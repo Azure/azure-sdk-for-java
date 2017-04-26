@@ -27,12 +27,10 @@ class ApplicationPackagesImpl extends
                 ApplicationPackageInner,
                 ApplicationImpl,
                         Application> {
-    private final ApplicationPackagesInner client;
     private final ApplicationImpl parent;
 
-    ApplicationPackagesImpl(ApplicationPackagesInner client, ApplicationImpl parent) {
+    ApplicationPackagesImpl(ApplicationImpl parent) {
         super(parent, "ApplicationPackage");
-        this.client = client;
         this.parent = parent;
         this.cacheCollection();
     }
@@ -56,7 +54,11 @@ class ApplicationPackagesImpl extends
         List<ApplicationPackageInner> applicationPackageList = this.parent.inner().packages();
 
         for (ApplicationPackageInner applicationPackage: applicationPackageList) {
-            childResources.add(new ApplicationPackageImpl(applicationPackage.version(), this.parent(), applicationPackage, this.client));
+            childResources.add(new ApplicationPackageImpl(
+                    applicationPackage.version(),
+                    this.parent(),
+                    applicationPackage,
+                    this.parent().parent().manager().inner().applicationPackages()));
         }
 
         return childResources;
@@ -65,7 +67,7 @@ class ApplicationPackagesImpl extends
     @Override
     protected ApplicationPackageImpl newChildResource(String name) {
         ApplicationPackageImpl applicationPackage = ApplicationPackageImpl
-                .newApplicationPackage(name, this.parent(), this.client);
+                .newApplicationPackage(name, this.parent(), this.parent().parent().manager().inner().applicationPackages());
         return applicationPackage;
     }
 

@@ -48,16 +48,16 @@ public class RestoreRequestInner extends Resource {
     private String siteName;
 
     /**
-     * Collection of databases which should be restored. This list has to
-     * match the list of databases included in the backup.
+     * Collection of databases which should be restored. This list has to match
+     * the list of databases included in the backup.
      */
     @JsonProperty(value = "properties.databases")
     private List<DatabaseBackupSetting> databases;
 
     /**
      * Changes a logic when restoring an app with custom domains.
-     * &lt;code&gt;true&lt;/code&gt; to remove custom domains automatically.
-     * If &lt;code&gt;false&lt;/code&gt;, custom domains are added to
+     * &lt;code&gt;true&lt;/code&gt; to remove custom domains automatically. If
+     * &lt;code&gt;false&lt;/code&gt;, custom domains are added to
      * the app's object when it is being restored, but that might fail due to
      * conflicts during the operation.
      */

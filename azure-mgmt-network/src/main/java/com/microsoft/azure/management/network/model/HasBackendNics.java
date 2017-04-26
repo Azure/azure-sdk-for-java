@@ -18,5 +18,5 @@ public interface HasBackendNics  {
      * @return a map of names of the IP configurations of network interfaces assigned to this backend,
      * indexed by their NIC's resource id
      */
-    Map<String, String> backendNicIpConfigurationNames();
+    Map<String, String> backendNicIPConfigurationNames();
 }

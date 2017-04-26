@@ -10,10 +10,13 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.azure.management.sql.implementation.ElasticPoolsInner;
+import com.microsoft.azure.management.sql.implementation.SqlServerManager;
 
 import java.util.List;
 
@@ -26,7 +29,9 @@ public interface SqlElasticPools extends
         SupportsDeletingById,
         SupportsGettingById<SqlElasticPool>,
         SupportsBatchCreation<SqlElasticPool>,
-        SupportsDeletingByParent {
+        SupportsDeletingByParent,
+        HasManager<SqlServerManager>,
+        HasInner<ElasticPoolsInner> {
 
     /**
      * Gets the SQLElasticPool based on the resource group name, SQLServer name and SQLElasticPool name.
@@ -45,7 +50,7 @@ public interface SqlElasticPools extends
      * @param name the name of SQLElasticPool
      * @return an immutable representation of the SQLElasticPool
      */
-    SqlElasticPool getBySqlServer(GroupableResource sqlServer, String name);
+    SqlElasticPool getBySqlServer(SqlServer sqlServer, String name);
 
     /**
      * Lists resources of the specified type in the specified resource group and SQLServer.
@@ -62,7 +67,7 @@ public interface SqlElasticPools extends
      * @param sqlServer the instance of SQLServer
      * @return the list of SQLElasticPools in a SQLServer
      */
-    List<SqlElasticPool> listBySqlServer(GroupableResource sqlServer);
+    List<SqlElasticPool> listBySqlServer(SqlServer sqlServer);
 
     /**
      * Entry point to SQL ElasticPool management API, which already have the SQLServer specified.

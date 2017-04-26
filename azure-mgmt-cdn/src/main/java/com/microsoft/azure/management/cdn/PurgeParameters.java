@@ -12,14 +12,14 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters required for endpoint purge.
+ * Parameters required for content purge.
  */
 public class PurgeParameters {
     /**
-     * The path to the content to be purged. Can describe a file path or a
-     * wild card directory.
+     * The path to the content to be purged. Can describe a file path or a wild
+     * card directory.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "contentPaths", required = true)
     private List<String> contentPaths;
 
     /**

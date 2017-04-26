@@ -8,16 +8,18 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -33,6 +35,7 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -41,7 +44,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Domains.
  */
-public final class DomainsInner {
+public class DomainsInner implements InnerSupportsGet<DomainInner>, InnerSupportsDelete<Void>, InnerSupportsListing<DomainInner> {
     /** The Retrofit service to perform REST calls. */
     private DomainsService service;
     /** The service client containing this operation class. */
@@ -63,77 +66,77 @@ public final class DomainsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface DomainsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains checkAvailability" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/checkDomainAvailability")
         Observable<Response<ResponseBody>> checkAvailability(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body NameIdentifierInner identifier, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/domains")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains getControlCenterSsoRequest" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/generateSsoRequest")
         Observable<Response<ResponseBody>> getControlCenterSsoRequest(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains listRecommendations" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/listDomainRecommendations")
         Observable<Response<ResponseBody>> listRecommendations(@Path("subscriptionId") String subscriptionId, @Body DomainRecommendationSearchParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("subscriptionId") String subscriptionId, @Body DomainInner domain, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("subscriptionId") String subscriptionId, @Body DomainInner domain, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("subscriptionId") String subscriptionId, @Query("forceHardDeleteDomain") Boolean forceHardDeleteDomain, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains listOwnershipIdentifiers" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers")
         Observable<Response<ResponseBody>> listOwnershipIdentifiers(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains getOwnershipIdentifier" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}")
         Observable<Response<ResponseBody>> getOwnershipIdentifier(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains createOrUpdateOwnershipIdentifier" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}")
         Observable<Response<ResponseBody>> createOrUpdateOwnershipIdentifier(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body DomainOwnershipIdentifierInner domainOwnershipIdentifier, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains deleteOwnershipIdentifier" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteOwnershipIdentifier(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains updateOwnershipIdentifier" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}")
         Observable<Response<ResponseBody>> updateOwnershipIdentifier(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body DomainOwnershipIdentifierInner domainOwnershipIdentifier, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("{nextLink}")
-        Observable<Response<ResponseBody>> listRecommendationsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains listRecommendationsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listRecommendationsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listByResourceGroupNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains listByResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listOwnershipIdentifiersNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Domains listOwnershipIdentifiersNext" })
+        @GET
+        Observable<Response<ResponseBody>> listOwnershipIdentifiersNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -141,10 +144,13 @@ public final class DomainsInner {
      * Check if a domain is available for registration.
      * Check if a domain is available for registration.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DomainAvailablilityCheckResultInner object if successful.
      */
     public DomainAvailablilityCheckResultInner checkAvailability() {
-        return checkAvailabilityWithServiceResponseAsync().toBlocking().single().getBody();
+        return checkAvailabilityWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
@@ -152,23 +158,25 @@ public final class DomainsInner {
      * Check if a domain is available for registration.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DomainAvailablilityCheckResultInner> checkAvailabilityAsync(final ServiceCallback<DomainAvailablilityCheckResultInner> serviceCallback) {
-        return ServiceCall.create(checkAvailabilityWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<DomainAvailablilityCheckResultInner> checkAvailabilityAsync(final ServiceCallback<DomainAvailablilityCheckResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkAvailabilityWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
      * Check if a domain is available for registration.
      * Check if a domain is available for registration.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainAvailablilityCheckResultInner object
      */
     public Observable<DomainAvailablilityCheckResultInner> checkAvailabilityAsync() {
         return checkAvailabilityWithServiceResponseAsync().map(new Func1<ServiceResponse<DomainAvailablilityCheckResultInner>, DomainAvailablilityCheckResultInner>() {
             @Override
             public DomainAvailablilityCheckResultInner call(ServiceResponse<DomainAvailablilityCheckResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -177,6 +185,7 @@ public final class DomainsInner {
      * Check if a domain is available for registration.
      * Check if a domain is available for registration.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainAvailablilityCheckResultInner object
      */
     public Observable<ServiceResponse<DomainAvailablilityCheckResultInner>> checkAvailabilityWithServiceResponseAsync() {
@@ -206,10 +215,13 @@ public final class DomainsInner {
      * Check if a domain is available for registration.
      *
      * @param name Name of the object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DomainAvailablilityCheckResultInner object if successful.
      */
     public DomainAvailablilityCheckResultInner checkAvailability(String name) {
-        return checkAvailabilityWithServiceResponseAsync(name).toBlocking().single().getBody();
+        return checkAvailabilityWithServiceResponseAsync(name).toBlocking().single().body();
     }
 
     /**
@@ -218,10 +230,11 @@ public final class DomainsInner {
      *
      * @param name Name of the object.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DomainAvailablilityCheckResultInner> checkAvailabilityAsync(String name, final ServiceCallback<DomainAvailablilityCheckResultInner> serviceCallback) {
-        return ServiceCall.create(checkAvailabilityWithServiceResponseAsync(name), serviceCallback);
+    public ServiceFuture<DomainAvailablilityCheckResultInner> checkAvailabilityAsync(String name, final ServiceCallback<DomainAvailablilityCheckResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkAvailabilityWithServiceResponseAsync(name), serviceCallback);
     }
 
     /**
@@ -229,13 +242,14 @@ public final class DomainsInner {
      * Check if a domain is available for registration.
      *
      * @param name Name of the object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainAvailablilityCheckResultInner object
      */
     public Observable<DomainAvailablilityCheckResultInner> checkAvailabilityAsync(String name) {
         return checkAvailabilityWithServiceResponseAsync(name).map(new Func1<ServiceResponse<DomainAvailablilityCheckResultInner>, DomainAvailablilityCheckResultInner>() {
             @Override
             public DomainAvailablilityCheckResultInner call(ServiceResponse<DomainAvailablilityCheckResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -245,6 +259,7 @@ public final class DomainsInner {
      * Check if a domain is available for registration.
      *
      * @param name Name of the object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainAvailablilityCheckResultInner object
      */
     public Observable<ServiceResponse<DomainAvailablilityCheckResultInner>> checkAvailabilityWithServiceResponseAsync(String name) {
@@ -269,7 +284,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<DomainAvailablilityCheckResultInner> checkAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainAvailablilityCheckResultInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DomainAvailablilityCheckResultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DomainAvailablilityCheckResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -279,14 +294,17 @@ public final class DomainsInner {
      * Get all domains in a subscription.
      * Get all domains in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DomainInner&gt; object if successful.
      */
     public PagedList<DomainInner> list() {
         ServiceResponse<Page<DomainInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<DomainInner>(response.getBody()) {
+        return new PagedList<DomainInner>(response.body()) {
             @Override
             public Page<DomainInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -296,10 +314,11 @@ public final class DomainsInner {
      * Get all domains in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DomainInner>> listAsync(final ListOperationCallback<DomainInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<DomainInner>> listAsync(final ListOperationCallback<DomainInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
@@ -314,6 +333,7 @@ public final class DomainsInner {
      * Get all domains in a subscription.
      * Get all domains in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DomainInner&gt; object
      */
     public Observable<Page<DomainInner>> listAsync() {
@@ -321,7 +341,7 @@ public final class DomainsInner {
             .map(new Func1<ServiceResponse<Page<DomainInner>>, Page<DomainInner>>() {
                 @Override
                 public Page<DomainInner> call(ServiceResponse<Page<DomainInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -330,6 +350,7 @@ public final class DomainsInner {
      * Get all domains in a subscription.
      * Get all domains in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DomainInner&gt; object
      */
     public Observable<ServiceResponse<Page<DomainInner>>> listWithServiceResponseAsync() {
@@ -337,7 +358,7 @@ public final class DomainsInner {
             .concatMap(new Func1<ServiceResponse<Page<DomainInner>>, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DomainInner>>> call(ServiceResponse<Page<DomainInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -350,6 +371,7 @@ public final class DomainsInner {
      * Get all domains in a subscription.
      * Get all domains in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DomainInner>>> listSinglePageAsync() {
@@ -363,7 +385,7 @@ public final class DomainsInner {
                 public Observable<ServiceResponse<Page<DomainInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DomainInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DomainInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DomainInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -372,7 +394,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<PageImpl<DomainInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DomainInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DomainInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DomainInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -382,10 +404,13 @@ public final class DomainsInner {
      * Generate a single sign-on request for the domain management portal.
      * Generate a single sign-on request for the domain management portal.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DomainControlCenterSsoRequestInner object if successful.
      */
     public DomainControlCenterSsoRequestInner getControlCenterSsoRequest() {
-        return getControlCenterSsoRequestWithServiceResponseAsync().toBlocking().single().getBody();
+        return getControlCenterSsoRequestWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
@@ -393,23 +418,25 @@ public final class DomainsInner {
      * Generate a single sign-on request for the domain management portal.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DomainControlCenterSsoRequestInner> getControlCenterSsoRequestAsync(final ServiceCallback<DomainControlCenterSsoRequestInner> serviceCallback) {
-        return ServiceCall.create(getControlCenterSsoRequestWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<DomainControlCenterSsoRequestInner> getControlCenterSsoRequestAsync(final ServiceCallback<DomainControlCenterSsoRequestInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getControlCenterSsoRequestWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
      * Generate a single sign-on request for the domain management portal.
      * Generate a single sign-on request for the domain management portal.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainControlCenterSsoRequestInner object
      */
     public Observable<DomainControlCenterSsoRequestInner> getControlCenterSsoRequestAsync() {
         return getControlCenterSsoRequestWithServiceResponseAsync().map(new Func1<ServiceResponse<DomainControlCenterSsoRequestInner>, DomainControlCenterSsoRequestInner>() {
             @Override
             public DomainControlCenterSsoRequestInner call(ServiceResponse<DomainControlCenterSsoRequestInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -418,6 +445,7 @@ public final class DomainsInner {
      * Generate a single sign-on request for the domain management portal.
      * Generate a single sign-on request for the domain management portal.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainControlCenterSsoRequestInner object
      */
     public Observable<ServiceResponse<DomainControlCenterSsoRequestInner>> getControlCenterSsoRequestWithServiceResponseAsync() {
@@ -440,7 +468,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<DomainControlCenterSsoRequestInner> getControlCenterSsoRequestDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainControlCenterSsoRequestInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DomainControlCenterSsoRequestInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DomainControlCenterSsoRequestInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -451,14 +479,17 @@ public final class DomainsInner {
      * Get domain name recommendations based on keywords.
      *
      * @param parameters Search parameters for domain name recommendations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;NameIdentifierInner&gt; object if successful.
      */
     public PagedList<NameIdentifierInner> listRecommendations(final DomainRecommendationSearchParametersInner parameters) {
         ServiceResponse<Page<NameIdentifierInner>> response = listRecommendationsSinglePageAsync(parameters).toBlocking().single();
-        return new PagedList<NameIdentifierInner>(response.getBody()) {
+        return new PagedList<NameIdentifierInner>(response.body()) {
             @Override
             public Page<NameIdentifierInner> nextPage(String nextPageLink) {
-                return listRecommendationsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listRecommendationsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -469,10 +500,11 @@ public final class DomainsInner {
      *
      * @param parameters Search parameters for domain name recommendations.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<NameIdentifierInner>> listRecommendationsAsync(final DomainRecommendationSearchParametersInner parameters, final ListOperationCallback<NameIdentifierInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<NameIdentifierInner>> listRecommendationsAsync(final DomainRecommendationSearchParametersInner parameters, final ListOperationCallback<NameIdentifierInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listRecommendationsSinglePageAsync(parameters),
             new Func1<String, Observable<ServiceResponse<Page<NameIdentifierInner>>>>() {
                 @Override
@@ -488,6 +520,7 @@ public final class DomainsInner {
      * Get domain name recommendations based on keywords.
      *
      * @param parameters Search parameters for domain name recommendations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;NameIdentifierInner&gt; object
      */
     public Observable<Page<NameIdentifierInner>> listRecommendationsAsync(final DomainRecommendationSearchParametersInner parameters) {
@@ -495,7 +528,7 @@ public final class DomainsInner {
             .map(new Func1<ServiceResponse<Page<NameIdentifierInner>>, Page<NameIdentifierInner>>() {
                 @Override
                 public Page<NameIdentifierInner> call(ServiceResponse<Page<NameIdentifierInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -505,6 +538,7 @@ public final class DomainsInner {
      * Get domain name recommendations based on keywords.
      *
      * @param parameters Search parameters for domain name recommendations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;NameIdentifierInner&gt; object
      */
     public Observable<ServiceResponse<Page<NameIdentifierInner>>> listRecommendationsWithServiceResponseAsync(final DomainRecommendationSearchParametersInner parameters) {
@@ -512,7 +546,7 @@ public final class DomainsInner {
             .concatMap(new Func1<ServiceResponse<Page<NameIdentifierInner>>, Observable<ServiceResponse<Page<NameIdentifierInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NameIdentifierInner>>> call(ServiceResponse<Page<NameIdentifierInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -526,6 +560,7 @@ public final class DomainsInner {
      * Get domain name recommendations based on keywords.
      *
     ServiceResponse<PageImpl<NameIdentifierInner>> * @param parameters Search parameters for domain name recommendations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;NameIdentifierInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<NameIdentifierInner>>> listRecommendationsSinglePageAsync(final DomainRecommendationSearchParametersInner parameters) {
@@ -543,7 +578,7 @@ public final class DomainsInner {
                 public Observable<ServiceResponse<Page<NameIdentifierInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<NameIdentifierInner>> result = listRecommendationsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NameIdentifierInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<NameIdentifierInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -552,7 +587,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<PageImpl<NameIdentifierInner>> listRecommendationsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<NameIdentifierInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<NameIdentifierInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<NameIdentifierInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -563,14 +598,17 @@ public final class DomainsInner {
      * Get all domains in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DomainInner&gt; object if successful.
      */
     public PagedList<DomainInner> listByResourceGroup(final String resourceGroupName) {
         ServiceResponse<Page<DomainInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<DomainInner>(response.getBody()) {
+        return new PagedList<DomainInner>(response.body()) {
             @Override
             public Page<DomainInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -581,10 +619,11 @@ public final class DomainsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DomainInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DomainInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<DomainInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DomainInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
@@ -600,6 +639,7 @@ public final class DomainsInner {
      * Get all domains in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DomainInner&gt; object
      */
     public Observable<Page<DomainInner>> listByResourceGroupAsync(final String resourceGroupName) {
@@ -607,7 +647,7 @@ public final class DomainsInner {
             .map(new Func1<ServiceResponse<Page<DomainInner>>, Page<DomainInner>>() {
                 @Override
                 public Page<DomainInner> call(ServiceResponse<Page<DomainInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -617,6 +657,7 @@ public final class DomainsInner {
      * Get all domains in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DomainInner&gt; object
      */
     public Observable<ServiceResponse<Page<DomainInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
@@ -624,7 +665,7 @@ public final class DomainsInner {
             .concatMap(new Func1<ServiceResponse<Page<DomainInner>>, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DomainInner>>> call(ServiceResponse<Page<DomainInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -638,6 +679,7 @@ public final class DomainsInner {
      * Get all domains in a resource group.
      *
     ServiceResponse<PageImpl<DomainInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DomainInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
@@ -654,7 +696,7 @@ public final class DomainsInner {
                 public Observable<ServiceResponse<Page<DomainInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DomainInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DomainInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DomainInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -663,7 +705,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<PageImpl<DomainInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DomainInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DomainInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DomainInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -675,10 +717,13 @@ public final class DomainsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DomainInner object if successful.
      */
-    public DomainInner get(String resourceGroupName, String domainName) {
-        return getWithServiceResponseAsync(resourceGroupName, domainName).toBlocking().single().getBody();
+    public DomainInner getByResourceGroup(String resourceGroupName, String domainName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, domainName).toBlocking().single().body();
     }
 
     /**
@@ -688,10 +733,11 @@ public final class DomainsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DomainInner> getAsync(String resourceGroupName, String domainName, final ServiceCallback<DomainInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, domainName), serviceCallback);
+    public ServiceFuture<DomainInner> getByResourceGroupAsync(String resourceGroupName, String domainName, final ServiceCallback<DomainInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, domainName), serviceCallback);
     }
 
     /**
@@ -700,13 +746,14 @@ public final class DomainsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainInner object
      */
-    public Observable<DomainInner> getAsync(String resourceGroupName, String domainName) {
-        return getWithServiceResponseAsync(resourceGroupName, domainName).map(new Func1<ServiceResponse<DomainInner>, DomainInner>() {
+    public Observable<DomainInner> getByResourceGroupAsync(String resourceGroupName, String domainName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, domainName).map(new Func1<ServiceResponse<DomainInner>, DomainInner>() {
             @Override
             public DomainInner call(ServiceResponse<DomainInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -717,9 +764,10 @@ public final class DomainsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainInner object
      */
-    public Observable<ServiceResponse<DomainInner>> getWithServiceResponseAsync(String resourceGroupName, String domainName) {
+    public Observable<ServiceResponse<DomainInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String domainName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -730,12 +778,12 @@ public final class DomainsInner {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2015-04-01";
-        return service.get(resourceGroupName, domainName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(resourceGroupName, domainName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DomainInner>>>() {
                 @Override
                 public Observable<ServiceResponse<DomainInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<DomainInner> clientResponse = getDelegate(response);
+                        ServiceResponse<DomainInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -744,8 +792,8 @@ public final class DomainsInner {
             });
     }
 
-    private ServiceResponse<DomainInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainInner, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<DomainInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<DomainInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DomainInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -758,10 +806,13 @@ public final class DomainsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DomainInner object if successful.
      */
     public DomainInner createOrUpdate(String resourceGroupName, String domainName, DomainInner domain) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, domainName, domain).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, domainName, domain).toBlocking().last().body();
     }
 
     /**
@@ -772,10 +823,11 @@ public final class DomainsInner {
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DomainInner> createOrUpdateAsync(String resourceGroupName, String domainName, DomainInner domain, final ServiceCallback<DomainInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, domainName, domain), serviceCallback);
+    public ServiceFuture<DomainInner> createOrUpdateAsync(String resourceGroupName, String domainName, DomainInner domain, final ServiceCallback<DomainInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, domainName, domain), serviceCallback);
     }
 
     /**
@@ -785,13 +837,14 @@ public final class DomainsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<DomainInner> createOrUpdateAsync(String resourceGroupName, String domainName, DomainInner domain) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, domainName, domain).map(new Func1<ServiceResponse<DomainInner>, DomainInner>() {
             @Override
             public DomainInner call(ServiceResponse<DomainInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -803,6 +856,7 @@ public final class DomainsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<DomainInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String domainName, DomainInner domain) {
@@ -831,10 +885,13 @@ public final class DomainsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DomainInner object if successful.
      */
     public DomainInner beginCreateOrUpdate(String resourceGroupName, String domainName, DomainInner domain) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, domainName, domain).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, domainName, domain).toBlocking().single().body();
     }
 
     /**
@@ -845,10 +902,11 @@ public final class DomainsInner {
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DomainInner> beginCreateOrUpdateAsync(String resourceGroupName, String domainName, DomainInner domain, final ServiceCallback<DomainInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, domainName, domain), serviceCallback);
+    public ServiceFuture<DomainInner> beginCreateOrUpdateAsync(String resourceGroupName, String domainName, DomainInner domain, final ServiceCallback<DomainInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, domainName, domain), serviceCallback);
     }
 
     /**
@@ -858,13 +916,14 @@ public final class DomainsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainInner object
      */
     public Observable<DomainInner> beginCreateOrUpdateAsync(String resourceGroupName, String domainName, DomainInner domain) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, domainName, domain).map(new Func1<ServiceResponse<DomainInner>, DomainInner>() {
             @Override
             public DomainInner call(ServiceResponse<DomainInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -876,6 +935,7 @@ public final class DomainsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainInner object
      */
     public Observable<ServiceResponse<DomainInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String domainName, DomainInner domain) {
@@ -908,7 +968,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<DomainInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DomainInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<DomainInner>() { }.getType())
                 .register(200, new TypeToken<DomainInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -921,9 +981,12 @@ public final class DomainsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String domainName) {
-        deleteWithServiceResponseAsync(resourceGroupName, domainName).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, domainName).toBlocking().single().body();
     }
 
     /**
@@ -933,10 +996,11 @@ public final class DomainsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String domainName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, domainName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String domainName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, domainName), serviceCallback);
     }
 
     /**
@@ -945,13 +1009,14 @@ public final class DomainsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String domainName) {
         return deleteWithServiceResponseAsync(resourceGroupName, domainName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -962,6 +1027,7 @@ public final class DomainsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String domainName) {
@@ -997,9 +1063,12 @@ public final class DomainsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param forceHardDeleteDomain Specify &lt;code&gt;true&lt;/code&gt; to delete the domain immediately. The default is &lt;code&gt;false&lt;/code&gt; which deletes the domain after 24 hours.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String domainName, Boolean forceHardDeleteDomain) {
-        deleteWithServiceResponseAsync(resourceGroupName, domainName, forceHardDeleteDomain).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, domainName, forceHardDeleteDomain).toBlocking().single().body();
     }
 
     /**
@@ -1010,10 +1079,11 @@ public final class DomainsInner {
      * @param domainName Name of the domain.
      * @param forceHardDeleteDomain Specify &lt;code&gt;true&lt;/code&gt; to delete the domain immediately. The default is &lt;code&gt;false&lt;/code&gt; which deletes the domain after 24 hours.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String domainName, Boolean forceHardDeleteDomain, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, domainName, forceHardDeleteDomain), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String domainName, Boolean forceHardDeleteDomain, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, domainName, forceHardDeleteDomain), serviceCallback);
     }
 
     /**
@@ -1023,13 +1093,14 @@ public final class DomainsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param forceHardDeleteDomain Specify &lt;code&gt;true&lt;/code&gt; to delete the domain immediately. The default is &lt;code&gt;false&lt;/code&gt; which deletes the domain after 24 hours.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String domainName, Boolean forceHardDeleteDomain) {
         return deleteWithServiceResponseAsync(resourceGroupName, domainName, forceHardDeleteDomain).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1041,6 +1112,7 @@ public final class DomainsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param forceHardDeleteDomain Specify &lt;code&gt;true&lt;/code&gt; to delete the domain immediately. The default is &lt;code&gt;false&lt;/code&gt; which deletes the domain after 24 hours.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String domainName, Boolean forceHardDeleteDomain) {
@@ -1069,9 +1141,10 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -1081,14 +1154,17 @@ public final class DomainsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DomainOwnershipIdentifierInner&gt; object if successful.
      */
     public PagedList<DomainOwnershipIdentifierInner> listOwnershipIdentifiers(final String resourceGroupName, final String domainName) {
         ServiceResponse<Page<DomainOwnershipIdentifierInner>> response = listOwnershipIdentifiersSinglePageAsync(resourceGroupName, domainName).toBlocking().single();
-        return new PagedList<DomainOwnershipIdentifierInner>(response.getBody()) {
+        return new PagedList<DomainOwnershipIdentifierInner>(response.body()) {
             @Override
             public Page<DomainOwnershipIdentifierInner> nextPage(String nextPageLink) {
-                return listOwnershipIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listOwnershipIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1100,10 +1176,11 @@ public final class DomainsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DomainOwnershipIdentifierInner>> listOwnershipIdentifiersAsync(final String resourceGroupName, final String domainName, final ListOperationCallback<DomainOwnershipIdentifierInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<DomainOwnershipIdentifierInner>> listOwnershipIdentifiersAsync(final String resourceGroupName, final String domainName, final ListOperationCallback<DomainOwnershipIdentifierInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listOwnershipIdentifiersSinglePageAsync(resourceGroupName, domainName),
             new Func1<String, Observable<ServiceResponse<Page<DomainOwnershipIdentifierInner>>>>() {
                 @Override
@@ -1120,6 +1197,7 @@ public final class DomainsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DomainOwnershipIdentifierInner&gt; object
      */
     public Observable<Page<DomainOwnershipIdentifierInner>> listOwnershipIdentifiersAsync(final String resourceGroupName, final String domainName) {
@@ -1127,7 +1205,7 @@ public final class DomainsInner {
             .map(new Func1<ServiceResponse<Page<DomainOwnershipIdentifierInner>>, Page<DomainOwnershipIdentifierInner>>() {
                 @Override
                 public Page<DomainOwnershipIdentifierInner> call(ServiceResponse<Page<DomainOwnershipIdentifierInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1138,6 +1216,7 @@ public final class DomainsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DomainOwnershipIdentifierInner&gt; object
      */
     public Observable<ServiceResponse<Page<DomainOwnershipIdentifierInner>>> listOwnershipIdentifiersWithServiceResponseAsync(final String resourceGroupName, final String domainName) {
@@ -1145,7 +1224,7 @@ public final class DomainsInner {
             .concatMap(new Func1<ServiceResponse<Page<DomainOwnershipIdentifierInner>>, Observable<ServiceResponse<Page<DomainOwnershipIdentifierInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DomainOwnershipIdentifierInner>>> call(ServiceResponse<Page<DomainOwnershipIdentifierInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1160,6 +1239,7 @@ public final class DomainsInner {
      *
     ServiceResponse<PageImpl<DomainOwnershipIdentifierInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<DomainOwnershipIdentifierInner>> * @param domainName Name of domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DomainOwnershipIdentifierInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DomainOwnershipIdentifierInner>>> listOwnershipIdentifiersSinglePageAsync(final String resourceGroupName, final String domainName) {
@@ -1179,7 +1259,7 @@ public final class DomainsInner {
                 public Observable<ServiceResponse<Page<DomainOwnershipIdentifierInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DomainOwnershipIdentifierInner>> result = listOwnershipIdentifiersDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DomainOwnershipIdentifierInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DomainOwnershipIdentifierInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1188,7 +1268,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<PageImpl<DomainOwnershipIdentifierInner>> listOwnershipIdentifiersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DomainOwnershipIdentifierInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DomainOwnershipIdentifierInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DomainOwnershipIdentifierInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1201,10 +1281,13 @@ public final class DomainsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DomainOwnershipIdentifierInner object if successful.
      */
     public DomainOwnershipIdentifierInner getOwnershipIdentifier(String resourceGroupName, String domainName, String name) {
-        return getOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name).toBlocking().single().getBody();
+        return getOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name).toBlocking().single().body();
     }
 
     /**
@@ -1215,10 +1298,11 @@ public final class DomainsInner {
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DomainOwnershipIdentifierInner> getOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name, final ServiceCallback<DomainOwnershipIdentifierInner> serviceCallback) {
-        return ServiceCall.create(getOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name), serviceCallback);
+    public ServiceFuture<DomainOwnershipIdentifierInner> getOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name, final ServiceCallback<DomainOwnershipIdentifierInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name), serviceCallback);
     }
 
     /**
@@ -1228,13 +1312,14 @@ public final class DomainsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainOwnershipIdentifierInner object
      */
     public Observable<DomainOwnershipIdentifierInner> getOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name) {
         return getOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name).map(new Func1<ServiceResponse<DomainOwnershipIdentifierInner>, DomainOwnershipIdentifierInner>() {
             @Override
             public DomainOwnershipIdentifierInner call(ServiceResponse<DomainOwnershipIdentifierInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1246,6 +1331,7 @@ public final class DomainsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainOwnershipIdentifierInner object
      */
     public Observable<ServiceResponse<DomainOwnershipIdentifierInner>> getOwnershipIdentifierWithServiceResponseAsync(String resourceGroupName, String domainName, String name) {
@@ -1277,7 +1363,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<DomainOwnershipIdentifierInner> getOwnershipIdentifierDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainOwnershipIdentifierInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DomainOwnershipIdentifierInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DomainOwnershipIdentifierInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1291,10 +1377,13 @@ public final class DomainsInner {
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DomainOwnershipIdentifierInner object if successful.
      */
     public DomainOwnershipIdentifierInner createOrUpdateOwnershipIdentifier(String resourceGroupName, String domainName, String name, DomainOwnershipIdentifierInner domainOwnershipIdentifier) {
-        return createOrUpdateOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name, domainOwnershipIdentifier).toBlocking().single().getBody();
+        return createOrUpdateOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name, domainOwnershipIdentifier).toBlocking().single().body();
     }
 
     /**
@@ -1306,10 +1395,11 @@ public final class DomainsInner {
      * @param name Name of identifier.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DomainOwnershipIdentifierInner> createOrUpdateOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name, DomainOwnershipIdentifierInner domainOwnershipIdentifier, final ServiceCallback<DomainOwnershipIdentifierInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name, domainOwnershipIdentifier), serviceCallback);
+    public ServiceFuture<DomainOwnershipIdentifierInner> createOrUpdateOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name, DomainOwnershipIdentifierInner domainOwnershipIdentifier, final ServiceCallback<DomainOwnershipIdentifierInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name, domainOwnershipIdentifier), serviceCallback);
     }
 
     /**
@@ -1320,13 +1410,14 @@ public final class DomainsInner {
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainOwnershipIdentifierInner object
      */
     public Observable<DomainOwnershipIdentifierInner> createOrUpdateOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name, DomainOwnershipIdentifierInner domainOwnershipIdentifier) {
         return createOrUpdateOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name, domainOwnershipIdentifier).map(new Func1<ServiceResponse<DomainOwnershipIdentifierInner>, DomainOwnershipIdentifierInner>() {
             @Override
             public DomainOwnershipIdentifierInner call(ServiceResponse<DomainOwnershipIdentifierInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1339,6 +1430,7 @@ public final class DomainsInner {
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainOwnershipIdentifierInner object
      */
     public Observable<ServiceResponse<DomainOwnershipIdentifierInner>> createOrUpdateOwnershipIdentifierWithServiceResponseAsync(String resourceGroupName, String domainName, String name, DomainOwnershipIdentifierInner domainOwnershipIdentifier) {
@@ -1374,7 +1466,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<DomainOwnershipIdentifierInner> createOrUpdateOwnershipIdentifierDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainOwnershipIdentifierInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DomainOwnershipIdentifierInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DomainOwnershipIdentifierInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1387,9 +1479,12 @@ public final class DomainsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteOwnershipIdentifier(String resourceGroupName, String domainName, String name) {
-        deleteOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name).toBlocking().single().getBody();
+        deleteOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name).toBlocking().single().body();
     }
 
     /**
@@ -1400,10 +1495,11 @@ public final class DomainsInner {
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name), serviceCallback);
+    public ServiceFuture<Void> deleteOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name), serviceCallback);
     }
 
     /**
@@ -1413,13 +1509,14 @@ public final class DomainsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name) {
         return deleteOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1431,6 +1528,7 @@ public final class DomainsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteOwnershipIdentifierWithServiceResponseAsync(String resourceGroupName, String domainName, String name) {
@@ -1462,9 +1560,10 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<Void> deleteOwnershipIdentifierDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -1476,10 +1575,13 @@ public final class DomainsInner {
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DomainOwnershipIdentifierInner object if successful.
      */
     public DomainOwnershipIdentifierInner updateOwnershipIdentifier(String resourceGroupName, String domainName, String name, DomainOwnershipIdentifierInner domainOwnershipIdentifier) {
-        return updateOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name, domainOwnershipIdentifier).toBlocking().single().getBody();
+        return updateOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name, domainOwnershipIdentifier).toBlocking().single().body();
     }
 
     /**
@@ -1491,10 +1593,11 @@ public final class DomainsInner {
      * @param name Name of identifier.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DomainOwnershipIdentifierInner> updateOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name, DomainOwnershipIdentifierInner domainOwnershipIdentifier, final ServiceCallback<DomainOwnershipIdentifierInner> serviceCallback) {
-        return ServiceCall.create(updateOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name, domainOwnershipIdentifier), serviceCallback);
+    public ServiceFuture<DomainOwnershipIdentifierInner> updateOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name, DomainOwnershipIdentifierInner domainOwnershipIdentifier, final ServiceCallback<DomainOwnershipIdentifierInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name, domainOwnershipIdentifier), serviceCallback);
     }
 
     /**
@@ -1505,13 +1608,14 @@ public final class DomainsInner {
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainOwnershipIdentifierInner object
      */
     public Observable<DomainOwnershipIdentifierInner> updateOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name, DomainOwnershipIdentifierInner domainOwnershipIdentifier) {
         return updateOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, domainName, name, domainOwnershipIdentifier).map(new Func1<ServiceResponse<DomainOwnershipIdentifierInner>, DomainOwnershipIdentifierInner>() {
             @Override
             public DomainOwnershipIdentifierInner call(ServiceResponse<DomainOwnershipIdentifierInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1524,6 +1628,7 @@ public final class DomainsInner {
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainOwnershipIdentifierInner object
      */
     public Observable<ServiceResponse<DomainOwnershipIdentifierInner>> updateOwnershipIdentifierWithServiceResponseAsync(String resourceGroupName, String domainName, String name, DomainOwnershipIdentifierInner domainOwnershipIdentifier) {
@@ -1559,7 +1664,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<DomainOwnershipIdentifierInner> updateOwnershipIdentifierDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainOwnershipIdentifierInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DomainOwnershipIdentifierInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DomainOwnershipIdentifierInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1570,14 +1675,17 @@ public final class DomainsInner {
      * Get all domains in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DomainInner&gt; object if successful.
      */
     public PagedList<DomainInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<DomainInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<DomainInner>(response.getBody()) {
+        return new PagedList<DomainInner>(response.body()) {
             @Override
             public Page<DomainInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1587,12 +1695,13 @@ public final class DomainsInner {
      * Get all domains in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DomainInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<DomainInner>> serviceCall, final ListOperationCallback<DomainInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<DomainInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<DomainInner>> serviceFuture, final ListOperationCallback<DomainInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
@@ -1608,6 +1717,7 @@ public final class DomainsInner {
      * Get all domains in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DomainInner&gt; object
      */
     public Observable<Page<DomainInner>> listNextAsync(final String nextPageLink) {
@@ -1615,7 +1725,7 @@ public final class DomainsInner {
             .map(new Func1<ServiceResponse<Page<DomainInner>>, Page<DomainInner>>() {
                 @Override
                 public Page<DomainInner> call(ServiceResponse<Page<DomainInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1625,6 +1735,7 @@ public final class DomainsInner {
      * Get all domains in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DomainInner&gt; object
      */
     public Observable<ServiceResponse<Page<DomainInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1632,7 +1743,7 @@ public final class DomainsInner {
             .concatMap(new Func1<ServiceResponse<Page<DomainInner>>, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DomainInner>>> call(ServiceResponse<Page<DomainInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1646,19 +1757,21 @@ public final class DomainsInner {
      * Get all domains in a subscription.
      *
     ServiceResponse<PageImpl<DomainInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DomainInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DomainInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DomainInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DomainInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DomainInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1667,7 +1780,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<PageImpl<DomainInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DomainInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DomainInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DomainInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1678,14 +1791,17 @@ public final class DomainsInner {
      * Get domain name recommendations based on keywords.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;NameIdentifierInner&gt; object if successful.
      */
     public PagedList<NameIdentifierInner> listRecommendationsNext(final String nextPageLink) {
         ServiceResponse<Page<NameIdentifierInner>> response = listRecommendationsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<NameIdentifierInner>(response.getBody()) {
+        return new PagedList<NameIdentifierInner>(response.body()) {
             @Override
             public Page<NameIdentifierInner> nextPage(String nextPageLink) {
-                return listRecommendationsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listRecommendationsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1695,12 +1811,13 @@ public final class DomainsInner {
      * Get domain name recommendations based on keywords.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<NameIdentifierInner>> listRecommendationsNextAsync(final String nextPageLink, final ServiceCall<List<NameIdentifierInner>> serviceCall, final ListOperationCallback<NameIdentifierInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<NameIdentifierInner>> listRecommendationsNextAsync(final String nextPageLink, final ServiceFuture<List<NameIdentifierInner>> serviceFuture, final ListOperationCallback<NameIdentifierInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listRecommendationsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<NameIdentifierInner>>>>() {
                 @Override
@@ -1716,6 +1833,7 @@ public final class DomainsInner {
      * Get domain name recommendations based on keywords.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;NameIdentifierInner&gt; object
      */
     public Observable<Page<NameIdentifierInner>> listRecommendationsNextAsync(final String nextPageLink) {
@@ -1723,7 +1841,7 @@ public final class DomainsInner {
             .map(new Func1<ServiceResponse<Page<NameIdentifierInner>>, Page<NameIdentifierInner>>() {
                 @Override
                 public Page<NameIdentifierInner> call(ServiceResponse<Page<NameIdentifierInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1733,6 +1851,7 @@ public final class DomainsInner {
      * Get domain name recommendations based on keywords.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;NameIdentifierInner&gt; object
      */
     public Observable<ServiceResponse<Page<NameIdentifierInner>>> listRecommendationsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1740,7 +1859,7 @@ public final class DomainsInner {
             .concatMap(new Func1<ServiceResponse<Page<NameIdentifierInner>>, Observable<ServiceResponse<Page<NameIdentifierInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NameIdentifierInner>>> call(ServiceResponse<Page<NameIdentifierInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1754,19 +1873,21 @@ public final class DomainsInner {
      * Get domain name recommendations based on keywords.
      *
     ServiceResponse<PageImpl<NameIdentifierInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;NameIdentifierInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<NameIdentifierInner>>> listRecommendationsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listRecommendationsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listRecommendationsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NameIdentifierInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NameIdentifierInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<NameIdentifierInner>> result = listRecommendationsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NameIdentifierInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<NameIdentifierInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1775,7 +1896,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<PageImpl<NameIdentifierInner>> listRecommendationsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<NameIdentifierInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<NameIdentifierInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<NameIdentifierInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1786,14 +1907,17 @@ public final class DomainsInner {
      * Get all domains in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DomainInner&gt; object if successful.
      */
     public PagedList<DomainInner> listByResourceGroupNext(final String nextPageLink) {
         ServiceResponse<Page<DomainInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<DomainInner>(response.getBody()) {
+        return new PagedList<DomainInner>(response.body()) {
             @Override
             public Page<DomainInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1803,12 +1927,13 @@ public final class DomainsInner {
      * Get all domains in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DomainInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<DomainInner>> serviceCall, final ListOperationCallback<DomainInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<DomainInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<DomainInner>> serviceFuture, final ListOperationCallback<DomainInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
@@ -1824,6 +1949,7 @@ public final class DomainsInner {
      * Get all domains in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DomainInner&gt; object
      */
     public Observable<Page<DomainInner>> listByResourceGroupNextAsync(final String nextPageLink) {
@@ -1831,7 +1957,7 @@ public final class DomainsInner {
             .map(new Func1<ServiceResponse<Page<DomainInner>>, Page<DomainInner>>() {
                 @Override
                 public Page<DomainInner> call(ServiceResponse<Page<DomainInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1841,6 +1967,7 @@ public final class DomainsInner {
      * Get all domains in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DomainInner&gt; object
      */
     public Observable<ServiceResponse<Page<DomainInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1848,7 +1975,7 @@ public final class DomainsInner {
             .concatMap(new Func1<ServiceResponse<Page<DomainInner>>, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DomainInner>>> call(ServiceResponse<Page<DomainInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1862,19 +1989,21 @@ public final class DomainsInner {
      * Get all domains in a resource group.
      *
     ServiceResponse<PageImpl<DomainInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DomainInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listByResourceGroupNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DomainInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DomainInner>> result = listByResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DomainInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DomainInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1883,7 +2012,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<PageImpl<DomainInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DomainInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DomainInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DomainInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1894,14 +2023,17 @@ public final class DomainsInner {
      * Lists domain ownership identifiers.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DomainOwnershipIdentifierInner&gt; object if successful.
      */
     public PagedList<DomainOwnershipIdentifierInner> listOwnershipIdentifiersNext(final String nextPageLink) {
         ServiceResponse<Page<DomainOwnershipIdentifierInner>> response = listOwnershipIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<DomainOwnershipIdentifierInner>(response.getBody()) {
+        return new PagedList<DomainOwnershipIdentifierInner>(response.body()) {
             @Override
             public Page<DomainOwnershipIdentifierInner> nextPage(String nextPageLink) {
-                return listOwnershipIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listOwnershipIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1911,12 +2043,13 @@ public final class DomainsInner {
      * Lists domain ownership identifiers.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DomainOwnershipIdentifierInner>> listOwnershipIdentifiersNextAsync(final String nextPageLink, final ServiceCall<List<DomainOwnershipIdentifierInner>> serviceCall, final ListOperationCallback<DomainOwnershipIdentifierInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<DomainOwnershipIdentifierInner>> listOwnershipIdentifiersNextAsync(final String nextPageLink, final ServiceFuture<List<DomainOwnershipIdentifierInner>> serviceFuture, final ListOperationCallback<DomainOwnershipIdentifierInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listOwnershipIdentifiersNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DomainOwnershipIdentifierInner>>>>() {
                 @Override
@@ -1932,6 +2065,7 @@ public final class DomainsInner {
      * Lists domain ownership identifiers.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DomainOwnershipIdentifierInner&gt; object
      */
     public Observable<Page<DomainOwnershipIdentifierInner>> listOwnershipIdentifiersNextAsync(final String nextPageLink) {
@@ -1939,7 +2073,7 @@ public final class DomainsInner {
             .map(new Func1<ServiceResponse<Page<DomainOwnershipIdentifierInner>>, Page<DomainOwnershipIdentifierInner>>() {
                 @Override
                 public Page<DomainOwnershipIdentifierInner> call(ServiceResponse<Page<DomainOwnershipIdentifierInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1949,6 +2083,7 @@ public final class DomainsInner {
      * Lists domain ownership identifiers.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DomainOwnershipIdentifierInner&gt; object
      */
     public Observable<ServiceResponse<Page<DomainOwnershipIdentifierInner>>> listOwnershipIdentifiersNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1956,7 +2091,7 @@ public final class DomainsInner {
             .concatMap(new Func1<ServiceResponse<Page<DomainOwnershipIdentifierInner>>, Observable<ServiceResponse<Page<DomainOwnershipIdentifierInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DomainOwnershipIdentifierInner>>> call(ServiceResponse<Page<DomainOwnershipIdentifierInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1970,19 +2105,21 @@ public final class DomainsInner {
      * Lists domain ownership identifiers.
      *
     ServiceResponse<PageImpl<DomainOwnershipIdentifierInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DomainOwnershipIdentifierInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DomainOwnershipIdentifierInner>>> listOwnershipIdentifiersNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listOwnershipIdentifiersNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listOwnershipIdentifiersNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DomainOwnershipIdentifierInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DomainOwnershipIdentifierInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DomainOwnershipIdentifierInner>> result = listOwnershipIdentifiersNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DomainOwnershipIdentifierInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DomainOwnershipIdentifierInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1991,7 +2128,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<PageImpl<DomainOwnershipIdentifierInner>> listOwnershipIdentifiersNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DomainOwnershipIdentifierInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DomainOwnershipIdentifierInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DomainOwnershipIdentifierInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

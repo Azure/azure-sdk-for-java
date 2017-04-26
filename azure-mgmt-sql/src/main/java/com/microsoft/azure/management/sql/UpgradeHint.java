@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.sql;
 
 import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents a Upgrade Hint.
@@ -17,11 +18,13 @@ public class UpgradeHint {
     /**
      * TargetServiceLevelObjective for upgrade hint.
      */
+    @JsonProperty(value = "targetServiceLevelObjective")
     private String targetServiceLevelObjective;
 
     /**
      * TargetServiceLevelObjectiveId for upgrade hint.
      */
+    @JsonProperty(value = "targetServiceLevelObjectiveId")
     private UUID targetServiceLevelObjectiveId;
 
     /**

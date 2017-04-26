@@ -1,14 +1,23 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.dns.implementation;
 
-import com.microsoft.azure.RestClient;
+import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.dns.DnsZones;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
+import com.microsoft.azure.serializer.AzureJacksonAdapter;
+import com.microsoft.rest.RestClient;
 
 /**
- * Entry point to Azure Dns zone manager management.
+ * Entry point to Azure DNS zone management.
  */
 public final class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementClientImpl> {
     // Collections
@@ -25,20 +34,23 @@ public final class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementC
     }
 
     /**
-     * Creates an instance of DnsZoneManager that exposes Dns zone manager management API entry points.
+     * Creates an instance of DnsZoneManager that exposes DNS zone management API entry points.
      *
      * @param credentials the credentials to use
      * @param subscriptionId the subscription UUID
      * @return the DnsZoneManager
      */
     public static DnsZoneManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-        return new DnsZoneManager(credentials.getEnvironment().newRestClientBuilder()
+        return new DnsZoneManager(new RestClient.Builder()
+                .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
+                .withSerializerAdapter(new AzureJacksonAdapter())
+                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                 .build(), subscriptionId);
     }
 
     /**
-     * Creates an instance of DnsZoneManager that exposes Dns zone manager management API entry points.
+     * Creates an instance of DnsZoneManager that exposes DNS zone management API entry points.
      *
      * @param restClient the RestClient to be used for API calls.
      * @param subscriptionId the subscription UUID
@@ -53,11 +65,11 @@ public final class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementC
      */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
-         * Creates an instance of DnsZoneManager that exposes Dns zone API entry points.
+         * Creates an instance of DnsZoneManager that exposes DNS zone API entry points.
          *
          * @param credentials the credentials to use
          * @param subscriptionId the subscription UUID
-         * @return the interface exposing Dns zone manager management API entry points that work across subscriptions
+         * @return the interface exposing DNS zone management API entry points that work across subscriptions
          */
         DnsZoneManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
     }
@@ -81,13 +93,11 @@ public final class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementC
     }
 
     /**
-     * @return entry point to Dns zone manager zone management
+     * @return entry point to DNS zone manager zone management
      */
     public DnsZones zones() {
         if (this.zones == null) {
-            this.zones = new DnsZonesImpl(
-                    super.innerManagementClient,
-                    this);
+            this.zones = new DnsZonesImpl(this);
         }
         return this.zones;
     }

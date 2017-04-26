@@ -30,7 +30,7 @@ import com.microsoft.azure.management.datalake.analytics.models.USqlType;
 import com.microsoft.azure.management.datalake.analytics.models.USqlView;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.util.List;
@@ -48,9 +48,8 @@ public interface Catalogs {
      * @param databaseName The name of the database in which to create the secret.
      * @param secretName The name of the secret.
      * @param parameters The parameters required to create the secret (name and password)
-     * @return the USqlSecret object if successful.
      */
-    USqlSecret createSecret(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
+    void createSecret(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
 
     /**
      * Creates the specified secret for use with external data sources in the specified database. This is deprecated and will be removed in the next release. Please use CreateCredential instead.
@@ -60,9 +59,9 @@ public interface Catalogs {
      * @param secretName The name of the secret.
      * @param parameters The parameters required to create the secret (name and password)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<USqlSecret> createSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<USqlSecret> serviceCallback);
+    ServiceFuture<Void> createSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Creates the specified secret for use with external data sources in the specified database. This is deprecated and will be removed in the next release. Please use CreateCredential instead.
@@ -71,9 +70,9 @@ public interface Catalogs {
      * @param databaseName The name of the database in which to create the secret.
      * @param secretName The name of the secret.
      * @param parameters The parameters required to create the secret (name and password)
-     * @return the observable to the USqlSecret object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<USqlSecret> createSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
+    Observable<Void> createSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
 
     /**
      * Creates the specified secret for use with external data sources in the specified database. This is deprecated and will be removed in the next release. Please use CreateCredential instead.
@@ -82,9 +81,9 @@ public interface Catalogs {
      * @param databaseName The name of the database in which to create the secret.
      * @param secretName The name of the secret.
      * @param parameters The parameters required to create the secret (name and password)
-     * @return the observable to the USqlSecret object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<USqlSecret>> createSecretWithServiceResponseAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
+    Observable<ServiceResponse<Void>> createSecretWithServiceResponseAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
 
     /**
      * Modifies the specified secret for use with external data sources in the specified database. This is deprecated and will be removed in the next release. Please use UpdateCredential instead.
@@ -93,9 +92,8 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret.
      * @param parameters The parameters required to modify the secret (name and password)
-     * @return the USqlSecret object if successful.
      */
-    USqlSecret updateSecret(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
+    void updateSecret(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
 
     /**
      * Modifies the specified secret for use with external data sources in the specified database. This is deprecated and will be removed in the next release. Please use UpdateCredential instead.
@@ -105,9 +103,9 @@ public interface Catalogs {
      * @param secretName The name of the secret.
      * @param parameters The parameters required to modify the secret (name and password)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<USqlSecret> updateSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<USqlSecret> serviceCallback);
+    ServiceFuture<Void> updateSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Modifies the specified secret for use with external data sources in the specified database. This is deprecated and will be removed in the next release. Please use UpdateCredential instead.
@@ -116,9 +114,9 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret.
      * @param parameters The parameters required to modify the secret (name and password)
-     * @return the observable to the USqlSecret object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<USqlSecret> updateSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
+    Observable<Void> updateSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
 
     /**
      * Modifies the specified secret for use with external data sources in the specified database. This is deprecated and will be removed in the next release. Please use UpdateCredential instead.
@@ -127,9 +125,9 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret.
      * @param parameters The parameters required to modify the secret (name and password)
-     * @return the observable to the USqlSecret object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<USqlSecret>> updateSecretWithServiceResponseAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
+    Observable<ServiceResponse<Void>> updateSecretWithServiceResponseAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
 
     /**
      * Gets the specified secret in the specified database. This is deprecated and will be removed in the next release. Please use GetCredential instead.
@@ -148,9 +146,9 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret to get
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<USqlSecret> getSecretAsync(String accountName, String databaseName, String secretName, final ServiceCallback<USqlSecret> serviceCallback);
+    ServiceFuture<USqlSecret> getSecretAsync(String accountName, String databaseName, String secretName, final ServiceCallback<USqlSecret> serviceCallback);
 
     /**
      * Gets the specified secret in the specified database. This is deprecated and will be removed in the next release. Please use GetCredential instead.
@@ -188,9 +186,9 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret to delete
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> deleteSecretAsync(String accountName, String databaseName, String secretName, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteSecretAsync(String accountName, String databaseName, String secretName, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Deletes the specified secret in the specified database. This is deprecated and will be removed in the next release. Please use DeleteCredential instead.
@@ -226,9 +224,9 @@ public interface Catalogs {
      * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
      * @param databaseName The name of the database containing the secret.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> deleteAllSecretsAsync(String accountName, String databaseName, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteAllSecretsAsync(String accountName, String databaseName, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Deletes all secrets in the specified database. This is deprecated and will be removed in the next release. In the future, please only drop individual credentials using DeleteCredential.
@@ -266,9 +264,9 @@ public interface Catalogs {
      * @param credentialName The name of the credential.
      * @param parameters The parameters required to create the credential (name and password)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> createCredentialAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialCreateParameters parameters, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> createCredentialAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialCreateParameters parameters, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Creates the specified credential for use with external data sources in the specified database.
@@ -310,9 +308,9 @@ public interface Catalogs {
      * @param credentialName The name of the credential.
      * @param parameters The parameters required to modify the credential (name and password)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> updateCredentialAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialUpdateParameters parameters, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> updateCredentialAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialUpdateParameters parameters, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Modifies the specified credential for use with external data sources in the specified database.
@@ -353,9 +351,9 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the schema.
      * @param credentialName The name of the credential.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<USqlCredential> getCredentialAsync(String accountName, String databaseName, String credentialName, final ServiceCallback<USqlCredential> serviceCallback);
+    ServiceFuture<USqlCredential> getCredentialAsync(String accountName, String databaseName, String credentialName, final ServiceCallback<USqlCredential> serviceCallback);
 
     /**
      * Retrieves the specified credential from the Data Lake Analytics catalog.
@@ -393,9 +391,9 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the credential.
      * @param credentialName The name of the credential to delete
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> deleteCredentialAsync(String accountName, String databaseName, String credentialName, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteCredentialAsync(String accountName, String databaseName, String credentialName, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Deletes the specified credential in the specified database.
@@ -423,8 +421,9 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the credential.
      * @param credentialName The name of the credential to delete
      * @param parameters The parameters to delete a credential if the current user is not the account owner.
+     * @param cascade Indicates if the delete should be a cascading delete (which deletes all resources dependent on the credential as well as the credential) or not. If false will fail if there are any resources relying on the credential.
      */
-    void deleteCredential(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters);
+    void deleteCredential(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters, Boolean cascade);
 
     /**
      * Deletes the specified credential in the specified database.
@@ -433,10 +432,11 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the credential.
      * @param credentialName The name of the credential to delete
      * @param parameters The parameters to delete a credential if the current user is not the account owner.
+     * @param cascade Indicates if the delete should be a cascading delete (which deletes all resources dependent on the credential as well as the credential) or not. If false will fail if there are any resources relying on the credential.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> deleteCredentialAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteCredentialAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters, Boolean cascade, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Deletes the specified credential in the specified database.
@@ -445,9 +445,10 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the credential.
      * @param credentialName The name of the credential to delete
      * @param parameters The parameters to delete a credential if the current user is not the account owner.
+     * @param cascade Indicates if the delete should be a cascading delete (which deletes all resources dependent on the credential as well as the credential) or not. If false will fail if there are any resources relying on the credential.
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<Void> deleteCredentialAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters);
+    Observable<Void> deleteCredentialAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters, Boolean cascade);
 
     /**
      * Deletes the specified credential in the specified database.
@@ -456,9 +457,10 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the credential.
      * @param credentialName The name of the credential to delete
      * @param parameters The parameters to delete a credential if the current user is not the account owner.
+     * @param cascade Indicates if the delete should be a cascading delete (which deletes all resources dependent on the credential as well as the credential) or not. If false will fail if there are any resources relying on the credential.
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<Void>> deleteCredentialWithServiceResponseAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters);
+    Observable<ServiceResponse<Void>> deleteCredentialWithServiceResponseAsync(String accountName, String databaseName, String credentialName, DataLakeAnalyticsCatalogCredentialDeleteParameters parameters, Boolean cascade);
 
     /**
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
@@ -475,9 +477,9 @@ public interface Catalogs {
      * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
      * @param databaseName The name of the database containing the schema.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlCredential>> listCredentialsAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlCredential> serviceCallback);
+    ServiceFuture<List<USqlCredential>> listCredentialsAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlCredential> serviceCallback);
 
     /**
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
@@ -523,9 +525,9 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlCredential>> listCredentialsAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlCredential> serviceCallback);
+    ServiceFuture<List<USqlCredential>> listCredentialsAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlCredential> serviceCallback);
 
     /**
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
@@ -574,9 +576,9 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the external data source.
      * @param externalDataSourceName The name of the external data source.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<USqlExternalDataSource> getExternalDataSourceAsync(String accountName, String databaseName, String externalDataSourceName, final ServiceCallback<USqlExternalDataSource> serviceCallback);
+    ServiceFuture<USqlExternalDataSource> getExternalDataSourceAsync(String accountName, String databaseName, String externalDataSourceName, final ServiceCallback<USqlExternalDataSource> serviceCallback);
 
     /**
      * Retrieves the specified external data source from the Data Lake Analytics catalog.
@@ -613,9 +615,9 @@ public interface Catalogs {
      * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
      * @param databaseName The name of the database containing the external data sources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlExternalDataSource>> listExternalDataSourcesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlExternalDataSource> serviceCallback);
+    ServiceFuture<List<USqlExternalDataSource>> listExternalDataSourcesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlExternalDataSource> serviceCallback);
 
     /**
      * Retrieves the list of external data sources from the Data Lake Analytics catalog.
@@ -661,9 +663,9 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlExternalDataSource>> listExternalDataSourcesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlExternalDataSource> serviceCallback);
+    ServiceFuture<List<USqlExternalDataSource>> listExternalDataSourcesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlExternalDataSource> serviceCallback);
 
     /**
      * Retrieves the list of external data sources from the Data Lake Analytics catalog.
@@ -714,9 +716,9 @@ public interface Catalogs {
      * @param schemaName The name of the schema containing the procedure.
      * @param procedureName The name of the procedure.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<USqlProcedure> getProcedureAsync(String accountName, String databaseName, String schemaName, String procedureName, final ServiceCallback<USqlProcedure> serviceCallback);
+    ServiceFuture<USqlProcedure> getProcedureAsync(String accountName, String databaseName, String schemaName, String procedureName, final ServiceCallback<USqlProcedure> serviceCallback);
 
     /**
      * Retrieves the specified procedure from the Data Lake Analytics catalog.
@@ -757,9 +759,9 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the procedures.
      * @param schemaName The name of the schema containing the procedures.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlProcedure>> listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlProcedure> serviceCallback);
+    ServiceFuture<List<USqlProcedure>> listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlProcedure> serviceCallback);
 
     /**
      * Retrieves the list of procedures from the Data Lake Analytics catalog.
@@ -809,9 +811,9 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlProcedure>> listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlProcedure> serviceCallback);
+    ServiceFuture<List<USqlProcedure>> listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlProcedure> serviceCallback);
 
     /**
      * Retrieves the list of procedures from the Data Lake Analytics catalog.
@@ -864,9 +866,9 @@ public interface Catalogs {
      * @param schemaName The name of the schema containing the table.
      * @param tableName The name of the table.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<USqlTable> getTableAsync(String accountName, String databaseName, String schemaName, String tableName, final ServiceCallback<USqlTable> serviceCallback);
+    ServiceFuture<USqlTable> getTableAsync(String accountName, String databaseName, String schemaName, String tableName, final ServiceCallback<USqlTable> serviceCallback);
 
     /**
      * Retrieves the specified table from the Data Lake Analytics catalog.
@@ -907,9 +909,9 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the tables.
      * @param schemaName The name of the schema containing the tables.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlTable>> listTablesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTable> serviceCallback);
+    ServiceFuture<List<USqlTable>> listTablesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTable> serviceCallback);
 
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
@@ -959,9 +961,9 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlTable>> listTablesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTable> serviceCallback);
+    ServiceFuture<List<USqlTable>> listTablesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTable> serviceCallback);
 
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
@@ -1014,9 +1016,9 @@ public interface Catalogs {
      * @param schemaName The name of the schema containing the table type.
      * @param tableTypeName The name of the table type to retrieve.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<USqlTableType> getTableTypeAsync(String accountName, String databaseName, String schemaName, String tableTypeName, final ServiceCallback<USqlTableType> serviceCallback);
+    ServiceFuture<USqlTableType> getTableTypeAsync(String accountName, String databaseName, String schemaName, String tableTypeName, final ServiceCallback<USqlTableType> serviceCallback);
 
     /**
      * Retrieves the specified table type from the Data Lake Analytics catalog.
@@ -1057,9 +1059,9 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the table types.
      * @param schemaName The name of the schema containing the table types.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlTableType>> listTableTypesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTableType> serviceCallback);
+    ServiceFuture<List<USqlTableType>> listTableTypesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTableType> serviceCallback);
 
     /**
      * Retrieves the list of table types from the Data Lake Analytics catalog.
@@ -1109,9 +1111,9 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlTableType>> listTableTypesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableType> serviceCallback);
+    ServiceFuture<List<USqlTableType>> listTableTypesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableType> serviceCallback);
 
     /**
      * Retrieves the list of table types from the Data Lake Analytics catalog.
@@ -1164,9 +1166,9 @@ public interface Catalogs {
      * @param schemaName The name of the schema containing the view.
      * @param viewName The name of the view.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<USqlView> getViewAsync(String accountName, String databaseName, String schemaName, String viewName, final ServiceCallback<USqlView> serviceCallback);
+    ServiceFuture<USqlView> getViewAsync(String accountName, String databaseName, String schemaName, String viewName, final ServiceCallback<USqlView> serviceCallback);
 
     /**
      * Retrieves the specified view from the Data Lake Analytics catalog.
@@ -1207,9 +1209,9 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the views.
      * @param schemaName The name of the schema containing the views.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlView>> listViewsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlView> serviceCallback);
+    ServiceFuture<List<USqlView>> listViewsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlView> serviceCallback);
 
     /**
      * Retrieves the list of views from the Data Lake Analytics catalog.
@@ -1259,9 +1261,9 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlView>> listViewsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlView> serviceCallback);
+    ServiceFuture<List<USqlView>> listViewsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlView> serviceCallback);
 
     /**
      * Retrieves the list of views from the Data Lake Analytics catalog.
@@ -1316,9 +1318,9 @@ public interface Catalogs {
      * @param tableName The name of the table containing the statistics.
      * @param statisticsName The name of the table statistics.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<USqlTableStatistics> getTableStatisticAsync(String accountName, String databaseName, String schemaName, String tableName, String statisticsName, final ServiceCallback<USqlTableStatistics> serviceCallback);
+    ServiceFuture<USqlTableStatistics> getTableStatisticAsync(String accountName, String databaseName, String schemaName, String tableName, String statisticsName, final ServiceCallback<USqlTableStatistics> serviceCallback);
 
     /**
      * Retrieves the specified table statistics from the Data Lake Analytics catalog.
@@ -1363,9 +1365,9 @@ public interface Catalogs {
      * @param schemaName The name of the schema containing the statistics.
      * @param tableName The name of the table containing the statistics.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlTableStatistics>> listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final ListOperationCallback<USqlTableStatistics> serviceCallback);
+    ServiceFuture<List<USqlTableStatistics>> listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final ListOperationCallback<USqlTableStatistics> serviceCallback);
 
     /**
      * Retrieves the list of table statistics from the Data Lake Analytics catalog.
@@ -1419,9 +1421,9 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlTableStatistics>> listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableStatistics> serviceCallback);
+    ServiceFuture<List<USqlTableStatistics>> listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableStatistics> serviceCallback);
 
     /**
      * Retrieves the list of table statistics from the Data Lake Analytics catalog.
@@ -1478,9 +1480,9 @@ public interface Catalogs {
      * @param tableName The name of the table containing the partition.
      * @param partitionName The name of the table partition.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<USqlTablePartition> getTablePartitionAsync(String accountName, String databaseName, String schemaName, String tableName, String partitionName, final ServiceCallback<USqlTablePartition> serviceCallback);
+    ServiceFuture<USqlTablePartition> getTablePartitionAsync(String accountName, String databaseName, String schemaName, String tableName, String partitionName, final ServiceCallback<USqlTablePartition> serviceCallback);
 
     /**
      * Retrieves the specified table partition from the Data Lake Analytics catalog.
@@ -1525,9 +1527,9 @@ public interface Catalogs {
      * @param schemaName The name of the schema containing the partitions.
      * @param tableName The name of the table containing the partitions.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlTablePartition>> listTablePartitionsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final ListOperationCallback<USqlTablePartition> serviceCallback);
+    ServiceFuture<List<USqlTablePartition>> listTablePartitionsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final ListOperationCallback<USqlTablePartition> serviceCallback);
 
     /**
      * Retrieves the list of table partitions from the Data Lake Analytics catalog.
@@ -1581,9 +1583,9 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlTablePartition>> listTablePartitionsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTablePartition> serviceCallback);
+    ServiceFuture<List<USqlTablePartition>> listTablePartitionsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTablePartition> serviceCallback);
 
     /**
      * Retrieves the list of table partitions from the Data Lake Analytics catalog.
@@ -1636,9 +1638,9 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the types.
      * @param schemaName The name of the schema containing the types.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlType>> listTypesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlType> serviceCallback);
+    ServiceFuture<List<USqlType>> listTypesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlType> serviceCallback);
 
     /**
      * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
@@ -1688,9 +1690,9 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlType>> listTypesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlType> serviceCallback);
+    ServiceFuture<List<USqlType>> listTypesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlType> serviceCallback);
 
     /**
      * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
@@ -1743,9 +1745,9 @@ public interface Catalogs {
      * @param schemaName The name of the schema containing the table valued function.
      * @param tableValuedFunctionName The name of the tableValuedFunction.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<USqlTableValuedFunction> getTableValuedFunctionAsync(String accountName, String databaseName, String schemaName, String tableValuedFunctionName, final ServiceCallback<USqlTableValuedFunction> serviceCallback);
+    ServiceFuture<USqlTableValuedFunction> getTableValuedFunctionAsync(String accountName, String databaseName, String schemaName, String tableValuedFunctionName, final ServiceCallback<USqlTableValuedFunction> serviceCallback);
 
     /**
      * Retrieves the specified table valued function from the Data Lake Analytics catalog.
@@ -1786,9 +1788,9 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the table valued functions.
      * @param schemaName The name of the schema containing the table valued functions.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlTableValuedFunction>> listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTableValuedFunction> serviceCallback);
+    ServiceFuture<List<USqlTableValuedFunction>> listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTableValuedFunction> serviceCallback);
 
     /**
      * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
@@ -1838,9 +1840,9 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlTableValuedFunction>> listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableValuedFunction> serviceCallback);
+    ServiceFuture<List<USqlTableValuedFunction>> listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableValuedFunction> serviceCallback);
 
     /**
      * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
@@ -1891,9 +1893,9 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the assembly.
      * @param assemblyName The name of the assembly.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<USqlAssembly> getAssemblyAsync(String accountName, String databaseName, String assemblyName, final ServiceCallback<USqlAssembly> serviceCallback);
+    ServiceFuture<USqlAssembly> getAssemblyAsync(String accountName, String databaseName, String assemblyName, final ServiceCallback<USqlAssembly> serviceCallback);
 
     /**
      * Retrieves the specified assembly from the Data Lake Analytics catalog.
@@ -1930,9 +1932,9 @@ public interface Catalogs {
      * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
      * @param databaseName The name of the database containing the assembly.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlAssemblyClr>> listAssembliesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlAssemblyClr> serviceCallback);
+    ServiceFuture<List<USqlAssemblyClr>> listAssembliesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlAssemblyClr> serviceCallback);
 
     /**
      * Retrieves the list of assemblies from the Data Lake Analytics catalog.
@@ -1978,9 +1980,9 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlAssemblyClr>> listAssembliesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlAssemblyClr> serviceCallback);
+    ServiceFuture<List<USqlAssemblyClr>> listAssembliesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlAssemblyClr> serviceCallback);
 
     /**
      * Retrieves the list of assemblies from the Data Lake Analytics catalog.
@@ -2029,9 +2031,9 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the schema.
      * @param schemaName The name of the schema.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<USqlSchema> getSchemaAsync(String accountName, String databaseName, String schemaName, final ServiceCallback<USqlSchema> serviceCallback);
+    ServiceFuture<USqlSchema> getSchemaAsync(String accountName, String databaseName, String schemaName, final ServiceCallback<USqlSchema> serviceCallback);
 
     /**
      * Retrieves the specified schema from the Data Lake Analytics catalog.
@@ -2068,9 +2070,9 @@ public interface Catalogs {
      * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
      * @param databaseName The name of the database containing the schema.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlSchema>> listSchemasAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlSchema> serviceCallback);
+    ServiceFuture<List<USqlSchema>> listSchemasAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlSchema> serviceCallback);
 
     /**
      * Retrieves the list of schemas from the Data Lake Analytics catalog.
@@ -2116,9 +2118,9 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlSchema>> listSchemasAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlSchema> serviceCallback);
+    ServiceFuture<List<USqlSchema>> listSchemasAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlSchema> serviceCallback);
 
     /**
      * Retrieves the list of schemas from the Data Lake Analytics catalog.
@@ -2165,9 +2167,9 @@ public interface Catalogs {
      * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
      * @param databaseName The name of the database.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<USqlDatabase> getDatabaseAsync(String accountName, String databaseName, final ServiceCallback<USqlDatabase> serviceCallback);
+    ServiceFuture<USqlDatabase> getDatabaseAsync(String accountName, String databaseName, final ServiceCallback<USqlDatabase> serviceCallback);
 
     /**
      * Retrieves the specified database from the Data Lake Analytics catalog.
@@ -2200,9 +2202,9 @@ public interface Catalogs {
      *
      * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlDatabase>> listDatabasesAsync(final String accountName, final ListOperationCallback<USqlDatabase> serviceCallback);
+    ServiceFuture<List<USqlDatabase>> listDatabasesAsync(final String accountName, final ListOperationCallback<USqlDatabase> serviceCallback);
 
     /**
      * Retrieves the list of databases from the Data Lake Analytics catalog.
@@ -2244,9 +2246,9 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlDatabase>> listDatabasesAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlDatabase> serviceCallback);
+    ServiceFuture<List<USqlDatabase>> listDatabasesAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlDatabase> serviceCallback);
 
     /**
      * Retrieves the list of databases from the Data Lake Analytics catalog.
@@ -2288,11 +2290,11 @@ public interface Catalogs {
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlCredential>> listCredentialsNextAsync(final String nextPageLink, final ServiceCall<List<USqlCredential>> serviceCall, final ListOperationCallback<USqlCredential> serviceCallback);
+    ServiceFuture<List<USqlCredential>> listCredentialsNextAsync(final String nextPageLink, final ServiceFuture<List<USqlCredential>> serviceFuture, final ListOperationCallback<USqlCredential> serviceCallback);
 
     /**
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
@@ -2322,11 +2324,11 @@ public interface Catalogs {
      * Retrieves the list of external data sources from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlExternalDataSource>> listExternalDataSourcesNextAsync(final String nextPageLink, final ServiceCall<List<USqlExternalDataSource>> serviceCall, final ListOperationCallback<USqlExternalDataSource> serviceCallback);
+    ServiceFuture<List<USqlExternalDataSource>> listExternalDataSourcesNextAsync(final String nextPageLink, final ServiceFuture<List<USqlExternalDataSource>> serviceFuture, final ListOperationCallback<USqlExternalDataSource> serviceCallback);
 
     /**
      * Retrieves the list of external data sources from the Data Lake Analytics catalog.
@@ -2356,11 +2358,11 @@ public interface Catalogs {
      * Retrieves the list of procedures from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlProcedure>> listProceduresNextAsync(final String nextPageLink, final ServiceCall<List<USqlProcedure>> serviceCall, final ListOperationCallback<USqlProcedure> serviceCallback);
+    ServiceFuture<List<USqlProcedure>> listProceduresNextAsync(final String nextPageLink, final ServiceFuture<List<USqlProcedure>> serviceFuture, final ListOperationCallback<USqlProcedure> serviceCallback);
 
     /**
      * Retrieves the list of procedures from the Data Lake Analytics catalog.
@@ -2390,11 +2392,11 @@ public interface Catalogs {
      * Retrieves the list of tables from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlTable>> listTablesNextAsync(final String nextPageLink, final ServiceCall<List<USqlTable>> serviceCall, final ListOperationCallback<USqlTable> serviceCallback);
+    ServiceFuture<List<USqlTable>> listTablesNextAsync(final String nextPageLink, final ServiceFuture<List<USqlTable>> serviceFuture, final ListOperationCallback<USqlTable> serviceCallback);
 
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
@@ -2424,11 +2426,11 @@ public interface Catalogs {
      * Retrieves the list of table types from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlTableType>> listTableTypesNextAsync(final String nextPageLink, final ServiceCall<List<USqlTableType>> serviceCall, final ListOperationCallback<USqlTableType> serviceCallback);
+    ServiceFuture<List<USqlTableType>> listTableTypesNextAsync(final String nextPageLink, final ServiceFuture<List<USqlTableType>> serviceFuture, final ListOperationCallback<USqlTableType> serviceCallback);
 
     /**
      * Retrieves the list of table types from the Data Lake Analytics catalog.
@@ -2458,11 +2460,11 @@ public interface Catalogs {
      * Retrieves the list of views from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlView>> listViewsNextAsync(final String nextPageLink, final ServiceCall<List<USqlView>> serviceCall, final ListOperationCallback<USqlView> serviceCallback);
+    ServiceFuture<List<USqlView>> listViewsNextAsync(final String nextPageLink, final ServiceFuture<List<USqlView>> serviceFuture, final ListOperationCallback<USqlView> serviceCallback);
 
     /**
      * Retrieves the list of views from the Data Lake Analytics catalog.
@@ -2492,11 +2494,11 @@ public interface Catalogs {
      * Retrieves the list of table statistics from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlTableStatistics>> listTableStatisticsNextAsync(final String nextPageLink, final ServiceCall<List<USqlTableStatistics>> serviceCall, final ListOperationCallback<USqlTableStatistics> serviceCallback);
+    ServiceFuture<List<USqlTableStatistics>> listTableStatisticsNextAsync(final String nextPageLink, final ServiceFuture<List<USqlTableStatistics>> serviceFuture, final ListOperationCallback<USqlTableStatistics> serviceCallback);
 
     /**
      * Retrieves the list of table statistics from the Data Lake Analytics catalog.
@@ -2526,11 +2528,11 @@ public interface Catalogs {
      * Retrieves the list of table partitions from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlTablePartition>> listTablePartitionsNextAsync(final String nextPageLink, final ServiceCall<List<USqlTablePartition>> serviceCall, final ListOperationCallback<USqlTablePartition> serviceCallback);
+    ServiceFuture<List<USqlTablePartition>> listTablePartitionsNextAsync(final String nextPageLink, final ServiceFuture<List<USqlTablePartition>> serviceFuture, final ListOperationCallback<USqlTablePartition> serviceCallback);
 
     /**
      * Retrieves the list of table partitions from the Data Lake Analytics catalog.
@@ -2560,11 +2562,11 @@ public interface Catalogs {
      * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlType>> listTypesNextAsync(final String nextPageLink, final ServiceCall<List<USqlType>> serviceCall, final ListOperationCallback<USqlType> serviceCallback);
+    ServiceFuture<List<USqlType>> listTypesNextAsync(final String nextPageLink, final ServiceFuture<List<USqlType>> serviceFuture, final ListOperationCallback<USqlType> serviceCallback);
 
     /**
      * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
@@ -2594,11 +2596,11 @@ public interface Catalogs {
      * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlTableValuedFunction>> listTableValuedFunctionsNextAsync(final String nextPageLink, final ServiceCall<List<USqlTableValuedFunction>> serviceCall, final ListOperationCallback<USqlTableValuedFunction> serviceCallback);
+    ServiceFuture<List<USqlTableValuedFunction>> listTableValuedFunctionsNextAsync(final String nextPageLink, final ServiceFuture<List<USqlTableValuedFunction>> serviceFuture, final ListOperationCallback<USqlTableValuedFunction> serviceCallback);
 
     /**
      * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
@@ -2628,11 +2630,11 @@ public interface Catalogs {
      * Retrieves the list of assemblies from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlAssemblyClr>> listAssembliesNextAsync(final String nextPageLink, final ServiceCall<List<USqlAssemblyClr>> serviceCall, final ListOperationCallback<USqlAssemblyClr> serviceCallback);
+    ServiceFuture<List<USqlAssemblyClr>> listAssembliesNextAsync(final String nextPageLink, final ServiceFuture<List<USqlAssemblyClr>> serviceFuture, final ListOperationCallback<USqlAssemblyClr> serviceCallback);
 
     /**
      * Retrieves the list of assemblies from the Data Lake Analytics catalog.
@@ -2662,11 +2664,11 @@ public interface Catalogs {
      * Retrieves the list of schemas from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlSchema>> listSchemasNextAsync(final String nextPageLink, final ServiceCall<List<USqlSchema>> serviceCall, final ListOperationCallback<USqlSchema> serviceCallback);
+    ServiceFuture<List<USqlSchema>> listSchemasNextAsync(final String nextPageLink, final ServiceFuture<List<USqlSchema>> serviceFuture, final ListOperationCallback<USqlSchema> serviceCallback);
 
     /**
      * Retrieves the list of schemas from the Data Lake Analytics catalog.
@@ -2696,11 +2698,11 @@ public interface Catalogs {
      * Retrieves the list of databases from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<USqlDatabase>> listDatabasesNextAsync(final String nextPageLink, final ServiceCall<List<USqlDatabase>> serviceCall, final ListOperationCallback<USqlDatabase> serviceCallback);
+    ServiceFuture<List<USqlDatabase>> listDatabasesNextAsync(final String nextPageLink, final ServiceFuture<List<USqlDatabase>> serviceFuture, final ListOperationCallback<USqlDatabase> serviceCallback);
 
     /**
      * Retrieves the list of databases from the Data Lake Analytics catalog.

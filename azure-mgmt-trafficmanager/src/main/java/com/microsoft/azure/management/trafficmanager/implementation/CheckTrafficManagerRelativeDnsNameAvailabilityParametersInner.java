@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.trafficmanager.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Parameters supplied to check Traffic Manager name operation.
@@ -16,11 +17,13 @@ public class CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner {
     /**
      * Gets or sets the name of the resource.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * Gets or sets the type of the resource.
      */
+    @JsonProperty(value = "type")
     private String type;
 
     /**

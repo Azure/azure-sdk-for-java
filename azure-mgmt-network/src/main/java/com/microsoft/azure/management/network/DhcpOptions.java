@@ -9,16 +9,18 @@
 package com.microsoft.azure.management.network;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * DHCPOptions contains an array of DNS servers available to VMs deployed in
- * the virtual networkStandard DHCP option for a subnet overrides VNET DHCP
+ * DhcpOptions contains an array of DNS servers available to VMs deployed in
+ * the virtual network. Standard DHCP option for a subnet overrides VNET DHCP
  * options.
  */
 public class DhcpOptions {
     /**
-     * Gets or sets list of DNS servers IP addresses.
+     * The list of DNS servers IP addresses.
      */
+    @JsonProperty(value = "dnsServers")
     private List<String> dnsServers;
 
     /**

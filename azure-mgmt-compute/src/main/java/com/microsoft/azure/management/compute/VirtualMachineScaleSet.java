@@ -1,21 +1,31 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetInner;
 import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.LoadBalancerInboundNatPool;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
+import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.storage.StorageAccount;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import rx.Completable;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,9 +36,8 @@ import java.util.Map;
  */
 @Fluent
 public interface VirtualMachineScaleSet extends
-        GroupableResource,
+        GroupableResource<ComputeManager, VirtualMachineScaleSetInner>,
         Refreshable<VirtualMachineScaleSet>,
-        Wrapper<VirtualMachineScaleSetInner>,
         Updatable<VirtualMachineScaleSet.UpdateStages.WithPrimaryLoadBalancer> {
     // Actions
     //
@@ -41,55 +50,117 @@ public interface VirtualMachineScaleSet extends
     /**
      * @return  available SKUs for the virtual machine scale set, including the minimum and maximum virtual machine instances
      *          allowed for a particular SKU
-     * @throws CloudException thrown for an invalid response from the service
-     * @throws IOException exception thrown from serialization/deserialization
      */
-    PagedList<VirtualMachineScaleSetSku> listAvailableSkus() throws CloudException, IOException;
+    PagedList<VirtualMachineScaleSetSku> listAvailableSkus();
 
     /**
      * Shuts down the virtual machines in the scale set and releases its compute resources.
-     *
-     * @throws CloudException thrown for an invalid response from the service
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws InterruptedException exception thrown when the operation is interrupted
      */
-    void deallocate() throws CloudException, IOException, InterruptedException;
+    void deallocate();
+
+    /**
+     * Shuts down the virtual machines in the scale set and releases its compute resources asynchronously.
+     *
+     * @return a representation of the deferred computation of this call
+     */
+    @Beta
+    Completable deallocateAsync();
+
+    /**
+     * Shuts down the virtual machines in the scale set and releases its compute resources asynchronously.
+     *
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     */
+    @Beta
+    ServiceFuture<Void> deallocateAsync(ServiceCallback<Void> callback);
 
     /**
      * Powers off (stops) the virtual machines in the scale set.
-     *
-     * @throws CloudException thrown for an invalid response from the service
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws InterruptedException exception thrown when the operation is interrupted
      */
-    void powerOff() throws CloudException, IOException, InterruptedException;
+    void powerOff();
+
+    /**
+     * Powers off (stops) the virtual machines in the scale set asynchronously.
+     * @return a representation of the deferred computation of this call
+     */
+    @Beta
+    Completable powerOffAsync();
+
+    /**
+     * Powers off (stops) the virtual machines in the scale set asynchronously.
+     *
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     */
+    @Beta
+    ServiceFuture<Void> powerOffAsync(ServiceCallback<Void> callback);
 
     /**
      * Restarts the virtual machines in the scale set.
-     *
-     * @throws CloudException thrown for an invalid response from the service
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws InterruptedException exception thrown when the operation is interrupted
      */
-    void restart() throws CloudException, IOException, InterruptedException;
+    void restart();
+
+    /**
+     * Restarts the virtual machines in the scale set asynchronously.
+     *
+     * @return a representation of the deferred computation of this call
+     */
+    @Beta
+    Completable restartAsync();
+
+    /**
+     * Restarts the virtual machines in the scale set asynchronously.
+     *
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     */
+    @Beta
+    ServiceFuture<Void> restartAsync(ServiceCallback<Void> callback);
 
     /**
      * Starts the virtual machines in the scale set.
-     *
-     * @throws CloudException thrown for an invalid response from the service
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws InterruptedException exception thrown when the operation is interrupted
      */
-    void start() throws CloudException, IOException, InterruptedException;
+    void start();
+
+    /**
+     * Starts the virtual machines in the scale set asynchronously.
+     *
+     * @return a representation of the deferred computation of this call
+     */
+    @Beta
+    Completable startAsync();
+
+    /**
+     * Starts the virtual machines in the scale set asynchronously.
+     *
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     */
+    @Beta
+    ServiceFuture<Void> startAsync(ServiceCallback<Void> callback);
 
     /**
      * Re-images (updates the version of the installed operating system) the virtual machines in the scale set.
-     *
-     * @throws CloudException thrown for an invalid response from the service
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws InterruptedException exception thrown when the operation is interrupted
      */
-    void reimage() throws CloudException, IOException, InterruptedException;
+    void reimage();
+
+    /**
+     * Re-images (updates the version of the installed operating system) the virtual machines in the scale set asynchronously.
+     *
+     * @return a representation of the deferred computation of this call
+     */
+    @Beta
+    Completable reimageAsync();
+
+    /**
+     * Re-images (updates the version of the installed operating system) the virtual machines in the scale set asynchronously.
+     *
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     */
+    @Beta
+    ServiceFuture<Void> reimageAsync(ServiceCallback<Void> callback);
 
     // Getters
     //
@@ -115,7 +186,7 @@ public interface VirtualMachineScaleSet extends
     String osDiskName();
 
     /**
-     * @return the upgradeModel
+     * @return the upgrade model
      */
     UpgradeMode upgradeModel();
 
@@ -146,7 +217,7 @@ public interface VirtualMachineScaleSet extends
     Network getPrimaryNetwork() throws IOException;
 
     /**
-     * @return the internet-facing load balancer associated with the primary network interface of
+     * @return the Internet-facing load balancer associated with the primary network interface of
      * the virtual machines in the scale set.
      *
      * @throws IOException the IO exception
@@ -154,7 +225,7 @@ public interface VirtualMachineScaleSet extends
     LoadBalancer getPrimaryInternetFacingLoadBalancer() throws IOException;
 
     /**
-     * @return the internet-facing load balancer's backends associated with the primary network interface
+     * @return the Internet-facing load balancer's backends associated with the primary network interface
      * of the virtual machines in the scale set
      *
      * @throws IOException the IO exception
@@ -162,7 +233,7 @@ public interface VirtualMachineScaleSet extends
     Map<String, LoadBalancerBackend> listPrimaryInternetFacingLoadBalancerBackends() throws IOException;
 
     /**
-     * @return the internet-facing load balancer's inbound NAT pool associated with the primary network interface
+     * @return the Internet-facing load balancer's inbound NAT pool associated with the primary network interface
      * of the virtual machines in the scale set
      *
      * @throws IOException the IO exception
@@ -198,7 +269,7 @@ public interface VirtualMachineScaleSet extends
      * of the scale set
      * @throws IOException the IO exception
      */
-    List<String> primaryPublicIpAddressIds() throws IOException;
+    List<String> primaryPublicIPAddressIds() throws IOException;
 
     /**
      * @return the URL to storage containers that store the VHDs of the virtual machines in the scale set
@@ -221,9 +292,37 @@ public interface VirtualMachineScaleSet extends
     Map<String, VirtualMachineScaleSetExtension> extensions();
 
     /**
-     * The entirety of the load balancer definition.
+     * Gets a network interface associated with a virtual machine scale set instance.
+     *
+     * @param instanceId the virtual machine scale set vm instance ID
+     * @param name the network interface name
+     * @return the network interface
      */
-    interface Definition extends
+    VirtualMachineScaleSetNetworkInterface getNetworkInterfaceByInstanceId(String instanceId, String name);
+
+    /**
+     * @return the network interfaces associated with all virtual machine instances in a scale set
+     */
+    PagedList<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces();
+
+    /**
+     * Lists the network interface associated with a specific virtual machine instance in the scale set.
+     *
+     * @param virtualMachineInstanceId the instance ID
+     * @return the network interfaces
+     */
+    PagedList<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesByInstanceId(String virtualMachineInstanceId);
+
+    /**
+     * @return true if managed disk is used for the virtual machine scale set's disks (os, data)
+     */
+    boolean isManagedDiskEnabled();
+
+    /**
+     * The virtual machine scale set stages shared between managed and unmanaged based
+     * virtual machine scale set definitions.
+     */
+    interface DefinitionShared extends
             DefinitionStages.Blank,
             DefinitionStages.WithGroup,
             DefinitionStages.WithSku,
@@ -235,13 +334,53 @@ public interface VirtualMachineScaleSet extends
             DefinitionStages.WithPrimaryInternetFacingLoadBalancerNatPool,
             DefinitionStages.WithInternalInternalLoadBalancerNatPool,
             DefinitionStages.WithOS,
-            DefinitionStages.WithLinuxRootUsername,
-            DefinitionStages.WithLinuxRootPasswordOrPublicKey,
-            DefinitionStages.WithWindowsAdminUsername,
-            DefinitionStages.WithWindowsAdminPassword,
-            DefinitionStages.WithLinuxCreate,
-            DefinitionStages.WithWindowsCreate,
             DefinitionStages.WithCreate {
+    }
+
+    /**
+     * The entirety of the virtual machine scale set definition.
+     */
+    interface DefinitionManagedOrUnmanaged
+            extends
+            DefinitionShared,
+            DefinitionStages.WithLinuxRootUsernameManagedOrUnmanaged,
+            DefinitionStages.WithLinuxRootPasswordOrPublicKeyManagedOrUnmanaged,
+            DefinitionStages.WithWindowsAdminUsernameManagedOrUnmanaged,
+            DefinitionStages.WithWindowsAdminPasswordManagedOrUnmanaged,
+            DefinitionStages.WithLinuxCreateManagedOrUnmanaged,
+            DefinitionStages.WithWindowsCreateManagedOrUnmanaged,
+            DefinitionStages.WithManagedCreate,
+            DefinitionStages.WithUnmanagedCreate {
+    }
+
+    /**
+     * The entirety of the managed disk based virtual machine scale set definition.
+     */
+    interface DefinitionManaged
+            extends
+            DefinitionShared,
+            DefinitionStages.WithLinuxRootUsernameManaged,
+            DefinitionStages.WithLinuxRootPasswordOrPublicKeyManaged,
+            DefinitionStages.WithWindowsAdminUsernameManaged,
+            DefinitionStages.WithWindowsAdminPasswordManaged,
+            DefinitionStages.WithLinuxCreateManaged,
+            DefinitionStages.WithWindowsCreateManaged,
+            DefinitionStages.WithManagedCreate {
+    }
+
+    /**
+     * The entirety of the unmanaged disk based virtual machine scale set definition.
+     */
+    interface DefinitionUnmanaged
+            extends
+            DefinitionShared,
+            DefinitionStages.WithLinuxRootUsernameUnmanaged,
+            DefinitionStages.WithLinuxRootPasswordOrPublicKeyUnmanaged,
+            DefinitionStages.WithWindowsAdminUsernameUnmanaged,
+            DefinitionStages.WithWindowsAdminPasswordUnmanaged,
+            DefinitionStages.WithLinuxCreateUnmanaged,
+            DefinitionStages.WithWindowsCreateUnmanaged,
+            DefinitionStages.WithUnmanagedCreate {
     }
 
     /**
@@ -390,7 +529,7 @@ public interface VirtualMachineScaleSet extends
              * virtual machines in the scale set.
              *
              * @param backendNames names of existing backends in the selected load balancer
-             * @return the next stage of the virtual machine scale set definition
+             * @return the next stage of the definition
              */
             WithInternalInternalLoadBalancerNatPool withPrimaryInternalLoadBalancerBackends(String ...backendNames);
          }
@@ -406,7 +545,7 @@ public interface VirtualMachineScaleSet extends
              *
              *
              * @param natPoolNames inbound NAT pool names
-             * @return the next stage of the virtual machine scale set definition
+             * @return the next stage of the definition
              */
             WithOS withPrimaryInternalLoadBalancerInboundNatPools(String ...natPoolNames);
         }
@@ -421,7 +560,7 @@ public interface VirtualMachineScaleSet extends
              * @param knownImage a known market-place image
              * @return the next stage of the definition
              */
-            WithWindowsAdminUsername withPopularWindowsImage(KnownWindowsVirtualMachineImage knownImage);
+            WithWindowsAdminUsernameManagedOrUnmanaged withPopularWindowsImage(KnownWindowsVirtualMachineImage knownImage);
 
             /**
              * Specifies that the latest version of the specified marketplace Windows image should be used.
@@ -431,7 +570,7 @@ public interface VirtualMachineScaleSet extends
              * @param sku specifies the SKU of the image
              * @return the next stage of the definition
              */
-            WithWindowsAdminUsername withLatestWindowsImage(String publisher, String offer, String sku);
+            WithWindowsAdminUsernameManagedOrUnmanaged withLatestWindowsImage(String publisher, String offer, String sku);
 
             /**
              * Specifies the specific version of a marketplace Windows image needs to be used.
@@ -439,16 +578,24 @@ public interface VirtualMachineScaleSet extends
              * @param imageReference describes publisher, offer, SKU and version of the marketplace image
              * @return the next stage of the definition
              */
-            WithWindowsAdminUsername withSpecificWindowsImageVersion(ImageReference imageReference);
+            WithWindowsAdminUsernameManagedOrUnmanaged withSpecificWindowsImageVersion(ImageReference imageReference);
+
+            /**
+             * Specifies the ID of a Windows custom image to be used.
+             *
+             * @param customImageId the resource ID of the custom image
+             * @return the next stage of the definition
+             */
+            WithWindowsAdminUsernameManaged withWindowsCustomImage(String customImageId);
 
             /**
              * Specifies the user (custom) Windows image to be used as the operating system for the virtual machines in the
              * scale set.
              * 
              * @param imageUrl the URL of the VHD
-             * @return the next stage of the virtual machine scale set definition
+             * @return the next stage of the definition
              */
-            WithWindowsAdminUsername withStoredWindowsImage(String imageUrl);
+            WithWindowsAdminUsernameUnmanaged withStoredWindowsImage(String imageUrl);
 
             /**
              * Specifies a known marketplace Linux image used as the virtual machine's operating system.
@@ -456,7 +603,7 @@ public interface VirtualMachineScaleSet extends
              * @param knownImage a known market-place image
              * @return the next stage of the definition
              */
-            WithLinuxRootUsername withPopularLinuxImage(KnownLinuxVirtualMachineImage knownImage);
+            WithLinuxRootUsernameManagedOrUnmanaged withPopularLinuxImage(KnownLinuxVirtualMachineImage knownImage);
 
             /**
              * Specifies that the latest version of a marketplace Linux image should be used.
@@ -466,7 +613,7 @@ public interface VirtualMachineScaleSet extends
              * @param sku the SKU of the image
              * @return the next stage of the definition
              */
-            WithLinuxRootUsername withLatestLinuxImage(String publisher, String offer, String sku);
+            WithLinuxRootUsernameManagedOrUnmanaged withLatestLinuxImage(String publisher, String offer, String sku);
 
             /**
              * Specifies the specific version of a market-place Linux image that should be used.
@@ -474,41 +621,75 @@ public interface VirtualMachineScaleSet extends
              * @param imageReference describes the publisher, offer, SKU and version of the market-place image
              * @return the next stage of the definition
              */
-            WithLinuxRootUsername withSpecificLinuxImageVersion(ImageReference imageReference);
+            WithLinuxRootUsernameManagedOrUnmanaged withSpecificLinuxImageVersion(ImageReference imageReference);
+
+            /**
+             * Specifies the ID of a Linux custom image to be used.
+             *
+             * @param customImageId the resource ID of the custom image
+             * @return the next stage of the definition
+             */
+            WithLinuxRootUsernameManaged withLinuxCustomImage(String customImageId);
 
             /**
              * Specifies the user (custom) Linux image used as the virtual machine's operating system.
              *
-             * @param imageUrl the url the the VHD
-             * @return the next stage of the virtual machine scale set definition
+             * @param imageUrl the URL the the VHD
+             * @return the next stage of the definition
              */
-            WithLinuxRootUsername withStoredLinuxImage(String imageUrl);
+            WithLinuxRootUsernameUnmanaged withStoredLinuxImage(String imageUrl);
         }
 
         /**
          * The stage of the Linux virtual machine scale set definition allowing to specify SSH root user name.
          */
-        interface WithLinuxRootUsername {
+        interface WithLinuxRootUsernameManagedOrUnmanaged {
             /**
              * Specifies the SSH root user name for the Linux virtual machine.
              *
-             * @param rootUserName the Linux SSH root user name. This must follow the required naming convention for Linux user name
-             * @return the next stage of the Linux virtual machine definition
+             * @param rootUserName a root user name following the required naming convention for Linux user names
+             * @return the next stage of the definition
              */
-            WithLinuxRootPasswordOrPublicKey withRootUsername(String rootUserName);
+            WithLinuxRootPasswordOrPublicKeyManagedOrUnmanaged withRootUsername(String rootUserName);
+        }
+
+        /**
+         * The stage of the Linux virtual machine scale set definition allowing to specify SSH root user name.
+         */
+        interface WithLinuxRootUsernameManaged {
+            /**
+             * Specifies the SSH root user name for the Linux virtual machine.
+             *
+             * @param rootUserName a root user name following the required naming conventions for Linux user names
+             * @return the next stage of the definition
+             */
+            WithLinuxRootPasswordOrPublicKeyManaged withRootUsername(String rootUserName);
+        }
+
+        /**
+         * The stage of the Linux virtual machine scale set definition allowing to specify SSH root user name.
+         */
+        interface WithLinuxRootUsernameUnmanaged {
+            /**
+             * Specifies the SSH root user name for the Linux virtual machine.
+             *
+             * @param rootUserName a root user name following the required naming convention for Linux user names
+             * @return the next stage of the definition
+             */
+            WithLinuxRootPasswordOrPublicKeyUnmanaged withRootUsername(String rootUserName);
         }
 
         /**
          * The stage of the Linux virtual machine scale set definition allowing to specify SSH root password or public key.
          */
-        interface WithLinuxRootPasswordOrPublicKey {
+        interface WithLinuxRootPasswordOrPublicKeyManagedOrUnmanaged {
             /**
              * Specifies the SSH root password for the Linux virtual machine.
              *
-             * @param rootPassword the SSH root password. This must follow the criteria for Azure Linux VM password.
-             * @return the next stage of the Linux virtual machine definition
+             * @param rootPassword a password following the complexity criteria for Azure Linux VM passwords
+             * @return the next stage of the definition
              */
-            WithLinuxCreate withRootPassword(String rootPassword);
+            WithLinuxCreateManagedOrUnmanaged withRootPassword(String rootPassword);
 
             /**
              * Specifies the SSH public key.
@@ -516,44 +697,142 @@ public interface VirtualMachineScaleSet extends
              * Each call to this method adds the given public key to the list of VM's public keys.
              *
              * @param publicKey the SSH public key in PEM format.
-             * @return the next stage of the Linux virtual machine definition
+             * @return the next stage of the definition
              */
-            WithLinuxCreate withSsh(String publicKey);
+            WithLinuxCreateManagedOrUnmanaged withSsh(String publicKey);
+        }
+
+        /**
+         * The stage of the Linux virtual machine scale set definition allowing to specify SSH root password or public key.
+         */
+        interface WithLinuxRootPasswordOrPublicKeyManaged {
+            /**
+             * Specifies the SSH root password for the Linux virtual machine.
+             *
+             * @param rootPassword a password following the complexity criteria for Azure Linux VM passwords
+             * @return the next stage of the definition
+             */
+            WithLinuxCreateManaged withRootPassword(String rootPassword);
+
+            /**
+             * Specifies the SSH public key.
+             * <p>
+             * Each call to this method adds the given public key to the list of VM's public keys.
+             *
+             * @param publicKey the SSH public key in PEM format.
+             * @return the next stage of the definition
+             */
+            WithLinuxCreateManaged withSsh(String publicKey);
+        }
+
+        /**
+         * The stage of the Linux virtual machine scale set definition allowing to specify SSH root password or public key.
+         */
+        interface WithLinuxRootPasswordOrPublicKeyUnmanaged {
+            /**
+             * Specifies the SSH root password for the Linux virtual machine.
+             *
+             * @param rootPassword a password following the complexity criteria for Azure Linux VM passwords
+             * @return the next stage of the definition
+             */
+            WithLinuxCreateUnmanaged withRootPassword(String rootPassword);
+
+            /**
+             * Specifies the SSH public key.
+             * <p>
+             * Each call to this method adds the given public key to the list of VM's public keys.
+             *
+             * @param publicKey the SSH public key in PEM format.
+             * @return the next stage of the definition
+             */
+            WithLinuxCreateUnmanaged withSsh(String publicKey);
         }
 
         /**
          * The stage of the Windows virtual machine scale set definition allowing to specify administrator user name.
          */
-        interface WithWindowsAdminUsername {
+        interface WithWindowsAdminUsernameManagedOrUnmanaged {
             /**
              * Specifies the administrator user name for the Windows virtual machine.
              *
              * @param adminUserName the Windows administrator user name. This must follow the required naming convention for Windows user name.
              * @return the stage representing creatable Linux VM definition
              */
-            WithWindowsAdminPassword withAdminUsername(String adminUserName);
+            WithWindowsAdminPasswordManagedOrUnmanaged withAdminUsername(String adminUserName);
         }
 
         /**
          * The stage of the Windows virtual machine scale set definition allowing to specify administrator user name.
          */
-        interface WithWindowsAdminPassword {
+        interface WithWindowsAdminUsernameManaged {
+            /**
+             * Specifies the administrator user name for the Windows virtual machine.
+             *
+             * @param adminUserName the Windows administrator user name. This must follow the required naming convention for Windows user name.
+             * @return the stage representing creatable Linux VM definition
+             */
+            WithWindowsAdminPasswordManaged withAdminUsername(String adminUserName);
+        }
+
+        /**
+         * The stage of the Windows virtual machine scale set definition allowing to specify administrator user name.
+         */
+        interface WithWindowsAdminUsernameUnmanaged {
+            /**
+             * Specifies the administrator user name for the Windows virtual machine.
+             *
+             * @param adminUserName the Windows administrator user name. This must follow the required naming convention for Windows user name.
+             * @return the stage representing creatable Linux VM definition
+             */
+            WithWindowsAdminPasswordUnmanaged withAdminUsername(String adminUserName);
+        }
+
+        /**
+         * The stage of the Windows virtual machine scale set definition allowing to specify administrator user name.
+         */
+        interface WithWindowsAdminPasswordManagedOrUnmanaged {
             /**
              * Specifies the administrator password for the Windows virtual machine.
              *
              * @param adminPassword the administrator password. This must follow the criteria for Azure Windows VM password.
              * @return the stage representing creatable Windows VM definition
              */
-            WithWindowsCreate withAdminPassword(String adminPassword);
+            WithWindowsCreateManagedOrUnmanaged withAdminPassword(String adminPassword);
+        }
+
+        /**
+         * The stage of the Windows virtual machine scale set definition allowing to specify administrator user name.
+         */
+        interface WithWindowsAdminPasswordManaged {
+            /**
+             * Specifies the administrator password for the Windows virtual machine.
+             *
+             * @param adminPassword the administrator password. This must follow the criteria for Azure Windows VM password.
+             * @return the stage representing creatable Windows VM definition
+             */
+            WithWindowsCreateManaged withAdminPassword(String adminPassword);
+        }
+
+        /**
+         * The stage of the Windows virtual machine scale set definition allowing to specify administrator user name.
+         */
+        interface WithWindowsAdminPasswordUnmanaged {
+            /**
+             * Specifies the administrator password for the Windows virtual machine.
+             *
+             * @param adminPassword the administrator password. This must follow the criteria for Azure Windows VM password.
+             * @return the stage representing creatable Windows VM definition
+             */
+            WithWindowsCreateUnmanaged withAdminPassword(String adminPassword);
         }
 
         /**
          * The stage of a Linux virtual machine scale set definition which contains all the minimum required inputs
-         * for the resource to be created (via {@link WithCreate#create()}), but also allows for any other optional
+         * for the resource to be created, but also allows for any other optional
          * settings to be specified.
          *
          */
-        interface WithLinuxCreate extends WithCreate {
+        interface WithLinuxCreateManagedOrUnmanaged extends WithManagedCreate {
             /**
              * Specifies the SSH public key.
              * <p>
@@ -562,43 +841,94 @@ public interface VirtualMachineScaleSet extends
              * @param publicKey an SSH public key in the PEM format.
              * @return the next stage of the definition
              */
-            WithLinuxCreate withSsh(String publicKey);
+            WithLinuxCreateManagedOrUnmanaged withSsh(String publicKey);
+
+            /**
+             * @return the next stage of a unmanaged disk based virtual machine scale set definition
+             */
+            WithUnmanagedCreate withUnmanagedDisks();
+        }
+
+        /**
+         * The stage of a Linux virtual machine scale set definition which contains all the minimum required inputs
+         * for the resource to be created, but also allows for any other optional
+         * settings to be specified.
+         *
+         */
+        interface WithLinuxCreateManaged extends WithManagedCreate {
+            /**
+             * Specifies the SSH public key.
+             * <p>
+             * Each call to this method adds the given public key to the list of VM's public keys.
+             *
+             * @param publicKey an SSH public key in the PEM format.
+             * @return the next stage of the definition
+             */
+            WithLinuxCreateManaged withSsh(String publicKey);
+        }
+
+        /**
+         * The stage of a Linux virtual machine scale set definition which contains all the minimum required inputs
+         * for the resource to be created, but also allows for any other optional
+         * settings to be specified.
+         *
+         */
+        interface WithLinuxCreateUnmanaged extends WithUnmanagedCreate {
+            /**
+             * Specifies the SSH public key.
+             * <p>
+             * Each call to this method adds the given public key to the list of VM's public keys.
+             *
+             * @param publicKey an SSH public key in the PEM format.
+             * @return the next stage of the definition
+             */
+            WithLinuxCreateUnmanaged withSsh(String publicKey);
         }
 
         /**
          * The stage of a Windows virtual machine scale set definition which contains all the minimum required
-         * inputs for the resource to be created (via {@link WithCreate#create()}, but also allows for any other
+         * inputs for the resource to be created, but also allows for any other
          * optional settings to be specified.
          *
          */
-        interface WithWindowsCreate extends WithCreate {
+        interface WithWindowsCreateManagedOrUnmanaged extends WithWindowsCreateManaged {
+            WithWindowsCreateUnmanaged withUnmanagedDisks();
+        }
+
+        /**
+         * The stage of a Windows virtual machine scale set definition which contains all the minimum required
+         * inputs for the resource to be created, but also allows for any other
+         * optional settings to be specified.
+         *
+         */
+        interface WithWindowsCreateManaged extends WithManagedCreate {
             /**
              * Enables the VM agent.
              *
              * @return the next stage of the definition
              */
-            WithWindowsCreate withVmAgent();
+            WithWindowsCreateManaged withVMAgent();
 
             /**
              * Disables the VM agent.
              *
              * @return the next stage of the definition
              */
-            WithWindowsCreate withoutVmAgent();
+            WithWindowsCreateManaged withoutVMAgent();
 
             /**
              * Enables automatic updates.
              *
              * @return the next stage of the definition
              */
-            WithWindowsCreate withAutoUpdate();
+            WithWindowsCreateManaged withAutoUpdate();
 
             /**
              * Disables automatic updates.
              *
              * @return the next stage of the definition
              */
-            WithWindowsCreate withoutAutoUpdate();
+            WithWindowsCreateManaged withoutAutoUpdate();
 
             /**
              * Specifies the time zone for the virtual machines to use.
@@ -606,17 +936,196 @@ public interface VirtualMachineScaleSet extends
              * @param timeZone a time zone
              * @return the next stage of the definition
              */
-            WithWindowsCreate withTimeZone(String timeZone);
+            WithWindowsCreateManaged withTimeZone(String timeZone);
 
             /**
              * Specifies the WinRM listener.
              * <p>
              * Each call to this method adds the given listener to the list of VM's WinRM listeners.
              *
-             * @param listener a WinRm listener
+             * @param listener a WinRM listener
              * @return the next stage of the definition
              */
-            WithWindowsCreate withWinRm(WinRMListener listener);
+            WithWindowsCreateManaged withWinRM(WinRMListener listener);
+        }
+
+        /**
+         * The stage of a Windows virtual machine scale set definition which contains all the minimum required
+         * inputs for the resource to be created, but also allows for any other
+         * optional settings to be specified.
+         *
+         */
+        interface WithWindowsCreateUnmanaged extends WithUnmanagedCreate {
+            /**
+             * Enables the VM agent.
+             *
+             * @return the next stage of the definition
+             */
+            WithWindowsCreateUnmanaged withVMAgent();
+
+            /**
+             * Disables the VM agent.
+             *
+             * @return the next stage of the definition
+             */
+            WithWindowsCreateUnmanaged withoutVMAgent();
+
+            /**
+             * Enables automatic updates.
+             *
+             * @return the next stage of the definition
+             */
+            WithWindowsCreateUnmanaged withAutoUpdate();
+
+            /**
+             * Disables automatic updates.
+             *
+             * @return the next stage of the definition
+             */
+            WithWindowsCreateUnmanaged withoutAutoUpdate();
+
+            /**
+             * Specifies the time zone for the virtual machines to use.
+             *
+             * @param timeZone a time zone
+             * @return the next stage of the definition
+             */
+            WithWindowsCreateUnmanaged withTimeZone(String timeZone);
+
+            /**
+             * Specifies the WinRM listener.
+             * <p>
+             * Each call to this method adds the given listener to the list of VM's WinRM listeners.
+             *
+             * @param listener a WinRM listener
+             * @return the next stage of the definition
+             */
+            WithWindowsCreateUnmanaged withWinRM(WinRMListener listener);
+        }
+
+        /**
+         * The stage of a virtual machine scale set definition allowing to specify managed data disks.
+         */
+        interface WithManagedDataDisk {
+            /**
+             * Specifies that a managed disk needs to be created implicitly with the given size.
+             *
+             * @param sizeInGB the size of the managed disk
+             * @return the next stage of virtual machine definition
+             */
+            WithManagedCreate withNewDataDisk(int sizeInGB);
+
+            /**
+             * Specifies that a managed disk needs to be created implicitly with the given settings.
+             *
+             * @param sizeInGB the size of the managed disk
+             * @param lun the disk LUN
+             * @param cachingType the caching type
+             * @return the next stage of virtual machine definition
+             */
+            WithManagedCreate withNewDataDisk(int sizeInGB, int lun, CachingTypes cachingType);
+
+            /**
+             * Specifies that a managed disk needs to be created implicitly with the given settings.
+             *
+             * @param sizeInGB the size of the managed disk
+             * @param lun the disk LUN
+             * @param cachingType the caching type
+             * @param storageAccountType the storage account type
+             * @return the next stage of virtual machine definition
+             */
+            WithManagedCreate withNewDataDisk(int sizeInGB,
+                                              int lun,
+                                              CachingTypes cachingType,
+                                              StorageAccountTypes storageAccountType);
+
+            /**
+             * Specifies the data disk to be created from the data disk image in the virtual machine image.
+             *
+             * @param imageLun the LUN of the source data disk image
+             * @return the next stage of virtual machine definition
+             */
+            WithManagedCreate withNewDataDiskFromImage(int imageLun);
+
+            /**
+             * Specifies the data disk to be created from the data disk image in the virtual machine image.
+             *
+             * @param imageLun the LUN of the source data disk image
+             * @param newSizeInGB the new size that overrides the default size specified in the data disk image
+             * @param cachingType the caching type
+             * @return the next stage of virtual machine definition
+             */
+            WithManagedCreate withNewDataDiskFromImage(int imageLun,
+                                                       int newSizeInGB,
+                                                       CachingTypes cachingType);
+
+            /**
+             * Specifies the data disk to be created from the data disk image in the virtual machine image.
+             *
+             * @param imageLun the LUN of the source data disk image
+             * @param newSizeInGB the new size that overrides the default size specified in the data disk image
+             * @param cachingType the caching type
+             * @param storageAccountType the storage account type
+             * @return the next stage of virtual machine definition
+             */
+            WithManagedCreate withNewDataDiskFromImage(int imageLun,
+                                                       int newSizeInGB,
+                                                       CachingTypes cachingType,
+                                                       StorageAccountTypes storageAccountType);
+        }
+
+        /**
+         * The optionals applicable only for managed disks.
+         */
+        interface WithManagedDiskOptionals {
+            /**
+             * Specifies the storage account type for managed OS disk.
+             *
+             * @param accountType the storage account type
+             * @return  the stage representing creatable VM definition
+             */
+            WithManagedCreate withOSDiskStorageAccountType(StorageAccountTypes accountType);
+
+            /**
+             * Specifies the default caching type for the managed data disks.
+             *
+             * @param cachingType the caching type
+             * @return the stage representing creatable VM definition
+             */
+            WithManagedCreate withDataDiskDefaultCachingType(CachingTypes cachingType);
+
+            /**
+             * Specifies the default caching type for the managed data disks.
+             *
+             * @param storageAccountType the storage account type
+             * @return the stage representing creatable VM definition
+             */
+            WithManagedCreate withDataDiskDefaultStorageAccountType(StorageAccountTypes storageAccountType);
+        }
+
+        /**
+         * The stage of the definition which contains all the minimum required inputs for the VM scale set to be
+         * created and optionally allow managed data disks specific settings to be specified.
+         */
+        interface WithManagedCreate
+                extends
+                WithManagedDataDisk,
+                WithManagedDiskOptionals,
+                WithCreate {
+        }
+
+        /**
+         * The stage of the virtual machine scale set definition allowing to specify unmanaged data disk.
+         */
+        interface WithUnmanagedDataDisk {
+        }
+
+        /**
+         * The stage of the definition which contains all the minimum required inputs for the VM scale set to be
+         * created and optionally allow unmanaged data disks specific settings to be specified.
+         */
+        interface WithUnmanagedCreate
+                extends WithUnmanagedDataDisk, WithCreate {
         }
 
         /**
@@ -640,7 +1149,7 @@ public interface VirtualMachineScaleSet extends
             /**
              * Specifies the maximum number of virtual machines in the scale set.
              *
-             * @param capacity the virtual machine capacity
+             * @param capacity number of virtual machines
              * @return the next stage of the definition
              */
             WithCreate withCapacity(int capacity);
@@ -691,14 +1200,14 @@ public interface VirtualMachineScaleSet extends
         /**
          * The stage of a virtual machine scale set definition allowing to specify OS disk configurations.
          */
-        interface WithOsDiskSettings {
+        interface WithOSDiskSettings {
             /**
              * Specifies the caching type for the operating system disk.
              *
              * @param cachingType the caching type
              * @return the next stage of the definition
              */
-            WithCreate withOsDiskCaching(CachingTypes cachingType);
+            WithCreate withOSDiskCaching(CachingTypes cachingType);
 
             /**
              * Specifies the name for the OS disk.
@@ -706,7 +1215,7 @@ public interface VirtualMachineScaleSet extends
              * @param name the OS disk name
              * @return the next stage of the definition
              */
-            WithCreate withOsDiskName(String name);
+            WithCreate withOSDiskName(String name);
         }
 
         /**
@@ -732,7 +1241,7 @@ public interface VirtualMachineScaleSet extends
             WithCreate withNewStorageAccount(Creatable<StorageAccount> creatable);
 
             /**
-             * Specifies an existing {@link StorageAccount} for the OS and data disk VHDs of
+             * Specifies an existing storage account for the OS and data disk VHDs of
              * the virtual machines in the scale set.
              *
              * @param storageAccount an existing storage account
@@ -755,7 +1264,7 @@ public interface VirtualMachineScaleSet extends
         }
 
         /**
-         * The stage of a virtual machine definition allowing to specify extensions.
+         * The stage of a virtual machine scale set definition allowing to specify extensions.
          */
         interface WithExtension {
             /**
@@ -769,12 +1278,12 @@ public interface VirtualMachineScaleSet extends
 
         /**
          * The stage of a virtual machine scale set definition containing all the required inputs for the resource
-         * to be created (via {@link WithCreate#create()}), but also allowing for any other optional settings
+         * to be created, but also allowing for any other optional settings
          * to be specified.
          */
         interface WithCreate extends
                 Creatable<VirtualMachineScaleSet>,
-                DefinitionStages.WithOsDiskSettings,
+                DefinitionStages.WithOSDiskSettings,
                 DefinitionStages.WithComputerNamePrefix,
                 DefinitionStages.WithCapacity,
                 DefinitionStages.WithUpgradePolicy,
@@ -799,7 +1308,7 @@ public interface VirtualMachineScaleSet extends
              * Specifies the load balancer to be used as the Internet-facing load balancer for the virtual machines in the
              * scale set.
              * <p>
-             * This will replace the current internet-facing load balancer associated with the virtual machines in the
+             * This will replace the current Internet-facing load balancer associated with the virtual machines in the
              * scale set (if any).
              * By default all the backend and inbound NAT pool of the load balancer will be associated with the primary
              * network interface of the virtual machines unless a subset of them is selected in the next stages
@@ -1032,12 +1541,99 @@ public interface VirtualMachineScaleSet extends
         }
 
         /**
-         * The stage of a virtual machine scale set update containing inputs for the resource to be updated
-         * (via {@link WithApply#apply()}).
+         * The stage of the virtual machine scale set definition allowing to specify unmanaged data disk.
+         */
+        interface WithUnmanagedDataDisk {
+        }
+
+        /**
+         * The stage of a virtual machine scale set update allowing to specify managed data disks.
+         */
+        interface WithManagedDataDisk {
+            /**
+             * Specifies that a managed disk needs to be created implicitly with the given size.
+             *
+             * @param sizeInGB the size of the managed disk
+             * @return the next stage of virtual machine scale set update
+             */
+            WithApply withNewDataDisk(int sizeInGB);
+
+            /**
+             * Specifies that a managed disk needs to be created implicitly with the given settings.
+             *
+             * @param sizeInGB the size of the managed disk
+             * @param lun the disk LUN
+             * @param cachingType the caching type
+             * @return the next stage of virtual machine scale set update
+             */
+            WithApply withNewDataDisk(int sizeInGB, int lun, CachingTypes cachingType);
+
+            /**
+             * Specifies that a managed disk needs to be created implicitly with the given settings.
+             *
+             * @param sizeInGB the size of the managed disk
+             * @param lun the disk LUN
+             * @param cachingType the caching type
+             * @param storageAccountType the storage account type
+             * @return the next stage of virtual machine scale set update
+             */
+            WithApply withNewDataDisk(int sizeInGB,
+                                      int lun,
+                                      CachingTypes cachingType,
+                                      StorageAccountTypes storageAccountType);
+
+            /**
+             * Detaches managed data disk with the given LUN from the virtual machine scale set instances.
+             *
+             * @param lun the disk LUN
+             * @return the next stage of virtual machine scale set update
+             */
+            WithApply withoutDataDisk(int lun);
+
+            /**
+             * Updates the size of a managed data disk with the given LUN.
+             *
+             * @param lun the disk LUN
+             * @param newSizeInGB the new size of the disk
+             * @return the next stage of virtual machine scale set update
+             */
+            // TODO: Broken by Azure REST API
+            // WithApply withDataDiskUpdated(int lun, int newSizeInGB);
+
+            /**
+             * Updates the size and caching type of a managed data disk with the given LUN.
+             *
+             * @param lun the disk LUN
+             * @param newSizeInGB the new size of the disk
+             * @param cachingType the caching type
+             * @return the next stage of virtual machine scale set update
+             */
+            // TODO: Broken by Azure REST API
+            // WithApply withDataDiskUpdated(int lun, int newSizeInGB, CachingTypes cachingType);
+
+            /**
+             * Updates the size, caching type and storage account type of a managed data disk with the given LUN.
+             * @param lun the disk LUN
+             * @param newSizeInGB the new size of the disk
+             * @param cachingType the caching type
+             * @param storageAccountType the storage account type
+             * @return the next stage of virtual machine scale set update
+             */
+            // TODO: Broken by Azure REST API
+            // WithApply withDataDiskUpdated(int lun,
+            //                              int newSizeInGB,
+            //                              CachingTypes cachingType,
+            //                              StorageAccountTypes storageAccountType);
+        }
+
+        /**
+         * The stage of a virtual machine scale set update containing inputs for the resource to be updated.
          */
         interface WithApply extends
                 Appliable<VirtualMachineScaleSet>,
                 Resource.UpdateWithTags<WithApply>,
+                UpdateStages.WithManagedDataDisk,
+                UpdateStages.WithUnmanagedDataDisk,
                 UpdateStages.WithSku,
                 UpdateStages.WithCapacity,
                 UpdateStages.WithExtension,
@@ -1048,7 +1644,7 @@ public interface VirtualMachineScaleSet extends
     }
 
     /**
-     * The entirety of the load balancer update.
+     * The entirety of the virtual machine scale set update.
      */
     interface Update extends
             UpdateStages.WithPrimaryLoadBalancer,

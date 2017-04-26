@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Information about the formal API definition for the app.
@@ -16,6 +17,7 @@ public class ApiDefinitionInfo {
     /**
      * The URL of the API definition.
      */
+    @JsonProperty(value = "url")
     private String url;
 
     /**

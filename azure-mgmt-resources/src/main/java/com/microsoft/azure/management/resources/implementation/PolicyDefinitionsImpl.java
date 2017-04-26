@@ -12,6 +12,7 @@ import com.microsoft.azure.management.resources.PolicyDefinitions;
 import com.microsoft.azure.management.resources.PolicyType;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
+import rx.Completable;
 import rx.Observable;
 
 /**
@@ -42,8 +43,8 @@ final class PolicyDefinitionsImpl
     }
 
     @Override
-    public Observable<Void> deleteByIdAsync(String name) {
-        return client.deleteAsync(name);
+    public Completable deleteByIdAsync(String name) {
+        return client.deleteAsync(name).toCompletable();
     }
 
     @Override
@@ -61,5 +62,10 @@ final class PolicyDefinitionsImpl
     @Override
     protected PolicyDefinitionImpl wrapModel(PolicyDefinitionInner inner) {
         return new PolicyDefinitionImpl(inner, client);
+    }
+
+    @Override
+    public Observable<PolicyDefinition> listAsync() {
+        return wrapPageAsync(client.listAsync());
     }
 }

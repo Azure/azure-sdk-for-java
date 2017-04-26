@@ -19,26 +19,27 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class BackendAddressPoolInner extends SubResource {
     /**
-     * Gets collection of references to IPs defined in NICs.
+     * Gets collection of references to IP addresses defined in network
+     * interfaces.
      */
     @JsonProperty(value = "properties.backendIPConfigurations", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkInterfaceIPConfigurationInner> backendIPConfigurations;
 
     /**
-     * Gets Load Balancing rules that use this Backend Address Pool.
+     * Gets load balancing rules that use this backend address pool.
      */
     @JsonProperty(value = "properties.loadBalancingRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> loadBalancingRules;
 
     /**
-     * Gets outbound rules that use this Backend Address Pool.
+     * Gets outbound rules that use this backend address pool.
      */
     @JsonProperty(value = "properties.outboundNatRule", access = JsonProperty.Access.WRITE_ONLY)
     private SubResource outboundNatRule;
 
     /**
-     * Get provisioning state of the PublicIP resource
-     * Updating/Deleting/Failed.
+     * Get provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
@@ -47,11 +48,13 @@ public class BackendAddressPoolInner extends SubResource {
      * Gets name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * A unique read-only string that changes whenever the resource is updated.
      */
+    @JsonProperty(value = "etag")
     private String etag;
 
     /**

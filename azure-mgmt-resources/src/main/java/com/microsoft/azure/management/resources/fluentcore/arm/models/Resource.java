@@ -1,8 +1,8 @@
-/*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT License. See License.txt in the project root for
-* license information.
-*/
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 
 package com.microsoft.azure.management.resources.fluentcore.arm.models;
 
@@ -51,14 +51,14 @@ public interface Resource extends
         /**
          * Specifies the region for the resource by name.
          * @param regionName The name of the region for the resource
-         * @return the next stage of the resource definition
+         * @return the next stage of the definition
          */
         T withRegion(String regionName);
 
         /**
          * Specifies the region for the resource.
          * @param region The location for the resource
-         * @return the next stage of the resource definition
+         * @return the next stage of the definition
          */
         T withRegion(Region region);
     }
@@ -73,7 +73,7 @@ public interface Resource extends
         /**
          * Specifies tags for the resource as a {@link Map}.
          * @param tags a {@link Map} of tags
-         * @return the next stage of the resource definition
+         * @return the next stage of the definition
          */
         T withTags(Map<String, String> tags);
 
@@ -81,7 +81,7 @@ public interface Resource extends
          * Adds a tag to the resource.
          * @param key the key for the tag
          * @param value the value for the tag
-         * @return the next stage of the resource definition
+         * @return the next stage of the definition
          */
         T withTag(String key, String value);
     }

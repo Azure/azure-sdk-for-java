@@ -5,29 +5,31 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayHttpListenerInner;
 import com.microsoft.azure.management.network.model.HasHostName;
 import com.microsoft.azure.management.network.model.HasProtocol;
-import com.microsoft.azure.management.network.model.HasPublicIpAddress;
+import com.microsoft.azure.management.network.model.HasPublicIPAddress;
 import com.microsoft.azure.management.network.model.HasServerNameIndication;
 import com.microsoft.azure.management.network.model.HasSslCertificate;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasSubnet;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * An immutable client-side representation of an application gateway's HTTP listener.
  */
 @Fluent()
+@Beta
 public interface ApplicationGatewayListener extends
-    Wrapper<ApplicationGatewayHttpListenerInner>,
+    HasInner<ApplicationGatewayHttpListenerInner>,
     ChildResource<ApplicationGateway>,
     HasSslCertificate<ApplicationGatewaySslCertificate>,
-    HasPublicIpAddress,
+    HasPublicIPAddress,
     HasProtocol<ApplicationGatewayProtocol>,
     HasHostName,
     HasServerNameIndication,

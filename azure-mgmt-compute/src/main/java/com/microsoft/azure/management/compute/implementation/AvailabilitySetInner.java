@@ -11,12 +11,13 @@ package com.microsoft.azure.management.compute.implementation;
 import java.util.List;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.compute.InstanceViewStatus;
+import com.microsoft.azure.management.compute.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Create or update Availability Set parameters.
+ * Create or update availability set parameters.
  */
 @JsonFlatten
 public class AvailabilitySetInner extends Resource {
@@ -33,17 +34,28 @@ public class AvailabilitySetInner extends Resource {
     private Integer platformFaultDomainCount;
 
     /**
-     * a list containing reference to all Virtual Machines created under this
-     * Availability Set.
+     * A list of references to all virtual machines in the availability set.
      */
     @JsonProperty(value = "properties.virtualMachines")
     private List<SubResource> virtualMachines;
 
     /**
-     * the resource status information.
+     * The resource status information.
      */
-    @JsonProperty(value = "properties.statuses")
+    @JsonProperty(value = "properties.statuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<InstanceViewStatus> statuses;
+
+    /**
+     * If the availability set supports managed disks.
+     */
+    @JsonProperty(value = "properties.managed")
+    private Boolean managed;
+
+    /**
+     * Sku of the availability set.
+     */
+    @JsonProperty(value = "sku")
+    private Sku sku;
 
     /**
      * Get the platformUpdateDomainCount value.
@@ -115,13 +127,42 @@ public class AvailabilitySetInner extends Resource {
     }
 
     /**
-     * Set the statuses value.
+     * Get the managed value.
      *
-     * @param statuses the statuses value to set
+     * @return the managed value
+     */
+    public Boolean managed() {
+        return this.managed;
+    }
+
+    /**
+     * Set the managed value.
+     *
+     * @param managed the managed value to set
      * @return the AvailabilitySetInner object itself.
      */
-    public AvailabilitySetInner withStatuses(List<InstanceViewStatus> statuses) {
-        this.statuses = statuses;
+    public AvailabilitySetInner withManaged(Boolean managed) {
+        this.managed = managed;
+        return this;
+    }
+
+    /**
+     * Get the sku value.
+     *
+     * @return the sku value
+     */
+    public Sku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku value.
+     *
+     * @param sku the sku value to set
+     * @return the AvailabilitySetInner object itself.
+     */
+    public AvailabilitySetInner withSku(Sku sku) {
+        this.sku = sku;
         return this;
     }
 

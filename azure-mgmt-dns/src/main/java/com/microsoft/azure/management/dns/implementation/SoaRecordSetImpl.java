@@ -11,23 +11,22 @@ import com.microsoft.azure.management.dns.SoaRecord;
 import com.microsoft.azure.management.dns.SoaRecordSet;
 
 /**
- * Implementation of {@link SoaRecordSet}.
+ * Implementation of SoaRecordSet.
  */
 @LangDefinition
 class SoaRecordSetImpl
         extends DnsRecordSetImpl
         implements SoaRecordSet {
-    SoaRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel, final RecordSetsInner client) {
-        super(parent, innerModel, client);
+    SoaRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel) {
+        super(parent, innerModel);
     }
 
-    static SoaRecordSetImpl newRecordSet(final DnsZoneImpl parent, final RecordSetsInner client) {
+    static SoaRecordSetImpl newRecordSet(final DnsZoneImpl parent) {
         return new SoaRecordSetImpl(parent,
                 new RecordSetInner()
                         .withName("@")
                         .withType(RecordType.SOA.toString())
-                        .withSoaRecord(new SoaRecord()),
-                    client);
+                        .withSoaRecord(new SoaRecord()));
     }
 
     @Override

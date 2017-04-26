@@ -28,23 +28,21 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Implementation of {@link DnsRecordSet}.
+ * Implementation of DnsRecordSet.
  */
 @LangDefinition
 abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
-        RecordSetInner,
-        DnsZoneImpl,
-        DnsZone>
+            RecordSetInner,
+            DnsZoneImpl,
+            DnsZone>
         implements DnsRecordSet,
-        DnsRecordSet.Definition<DnsZone.DefinitionStages.WithCreate>,
-        DnsRecordSet.UpdateDefinition<DnsZone.Update>,
-        DnsRecordSet.UpdateCombined {
-    protected final RecordSetsInner client;
+            DnsRecordSet.Definition<DnsZone.DefinitionStages.WithCreate>,
+            DnsRecordSet.UpdateDefinition<DnsZone.Update>,
+            DnsRecordSet.UpdateCombined {
     protected final RecordSetInner recordSetRemoveInfo;
 
-    protected DnsRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel, final RecordSetsInner client) {
+    protected DnsRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel) {
         super(innerModel.name(), parent, innerModel);
-        this.client = client;
         this.recordSetRemoveInfo = new RecordSetInner()
             .withName(innerModel.name())
             .withType(innerModel.type())
@@ -85,7 +83,7 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
     // Setters
 
     @Override
-    public DnsRecordSetImpl withIpv4Address(String ipv4Address) {
+    public DnsRecordSetImpl withIPv4Address(String ipv4Address) {
         this.inner()
                 .aRecords()
                 .add(new ARecord().withIpv4Address(ipv4Address));
@@ -93,7 +91,7 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
     }
 
     @Override
-    public DnsRecordSetImpl withoutIpv4Address(String ipv4Address) {
+    public DnsRecordSetImpl withoutIPv4Address(String ipv4Address) {
         this.recordSetRemoveInfo
                 .aRecords()
                 .add(new ARecord().withIpv4Address(ipv4Address));
@@ -101,7 +99,7 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
     }
 
     @Override
-    public DnsRecordSetImpl withIpv6Address(String ipv6Address) {
+    public DnsRecordSetImpl withIPv6Address(String ipv6Address) {
         this.inner()
                 .aaaaRecords()
                 .add(new AaaaRecord().withIpv6Address(ipv6Address));
@@ -109,7 +107,7 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
     }
 
     @Override
-    public DnsRecordSetImpl withoutIpv6Address(String ipv6Address) {
+    public DnsRecordSetImpl withoutIPv6Address(String ipv6Address) {
         this.recordSetRemoveInfo
                 .aaaaRecords()
                 .add(new AaaaRecord().withIpv6Address(ipv6Address));
@@ -269,7 +267,7 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
 
     @Override
     public Observable<DnsRecordSet> updateAsync() {
-        return this.client.getAsync(this.parent().resourceGroupName(),
+        return this.parent().manager().inner().recordSets().getAsync(this.parent().resourceGroupName(),
                 this.parent().name(), this.name(), this.recordType())
                 .map(new Func1<RecordSetInner, RecordSetInner>() {
                     public RecordSetInner call(RecordSetInner resource) {
@@ -285,7 +283,7 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
 
     @Override
     public Observable<Void> deleteAsync() {
-        return this.client.deleteAsync(this.parent().resourceGroupName(),
+        return this.parent().manager().inner().recordSets().deleteAsync(this.parent().resourceGroupName(),
                 this.parent().name(), this.name(), this.recordType());
     }
 
@@ -300,17 +298,16 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
     }
 
     @Override
-    public DnsRecordSetImpl refresh() {
-        this.setInner(this.client.get(this.parent().resourceGroupName(),
+    protected Observable<RecordSetInner> getInnerAsync() {
+        return this.parent().manager().inner().recordSets().getAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name(),
-                this.recordType()));
-        return this;
+                this.recordType());
     }
 
     private Observable<DnsRecordSet> createOrUpdateAsync(RecordSetInner resource) {
         final DnsRecordSetImpl self = this;
-        return this.client.createOrUpdateAsync(this.parent().resourceGroupName(),
+        return this.parent().manager().inner().recordSets().createOrUpdateAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name(),
                 this.recordType(),

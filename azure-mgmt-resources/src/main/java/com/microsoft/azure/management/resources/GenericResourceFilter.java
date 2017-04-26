@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.resources;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Resource filter.
@@ -16,16 +17,19 @@ public class GenericResourceFilter {
     /**
      * The resource type.
      */
+    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /**
      * The tag name.
      */
+    @JsonProperty(value = "tagname")
     private String tagname;
 
     /**
      * The tag value.
      */
+    @JsonProperty(value = "tagvalue")
     private String tagvalue;
 
     /**

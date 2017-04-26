@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.resources;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
@@ -15,8 +16,11 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import rx.Observable;
 
 /**
  * An immutable client-side representation of an Azure resource group.
@@ -26,7 +30,7 @@ public interface ResourceGroup extends
         Indexable,
         Resource,
         Refreshable<ResourceGroup>,
-        Wrapper<ResourceGroupInner>,
+        HasInner<ResourceGroupInner>,
         Updatable<ResourceGroup.Update>,
         HasName {
 
@@ -42,6 +46,26 @@ public interface ResourceGroup extends
      * @return the exported template result
      */
     ResourceGroupExportResult exportTemplate(ResourceGroupExportTemplateOptions options);
+
+    /**
+     * Captures the specified resource group as a template asynchronously.
+     *
+     * @param options the export options
+     * @return observable to the exported template result
+     */
+    @Beta
+    Observable<ResourceGroupExportResult> exportTemplateAsync(ResourceGroupExportTemplateOptions options);
+
+    /**
+     * Captures the specified resource group as a template asynchronously.
+     *
+     * @param options the export options
+     * @param callback the callback to call on success or failure with result as parameter
+     *
+     * @return a handle to cancel the request
+     */
+    @Beta
+    ServiceFuture<ResourceGroupExportResult> exportTemplateAsync(ResourceGroupExportTemplateOptions options, ServiceCallback<ResourceGroupExportResult> callback);
 
     /**************************************************************
      * Fluent interfaces to provision a ResourceGroup

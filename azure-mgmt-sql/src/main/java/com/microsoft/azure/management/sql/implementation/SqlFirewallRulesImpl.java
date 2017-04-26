@@ -11,11 +11,14 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildrenImpl;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.sql.SqlFirewallRule;
 import com.microsoft.azure.management.sql.SqlFirewallRules;
+import com.microsoft.azure.management.sql.SqlServer;
+
 import org.apache.commons.lang3.NotImplementedException;
+import rx.Completable;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.List;
 
@@ -28,10 +31,11 @@ class SqlFirewallRulesImpl extends IndependentChildrenImpl<
             SqlFirewallRuleImpl,
             ServerFirewallRuleInner,
             ServersInner,
-            SqlServerManager>
+            SqlServerManager,
+            SqlServer>
         implements SqlFirewallRules,
-        SupportsGettingByParent<SqlFirewallRule>,
-        SupportsListingByParent<SqlFirewallRule>,
+        SupportsGettingByParent<SqlFirewallRule, SqlServer, SqlServerManager>,
+        SupportsListingByParent<SqlFirewallRule, SqlServer, SqlServerManager>,
         SqlFirewallRules.SqlFirewallRulesCreatable {
     protected SqlFirewallRulesImpl(ServersInner innerCollection, SqlServerManager manager) {
         super(innerCollection, manager);
@@ -43,8 +47,13 @@ class SqlFirewallRulesImpl extends IndependentChildrenImpl<
     }
 
     @Override
-    public SqlFirewallRule getByParent(String resourceGroup, String parentName, String name) {
-        return wrapModel(this.innerCollection.getFirewallRule(resourceGroup, parentName, name));
+    public Observable<SqlFirewallRule> getByParentAsync(String resourceGroup, String parentName, String name) {
+        return this.innerCollection.getFirewallRuleAsync(resourceGroup, parentName, name).map(new Func1<ServerFirewallRuleInner, SqlFirewallRule>() {
+            @Override
+            public SqlFirewallRule call(ServerFirewallRuleInner serverFirewallRuleInner) {
+                return wrapModel(serverFirewallRuleInner);
+            }
+        });
     }
 
     @Override
@@ -57,12 +66,12 @@ class SqlFirewallRulesImpl extends IndependentChildrenImpl<
         if (inner == null) {
             return null;
         }
-        return new SqlFirewallRuleImpl(inner.name(), inner, this.innerCollection);
+        return new SqlFirewallRuleImpl(inner.name(), inner, this.innerCollection, this.manager());
     }
 
     @Override
-    public Observable<Void> deleteByParentAsync(String groupName, String parentName, String name) {
-        return this.innerCollection.deleteFirewallRuleAsync(groupName, parentName, name);
+    public Completable deleteByParentAsync(String groupName, String parentName, String name) {
+        return this.innerCollection.deleteFirewallRuleAsync(groupName, parentName, name).toCompletable();
     }
 
     @Override
@@ -71,7 +80,7 @@ class SqlFirewallRulesImpl extends IndependentChildrenImpl<
     }
 
     @Override
-    public SqlFirewallRule getBySqlServer(GroupableResource sqlServer, String name) {
+    public SqlFirewallRule getBySqlServer(SqlServer sqlServer, String name) {
         return this.getByParent(sqlServer, name);
     }
 
@@ -81,7 +90,7 @@ class SqlFirewallRulesImpl extends IndependentChildrenImpl<
     }
 
     @Override
-    public List<SqlFirewallRule> listBySqlServer(GroupableResource sqlServer) {
+    public List<SqlFirewallRule> listBySqlServer(SqlServer sqlServer) {
         return this.listByParent(sqlServer);
     }
 
@@ -92,6 +101,7 @@ class SqlFirewallRulesImpl extends IndependentChildrenImpl<
         return new SqlFirewallRuleImpl(
                 firewallRuleName,
                 inner,
-                this.innerCollection).withExistingParentResource(resourceGroupName, sqlServerName);
+                this.innerCollection,
+                this.manager()).withExistingParentResource(resourceGroupName, sqlServerName);
     }
 }

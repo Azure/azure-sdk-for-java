@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
@@ -13,6 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
  * An immutable client-side representation of an HTTP load balancing probe.
  */
 @Fluent()
+@Beta
 public interface LoadBalancerHttpProbe extends LoadBalancerProbe {
 
     /**
@@ -26,7 +28,7 @@ public interface LoadBalancerHttpProbe extends LoadBalancerProbe {
     interface DefinitionStages {
         /**
          * The first stage of the probe definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithRequestPath<ParentT> {
         }
@@ -166,7 +168,7 @@ public interface LoadBalancerHttpProbe extends LoadBalancerProbe {
     interface UpdateDefinitionStages {
         /**
          * The first stage of the probe definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithRequestPath<ParentT> {
         }

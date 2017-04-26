@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.DeploymentProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Deployment operation parameters.
@@ -17,6 +18,7 @@ public class DeploymentInner {
     /**
      * The deployment properties.
      */
+    @JsonProperty(value = "properties", required = true)
     private DeploymentProperties properties;
 
     /**

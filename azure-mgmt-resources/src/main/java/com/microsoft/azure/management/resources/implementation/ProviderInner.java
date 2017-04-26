@@ -17,26 +17,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ProviderInner {
     /**
-     * The provider id.
+     * The provider ID.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
-     * The namespace of the provider.
+     * The namespace of the resource provider.
      */
+    @JsonProperty(value = "namespace")
     private String namespace;
 
     /**
      * The registration state of the provider.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "registrationState", access = JsonProperty.Access.WRITE_ONLY)
     private String registrationState;
 
     /**
      * The collection of provider resource types.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "resourceTypes", access = JsonProperty.Access.WRITE_ONLY)
     private List<ProviderResourceType> resourceTypes;
 
     /**

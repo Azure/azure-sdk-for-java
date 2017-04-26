@@ -8,14 +8,16 @@
 
 package com.microsoft.azure.management.dns;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * An A record.
  */
 public class ARecord {
     /**
-     * Gets or sets the IPv4 address of this A record in string notation.
+     * The IPv4 address of this A record.
      */
+    @JsonProperty(value = "ipv4Address")
     private String ipv4Address;
 
     /**

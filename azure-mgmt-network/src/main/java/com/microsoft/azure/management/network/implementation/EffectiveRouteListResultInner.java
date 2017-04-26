@@ -10,19 +10,22 @@ package com.microsoft.azure.management.network.implementation;
 
 import java.util.List;
 import com.microsoft.azure.management.network.EffectiveRoute;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Response for list effective route api service call.
+ * Response for list effective route API service call.
  */
 public class EffectiveRouteListResultInner {
     /**
-     * Gets list of effective routes.
+     * A list of effective routes.
      */
+    @JsonProperty(value = "value")
     private List<EffectiveRoute> value;
 
     /**
-     * Gets the URL to get the next set of results.
+     * The URL to get the next set of results.
      */
+    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**

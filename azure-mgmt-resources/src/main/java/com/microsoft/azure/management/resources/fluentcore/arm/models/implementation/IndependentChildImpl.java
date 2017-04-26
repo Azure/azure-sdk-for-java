@@ -9,9 +9,11 @@ package com.microsoft.azure.management.resources.fluentcore.arm.models.implement
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 
@@ -22,21 +24,24 @@ import rx.Observable;
  * @param <FluentParentModelT> the fluent model for parent resource
  * @param <InnerModelT> Azure inner resource class type
  * @param <FluentModelImplT> the implementation type of the fluent model type
+ * @param <ManagerT> the client manager type representing the service
  */
 @LangDefinition
 public abstract class IndependentChildImpl<
-            FluentModelT extends IndependentChild,
-            FluentParentModelT extends GroupableResource,
+            FluentModelT extends IndependentChild<ManagerT>,
+            FluentParentModelT extends Resource & HasResourceGroup,
             InnerModelT,
-            FluentModelImplT extends IndependentChildImpl<FluentModelT, FluentParentModelT, InnerModelT, FluentModelImplT>>
+            FluentModelImplT extends IndependentChildImpl<FluentModelT, FluentParentModelT, InnerModelT, FluentModelImplT, ManagerT>,
+            ManagerT>
         extends
             CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
         implements
-            IndependentChild,
+            IndependentChild<ManagerT>,
             IndependentChild.DefinitionStages.WithParentResource<FluentModelT, FluentParentModelT> {
     private String groupName;
     protected String parentName;
     private String creatableParentResourceKey;
+    private final ManagerT manager;
 
     /**
      * Creates a new instance of IndependentChildResourceImpl.
@@ -44,13 +49,19 @@ public abstract class IndependentChildImpl<
      * @param name        the name of the resource
      * @param innerObject the inner object
      */
-    protected IndependentChildImpl(String name, InnerModelT innerObject) {
+    protected IndependentChildImpl(String name, InnerModelT innerObject, ManagerT manager) {
         super(name, innerObject);
+        this.manager = manager;
     }
 
     /*******************************************
      * Getters.
      *******************************************/
+
+    @Override
+    public ManagerT manager() {
+        return this.manager;
+    }
 
     @Override
     public String resourceGroupName() {
@@ -111,8 +122,12 @@ public abstract class IndependentChildImpl<
 
     protected void setParentName(InnerModelT inner) {
         if (this.id() != null) {
-            this.parentName = ResourceId.parseResourceId(this.id()).parent().name();
+            this.parentName = ResourceId.fromString(this.id()).parent().name();
         }
+    }
+
+    protected Indexable createdResource(String key) {
+        return super.createdModel(key);
     }
 
     protected abstract Observable<FluentModelT> createChildResourceAsync();

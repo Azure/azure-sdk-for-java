@@ -8,19 +8,22 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The instance view of a virtual machine boot diagnostics.
  */
 public class BootDiagnosticsInstanceView {
     /**
-     * the console screenshot blob Uri.
+     * The console screenshot blob URI.
      */
+    @JsonProperty(value = "consoleScreenshotBlobUri")
     private String consoleScreenshotBlobUri;
 
     /**
-     * the Linux serial console log blob Uri.
+     * The Linux serial console log blob Uri.
      */
+    @JsonProperty(value = "serialConsoleLogBlobUri")
     private String serialConsoleLogBlobUri;
 
     /**

@@ -5,19 +5,19 @@
  */
 
 package com.microsoft.azure.management.redis;
-
 import org.joda.time.Period;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
+import com.microsoft.azure.management.redis.implementation.RedisManager;
 import com.microsoft.azure.management.redis.implementation.RedisResourceInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import java.util.List;
 import java.util.Map;
 
@@ -26,10 +26,9 @@ import java.util.Map;
  */
 @Fluent
 public interface RedisCache extends
-        GroupableResource,
+        GroupableResource<RedisManager, RedisResourceInner>,
         Refreshable<RedisCache>,
-        Updatable<RedisCache.Update>,
-        Wrapper<RedisResourceInner> {
+        Updatable<RedisCache.Update> {
 
     /**
      * @return exposes features available only to Premium Sku Redis Cache instances.
@@ -242,11 +241,11 @@ public interface RedisCache extends
              /**
               * Assigns the specified subnet to this instance of Redis Cache.
               *
-              * @param networkResource instance of Network object.
+              * @param network instance of Network object.
               * @param subnetName the name of the subnet.
               * @return the next stage of Redis Cache definition.
               */
-             WithCreate withSubnet(GroupableResource networkResource, String subnetName);
+             WithCreate withSubnet(HasId network, String subnetName);
 
              /**
               * Sets Redis Cache static IP. Required when deploying a Redis Cache inside an existing Azure Virtual Network.
@@ -437,7 +436,7 @@ public interface RedisCache extends
          * @param subnetName the name of the subnet.
          * @return the next stage of Redis Cache update.
          */
-        Update withSubnet(GroupableResource networkResource, String subnetName);
+        Update withSubnet(HasId networkResource, String subnetName);
 
         /**
          * Sets Redis Cache static IP. Required when deploying a Redis Cache inside an existing Azure Virtual Network.

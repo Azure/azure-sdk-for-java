@@ -5,38 +5,74 @@
  */
 package com.microsoft.azure.management.network;
 
+import java.util.List;
 import java.util.Map;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayInner;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
-import com.microsoft.azure.management.network.model.HasPrivateIpAddress;
-import com.microsoft.azure.management.network.model.HasPublicIpAddress;
+import com.microsoft.azure.management.network.model.HasPrivateIPAddress;
+import com.microsoft.azure.management.network.model.HasPublicIPAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasSubnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+
+import rx.Completable;
 
 /**
  * Entry point for application gateway management API in Azure.
  */
 @Fluent
+@Beta
 public interface ApplicationGateway extends
-        GroupableResource,
+        GroupableResource<NetworkManager, ApplicationGatewayInner>,
         Refreshable<ApplicationGateway>,
-        Wrapper<ApplicationGatewayInner>,
         Updatable<ApplicationGateway.Update>,
         HasSubnet,
-        HasPrivateIpAddress,
-        HasManager<NetworkManager> {
+        HasPrivateIPAddress {
+
+    // Actions
+    /**
+     * Starts the application gateway.
+     */
+    @Method
+    void start();
+
+    /**
+     * Stops the application gateway.
+     */
+    @Method
+    void stop();
+
+    /**
+     * Starts the application gateway asynchronously.
+     * @return a representation of the deferred computation of this call
+     */
+    @Method
+    @Beta
+    Completable startAsync();
+
+    /**
+     * Stops the application gateway asynchronously.
+     * @return a representation of the deferred computation of this call
+     */
+    @Method
+    @Beta
+    Completable stopAsync();
 
     // Getters
+
+    /**
+     * @return disabled SSL protocols
+     */
+    @Beta //v1.0.0
+    List<ApplicationGatewaySslProtocol> disabledSslProtocols();
 
     /**
      * @return true if the application gateway has at least one internally load balanced frontend accessible within the virtual network
@@ -91,7 +127,7 @@ public interface ApplicationGateway extends
     /**
      * @return IP configurations of this application gateway, indexed by name
      */
-    Map<String, ApplicationGatewayIpConfiguration> ipConfigurations();
+    Map<String, ApplicationGatewayIPConfiguration> ipConfigurations();
 
     /**
      * @return backend address pools of this application gateway, indexed by name
@@ -99,9 +135,14 @@ public interface ApplicationGateway extends
     Map<String, ApplicationGatewayBackend> backends();
 
     /**
+     * @return probes of this application gateway, indexed by name
+     */
+    Map<String, ApplicationGatewayProbe> probes();
+
+    /**
      * @return the IP configuration named "default" if it exists, or the one existing IP configuration if only one exists, else null
      */
-    ApplicationGatewayIpConfiguration defaultIpConfiguration();
+    ApplicationGatewayIPConfiguration defaultIPConfiguration();
 
     /**
      * @return frontend IP configurations, indexed by name
@@ -189,13 +230,13 @@ public interface ApplicationGateway extends
         /**
          * The stage of an application gateway definition allowing to add a new Internet-facing frontend with a public IP address.
          */
-        interface WithPublicIpAddress extends HasPublicIpAddress.DefinitionStages.WithPublicIpAddressNoDnsLabel<WithCreate> {
+        interface WithPublicIPAddress extends HasPublicIPAddress.DefinitionStages.WithPublicIPAddressNoDnsLabel<WithCreate> {
         }
 
         /**
          * The stage of an application gateway definition allowing to define one or more public, or Internet-facing, frontends.
          */
-        interface WithPublicFrontend extends WithPublicIpAddress {
+        interface WithPublicFrontend extends WithPublicIPAddress {
             /**
              * Specifies that the application gateway should not be Internet-facing.
              * @return the next stage of the definition
@@ -236,6 +277,18 @@ public interface ApplicationGateway extends
              * @return the first stage of the listener definition
              */
             ApplicationGatewayListener.DefinitionStages.Blank<WithCreate> defineListener(String name);
+        }
+
+        /**
+         * The stage of an application gateway definition allowing to add a probe.
+         */
+        interface WithProbe {
+            /**
+             * Begins the definition of a new probe.
+             * @param name a unique name for the probe
+             * @return the first stage of a probe definition
+             */
+            ApplicationGatewayProbe.DefinitionStages.Blank<WithCreate> defineProbe(String name);
         }
 
         /**
@@ -381,7 +434,28 @@ public interface ApplicationGateway extends
          * The stage of an application gateway definition allowing to specify the default IP address the app gateway will be internally available at,
          * if the default private frontend has been enabled.
          */
-        interface WithPrivateIpAddress extends HasPrivateIpAddress.DefinitionStages.WithPrivateIpAddress<WithCreate> {
+        interface WithPrivateIPAddress extends HasPrivateIPAddress.DefinitionStages.WithPrivateIPAddress<WithCreate> {
+        }
+
+        /**
+         * The stage of an application gateway definition allowing to specify the SSL protocols to disable.
+         */
+        interface WithDisabledSslProtocol {
+            /**
+             * Disables the specified SSL protocol.
+             * @param protocol an SSL protocol
+             * @return the next stage of the definition
+             */
+            @Beta //v1.0.0
+            WithCreate withDisabledSslProtocol(ApplicationGatewaySslProtocol protocol);
+
+            /**
+             * Disables the specified SSL protocols.
+             * @param protocols SSL protocols
+             * @return the next stage of the definition
+             */
+            @Beta //v1.0.0
+            WithCreate withDisabledSslProtocols(ApplicationGatewaySslProtocol...protocols);
         }
 
         /**
@@ -400,10 +474,12 @@ public interface ApplicationGateway extends
             WithBackendHttpConfig,
             WithBackend,
             WithExistingSubnet,
-            WithPrivateIpAddress,
+            WithPrivateIPAddress,
             WithPrivateFrontend,
             WithPublicFrontend,
-            WithPublicIpAddress {
+            WithPublicIPAddress,
+            WithProbe,
+            WithDisabledSslProtocol {
         }
     }
 
@@ -465,7 +541,7 @@ public interface ApplicationGateway extends
         /**
          * The stage of an application gateway update allowing to modify IP configurations.
          */
-        interface WithIpConfig {
+        interface WithIPConfig {
             /**
              * Removes the specified IP configuration.
              * <p>
@@ -474,30 +550,30 @@ public interface ApplicationGateway extends
              * @param ipConfigurationName the name of the IP configuration to remove
              * @return the next stage of the update
              */
-            Update withoutIpConfiguration(String ipConfigurationName);
+            Update withoutIPConfiguration(String ipConfigurationName);
 
             /**
              * Begins the update of an existing IP configuration.
              * @param ipConfigurationName the name of an existing IP configuration
              * @return the first stage of an IP configuration update
              */
-            ApplicationGatewayIpConfiguration.Update updateIpConfiguration(String ipConfigurationName);
+            ApplicationGatewayIPConfiguration.Update updateIPConfiguration(String ipConfigurationName);
 
             /**
              * Begins the update of the default IP configuration i.e. the only one IP configuration that exists, assuming only one exists.
              * @return the first stage of an IP configuration update.
              */
             @Method
-            ApplicationGatewayIpConfiguration.Update updateDefaultIpConfiguration();
+            ApplicationGatewayIPConfiguration.Update updateDefaultIPConfiguration();
 
             /**
              * Begins the definition of the default IP configuration.
              * <p>
-             * If a default IP configuration already exists, it will be this is equivalent to {@code updateDefaultIpConfiguration()}.
+             * If a default IP configuration already exists, it will be this is equivalent to <code>updateDefaultIPConfiguration()</code>.
              * @return the first stage of an IP configuration update
              */
             @Method
-            ApplicationGatewayIpConfiguration.UpdateDefinitionStages.Blank<Update> defineDefaultIpConfiguration();
+            ApplicationGatewayIPConfiguration.UpdateDefinitionStages.Blank<Update> defineDefaultIPConfiguration();
         }
 
         /**
@@ -541,7 +617,7 @@ public interface ApplicationGateway extends
         /**
          * The stage of an application gateway update allowing to specify a public IP address for the public frontend.
          */
-        interface WithPublicIpAddress extends HasPublicIpAddress.UpdateStages.WithPublicIpAddressNoDnsLabel<Update> {
+        interface WithPublicIPAddress extends HasPublicIPAddress.UpdateStages.WithPublicIPAddressNoDnsLabel<Update> {
         }
 
         /**
@@ -637,7 +713,7 @@ public interface ApplicationGateway extends
              * @param ipAddress an IP address
              * @return the next stage of the update
              */
-            Update withoutBackendIpAddress(String ipAddress);
+            Update withoutBackendIPAddress(String ipAddress);
 
             /**
              * Removes the specified backend.
@@ -654,6 +730,32 @@ public interface ApplicationGateway extends
              * @return the first stage of an update of the backend
              */
             ApplicationGatewayBackend.Update updateBackend(String name);
+        }
+
+        /**
+         * The stage of an application gateway update allowing to modify probes.
+         */
+        interface WithProbe {
+            /**
+             * Begins the definition of a new probe.
+             * @param name a unique name for the probe
+             * @return the first stage of a probe definition
+             */
+            ApplicationGatewayProbe.UpdateDefinitionStages.Blank<Update> defineProbe(String name);
+
+            /**
+             * Begins the update of an existing probe.
+             * @param name the name of an existing probe
+             * @return the first stage of a probe update
+             */
+            ApplicationGatewayProbe.Update updateProbe(String name);
+
+            /**
+             * Removes a probe from the application gateway.
+             * @param name the name of an existing probe
+             * @return the next stage of the update
+             */
+            Update withoutProbe(String name);
         }
 
         /**
@@ -783,6 +885,51 @@ public interface ApplicationGateway extends
              */
             ApplicationGatewayRequestRoutingRule.Update updateRequestRoutingRule(String name);
         }
+
+        /**
+         * The stage of an application gateway definition allowing to specify the SSL protocols to disable.
+         */
+        interface WithDisabledSslProtocol {
+            /**
+             * Disables the specified SSL protocol.
+             * @param protocol an SSL protocol
+             * @return the next stage of the update
+             */
+            @Beta //v1.0.0
+            Update withDisabledSslProtocol(ApplicationGatewaySslProtocol protocol);
+
+            /**
+             * Disables the specified SSL protocols.
+             * @param protocols SSL protocols
+             * @return the next stage of the update
+             */
+            @Beta //v1.0.0
+            Update withDisabledSslProtocols(ApplicationGatewaySslProtocol...protocols);
+
+            /**
+             * Enables the specified SSL protocol, if previously disabled.
+             * @param protocol an SSL protocol
+             * @return the next stage of the update
+             */
+            @Beta //v1.0.0
+            Update withoutDisabledSslProtocol(ApplicationGatewaySslProtocol protocol);
+
+            /**
+             * Enables the specified SSL protocols, if previously disabled.
+             * @param protocols SSL protocols
+             * @return the next stage of the update
+             */
+            @Beta //v1.0.0
+            Update withoutDisabledSslProtocols(ApplicationGatewaySslProtocol...protocols);
+
+            /**
+             * Enables all SSL protocols, if previously disabled.
+             * @return the next stage of the update
+             */
+            @Beta //v1.0.0
+            @Method
+            Update withoutAnyDisabledProtocols();
+        }
     }
 
     /**
@@ -798,13 +945,15 @@ public interface ApplicationGateway extends
         UpdateStages.WithInstanceCount,
         UpdateStages.WithBackend,
         UpdateStages.WithBackendHttpConfig,
-        UpdateStages.WithIpConfig,
+        UpdateStages.WithIPConfig,
         UpdateStages.WithFrontend,
-        UpdateStages.WithPublicIpAddress,
+        UpdateStages.WithPublicIPAddress,
         UpdateStages.WithFrontendPort,
         UpdateStages.WithSslCert,
         UpdateStages.WithListener,
         UpdateStages.WithRequestRoutingRule,
-        UpdateStages.WithExistingSubnet {
+        UpdateStages.WithExistingSubnet,
+        UpdateStages.WithProbe,
+        UpdateStages.WithDisabledSslProtocol {
     }
 }

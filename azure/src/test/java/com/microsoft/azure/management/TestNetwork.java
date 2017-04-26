@@ -11,7 +11,6 @@ import org.junit.Assert;
 
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
-import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.RouteTable;
 import com.microsoft.azure.management.network.Subnet;
@@ -25,11 +24,6 @@ public class TestNetwork {
      * Test of plain subnets.
      */
     public static class WithSubnets extends TestTemplate<Network, Networks> {
-        private final NetworkSecurityGroups nsgs;
-        WithSubnets(NetworkSecurityGroups nsgs) {
-            this.nsgs = nsgs;
-        }
-
         @Override
         public Network createResource(Networks networks) throws Exception {
             final String newName = "net" + this.testId;
@@ -37,7 +31,7 @@ public class TestNetwork {
             String groupName = "rg" + this.testId;
 
             // Create an NSG
-            NetworkSecurityGroup nsg = nsgs.define("nsg" + this.testId)
+            NetworkSecurityGroup nsg = networks.manager().networkSecurityGroups().define("nsg" + this.testId)
                     .withRegion(region)
                     .withNewResourceGroup(groupName)
                     .create();
@@ -54,17 +48,25 @@ public class TestNetwork {
                         .attach()
                     .create();
 
+            // Verify subnets
             List<Subnet> subnets = nsg.refresh().listAssociatedSubnets();
             Assert.assertTrue(subnets.size() == 1);
             Subnet subnet = subnets.get(0);
             Assert.assertTrue(subnet.name().equalsIgnoreCase("subnetB"));
             Assert.assertTrue(subnet.parent().name().equalsIgnoreCase(newName));
+
+            // Verify NSG
+            Assert.assertTrue(subnet.networkSecurityGroupId() != null);
+            NetworkSecurityGroup nsg2 = subnet.getNetworkSecurityGroup();
+            Assert.assertTrue(nsg2 != null);
+            Assert.assertTrue(nsg2.id().equalsIgnoreCase(nsg.id()));
+
             return network;
         }
 
         @Override
         public Network updateResource(Network resource) throws Exception {
-            NetworkSecurityGroup nsg = nsgs.define("nsgB" + this.testId)
+            NetworkSecurityGroup nsg = resource.manager().networkSecurityGroups().define("nsgB" + this.testId)
                     .withRegion(resource.region())
                     .withExistingResourceGroup(resource.resourceGroupName())
                     .create();
@@ -107,7 +109,7 @@ public class TestNetwork {
                 .append("\n\tRegion: ").append(resource.region())
                 .append("\n\tTags: ").append(resource.tags())
                 .append("\n\tAddress spaces: ").append(resource.addressSpaces())
-                .append("\n\tDNS server IPs: ").append(resource.dnsServerIps());
+                .append("\n\tDNS server IPs: ").append(resource.dnsServerIPs());
 
         // Output subnets
         for (Subnet subnet : resource.subnets().values()) {

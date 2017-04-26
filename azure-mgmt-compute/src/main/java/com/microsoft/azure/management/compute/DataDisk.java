@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.management.compute.implementation.ManagedDiskParametersInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,48 +16,57 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class DataDisk {
     /**
-     * the logical unit number.
+     * The logical unit number.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "lun", required = true)
     private int lun;
 
     /**
-     * the disk name.
+     * The disk name.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "name")
     private String name;
 
     /**
-     * the Virtual Hard Disk.
+     * The virtual hard disk.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "vhd")
     private VirtualHardDisk vhd;
 
     /**
-     * the Source User Image VirtualHardDisk. This VirtualHardDisk will be
-     * copied before using it to attach to the Virtual Machine.If SourceImage
-     * is provided, the destination VirtualHardDisk should not exist.
+     * The source user image virtual hard disk. This virtual hard disk will be
+     * copied before using it to attach to the virtual machine. If SourceImage
+     * is provided, the destination virtual hard disk must not exist.
      */
+    @JsonProperty(value = "image")
     private VirtualHardDisk image;
 
     /**
-     * the caching type. Possible values include: 'None', 'ReadOnly',
+     * The caching type. Possible values include: 'None', 'ReadOnly',
      * 'ReadWrite'.
      */
+    @JsonProperty(value = "caching")
     private CachingTypes caching;
 
     /**
-     * the create option. Possible values include: 'fromImage', 'empty',
+     * The create option. Possible values include: 'fromImage', 'empty',
      * 'attach'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "createOption", required = true)
     private DiskCreateOptionTypes createOption;
 
     /**
-     * the initial disk size in GB for blank data disks, and the new desired
-     * size for existing OS and Data disks.
+     * The initial disk size in GB for blank data disks, and the new desired
+     * size for resizing existing OS and data disks.
      */
+    @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
+
+    /**
+     * The managed disk parameters.
+     */
+    @JsonProperty(value = "managedDisk")
+    private ManagedDiskParametersInner managedDisk;
 
     /**
      * Get the lun value.
@@ -195,6 +205,26 @@ public class DataDisk {
      */
     public DataDisk withDiskSizeGB(Integer diskSizeGB) {
         this.diskSizeGB = diskSizeGB;
+        return this;
+    }
+
+    /**
+     * Get the managedDisk value.
+     *
+     * @return the managedDisk value
+     */
+    public ManagedDiskParametersInner managedDisk() {
+        return this.managedDisk;
+    }
+
+    /**
+     * Set the managedDisk value.
+     *
+     * @param managedDisk the managedDisk value to set
+     * @return the DataDisk object itself.
+     */
+    public DataDisk withManagedDisk(ManagedDiskParametersInner managedDisk) {
+        this.managedDisk = managedDisk;
         return this;
     }
 

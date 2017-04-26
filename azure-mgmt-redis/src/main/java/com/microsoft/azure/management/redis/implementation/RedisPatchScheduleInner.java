@@ -9,44 +9,43 @@
 package com.microsoft.azure.management.redis.implementation;
 
 import java.util.List;
-import com.microsoft.azure.management.redis.ScheduleEntry;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Response to put/get patch schedules for redis cache.
+ * Response to put/get patch schedules for Redis cache.
  */
 @JsonFlatten
 public class RedisPatchScheduleInner {
     /**
-     * Resource Id.
+     * Resource ID.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
      * Resource name.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
      * Resource type.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
      * Resource location.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /**
-     * List of patch schedules for redis cache.
+     * List of patch schedules for a Redis cache.
      */
     @JsonProperty(value = "properties.scheduleEntries", required = true)
-    private List<ScheduleEntry> scheduleEntries;
+    private List<ScheduleEntryInner> scheduleEntries;
 
     /**
      * Get the id value.
@@ -89,7 +88,7 @@ public class RedisPatchScheduleInner {
      *
      * @return the scheduleEntries value
      */
-    public List<ScheduleEntry> scheduleEntries() {
+    public List<ScheduleEntryInner> scheduleEntries() {
         return this.scheduleEntries;
     }
 
@@ -99,7 +98,7 @@ public class RedisPatchScheduleInner {
      * @param scheduleEntries the scheduleEntries value to set
      * @return the RedisPatchScheduleInner object itself.
      */
-    public RedisPatchScheduleInner withScheduleEntries(List<ScheduleEntry> scheduleEntries) {
+    public RedisPatchScheduleInner withScheduleEntries(List<ScheduleEntryInner> scheduleEntries) {
         this.scheduleEntries = scheduleEntries;
         return this;
     }

@@ -23,76 +23,80 @@ public class USqlJobProperties extends JobProperties {
     /**
      * the list of resources that are required by the job.
      */
+    @JsonProperty(value = "resources")
     private List<JobResource> resources;
 
     /**
      * the job specific statistics.
      */
+    @JsonProperty(value = "statistics")
     private JobStatistics statistics;
 
     /**
      * the job specific debug data locations.
      */
+    @JsonProperty(value = "debugData")
     private JobDataPath debugData;
 
     /**
      * the diagnostics for the job.
      */
+    @JsonProperty(value = "diagnostics")
     private List<Diagnostics> diagnostics;
 
     /**
      * the algebra file path after the job has completed.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "algebraFilePath", access = JsonProperty.Access.WRITE_ONLY)
     private String algebraFilePath;
 
     /**
-     * the total time this job spent compiling. This value should not be set
-     * by the user and will be ignored if it is.
+     * the total time this job spent compiling. This value should not be set by
+     * the user and will be ignored if it is.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "totalCompilationTime", access = JsonProperty.Access.WRITE_ONLY)
     private Period totalCompilationTime;
 
     /**
      * the total time this job spent paused. This value should not be set by
      * the user and will be ignored if it is.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "totalPauseTime", access = JsonProperty.Access.WRITE_ONLY)
     private Period totalPauseTime;
 
     /**
      * the total time this job spent queued. This value should not be set by
      * the user and will be ignored if it is.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "totalQueuedTime", access = JsonProperty.Access.WRITE_ONLY)
     private Period totalQueuedTime;
 
     /**
-     * the total time this job spent executing. This value should not be set
-     * by the user and will be ignored if it is.
+     * the total time this job spent executing. This value should not be set by
+     * the user and will be ignored if it is.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "totalRunningTime", access = JsonProperty.Access.WRITE_ONLY)
     private Period totalRunningTime;
 
     /**
-     * the ID used to identify the job manager coordinating job execution.
-     * This value should not be set by the user and will be ignored if it is.
+     * the ID used to identify the job manager coordinating job execution. This
+     * value should not be set by the user and will be ignored if it is.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "rootProcessNodeId", access = JsonProperty.Access.WRITE_ONLY)
     private String rootProcessNodeId;
 
     /**
      * the ID used to identify the yarn application executing the job. This
      * value should not be set by the user and will be ignored if it is.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "yarnApplicationId", access = JsonProperty.Access.WRITE_ONLY)
     private String yarnApplicationId;
 
     /**
      * the timestamp (in ticks) for the yarn application executing the job.
      * This value should not be set by the user and will be ignored if it is.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "yarnApplicationTimeStamp", access = JsonProperty.Access.WRITE_ONLY)
     private Long yarnApplicationTimeStamp;
 
     /**
@@ -101,6 +105,7 @@ public class USqlJobProperties extends JobProperties {
      * determine the optimal compilation mode. Possible values include:
      * 'Semantic', 'Full', 'SingleBox'.
      */
+    @JsonProperty(value = "compileMode")
     private CompileMode compileMode;
 
     /**

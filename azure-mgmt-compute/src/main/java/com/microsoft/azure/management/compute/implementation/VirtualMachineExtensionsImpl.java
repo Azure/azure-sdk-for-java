@@ -1,9 +1,18 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
+import rx.Observable;
+import rx.functions.Action2;
+import rx.functions.Func0;
+import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,18 +48,59 @@ class VirtualMachineExtensionsImpl extends
      * @return the extension as a map indexed by name.
      */
     public Map<String, VirtualMachineExtension> asMap() {
-        Map<String, VirtualMachineExtension> result = new HashMap<>();
-        for (Map.Entry<String, VirtualMachineExtensionImpl> entry : this.collection().entrySet()) {
-            VirtualMachineExtensionImpl extension = entry.getValue();
-            if (extension.isReference()) {
-                extension = new VirtualMachineExtensionImpl(entry.getKey(),
-                        this.parent(),
-                        this.client.get(parent().resourceGroupName(), parent().name(), entry.getKey()),
-                        this.client);
+        return Collections.unmodifiableMap(this.asMapAsync().toBlocking().last());
+    }
+
+    /**
+     * @return an observable emits extensions in this collection as a map indexed by name.
+     */
+    public Observable<Map<String, VirtualMachineExtension>> asMapAsync() {
+        return listAsync()
+                .collect(new Func0<Map<String, VirtualMachineExtension>>() {
+                    @Override
+                    public Map<String, VirtualMachineExtension> call() {
+                        return new HashMap<>();
+                    }
+                }, new Action2<Map<String, VirtualMachineExtension>, VirtualMachineExtension>() {
+                    @Override
+                    public void call(Map<String, VirtualMachineExtension> map, VirtualMachineExtension extension) {
+                        map.put(extension.name(), extension);
+                    }
+                });
+    }
+
+    /**
+     * @return an observable emits extensions in this collection
+     */
+    public Observable<VirtualMachineExtension> listAsync() {
+        Observable<VirtualMachineExtensionImpl> extensions = Observable.from(this.collection().values());
+        // Resolve reference getExtensions
+        //
+        Observable<VirtualMachineExtension> resolvedExtensionsStream = extensions
+                .filter(new Func1<VirtualMachineExtensionImpl, Boolean>() {
+                    @Override
+                    public Boolean call(VirtualMachineExtensionImpl extension) {
+                        return extension.isReference();
+                    }
+                })
+                .flatMap(new Func1<VirtualMachineExtensionImpl, Observable<VirtualMachineExtension>>() {
+                    @Override
+                    public Observable<VirtualMachineExtension> call(final VirtualMachineExtensionImpl extension) {
+                        return client.getAsync(parent().resourceGroupName(), parent().name(), extension.name())
+                                .map(new Func1<VirtualMachineExtensionInner, VirtualMachineExtension>() {
+                                    @Override
+                                    public VirtualMachineExtension call(VirtualMachineExtensionInner extensionInner) {
+                                        return new VirtualMachineExtensionImpl(extension.name(), parent(), extensionInner, client);
+                                    }
+                                });
+                    }
+                });
+        return resolvedExtensionsStream.concatWith(extensions.filter(new Func1<VirtualMachineExtensionImpl, Boolean>() {
+            @Override
+            public Boolean call(VirtualMachineExtensionImpl extension) {
+                return !extension.isReference();
             }
-            result.put(entry.getKey(), extension);
-        }
-        return Collections.unmodifiableMap(result);
+        }));
     }
 
     /**

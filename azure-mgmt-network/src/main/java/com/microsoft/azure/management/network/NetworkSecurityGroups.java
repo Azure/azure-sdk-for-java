@@ -6,14 +6,19 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.network.implementation.NetworkManager;
+import com.microsoft.azure.management.network.implementation.NetworkSecurityGroupsInner;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 
 /**
@@ -23,10 +28,13 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 public interface NetworkSecurityGroups extends
     SupportsCreating<NetworkSecurityGroup.DefinitionStages.Blank>,
     SupportsListing<NetworkSecurityGroup>,
-    SupportsListingByGroup<NetworkSecurityGroup>,
-    SupportsGettingByGroup<NetworkSecurityGroup>,
+    SupportsListingByResourceGroup<NetworkSecurityGroup>,
+    SupportsGettingByResourceGroup<NetworkSecurityGroup>,
     SupportsGettingById<NetworkSecurityGroup>,
-        SupportsDeletingById,
-    SupportsDeletingByGroup,
-    SupportsBatchCreation<NetworkSecurityGroup> {
+    SupportsDeletingById,
+    SupportsDeletingByResourceGroup,
+    SupportsBatchCreation<NetworkSecurityGroup>,
+    SupportsBatchDeletion,
+    HasManager<NetworkManager>,
+    HasInner<NetworkSecurityGroupsInner> {
 }

@@ -9,24 +9,28 @@
 package com.microsoft.azure.management.compute;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The instance view of the VM Agent running on the virtual machine.
  */
 public class VirtualMachineAgentInstanceView {
     /**
-     * the VM Agent full version.
+     * The VM Agent full version.
      */
+    @JsonProperty(value = "vmAgentVersion")
     private String vmAgentVersion;
 
     /**
-     * the virtual machine extension handler instance view.
+     * The virtual machine extension handler instance view.
      */
+    @JsonProperty(value = "extensionHandlers")
     private List<VirtualMachineExtensionHandlerInstanceView> extensionHandlers;
 
     /**
-     * the resource status information.
+     * The resource status information.
      */
+    @JsonProperty(value = "statuses")
     private List<InstanceViewStatus> statuses;
 
     /**

@@ -15,10 +15,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class GroupGetMemberGroupsParameters {
     /**
-     * If true only membership in security enabled groups should be checked.
-     * Otherwise membership in all groups should be checked.
+     * If true, only membership in security-enabled groups should be checked.
+     * Otherwise, membership in all groups should be checked.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "securityEnabledOnly", required = true)
     private boolean securityEnabledOnly;
 
     /**

@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
@@ -13,19 +14,19 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 import com.microsoft.azure.management.appservice.implementation.AppServicePlanInner;
 
 /**
- * An immutable client-side representation of an Azure App Service Plan.
+ * An immutable client-side representation of an Azure App service plan.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
+@Beta
 public interface AppServicePlan extends
-        GroupableResource,
+        GroupableResource<AppServiceManager, AppServicePlanInner>,
         HasName,
         Refreshable<AppServicePlan>,
-        Updatable<AppServicePlan.Update>,
-        Wrapper<AppServicePlanInner> {
+        Updatable<AppServicePlan.Update> {
     /**
      * @return maximum number of instances that can be assigned
      */
@@ -49,7 +50,12 @@ public interface AppServicePlan extends
     /**
      * @return the pricing tier information of the App Service Plan
      */
-    AppServicePricingTier pricingTier();
+    PricingTier pricingTier();
+
+    /**
+     * @return the operating system the web app is running on
+     */
+    OperatingSystem operatingSystem();
 
     /**************************************************************
      * Fluent interfaces to provision a App service plan
@@ -62,6 +68,7 @@ public interface AppServicePlan extends
             DefinitionStages.Blank,
             DefinitionStages.WithGroup,
             DefinitionStages.WithPricingTier,
+            DefinitionStages.WithOperatingSystem,
             DefinitionStages.WithCreate {
     }
 
@@ -86,12 +93,39 @@ public interface AppServicePlan extends
          */
         interface WithPricingTier {
             /**
+             * Specifies free pricing tier for the app service plan.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withFreePricingTier();
+
+            /**
+             * Specifies shared pricing tier for the app service plan.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withSharedPricingTier();
+
+            /**
              * Specifies the pricing tier for the app service plan.
              *
              * @param pricingTier the pricing tier enum
-             * @return the next stage of the app service plan definition
+             * @return the next stage of the definition
              */
-            WithCreate withPricingTier(AppServicePricingTier pricingTier);
+            WithOperatingSystem withPricingTier(PricingTier pricingTier);
+        }
+
+        /**
+         * An app service plan definition allowing the operating system to be set.
+         */
+        interface WithOperatingSystem {
+            /**
+             * Specifies the operating system of the app service plan.
+             *
+             * @param operatingSystem the operating system
+             * @return the next stage of the definition
+             */
+            WithCreate withOperatingSystem(OperatingSystem operatingSystem);
         }
 
         /**
@@ -102,7 +136,7 @@ public interface AppServicePlan extends
              * Specifies whether per-site scaling will be turned on.
              *
              * @param perSiteScaling if each site can be scaled individually
-             * @return the next stage of the app service plan definition
+             * @return the next stage of the definition
              */
             WithCreate withPerSiteScaling(boolean perSiteScaling);
         }
@@ -147,7 +181,7 @@ public interface AppServicePlan extends
              * @param pricingTier the pricing tier enum
              * @return the next stage of the app service plan update
              */
-            Update withPricingTier(AppServicePricingTier pricingTier);
+            Update withPricingTier(PricingTier pricingTier);
         }
 
         /**

@@ -13,18 +13,17 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.implementation.GenericResourceInner;
+import com.microsoft.azure.management.resources.implementation.ResourceManager;
 
 /**
  * An immutable client-side representation of an Azure generic resource.
  */
 @Fluent
 public interface GenericResource extends
-        GroupableResource,
+        GroupableResource<ResourceManager, GenericResourceInner>,
         Refreshable<GenericResource>,
-        Updatable<GenericResource.Update>,
-        Wrapper<GenericResourceInner> {
+        Updatable<GenericResource.Update> {
     /**
      * @return the namespace of the resource provider
      */
@@ -106,7 +105,7 @@ public interface GenericResource extends
              * Specifies the resource provider's namespace.
              *
              * @param resourceProviderNamespace the namespace of the resource provider
-             * @return the next stage of the generic resource definition
+             * @return the next stage of the definition
              */
             WithPlan withProviderNamespace(String resourceProviderNamespace);
         }
@@ -122,14 +121,14 @@ public interface GenericResource extends
              * @param publisher the publisher of the plan
              * @param product the name of the product
              * @param promotionCode the promotion code, if any
-             * @return the next stage of the generic resource definition
+             * @return the next stage of the definition
              */
             WithCreate withPlan(String name, String publisher, String product, String promotionCode);
 
             /**
              * Specifies the plan of the resource.
              *
-             * @return the next stage of the generic resource definition
+             * @return the next stage of the definition
              */
             WithCreate withoutPlan();
         }
@@ -142,7 +141,7 @@ public interface GenericResource extends
              * Specifies the api version.
              *
              * @param apiVersion the API version of the resource
-             * @return the next stage of the generic resource definition
+             * @return the next stage of the definition
              */
             WithCreate withApiVersion(String apiVersion);
         }
@@ -155,7 +154,7 @@ public interface GenericResource extends
              * Specifies the parent resource.
              *
              * @param parentResourceId the parent resource id
-             * @return the next stage of the generic resource definition
+             * @return the next stage of the definition
              */
             WithCreate withParentResourceId(String parentResourceId);
 
@@ -163,7 +162,7 @@ public interface GenericResource extends
              * Specifies the parent resource relative path.
              *
              * @param parentResourcePath the relative path of parent resource
-             * @return the next stage of the generic resource definition
+             * @return the next stage of the definition
              */
             WithCreate withParentResourcePath(String parentResourcePath);
         }

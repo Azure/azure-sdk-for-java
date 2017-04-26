@@ -1,0 +1,1560 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgnemv_ba21748655d5?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:10:10 GMT",
+      "content-length" : "191",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1181",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "c0219525-21a2-472d-a78f-91d08790c853",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191010Z:c0219525-21a2-472d-a78f-91d08790c853",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "c0219525-21a2-472d-a78f-91d08790c853",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5\",\"name\":\"rgnemv_ba21748655d5\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/serverfarms/webapp1-1da3444935plane2e47764c?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:10:18 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "1198",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1180",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "96c04fc5-18bb-4c9f-aca8-00bf11fd7e20",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191018Z:96c04fc5-18bb-4c9f-aca8-00bf11fd7e20",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "efd0f1b9-14c2-4aea-9932-04fd7084fa2b",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/serverfarms/webapp1-1da3444935plane2e47764c\",\"name\":\"webapp1-1da3444935plane2e47764c\",\"type\":\"Microsoft.Web/serverfarms\",\"kind\":\"app\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"serverFarmId\":0,\"name\":\"webapp1-1da3444935plane2e47764c\",\"workerSize\":\"Small\",\"workerSizeId\":0,\"workerTierName\":null,\"numberOfWorkers\":1,\"currentWorkerSize\":\"Small\",\"currentWorkerSizeId\":0,\"currentNumberOfWorkers\":1,\"status\":\"Ready\",\"webSpace\":\"rgnemv_ba21748655d5-WestUSwebspace\",\"subscription\":\"00000000-0000-0000-0000-000000000000\",\"adminSiteName\":null,\"hostingEnvironment\":null,\"hostingEnvironmentProfile\":null,\"maximumNumberOfWorkers\":10,\"planName\":\"VirtualDedicatedPlan\",\"adminRuntimeSiteName\":null,\"computeMode\":\"Shared\",\"siteMode\":null,\"geoRegion\":\"West US\",\"perSiteScaling\":false,\"numberOfSites\":0,\"hostingEnvironmentId\":null,\"tags\":{},\"kind\":\"app\",\"resourceGroup\":\"rgnemv_ba21748655d5\",\"reserved\":false,\"mdmId\":\"waws-prod-bay-071_5825\",\"targetWorkerCount\":0,\"targetWorkerSizeId\":0,\"provisioningState\":\"Succeeded\"},\"sku\":{\"name\":\"S1\",\"tier\":\"Standard\",\"size\":\"S1\",\"family\":\"S\",\"capacity\":1}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:10:32 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "2694",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1179",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "0c8a3b6e-c607-4420-a240-d65c242230ea",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191033Z:0c8a3b6e-c607-4420-a240-d65c242230ea",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "etag" : "\"1D2B4899A8FCBC0\"",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "1a27020f-c883-4f45-8403-3737a997a1cf",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935\",\"name\":\"webapp1-1da3444935\",\"type\":\"Microsoft.Web/sites\",\"kind\":\"app\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"name\":\"webapp1-1da3444935\",\"state\":\"Running\",\"hostNames\":[\"webapp1-1da3444935.azurewebsites.net\"],\"webSpace\":\"rgnemv_ba21748655d5-WestUSwebspace\",\"selfLink\":\"https://waws-prod-bay-071.api.azurewebsites.windows.net:454/subscriptions/00000000-0000-0000-0000-000000000000/webspaces/rgnemv_ba21748655d5-WestUSwebspace/sites/webapp1-1da3444935\",\"repositorySiteName\":\"webapp1-1da3444935\",\"owner\":null,\"usageState\":\"Normal\",\"enabled\":true,\"adminEnabled\":true,\"enabledHostNames\":[\"webapp1-1da3444935.azurewebsites.net\",\"webapp1-1da3444935.scm.azurewebsites.net\"],\"siteProperties\":{\"metadata\":null,\"properties\":[],\"appSettings\":null},\"availabilityState\":\"Normal\",\"sslCertificates\":null,\"csrs\":[],\"cers\":null,\"siteMode\":null,\"hostNameSslStates\":[{\"name\":\"webapp1-1da3444935.azurewebsites.net\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Standard\"},{\"name\":\"webapp1-1da3444935.scm.azurewebsites.net\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Repository\"}],\"computeMode\":null,\"serverFarm\":null,\"serverFarmId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/serverfarms/webapp1-1da3444935plane2e47764c\",\"reserved\":false,\"lastModifiedTimeUtc\":\"2017-04-13T19:10:23.94\",\"storageRecoveryDefaultState\":\"Running\",\"contentAvailabilityState\":\"Normal\",\"runtimeAvailabilityState\":\"Normal\",\"siteConfig\":null,\"deploymentId\":\"webapp1-1da3444935\",\"trafficManagerHostNames\":null,\"sku\":\"Standard\",\"premiumAppDeployed\":null,\"scmSiteAlsoStopped\":false,\"targetSwapSlot\":null,\"hostingEnvironment\":null,\"hostingEnvironmentProfile\":null,\"microService\":\"WebSites\",\"gatewaySiteName\":null,\"clientAffinityEnabled\":true,\"clientCertEnabled\":false,\"hostNamesDisabled\":false,\"domainVerificationIdentifiers\":null,\"kind\":\"app\",\"outboundIpAddresses\":\"23.101.199.30,23.101.196.70,23.101.201.119,23.101.197.194\",\"containerSize\":0,\"dailyMemoryTimeQuota\":0,\"suspendedTill\":null,\"siteDisabledReason\":0,\"functionExecutionUnitsCache\":null,\"maxNumberOfWorkers\":null,\"homeStamp\":\"waws-prod-bay-071\",\"cloningInfo\":null,\"hostingEnvironmentId\":null,\"tags\":{},\"resourceGroup\":\"rgnemv_ba21748655d5\",\"defaultHostName\":\"webapp1-1da3444935.azurewebsites.net\",\"slotSwapStatus\":null}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:10:33 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "2695",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14962",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "a4e7ce59-852b-44d3-9e12-5204131d4ab3",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191033Z:a4e7ce59-852b-44d3-9e12-5204131d4ab3",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "etag" : "\"1D2B4899A8FCBC0\"",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "8017c0e6-f8cd-446f-b1d5-0c8492fab643",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935\",\"name\":\"webapp1-1da3444935\",\"type\":\"Microsoft.Web/sites\",\"kind\":\"app\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"name\":\"webapp1-1da3444935\",\"state\":\"Running\",\"hostNames\":[\"webapp1-1da3444935.azurewebsites.net\"],\"webSpace\":\"rgnemv_ba21748655d5-WestUSwebspace\",\"selfLink\":\"https://waws-prod-bay-071.api.azurewebsites.windows.net:454/subscriptions/00000000-0000-0000-0000-000000000000/webspaces/rgnemv_ba21748655d5-WestUSwebspace/sites/webapp1-1da3444935\",\"repositorySiteName\":\"webapp1-1da3444935\",\"owner\":null,\"usageState\":\"Normal\",\"enabled\":true,\"adminEnabled\":true,\"enabledHostNames\":[\"webapp1-1da3444935.azurewebsites.net\",\"webapp1-1da3444935.scm.azurewebsites.net\"],\"siteProperties\":{\"metadata\":null,\"properties\":[],\"appSettings\":null},\"availabilityState\":\"Normal\",\"sslCertificates\":null,\"csrs\":[],\"cers\":null,\"siteMode\":null,\"hostNameSslStates\":[{\"name\":\"webapp1-1da3444935.azurewebsites.net\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Standard\"},{\"name\":\"webapp1-1da3444935.scm.azurewebsites.net\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Repository\"}],\"computeMode\":null,\"serverFarm\":null,\"serverFarmId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/serverfarms/webapp1-1da3444935plane2e47764c\",\"reserved\":false,\"lastModifiedTimeUtc\":\"2017-04-13T19:10:24.38\",\"storageRecoveryDefaultState\":\"Running\",\"contentAvailabilityState\":\"Normal\",\"runtimeAvailabilityState\":\"Normal\",\"siteConfig\":null,\"deploymentId\":\"webapp1-1da3444935\",\"trafficManagerHostNames\":null,\"sku\":\"Standard\",\"premiumAppDeployed\":null,\"scmSiteAlsoStopped\":false,\"targetSwapSlot\":null,\"hostingEnvironment\":null,\"hostingEnvironmentProfile\":null,\"microService\":\"WebSites\",\"gatewaySiteName\":null,\"clientAffinityEnabled\":true,\"clientCertEnabled\":false,\"hostNamesDisabled\":false,\"domainVerificationIdentifiers\":null,\"kind\":\"app\",\"outboundIpAddresses\":\"23.101.199.30,23.101.196.70,23.101.201.119,23.101.197.194\",\"containerSize\":0,\"dailyMemoryTimeQuota\":0,\"suspendedTill\":null,\"siteDisabledReason\":0,\"functionExecutionUnitsCache\":null,\"maxNumberOfWorkers\":null,\"homeStamp\":\"waws-prod-bay-071\",\"cloningInfo\":null,\"hostingEnvironmentId\":null,\"tags\":{},\"resourceGroup\":\"rgnemv_ba21748655d5\",\"defaultHostName\":\"webapp1-1da3444935.azurewebsites.net\",\"slotSwapStatus\":null}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/config/appsettings/list?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:10:33 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "305",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "c2712b6c-864b-4476-ae5c-1224dcdd45a7",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11987",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191034Z:c2712b6c-864b-4476-ae5c-1224dcdd45a7",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "0fe2a9e6-cc44-428b-8673-9128d8cc9d6f",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"WEBSITE_NODE_DEFAULT_VERSION\":\"6.9.1\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/config/connectionstrings/list?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:10:33 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "279",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "f1301d2c-1e73-4c12-99a2-09b08e4f8e93",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11986",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191034Z:f1301d2c-1e73-4c12-99a2-09b08e4f8e93",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "a4423334-63e8-49b3-9d9b-11b123f859ab",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/config/connectionstrings\",\"name\":\"connectionstrings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/config/slotConfigNames?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:10:34 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "166",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14961",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "1d2182aa-d620-42ee-b787-a17f1a5a89ae",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191034Z:1d2182aa-d620-42ee-b787-a17f1a5a89ae",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "3ecb9a06-5e3f-4d4d-844a-f88e519473c5",
+      "Body" : "{\"id\":null,\"name\":\"webapp1-1da3444935\",\"type\":\"Microsoft.Web/sites\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"connectionStringNames\":null,\"appSettingNames\":null}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/config/authsettings/list?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:10:34 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "838",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "7ea1fdee-6bc8-456b-bec8-444548c05d7d",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11985",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191034Z:7ea1fdee-6bc8-456b-bec8-444548c05d7d",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "84211729-3a72-408f-91ee-af29205cd268",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/config/authsettings\",\"name\":\"authsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"enabled\":false,\"unauthenticatedClientAction\":null,\"tokenStoreEnabled\":null,\"allowedExternalRedirectUrls\":null,\"defaultProvider\":null,\"clientId\":null,\"clientSecret\":null,\"issuer\":null,\"allowedAudiences\":null,\"additionalLoginParams\":null,\"isAadAutoProvisioned\":false,\"googleClientId\":null,\"googleClientSecret\":null,\"googleOAuthScopes\":null,\"facebookAppId\":null,\"facebookAppSecret\":null,\"facebookOAuthScopes\":null,\"twitterConsumerKey\":null,\"twitterConsumerSecret\":null,\"microsoftAccountClientId\":null,\"microsoftAccountClientSecret\":null,\"microsoftAccountOAuthScopes\":null}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/hostNameBindings?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:10:34 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "457",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14960",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "011893f1-0e8e-477a-93bf-67d69772b239",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191035Z:011893f1-0e8e-477a-93bf-67d69772b239",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "etag" : "\"1D2B4899A8FCBC0\"",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "70a6d636-3ef4-48cb-85f5-ba851ee89921",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/hostNameBindings/webapp1-1da3444935.azurewebsites.net\",\"name\":\"webapp1-1da3444935/webapp1-1da3444935.azurewebsites.net\",\"type\":\"Microsoft.Web/sites/hostNameBindings\",\"location\":\"West US\",\"properties\":{\"siteName\":\"webapp1-1da3444935\",\"domainId\":null,\"hostNameType\":\"Verified\"}}],\"nextLink\":null,\"id\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/serverfarms/webapp1-1da3444935plane2e47764c?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:10:36 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "1198",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14959",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "a13b5fa0-0379-400f-bb35-5a6b33d04502",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191036Z:a13b5fa0-0379-400f-bb35-5a6b33d04502",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "f2a6355b-703b-4e0c-a897-5a3caa8dce54",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/serverfarms/webapp1-1da3444935plane2e47764c\",\"name\":\"webapp1-1da3444935plane2e47764c\",\"type\":\"Microsoft.Web/serverfarms\",\"kind\":\"app\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"serverFarmId\":0,\"name\":\"webapp1-1da3444935plane2e47764c\",\"workerSize\":\"Small\",\"workerSizeId\":0,\"workerTierName\":null,\"numberOfWorkers\":1,\"currentWorkerSize\":\"Small\",\"currentWorkerSizeId\":0,\"currentNumberOfWorkers\":1,\"status\":\"Ready\",\"webSpace\":\"rgnemv_ba21748655d5-WestUSwebspace\",\"subscription\":\"00000000-0000-0000-0000-000000000000\",\"adminSiteName\":null,\"hostingEnvironment\":null,\"hostingEnvironmentProfile\":null,\"maximumNumberOfWorkers\":10,\"planName\":\"VirtualDedicatedPlan\",\"adminRuntimeSiteName\":null,\"computeMode\":\"Shared\",\"siteMode\":null,\"geoRegion\":\"West US\",\"perSiteScaling\":false,\"numberOfSites\":1,\"hostingEnvironmentId\":null,\"tags\":{},\"kind\":\"app\",\"resourceGroup\":\"rgnemv_ba21748655d5\",\"reserved\":false,\"mdmId\":\"waws-prod-bay-071_5825\",\"targetWorkerCount\":0,\"targetWorkerSizeId\":0,\"provisioningState\":\"Succeeded\"},\"sku\":{\"name\":\"S1\",\"tier\":\"Standard\",\"size\":\"S1\",\"family\":\"S\",\"capacity\":1}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:10:40 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "2694",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1178",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "ccce3f67-7bcc-46cc-9a6f-4c1d873a41a1",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191041Z:ccce3f67-7bcc-46cc-9a6f-4c1d873a41a1",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "etag" : "\"1D2B489A4F778CB\"",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "44dba1c8-730b-4eeb-be5d-23b0346c6d23",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733\",\"name\":\"webapp2-8617290733\",\"type\":\"Microsoft.Web/sites\",\"kind\":\"app\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"name\":\"webapp2-8617290733\",\"state\":\"Running\",\"hostNames\":[\"webapp2-8617290733.azurewebsites.net\"],\"webSpace\":\"rgnemv_ba21748655d5-WestUSwebspace\",\"selfLink\":\"https://waws-prod-bay-071.api.azurewebsites.windows.net:454/subscriptions/00000000-0000-0000-0000-000000000000/webspaces/rgnemv_ba21748655d5-WestUSwebspace/sites/webapp2-8617290733\",\"repositorySiteName\":\"webapp2-8617290733\",\"owner\":null,\"usageState\":\"Normal\",\"enabled\":true,\"adminEnabled\":true,\"enabledHostNames\":[\"webapp2-8617290733.azurewebsites.net\",\"webapp2-8617290733.scm.azurewebsites.net\"],\"siteProperties\":{\"metadata\":null,\"properties\":[],\"appSettings\":null},\"availabilityState\":\"Normal\",\"sslCertificates\":null,\"csrs\":[],\"cers\":null,\"siteMode\":null,\"hostNameSslStates\":[{\"name\":\"webapp2-8617290733.azurewebsites.net\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Standard\"},{\"name\":\"webapp2-8617290733.scm.azurewebsites.net\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Repository\"}],\"computeMode\":null,\"serverFarm\":null,\"serverFarmId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/serverfarms/webapp1-1da3444935plane2e47764c\",\"reserved\":false,\"lastModifiedTimeUtc\":\"2017-04-13T19:10:41.4\",\"storageRecoveryDefaultState\":\"Running\",\"contentAvailabilityState\":\"Normal\",\"runtimeAvailabilityState\":\"Normal\",\"siteConfig\":null,\"deploymentId\":\"webapp2-8617290733\",\"trafficManagerHostNames\":null,\"sku\":\"Standard\",\"premiumAppDeployed\":null,\"scmSiteAlsoStopped\":false,\"targetSwapSlot\":null,\"hostingEnvironment\":null,\"hostingEnvironmentProfile\":null,\"microService\":\"WebSites\",\"gatewaySiteName\":null,\"clientAffinityEnabled\":true,\"clientCertEnabled\":false,\"hostNamesDisabled\":false,\"domainVerificationIdentifiers\":null,\"kind\":\"app\",\"outboundIpAddresses\":\"23.101.199.30,23.101.196.70,23.101.201.119,23.101.197.194\",\"containerSize\":0,\"dailyMemoryTimeQuota\":0,\"suspendedTill\":null,\"siteDisabledReason\":0,\"functionExecutionUnitsCache\":null,\"maxNumberOfWorkers\":null,\"homeStamp\":\"waws-prod-bay-071\",\"cloningInfo\":null,\"hostingEnvironmentId\":null,\"tags\":{},\"resourceGroup\":\"rgnemv_ba21748655d5\",\"defaultHostName\":\"webapp2-8617290733.azurewebsites.net\",\"slotSwapStatus\":null}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:10:40 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "2700",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14958",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "58546101-96bb-4461-8430-e47f9c53c369",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191041Z:58546101-96bb-4461-8430-e47f9c53c369",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "etag" : "\"1D2B489A4F778CB\"",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "e21de9fd-21e0-4056-9716-94c1870b37c3",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733\",\"name\":\"webapp2-8617290733\",\"type\":\"Microsoft.Web/sites\",\"kind\":\"app\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"name\":\"webapp2-8617290733\",\"state\":\"Running\",\"hostNames\":[\"webapp2-8617290733.azurewebsites.net\"],\"webSpace\":\"rgnemv_ba21748655d5-WestUSwebspace\",\"selfLink\":\"https://waws-prod-bay-071.api.azurewebsites.windows.net:454/subscriptions/00000000-0000-0000-0000-000000000000/webspaces/rgnemv_ba21748655d5-WestUSwebspace/sites/webapp2-8617290733\",\"repositorySiteName\":\"webapp2-8617290733\",\"owner\":null,\"usageState\":\"Normal\",\"enabled\":true,\"adminEnabled\":true,\"enabledHostNames\":[\"webapp2-8617290733.azurewebsites.net\",\"webapp2-8617290733.scm.azurewebsites.net\"],\"siteProperties\":{\"metadata\":null,\"properties\":[],\"appSettings\":null},\"availabilityState\":\"Normal\",\"sslCertificates\":null,\"csrs\":[],\"cers\":null,\"siteMode\":null,\"hostNameSslStates\":[{\"name\":\"webapp2-8617290733.azurewebsites.net\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Standard\"},{\"name\":\"webapp2-8617290733.scm.azurewebsites.net\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Repository\"}],\"computeMode\":null,\"serverFarm\":null,\"serverFarmId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/serverfarms/webapp1-1da3444935plane2e47764c\",\"reserved\":false,\"lastModifiedTimeUtc\":\"2017-04-13T19:10:41.8366667\",\"storageRecoveryDefaultState\":\"Running\",\"contentAvailabilityState\":\"Normal\",\"runtimeAvailabilityState\":\"Normal\",\"siteConfig\":null,\"deploymentId\":\"webapp2-8617290733\",\"trafficManagerHostNames\":null,\"sku\":\"Standard\",\"premiumAppDeployed\":null,\"scmSiteAlsoStopped\":false,\"targetSwapSlot\":null,\"hostingEnvironment\":null,\"hostingEnvironmentProfile\":null,\"microService\":\"WebSites\",\"gatewaySiteName\":null,\"clientAffinityEnabled\":true,\"clientCertEnabled\":false,\"hostNamesDisabled\":false,\"domainVerificationIdentifiers\":null,\"kind\":\"app\",\"outboundIpAddresses\":\"23.101.199.30,23.101.196.70,23.101.201.119,23.101.197.194\",\"containerSize\":0,\"dailyMemoryTimeQuota\":0,\"suspendedTill\":null,\"siteDisabledReason\":0,\"functionExecutionUnitsCache\":null,\"maxNumberOfWorkers\":null,\"homeStamp\":\"waws-prod-bay-071\",\"cloningInfo\":null,\"hostingEnvironmentId\":null,\"tags\":{},\"resourceGroup\":\"rgnemv_ba21748655d5\",\"defaultHostName\":\"webapp2-8617290733.azurewebsites.net\",\"slotSwapStatus\":null}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733/config/appsettings/list?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:10:41 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "305",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "1aa191a4-7bc9-4386-8e13-f13cffb867a5",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11984",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191041Z:1aa191a4-7bc9-4386-8e13-f13cffb867a5",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "090609fc-9f27-498f-a067-2fefd84e82ce",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"WEBSITE_NODE_DEFAULT_VERSION\":\"6.9.1\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733/config/connectionstrings/list?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:10:41 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "279",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "e020477b-1d5f-4bc4-8d44-322b6628ed31",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11983",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191041Z:e020477b-1d5f-4bc4-8d44-322b6628ed31",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "b295e51f-5709-4e91-9d65-c117d74722e5",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733/config/connectionstrings\",\"name\":\"connectionstrings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733/config/slotConfigNames?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:10:41 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "166",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14957",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "f03a52d6-a403-4d70-999c-0e8df51a9f02",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191041Z:f03a52d6-a403-4d70-999c-0e8df51a9f02",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "3c3cab1d-548a-42b8-82de-f200a9f8da35",
+      "Body" : "{\"id\":null,\"name\":\"webapp2-8617290733\",\"type\":\"Microsoft.Web/sites\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"connectionStringNames\":null,\"appSettingNames\":null}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733/config/authsettings/list?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:10:41 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "838",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "40a6566f-26a3-4009-aef4-02a019e3bf23",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11982",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191042Z:40a6566f-26a3-4009-aef4-02a019e3bf23",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "4212d3a3-723c-4d0c-92dc-651f1aa5cd73",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733/config/authsettings\",\"name\":\"authsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"enabled\":false,\"unauthenticatedClientAction\":null,\"tokenStoreEnabled\":null,\"allowedExternalRedirectUrls\":null,\"defaultProvider\":null,\"clientId\":null,\"clientSecret\":null,\"issuer\":null,\"allowedAudiences\":null,\"additionalLoginParams\":null,\"isAadAutoProvisioned\":false,\"googleClientId\":null,\"googleClientSecret\":null,\"googleOAuthScopes\":null,\"facebookAppId\":null,\"facebookAppSecret\":null,\"facebookOAuthScopes\":null,\"twitterConsumerKey\":null,\"twitterConsumerSecret\":null,\"microsoftAccountClientId\":null,\"microsoftAccountClientSecret\":null,\"microsoftAccountOAuthScopes\":null}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733/hostNameBindings?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:10:41 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "457",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14956",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "a382e6cb-f40a-4771-a5a9-1c5d63495f4a",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191042Z:a382e6cb-f40a-4771-a5a9-1c5d63495f4a",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "etag" : "\"1D2B489A4F778CB\"",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "2ee6f166-9b2b-41ca-9dd3-ce03ced955c7",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733/hostNameBindings/webapp2-8617290733.azurewebsites.net\",\"name\":\"webapp2-8617290733/webapp2-8617290733.azurewebsites.net\",\"type\":\"Microsoft.Web/sites/hostNameBindings\",\"location\":\"West US\",\"properties\":{\"siteName\":\"webapp2-8617290733\",\"domainId\":null,\"hostNameType\":\"Verified\"}}],\"nextLink\":null,\"id\":null}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DomainRegistration/topLevelDomains/com/listAgreements?api-version=2015-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:10:43 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "46681",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1177",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "fbafa62b-b6c5-4816-9a13-d06071d6d57d",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191043Z:fbafa62b-b6c5-4816-9a13-d06071d6d57d",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "50c97f56-1a2a-4f01-9628-64a4378279f2",
+      "Body" : "{\"value\":[{\"agreementKey\":\"DNTA\",\"title\":\"Domain Name Transfer Agreement\",\"content\":\"<table width=\\\"100%\\\">\\n<tbody>\\n<tr><td width=\\\"100\\\"></td><td></td></tr>\\n<tr><td></td><td>\\n<table>\\n<tbody>\\n<tr><th align=\\\"left\\\" class=\\\"EULATitle\\\">\\nDomain Name Transfer Agreement\\n</th></tr>\\n<tr><td class=\\\"bodyText\\\">\\n<p><strong>Last Revised: November 23, 2016</strong></p>\\n<p><strong>PLEASE READ THIS AGREEMENT CAREFULLY, AS IT CONTAINS IMPORTANT INFORMATION REGARDING YOUR LEGAL RIGHTS AND REMEDIES.</strong></p>\\r\\n<p><strong class=\\\"heading1\\\">1. OVERVIEW</strong></p>\\r\\n<p>This Domain Name Transfer Agreement (this &ldquo;<span style=\\\"text-decoration: underline;\\\">Agreement</span>&rdquo;) is entered into by and between 510456, an individual, or in the event of a .ca domain name, by and between Wild West Domains Canada, Inc., a British Columbia corporation (each \\\"<span style=\\\"text-decoration: underline;\\\">Azure</span>\\\") and you, and is made effective as of the date of electronic acceptance.&nbsp; This Agreement sets forth the terms and conditions of your use of Azure&rsquo;s Domain Name Transfer services (the &ldquo;<span style=\\\"text-decoration: underline;\\\">Services</span>&rdquo;) to transfer a registered domain name from another domain name registrar to Azure as the domain name registrar.</p>\\r\\n<p>Your electronic acceptance of this Agreement signifies that you have read, understand, acknowledge and agree to be bound by this Agreement, along with Azure&rsquo;s <a href=\\\"http://www.securepaynet.net/agreements/ShowDoc.aspx?pageid=utos&amp;prog_id=510456\\\" target=\\\"_blank\\\">Universal Terms of Service Agreement</a>, <a href=\\\"http://www.securepaynet.net/agreements/ShowDoc.aspx?pageid=reg_sa&amp;prog_id=510456\\\" target=\\\"_blank\\\">Domain Name Registration Agreement</a>, and <a href=\\\"http://www.securepaynet.net/agreements/ShowDoc.aspx?pageid=uniform_domain&amp;prog_id=510456\\\" target=\\\"_blank\\\">Uniform Domain Name Dispute Resolution Policy</a>, which are incorporated herein by reference.</p>\\r\\n<p>The terms &ldquo;we&rdquo;, &ldquo;us&rdquo; or &ldquo;our&rdquo; shall refer to Azure.&nbsp; The terms &ldquo;you&rdquo;, &ldquo;your&rdquo;, &ldquo;User&rdquo; or &ldquo;customer&rdquo; shall refer to any individual or entity who accepts this Agreement.&nbsp; Nothing in this Agreement shall be deemed to confer any third-party rights or benefits.</p>\\r\\n<p>Azure, in its sole and absolute discretion, may change or modify this Agreement, and any policies or agreements which are incorporated herein, at any time, and such changes or modifications shall be effective immediately upon posting to the Azure website (this &ldquo;<span style=\\\"text-decoration: underline;\\\">Site</span>&rdquo;).&nbsp; You acknowledge and agree that (i) Azure may notify you of such changes or modifications by posting them to this Site and (ii) your use of this Site or the Services found at this Site after such changes or modifications have been made (as indicated by the &ldquo;Last Revised&rdquo; date at the top of this page) shall constitute your acceptance of this Agreement as last revised.&nbsp; If you do not agree to be bound by this Agreement as last revised, do not use (or continue to use) this Site or the Services found at this Site.&nbsp; In addition, Azure may occasionally notify you of changes or modifications to this Agreement by email.&nbsp; It is therefore very important that you keep your account (&ldquo;<span style=\\\"text-decoration: underline;\\\">Account</span>&rdquo;) information, including your email address, current.&nbsp; Azure assumes no liability or responsibility for your failure to receive an email notification if such failure results from an inaccurate or out-of-date email address.</p>\\r\\n<p></p>\\r\\n<p> Azure is not an Internet Corporation for Assigned Names and Numbers (&ldquo;<span style=\\\"text-decoration: underline;\\\">ICANN</span>&rdquo;) accredited registrar; it is an authorized reseller of domain name registration services.&nbsp; Accordingly, you acknowledge and agree that Azure may modify this Agreement in order to comply with any terms and conditions set forth by (i) the sponsoring registrar, (ii) ICANN, and/or (iii) the registry applicable to the top level domain (&ldquo;<span style=\\\"text-decoration: underline;\\\">TLD</span>&rdquo;) or country code top level domain (&ldquo;<span style=\\\"text-decoration: underline;\\\">ccTLD</span>&rdquo;) in question.&nbsp; As used herein, the terms &ldquo;registry&rdquo;, &ldquo;Registry&rdquo;, &ldquo;registry operator&rdquo; or &ldquo;Registry Operator&rdquo; shall refer to the registry applicable to the TLD or ccTLD in question.&nbsp; To identify the sponsoring registrar, click <a href=\\\"http://www.internic.net/whois.html\\\" target=\\\"_blank\\\">here</a>. </p>\\r\\n<p>This Agreement will be effective upon acceptance of the Registration and Transfer agreements in Step 3 of the Online Transfer Application process.</p>\\r\\n<p><strong class=\\\"heading1\\\">2. transfer process for all domain names, except .ca domain names</strong></p>\\r\\n<p><strong>2.A. Steps for Transferring Your Domain Name Registration</strong></p>\\r\\n<p>NOTE: Once the transfer is complete, you will be able to RENEW, MODIFY DNS, and perform other functions by logging into your <a href=\\\"https://www.securepaynet.net/gdshop/shopper_lookup.asp?prog_id=510456\\\" target=\\\"_blank\\\">Account Manager</a>. Complete all required information requested through the online transfer application, i.e. contact information, nameserver information, etc. Proceed through to the shopping cart and pay for your transfer(s). Update your Administrative Contact's email address at your current registrar. We will be contacting the Administrative Contact's email address for transfer approval. The transfer will only be initiated upon approval from your Administrative Contact. Once initiated, a transfer will be accepted or denied by the losing registrar within five (5) days.</p>\\r\\n<p><strong>2.B. Failed or Rejected Transfer Requests</strong></p>\\r\\n<p>Azure may elect to accept or reject your domain name transfer application for any reason at its sole discretion. Rejections may include, but are not limited to:</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The current Registrar rejected the transfer;</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The original registration took place less than sixty (60) days prior to the transfer request;</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The domain name has been placed in a locked status by either the Registry or by the losing registrar;</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The domain was transferred to Azure less than sixty (60) days prior to the transfer request;</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The domain name expired but was not renewed;</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The domain name expired and was renewed during the forty-five (45) day grace period and the forty-five (45) day grace period has not yet passed;</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The Domain Name Registrant was changed less than sixty (60) days prior to the transfer request;</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; There was a Change of Account less than ten (10) days prior to the transfer request;</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Any pending bankruptcy of the current domain name holder;</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Any dispute over the identity of the domain name holder;</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Any situation described in the Dispute Policy; or</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Transfer orders over thirty (30) days old.</p>\\r\\n<p><strong>2.C. Terms for Transferring Domain Names</strong></p>\\r\\n<p>  Upon successful transfer, you shall remain the registrant of the domain name and Azure&rsquo;s sponsoring registrar shall become the registrar of record.  Your registration will be automatically extended by one (1) year when available by the domain name registry (please see the product disclaimers located on this Site for any applicable exceptions). Domain name registration transfers may only be initiated once acceptance of this Agreement is recorded, payment is made and the Administrative contact has responded positively to our email message asking for Permission to Transfer. The email message asking for Permission to Transfer will be sent to the Domain Name(s) Administrative Contact as identified in the previous Registrar's WHO-IS database. You agree to retain a copy for your own records of the receipt for purchase of your domain name. The Administrative Contact will be acting on behalf of the Registrant and has legal authority to initiate this transfer request. You are responsible for updating the Administrative Contact's email as identified in the previous Registrar's WHO-IS database.</p>\\r\\n<p><strong>2.D. Transfers of Recently Renewed Domain Names</strong></p>\\r\\n<p>You understand that if you are transferring a domain name that has been recently renewed, there is the potential the renewal year will be lost. The renewal year will be lost if: (i) the domain name was renewed during the forty-five (45) day grace period after the expiration date had passed; and (ii) forty-five (45) days have not yet passed since that expiration date. You understand and agree that Azure is not responsible for this lost year and that Azure will not credit that year to your domain. You will need to review the registration agreement you have with your previous registrar to determine if you are due a refund or credit for the lost year. Please contact your previous registrar if you have any questions about the lost year. You understand and agree that Azure will not intervene in the recovery of any such lost registration years that occur during the transfer of your domain name.</p>\\r\\n<p><strong>2.E. Data for Domain Transfer</strong></p>\\r\\n<p>You understand this is a request for a domain name transfer of registrars. By acceptance of this Agreement, you are requesting the domain name registration be transferred from the current registrar to Azure. As the current authorized Registrant of the domain name(s), you agree to authorize this transfer by notifying your Administrative contact of his/her responsibilities with respect to this transfer. You acknowledge that you and Azure have entered into a Domain Name Registration Agreement. You have read, understood, and agree to be legally bound by the agreements that govern all domain names registered through Azure as found on the legal agreements page, including the <a href=\\\"http://www.securepaynet.net/agreements/ShowDoc.aspx?pageid=reg_sa&amp;prog_id=510456\\\" target=\\\"_blank\\\">Domain Name Registration Agreement</a>; the <a href=\\\"http://www.icann.org/en/dndr/udrp/uniform-rules.htm\\\" target=\\\"_blank\\\">ICANN Rules for Uniform Domain Name Dispute Resolution Policy</a>; this Agreement; any Azure policies and procedures that are or may be published from time to time by Azure, ICANN, and/or the Registry Administrator chosen by ICANN.</p>\\r\\n<p><strong class=\\\"heading1\\\">3. transfer process for .ca domain names</strong></p>\\r\\n<p><strong>3.A. Steps for Transferring Your Domain Name Registration</strong></p>\\r\\n<p>NOTE: Once the transfer is complete, you will be able to RENEW, MODIFY DNS, and perform other functions by logging into your <a href=\\\"https://www.securepaynet.net/gdshop/shopper_lookup.asp?prog_id=510456\\\" target=\\\"_blank\\\">Account Manager</a>. Complete all required information requested through the online transfer application, i.e. contact information, nameserver information, etc. Proceed through to the shopping cart and pay for your transfer(s). Update your Administrative Contact's email address at your current registrar. We will send an email to the email address in your account for transfer approval. The transfer will be initiated immediately once the correct authorization code is provided.</p>\\r\\n<p><strong>3.B. Failed or Rejected Transfer Requests</strong></p>\\r\\n<p>Azure may elect to accept or reject your domain name transfer application for any reason at its sole discretion. Rejections may include, but are not limited to:</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The original registration took place less than sixty (60) days prior to the transfer request;</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The domain name has been placed in a locked status by either the Registry or by the losing registrar;</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The domain was transferred to Azure less than sixty (60) days prior to the transfer request;</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The domain name expired but was not renewed;</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The domain name expired and was renewed during the forty-five (45) day grace period and the forty-five (45) day grace period has not yet passed;</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The Domain Name Registrant was changed less than sixty (60) days prior to the transfer request;</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; There was a Change of Account less than ten (10) days prior to the transfer request;</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Any pending bankruptcy of the current domain name holder;</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Any dispute over the identity of the domain name holder;</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Any situation described in the Dispute Policy; or</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Transfer orders over thirty (30) days old.</p>\\r\\n<p><strong>3.C. Terms for Transferring Domain Names</strong></p>\\r\\n<p>  Upon successful transfer, you shall remain the registrant of the domain name and Azure&rsquo;s sponsoring registrar shall become the registrar of record.  Your registration will be automatically extended by one (1) year. Domain name registration transfers may only be initiated once acceptance of this Agreement is recorded, payment is made and you have responded positively to our email message asking for Permission to Transfer. The email message asking for Permission to Transfer will be sent to you. You agree to retain a copy for your own records of the receipt for purchase of your domain name.</p>\\r\\n<p><strong>3.D. Transfers of Recently Renewed Domain Names</strong></p>\\r\\n<p>You understand that if you are transferring a domain name that has been recently renewed, there is the potential the renewal year will be lost. The renewal year will be lost if: (i) the domain name was renewed during the forty-five (45) day grace period after the expiration date had passed; and (ii) forty-five (45) days have not yet passed since that expiration date. You understand and agree that Azure is not responsible for this lost year and that Azure will not credit that year to your domain. You will need to review the registration agreement you have with your previous registrar to determine if you are due a refund or credit for the lost year. Please contact your previous registrar if you have any questions about the lost year. You understand and agree that Azure will not intervene in the recovery of any such lost registration years that occur during the transfer of your domain name.</p>\\r\\n<p><strong>3.E. Data for Domain Transfer</strong></p>\\r\\n<p>You understand this is a request for a domain name transfer of registrars. By acceptance of this Agreement, you are requesting the domain name registration be transferred from the current registrar to Azure. You acknowledge that you and Azure have entered into a Domain Name Registration Agreement. You have read, understood, and agree to be legally bound by the agreements that govern all domain names registered through Azure as found on the legal agreements page, including the <a href=\\\"http://www.securepaynet.net/agreements/ShowDoc.aspx?pageid=reg_sa&amp;prog_id=510456\\\" target=\\\"_blank\\\">Domain Name Registration Agreement</a>; the <a href=\\\"http://www.icann.org/en/dndr/udrp/uniform-rules.htm\\\" target=\\\"_blank\\\">ICANN Rules for Uniform Domain Name Dispute Resolution Policy</a>; this Agreement; any Azure policies and procedures that are or may be published from time to time by Azure.</p>\\r\\n<p><strong class=\\\"heading1\\\">4. titles and headings; independent covenants; severability</strong></p>\\r\\n<p>The titles and headings of this Agreement are for convenience and ease of reference only and shall not be utilized in any way to construe or interpret the agreement of the parties as otherwise set forth herein.&nbsp; Each covenant and agreement in this Agreement shall be construed for all purposes to be a separate and independent covenant or agreement.&nbsp; If a court of competent jurisdiction holds any provision (or portion of a provision) of this Agreement to be illegal, invalid, or otherwise unenforceable, the remaining provisions (or portions of provisions) of this Agreement shall not be affected thereby and shall be found to be valid and enforceable to the fullest extent permitted by law.</p>\\r\\n<p><strong class=\\\"heading1\\\">5. DEFINITIONS; CONFLICTS</strong></p>\\r\\n<p>Capitalized terms used but not defined herein shall have the meanings ascribed to them in the Universal Terms of Service Agreement.&nbsp; In the event there is a conflict between the provisions of this Agreement and the provisions of the Universal Terms of Service Agreement, the provisions of this Agreement shall control.&nbsp;</p>\\n</td></tr>\\n<tr><td>\\n<br />\\n<span class=\\\"finePrint\\\">\\nRevised: 11/23/16<br />\\nCopyright &copy; 2004-2016  All Rights Reserved.\\n</span>\\n</td></tr>\\n</tbody>\\n</table>\\n</td></tr>\\n</tbody>\\n</table>\",\"url\":\"http://www.secureserver.net/agreements/ShowDoc.aspx?pageid=TRANSFER_SA&pl_id=510456\"},{\"agreementKey\":\"DNPA\",\"title\":\"Domain Name Proxy Agreement\",\"content\":\"<table width=\\\"100%\\\">\\n<tbody>\\n<tr><td width=\\\"100\\\"></td><td></td></tr>\\n<tr><td></td><td>\\n<table>\\n<tbody>\\n<tr><th align=\\\"left\\\" class=\\\"EULATitle\\\">\\nDomain Name Proxy Agreement\\n</th></tr>\\n<tr><td class=\\\"bodyText\\\">\\n<p><strong>Last Revised: November 23, 2016</strong></p>\\n<p>Please read this Domain Name Proxy Agreement (\\\"Agreement\\\") carefully. By using the Services and/or website of Domains By Proxy, LLC, a Delaware limited liability company (\\\"DBP\\\"), You (as defined below) agree to all the terms and conditions set forth both herein and in the DBP privacy policy, which is incorporated by reference and can be found by clicking <a href=\\\"http://www.domainsbyproxy.com/policy/ShowDoc.aspx?pageid=privacy\\\" target=\\\"_blank\\\">here</a>.&nbsp; You acknowledge that DBP may amend this Agreement at any time upon posting the amended terms on its website, and that any new, different or additional features changing the services provided by DBP will automatically be subject to this Agreement. If You do not agree to be bound by, or if You object to, the terms and conditions of this Agreement and any amendments hereto, do not use or access DBP's services. Continued use of DBP's services and its website after any such changes to this Agreement have been posted, constitutes Your acceptance of those changes.</p>\\r\\n<p>This Agreement is by and between DBP and you, your heirs, assigns, agents and contractors (\\\"You\\\") and is made effective as of the date of electronic execution. This Agreement sets forth the terms and conditions of Your relationship with DBP and Your use of DBP's services and represents the entire Agreement between You and DBP. By using DBP's Services, You acknowledge that You have read, understand and agree to be bound by all the terms and conditions of this Agreement, and You further agree to be bound by the terms of this Agreement for transactions entered into by:</p>\\r\\n<ol>\\r\\n<li>You on Your behalf;</li>\\r\\n<li>Anyone acting as Your agent; and</li>\\r\\n<li>Anyone who uses the account You have established with DBP, whether or not the transactions were on Your behalf and/or authorized by You.</li>\\r\\n</ol>\\r\\n<p>You agree You will be bound by representations made by third parties acting on Your behalf, which either use or&nbsp;purchase services from DBP.&nbsp;You further agree that DBP will not be bound by statements of a general nature on DBP's website or&nbsp;DBP promotional materials. You further agree to abide by the terms and conditions promulgated by the Internet Corporation for Assigned Names and Numbers (\\\"ICANN\\\") (including the Uniform Domain Name Dispute Resolution Policy (\\\"Dispute Resolution Policy\\\") and Your Registrar (i.e., the ICANN-accredited person or entity through which You register a domain name).</p>\\r\\n<p class=\\\"heading1\\\">1. description of DBP's private registration services</p>\\r\\n<p>When You subscribe to DBP's private registration service through a DBP-affiliated Registrar, each&nbsp;available domain name registration You designate will thereafter be registered in the name of DBP, as Registrant. In exchange for DBP becoming the Registrant of each domain name registration on Your behalf, DBP shall keep Your name, postal address, email address, phone and fax numbers confidential, subject to Section 4 of this Agreement. When DBP becomes the Registrant of Your domain name registration, the following&nbsp;information (and not Your personal information) will be made publicly available in the \\\"Whois\\\" directory as determined by ICANN policy:</p>\\r\\n<ol>\\r\\n<li>DBP's name as the Registrant of the domain name&nbsp;and a proxy email&nbsp;address, phone number and postal address for the Registrant's contact information;</li>\\r\\n<li>A proxy&nbsp;postal address and phone number for the domain name registration's technical contact;</li>\\r\\n<li>A proxy&nbsp;email address, postal address and phone number for the domain name registration's administrative contact;</li>\\r\\n<li>A proxy email address, postal address and phone number for the domain's name registration's billing contact;</li>\\r\\n<li>The primary and secondary domain name servers You designate for the domain name;</li>\\r\\n<li>The domain name's original date of registration and expiration date of the registration; and</li>\\r\\n<li>The identity of the Registrar.</li>\\r\\n</ol>\\r\\n<p class=\\\"heading1\\\">2. full benefits of domain registration retained by you</p>\\r\\n<p>Although DBP will show in the \\\"Whois\\\" directory as&nbsp;the Registrant of each domain name registration You designate, You will retain the full benefits of domain name registration with respect to each such domain name registration, including, subject to Section 4 below:</p>\\r\\n<ol>\\r\\n<li>The right to sell, transfer or assign each domain name registration, which shall require cancellation of the DBP services associated with each such domain name registration;</li>\\r\\n<li>The right to control the use of each domain name registration, including designating the primary and secondary domain name servers to which each domain name points;</li>\\r\\n<li>The right to cancel each domain name registration;</li>\\r\\n<li>The right to cancel the DBP services associated with each domain name registration and/or Your&nbsp;privacy services with DBP so that Your contract information is listed in the \\\"Whois\\\" directory; and</li>\\r\\n<li>The right to renew each domain name registration upon its expiration, subject to Your Registrar's applicable rules and policies.</li>\\r\\n</ol>\\r\\n<p class=\\\"heading1\\\">3. PERSONAL INFORMATION AND your notification obligations; representation and warranties; ACCOUNT SECURITY</p>\\r\\n<p><strong>Personal Information&nbsp;and Your Notification Obligations&nbsp;</strong></p>\\r\\n<p>You agree that for each domain name for which DBP becomes the Registrant on Your behalf, You will provide accurate and current information as to:</p>\\r\\n<ol>\\r\\n<li>Your name, the email address,&nbsp;postal address, phone and fax numbers for the domain name registration's Registrant contact;</li>\\r\\n<li>The email address, postal address, phone and fax numbers for the domain name registration's technical contact;</li>\\r\\n<li>The email address, postal address, phone and fax numbers for the domain name registration's administrative contact;</li>\\r\\n<li>The email address, postal address, phone and fax numbers for the domain name registration's billing contact; and</li>\\r\\n<li>You agree to provide government issued photo identification and/or government issued business identification as required for verification of identity when requested.</li>\\r\\n</ol>\\r\\n<p>You agree to:</p>\\r\\n<ol>\\r\\n<li>Notify DBP within&nbsp;three (3) calendar days when any of the personal information You provided upon subscribing to DBP's services, changes;</li>\\r\\n<li>Respond within three (3)&nbsp;calendar days to any inquiries made by DBP to determine the validity of personal information provided by You; and</li>\\r\\n<li>Timely respond to email messages&nbsp;DBP sends to You regarding correspondence DBP has received that is either addressed to or involves You and/or Your domain name registration, as more fully set forth in Section 5(c) below.</li>\\r\\n<li>To allow DBP to act as your Designated Agent (as that term is defined below) in instances when DBP services are added to or cancelled from your domain name and&nbsp;for the purpose of facilitating&nbsp;a change of registrant request (as further described below).&nbsp;</li>\\r\\n</ol>\\r\\n<p>It is Your responsibility to keep Your personal information current and accurate at all times.</p>\\r\\n<p><strong>Renewals </strong></p>\\r\\n<p>You agree DBP, as Registrant, will&nbsp;arrange for Your Registrar to charge the credit card You have on file with the Registrar, at the Registrar's then current rates.</p>\\r\\n<p>If for any reason DBP and/or the Registrar for Your domain name is unable to charge Your credit card for the full amount of the service provided, or if DBP and/or the Registrar is charged back for any fee it previously charged to the credit card You provided, You agree that DBP and/or the Registrar may, without notice to You, pursue all available remedies in order to obtain payment, including but not limited to immediate cancellation of all services DBP provides to You.</p>\\r\\n<p><strong>Representations and Warranties </strong></p>\\r\\n<p>You warrant that all information provided by You to DBP is truthful, complete, current and accurate. You also warrant that You are using DBP's private registration services in good faith and You have no knowledge of Your domain name infringing upon or conflicting with the legal rights of a third party or a third party's trademark or trade name. You also warrant the domain name being registered by DBP on Your behalf will not be used in connection with any illegal or morally objectionable activity (as defined below in Section 4), or, in connection with the transmission of Spam, or that contains or installs any viruses, worms, bugs, Trojan horses or other code, files or programs designed to, or capable or, disrupting, damaging or limiting the functionality of any software or hardware.</p>\\r\\n<p class=\\\"heading2\\\">Account Security</p>\\r\\n<p>You agree You are entirely responsible for maintaining the confidentiality of Your customer number/login ID&nbsp;and password (\\\"Account Access Information\\\").&nbsp; You agree to notify DBP immediately of any unauthorized use of Your account or any other breach of security.&nbsp; You agree DBP will not be liable for any loss that You may incur as a result of someone else using Your Account Access Information, either with or without Your knowledge.&nbsp; You further agree You could be held liable for losses incurred by DBP or another party due to someone else using Your Account Access Information.&nbsp; For security purposes, You should keep Account Access Information in a secure location and take precautions to prevent others from gaining access to Your Account Access Information.&nbsp; You agree that You are entirely responsible for all activity in Your account, whether initiated by You, or by others.&nbsp; DBP specifically disclaims liability for any activity in Your account, regardless of whether You authorized the activity.</p>\\r\\n<p><strong>Designated Agency and Change of Registrant Information</strong></p>\\r\\n<p>&ldquo;DESIGNATED AGENT&rdquo; MEANS AN INDIVIDUAL OR ENTITY THAT THE PRIOR REGISTRANT OR NEW REGISTRANT EXPLICITLY AUTHORIZES TO APPROVE A CHANGE OF REGISTRANT REQUEST ON ITS BEHALF.&nbsp; IN THE CASE OF DBP SERVICES, A CHANGE OF REGISTRANT REQUEST MAY ALSO ARISE&nbsp;DUE TO INSTANCES WHERE DBP SERVICES ARE ADDED, OR REMOVED, FROM A DOMAIN NAME.&nbsp;&nbsp;FOR THE PURPOSE OF&nbsp;FACILITATING ANY SUCH CHANGE REQUEST,&nbsp;AND IN ACCORDANCE WITH ICANN'S <a href=\\\"https://www.icann.org/resources/pages/transfer-policy-2016-06-01-en\\\">CHANGE OF REGISTRANT POLICY</a>, YOU AGREE TO APPOINT&nbsp;DBP AS&nbsp;YOUR DESIGNATED AGENT FOR THE SOLE PURPOSE OF&nbsp;EXPLICITLY CONSENTING TO MATERIAL CHANGES OF REGISTRATION CONTACT INFORMATION ON YOUR BEHALF.</p>\\r\\n<p class=\\\"heading1\\\">4. DBP's rights to deny, suspend, terminate service and to disclose your personal information</p>\\r\\n<p>You understand and agree that DBP has the absolute right and power, in its sole discretion and without any liability to You whatsoever, to:</p>\\r\\n<ol>\\r\\n<li>Cancel the privacy service (which means that Your information will be available in the \\\"Whois\\\" directory) and/or reveal Your name and personal information that You provided to DBP:&nbsp;&nbsp;<br />A. When required by law, in the good faith belief that such action is necessary in order to conform to the edicts of the law or in the interest of public safety; <br />B. To comply with legal process served upon DBP or in response to a reasonable threat of litigation against DBP (as determined by DBP in its sole and absolute discretion); or <br />C. To comply with ICANN rules, policies, or procedures.</li>\\r\\n<li>Resolve any and all third party claims, whether threatened or made, arising out of Your use of a domain name&nbsp;for which DBP is the registrant listed in the \\\"Whois\\\" directory&nbsp;on Your behalf; or</li>\\r\\n<li>Take any other action DBP deems necessary: <br />A. In the event you breach any provision of this Agreement or the DBP Anti-Spam Policy; <br />B.&nbsp;To protect the integrity and stability of, and to comply with registration requirements, terms, conditions and policies of, the applicable domain name Registry and/or Registry Provider;<ol><ol>C. To comply with any applicable laws, government rules or requirements, subpoenas, court orders or requests of law enforcement;&nbsp;</ol></ol>D. To comply with ICANN's Dispute Resolution Policy or ICANN's Change of Registrant Policy; <br />E. To avoid any financial loss or legal liability (civil or criminal) on the part of DBP, its parent companies, subsidiaries, affiliates, shareholders, agents, officers, directors and employees; <br />F. If the domain name for which DBP is the registrant on Your behalf violates or infringes a third party's trademark, trade name or other legal rights; and <br />G. If it comes to DBP's attention that You are using DBP's services for purposes of engaging in, participating in, sponsoring or hiding Your involvement in, illegal or morally objectionable activities, including but not limited to, activities which are designed, intended to or otherwise:</li>\\r\\n</ol>\\r\\n<blockquote style=\\\"margin: 0 0 0 40px; border: none; padding: 0px;\\\">1. Appeal purely to the prurient interests of third parties;<br />2. Defame, embarrass, harm, abuse, threaten, or harass third parties;<br />3. Violate state,&nbsp;federal or international law;<br />4. Involve hate crimes, terrorism and child pornography;<br />5. Are tortious, vulgar, obscene, invasive of a third party's privacy, racially, ethnically, or otherwise objectionable;<br />6. Impersonate the identity of a third party;<br />7. Harm minors in any way; or<br />8. Relate to or transmit viruses, Trojan Horses, access codes, backdoors, worms, timebombs or any other code, routine, mechanism, device or item that corrupts, damages, impairs, interferes with, intercepts or misappropriates any software, hardware, firmware, network, system, data or personally identifiable information.</blockquote>\\r\\n<p>You further understand and agree that if DBP is named as a defendant in, or investigated in anticipation of, any legal or administrative proceeding arising out of Your domain name registration or Your use of DBP's services, Your private registration service may be canceled, which means the domain name registration will revert back to You and Your identity will therefore be revealed in the Whois directory as Registrant.</p>\\r\\n<p>In the event:</p>\\r\\n<ol>\\r\\n<li>DBP takes any of the actions set forth in subsection&nbsp;i, ii, or iii&nbsp;above or section 5; and/or</li>\\r\\n<li>You elect to cancel DBP's services for any reason --</li>\\r\\n</ol>\\r\\n<p>Neither DBP nor your Registrar will refund any fees paid by You whatsoever.</p>\\r\\n<p class=\\\"heading1\\\">5. communications forwarding</p>\\r\\n<p><strong>a. Correspondence Forwarding </strong></p>\\r\\n<p>Inasmuch as DBP's name, postal address and phone number will be listed in the Whois directory, You agree DBP will review and forward communications addressed to Your domain name that are received via email, certified or traceable courier mail (such as UPS, FedEx, or DHL), or first class U.S. postal mail. You specifically acknowledge DBP will not forward to You first class postal mail (other than legal notices), \\\"junk\\\" mail or other unsolicited communications (whether delivered through email, fax, postal mail or telephone), and You further authorize DBP to either discard all such communications or return all such communications to sender unopened. You agree to waive any and all claims arising from Your failure to receive communications directed to Your domain name but not forwarded to You by DBP.</p>\\r\\n<p><strong>b. Email Forwarding </strong></p>\\r\\n<p>The Whois directory requires an email address for every purchased domain name registration. When You purchase a private domain registration, DBP creates a private email address for that domain name, \\\"@domainsbyproxy.com\\\". Thereafter, when messages are sent to that private email address, DBP handles them according to the email preference You selected for that particular domain name. You have three (3) email preferences from which to choose. You can elect to:</p>\\r\\n<ol>\\r\\n<li>Have all of the messages forwarded;</li>\\r\\n<li>Have all of the messages filtered for Spam and then forwarded; or</li>\\r\\n<li>Have none of the messages forwarded.</li>\\r\\n</ol>\\r\\n<p>As with all communications, You agree to waive any and all claims arising from Your failure to receive email directed to Your domain name but not forwarded to You by DBP.</p>\\r\\n<p><strong>c. Notifications Regarding Correspondence and Your Obligation to Respond </strong></p>\\r\\n<p>When DBP receives certified or traceable courier mail or legal notices addressed to Your domain name, in most cases, DBP will attempt to forward the mail to you via email. If&nbsp;You do not respond to the DBP email and/or the correspondence DBP has received regarding&nbsp;Your domain name registration concerns a&nbsp;dispute of any kind or otherwise requires immediate disposition, DBP may immediately reveal Your identity and/or cancel the DBP private registration service regarding either the domain name registration(s) in question.&nbsp;This means the Whois directory will revert to displaying Your name, postal address, email address and phone number that you provided to DBP.</p>\\r\\n<p><strong>d.&nbsp;</strong><strong>Additional Administrative Fees </strong></p>\\r\\n<p>DBP reserves the right to charge You&nbsp;reasonable&nbsp;\\\"administrative fees\\\" or \\\"processing fees\\\" for (i) &nbsp;tasks DBP may perform outside the normal scope of its&nbsp;Services, (ii) additional time and/or costs DBP may incur in providing its Services, and/or (iii) Your non-compliance with the Agreement (as determined by DBP in its sole and absolute discretion). Typical administrative or processing fee scenarios&nbsp;include, but are not limited to, (i) customer service issues that&nbsp;require additional personal time and attention; (ii)&nbsp;disputes that require accounting or&nbsp;legal services, whether performed by DBP staff or by outside firms retained by DBP; (iii) recouping any and all costs and fees, including the cost of Services, incurred by DBP as the result of chargebacks or other payment disputes brought by You, Your bank or Payment Method processor.&nbsp; These administrative fees or processing fees will be billed to the Payment Method You have on file with&nbsp;Your Registrar.</p>\\r\\n<p>You agree to waive the right to trial by jury in any proceeding that takes place relating to or arising out of this Agreement.</p>\\r\\n<p class=\\\"heading1\\\">6. limitations of liability</p>\\r\\n<p><strong>UNDER NO CIRCUMSTANCES SHALL DBP BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, PUNITIVE, SPECIAL, OR CONSEQUENTIAL DAMAGES FOR ANY REASON WHATSOEVER RELATED TO THIS AGREEMENT, YOUR DOMAIN NAME REGISTRATION, DBP'S SERVICES, USE OR INABILITY TO USE THE DBP WEBSITE OR THE MATERIALS AND CONTENT OF THE WEBSITE OR ANY OTHER WEBSITES LINKED TO THE DBP WEBSITE OR YOUR PROVISION OF ANY PERSONALLY IDENTIFIABLE INFORMATION TO DBP OR ANY THIRD PARTY. THIS LIMITATION APPLIES REGARDLESS OF WHETHER THE ALLEGED LIABILITY IS BASED ON CONTRACT, TORT, WARRANTY, NEGLIGENCE, STRICT LIABILITY OR ANY OTHER BASIS, EVEN IF DBP HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES OR SUCH DAMAGES WERE REASONABLY FORESEEABLE. BECAUSE CERTAIN JURISDICTIONS DO NOT PERMIT THE LIMITATION OR ELIMINATION OF LIABILITY FOR CONSEQUENTIAL OR INCIDENTAL DAMAGES, DBP'S LIABILITY IN SUCH JURISDICTIONS SHALL BE LIMITED TO THE SMALLEST AMOUNT PERMITTED BY LAW. </strong></p>\\r\\n<p><strong>YOU FURTHER UNDERSTAND AND AGREE THAT DBP DISCLAIMS ANY LOSS OR LIABILITY RESULTING FROM: </strong></p>\\r\\n<ol>\\r\\n<li><strong>THE INADVERTENT DISCLOSURE OR THEFT OF YOUR PERSONAL INFORMATION; </strong></li>\\r\\n<li><strong>ACCESS DELAYS OR INTERRUPTIONS TO OUR WEBSITE OR THE WEBSITES OF OUR AFFILIATED REGISTRARS; </strong></li>\\r\\n<li><strong>DATA NON-DELIVERY OF MIS-DELIVERY BETWEEN YOU AND DBP; </strong></li>\\r\\n<li><strong>THE FAILURE FOR WHATEVER REASON TO RENEW A PRIVATE DOMAIN NAME REGISTRATION; </strong></li>\\r\\n<li><strong>THE UNAUTHORIZED USE OF YOUR DBP ACCOUNT OR ANY OF DBP'S SERVICES; </strong></li>\\r\\n<li><strong>ERRORS, OMISSIONS OR MISSTATEMENTS BY DBP; </strong></li>\\r\\n<li><strong>DELETION OF, FAILURE TO STORE, FAILURE TO PROCESS OR ACT UPON EMAIL MESSAGES FORWARDED TO EITHER YOU OR YOUR PRIVATE DOMAIN NAME REGISTRATION; </strong></li>\\r\\n<li><strong>PROCESSING OF UPDATED INFORMATION REGARDING YOUR DBP ACCOUNT; AND/OR </strong></li>\\r\\n<li><strong>ANY ACT OR OMISSION CAUSED BY YOU OR YOUR AGENTS (WHETHER AUTHORIZED BY YOU OR NOT). </strong></li>\\r\\n</ol>\\r\\n<p class=\\\"heading1\\\">7. indemnity</p>\\r\\n<p>You agree to release, defend, indemnify and hold harmless DBP, its parent companies, subsidiaries, affiliates, shareholders, agents, directors, officers and employees and Your Registrar, from and against any and all claims, demands, liabilities, losses, damages or costs, including reasonable attorneys' fees, arising out of or related in any way to this Agreement, the services provided hereunder by DBP, the DBP website, Your account with DBP, Your use of Your domain name registration, and/or disputes arising in connection with the <a href=\\\"http://www.icann.org/en/dndr/udrp/uniform-rules.htm\\\" target=\\\"_blank\\\">dispute policy</a>.</p>\\r\\n<p class=\\\"heading1\\\">8. DBP warranty disclaimer</p>\\r\\n<p><strong>DBP, ITS PARENT COMPANIES, SUBSIDIARIES, AFFILIATES, SHAREHOLDERS, AGENTS, DIRECTORS, OFFICERS, AND EMPLOYEES EXPRESSLY DISCLAIM ALL REPRESENTATIONS AND WARRANTIES OF ANY KIND IN CONNECTION WITH THIS AGREEMENT, THE SERVICE PROVIDED HEREUNDER, THE DBP WEBSITE OR ANY WEBSITES LINKED TO THE DBP WEBSITE, WHETHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. ALL DBP SERVICES, AS WELL AS THE DBP WEBSITE, ARE PROVIDED \\\"AS IS\\\". YOUR SUBSCRIPTION TO AND USE OF DBP'S SERVICES AND ITS WEBSITE ARE ENTIRELY AT YOUR RISK. SOME JURISDICTIONS DO NOT ALLOW THE DISCLAIMER OF IMPLIED WARRANTIES, IN WHICH EVENT THE FOREGOING DISCLAIMER MAY NOT APPLY TO YOU. </strong></p>\\r\\n<p class=\\\"heading1\\\">9. copyright and trademark</p>\\r\\n<p>You understand and agree that all content and materials contained in this Agreement, the <a href=\\\"http://www.domainsbyproxy.com/policy/ShowDoc.aspx?pageid=privacy\\\" target=\\\"_blank\\\">Privacy Policy </a>and the DBP website <a href=\\\"http://www.domainsbyproxy.com/\\\" target=\\\"_blank\\\">found here </a>, are protected by the various copyright, patent, trademark, service mark and trade secret laws of the United States, as well as any other applicable proprietary rights and laws, and that DBP expressly reserves its rights in and to all such content and materials.</p>\\r\\n<p>You further understand and agree You are prohibited from using, in any manner whatsoever, any of the afore-described content and materials without the express written permission of DBP. No license or right under any copyright, patent, trademark, service mark or other proprietary right or license is granted to You or conferred upon You by this Agreement or otherwise.</p>\\r\\n<p class=\\\"heading1\\\">10. miscellaneous provisions</p>\\r\\n<p><strong>a. Severability; Construction; Entire Agreement </strong></p>\\r\\n<p>If any part of this Agreement shall be held to be illegal, unenforceable or invalid, in whole or in part, such provision shall be modified to the minimum extent necessary to make it legal, enforceable and valid, and the legality, enforceability and validity of the remaining provisions of this Agreement shall not be affected or impaired. The headings herein will not be considered a part of this Agreement. You agree this Agreement, including the policies it incorporates by reference, constitute the complete and only Agreement between You and DBP regarding the services contemplated herein.</p>\\r\\n<p><strong>b. Governing Law; Venue; Waiver Of Trial By Jury </strong></p>\\r\\n<p>This Agreement shall be governed in all respects by the laws and judicial decisions of Maricopa County, Arizona, excluding its conflicts of laws rules. Except as provided immediately below, You agree that any action relating to or arising out of this Agreement, shall be brought exclusively in the courts of Maricopa County, Arizona. For the adjudication of domain name registration disputes, you agree to submit to the exclusive jurisdiction and venue of the U.S. District Court for the District of Arizona located in Phoenix, Arizona. You agree to waive the right to trial by jury in any proceeding, regardless of venue, that takes place relating to or arising out of this Agreement.</p>\\r\\n<p><strong>c. Notices </strong></p>\\r\\n<p>All notices from DBP to You will be sent to the email address You provided to DBP. Notices by email shall be deemed effective twenty-four (24) hours after the email is sent by DBP, unless DBP receives notice that the email address is invalid, in which event DBP may give You notice via first class or certified mail, return receipt requested. All notices from You to DBP shall be sent via certified mail, return receipt requested or traceable courier to:</p>\\r\\n<ol><ol>Domains By Proxy, LLC</ol><ol>Attn: General Counsel</ol><ol>14455 North Hayden Rd.<br />Suite 219<br />Scottsdale, AZ 85260<br /></ol></ol>\\r\\n<p>Notices sent via certified mail or traceable courier shall be deemed effective five (5) days after the date of mailing.</p>\\r\\n<p><strong>d. Insurance </strong></p>\\r\\n<p>In the unlikely event You lose Your domain name registration to a third party solely as a result of DBP's negligent actions (and absent fraud or other negligent or willful misconduct committed by a third party), You may be insured against such loss through DBP's Professional Liability Insurance Policy, which is currently underwritten by American International Insurance Company. Of course, every claim is subject to the then-carrier's investigation into the facts and circumstances surrounding such claim. In the event You have reason to believe that circumstances exist which warrant the filing of an insurance claim, please send a written notice (specifying the basis for such claim), via certified mail, return receipt requested, to:</p>\\r\\n<ol><ol>Domains By Proxy, LLC</ol><ol>Attn: Insurance Claims</ol><ol>14455 North Hayden Rd.<br />Suite 219<br />Scottsdale, AZ 85260<br /></ol></ol>\\r\\n<p><strong>e. Indemnification </strong></p>\\r\\n<p>In the unlikely event You lose Your domain name registration to a third party solely as a result of DBP's willful misconduct, Your Registrar (the \\\"Indemnifying Party\\\") will indemnify and hold You harmless against any losses, damages or costs (including reasonable attorneys' fees) resulting from any claim, action, proceeding, suit or demand arising out of or related to the loss of Your domain name registration. Such indemnification obligations under this Section 10(e) are conditioned upon the following:</p>\\r\\n<ol>\\r\\n<li>That You promptly give both DBP and the Indemnifying Party written notice of the claim, demand, or action and provide reasonable assistance to the Indemnifying Party, at its cost and expense, in connection therewith, and</li>\\r\\n<li>That the Indemnifying Party has the right, at its option, to control and direct the defense to any settlement of such claim, demand, or action.</li>\\r\\n</ol>\\r\\n<p>Any notice concerning indemnification shall, with respect to DBP, be sent in accordance with Section 10(c) of this Agreement. With respect to Your Registrar, notices regarding indemnification should be sent in accordance with the notification provisions contained in Your Registrar's Domain Name Registration Agreement.</p>\\r\\n<p><strong>f. Term of Agreement; Survival </strong></p>\\r\\n<p>The terms of this Agreement shall continue in full force and effect as long as DBP is the Registrant for any domain name on Your behalf. Sections 5 (Communications Forwarding), 6 (Limitation of Liability), 7 (Indemnity), 8 (Warranty Disclaimer) and 10 (Miscellaneous Provisions) shall survive any termination or expiration of this Agreement.</p>\\n</td></tr>\\n<tr><td>\\n<br />\\n<span class=\\\"finePrint\\\">\\nRevised: 11/23/16<br />\\nCopyright &copy; 2003-2016  All Rights Reserved.\\n</span>\\n</td></tr>\\n</tbody>\\n</table>\\n</td></tr>\\n</tbody>\\n</table>\",\"url\":\"http://www.secureserver.net/agreements/ShowDoc.aspx?pageid=domain_nameproxy&pl_id=510456\"}],\"nextLink\":null,\"id\":null}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.DomainRegistration/domains/jsdkdemo-57387683d.com?api-version=2015-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:10:46 GMT",
+      "content-length" : "0",
+      "server" : "Microsoft-IIS/8.0",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1176",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "c3f67522-e365-4639-976b-454c3d78da1f",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191047Z:c3f67522-e365-4639-976b-454c3d78da1f",
+      "x-powered-by" : "ASP.NET",
+      "location" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.DomainRegistration/domains/jsdkdemo-57387683d.com/operationresults/879957e4-9c38-48f9-9079-da1d5de047a7?api-version=2015-04-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "c3f67522-e365-4639-976b-454c3d78da1f",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.DomainRegistration/domains/jsdkdemo-57387683d.com/operationresults/879957e4-9c38-48f9-9079-da1d5de047a7?api-version=2015-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:19 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "682",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14955",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "0c1d9465-0a26-4a71-a183-132015b890aa",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191119Z:0c1d9465-0a26-4a71-a183-132015b890aa",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "107805e0-ac93-42a1-a42f-f0f6e745afc7",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.DomainRegistration/domains/jsdkdemo-57387683d.com\",\"name\":\"jsdkdemo-57387683d.com\",\"type\":\"Microsoft.DomainRegistration/domains\",\"location\":\"global\",\"tags\":{},\"properties\":{\"registrationStatus\":\"Active\",\"provisioningState\":\"Succeeded\",\"nameServers\":[\"ns13.domaincontrol.com\",\"ns14.domaincontrol.com\"],\"privacy\":true,\"createdTime\":\"2017-04-13T14:10:51\",\"expirationTime\":\"2018-04-13T14:10:51\",\"autoRenew\":true,\"readyForDnsRecordManagement\":true,\"managedHostNames\":[],\"domainNotRenewableReasons\":[\"ExpirationNotInRenewalTimeRange\"],\"dnsType\":\"DefaultDomainRegistrarDns\"}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:20 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "2695",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1175",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "373da4f3-9812-46d3-ab41-8ebabcfa0a51",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191121Z:373da4f3-9812-46d3-ab41-8ebabcfa0a51",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "etag" : "\"1D2B489BD5D6720\"",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "8dac1dc1-adf4-4385-b934-1bf7c7e0351a",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935\",\"name\":\"webapp1-1da3444935\",\"type\":\"Microsoft.Web/sites\",\"kind\":\"app\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"name\":\"webapp1-1da3444935\",\"state\":\"Running\",\"hostNames\":[\"webapp1-1da3444935.azurewebsites.net\"],\"webSpace\":\"rgnemv_ba21748655d5-WestUSwebspace\",\"selfLink\":\"https://waws-prod-bay-071.api.azurewebsites.windows.net:454/subscriptions/00000000-0000-0000-0000-000000000000/webspaces/rgnemv_ba21748655d5-WestUSwebspace/sites/webapp1-1da3444935\",\"repositorySiteName\":\"webapp1-1da3444935\",\"owner\":null,\"usageState\":\"Normal\",\"enabled\":true,\"adminEnabled\":true,\"enabledHostNames\":[\"webapp1-1da3444935.azurewebsites.net\",\"webapp1-1da3444935.scm.azurewebsites.net\"],\"siteProperties\":{\"metadata\":null,\"properties\":[],\"appSettings\":null},\"availabilityState\":\"Normal\",\"sslCertificates\":null,\"csrs\":[],\"cers\":null,\"siteMode\":null,\"hostNameSslStates\":[{\"name\":\"webapp1-1da3444935.azurewebsites.net\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Standard\"},{\"name\":\"webapp1-1da3444935.scm.azurewebsites.net\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Repository\"}],\"computeMode\":null,\"serverFarm\":null,\"serverFarmId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/serverfarms/webapp1-1da3444935plane2e47764c\",\"reserved\":false,\"lastModifiedTimeUtc\":\"2017-04-13T19:11:22.77\",\"storageRecoveryDefaultState\":\"Running\",\"contentAvailabilityState\":\"Normal\",\"runtimeAvailabilityState\":\"Normal\",\"siteConfig\":null,\"deploymentId\":\"webapp1-1da3444935\",\"trafficManagerHostNames\":null,\"sku\":\"Standard\",\"premiumAppDeployed\":null,\"scmSiteAlsoStopped\":false,\"targetSwapSlot\":null,\"hostingEnvironment\":null,\"hostingEnvironmentProfile\":null,\"microService\":\"WebSites\",\"gatewaySiteName\":null,\"clientAffinityEnabled\":true,\"clientCertEnabled\":false,\"hostNamesDisabled\":false,\"domainVerificationIdentifiers\":null,\"kind\":\"app\",\"outboundIpAddresses\":\"23.101.199.30,23.101.196.70,23.101.201.119,23.101.197.194\",\"containerSize\":0,\"dailyMemoryTimeQuota\":0,\"suspendedTill\":null,\"siteDisabledReason\":0,\"functionExecutionUnitsCache\":null,\"maxNumberOfWorkers\":null,\"homeStamp\":\"waws-prod-bay-071\",\"cloningInfo\":null,\"hostingEnvironmentId\":null,\"tags\":{},\"resourceGroup\":\"rgnemv_ba21748655d5\",\"defaultHostName\":\"webapp1-1da3444935.azurewebsites.net\",\"slotSwapStatus\":null}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/hostNameBindings/webapp1-1da3444935.jsdkdemo-57387683d.com?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:26 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "537",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1174",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "fdf9f6f1-c971-4776-b413-a67bb1ee0b6d",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191126Z:fdf9f6f1-c971-4776-b413-a67bb1ee0b6d",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "etag" : "\"1D2B489BD5D6720\"",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "f8851c2d-e39f-4ef3-992f-7d88215405d1",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/hostNameBindings/webapp1-1da3444935.jsdkdemo-57387683d.com\",\"name\":\"webapp1-1da3444935/webapp1-1da3444935.jsdkdemo-57387683d.com\",\"type\":\"Microsoft.Web/sites/hostNameBindings\",\"location\":\"West US\",\"properties\":{\"siteName\":\"webapp1-1da3444935\",\"domainId\":null,\"azureResourceName\":\"webapp1-1da3444935\",\"azureResourceType\":\"Website\",\"customHostNameDnsRecordType\":\"CName\",\"hostNameType\":\"Managed\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:26 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "3020",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14954",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "baccadca-6757-4804-9f22-ae3bfe32442b",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191126Z:baccadca-6757-4804-9f22-ae3bfe32442b",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "etag" : "\"1D2B489C0406FD5\"",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "e7afd29d-96c2-430c-99c5-4020458fc032",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935\",\"name\":\"webapp1-1da3444935\",\"type\":\"Microsoft.Web/sites\",\"kind\":\"app\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"name\":\"webapp1-1da3444935\",\"state\":\"Running\",\"hostNames\":[\"webapp1-1da3444935.jsdkdemo-57387683d.com\",\"webapp1-1da3444935.azurewebsites.net\"],\"webSpace\":\"rgnemv_ba21748655d5-WestUSwebspace\",\"selfLink\":\"https://waws-prod-bay-071.api.azurewebsites.windows.net:454/subscriptions/00000000-0000-0000-0000-000000000000/webspaces/rgnemv_ba21748655d5-WestUSwebspace/sites/webapp1-1da3444935\",\"repositorySiteName\":\"webapp1-1da3444935\",\"owner\":null,\"usageState\":\"Normal\",\"enabled\":true,\"adminEnabled\":true,\"enabledHostNames\":[\"webapp1-1da3444935.jsdkdemo-57387683d.com\",\"webapp1-1da3444935.azurewebsites.net\",\"webapp1-1da3444935.scm.azurewebsites.net\"],\"siteProperties\":{\"metadata\":null,\"properties\":[],\"appSettings\":null},\"availabilityState\":\"Normal\",\"sslCertificates\":null,\"csrs\":[],\"cers\":null,\"siteMode\":null,\"hostNameSslStates\":[{\"name\":\"webapp1-1da3444935.azurewebsites.net\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Standard\"},{\"name\":\"webapp1-1da3444935.jsdkdemo-57387683d.com\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Standard\"},{\"name\":\"webapp1-1da3444935.scm.azurewebsites.net\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Repository\"}],\"computeMode\":null,\"serverFarm\":null,\"serverFarmId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/serverfarms/webapp1-1da3444935plane2e47764c\",\"reserved\":false,\"lastModifiedTimeUtc\":\"2017-04-13T19:11:27.6133333\",\"storageRecoveryDefaultState\":\"Running\",\"contentAvailabilityState\":\"Normal\",\"runtimeAvailabilityState\":\"Normal\",\"siteConfig\":null,\"deploymentId\":\"webapp1-1da3444935\",\"trafficManagerHostNames\":null,\"sku\":\"Standard\",\"premiumAppDeployed\":null,\"scmSiteAlsoStopped\":false,\"targetSwapSlot\":null,\"hostingEnvironment\":null,\"hostingEnvironmentProfile\":null,\"microService\":\"WebSites\",\"gatewaySiteName\":null,\"clientAffinityEnabled\":true,\"clientCertEnabled\":false,\"hostNamesDisabled\":false,\"domainVerificationIdentifiers\":null,\"kind\":\"app\",\"outboundIpAddresses\":\"23.101.199.30,23.101.196.70,23.101.201.119,23.101.197.194\",\"containerSize\":0,\"dailyMemoryTimeQuota\":0,\"suspendedTill\":null,\"siteDisabledReason\":0,\"functionExecutionUnitsCache\":null,\"maxNumberOfWorkers\":null,\"homeStamp\":\"waws-prod-bay-071\",\"cloningInfo\":null,\"hostingEnvironmentId\":null,\"tags\":{},\"resourceGroup\":\"rgnemv_ba21748655d5\",\"defaultHostName\":\"webapp1-1da3444935.azurewebsites.net\",\"slotSwapStatus\":null}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/config/appsettings/list?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:27 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "305",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "f7ebfed4-968d-41a9-9a21-7b7ad8ee5393",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11981",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191127Z:f7ebfed4-968d-41a9-9a21-7b7ad8ee5393",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "a773fb41-85cb-469e-9c96-b534dfea8bcd",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"WEBSITE_NODE_DEFAULT_VERSION\":\"6.9.1\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/config/connectionstrings/list?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:27 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "279",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "c26e9db3-c48f-45f2-9b7e-7f5312d8f55a",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11980",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191127Z:c26e9db3-c48f-45f2-9b7e-7f5312d8f55a",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "6ab38e41-204d-4076-a7df-692b726db6e5",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/config/connectionstrings\",\"name\":\"connectionstrings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/config/slotConfigNames?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:27 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "166",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14953",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "65297935-fb99-4a71-b7db-0a6dd78b7c98",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191127Z:65297935-fb99-4a71-b7db-0a6dd78b7c98",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "c7592b04-d4b3-476e-84e1-f2260daa0682",
+      "Body" : "{\"id\":null,\"name\":\"webapp1-1da3444935\",\"type\":\"Microsoft.Web/sites\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"connectionStringNames\":null,\"appSettingNames\":null}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/config/authsettings/list?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:27 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "838",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "c9ae5c18-a121-413d-a179-31970c5518be",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11979",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191128Z:c9ae5c18-a121-413d-a179-31970c5518be",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "84f421b8-dd90-4419-b34b-4992f370e0c8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/config/authsettings\",\"name\":\"authsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"enabled\":false,\"unauthenticatedClientAction\":null,\"tokenStoreEnabled\":null,\"allowedExternalRedirectUrls\":null,\"defaultProvider\":null,\"clientId\":null,\"clientSecret\":null,\"issuer\":null,\"allowedAudiences\":null,\"additionalLoginParams\":null,\"isAadAutoProvisioned\":false,\"googleClientId\":null,\"googleClientSecret\":null,\"googleOAuthScopes\":null,\"facebookAppId\":null,\"facebookAppSecret\":null,\"facebookOAuthScopes\":null,\"twitterConsumerKey\":null,\"twitterConsumerSecret\":null,\"microsoftAccountClientId\":null,\"microsoftAccountClientSecret\":null,\"microsoftAccountOAuthScopes\":null}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/hostNameBindings?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:28 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "995",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14952",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "bc0767c5-f2f8-465f-a64e-1996f46b7738",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191128Z:bc0767c5-f2f8-465f-a64e-1996f46b7738",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "etag" : "\"1D2B489C0406FD5\"",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "5cbbf525-5c68-4344-abe8-9435a0227f75",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/hostNameBindings/webapp1-1da3444935.azurewebsites.net\",\"name\":\"webapp1-1da3444935/webapp1-1da3444935.azurewebsites.net\",\"type\":\"Microsoft.Web/sites/hostNameBindings\",\"location\":\"West US\",\"properties\":{\"siteName\":\"webapp1-1da3444935\",\"domainId\":null,\"hostNameType\":\"Verified\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/hostNameBindings/webapp1-1da3444935.jsdkdemo-57387683d.com\",\"name\":\"webapp1-1da3444935/webapp1-1da3444935.jsdkdemo-57387683d.com\",\"type\":\"Microsoft.Web/sites/hostNameBindings\",\"location\":\"West US\",\"properties\":{\"siteName\":\"webapp1-1da3444935\",\"domainId\":null,\"azureResourceName\":\"webapp1-1da3444935\",\"azureResourceType\":\"Website\",\"customHostNameDnsRecordType\":\"CName\",\"hostNameType\":\"Managed\"}}],\"nextLink\":null,\"id\":null}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:30 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "3020",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1173",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "33de32f2-34bd-4a86-9a0c-ed31b30dda28",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191130Z:33de32f2-34bd-4a86-9a0c-ed31b30dda28",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "etag" : "\"1D2B489C33BE28B\"",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "cf5e4dbf-90b8-45e5-91bf-bbb64069024a",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935\",\"name\":\"webapp1-1da3444935\",\"type\":\"Microsoft.Web/sites\",\"kind\":\"app\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"name\":\"webapp1-1da3444935\",\"state\":\"Running\",\"hostNames\":[\"webapp1-1da3444935.jsdkdemo-57387683d.com\",\"webapp1-1da3444935.azurewebsites.net\"],\"webSpace\":\"rgnemv_ba21748655d5-WestUSwebspace\",\"selfLink\":\"https://waws-prod-bay-071.api.azurewebsites.windows.net:454/subscriptions/00000000-0000-0000-0000-000000000000/webspaces/rgnemv_ba21748655d5-WestUSwebspace/sites/webapp1-1da3444935\",\"repositorySiteName\":\"webapp1-1da3444935\",\"owner\":null,\"usageState\":\"Normal\",\"enabled\":true,\"adminEnabled\":true,\"enabledHostNames\":[\"webapp1-1da3444935.jsdkdemo-57387683d.com\",\"webapp1-1da3444935.azurewebsites.net\",\"webapp1-1da3444935.scm.azurewebsites.net\"],\"siteProperties\":{\"metadata\":null,\"properties\":[],\"appSettings\":null},\"availabilityState\":\"Normal\",\"sslCertificates\":null,\"csrs\":[],\"cers\":null,\"siteMode\":null,\"hostNameSslStates\":[{\"name\":\"webapp1-1da3444935.azurewebsites.net\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Standard\"},{\"name\":\"webapp1-1da3444935.jsdkdemo-57387683d.com\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Standard\"},{\"name\":\"webapp1-1da3444935.scm.azurewebsites.net\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Repository\"}],\"computeMode\":null,\"serverFarm\":null,\"serverFarmId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/serverfarms/webapp1-1da3444935plane2e47764c\",\"reserved\":false,\"lastModifiedTimeUtc\":\"2017-04-13T19:11:32.6166667\",\"storageRecoveryDefaultState\":\"Running\",\"contentAvailabilityState\":\"Normal\",\"runtimeAvailabilityState\":\"Normal\",\"siteConfig\":null,\"deploymentId\":\"webapp1-1da3444935\",\"trafficManagerHostNames\":null,\"sku\":\"Standard\",\"premiumAppDeployed\":null,\"scmSiteAlsoStopped\":false,\"targetSwapSlot\":null,\"hostingEnvironment\":null,\"hostingEnvironmentProfile\":null,\"microService\":\"WebSites\",\"gatewaySiteName\":null,\"clientAffinityEnabled\":true,\"clientCertEnabled\":false,\"hostNamesDisabled\":false,\"domainVerificationIdentifiers\":null,\"kind\":\"app\",\"outboundIpAddresses\":\"23.101.199.30,23.101.196.70,23.101.201.119,23.101.197.194\",\"containerSize\":0,\"dailyMemoryTimeQuota\":0,\"suspendedTill\":null,\"siteDisabledReason\":0,\"functionExecutionUnitsCache\":null,\"maxNumberOfWorkers\":null,\"homeStamp\":\"waws-prod-bay-071\",\"cloningInfo\":null,\"hostingEnvironmentId\":null,\"tags\":{},\"resourceGroup\":\"rgnemv_ba21748655d5\",\"defaultHostName\":\"webapp1-1da3444935.azurewebsites.net\",\"slotSwapStatus\":null}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/hostNameBindings/webapp1-1da3444935.jsdkdemo-57387683d.com?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:31 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "537",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1172",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "c8a4b0ad-5b15-41f4-8fef-406a7c95e39e",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191131Z:c8a4b0ad-5b15-41f4-8fef-406a7c95e39e",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "etag" : "\"1D2B489C33BE28B\"",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "63cf4f81-285f-423b-ad55-2198a40181a1",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/hostNameBindings/webapp1-1da3444935.jsdkdemo-57387683d.com\",\"name\":\"webapp1-1da3444935/webapp1-1da3444935.jsdkdemo-57387683d.com\",\"type\":\"Microsoft.Web/sites/hostNameBindings\",\"location\":\"West US\",\"properties\":{\"siteName\":\"webapp1-1da3444935\",\"domainId\":null,\"azureResourceName\":\"webapp1-1da3444935\",\"azureResourceType\":\"Website\",\"customHostNameDnsRecordType\":\"CName\",\"hostNameType\":\"Managed\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:31 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "3020",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14951",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "102e3cf5-c32b-490b-81b0-249a34265c57",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191131Z:102e3cf5-c32b-490b-81b0-249a34265c57",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "etag" : "\"1D2B489C33BE28B\"",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "2c837cd8-210f-44ef-b7fa-8bf7091b55f8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935\",\"name\":\"webapp1-1da3444935\",\"type\":\"Microsoft.Web/sites\",\"kind\":\"app\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"name\":\"webapp1-1da3444935\",\"state\":\"Running\",\"hostNames\":[\"webapp1-1da3444935.jsdkdemo-57387683d.com\",\"webapp1-1da3444935.azurewebsites.net\"],\"webSpace\":\"rgnemv_ba21748655d5-WestUSwebspace\",\"selfLink\":\"https://waws-prod-bay-071.api.azurewebsites.windows.net:454/subscriptions/00000000-0000-0000-0000-000000000000/webspaces/rgnemv_ba21748655d5-WestUSwebspace/sites/webapp1-1da3444935\",\"repositorySiteName\":\"webapp1-1da3444935\",\"owner\":null,\"usageState\":\"Normal\",\"enabled\":true,\"adminEnabled\":true,\"enabledHostNames\":[\"webapp1-1da3444935.jsdkdemo-57387683d.com\",\"webapp1-1da3444935.azurewebsites.net\",\"webapp1-1da3444935.scm.azurewebsites.net\"],\"siteProperties\":{\"metadata\":null,\"properties\":[],\"appSettings\":null},\"availabilityState\":\"Normal\",\"sslCertificates\":null,\"csrs\":[],\"cers\":null,\"siteMode\":null,\"hostNameSslStates\":[{\"name\":\"webapp1-1da3444935.azurewebsites.net\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Standard\"},{\"name\":\"webapp1-1da3444935.jsdkdemo-57387683d.com\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Standard\"},{\"name\":\"webapp1-1da3444935.scm.azurewebsites.net\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Repository\"}],\"computeMode\":null,\"serverFarm\":null,\"serverFarmId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/serverfarms/webapp1-1da3444935plane2e47764c\",\"reserved\":false,\"lastModifiedTimeUtc\":\"2017-04-13T19:11:32.6166667\",\"storageRecoveryDefaultState\":\"Running\",\"contentAvailabilityState\":\"Normal\",\"runtimeAvailabilityState\":\"Normal\",\"siteConfig\":null,\"deploymentId\":\"webapp1-1da3444935\",\"trafficManagerHostNames\":null,\"sku\":\"Standard\",\"premiumAppDeployed\":null,\"scmSiteAlsoStopped\":false,\"targetSwapSlot\":null,\"hostingEnvironment\":null,\"hostingEnvironmentProfile\":null,\"microService\":\"WebSites\",\"gatewaySiteName\":null,\"clientAffinityEnabled\":true,\"clientCertEnabled\":false,\"hostNamesDisabled\":false,\"domainVerificationIdentifiers\":null,\"kind\":\"app\",\"outboundIpAddresses\":\"23.101.199.30,23.101.196.70,23.101.201.119,23.101.197.194\",\"containerSize\":0,\"dailyMemoryTimeQuota\":0,\"suspendedTill\":null,\"siteDisabledReason\":0,\"functionExecutionUnitsCache\":null,\"maxNumberOfWorkers\":null,\"homeStamp\":\"waws-prod-bay-071\",\"cloningInfo\":null,\"hostingEnvironmentId\":null,\"tags\":{},\"resourceGroup\":\"rgnemv_ba21748655d5\",\"defaultHostName\":\"webapp1-1da3444935.azurewebsites.net\",\"slotSwapStatus\":null}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/certificates/80535D3B56F894E7F2311B7FD68F6BBA9E6A7F37%23%23West%20US%23?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:33 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "925",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1171",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "572e8ba9-1d96-42f7-888d-2e8a92514ca1",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191133Z:572e8ba9-1d96-42f7-888d-2e8a92514ca1",
+      "x-powered-by" : "ASP.NET",
+      "warning" : "199 Some of the uploaded certificates are either self-signed or expired.,199 Some of the uploaded certificates cannot be validated to a trusted CA",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "9b3d50b5-148d-4aba-8765-3cf3170dc4d4",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/certificates/80535D3B56F894E7F2311B7FD68F6BBA9E6A7F37##West US#\",\"name\":\"80535D3B56F894E7F2311B7FD68F6BBA9E6A7F37##West US#\",\"type\":\"Microsoft.Web/certificates\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"friendlyName\":\"jsdkdemo-57387683d.com\",\"subjectName\":\"*.jsdkdemo-57387683d.com\",\"hostNames\":[\"*.jsdkdemo-57387683d.com\"],\"pfxBlob\":null,\"siteName\":null,\"selfLink\":null,\"issuer\":\"*.jsdkdemo-57387683d.com\",\"issueDate\":\"2017-04-13T19:11:29+00:00\",\"expirationDate\":\"2027-04-11T19:11:29+00:00\",\"password\":null,\"thumbprint\":\"80535D3B56F894E7F2311B7FD68F6BBA9E6A7F37\",\"valid\":null,\"toDelete\":null,\"cerBlob\":null,\"publicKeyHash\":null,\"hostingEnvironment\":null,\"hostingEnvironmentProfile\":null,\"keyVaultSecretStatus\":\"Initialized\",\"webSpace\":\"rgnemv_ba21748655d5-WestUSwebspace\",\"serverFarmId\":null,\"tags\":{}}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:34 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "3055",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1170",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "ea6002eb-7e68-4bc9-8ee4-0744cf18f72f",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191134Z:ea6002eb-7e68-4bc9-8ee4-0744cf18f72f",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "etag" : "\"1D2B489C564C300\"",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "dfe70c89-f34a-4e6f-a98d-f9b97384a22e",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935\",\"name\":\"webapp1-1da3444935\",\"type\":\"Microsoft.Web/sites\",\"kind\":\"app\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"name\":\"webapp1-1da3444935\",\"state\":\"Running\",\"hostNames\":[\"webapp1-1da3444935.jsdkdemo-57387683d.com\",\"webapp1-1da3444935.azurewebsites.net\"],\"webSpace\":\"rgnemv_ba21748655d5-WestUSwebspace\",\"selfLink\":\"https://waws-prod-bay-071.api.azurewebsites.windows.net:454/subscriptions/00000000-0000-0000-0000-000000000000/webspaces/rgnemv_ba21748655d5-WestUSwebspace/sites/webapp1-1da3444935\",\"repositorySiteName\":\"webapp1-1da3444935\",\"owner\":null,\"usageState\":\"Normal\",\"enabled\":true,\"adminEnabled\":true,\"enabledHostNames\":[\"webapp1-1da3444935.jsdkdemo-57387683d.com\",\"webapp1-1da3444935.azurewebsites.net\",\"webapp1-1da3444935.scm.azurewebsites.net\"],\"siteProperties\":{\"metadata\":null,\"properties\":[],\"appSettings\":null},\"availabilityState\":\"Normal\",\"sslCertificates\":null,\"csrs\":[],\"cers\":null,\"siteMode\":null,\"hostNameSslStates\":[{\"name\":\"webapp1-1da3444935.azurewebsites.net\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Standard\"},{\"name\":\"webapp1-1da3444935.jsdkdemo-57387683d.com\",\"sslState\":\"SniEnabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":\"80535D3B56F894E7F2311B7FD68F6BBA9E6A7F37\",\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Standard\"},{\"name\":\"webapp1-1da3444935.scm.azurewebsites.net\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Repository\"}],\"computeMode\":null,\"serverFarm\":null,\"serverFarmId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/serverfarms/webapp1-1da3444935plane2e47764c\",\"reserved\":false,\"lastModifiedTimeUtc\":\"2017-04-13T19:11:36.24\",\"storageRecoveryDefaultState\":\"Running\",\"contentAvailabilityState\":\"Normal\",\"runtimeAvailabilityState\":\"Normal\",\"siteConfig\":null,\"deploymentId\":\"webapp1-1da3444935\",\"trafficManagerHostNames\":null,\"sku\":\"Standard\",\"premiumAppDeployed\":null,\"scmSiteAlsoStopped\":false,\"targetSwapSlot\":null,\"hostingEnvironment\":null,\"hostingEnvironmentProfile\":null,\"microService\":\"WebSites\",\"gatewaySiteName\":null,\"clientAffinityEnabled\":true,\"clientCertEnabled\":false,\"hostNamesDisabled\":false,\"domainVerificationIdentifiers\":null,\"kind\":\"app\",\"outboundIpAddresses\":\"23.101.199.30,23.101.196.70,23.101.201.119,23.101.197.194\",\"containerSize\":0,\"dailyMemoryTimeQuota\":0,\"suspendedTill\":null,\"siteDisabledReason\":0,\"functionExecutionUnitsCache\":null,\"maxNumberOfWorkers\":null,\"homeStamp\":\"waws-prod-bay-071\",\"cloningInfo\":null,\"hostingEnvironmentId\":null,\"tags\":{},\"resourceGroup\":\"rgnemv_ba21748655d5\",\"defaultHostName\":\"webapp1-1da3444935.azurewebsites.net\",\"slotSwapStatus\":null}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/config/appsettings/list?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:34 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "305",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "0396327d-8357-40a6-bed9-98d6ce29912f",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11978",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191134Z:0396327d-8357-40a6-bed9-98d6ce29912f",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "740463d7-fbf8-431d-b481-ad6eb6ee752b",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"WEBSITE_NODE_DEFAULT_VERSION\":\"6.9.1\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/config/connectionstrings/list?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:34 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "279",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "c9ff7b67-cff6-4524-8c52-3791bf8e66f2",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11977",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191135Z:c9ff7b67-cff6-4524-8c52-3791bf8e66f2",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "638c2348-8e9e-42c8-ac63-24361df68a22",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/config/connectionstrings\",\"name\":\"connectionstrings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/config/slotConfigNames?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:35 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "166",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14950",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "e2078120-7339-432c-9d18-b41ebda12148",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191135Z:e2078120-7339-432c-9d18-b41ebda12148",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "d843464b-ba45-4c8f-ad0c-837dfee25756",
+      "Body" : "{\"id\":null,\"name\":\"webapp1-1da3444935\",\"type\":\"Microsoft.Web/sites\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"connectionStringNames\":null,\"appSettingNames\":null}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/config/authsettings/list?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:35 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "838",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "ead3bd82-6d57-41b5-9f04-d9eb731d8a0a",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11976",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191135Z:ead3bd82-6d57-41b5-9f04-d9eb731d8a0a",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "c73a4fcd-3c4b-4b4c-b69b-7ec6ae9658c1",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/config/authsettings\",\"name\":\"authsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"enabled\":false,\"unauthenticatedClientAction\":null,\"tokenStoreEnabled\":null,\"allowedExternalRedirectUrls\":null,\"defaultProvider\":null,\"clientId\":null,\"clientSecret\":null,\"issuer\":null,\"allowedAudiences\":null,\"additionalLoginParams\":null,\"isAadAutoProvisioned\":false,\"googleClientId\":null,\"googleClientSecret\":null,\"googleOAuthScopes\":null,\"facebookAppId\":null,\"facebookAppSecret\":null,\"facebookOAuthScopes\":null,\"twitterConsumerKey\":null,\"twitterConsumerSecret\":null,\"microsoftAccountClientId\":null,\"microsoftAccountClientSecret\":null,\"microsoftAccountOAuthScopes\":null}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/hostNameBindings?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:35 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "1075",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14949",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "ba81aea7-e05e-4058-b599-6c0149447827",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191135Z:ba81aea7-e05e-4058-b599-6c0149447827",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "etag" : "\"1D2B489C564C300\"",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "0e11d528-a4ee-416b-becf-fc77eb531a72",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/hostNameBindings/webapp1-1da3444935.azurewebsites.net\",\"name\":\"webapp1-1da3444935/webapp1-1da3444935.azurewebsites.net\",\"type\":\"Microsoft.Web/sites/hostNameBindings\",\"location\":\"West US\",\"properties\":{\"siteName\":\"webapp1-1da3444935\",\"domainId\":null,\"hostNameType\":\"Verified\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp1-1da3444935/hostNameBindings/webapp1-1da3444935.jsdkdemo-57387683d.com\",\"name\":\"webapp1-1da3444935/webapp1-1da3444935.jsdkdemo-57387683d.com\",\"type\":\"Microsoft.Web/sites/hostNameBindings\",\"location\":\"West US\",\"properties\":{\"siteName\":\"webapp1-1da3444935\",\"domainId\":null,\"azureResourceName\":\"webapp1-1da3444935\",\"azureResourceType\":\"Website\",\"customHostNameDnsRecordType\":\"CName\",\"hostNameType\":\"Managed\",\"sslState\":\"SniEnabled\",\"thumbprint\":\"80535D3B56F894E7F2311B7FD68F6BBA9E6A7F37\"}}],\"nextLink\":null,\"id\":null}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:37 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "2695",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1169",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "e8b1d953-9c00-4c77-a7de-afcd358f5f1e",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191137Z:e8b1d953-9c00-4c77-a7de-afcd358f5f1e",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "etag" : "\"1D2B489C703CD00\"",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "c3420ed6-1dd7-4278-94fa-09e75c3f9c3a",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733\",\"name\":\"webapp2-8617290733\",\"type\":\"Microsoft.Web/sites\",\"kind\":\"app\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"name\":\"webapp2-8617290733\",\"state\":\"Running\",\"hostNames\":[\"webapp2-8617290733.azurewebsites.net\"],\"webSpace\":\"rgnemv_ba21748655d5-WestUSwebspace\",\"selfLink\":\"https://waws-prod-bay-071.api.azurewebsites.windows.net:454/subscriptions/00000000-0000-0000-0000-000000000000/webspaces/rgnemv_ba21748655d5-WestUSwebspace/sites/webapp2-8617290733\",\"repositorySiteName\":\"webapp2-8617290733\",\"owner\":null,\"usageState\":\"Normal\",\"enabled\":true,\"adminEnabled\":true,\"enabledHostNames\":[\"webapp2-8617290733.azurewebsites.net\",\"webapp2-8617290733.scm.azurewebsites.net\"],\"siteProperties\":{\"metadata\":null,\"properties\":[],\"appSettings\":null},\"availabilityState\":\"Normal\",\"sslCertificates\":null,\"csrs\":[],\"cers\":null,\"siteMode\":null,\"hostNameSslStates\":[{\"name\":\"webapp2-8617290733.azurewebsites.net\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Standard\"},{\"name\":\"webapp2-8617290733.scm.azurewebsites.net\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Repository\"}],\"computeMode\":null,\"serverFarm\":null,\"serverFarmId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/serverfarms/webapp1-1da3444935plane2e47764c\",\"reserved\":false,\"lastModifiedTimeUtc\":\"2017-04-13T19:11:38.96\",\"storageRecoveryDefaultState\":\"Running\",\"contentAvailabilityState\":\"Normal\",\"runtimeAvailabilityState\":\"Normal\",\"siteConfig\":null,\"deploymentId\":\"webapp2-8617290733\",\"trafficManagerHostNames\":null,\"sku\":\"Standard\",\"premiumAppDeployed\":null,\"scmSiteAlsoStopped\":false,\"targetSwapSlot\":null,\"hostingEnvironment\":null,\"hostingEnvironmentProfile\":null,\"microService\":\"WebSites\",\"gatewaySiteName\":null,\"clientAffinityEnabled\":true,\"clientCertEnabled\":false,\"hostNamesDisabled\":false,\"domainVerificationIdentifiers\":null,\"kind\":\"app\",\"outboundIpAddresses\":\"23.101.199.30,23.101.196.70,23.101.201.119,23.101.197.194\",\"containerSize\":0,\"dailyMemoryTimeQuota\":0,\"suspendedTill\":null,\"siteDisabledReason\":0,\"functionExecutionUnitsCache\":null,\"maxNumberOfWorkers\":null,\"homeStamp\":\"waws-prod-bay-071\",\"cloningInfo\":null,\"hostingEnvironmentId\":null,\"tags\":{},\"resourceGroup\":\"rgnemv_ba21748655d5\",\"defaultHostName\":\"webapp2-8617290733.azurewebsites.net\",\"slotSwapStatus\":null}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733/hostNameBindings/webapp2-8617290733.jsdkdemo-57387683d.com?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:42 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "537",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1168",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "4117f00a-3244-4f52-8854-20a49b7cd9d5",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191142Z:4117f00a-3244-4f52-8854-20a49b7cd9d5",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "etag" : "\"1D2B489C703CD00\"",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "6e05e400-4063-4b62-ba9e-4212be2e039c",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733/hostNameBindings/webapp2-8617290733.jsdkdemo-57387683d.com\",\"name\":\"webapp2-8617290733/webapp2-8617290733.jsdkdemo-57387683d.com\",\"type\":\"Microsoft.Web/sites/hostNameBindings\",\"location\":\"West US\",\"properties\":{\"siteName\":\"webapp2-8617290733\",\"domainId\":null,\"azureResourceName\":\"webapp2-8617290733\",\"azureResourceType\":\"Website\",\"customHostNameDnsRecordType\":\"CName\",\"hostNameType\":\"Managed\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:42 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "3015",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14948",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "70c04daa-9e44-4d8d-a19a-b62bda93c3a0",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191142Z:70c04daa-9e44-4d8d-a19a-b62bda93c3a0",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "etag" : "\"1D2B489C9BEA740\"",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "485cff85-c6c3-4f1d-8102-8f0e8ebc4e55",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733\",\"name\":\"webapp2-8617290733\",\"type\":\"Microsoft.Web/sites\",\"kind\":\"app\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"name\":\"webapp2-8617290733\",\"state\":\"Running\",\"hostNames\":[\"webapp2-8617290733.jsdkdemo-57387683d.com\",\"webapp2-8617290733.azurewebsites.net\"],\"webSpace\":\"rgnemv_ba21748655d5-WestUSwebspace\",\"selfLink\":\"https://waws-prod-bay-071.api.azurewebsites.windows.net:454/subscriptions/00000000-0000-0000-0000-000000000000/webspaces/rgnemv_ba21748655d5-WestUSwebspace/sites/webapp2-8617290733\",\"repositorySiteName\":\"webapp2-8617290733\",\"owner\":null,\"usageState\":\"Normal\",\"enabled\":true,\"adminEnabled\":true,\"enabledHostNames\":[\"webapp2-8617290733.jsdkdemo-57387683d.com\",\"webapp2-8617290733.azurewebsites.net\",\"webapp2-8617290733.scm.azurewebsites.net\"],\"siteProperties\":{\"metadata\":null,\"properties\":[],\"appSettings\":null},\"availabilityState\":\"Normal\",\"sslCertificates\":null,\"csrs\":[],\"cers\":null,\"siteMode\":null,\"hostNameSslStates\":[{\"name\":\"webapp2-8617290733.azurewebsites.net\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Standard\"},{\"name\":\"webapp2-8617290733.jsdkdemo-57387683d.com\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Standard\"},{\"name\":\"webapp2-8617290733.scm.azurewebsites.net\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Repository\"}],\"computeMode\":null,\"serverFarm\":null,\"serverFarmId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/serverfarms/webapp1-1da3444935plane2e47764c\",\"reserved\":false,\"lastModifiedTimeUtc\":\"2017-04-13T19:11:43.54\",\"storageRecoveryDefaultState\":\"Running\",\"contentAvailabilityState\":\"Normal\",\"runtimeAvailabilityState\":\"Normal\",\"siteConfig\":null,\"deploymentId\":\"webapp2-8617290733\",\"trafficManagerHostNames\":null,\"sku\":\"Standard\",\"premiumAppDeployed\":null,\"scmSiteAlsoStopped\":false,\"targetSwapSlot\":null,\"hostingEnvironment\":null,\"hostingEnvironmentProfile\":null,\"microService\":\"WebSites\",\"gatewaySiteName\":null,\"clientAffinityEnabled\":true,\"clientCertEnabled\":false,\"hostNamesDisabled\":false,\"domainVerificationIdentifiers\":null,\"kind\":\"app\",\"outboundIpAddresses\":\"23.101.199.30,23.101.196.70,23.101.201.119,23.101.197.194\",\"containerSize\":0,\"dailyMemoryTimeQuota\":0,\"suspendedTill\":null,\"siteDisabledReason\":0,\"functionExecutionUnitsCache\":null,\"maxNumberOfWorkers\":null,\"homeStamp\":\"waws-prod-bay-071\",\"cloningInfo\":null,\"hostingEnvironmentId\":null,\"tags\":{},\"resourceGroup\":\"rgnemv_ba21748655d5\",\"defaultHostName\":\"webapp2-8617290733.azurewebsites.net\",\"slotSwapStatus\":null}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/certificates/80535D3B56F894E7F2311B7FD68F6BBA9E6A7F37%23%23West%20US%23?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:43 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "925",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1167",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "027a6455-61d6-4ffd-ade1-d3fc939db358",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191143Z:027a6455-61d6-4ffd-ade1-d3fc939db358",
+      "x-powered-by" : "ASP.NET",
+      "warning" : "199 Some of the uploaded certificates are either self-signed or expired.,199 Some of the uploaded certificates cannot be validated to a trusted CA",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "591c3863-87b0-43da-b306-0f10cfc758b4",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/certificates/80535D3B56F894E7F2311B7FD68F6BBA9E6A7F37##West US#\",\"name\":\"80535D3B56F894E7F2311B7FD68F6BBA9E6A7F37##West US#\",\"type\":\"Microsoft.Web/certificates\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"friendlyName\":\"jsdkdemo-57387683d.com\",\"subjectName\":\"*.jsdkdemo-57387683d.com\",\"hostNames\":[\"*.jsdkdemo-57387683d.com\"],\"pfxBlob\":null,\"siteName\":null,\"selfLink\":null,\"issuer\":\"*.jsdkdemo-57387683d.com\",\"issueDate\":\"2017-04-13T19:11:29+00:00\",\"expirationDate\":\"2027-04-11T19:11:29+00:00\",\"password\":null,\"thumbprint\":\"80535D3B56F894E7F2311B7FD68F6BBA9E6A7F37\",\"valid\":null,\"toDelete\":null,\"cerBlob\":null,\"publicKeyHash\":null,\"hostingEnvironment\":null,\"hostingEnvironmentProfile\":null,\"keyVaultSecretStatus\":\"Initialized\",\"webSpace\":\"rgnemv_ba21748655d5-WestUSwebspace\",\"serverFarmId\":null,\"tags\":{}}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:44 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "3055",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1166",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "72390ac1-383a-41e2-92c7-10e35730cf3b",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191144Z:72390ac1-383a-41e2-92c7-10e35730cf3b",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "etag" : "\"1D2B489CB886AC0\"",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "b312b8a0-2819-4ce5-8b4f-72c84aec3b94",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733\",\"name\":\"webapp2-8617290733\",\"type\":\"Microsoft.Web/sites\",\"kind\":\"app\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"name\":\"webapp2-8617290733\",\"state\":\"Running\",\"hostNames\":[\"webapp2-8617290733.jsdkdemo-57387683d.com\",\"webapp2-8617290733.azurewebsites.net\"],\"webSpace\":\"rgnemv_ba21748655d5-WestUSwebspace\",\"selfLink\":\"https://waws-prod-bay-071.api.azurewebsites.windows.net:454/subscriptions/00000000-0000-0000-0000-000000000000/webspaces/rgnemv_ba21748655d5-WestUSwebspace/sites/webapp2-8617290733\",\"repositorySiteName\":\"webapp2-8617290733\",\"owner\":null,\"usageState\":\"Normal\",\"enabled\":true,\"adminEnabled\":true,\"enabledHostNames\":[\"webapp2-8617290733.jsdkdemo-57387683d.com\",\"webapp2-8617290733.azurewebsites.net\",\"webapp2-8617290733.scm.azurewebsites.net\"],\"siteProperties\":{\"metadata\":null,\"properties\":[],\"appSettings\":null},\"availabilityState\":\"Normal\",\"sslCertificates\":null,\"csrs\":[],\"cers\":null,\"siteMode\":null,\"hostNameSslStates\":[{\"name\":\"webapp2-8617290733.azurewebsites.net\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Standard\"},{\"name\":\"webapp2-8617290733.jsdkdemo-57387683d.com\",\"sslState\":\"SniEnabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":\"80535D3B56F894E7F2311B7FD68F6BBA9E6A7F37\",\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Standard\"},{\"name\":\"webapp2-8617290733.scm.azurewebsites.net\",\"sslState\":\"Disabled\",\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":\"NotConfigured\",\"hostType\":\"Repository\"}],\"computeMode\":null,\"serverFarm\":null,\"serverFarmId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/serverfarms/webapp1-1da3444935plane2e47764c\",\"reserved\":false,\"lastModifiedTimeUtc\":\"2017-04-13T19:11:46.54\",\"storageRecoveryDefaultState\":\"Running\",\"contentAvailabilityState\":\"Normal\",\"runtimeAvailabilityState\":\"Normal\",\"siteConfig\":null,\"deploymentId\":\"webapp2-8617290733\",\"trafficManagerHostNames\":null,\"sku\":\"Standard\",\"premiumAppDeployed\":null,\"scmSiteAlsoStopped\":false,\"targetSwapSlot\":null,\"hostingEnvironment\":null,\"hostingEnvironmentProfile\":null,\"microService\":\"WebSites\",\"gatewaySiteName\":null,\"clientAffinityEnabled\":true,\"clientCertEnabled\":false,\"hostNamesDisabled\":false,\"domainVerificationIdentifiers\":null,\"kind\":\"app\",\"outboundIpAddresses\":\"23.101.199.30,23.101.196.70,23.101.201.119,23.101.197.194\",\"containerSize\":0,\"dailyMemoryTimeQuota\":0,\"suspendedTill\":null,\"siteDisabledReason\":0,\"functionExecutionUnitsCache\":null,\"maxNumberOfWorkers\":null,\"homeStamp\":\"waws-prod-bay-071\",\"cloningInfo\":null,\"hostingEnvironmentId\":null,\"tags\":{},\"resourceGroup\":\"rgnemv_ba21748655d5\",\"defaultHostName\":\"webapp2-8617290733.azurewebsites.net\",\"slotSwapStatus\":null}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733/config/appsettings/list?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:44 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "305",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "8c704e6d-c829-45ac-a722-f0e557582d99",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11975",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191145Z:8c704e6d-c829-45ac-a722-f0e557582d99",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "a15604ab-b557-440a-99ba-a67b1f2131d5",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"WEBSITE_NODE_DEFAULT_VERSION\":\"6.9.1\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733/config/connectionstrings/list?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:44 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "279",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "204a14e7-9c8a-436c-8796-0bd573e3fcf6",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11974",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191145Z:204a14e7-9c8a-436c-8796-0bd573e3fcf6",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "171220c9-6818-4915-925e-b1fa6f8a1003",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733/config/connectionstrings\",\"name\":\"connectionstrings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733/config/slotConfigNames?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:44 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "166",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14947",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "35340840-f727-4208-84af-559da9ae3955",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191145Z:35340840-f727-4208-84af-559da9ae3955",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "79f75b88-e13f-43e0-a647-58aeb526b172",
+      "Body" : "{\"id\":null,\"name\":\"webapp2-8617290733\",\"type\":\"Microsoft.Web/sites\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"connectionStringNames\":null,\"appSettingNames\":null}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733/config/authsettings/list?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:45 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "838",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "26981a2f-a3c5-42f0-a529-93362f6526d4",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11973",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191145Z:26981a2f-a3c5-42f0-a529-93362f6526d4",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "368b6fec-a4a6-4bf6-830c-565591641ede",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733/config/authsettings\",\"name\":\"authsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"enabled\":false,\"unauthenticatedClientAction\":null,\"tokenStoreEnabled\":null,\"allowedExternalRedirectUrls\":null,\"defaultProvider\":null,\"clientId\":null,\"clientSecret\":null,\"issuer\":null,\"allowedAudiences\":null,\"additionalLoginParams\":null,\"isAadAutoProvisioned\":false,\"googleClientId\":null,\"googleClientSecret\":null,\"googleOAuthScopes\":null,\"facebookAppId\":null,\"facebookAppSecret\":null,\"facebookOAuthScopes\":null,\"twitterConsumerKey\":null,\"twitterConsumerSecret\":null,\"microsoftAccountClientId\":null,\"microsoftAccountClientSecret\":null,\"microsoftAccountOAuthScopes\":null}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733/hostNameBindings?api-version=2016-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (WebSiteManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:45 GMT",
+      "server" : "Microsoft-IIS/8.0",
+      "content-length" : "1075",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14946",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "4ed2b4e5-b2ed-4cad-b485-ad7af91cb987",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191145Z:4ed2b4e5-b2ed-4cad-b485-ad7af91cb987",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json",
+      "etag" : "\"1D2B489CB886AC0\"",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "975a2aee-f231-45a8-9bc6-c9d16f5bba11",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733/hostNameBindings/webapp2-8617290733.azurewebsites.net\",\"name\":\"webapp2-8617290733/webapp2-8617290733.azurewebsites.net\",\"type\":\"Microsoft.Web/sites/hostNameBindings\",\"location\":\"West US\",\"properties\":{\"siteName\":\"webapp2-8617290733\",\"domainId\":null,\"hostNameType\":\"Verified\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_ba21748655d5/providers/Microsoft.Web/sites/webapp2-8617290733/hostNameBindings/webapp2-8617290733.jsdkdemo-57387683d.com\",\"name\":\"webapp2-8617290733/webapp2-8617290733.jsdkdemo-57387683d.com\",\"type\":\"Microsoft.Web/sites/hostNameBindings\",\"location\":\"West US\",\"properties\":{\"siteName\":\"webapp2-8617290733\",\"domainId\":null,\"azureResourceName\":\"webapp2-8617290733\",\"azureResourceType\":\"Website\",\"customHostNameDnsRecordType\":\"CName\",\"hostNameType\":\"Managed\",\"sslState\":\"SniEnabled\",\"thumbprint\":\"80535D3B56F894E7F2311B7FD68F6BBA9E6A7F37\"}}],\"nextLink\":null,\"id\":null}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgnemv_ba21748655d5?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:45 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1165",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "17af00fc-e407-41ae-8720-044643c4b267",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191146Z:17af00fc-e407-41ae-8720-044643c4b267",
+      "location" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUZCQTIxNzQ4NjU1RDUtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "17af00fc-e407-41ae-8720-044643c4b267",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUZCQTIxNzQ4NjU1RDUtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:11:46 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14945",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "a7bcb96a-db87-495d-8025-a8af5bdad316",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191146Z:a7bcb96a-db87-495d-8025-a8af5bdad316",
+      "location" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUZCQTIxNzQ4NjU1RDUtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "a7bcb96a-db87-495d-8025-a8af5bdad316",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUZCQTIxNzQ4NjU1RDUtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:12:00 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14944",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "f611d5cf-b254-4478-a090-5fda8ba3a832",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191201Z:f611d5cf-b254-4478-a090-5fda8ba3a832",
+      "location" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUZCQTIxNzQ4NjU1RDUtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "f611d5cf-b254-4478-a090-5fda8ba3a832",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUZCQTIxNzQ4NjU1RDUtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:12:15 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14943",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "d6470c38-9eb6-41db-b99f-034ba6342bf2",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191216Z:d6470c38-9eb6-41db-b99f-034ba6342bf2",
+      "location" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUZCQTIxNzQ4NjU1RDUtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "d6470c38-9eb6-41db-b99f-034ba6342bf2",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUZCQTIxNzQ4NjU1RDUtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:12:30 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14942",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "3c49f876-4743-4439-bbb6-a1a25c8590ca",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191231Z:3c49f876-4743-4439-bbb6-a1a25c8590ca",
+      "location" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUZCQTIxNzQ4NjU1RDUtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "3c49f876-4743-4439-bbb6-a1a25c8590ca",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUZCQTIxNzQ4NjU1RDUtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:12:46 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14941",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "653c5248-8c2c-453c-afc9-8d9604f14b0c",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191246Z:653c5248-8c2c-453c-afc9-8d9604f14b0c",
+      "location" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUZCQTIxNzQ4NjU1RDUtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "653c5248-8c2c-453c-afc9-8d9604f14b0c",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUZCQTIxNzQ4NjU1RDUtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:13:01 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14940",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "70c871a4-f5fc-49f2-9157-1f94ca852764",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191302Z:70c871a4-f5fc-49f2-9157-1f94ca852764",
+      "location" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUZCQTIxNzQ4NjU1RDUtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "70c871a4-f5fc-49f2-9157-1f94ca852764",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUZCQTIxNzQ4NjU1RDUtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:13:16 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14939",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "c8df7fc3-ffb7-44cf-be27-1f75ebb5c359",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191317Z:c8df7fc3-ffb7-44cf-be27-1f75ebb5c359",
+      "location" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUZCQTIxNzQ4NjU1RDUtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "c8df7fc3-ffb7-44cf-be27-1f75ebb5c359",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3379/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUZCQTIxNzQ4NjU1RDUtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 19:13:31 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14938",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "ddcdeb99-43f8-4e53-8495-d4896287e492",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T191332Z:ddcdeb99-43f8-4e53-8495-d4896287e492",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "ddcdeb99-43f8-4e53-8495-d4896287e492",
+      "Body" : ""
+    }
+  } ],
+  "variables" : [ "webapp1-1da3444935", "webapp2-8617290733", "rgnemv_ba21748655d5", "jsdkdemo-57387683d", "webapp1-1da3444935plane2e47764c" ]
+}

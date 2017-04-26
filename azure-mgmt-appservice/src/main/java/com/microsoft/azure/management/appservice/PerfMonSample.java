@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.appservice;
 
 import org.joda.time.DateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Performance monitor sample in a set.
@@ -17,16 +18,19 @@ public class PerfMonSample {
     /**
      * Point in time for which counter was measured.
      */
+    @JsonProperty(value = "time")
     private DateTime time;
 
     /**
      * Name of the server on which the measurement is made.
      */
+    @JsonProperty(value = "instanceName")
     private String instanceName;
 
     /**
      * Value of counter at a certain time.
      */
+    @JsonProperty(value = "value")
     private Double value;
 
     /**

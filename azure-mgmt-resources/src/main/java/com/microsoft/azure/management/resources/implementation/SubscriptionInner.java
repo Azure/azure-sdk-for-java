@@ -17,47 +17,50 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class SubscriptionInner {
     /**
-     * The fully qualified Id. For example,
+     * The fully qualified ID for the subscription. For example,
      * /subscriptions/00000000-0000-0000-0000-000000000000.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
-     * The subscription Id.
+     * The subscription ID.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
     /**
-     * The tenant Id.
+     * The tenant ID.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /**
      * The subscription display name.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /**
-     * The subscription state. Possible values include: 'Enabled', 'Warned',
+     * The subscription state. Possible values are Enabled, Warned, PastDue,
+     * Disabled, and Deleted. Possible values include: 'Enabled', 'Warned',
      * 'PastDue', 'Disabled', 'Deleted'.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private SubscriptionState state;
 
     /**
      * The subscription policies.
      */
+    @JsonProperty(value = "subscriptionPolicies")
     private SubscriptionPolicies subscriptionPolicies;
 
     /**
      * The authorization source of the request. Valid values are one or more
-     * combinations of Legacy, RoleBased, Bypassed, Direct and Management.
-     * For example, 'Legacy, RoleBased'.
+     * combinations of Legacy, RoleBased, Bypassed, Direct and Management. For
+     * example, 'Legacy, RoleBased'.
      */
+    @JsonProperty(value = "authorizationSource")
     private String authorizationSource;
 
     /**

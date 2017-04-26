@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.Page;
@@ -6,8 +12,11 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
 import com.microsoft.azure.management.resources.implementation.PageImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import org.junit.Assert;
 import org.junit.Test;
+import rx.Observable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -151,22 +160,33 @@ public class GroupPagedListTests {
             }
 
             @Override
+            public Observable<ResourceGroupExportResult> exportTemplateAsync(ResourceGroupExportTemplateOptions options) {
+                return null;
+            }
+
+            @Override
+            public ServiceFuture<ResourceGroupExportResult> exportTemplateAsync(ResourceGroupExportTemplateOptions options, ServiceCallback<ResourceGroupExportResult> callback) {
+                return null;
+            }
+
+            @Override
             public String key() {
                 return null;
             }
 
             @Override
             public ResourceGroup refresh() {
-                return null;
+                return refreshAsync().toBlocking().last();
+            }
+
+            @Override
+            public Observable<ResourceGroup> refreshAsync() {
+                return Observable.just(null);
             }
 
             @Override
             public ResourceGroupInner inner() {
                 return null;
-            }
-
-            @Override
-            public void setInner(ResourceGroupInner inner) {
             }
         };
     }

@@ -11,14 +11,14 @@ import com.microsoft.azure.management.network.implementation.SecurityRuleInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * A network security rule in a network security group.
  */
 @Fluent
 public interface NetworkSecurityRule extends
-    Wrapper<SecurityRuleInner>,
+    HasInner<SecurityRuleInner>,
     ChildResource<NetworkSecurityGroup> {
 
     /**
@@ -90,45 +90,45 @@ public interface NetworkSecurityRule extends
     interface DefinitionStages {
         /**
          * The first stage of a security rule definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithDirectionAccess<ParentT> {
         }
 
         /**
          * The stage of the security rule definition allowing the protocol that the rule applies to to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithProtocol<ParentT> {
             /**
              * Specifies the protocol that this rule applies to.
              * @param protocol one of the supported protocols
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withProtocol(SecurityRuleProtocol protocol);
 
             /**
              * Makes this rule apply to any supported protocol.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withAnyProtocol();
         }
 
         /**
          * The stage of the network rule definition allowing the destination port(s) to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithDestinationPort<ParentT> {
             /**
              * Specifies the destination port to which this rule applies.
              * @param port the destination port number
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             WithProtocol<ParentT> toPort(int port);
 
             /**
              * Makes this rule apply to any destination port.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             WithProtocol<ParentT> toAnyPort();
@@ -137,26 +137,26 @@ public interface NetworkSecurityRule extends
              * Specifies the destination port range to which this rule applies.
              * @param from the starting port number
              * @param to the ending port number
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             WithProtocol<ParentT> toPortRange(int from, int to);
         }
 
         /**
          * The stage of the network rule definition allowing the destination address to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithDestinationAddress<ParentT> {
             /**
              * Specifies the traffic destination address range to which this rule applies.
              * @param cidr an IP address range expressed in the CIDR notation
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             WithDestinationPort<ParentT> toAddress(String cidr);
 
             /**
              * Makes the rule apply to any traffic destination address.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             WithDestinationPort<ParentT> toAnyAddress();
@@ -164,19 +164,19 @@ public interface NetworkSecurityRule extends
 
         /**
          * The stage of the network rule definition allowing the source port(s) to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithSourcePort<ParentT> {
             /**
              * Specifies the source port to which this rule applies.
              * @param port the source port number
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             WithDestinationAddress<ParentT> fromPort(int port);
 
             /**
              * Makes this rule apply to any source port.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             WithDestinationAddress<ParentT> fromAnyPort();
@@ -185,27 +185,27 @@ public interface NetworkSecurityRule extends
              * Specifies the source port range to which this rule applies.
              * @param from the starting port number
              * @param to the ending port number
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             WithDestinationAddress<ParentT> fromPortRange(int from, int to);
         }
 
         /**
          * The stage of the network rule definition allowing the source address to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithSourceAddress<ParentT> {
             /**
              * Specifies the traffic source address prefix to which this rule applies.
              * @param cidr an IP address prefix expressed in the CIDR notation
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             WithSourcePort<ParentT> fromAddress(String cidr);
 
             /**
              * Specifies that the rule applies to any traffic source address.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             WithSourcePort<ParentT> fromAnyAddress();
@@ -213,33 +213,33 @@ public interface NetworkSecurityRule extends
 
         /**
          * The stage of the network rule definition allowing the direction and the access type to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithDirectionAccess<ParentT> {
             /**
              * Allows inbound traffic.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             WithSourceAddress<ParentT> allowInbound();
 
             /**
              * Allows outbound traffic.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             WithSourceAddress<ParentT> allowOutbound();
 
             /**
              * Blocks inbound traffic.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             WithSourceAddress<ParentT> denyInbound();
 
             /**
              * Blocks outbound traffic.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             WithSourceAddress<ParentT> denyOutbound();
@@ -247,7 +247,7 @@ public interface NetworkSecurityRule extends
 
         /**
          * The stage of the network rule definition allowing the priority to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithPriority<ParentT> {
             /**
@@ -262,7 +262,7 @@ public interface NetworkSecurityRule extends
 
         /**
          * The stage of the network rule definition allowing the description to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithDescription<ParentT> {
             /**
@@ -313,33 +313,33 @@ public interface NetworkSecurityRule extends
 
         /**
          * The stage of the network rule description allowing the direction and the access type to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithDirectionAccess<ParentT> {
             /**
              * Allows inbound traffic.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             WithSourceAddress<ParentT> allowInbound();
 
             /**
              * Allows outbound traffic.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             WithSourceAddress<ParentT> allowOutbound();
 
             /**
              * Blocks inbound traffic.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             WithSourceAddress<ParentT> denyInbound();
 
             /**
              * Blocks outbound traffic.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             WithSourceAddress<ParentT> denyOutbound();
@@ -347,20 +347,20 @@ public interface NetworkSecurityRule extends
 
         /**
          * The stage of the network rule definition allowing the source address to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithSourceAddress<ParentT> {
             /**
              * Specifies the traffic source address prefix to which this rule applies.
              * @param cidr an IP address prefix expressed in the CIDR notation
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             WithSourcePort<ParentT> fromAddress(String cidr);
 
             /**
              * Specifies that the rule applies to any traffic source address.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             WithSourcePort<ParentT> fromAnyAddress();
@@ -368,19 +368,19 @@ public interface NetworkSecurityRule extends
 
         /**
          * The stage of the network rule definition allowing the source port(s) to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithSourcePort<ParentT> {
             /**
              * Specifies the source port to which this rule applies.
              * @param port the source port number
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             WithDestinationAddress<ParentT> fromPort(int port);
 
             /**
              * Makes this rule apply to any source port.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             WithDestinationAddress<ParentT> fromAnyPort();
@@ -389,26 +389,26 @@ public interface NetworkSecurityRule extends
              * Specifies the source port range to which this rule applies.
              * @param from the starting port number
              * @param to the ending port number
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             WithDestinationAddress<ParentT> fromPortRange(int from, int to);
         }
 
         /**
          * The stage of the network rule definition allowing the destination address to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithDestinationAddress<ParentT> {
             /**
              * Specifies the traffic destination address range to which this rule applies.
              * @param cidr an IP address range expressed in the CIDR notation
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             WithDestinationPort<ParentT> toAddress(String cidr);
 
             /**
              * Makes the rule apply to any traffic destination address.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             WithDestinationPort<ParentT> toAnyAddress();
@@ -416,19 +416,19 @@ public interface NetworkSecurityRule extends
 
         /**
          * The stage of the network rule definition allowing the destination port(s) to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithDestinationPort<ParentT> {
             /**
              * Specifies the destination port to which this rule applies.
              * @param port the destination port number
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             WithProtocol<ParentT> toPort(int port);
 
             /**
              * Makes this rule apply to any destination port.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             WithProtocol<ParentT> toAnyPort();
@@ -437,26 +437,26 @@ public interface NetworkSecurityRule extends
              * Specifies the destination port range to which this rule applies.
              * @param from the starting port number
              * @param to the ending port number
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             WithProtocol<ParentT> toPortRange(int from, int to);
         }
 
         /**
          * The stage of the security rule definition allowing the protocol that the rule applies to to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithProtocol<ParentT> {
             /**
              * Specifies the protocol that this rule applies to.
              * @param protocol one of the supported protocols
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withProtocol(SecurityRuleProtocol protocol);
 
             /**
              * Makes this rule apply to any supported protocol.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withAnyProtocol();
         }
@@ -525,28 +525,28 @@ public interface NetworkSecurityRule extends
         interface WithDirectionAccess {
             /**
              * Allows inbound traffic.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             Update allowInbound();
 
             /**
              * Allows outbound traffic.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             Update allowOutbound();
 
             /**
              * Blocks inbound traffic.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             Update denyInbound();
 
             /**
              * Blocks outbound traffic.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             Update denyOutbound();
@@ -559,14 +559,14 @@ public interface NetworkSecurityRule extends
             /**
              * Specifies the traffic source address prefix to which this rule applies.
              * @param cidr an IP address prefix expressed in the CIDR notation
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             Update fromAddress(String cidr);
 
             /**
              * Specifies that the rule applies to any traffic source address.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             Update fromAnyAddress();
@@ -579,13 +579,13 @@ public interface NetworkSecurityRule extends
             /**
              * Specifies the source port to which this rule applies.
              * @param port the source port number
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             Update fromPort(int port);
 
             /**
              * Makes this rule apply to any source port.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             Update fromAnyPort();
@@ -594,7 +594,7 @@ public interface NetworkSecurityRule extends
              * Specifies the source port range to which this rule applies.
              * @param from the starting port number
              * @param to the ending port number
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             Update fromPortRange(int from, int to);
         }
@@ -606,13 +606,13 @@ public interface NetworkSecurityRule extends
             /**
              * Specifies the traffic destination address range to which this rule applies.
              * @param cidr an IP address range expressed in the CIDR notation
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             Update toAddress(String cidr);
 
             /**
              * Makes the rule apply to any traffic destination address.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             Update toAnyAddress();
@@ -625,13 +625,13 @@ public interface NetworkSecurityRule extends
             /**
              * Specifies the destination port to which this rule applies.
              * @param port the destination port number
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             Update toPort(int port);
 
             /**
              * Makes this rule apply to any destination port.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             @Method
             Update toAnyPort();
@@ -640,7 +640,7 @@ public interface NetworkSecurityRule extends
              * Specifies the destination port range to which this rule applies.
              * @param from the starting port number
              * @param to the ending port number
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             Update toPortRange(int from, int to);
         }
@@ -652,13 +652,13 @@ public interface NetworkSecurityRule extends
             /**
              * Specifies the protocol that this rule applies to.
              * @param protocol one of the supported protocols
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             Update withProtocol(SecurityRuleProtocol protocol);
 
             /**
              * Makes this rule apply to any supported protocol.
-             * @return the next stage of the security rule definition
+             * @return the next stage of the definition
              */
             Update withAnyProtocol();
         }

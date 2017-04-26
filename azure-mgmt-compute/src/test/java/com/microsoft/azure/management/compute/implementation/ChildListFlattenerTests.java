@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.Page;
@@ -46,12 +52,12 @@ public class ChildListFlattenerTests {
 
     private class EmptyPage implements Page<Integer> {
         @Override
-        public String getNextPageLink() {
+        public String nextPageLink() {
             return null;
         }
 
         @Override
-        public List<Integer> getItems() {
+        public List<Integer> items() {
             return new ArrayList<>();
         }
     }
@@ -64,7 +70,7 @@ public class ChildListFlattenerTests {
         }
 
         @Override
-        public String getNextPageLink() {
+        public String nextPageLink() {
             if (page == 5) {
                 return null;
             }
@@ -72,7 +78,7 @@ public class ChildListFlattenerTests {
         }
 
         @Override
-        public List<Integer> getItems() {
+        public List<Integer> items() {
             if (page == 2) {
                 List<Integer> items = new ArrayList<>();
                 items.add(1);
@@ -96,7 +102,7 @@ public class ChildListFlattenerTests {
         }
 
         @Override
-        public String getNextPageLink() {
+        public String nextPageLink() {
             if (page == 5) {
                 return null;
             }
@@ -104,7 +110,7 @@ public class ChildListFlattenerTests {
         }
 
         @Override
-        public List<Integer> getItems() {
+        public List<Integer> items() {
             if ((parent == 1 || parent == 2) && page == 2) {
                 List<Integer> items = new ArrayList<>();
                 items.add(parent);

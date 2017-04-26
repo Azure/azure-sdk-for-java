@@ -8,19 +8,21 @@ package com.microsoft.azure.management.network;
 import java.io.File;
 import java.io.IOException;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewaySslCertificateInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * An immutable client-side representation of an application gateway SSL certificate.
  */
 @Fluent()
+@Beta()
 public interface ApplicationGatewaySslCertificate extends
-    Wrapper<ApplicationGatewaySslCertificateInner>,
+    HasInner<ApplicationGatewaySslCertificateInner>,
     ChildResource<ApplicationGateway> {
 
     /**
@@ -65,6 +67,7 @@ public interface ApplicationGatewaySslCertificate extends
              * Specifies the PFX (PKCS#12) file to get the private key content from.
              * @param pfxFile a file in the PFX format
              * @return the next stage of the definition
+             * @throws java.io.IOException when there are problems with the provided file
              */
             WithPassword<ParentT> withPfxFromFile(File pfxFile) throws IOException;
         }

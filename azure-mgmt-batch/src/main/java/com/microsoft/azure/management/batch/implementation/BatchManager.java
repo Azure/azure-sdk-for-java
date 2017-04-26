@@ -6,16 +6,19 @@
 
 package com.microsoft.azure.management.batch.implementation;
 
-import com.microsoft.azure.RestClient;
+import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.batch.BatchAccounts;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
+import com.microsoft.azure.serializer.AzureJacksonAdapter;
+import com.microsoft.rest.RestClient;
 
 /**
- * Entry point to Azure Batch Account resource management.
+ * Entry point to Azure Batch service management.
  */
 public class BatchManager extends Manager<BatchManager, BatchManagementClientImpl> {
 
@@ -32,7 +35,7 @@ public class BatchManager extends Manager<BatchManager, BatchManagementClientImp
     }
 
     /**
-     * Get a Configurable instance that can be used to create BatchManager with optional configuration.
+     * Get a Configurable instance that can be used to create a BatchManager with optional configuration.
      *
      * @return Configurable
      */
@@ -41,20 +44,23 @@ public class BatchManager extends Manager<BatchManager, BatchManagementClientImp
     }
 
     /**
-     * Creates an instance of BatchManager that exposes Compute resource management API entry points.
+     * Creates an instance of a BatchManager that exposes Batch resource management API entry points.
      *
      * @param credentials the credentials to use
      * @param subscriptionId the subscription
      * @return the BatchManager
      */
     public static BatchManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-        return new BatchManager(credentials.getEnvironment().newRestClientBuilder()
+        return new BatchManager(new RestClient.Builder()
+                .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
+                .withSerializerAdapter(new AzureJacksonAdapter())
+                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                 .build(), subscriptionId);
     }
 
     /**
-     * Creates an instance of BatchManager that exposes Compute resource management API entry points.
+     * Creates an instance of a BatchManager that exposes Batch resource management API entry points.
      *
      * @param restClient the RestClient to be used for API calls.
      * @param subscriptionId the subscription
@@ -93,13 +99,7 @@ public class BatchManager extends Manager<BatchManager, BatchManagementClientImp
      */
     public BatchAccounts batchAccounts() {
         if (batchAccounts == null) {
-            batchAccounts = new BatchAccountsImpl(
-                    super.innerManagementClient.batchAccounts(),
-                    this,
-                    super.innerManagementClient.applications(),
-                    super.innerManagementClient.applicationPackages(),
-                    super.innerManagementClient.locations(),
-                    this.storageManager);
+            batchAccounts = new BatchAccountsImpl(this, this.storageManager);
         }
 
         return batchAccounts;

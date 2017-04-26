@@ -1,30 +1,32 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
+import com.microsoft.azure.management.resources.core.TestBase;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import okhttp3.logging.HttpLoggingInterceptor;
+import com.microsoft.rest.RestClient;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
 
-public class ProvidersTests {
+public class ProvidersTests extends TestBase {
     protected static ResourceManager resourceManager;
 
-    @BeforeClass
-    public static void setup() throws Exception {
+    @Override
+    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
         resourceManager = ResourceManager
-                .configure()
-                .withLogLevel(HttpLoggingInterceptor.Level.BODY)
-                .authenticate(
-                        new ApplicationTokenCredentials(
-                                System.getenv("client-id"),
-                                System.getenv("domain"),
-                                System.getenv("secret"),
-                                AzureEnvironment.AZURE)
-                ).withSubscription(System.getenv("subscription-id"));
+                .authenticate(restClient)
+                .withSubscription(defaultSubscription);
+    }
+
+    @Override
+    protected void cleanUpResources() {
     }
 
     @Test
@@ -36,12 +38,13 @@ public class ProvidersTests {
         resourceManager.providers().unregister(provider.namespace());
         provider = resourceManager.providers().getByName(provider.namespace());
         while (provider.registrationState().equals("Unregistering")) {
-            Thread.sleep(5000);
+            SdkContext.sleep(5000);
             provider = resourceManager.providers().getByName(provider.namespace());
         }
         resourceManager.providers().register(provider.namespace());
-        while (provider.registrationState().equals("Unregistered")) {
-            Thread.sleep(5000);
+        while (provider.registrationState().equals("Unregistered")
+                || provider.registrationState().equalsIgnoreCase("Registering")) {
+            SdkContext.sleep(5 * 1000);
             provider = resourceManager.providers().getByName(provider.namespace());
         }
         Assert.assertEquals("Registered", provider.registrationState());

@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Identifies an object.
@@ -16,6 +17,7 @@ public class NameIdentifierInner {
     /**
      * Name of the object.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**

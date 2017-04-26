@@ -1,5 +1,12 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 package com.microsoft.azure.management.compute.implementation;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImage;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSet;
@@ -23,13 +30,9 @@ public class VirtualMachineScaleSetExtensionImpl
         VirtualMachineScaleSetExtension.UpdateDefinition<VirtualMachineScaleSet.UpdateStages.WithApply>,
         VirtualMachineScaleSetExtension.Update {
 
-    private HashMap<String, Object> publicSettings;
-    private HashMap<String, Object> protectedSettings;
-
     protected VirtualMachineScaleSetExtensionImpl(VirtualMachineScaleSetExtensionInner inner,
                                                   VirtualMachineScaleSetImpl parent) {
         super(inner, parent);
-        initializeSettings();
     }
 
     // Getters
@@ -61,12 +64,20 @@ public class VirtualMachineScaleSetExtensionImpl
 
     @Override
     public Map<String, Object> publicSettings() {
-        return Collections.unmodifiableMap(this.publicSettings);
+        if (this.inner().settings() == null) {
+            return Collections.unmodifiableMap(new LinkedHashMap<String, Object>());
+        }
+        return Collections.unmodifiableMap((LinkedHashMap<String, Object>) this.inner().settings());
     }
 
     @Override
     public String publicSettingsAsJsonString() {
-        return null;
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this.publicSettings());
+        } catch (JsonProcessingException jex) {
+            return null;
+        }
     }
 
     @Override
@@ -105,27 +116,27 @@ public class VirtualMachineScaleSetExtensionImpl
 
     @Override
     public VirtualMachineScaleSetExtensionImpl withPublicSetting(String key, Object value) {
-        this.publicSettings.put(key, value);
+        this.ensurePublicSettings().put(key, value);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetExtensionImpl withProtectedSetting(String key, Object value) {
-        this.protectedSettings.put(key, value);
+        this.ensureProtectedSettings().put(key, value);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetExtensionImpl withPublicSettings(HashMap<String, Object> settings) {
-        this.publicSettings.clear();
-        this.publicSettings.putAll(settings);
+        this.ensurePublicSettings().clear();
+        this.ensurePublicSettings().putAll(settings);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetExtensionImpl withProtectedSettings(HashMap<String, Object> settings) {
-        this.protectedSettings.clear();
-        this.protectedSettings.putAll(settings);
+        this.ensureProtectedSettings().clear();
+        this.ensureProtectedSettings().putAll(settings);
         return this;
     }
 
@@ -141,36 +152,30 @@ public class VirtualMachineScaleSetExtensionImpl
         return this;
     }
 
-    // Helper methods
-    //
-    private void nullifySettingsIfEmpty() {
-        if (this.publicSettings.size() == 0) {
-            this.inner().withSettings(null);
-        }
-        if (this.protectedSettings.size() == 0) {
-            this.inner().withProtectedSettings(null);
-        }
-    }
-
-    private void initializeSettings() {
-        if (this.inner().settings() == null) {
-            this.publicSettings = new LinkedHashMap<>();
-            this.inner().withSettings(this.publicSettings);
-        } else {
-            this.publicSettings = (LinkedHashMap<String, Object>) this.inner().settings();
-        }
-
-        if (this.inner().protectedSettings() == null) {
-            this.protectedSettings = new LinkedHashMap<>();
-            this.inner().withProtectedSettings(this.protectedSettings);
-        } else {
-            this.protectedSettings = (LinkedHashMap<String, Object>) this.inner().protectedSettings();
-        }
-    }
-
     @Override
     public VirtualMachineScaleSetImpl attach() {
-        nullifySettingsIfEmpty();
         return this.parent().withExtension(this);
+    }
+
+    //
+    // Note: Internal handling of VMSS extensions are different from VM extension.
+    //       VM extensions are external child resources so only new, added or updated extensions will be committed.
+    //
+    //       VMSS extensions are inline child resources hence all extensions are always part of VMSS PUT payload
+    //       i.e including the one that user didn't choose to update. ensurePublicSettings and ensureProtectedSettings
+    //       are used to ensure we initialize settings/protectedSettings of an extension only if user choose to update it.
+    //
+    private HashMap<String, Object> ensurePublicSettings() {
+        if (this.inner().settings() == null) {
+            this.inner().withSettings(new LinkedHashMap<String, Object>());
+        }
+        return (LinkedHashMap<String, Object>) this.inner().settings();
+    }
+
+    private HashMap<String, Object> ensureProtectedSettings() {
+        if (this.inner().protectedSettings() == null) {
+            this.inner().withProtectedSettings(new LinkedHashMap<String, Object>());
+        }
+        return (LinkedHashMap<String, Object>) this.inner().protectedSettings();
     }
 }

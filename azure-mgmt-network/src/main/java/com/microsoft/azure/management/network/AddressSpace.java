@@ -9,16 +9,18 @@
 package com.microsoft.azure.management.network;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * AddressSpace contains an array of IP address ranges that can be used by
- * subnets.
+ * subnets of the virtual network.
  */
 public class AddressSpace {
     /**
-     * Gets or sets list of address blocks reserved for this virtual network
-     * in CIDR notation.
+     * A list of address blocks reserved for this virtual network in CIDR
+     * notation.
      */
+    @JsonProperty(value = "addressPrefixes")
     private List<String> addressPrefixes;
 
     /**

@@ -19,19 +19,20 @@ public class VaultProperties {
     /**
      * The URI of the vault for performing operations on keys and secrets.
      */
+    @JsonProperty(value = "vaultUri")
     private String vaultUri;
 
     /**
      * The Azure Active Directory tenant ID that should be used for
      * authenticating requests to the key vault.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "tenantId", required = true)
     private UUID tenantId;
 
     /**
      * SKU details.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
     /**
@@ -39,25 +40,28 @@ public class VaultProperties {
      * identities in the array must use the same tenant ID as the key vault's
      * tenant ID.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "accessPolicies", required = true)
     private List<AccessPolicyEntry> accessPolicies;
 
     /**
      * Property to specify whether Azure Virtual Machines are permitted to
      * retrieve certificates stored as secrets from the key vault.
      */
+    @JsonProperty(value = "enabledForDeployment")
     private Boolean enabledForDeployment;
 
     /**
      * Property to specify whether Azure Disk Encryption is permitted to
      * retrieve secrets from the vault and unwrap keys.
      */
+    @JsonProperty(value = "enabledForDiskEncryption")
     private Boolean enabledForDiskEncryption;
 
     /**
      * Property to specify whether Azure Resource Manager is permitted to
      * retrieve secrets from the key vault.
      */
+    @JsonProperty(value = "enabledForTemplateDeployment")
     private Boolean enabledForTemplateDeployment;
 
     /**

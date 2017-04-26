@@ -15,19 +15,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Sku {
     /**
-     * Gets or sets the sku name. Required for account creation, optional for
+     * Gets or sets the sku name. Required for account creation; optional for
      * update. Note that in older versions, sku name was called accountType.
      * Possible values include: 'Standard_LRS', 'Standard_GRS',
      * 'Standard_RAGRS', 'Standard_ZRS', 'Premium_LRS'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "name", required = true)
     private SkuName name;
 
     /**
      * Gets the sku tier. This is based on the SKU name. Possible values
      * include: 'Standard', 'Premium'.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private SkuTier tier;
 
     /**

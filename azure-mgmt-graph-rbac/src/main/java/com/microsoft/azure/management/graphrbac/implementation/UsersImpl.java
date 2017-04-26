@@ -11,9 +11,10 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.User;
 import com.microsoft.azure.management.graphrbac.Users;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -26,7 +27,10 @@ class UsersImpl
                     User,
                     UserImpl,
                     UserInner>
-        implements Users {
+        implements
+            Users,
+            HasManager<GraphRbacManager>,
+            HasInner<UsersInner> {
     private UsersInner innerCollection;
     private GraphRbacManager manager;
 
@@ -61,15 +65,8 @@ class UsersImpl
     }
 
     @Override
-    public ServiceCall<User> getByUserPrincipalNameAsync(String upn, final ServiceCallback<User> callback) {
-        return ServiceCall.create(
-                getByUserPrincipalNameAsync(upn).map(new Func1<User, ServiceResponse<User>>() {
-                    @Override
-                    public ServiceResponse<User> call(User fluentModelT) {
-                        return new ServiceResponse<>(fluentModelT, null);
-                    }
-                }), callback
-        );
+    public ServiceFuture<User> getByUserPrincipalNameAsync(String upn, final ServiceCallback<User> callback) {
+        return ServiceFuture.fromBody(getByUserPrincipalNameAsync(upn), callback);
     }
 
     @Override
@@ -81,5 +78,20 @@ class UsersImpl
                         return new UserImpl(userInnerServiceResponse, innerCollection);
                     }
                 });
+    }
+
+    @Override
+    public GraphRbacManager manager() {
+        return this.manager;
+    }
+
+    @Override
+    public UsersInner inner() {
+        return this.innerCollection;
+    }
+
+    @Override
+    public Observable<User> listAsync() {
+        return wrapPageAsync(this.inner().listAsync());
     }
 }

@@ -19,12 +19,14 @@ public class USqlTablePartition extends CatalogItem {
     /**
      * the name of the database.
      */
+    @JsonProperty(value = "databaseName")
     private String databaseName;
 
     /**
      * the name of the schema associated with this table partition and
      * database.
      */
+    @JsonProperty(value = "schemaName")
     private String schemaName;
 
     /**
@@ -36,21 +38,25 @@ public class USqlTablePartition extends CatalogItem {
     /**
      * the Ddl object of the partition's parent.
      */
+    @JsonProperty(value = "parentName")
     private DdlName parentName;
 
     /**
      * the index ID for this partition.
      */
+    @JsonProperty(value = "indexId")
     private Integer indexId;
 
     /**
      * the list of labels associated with this partition.
      */
+    @JsonProperty(value = "label")
     private List<String> label;
 
     /**
      * the creation time of the partition.
      */
+    @JsonProperty(value = "createDate")
     private DateTime createDate;
 
     /**

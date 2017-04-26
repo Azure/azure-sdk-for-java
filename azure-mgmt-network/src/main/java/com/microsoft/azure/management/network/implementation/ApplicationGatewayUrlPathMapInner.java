@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * UrlPathMap of application gateway.
+ * UrlPathMaps give a url path to the backend mapping information for
+ * PathBasedRouting.
  */
 @JsonFlatten
 public class ApplicationGatewayUrlPathMapInner extends SubResource {
@@ -37,8 +38,8 @@ public class ApplicationGatewayUrlPathMapInner extends SubResource {
     private List<ApplicationGatewayPathRuleInner> pathRules;
 
     /**
-     * Provisioning state of the backend http settings resource
-     * Updating/Deleting/Failed.
+     * Provisioning state of the backend http settings resource. Possible
+     * values are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
@@ -47,11 +48,13 @@ public class ApplicationGatewayUrlPathMapInner extends SubResource {
      * Name of the resource that is unique within a resource group. This name
      * can be used to access the resource.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * A unique read-only string that changes whenever the resource is updated.
      */
+    @JsonProperty(value = "etag")
     private String etag;
 
     /**

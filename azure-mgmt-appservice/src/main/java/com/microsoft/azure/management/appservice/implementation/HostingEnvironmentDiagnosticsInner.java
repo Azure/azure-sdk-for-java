@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Diagnostics for an App Service Environment.
@@ -16,11 +17,13 @@ public class HostingEnvironmentDiagnosticsInner {
     /**
      * Name/identifier of the diagnostics.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * Diagnostics output.
      */
+    @JsonProperty(value = "diagnosicsOutput")
     private String diagnosicsOutput;
 
     /**

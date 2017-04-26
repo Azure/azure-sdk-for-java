@@ -5,85 +5,70 @@
  */
 package com.microsoft.azure.management.trafficmanager.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.microsoft.azure.management.trafficmanager.CheckProfileDnsNameAvailabilityResult;
 import com.microsoft.azure.management.trafficmanager.DnsConfig;
 import com.microsoft.azure.management.trafficmanager.MonitorConfig;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfiles;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.ArrayList;
 
 /**
- * Implementation for {@link TrafficManagerProfiles}.
+ * Implementation for TrafficManagerProfiles.
  */
 @LangDefinition
-class TrafficManagerProfilesImpl extends GroupableResourcesImpl<
+class TrafficManagerProfilesImpl
+    extends TopLevelModifiableResourcesImpl<
         TrafficManagerProfile,
         TrafficManagerProfileImpl,
         ProfileInner,
         ProfilesInner,
         TrafficManager>
-        implements TrafficManagerProfiles {
-    private final EndpointsInner endpointsClient;
+    implements TrafficManagerProfiles {
 
-    TrafficManagerProfilesImpl(
-            final TrafficManagerManagementClientImpl trafficManagementClient,
-            final TrafficManager trafficManager) {
-        super(trafficManagementClient.profiles(), trafficManager);
-        this.endpointsClient = trafficManagementClient.endpoints();
+    TrafficManagerProfilesImpl(final TrafficManager trafficManager) {
+        super(trafficManager.inner().profiles(), trafficManager);
     }
 
     @Override
     public CheckProfileDnsNameAvailabilityResult checkDnsNameAvailability(String dnsNameLabel) {
+        return this.checkDnsNameAvailabilityAsync(dnsNameLabel).toBlocking().last();
+    }
+
+    @Override
+    public Observable<CheckProfileDnsNameAvailabilityResult> checkDnsNameAvailabilityAsync(String dnsNameLabel) {
         CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner parameter =
                 new CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner()
-                    .withName(dnsNameLabel)
-                    .withType("Microsoft.Network/trafficManagerProfiles");
-        return new CheckProfileDnsNameAvailabilityResult(this
-                .innerCollection
-                .checkTrafficManagerRelativeDnsNameAvailability(parameter));
+                        .withName(dnsNameLabel)
+                        .withType("Microsoft.Network/trafficManagerProfiles");
+        return this.inner()
+                .checkTrafficManagerRelativeDnsNameAvailabilityAsync(parameter).map(new Func1<TrafficManagerNameAvailabilityInner, CheckProfileDnsNameAvailabilityResult>() {
+                    @Override
+                    public CheckProfileDnsNameAvailabilityResult call(TrafficManagerNameAvailabilityInner trafficManagerNameAvailabilityInner) {
+                        return new CheckProfileDnsNameAvailabilityResult(trafficManagerNameAvailabilityInner);
+                    }
+                });
     }
 
     @Override
-    public PagedList<TrafficManagerProfile> list() {
-        return wrapList(this.innerCollection.listAll());
-    }
-
-    @Override
-    public PagedList<TrafficManagerProfile> listByGroup(String groupName) {
-        return wrapList(this.innerCollection.listAllInResourceGroup(groupName));
-    }
-
-    @Override
-    public TrafficManagerProfile getByGroup(String groupName, String name) {
-        return wrapModel(this.innerCollection.get(groupName, name));
-    }
-
-    @Override
-    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name);
+    public ServiceFuture<CheckProfileDnsNameAvailabilityResult> checkDnsNameAvailabilityAsync(String dnsNameLabel, ServiceCallback<CheckProfileDnsNameAvailabilityResult> callback) {
+        return ServiceFuture.fromBody(this.checkDnsNameAvailabilityAsync(dnsNameLabel), callback);
     }
 
     @Override
     protected TrafficManagerProfileImpl wrapModel(String name) {
-        return new TrafficManagerProfileImpl(name,
-                new ProfileInner(),
-                this.innerCollection,
-                this.endpointsClient,
-                this.myManager);
+        return new TrafficManagerProfileImpl(name, new ProfileInner(), this.manager());
     }
 
     @Override
     protected TrafficManagerProfileImpl wrapModel(ProfileInner inner) {
-        return new TrafficManagerProfileImpl(inner.name(),
-                inner,
-                this.innerCollection,
-                this.endpointsClient,
-                this.myManager);
+        return new TrafficManagerProfileImpl(inner.name(), inner, this.manager());
     }
 
     @Override

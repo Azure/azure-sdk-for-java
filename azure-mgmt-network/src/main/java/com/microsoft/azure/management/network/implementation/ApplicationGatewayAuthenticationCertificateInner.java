@@ -13,7 +13,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.SubResource;
 
 /**
- * Authentication certificates of application gateway.
+ * Authentication certificates of an application gateway.
  */
 @JsonFlatten
 public class ApplicationGatewayAuthenticationCertificateInner extends SubResource {
@@ -24,8 +24,8 @@ public class ApplicationGatewayAuthenticationCertificateInner extends SubResourc
     private String data;
 
     /**
-     * Provisioning state of the authentication certificate resource
-     * Updating/Deleting/Failed.
+     * Provisioning state of the authentication certificate resource. Possible
+     * values are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
@@ -34,11 +34,13 @@ public class ApplicationGatewayAuthenticationCertificateInner extends SubResourc
      * Name of the resource that is unique within a resource group. This name
      * can be used to access the resource.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * A unique read-only string that changes whenever the resource is updated.
      */
+    @JsonProperty(value = "etag")
     private String etag;
 
     /**

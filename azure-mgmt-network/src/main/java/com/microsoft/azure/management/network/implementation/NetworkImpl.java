@@ -12,6 +12,7 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,7 +22,7 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 /**
- * Implementation for {@link Network} and its create and update interfaces.
+ * Implementation for Network and its create and update interfaces.
  */
 @LangDefinition
 class NetworkImpl
@@ -35,15 +36,12 @@ class NetworkImpl
         Network.Definition,
         Network.Update {
 
-    private final VirtualNetworksInner innerCollection;
     private Map<String, Subnet> subnets;
 
     NetworkImpl(String name,
             final VirtualNetworkInner innerModel,
-            final VirtualNetworksInner innerCollection,
             final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
-        this.innerCollection = innerCollection;
     }
 
     @Override
@@ -61,11 +59,20 @@ class NetworkImpl
     // Verbs
 
     @Override
-    public NetworkImpl refresh() {
-        VirtualNetworkInner inner = this.innerCollection.get(this.resourceGroupName(), this.name());
-        this.setInner(inner);
-        initializeChildrenFromInner();
-        return this;
+    public Observable<Network> refreshAsync() {
+        return super.refreshAsync().map(new Func1<Network, Network>() {
+            @Override
+            public Network call(Network network) {
+                NetworkImpl impl = (NetworkImpl) network;
+                impl.initializeChildrenFromInner();
+                return impl;
+            }
+        });
+    }
+
+    @Override
+    protected Observable<VirtualNetworkInner> getInnerAsync() {
+        return this.manager().inner().virtualNetworks().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     // Helpers
@@ -73,10 +80,6 @@ class NetworkImpl
     NetworkImpl withSubnet(SubnetImpl subnet) {
         this.subnets.put(subnet.name(), subnet);
         return this;
-    }
-
-    NetworkManager manager() {
-        return super.myManager;
     }
 
     // Setters (fluent)
@@ -153,7 +156,7 @@ class NetworkImpl
     }
 
     @Override
-    public List<String> dnsServerIps() {
+    public List<String> dnsServerIPs() {
         List<String> ips = new ArrayList<String>();
         if (this.inner().dhcpOptions() == null) {
             return Collections.unmodifiableList(ips);
@@ -199,6 +202,6 @@ class NetworkImpl
 
     @Override
     protected Observable<VirtualNetworkInner> createInner() {
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
+        return this.manager().inner().virtualNetworks().createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
 }

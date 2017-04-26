@@ -8,17 +8,19 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildResourcesImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.appservice.DeploymentSlot;
 import com.microsoft.azure.management.appservice.DeploymentSlots;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.azure.management.appservice.WebApp;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
 /**
- * The implementation for {@link DeploymentSlots}.
+ * The implementation DeploymentSlots.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class DeploymentSlotsImpl
@@ -27,40 +29,40 @@ class DeploymentSlotsImpl
                         DeploymentSlotImpl,
                         SiteInner,
                         WebAppsInner,
-                        AppServiceManager>
+                        AppServiceManager,
+                        WebApp>
         implements DeploymentSlots {
 
     private final PagedListConverter<SiteInner, DeploymentSlot> converter;
     private final WebAppImpl parent;
-    private final WebSiteManagementClientImpl serviceClient;
 
-    DeploymentSlotsImpl(final WebAppImpl parent, final WebAppsInner innerCollection, AppServiceManager manager, WebSiteManagementClientImpl serviceClient) {
-        super(innerCollection, manager);
-        this.serviceClient = serviceClient;
+    DeploymentSlotsImpl(final WebAppImpl parent) {
+        super(parent.manager().inner().webApps(), parent.manager());
 
         this.parent = parent;
+        final WebAppsInner innerCollection = this.inner();
         converter = new PagedListConverter<SiteInner, DeploymentSlot>() {
             @Override
             public DeploymentSlot typeConvert(SiteInner siteInner) {
-                siteInner.withSiteConfig(innerCollection.getConfigurationSlot(siteInner.resourceGroup(), parent.name(), siteInner.name().replaceAll(".*/", "")));
-                return wrapModel(siteInner).cacheAppSettingsAndConnectionStrings().toBlocking().single();
+                return wrapModelWithConfigChange(siteInner, innerCollection, parent);
             }
         };
     }
 
+    private DeploymentSlot wrapModelWithConfigChange(SiteInner siteInner, WebAppsInner innerCollection, WebAppImpl parent) {
+        return wrapModel(siteInner, innerCollection.getConfigurationSlot(siteInner.resourceGroup(), parent.name(), siteInner.name().replaceAll(".*/", ""))).cacheSiteProperties().toBlocking().single();
+    }
+
     @Override
     protected DeploymentSlotImpl wrapModel(String name) {
-        return new DeploymentSlotImpl(name, new SiteInner(), null, parent, innerCollection, super.manager, serviceClient)
+        return new DeploymentSlotImpl(name, new SiteInner(), null, parent)
                 .withRegion(parent.regionName())
                 .withExistingResourceGroup(parent.resourceGroupName());
     }
 
     @Override
     protected DeploymentSlotImpl wrapModel(SiteInner inner) {
-        if (inner == null) {
-            return null;
-        }
-        return new DeploymentSlotImpl(inner.name(), inner, inner.siteConfig(), parent, innerCollection, super.manager, serviceClient);
+        return wrapModel(inner, null);
     }
 
     protected PagedList<DeploymentSlot> wrapList(PagedList<SiteInner> pagedList) {
@@ -73,13 +75,22 @@ class DeploymentSlotsImpl
     }
 
     @Override
-    public DeploymentSlot getByParent(String resourceGroup, String parentName, String name) {
-        SiteInner siteInner = innerCollection.getSlot(resourceGroup, parentName, name);
-        if (siteInner == null) {
-            return null;
-        }
-        siteInner.withSiteConfig(innerCollection.getConfigurationSlot(resourceGroup, parentName, name));
-        return wrapModel(siteInner).cacheAppSettingsAndConnectionStrings().toBlocking().single();
+    public Observable<DeploymentSlot> getByParentAsync(final String resourceGroup, final String parentName, final String name) {
+        return innerCollection.getSlotAsync(resourceGroup, parentName, name).flatMap(new Func1<SiteInner, Observable<DeploymentSlot>>() {
+            @Override
+            public Observable<DeploymentSlot> call(final SiteInner siteInner) {
+                if (siteInner == null) {
+                    return null;
+                }
+                return innerCollection.getConfigurationSlotAsync(resourceGroup, parentName, name)
+                        .flatMap(new Func1<SiteConfigResourceInner, Observable<DeploymentSlot>>() {
+                    @Override
+                    public Observable<DeploymentSlot> call(SiteConfigResourceInner siteConfigInner) {
+                        return wrapModel(siteInner, siteConfigInner).cacheSiteProperties();
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -88,14 +99,8 @@ class DeploymentSlotsImpl
     }
 
     @Override
-    public Observable<Void> deleteByParentAsync(String groupName, String parentName, String name) {
-        return innerCollection.deleteSlotAsync(groupName, parentName, name)
-                .flatMap(new Func1<Object, Observable<Void>>() {
-                    @Override
-                    public Observable<Void> call(Object o) {
-                        return null;
-                    }
-                });
+    public Completable deleteByParentAsync(String groupName, String parentName, String name) {
+        return innerCollection.deleteSlotAsync(groupName, parentName, name).toCompletable();
     }
 
     @Override
@@ -104,12 +109,12 @@ class DeploymentSlotsImpl
     }
 
     @Override
-    public ServiceCall<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback) {
+    public ServiceFuture<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback) {
         return deleteByParentAsync(parent.resourceGroupName(), parent.name(), name, callback);
     }
 
     @Override
-    public Observable<Void> deleteByNameAsync(String name) {
+    public Completable deleteByNameAsync(String name) {
         return deleteByParentAsync(parent.resourceGroupName(), parent.name(), name);
     }
 
@@ -121,5 +126,27 @@ class DeploymentSlotsImpl
     @Override
     public DeploymentSlot getByName(String name) {
         return getByParent(parent.resourceGroupName(), parent.name(), name);
+    }
+
+    @Override
+    public WebApp parent() {
+        return this.parent;
+    }
+
+    @Override
+    public Observable<DeploymentSlot> listAsync() {
+        return convertPageToInnerAsync(innerCollection.listSlotsAsync(parent.resourceGroupName(), parent.name())).map(new Func1<SiteInner, DeploymentSlot>() {
+            @Override
+            public DeploymentSlot call(SiteInner siteInner) {
+                return wrapModelWithConfigChange(siteInner, innerCollection, parent);
+            }
+        });
+    }
+
+    private DeploymentSlotImpl wrapModel(SiteInner inner, SiteConfigResourceInner configResourceInner) {
+        if (inner == null) {
+            return null;
+        }
+        return new DeploymentSlotImpl(inner.name(), inner, configResourceInner, parent);
     }
 }

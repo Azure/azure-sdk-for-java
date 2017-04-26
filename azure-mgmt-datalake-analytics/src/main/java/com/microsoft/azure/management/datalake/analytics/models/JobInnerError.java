@@ -17,70 +17,70 @@ public class JobInnerError {
     /**
      * the diagnostic error code.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "diagnosticCode", access = JsonProperty.Access.WRITE_ONLY)
     private Integer diagnosticCode;
 
     /**
      * the severity level of the failure. Possible values include: 'Warning',
-     * 'Error', 'Info'.
+     * 'Error', 'Info', 'SevereWarning', 'Deprecated', 'UserWarning'.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "severity", access = JsonProperty.Access.WRITE_ONLY)
     private SeverityTypes severity;
 
     /**
      * the details of the error message.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private String details;
 
     /**
      * the component that failed.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "component", access = JsonProperty.Access.WRITE_ONLY)
     private String component;
 
     /**
      * the specific identifier for the type of error encountered in the job.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "errorId", access = JsonProperty.Access.WRITE_ONLY)
     private String errorId;
 
     /**
      * the link to MSDN or Azure help for this type of error, if any.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "helpLink", access = JsonProperty.Access.WRITE_ONLY)
     private String helpLink;
 
     /**
-     * the internal diagnostic stack trace if the user requesting the job
-     * error details has sufficient permissions it will be retrieved,
-     * otherwise it will be empty.
+     * the internal diagnostic stack trace if the user requesting the job error
+     * details has sufficient permissions it will be retrieved, otherwise it
+     * will be empty.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "internalDiagnostics", access = JsonProperty.Access.WRITE_ONLY)
     private String internalDiagnostics;
 
     /**
      * the user friendly error message for the failure.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /**
      * the recommended resolution for the failure, if any.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "resolution", access = JsonProperty.Access.WRITE_ONLY)
     private String resolution;
 
     /**
      * the ultimate source of the failure (usually either SYSTEM or USER).
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "source", access = JsonProperty.Access.WRITE_ONLY)
     private String source;
 
     /**
      * the error message description.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /**

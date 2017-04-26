@@ -48,8 +48,8 @@ public class ReplicationLinkInner extends SqlSubResource {
 
     /**
      * The role of the partner Azure SQL Database in the replication link.
-     * Possible values include: 'Primary', 'Secondary',
-     * 'NonReadableSecondary', 'Source', 'Copy'.
+     * Possible values include: 'Primary', 'Secondary', 'NonReadableSecondary',
+     * 'Source', 'Copy'.
      */
     @JsonProperty(value = "properties.partnerRole", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationRole partnerRole;
@@ -67,8 +67,8 @@ public class ReplicationLinkInner extends SqlSubResource {
     private Integer percentComplete;
 
     /**
-     * The replication state for the replication link. Possible values
-     * include: 'PENDING', 'SEEDING', 'CATCH_UP', 'SUSPENDED'.
+     * The replication state for the replication link. Possible values include:
+     * 'PENDING', 'SEEDING', 'CATCH_UP', 'SUSPENDED'.
      */
     @JsonProperty(value = "properties.replicationState", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationState replicationState;

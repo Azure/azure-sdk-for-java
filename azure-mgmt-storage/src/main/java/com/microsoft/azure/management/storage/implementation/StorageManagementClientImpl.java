@@ -10,13 +10,13 @@ package com.microsoft.azure.management.storage.implementation;
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
-import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
 
 /**
  * Initializes a new instance of the StorageManagementClientImpl class.
  */
-public final class StorageManagementClientImpl extends AzureServiceClient {
+public class StorageManagementClientImpl extends AzureServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -28,11 +28,11 @@ public final class StorageManagementClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. */
+    /** Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. */
     private String subscriptionId;
 
     /**
-     * Gets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     * Gets Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
      *
      * @return the subscriptionId value.
      */
@@ -41,7 +41,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     * Sets Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself
@@ -174,10 +174,8 @@ public final class StorageManagementClientImpl extends AzureServiceClient {
      * @param credentials the management credentials for Azure
      */
     public StorageManagementClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        this(new RestClient.Builder()
-                .withBaseUrl(baseUrl)
-                .withCredentials(credentials)
-                .build());
+        super(baseUrl, credentials);
+        initialize();
     }
 
     /**
@@ -207,8 +205,6 @@ public final class StorageManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("Azure-SDK-For-Java/%s (%s)",
-                getClass().getPackage().getImplementationVersion(),
-                "StorageManagementClient, 2016-01-01");
+        return String.format("%s (%s, %s)", super.userAgent(), "StorageManagementClient", "2016-01-01");
     }
 }

@@ -1,8 +1,7 @@
 /**
- *
  * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for license information.
- *
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
  */
 
 package com.microsoft.azure.management.resources.fluentcore.dag;
@@ -18,16 +17,37 @@ import java.util.Set;
  * <p>
  * Each node in a graph is represented by {@link Node}
  *
- * @param <T> the type of the data stored in the graph's nodes
- * @param <U> the type of the nodes in the graph
+ * @param <DataT> the type of the data stored in the graph's nodes
+ * @param <NodeT> the type of the nodes in the graph
  */
-public class Graph<T, U extends Node<T, U>> {
-    protected Map<String, U> graph;
+public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
+    /**
+     * the underlying graph.
+     */
+    protected Map<String, NodeT> graph;
+    /**
+     * to track the already visited node while performing DFS.
+     */
     private Set<String> visited;
+    /**
+     * to generate node entry and exit time while performing DFS.
+     */
     private Integer time;
+    /**
+     * to track the entry time to each node while performing DFS.
+     */
     private Map<String, Integer> entryTime;
+    /**
+     * to track the exit time from each node while performing DFS.
+     */
     private Map<String, Integer> exitTime;
+    /**
+     * to track the immediate parent node of each node while performing DFS.
+     */
     private Map<String, String> parent;
+    /**
+     * to track already processed node while performing DFS.
+     */
     private Set<String> processed;
 
     /**
@@ -48,7 +68,7 @@ public class Graph<T, U extends Node<T, U>> {
      *
      * @param node the node
      */
-    public void addNode(U node) {
+    public void addNode(NodeT node) {
         node.setOwner(this);
         graph.put(node.key(), node);
     }
@@ -56,7 +76,7 @@ public class Graph<T, U extends Node<T, U>> {
     /**
      * @return all nodes in the graph.
      */
-    public Collection<U> getNodes() {
+    public Collection<NodeT> getNodes() {
         return graph.values();
     }
 
@@ -69,7 +89,7 @@ public class Graph<T, U extends Node<T, U>> {
      * @param visitor the graph visitor
      */
     public void visit(Visitor visitor) {
-        for (Map.Entry<String, ? extends Node<T, U>> item : graph.entrySet()) {
+        for (Map.Entry<String, NodeT> item : graph.entrySet()) {
             if (!visited.contains(item.getKey())) {
                 this.dfs(visitor, item.getValue());
             }
@@ -82,7 +102,7 @@ public class Graph<T, U extends Node<T, U>> {
         processed.clear();
     }
 
-    private void dfs(Visitor visitor, Node<T, U> node) {
+    private void dfs(Visitor visitor, Node<DataT, NodeT> node) {
         visitor.visitNode(node);
 
         String fromKey = node.key();

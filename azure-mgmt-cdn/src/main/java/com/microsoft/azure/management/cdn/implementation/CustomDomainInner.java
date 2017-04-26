@@ -9,14 +9,13 @@
 package com.microsoft.azure.management.cdn.implementation;
 
 import com.microsoft.azure.management.cdn.CustomDomainResourceState;
+import com.microsoft.azure.management.cdn.CustomHttpsProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * CDN CustomDomain represents a mapping between a user-specified domain name
- * and a CDN endpoint. This is to use custom domain names to represent the
- * URLs for branding purposes.
+ * Customer provided domain for branding purposes, e.g. www.consoto.com.
  */
 @JsonFlatten
 public class CustomDomainInner extends Resource {
@@ -34,9 +33,16 @@ public class CustomDomainInner extends Resource {
     private CustomDomainResourceState resourceState;
 
     /**
+     * Provisioning state of Custom Https of the custom domain. Possible values
+     * include: 'Enabling', 'Enabled', 'Disabling', 'Disabled', 'Failed'.
+     */
+    @JsonProperty(value = "properties.customHttpsProvisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private CustomHttpsProvisioningState customHttpsProvisioningState;
+
+    /**
      * Special validation or data may be required when delivering CDN to some
-     * regions due to local compliance reasons. (e.g. ICP license number of a
-     * custom domain is required to deliver content in China.).
+     * regions due to local compliance reasons. E.g. ICP license number of a
+     * custom domain is required to deliver content in China.
      */
     @JsonProperty(value = "properties.validationData")
     private String validationData;
@@ -74,6 +80,15 @@ public class CustomDomainInner extends Resource {
      */
     public CustomDomainResourceState resourceState() {
         return this.resourceState;
+    }
+
+    /**
+     * Get the customHttpsProvisioningState value.
+     *
+     * @return the customHttpsProvisioningState value
+     */
+    public CustomHttpsProvisioningState customHttpsProvisioningState() {
+        return this.customHttpsProvisioningState;
     }
 
     /**

@@ -12,45 +12,49 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Request parameters for create a new application.
+ * Request parameters for creating a new application.
  */
 public class ApplicationCreateParametersInner {
     /**
-     * Indicates if the application will be available to other tenants.
+     * Whether the application is available to other tenants.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "availableToOtherTenants", required = true)
     private boolean availableToOtherTenants;
 
     /**
-     * Application display name.
+     * The display name of the application.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /**
-     * Application homepage.
+     * The home page of the application.
      */
+    @JsonProperty(value = "homepage")
     private String homepage;
 
     /**
-     * Application Uris.
+     * A collection of URIs for the application.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "identifierUris", required = true)
     private List<String> identifierUris;
 
     /**
-     * Application reply Urls.
+     * A collection of reply URLs for the application.
      */
+    @JsonProperty(value = "replyUrls")
     private List<String> replyUrls;
 
     /**
-     * the list of KeyCredential objects.
+     * The list of KeyCredential objects.
      */
+    @JsonProperty(value = "keyCredentials")
     private List<KeyCredentialInner> keyCredentials;
 
     /**
-     * the list of PasswordCredential objects.
+     * The list of PasswordCredential objects.
      */
+    @JsonProperty(value = "passwordCredentials")
     private List<PasswordCredentialInner> passwordCredentials;
 
     /**

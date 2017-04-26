@@ -13,10 +13,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.sql.implementation.ServerInner;
 import com.microsoft.azure.management.sql.implementation.SqlServerManager;
-import rx.Observable;
+import rx.Completable;
 
 import java.util.List;
 import java.util.Map;
@@ -27,11 +26,10 @@ import java.util.Map;
  */
 @Fluent
 public interface SqlServer extends
-        GroupableResource,
+        GroupableResource<SqlServerManager, ServerInner>,
         Refreshable<SqlServer>,
         Updatable<SqlServer.Update>,
-        HasManager<SqlServerManager>,
-        Wrapper<ServerInner> {
+        HasManager<SqlServerManager> {
 
     /**
      * @return fully qualified name of the SQL Server
@@ -127,7 +125,7 @@ public interface SqlServer extends
          * @param firewallRuleName name of the firewall rule to delete
          * @return observable for the delete operation
          */
-        Observable<Void> deleteAsync(String firewallRuleName);
+        Completable deleteAsync(String firewallRuleName);
     }
 
     /**
@@ -170,7 +168,7 @@ public interface SqlServer extends
          * @param elasticPoolName name of the elastic pool to delete
          * @return observable for the delete operation
          */
-        Observable<Void> deleteAsync(String elasticPoolName);
+        Completable deleteAsync(String elasticPoolName);
     }
 
     /**
@@ -213,7 +211,7 @@ public interface SqlServer extends
          * @param databaseName name of the database to delete
          * @return observable for the delete operation
          */
-        Observable<Void> deleteAsync(String databaseName);
+        Completable deleteAsync(String databaseName);
     }
 
     /**************************************************************
@@ -325,21 +323,21 @@ public interface SqlServer extends
             /**
              * Creates new firewall rule in the SQL Server.
              *
-             * @param startIpAddress start ipAddress for the firewall rule
-             * @param endIpAddress end ipAddress for the firewall rule
+             * @param startIPAddress start IP address for the firewall rule
+             * @param endIPAddress end IP address for the firewall rule
              * @return Next stage of the SQL Server definition
              */
-            WithCreate withNewFirewallRule(String startIpAddress, String endIpAddress);
+            WithCreate withNewFirewallRule(String startIPAddress, String endIPAddress);
 
             /**
              * Creates new firewall rule in the SQL Server.
              *
-             * @param startIpAddress start ipAddress for the firewall rule
-             * @param endIpAddress end ipAddress for the firewall rule
+             * @param startIPAddress start IP address for the firewall rule
+             * @param endIPAddress end IP address for the firewall rule
              * @param firewallRuleName name for the firewall rule
              * @return Next stage of the SQL Server definition
              */
-            WithCreate withNewFirewallRule(String startIpAddress, String endIpAddress, String firewallRuleName);
+            WithCreate withNewFirewallRule(String startIPAddress, String endIPAddress, String firewallRuleName);
         }
         /**
          * A SQL Server definition with sufficient inputs to create a new
@@ -439,7 +437,7 @@ public interface SqlServer extends
             /**
              * Create new firewall rule in the SQL Server.
              *
-             * @param ipAddress ipAddress for the firewall rule
+             * @param ipAddress IP address for the firewall rule
              * @return Next stage of the SQL Server update
              */
             Update withNewFirewallRule(String ipAddress);
@@ -447,21 +445,21 @@ public interface SqlServer extends
             /**
              * Create new firewall rule in the SQL Server.
              *
-             * @param startIpAddress Start ipAddress for the firewall rule
-             * @param endIpAddress ipAddress for the firewall rule
+             * @param startIPAddress Start IP address for the firewall rule
+             * @param endIPAddress IP address for the firewall rule
              * @return Next stage of the SQL Server update
              */
-            Update withNewFirewallRule(String startIpAddress, String endIpAddress);
+            Update withNewFirewallRule(String startIPAddress, String endIPAddress);
 
             /**
              * Creates new firewall rule in the SQL Server.
              *
-             * @param startIpAddress start ipAddress for the firewall rule
-             * @param endIpAddress end ipAddress for the firewall rule
+             * @param startIPAddress start IP address for the firewall rule
+             * @param endIPAddress end IP address for the firewall rule
              * @param firewallRuleName name for the firewall rule
              * @return Next stage of the SQL Server update
              */
-            Update withNewFirewallRule(String startIpAddress, String endIpAddress, String firewallRuleName);
+            Update withNewFirewallRule(String startIPAddress, String endIPAddress, String firewallRuleName);
 
             /**
              * Removes firewall rule from the SQL Server.

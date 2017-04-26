@@ -28,13 +28,9 @@ class ApplicationsImpl extends
                 ApplicationInner,
                 BatchAccountImpl,
                 BatchAccount> {
-    private final ApplicationsInner client;
-    private ApplicationPackagesInner applicationPackagesClient;
 
-    ApplicationsImpl(ApplicationsInner client, ApplicationPackagesInner applicationPackagesClient, BatchAccountImpl parent) {
+    ApplicationsImpl(BatchAccountImpl parent) {
         super(parent, "Application");
-        this.client = client;
-        this.applicationPackagesClient = applicationPackagesClient;
         this.cacheCollection();
     }
 
@@ -70,10 +66,14 @@ class ApplicationsImpl extends
             return childResources;
         }
 
-        PagedList<ApplicationInner> applicationList = this.client.list(this.parent().resourceGroupName(), this.parent().name());
+        PagedList<ApplicationInner> applicationList = this.parent().manager().inner().applications().list(
+                this.parent().resourceGroupName(), this.parent().name());
 
         for (ApplicationInner application: applicationList) {
-            childResources.add(new ApplicationImpl(application.id(), this.parent(), application, this.client, this.applicationPackagesClient));
+            childResources.add(new ApplicationImpl(
+                    application.id(),
+                    this.parent(),
+                    application));
         }
 
         return childResources;
@@ -81,8 +81,7 @@ class ApplicationsImpl extends
 
     @Override
     protected ApplicationImpl newChildResource(String name) {
-        ApplicationImpl application = ApplicationImpl
-                .newApplication(name, this.parent(), this.client, this.applicationPackagesClient);
+        ApplicationImpl application = ApplicationImpl.newApplication(name, this.parent());
         return application;
     }
 }

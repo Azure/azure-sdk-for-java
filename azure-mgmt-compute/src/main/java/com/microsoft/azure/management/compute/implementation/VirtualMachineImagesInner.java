@@ -10,10 +10,9 @@ package com.microsoft.azure.management.compute.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
-import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
@@ -31,7 +30,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in VirtualMachineImages.
  */
-public final class VirtualMachineImagesInner {
+public class VirtualMachineImagesInner {
     /** The Retrofit service to perform REST calls. */
     private VirtualMachineImagesService service;
     /** The service client containing this operation class. */
@@ -53,23 +52,23 @@ public final class VirtualMachineImagesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface VirtualMachineImagesService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachineImages get" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions/{version}")
         Observable<Response<ResponseBody>> get(@Path("location") String location, @Path("publisherName") String publisherName, @Path("offer") String offer, @Path("skus") String skus, @Path("version") String version, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachineImages list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions")
         Observable<Response<ResponseBody>> list(@Path("location") String location, @Path("publisherName") String publisherName, @Path("offer") String offer, @Path("skus") String skus, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$orderby") String orderby, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachineImages listOffers" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers")
         Observable<Response<ResponseBody>> listOffers(@Path("location") String location, @Path("publisherName") String publisherName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachineImages listPublishers" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers")
         Observable<Response<ResponseBody>> listPublishers(@Path("location") String location, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachineImages listSkus" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus")
         Observable<Response<ResponseBody>> listSkus(@Path("location") String location, @Path("publisherName") String publisherName, @Path("offer") String offer, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -78,47 +77,52 @@ public final class VirtualMachineImagesInner {
     /**
      * Gets a virtual machine image.
      *
-     * @param location the String value
-     * @param publisherName the String value
-     * @param offer the String value
-     * @param skus the String value
-     * @param version the String value
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
+     * @param version A valid image SKU version.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VirtualMachineImageInner object if successful.
      */
     public VirtualMachineImageInner get(String location, String publisherName, String offer, String skus, String version) {
-        return getWithServiceResponseAsync(location, publisherName, offer, skus, version).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(location, publisherName, offer, skus, version).toBlocking().single().body();
     }
 
     /**
      * Gets a virtual machine image.
      *
-     * @param location the String value
-     * @param publisherName the String value
-     * @param offer the String value
-     * @param skus the String value
-     * @param version the String value
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
+     * @param version A valid image SKU version.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VirtualMachineImageInner> getAsync(String location, String publisherName, String offer, String skus, String version, final ServiceCallback<VirtualMachineImageInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(location, publisherName, offer, skus, version), serviceCallback);
+    public ServiceFuture<VirtualMachineImageInner> getAsync(String location, String publisherName, String offer, String skus, String version, final ServiceCallback<VirtualMachineImageInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(location, publisherName, offer, skus, version), serviceCallback);
     }
 
     /**
      * Gets a virtual machine image.
      *
-     * @param location the String value
-     * @param publisherName the String value
-     * @param offer the String value
-     * @param skus the String value
-     * @param version the String value
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
+     * @param version A valid image SKU version.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VirtualMachineImageInner object
      */
     public Observable<VirtualMachineImageInner> getAsync(String location, String publisherName, String offer, String skus, String version) {
         return getWithServiceResponseAsync(location, publisherName, offer, skus, version).map(new Func1<ServiceResponse<VirtualMachineImageInner>, VirtualMachineImageInner>() {
             @Override
             public VirtualMachineImageInner call(ServiceResponse<VirtualMachineImageInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -126,11 +130,12 @@ public final class VirtualMachineImagesInner {
     /**
      * Gets a virtual machine image.
      *
-     * @param location the String value
-     * @param publisherName the String value
-     * @param offer the String value
-     * @param skus the String value
-     * @param version the String value
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
+     * @param version A valid image SKU version.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VirtualMachineImageInner object
      */
     public Observable<ServiceResponse<VirtualMachineImageInner>> getWithServiceResponseAsync(String location, String publisherName, String offer, String skus, String version) {
@@ -152,10 +157,8 @@ public final class VirtualMachineImagesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(location, publisherName, offer, skus, version, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-04-30-preview";
+        return service.get(location, publisherName, offer, skus, version, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualMachineImageInner>>>() {
                 @Override
                 public Observable<ServiceResponse<VirtualMachineImageInner>> call(Response<ResponseBody> response) {
@@ -170,64 +173,70 @@ public final class VirtualMachineImagesInner {
     }
 
     private ServiceResponse<VirtualMachineImageInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualMachineImageInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VirtualMachineImageInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VirtualMachineImageInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Gets a list of virtual machine images.
+     * Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
      *
-     * @param location the String value
-     * @param publisherName the String value
-     * @param offer the String value
-     * @param skus the String value
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;VirtualMachineImageResourceInner&gt; object if successful.
      */
     public List<VirtualMachineImageResourceInner> list(String location, String publisherName, String offer, String skus) {
-        return listWithServiceResponseAsync(location, publisherName, offer, skus).toBlocking().single().getBody();
+        return listWithServiceResponseAsync(location, publisherName, offer, skus).toBlocking().single().body();
     }
 
     /**
-     * Gets a list of virtual machine images.
+     * Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
      *
-     * @param location the String value
-     * @param publisherName the String value
-     * @param offer the String value
-     * @param skus the String value
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
-        return ServiceCall.create(listWithServiceResponseAsync(location, publisherName, offer, skus), serviceCallback);
+    public ServiceFuture<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(location, publisherName, offer, skus), serviceCallback);
     }
 
     /**
-     * Gets a list of virtual machine images.
+     * Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
      *
-     * @param location the String value
-     * @param publisherName the String value
-     * @param offer the String value
-     * @param skus the String value
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
     public Observable<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus) {
         return listWithServiceResponseAsync(location, publisherName, offer, skus).map(new Func1<ServiceResponse<List<VirtualMachineImageResourceInner>>, List<VirtualMachineImageResourceInner>>() {
             @Override
             public List<VirtualMachineImageResourceInner> call(ServiceResponse<List<VirtualMachineImageResourceInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Gets a list of virtual machine images.
+     * Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
      *
-     * @param location the String value
-     * @param publisherName the String value
-     * @param offer the String value
-     * @param skus the String value
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
     public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listWithServiceResponseAsync(String location, String publisherName, String offer, String skus) {
@@ -246,13 +255,11 @@ public final class VirtualMachineImagesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2016-04-30-preview";
         final String filter = null;
         final Integer top = null;
         final String orderby = null;
-        return service.list(location, publisherName, offer, skus, this.client.subscriptionId(), filter, top, orderby, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(location, publisherName, offer, skus, this.client.subscriptionId(), filter, top, orderby, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> call(Response<ResponseBody> response) {
@@ -267,69 +274,75 @@ public final class VirtualMachineImagesInner {
     }
 
     /**
-     * Gets a list of virtual machine images.
+     * Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
      *
-     * @param location the String value
-     * @param publisherName the String value
-     * @param offer the String value
-     * @param skus the String value
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
      * @param filter The filter to apply on the operation.
      * @param top the Integer value
      * @param orderby the String value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;VirtualMachineImageResourceInner&gt; object if successful.
      */
     public List<VirtualMachineImageResourceInner> list(String location, String publisherName, String offer, String skus, String filter, Integer top, String orderby) {
-        return listWithServiceResponseAsync(location, publisherName, offer, skus, filter, top, orderby).toBlocking().single().getBody();
+        return listWithServiceResponseAsync(location, publisherName, offer, skus, filter, top, orderby).toBlocking().single().body();
     }
 
     /**
-     * Gets a list of virtual machine images.
+     * Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
      *
-     * @param location the String value
-     * @param publisherName the String value
-     * @param offer the String value
-     * @param skus the String value
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
      * @param filter The filter to apply on the operation.
      * @param top the Integer value
      * @param orderby the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus, String filter, Integer top, String orderby, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
-        return ServiceCall.create(listWithServiceResponseAsync(location, publisherName, offer, skus, filter, top, orderby), serviceCallback);
+    public ServiceFuture<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus, String filter, Integer top, String orderby, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(location, publisherName, offer, skus, filter, top, orderby), serviceCallback);
     }
 
     /**
-     * Gets a list of virtual machine images.
+     * Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
      *
-     * @param location the String value
-     * @param publisherName the String value
-     * @param offer the String value
-     * @param skus the String value
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
      * @param filter The filter to apply on the operation.
      * @param top the Integer value
      * @param orderby the String value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
     public Observable<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus, String filter, Integer top, String orderby) {
         return listWithServiceResponseAsync(location, publisherName, offer, skus, filter, top, orderby).map(new Func1<ServiceResponse<List<VirtualMachineImageResourceInner>>, List<VirtualMachineImageResourceInner>>() {
             @Override
             public List<VirtualMachineImageResourceInner> call(ServiceResponse<List<VirtualMachineImageResourceInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Gets a list of virtual machine images.
+     * Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
      *
-     * @param location the String value
-     * @param publisherName the String value
-     * @param offer the String value
-     * @param skus the String value
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
      * @param filter The filter to apply on the operation.
      * @param top the Integer value
      * @param orderby the String value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
     public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listWithServiceResponseAsync(String location, String publisherName, String offer, String skus, String filter, Integer top, String orderby) {
@@ -348,10 +361,8 @@ public final class VirtualMachineImagesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(location, publisherName, offer, skus, this.client.subscriptionId(), filter, top, orderby, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-04-30-preview";
+        return service.list(location, publisherName, offer, skus, this.client.subscriptionId(), filter, top, orderby, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> call(Response<ResponseBody> response) {
@@ -366,56 +377,62 @@ public final class VirtualMachineImagesInner {
     }
 
     private ServiceResponse<List<VirtualMachineImageResourceInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VirtualMachineImageResourceInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<VirtualMachineImageResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<VirtualMachineImageResourceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Gets a list of virtual machine image offers.
+     * Gets a list of virtual machine image offers for the specified location and publisher.
      *
-     * @param location the String value
-     * @param publisherName the String value
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;VirtualMachineImageResourceInner&gt; object if successful.
      */
     public List<VirtualMachineImageResourceInner> listOffers(String location, String publisherName) {
-        return listOffersWithServiceResponseAsync(location, publisherName).toBlocking().single().getBody();
+        return listOffersWithServiceResponseAsync(location, publisherName).toBlocking().single().body();
     }
 
     /**
-     * Gets a list of virtual machine image offers.
+     * Gets a list of virtual machine image offers for the specified location and publisher.
      *
-     * @param location the String value
-     * @param publisherName the String value
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VirtualMachineImageResourceInner>> listOffersAsync(String location, String publisherName, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
-        return ServiceCall.create(listOffersWithServiceResponseAsync(location, publisherName), serviceCallback);
+    public ServiceFuture<List<VirtualMachineImageResourceInner>> listOffersAsync(String location, String publisherName, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listOffersWithServiceResponseAsync(location, publisherName), serviceCallback);
     }
 
     /**
-     * Gets a list of virtual machine image offers.
+     * Gets a list of virtual machine image offers for the specified location and publisher.
      *
-     * @param location the String value
-     * @param publisherName the String value
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
     public Observable<List<VirtualMachineImageResourceInner>> listOffersAsync(String location, String publisherName) {
         return listOffersWithServiceResponseAsync(location, publisherName).map(new Func1<ServiceResponse<List<VirtualMachineImageResourceInner>>, List<VirtualMachineImageResourceInner>>() {
             @Override
             public List<VirtualMachineImageResourceInner> call(ServiceResponse<List<VirtualMachineImageResourceInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Gets a list of virtual machine image offers.
+     * Gets a list of virtual machine image offers for the specified location and publisher.
      *
-     * @param location the String value
-     * @param publisherName the String value
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
     public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listOffersWithServiceResponseAsync(String location, String publisherName) {
@@ -428,10 +445,8 @@ public final class VirtualMachineImagesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.listOffers(location, publisherName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-04-30-preview";
+        return service.listOffers(location, publisherName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> call(Response<ResponseBody> response) {
@@ -446,52 +461,58 @@ public final class VirtualMachineImagesInner {
     }
 
     private ServiceResponse<List<VirtualMachineImageResourceInner>> listOffersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VirtualMachineImageResourceInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<VirtualMachineImageResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<VirtualMachineImageResourceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Gets a list of virtual machine image publishers.
+     * Gets a list of virtual machine image publishers for the specified Azure location.
      *
-     * @param location the String value
+     * @param location The name of a supported Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;VirtualMachineImageResourceInner&gt; object if successful.
      */
     public List<VirtualMachineImageResourceInner> listPublishers(String location) {
-        return listPublishersWithServiceResponseAsync(location).toBlocking().single().getBody();
+        return listPublishersWithServiceResponseAsync(location).toBlocking().single().body();
     }
 
     /**
-     * Gets a list of virtual machine image publishers.
+     * Gets a list of virtual machine image publishers for the specified Azure location.
      *
-     * @param location the String value
+     * @param location The name of a supported Azure region.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VirtualMachineImageResourceInner>> listPublishersAsync(String location, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
-        return ServiceCall.create(listPublishersWithServiceResponseAsync(location), serviceCallback);
+    public ServiceFuture<List<VirtualMachineImageResourceInner>> listPublishersAsync(String location, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listPublishersWithServiceResponseAsync(location), serviceCallback);
     }
 
     /**
-     * Gets a list of virtual machine image publishers.
+     * Gets a list of virtual machine image publishers for the specified Azure location.
      *
-     * @param location the String value
+     * @param location The name of a supported Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
     public Observable<List<VirtualMachineImageResourceInner>> listPublishersAsync(String location) {
         return listPublishersWithServiceResponseAsync(location).map(new Func1<ServiceResponse<List<VirtualMachineImageResourceInner>>, List<VirtualMachineImageResourceInner>>() {
             @Override
             public List<VirtualMachineImageResourceInner> call(ServiceResponse<List<VirtualMachineImageResourceInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Gets a list of virtual machine image publishers.
+     * Gets a list of virtual machine image publishers for the specified Azure location.
      *
-     * @param location the String value
+     * @param location The name of a supported Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
     public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listPublishersWithServiceResponseAsync(String location) {
@@ -501,10 +522,8 @@ public final class VirtualMachineImagesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.listPublishers(location, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-04-30-preview";
+        return service.listPublishers(location, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> call(Response<ResponseBody> response) {
@@ -519,60 +538,66 @@ public final class VirtualMachineImagesInner {
     }
 
     private ServiceResponse<List<VirtualMachineImageResourceInner>> listPublishersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VirtualMachineImageResourceInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<VirtualMachineImageResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<VirtualMachineImageResourceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Gets a list of virtual machine image skus.
+     * Gets a list of virtual machine image SKUs for the specified location, publisher, and offer.
      *
-     * @param location the String value
-     * @param publisherName the String value
-     * @param offer the String value
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;VirtualMachineImageResourceInner&gt; object if successful.
      */
     public List<VirtualMachineImageResourceInner> listSkus(String location, String publisherName, String offer) {
-        return listSkusWithServiceResponseAsync(location, publisherName, offer).toBlocking().single().getBody();
+        return listSkusWithServiceResponseAsync(location, publisherName, offer).toBlocking().single().body();
     }
 
     /**
-     * Gets a list of virtual machine image skus.
+     * Gets a list of virtual machine image SKUs for the specified location, publisher, and offer.
      *
-     * @param location the String value
-     * @param publisherName the String value
-     * @param offer the String value
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VirtualMachineImageResourceInner>> listSkusAsync(String location, String publisherName, String offer, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
-        return ServiceCall.create(listSkusWithServiceResponseAsync(location, publisherName, offer), serviceCallback);
+    public ServiceFuture<List<VirtualMachineImageResourceInner>> listSkusAsync(String location, String publisherName, String offer, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listSkusWithServiceResponseAsync(location, publisherName, offer), serviceCallback);
     }
 
     /**
-     * Gets a list of virtual machine image skus.
+     * Gets a list of virtual machine image SKUs for the specified location, publisher, and offer.
      *
-     * @param location the String value
-     * @param publisherName the String value
-     * @param offer the String value
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
     public Observable<List<VirtualMachineImageResourceInner>> listSkusAsync(String location, String publisherName, String offer) {
         return listSkusWithServiceResponseAsync(location, publisherName, offer).map(new Func1<ServiceResponse<List<VirtualMachineImageResourceInner>>, List<VirtualMachineImageResourceInner>>() {
             @Override
             public List<VirtualMachineImageResourceInner> call(ServiceResponse<List<VirtualMachineImageResourceInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Gets a list of virtual machine image skus.
+     * Gets a list of virtual machine image SKUs for the specified location, publisher, and offer.
      *
-     * @param location the String value
-     * @param publisherName the String value
-     * @param offer the String value
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
     public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listSkusWithServiceResponseAsync(String location, String publisherName, String offer) {
@@ -588,10 +613,8 @@ public final class VirtualMachineImagesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.listSkus(location, publisherName, offer, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-04-30-preview";
+        return service.listSkus(location, publisherName, offer, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> call(Response<ResponseBody> response) {
@@ -606,7 +629,7 @@ public final class VirtualMachineImagesInner {
     }
 
     private ServiceResponse<List<VirtualMachineImageResourceInner>> listSkusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VirtualMachineImageResourceInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<VirtualMachineImageResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<VirtualMachineImageResourceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

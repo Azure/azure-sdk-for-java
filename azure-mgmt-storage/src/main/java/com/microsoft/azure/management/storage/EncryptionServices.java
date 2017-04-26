@@ -8,14 +8,16 @@
 
 package com.microsoft.azure.management.storage;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The encrypted services.
+ * A list of services that support encryption.
  */
 public class EncryptionServices {
     /**
-     * The blob service.
+     * The encryption function of the blob storage service.
      */
+    @JsonProperty(value = "blob")
     private EncryptionService blob;
 
     /**

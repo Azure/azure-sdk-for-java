@@ -22,7 +22,16 @@ public enum SeverityTypes {
     ERROR("Error"),
 
     /** Enum value Info. */
-    INFO("Info");
+    INFO("Info"),
+
+    /** Enum value SevereWarning. */
+    SEVERE_WARNING("SevereWarning"),
+
+    /** Enum value Deprecated. */
+    DEPRECATED("Deprecated"),
+
+    /** Enum value UserWarning. */
+    USER_WARNING("UserWarning");
 
     /** The actual serialized value for a SeverityTypes instance. */
     private String value;

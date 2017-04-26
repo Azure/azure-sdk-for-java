@@ -8,28 +8,42 @@ package com.microsoft.azure.management;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.ResourceGroups;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
+import com.microsoft.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.Assert;
 
 import java.io.IOException;
 
 /**
  * Base class for CRUD test cases for top level Azure resource models.
- * @param <T> Top level resource type
- * @param <C> Type representing the collection of the top level resources
+ * @param <ResourceT> Top level resource type
+ * @param <CollectionT> Type representing the collection of the top level resources
  */
 public abstract class TestTemplate<
-    T extends GroupableResource,
-    C extends SupportsListing<T> & SupportsGettingByGroup<T> & SupportsDeletingById & SupportsGettingById<T>> {
+    ResourceT extends GroupableResource<? extends ManagerBase, ?>,
+    CollectionT extends
+        SupportsListing<ResourceT>
+        & SupportsGettingByResourceGroup<ResourceT>
+        & SupportsDeletingById
+        & SupportsGettingById<ResourceT>
+        & HasInner<?>
+        & HasManager<? extends ManagerBase>> {
 
-    protected String testId = String.valueOf(System.currentTimeMillis() % 100000L);
-    private T resource;
-    private C collection;
+    protected String testId = "";
+    private ResourceT resource;
+    private CollectionT collection;
     private ResourceGroups resourceGroups;
+
+    protected TestTemplate() {
+        testId = SdkContext.randomResourceName("", 8);
+    }
 
     /**
      * Resource creation logic.
@@ -37,7 +51,7 @@ public abstract class TestTemplate<
      * @return created resource
      * @throws Exception if anything goes wrong
      */
-    public abstract T createResource(C resources) throws Exception;
+    public abstract ResourceT createResource(CollectionT resources) throws Exception;
 
     /**
      * Resource update logic.
@@ -45,7 +59,7 @@ public abstract class TestTemplate<
      * @return the updated resource
      * @throws Exception if anything goes wrong
      */
-    public abstract T updateResource(T resource) throws Exception;
+    public abstract ResourceT updateResource(ResourceT resource) throws Exception;
 
     /**
      * Tests the listing logic.
@@ -54,8 +68,8 @@ public abstract class TestTemplate<
      * @throws IOException if anything goes wrong
      */
     public int verifyListing() throws CloudException, IOException {
-        PagedList<T> resources = this.collection.list();
-        for (T r : resources) {
+        PagedList<ResourceT> resources = this.collection.list();
+        for (ResourceT r : resources) {
             System.out.println("resource id: " + r.id());
         }
         return resources.size();
@@ -67,9 +81,9 @@ public abstract class TestTemplate<
      * @throws CloudException if anything goes wrong
      * @throws IOException if anything goes wrong
      */
-    public T verifyGetting() throws CloudException, IOException {
-        T resourceByGroup = this.collection.getByGroup(this.resource.resourceGroupName(), this.resource.name());
-        T resourceById = this.collection.getById(resourceByGroup.id());
+    public ResourceT verifyGetting() throws CloudException, IOException {
+        ResourceT resourceByGroup = this.collection.getByResourceGroup(this.resource.resourceGroupName(), this.resource.name());
+        ResourceT resourceById = this.collection.getById(resourceByGroup.id());
         Assert.assertTrue(resourceById.id().equalsIgnoreCase(resourceByGroup.id()));
         return resourceById;
     }
@@ -89,7 +103,7 @@ public abstract class TestTemplate<
      *
      * @param resource resource to print
      */
-    public abstract void print(T resource);
+    public abstract void print(ResourceT resource);
 
     /**
      * Runs the test.
@@ -97,7 +111,7 @@ public abstract class TestTemplate<
      * @param resourceGroups the resource groups collection
      * @throws Exception if anything goes wrong
      */
-    public void runTest(C collection, ResourceGroups resourceGroups) throws Exception {
+    public void runTest(CollectionT collection, ResourceGroups resourceGroups) throws Exception {
         this.collection = collection;
         this.resourceGroups = resourceGroups;
 
@@ -118,17 +132,30 @@ public abstract class TestTemplate<
         System.out.println("\n------------\nRetrieved resource:\n");
         print(this.resource);
 
+        boolean failedUpdate = false;
+        String message = "Update Failed";
         // Verify update
         try {
             this.resource = updateResource(this.resource);
             Assert.assertTrue(this.resource != null);
             System.out.println("\n------------\nUpdated resource:\n");
+            message = "Print failed";
             print(this.resource);
         } catch (Exception e) {
             e.printStackTrace();
+            failedUpdate = true;
         }
 
         // Verify deletion
-        verifyDeleting();
+        boolean failedDelete = false;
+        try {
+            message = "Delete failed";
+            verifyDeleting();
+        } catch (Exception e) {
+            e.printStackTrace();
+            failedDelete = true;
+        }
+        Assert.assertFalse(message, failedUpdate);
+        Assert.assertFalse(message,  failedDelete);
     }
 }

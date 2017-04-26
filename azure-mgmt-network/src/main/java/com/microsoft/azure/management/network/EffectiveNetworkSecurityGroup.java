@@ -10,24 +10,28 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.SubResource;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Effective NetworkSecurityGroup.
+ * Effective network security group.
  */
 public class EffectiveNetworkSecurityGroup {
     /**
-     * Gets the id of network security group that is applied.
+     * The ID of network security group that is applied.
      */
+    @JsonProperty(value = "networkSecurityGroup")
     private SubResource networkSecurityGroup;
 
     /**
      * The association property.
      */
+    @JsonProperty(value = "association")
     private EffectiveNetworkSecurityGroupAssociation association;
 
     /**
-     * Gets collection of effective security rules.
+     * A collection of effective security rules.
      */
+    @JsonProperty(value = "effectiveSecurityRules")
     private List<EffectiveNetworkSecurityRule> effectiveSecurityRules;
 
     /**

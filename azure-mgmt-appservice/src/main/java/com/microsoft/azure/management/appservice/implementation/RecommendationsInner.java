@@ -10,10 +10,11 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
@@ -32,7 +33,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Recommendations.
  */
-public final class RecommendationsInner {
+public class RecommendationsInner {
     /** The Retrofit service to perform REST calls. */
     private RecommendationsService service;
     /** The service client containing this operation class. */
@@ -54,31 +55,31 @@ public final class RecommendationsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface RecommendationsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Recommendations list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("featured") Boolean featured, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Recommendations resetAllFilters" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations/reset")
         Observable<Response<ResponseBody>> resetAllFilters(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Recommendations listHistoryForWebApp" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendationHistory")
         Observable<Response<ResponseBody>> listHistoryForWebApp(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("subscriptionId") String subscriptionId, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Recommendations listRecommendedRulesForWebApp" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations")
-        Observable<Response<ResponseBody>> listRecommendedRulesForWebApp(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("subscriptionId") String subscriptionId, @Query("featured") Boolean featured, @Query("webAppSku") String webAppSku, @Query("numSlots") Integer numSlots, @Query("liveHours") Integer liveHours, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listRecommendedRulesForWebApp(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("subscriptionId") String subscriptionId, @Query("featured") Boolean featured, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Recommendations disableAllForWebApp" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/disable")
         Observable<Response<ResponseBody>> disableAllForWebApp(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Recommendations resetAllFiltersForWebApp" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/reset")
         Observable<Response<ResponseBody>> resetAllFiltersForWebApp(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Recommendations getRuleDetailsByWebApp" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/{name}")
         Observable<Response<ResponseBody>> getRuleDetailsByWebApp(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("updateSeen") Boolean updateSeen, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -88,10 +89,18 @@ public final class RecommendationsInner {
      * List all recommendations for a subscription.
      * List all recommendations for a subscription.
      *
-     * @return the List&lt;RecommendationInner&gt; object if successful.
+     * @return the PagedList<RecommendationInner> object if successful.
      */
-    public List<RecommendationInner> list() {
-        return listWithServiceResponseAsync().toBlocking().single().getBody();
+    public PagedList<RecommendationInner> list() {
+        PageImpl1<RecommendationInner> page = new PageImpl1<>();
+        page.setItems(listWithServiceResponseAsync().toBlocking().single().body());
+        page.setNextPageLink(null);
+        return new PagedList<RecommendationInner>(page) {
+            @Override
+            public Page<RecommendationInner> nextPage(String nextPageLink) {
+                return null;
+            }
+        };
     }
 
     /**
@@ -99,10 +108,10 @@ public final class RecommendationsInner {
      * List all recommendations for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecommendationInner>> listAsync(final ServiceCallback<List<RecommendationInner>> serviceCallback) {
-        return ServiceCall.create(listWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<List<RecommendationInner>> listAsync(final ServiceCallback<List<RecommendationInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -111,11 +120,13 @@ public final class RecommendationsInner {
      *
      * @return the observable to the List&lt;RecommendationInner&gt; object
      */
-    public Observable<List<RecommendationInner>> listAsync() {
-        return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
+    public Observable<Page<RecommendationInner>> listAsync() {
+        return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<RecommendationInner>>, Page<RecommendationInner>>() {
             @Override
-            public List<RecommendationInner> call(ServiceResponse<List<RecommendationInner>> response) {
-                return response.getBody();
+            public Page<RecommendationInner> call(ServiceResponse<List<RecommendationInner>> response) {
+                PageImpl1<RecommendationInner> page = new PageImpl1<>();
+                page.setItems(response.body());
+                return page;
             }
         });
     }
@@ -138,7 +149,8 @@ public final class RecommendationsInner {
                 @Override
                 public Observable<ServiceResponse<List<RecommendationInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<RecommendationInner>> clientResponse = listDelegate(response);
+                        ServiceResponse<PageImpl1<RecommendationInner>> result = listDelegate(response);
+                        ServiceResponse<List<RecommendationInner>> clientResponse = new ServiceResponse<List<RecommendationInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -153,10 +165,18 @@ public final class RecommendationsInner {
      *
      * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
      * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
-     * @return the List&lt;RecommendationInner&gt; object if successful.
+     * @return the PagedList<RecommendationInner> object if successful.
      */
-    public List<RecommendationInner> list(Boolean featured, String filter) {
-        return listWithServiceResponseAsync(featured, filter).toBlocking().single().getBody();
+    public PagedList<RecommendationInner> list(Boolean featured, String filter) {
+        PageImpl1<RecommendationInner> page = new PageImpl1<>();
+        page.setItems(listWithServiceResponseAsync(featured, filter).toBlocking().single().body());
+        page.setNextPageLink(null);
+        return new PagedList<RecommendationInner>(page) {
+            @Override
+            public Page<RecommendationInner> nextPage(String nextPageLink) {
+                return null;
+            }
+        };
     }
 
     /**
@@ -166,10 +186,10 @@ public final class RecommendationsInner {
      * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
      * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecommendationInner>> listAsync(Boolean featured, String filter, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
-        return ServiceCall.create(listWithServiceResponseAsync(featured, filter), serviceCallback);
+    public ServiceFuture<List<RecommendationInner>> listAsync(Boolean featured, String filter, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(featured, filter), serviceCallback);
     }
 
     /**
@@ -180,11 +200,13 @@ public final class RecommendationsInner {
      * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
      * @return the observable to the List&lt;RecommendationInner&gt; object
      */
-    public Observable<List<RecommendationInner>> listAsync(Boolean featured, String filter) {
-        return listWithServiceResponseAsync(featured, filter).map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
+    public Observable<Page<RecommendationInner>> listAsync(Boolean featured, String filter) {
+        return listWithServiceResponseAsync(featured, filter).map(new Func1<ServiceResponse<List<RecommendationInner>>, Page<RecommendationInner>>() {
             @Override
-            public List<RecommendationInner> call(ServiceResponse<List<RecommendationInner>> response) {
-                return response.getBody();
+            public Page<RecommendationInner> call(ServiceResponse<List<RecommendationInner>> response) {
+                PageImpl1<RecommendationInner> page = new PageImpl1<>();
+                page.setItems(response.body());
+                return page;
             }
         });
     }
@@ -207,7 +229,8 @@ public final class RecommendationsInner {
                 @Override
                 public Observable<ServiceResponse<List<RecommendationInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<RecommendationInner>> clientResponse = listDelegate(response);
+                        ServiceResponse<PageImpl1<RecommendationInner>> result = listDelegate(response);
+                        ServiceResponse<List<RecommendationInner>> clientResponse = new ServiceResponse<List<RecommendationInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -216,9 +239,9 @@ public final class RecommendationsInner {
             });
     }
 
-    private ServiceResponse<List<RecommendationInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<RecommendationInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<List<RecommendationInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<RecommendationInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<RecommendationInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<RecommendationInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -227,9 +250,12 @@ public final class RecommendationsInner {
      * Reset all recommendation opt-out settings for a subscription.
      * Reset all recommendation opt-out settings for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void resetAllFilters() {
-        resetAllFiltersWithServiceResponseAsync().toBlocking().single().getBody();
+        resetAllFiltersWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
@@ -237,23 +263,25 @@ public final class RecommendationsInner {
      * Reset all recommendation opt-out settings for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> resetAllFiltersAsync(final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(resetAllFiltersWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<Void> resetAllFiltersAsync(final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(resetAllFiltersWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
      * Reset all recommendation opt-out settings for a subscription.
      * Reset all recommendation opt-out settings for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> resetAllFiltersAsync() {
         return resetAllFiltersWithServiceResponseAsync().map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -262,6 +290,7 @@ public final class RecommendationsInner {
      * Reset all recommendation opt-out settings for a subscription.
      * Reset all recommendation opt-out settings for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> resetAllFiltersWithServiceResponseAsync() {
@@ -284,8 +313,9 @@ public final class RecommendationsInner {
     }
 
     private ServiceResponse<Void> resetAllFiltersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -295,10 +325,13 @@ public final class RecommendationsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
     public List<RecommendationInner> listHistoryForWebApp(String resourceGroupName, String siteName) {
-        return listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().getBody();
+        return listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().body();
     }
 
     /**
@@ -308,10 +341,11 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecommendationInner>> listHistoryForWebAppAsync(String resourceGroupName, String siteName, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
-        return ServiceCall.create(listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
+    public ServiceFuture<List<RecommendationInner>> listHistoryForWebAppAsync(String resourceGroupName, String siteName, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
     }
 
     /**
@@ -320,13 +354,14 @@ public final class RecommendationsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;RecommendationInner&gt; object
      */
     public Observable<List<RecommendationInner>> listHistoryForWebAppAsync(String resourceGroupName, String siteName) {
         return listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName).map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
             @Override
             public List<RecommendationInner> call(ServiceResponse<List<RecommendationInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -337,6 +372,7 @@ public final class RecommendationsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;RecommendationInner&gt; object
      */
     public Observable<ServiceResponse<List<RecommendationInner>>> listHistoryForWebAppWithServiceResponseAsync(String resourceGroupName, String siteName) {
@@ -372,10 +408,13 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
     public List<RecommendationInner> listHistoryForWebApp(String resourceGroupName, String siteName, String filter) {
-        return listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName, filter).toBlocking().single().getBody();
+        return listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName, filter).toBlocking().single().body();
     }
 
     /**
@@ -386,10 +425,11 @@ public final class RecommendationsInner {
      * @param siteName Name of the app.
      * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecommendationInner>> listHistoryForWebAppAsync(String resourceGroupName, String siteName, String filter, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
-        return ServiceCall.create(listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName, filter), serviceCallback);
+    public ServiceFuture<List<RecommendationInner>> listHistoryForWebAppAsync(String resourceGroupName, String siteName, String filter, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName, filter), serviceCallback);
     }
 
     /**
@@ -399,13 +439,14 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;RecommendationInner&gt; object
      */
     public Observable<List<RecommendationInner>> listHistoryForWebAppAsync(String resourceGroupName, String siteName, String filter) {
         return listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName, filter).map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
             @Override
             public List<RecommendationInner> call(ServiceResponse<List<RecommendationInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -417,6 +458,7 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;RecommendationInner&gt; object
      */
     public Observable<ServiceResponse<List<RecommendationInner>>> listHistoryForWebAppWithServiceResponseAsync(String resourceGroupName, String siteName, String filter) {
@@ -445,7 +487,7 @@ public final class RecommendationsInner {
     }
 
     private ServiceResponse<List<RecommendationInner>> listHistoryForWebAppDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<RecommendationInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<RecommendationInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<RecommendationInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -457,10 +499,13 @@ public final class RecommendationsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
     public List<RecommendationInner> listRecommendedRulesForWebApp(String resourceGroupName, String siteName) {
-        return listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().getBody();
+        return listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().body();
     }
 
     /**
@@ -470,10 +515,11 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecommendationInner>> listRecommendedRulesForWebAppAsync(String resourceGroupName, String siteName, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
-        return ServiceCall.create(listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
+    public ServiceFuture<List<RecommendationInner>> listRecommendedRulesForWebAppAsync(String resourceGroupName, String siteName, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
     }
 
     /**
@@ -482,13 +528,14 @@ public final class RecommendationsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;RecommendationInner&gt; object
      */
     public Observable<List<RecommendationInner>> listRecommendedRulesForWebAppAsync(String resourceGroupName, String siteName) {
         return listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName).map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
             @Override
             public List<RecommendationInner> call(ServiceResponse<List<RecommendationInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -499,6 +546,7 @@ public final class RecommendationsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;RecommendationInner&gt; object
      */
     public Observable<ServiceResponse<List<RecommendationInner>>> listRecommendedRulesForWebAppWithServiceResponseAsync(String resourceGroupName, String siteName) {
@@ -513,11 +561,8 @@ public final class RecommendationsInner {
         }
         final String apiVersion = "2016-03-01";
         final Boolean featured = null;
-        final String webAppSku = null;
-        final Integer numSlots = null;
-        final Integer liveHours = null;
         final String filter = null;
-        return service.listRecommendedRulesForWebApp(resourceGroupName, siteName, this.client.subscriptionId(), featured, webAppSku, numSlots, liveHours, filter, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listRecommendedRulesForWebApp(resourceGroupName, siteName, this.client.subscriptionId(), featured, filter, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<RecommendationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<RecommendationInner>>> call(Response<ResponseBody> response) {
@@ -538,14 +583,14 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param webAppSku SKU of the app.
-     * @param numSlots Number of deployment slots in the app.
-     * @param liveHours If greater than zero, this operation scans the last active live site symptoms and dynamically generate on-the-fly recommendations.
      * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
-    public List<RecommendationInner> listRecommendedRulesForWebApp(String resourceGroupName, String siteName, Boolean featured, String webAppSku, Integer numSlots, Integer liveHours, String filter) {
-        return listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName, featured, webAppSku, numSlots, liveHours, filter).toBlocking().single().getBody();
+    public List<RecommendationInner> listRecommendedRulesForWebApp(String resourceGroupName, String siteName, Boolean featured, String filter) {
+        return listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName, featured, filter).toBlocking().single().body();
     }
 
     /**
@@ -555,15 +600,13 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param webAppSku SKU of the app.
-     * @param numSlots Number of deployment slots in the app.
-     * @param liveHours If greater than zero, this operation scans the last active live site symptoms and dynamically generate on-the-fly recommendations.
      * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecommendationInner>> listRecommendedRulesForWebAppAsync(String resourceGroupName, String siteName, Boolean featured, String webAppSku, Integer numSlots, Integer liveHours, String filter, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
-        return ServiceCall.create(listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName, featured, webAppSku, numSlots, liveHours, filter), serviceCallback);
+    public ServiceFuture<List<RecommendationInner>> listRecommendedRulesForWebAppAsync(String resourceGroupName, String siteName, Boolean featured, String filter, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName, featured, filter), serviceCallback);
     }
 
     /**
@@ -573,17 +616,15 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param webAppSku SKU of the app.
-     * @param numSlots Number of deployment slots in the app.
-     * @param liveHours If greater than zero, this operation scans the last active live site symptoms and dynamically generate on-the-fly recommendations.
      * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;RecommendationInner&gt; object
      */
-    public Observable<List<RecommendationInner>> listRecommendedRulesForWebAppAsync(String resourceGroupName, String siteName, Boolean featured, String webAppSku, Integer numSlots, Integer liveHours, String filter) {
-        return listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName, featured, webAppSku, numSlots, liveHours, filter).map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
+    public Observable<List<RecommendationInner>> listRecommendedRulesForWebAppAsync(String resourceGroupName, String siteName, Boolean featured, String filter) {
+        return listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName, featured, filter).map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
             @Override
             public List<RecommendationInner> call(ServiceResponse<List<RecommendationInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -595,13 +636,11 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param webAppSku SKU of the app.
-     * @param numSlots Number of deployment slots in the app.
-     * @param liveHours If greater than zero, this operation scans the last active live site symptoms and dynamically generate on-the-fly recommendations.
      * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;RecommendationInner&gt; object
      */
-    public Observable<ServiceResponse<List<RecommendationInner>>> listRecommendedRulesForWebAppWithServiceResponseAsync(String resourceGroupName, String siteName, Boolean featured, String webAppSku, Integer numSlots, Integer liveHours, String filter) {
+    public Observable<ServiceResponse<List<RecommendationInner>>> listRecommendedRulesForWebAppWithServiceResponseAsync(String resourceGroupName, String siteName, Boolean featured, String filter) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -612,7 +651,7 @@ public final class RecommendationsInner {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-03-01";
-        return service.listRecommendedRulesForWebApp(resourceGroupName, siteName, this.client.subscriptionId(), featured, webAppSku, numSlots, liveHours, filter, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listRecommendedRulesForWebApp(resourceGroupName, siteName, this.client.subscriptionId(), featured, filter, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<RecommendationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<RecommendationInner>>> call(Response<ResponseBody> response) {
@@ -627,7 +666,7 @@ public final class RecommendationsInner {
     }
 
     private ServiceResponse<List<RecommendationInner>> listRecommendedRulesForWebAppDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<RecommendationInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<RecommendationInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<RecommendationInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -639,9 +678,12 @@ public final class RecommendationsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void disableAllForWebApp(String resourceGroupName, String siteName) {
-        disableAllForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().getBody();
+        disableAllForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().body();
     }
 
     /**
@@ -651,10 +693,11 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> disableAllForWebAppAsync(String resourceGroupName, String siteName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(disableAllForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
+    public ServiceFuture<Void> disableAllForWebAppAsync(String resourceGroupName, String siteName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(disableAllForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
     }
 
     /**
@@ -663,13 +706,14 @@ public final class RecommendationsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> disableAllForWebAppAsync(String resourceGroupName, String siteName) {
         return disableAllForWebAppWithServiceResponseAsync(resourceGroupName, siteName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -680,6 +724,7 @@ public final class RecommendationsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> disableAllForWebAppWithServiceResponseAsync(String resourceGroupName, String siteName) {
@@ -708,8 +753,9 @@ public final class RecommendationsInner {
     }
 
     private ServiceResponse<Void> disableAllForWebAppDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -719,9 +765,12 @@ public final class RecommendationsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void resetAllFiltersForWebApp(String resourceGroupName, String siteName) {
-        resetAllFiltersForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().getBody();
+        resetAllFiltersForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().body();
     }
 
     /**
@@ -731,10 +780,11 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> resetAllFiltersForWebAppAsync(String resourceGroupName, String siteName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(resetAllFiltersForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
+    public ServiceFuture<Void> resetAllFiltersForWebAppAsync(String resourceGroupName, String siteName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(resetAllFiltersForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
     }
 
     /**
@@ -743,13 +793,14 @@ public final class RecommendationsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> resetAllFiltersForWebAppAsync(String resourceGroupName, String siteName) {
         return resetAllFiltersForWebAppWithServiceResponseAsync(resourceGroupName, siteName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -760,6 +811,7 @@ public final class RecommendationsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> resetAllFiltersForWebAppWithServiceResponseAsync(String resourceGroupName, String siteName) {
@@ -788,8 +840,9 @@ public final class RecommendationsInner {
     }
 
     private ServiceResponse<Void> resetAllFiltersForWebAppDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -800,10 +853,13 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param name Name of the recommendation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RecommendationRuleInner object if successful.
      */
     public RecommendationRuleInner getRuleDetailsByWebApp(String resourceGroupName, String siteName, String name) {
-        return getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name).toBlocking().single().getBody();
+        return getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name).toBlocking().single().body();
     }
 
     /**
@@ -814,10 +870,11 @@ public final class RecommendationsInner {
      * @param siteName Name of the app.
      * @param name Name of the recommendation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RecommendationRuleInner> getRuleDetailsByWebAppAsync(String resourceGroupName, String siteName, String name, final ServiceCallback<RecommendationRuleInner> serviceCallback) {
-        return ServiceCall.create(getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name), serviceCallback);
+    public ServiceFuture<RecommendationRuleInner> getRuleDetailsByWebAppAsync(String resourceGroupName, String siteName, String name, final ServiceCallback<RecommendationRuleInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name), serviceCallback);
     }
 
     /**
@@ -827,13 +884,14 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param name Name of the recommendation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecommendationRuleInner object
      */
     public Observable<RecommendationRuleInner> getRuleDetailsByWebAppAsync(String resourceGroupName, String siteName, String name) {
         return getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name).map(new Func1<ServiceResponse<RecommendationRuleInner>, RecommendationRuleInner>() {
             @Override
             public RecommendationRuleInner call(ServiceResponse<RecommendationRuleInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -845,6 +903,7 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param name Name of the recommendation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecommendationRuleInner object
      */
     public Observable<ServiceResponse<RecommendationRuleInner>> getRuleDetailsByWebAppWithServiceResponseAsync(String resourceGroupName, String siteName, String name) {
@@ -884,10 +943,13 @@ public final class RecommendationsInner {
      * @param siteName Name of the app.
      * @param name Name of the recommendation.
      * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RecommendationRuleInner object if successful.
      */
     public RecommendationRuleInner getRuleDetailsByWebApp(String resourceGroupName, String siteName, String name, Boolean updateSeen) {
-        return getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name, updateSeen).toBlocking().single().getBody();
+        return getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name, updateSeen).toBlocking().single().body();
     }
 
     /**
@@ -899,10 +961,11 @@ public final class RecommendationsInner {
      * @param name Name of the recommendation.
      * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation object.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RecommendationRuleInner> getRuleDetailsByWebAppAsync(String resourceGroupName, String siteName, String name, Boolean updateSeen, final ServiceCallback<RecommendationRuleInner> serviceCallback) {
-        return ServiceCall.create(getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name, updateSeen), serviceCallback);
+    public ServiceFuture<RecommendationRuleInner> getRuleDetailsByWebAppAsync(String resourceGroupName, String siteName, String name, Boolean updateSeen, final ServiceCallback<RecommendationRuleInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name, updateSeen), serviceCallback);
     }
 
     /**
@@ -913,13 +976,14 @@ public final class RecommendationsInner {
      * @param siteName Name of the app.
      * @param name Name of the recommendation.
      * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecommendationRuleInner object
      */
     public Observable<RecommendationRuleInner> getRuleDetailsByWebAppAsync(String resourceGroupName, String siteName, String name, Boolean updateSeen) {
         return getRuleDetailsByWebAppWithServiceResponseAsync(resourceGroupName, siteName, name, updateSeen).map(new Func1<ServiceResponse<RecommendationRuleInner>, RecommendationRuleInner>() {
             @Override
             public RecommendationRuleInner call(ServiceResponse<RecommendationRuleInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -932,6 +996,7 @@ public final class RecommendationsInner {
      * @param siteName Name of the app.
      * @param name Name of the recommendation.
      * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecommendationRuleInner object
      */
     public Observable<ServiceResponse<RecommendationRuleInner>> getRuleDetailsByWebAppWithServiceResponseAsync(String resourceGroupName, String siteName, String name, Boolean updateSeen) {
@@ -963,7 +1028,7 @@ public final class RecommendationsInner {
     }
 
     private ServiceResponse<RecommendationRuleInner> getRuleDetailsByWebAppDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RecommendationRuleInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RecommendationRuleInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RecommendationRuleInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

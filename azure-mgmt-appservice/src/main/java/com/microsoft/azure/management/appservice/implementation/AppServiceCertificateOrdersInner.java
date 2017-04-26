@@ -8,16 +8,18 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -32,6 +34,7 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -40,7 +43,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in AppServiceCertificateOrders.
  */
-public final class AppServiceCertificateOrdersInner {
+public class AppServiceCertificateOrdersInner implements InnerSupportsGet<AppServiceCertificateOrderInner>, InnerSupportsDelete<Void>, InnerSupportsListing<AppServiceCertificateOrderInner> {
     /** The Retrofit service to perform REST calls. */
     private AppServiceCertificateOrdersService service;
     /** The service client containing this operation class. */
@@ -62,89 +65,97 @@ public final class AppServiceCertificateOrdersInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface AppServiceCertificateOrdersService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration/certificateOrders")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders validatePurchaseInformation" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration/validateCertificateRegistrationInformation")
         Observable<Response<ResponseBody>> validatePurchaseInformation(@Path("subscriptionId") String subscriptionId, @Body AppServiceCertificateOrderInner appServiceCertificateOrder, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders getByResourceGroup" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}")
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("certificateOrderName") String certificateOrderName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders createOrUpdate" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}")
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("certificateOrderName") String certificateOrderName, @Path("subscriptionId") String subscriptionId, @Body AppServiceCertificateOrderInner certificateDistinguishedName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders beginCreateOrUpdate" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}")
+        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("certificateOrderName") String certificateOrderName, @Path("subscriptionId") String subscriptionId, @Body AppServiceCertificateOrderInner certificateDistinguishedName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders delete" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("certificateOrderName") String certificateOrderName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders listCertificates" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates")
         Observable<Response<ResponseBody>> listCertificates(@Path("resourceGroupName") String resourceGroupName, @Path("certificateOrderName") String certificateOrderName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders getCertificate" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}")
         Observable<Response<ResponseBody>> getCertificate(@Path("resourceGroupName") String resourceGroupName, @Path("certificateOrderName") String certificateOrderName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders createOrUpdateCertificate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}")
-        Observable<Response<ResponseBody>> createOrUpdateCertificate(@Path("resourceGroupName") String resourceGroupName, @Path("certificateOrderName") String certificateOrderName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServiceCertificateInner keyVaultCertificate, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdateCertificate(@Path("resourceGroupName") String resourceGroupName, @Path("certificateOrderName") String certificateOrderName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServiceCertificateResourceInner keyVaultCertificate, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders beginCreateOrUpdateCertificate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}")
-        Observable<Response<ResponseBody>> beginCreateOrUpdateCertificate(@Path("resourceGroupName") String resourceGroupName, @Path("certificateOrderName") String certificateOrderName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServiceCertificateInner keyVaultCertificate, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreateOrUpdateCertificate(@Path("resourceGroupName") String resourceGroupName, @Path("certificateOrderName") String certificateOrderName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServiceCertificateResourceInner keyVaultCertificate, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders deleteCertificate" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteCertificate(@Path("resourceGroupName") String resourceGroupName, @Path("certificateOrderName") String certificateOrderName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders reissue" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/reissue")
+        Observable<Response<ResponseBody>> reissue(@Path("resourceGroupName") String resourceGroupName, @Path("certificateOrderName") String certificateOrderName, @Path("subscriptionId") String subscriptionId, @Body ReissueCertificateOrderRequestInner reissueCertificateOrderRequest, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}")
-        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServiceCertificateOrderInner certificateDistinguishedName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders renew" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/renew")
+        Observable<Response<ResponseBody>> renew(@Path("resourceGroupName") String resourceGroupName, @Path("certificateOrderName") String certificateOrderName, @Path("subscriptionId") String subscriptionId, @Body RenewCertificateOrderRequestInner renewCertificateOrderRequest, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}")
-        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServiceCertificateOrderInner certificateDistinguishedName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders resendEmail" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/resendEmail")
+        Observable<Response<ResponseBody>> resendEmail(@Path("resourceGroupName") String resourceGroupName, @Path("certificateOrderName") String certificateOrderName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteCertificateOrder(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders resendRequestEmails" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/resendRequestEmails")
+        Observable<Response<ResponseBody>> resendRequestEmails(@Path("resourceGroupName") String resourceGroupName, @Path("certificateOrderName") String certificateOrderName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body NameIdentifierInner nameIdentifier, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}/reissue")
-        Observable<Response<ResponseBody>> reissue(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body ReissueCertificateOrderRequestInner reissueCertificateOrderRequest, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders retrieveSiteSeal" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/retrieveSiteSeal")
+        Observable<Response<ResponseBody>> retrieveSiteSeal(@Path("resourceGroupName") String resourceGroupName, @Path("certificateOrderName") String certificateOrderName, @Path("subscriptionId") String subscriptionId, @Body SiteSealRequestInner siteSealRequest, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}/renew")
-        Observable<Response<ResponseBody>> renew(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body RenewCertificateOrderRequestInner renewCertificateOrderRequest, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders verifyDomainOwnership" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/verifyDomainOwnership")
+        Observable<Response<ResponseBody>> verifyDomainOwnership(@Path("resourceGroupName") String resourceGroupName, @Path("certificateOrderName") String certificateOrderName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}/resendEmail")
-        Observable<Response<ResponseBody>> resendEmail(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders retrieveCertificateActions" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}/retrieveCertificateActions")
         Observable<Response<ResponseBody>> retrieveCertificateActions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders retrieveCertificateEmailHistory" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}/retrieveEmailHistory")
         Observable<Response<ResponseBody>> retrieveCertificateEmailHistory(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}/verifyDomainOwnership")
-        Observable<Response<ResponseBody>> verifyDomainOwnership(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders listByResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listByResourceGroupNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listCertificatesNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceCertificateOrders listCertificatesNext" })
+        @GET
+        Observable<Response<ResponseBody>> listCertificatesNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -152,14 +163,17 @@ public final class AppServiceCertificateOrdersInner {
      * List all certificate orders in a subscription.
      * List all certificate orders in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppServiceCertificateOrderInner&gt; object if successful.
      */
     public PagedList<AppServiceCertificateOrderInner> list() {
         ServiceResponse<Page<AppServiceCertificateOrderInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<AppServiceCertificateOrderInner>(response.getBody()) {
+        return new PagedList<AppServiceCertificateOrderInner>(response.body()) {
             @Override
             public Page<AppServiceCertificateOrderInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -169,10 +183,11 @@ public final class AppServiceCertificateOrdersInner {
      * List all certificate orders in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServiceCertificateOrderInner>> listAsync(final ListOperationCallback<AppServiceCertificateOrderInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<AppServiceCertificateOrderInner>> listAsync(final ListOperationCallback<AppServiceCertificateOrderInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>>>() {
                 @Override
@@ -187,6 +202,7 @@ public final class AppServiceCertificateOrdersInner {
      * List all certificate orders in a subscription.
      * List all certificate orders in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServiceCertificateOrderInner&gt; object
      */
     public Observable<Page<AppServiceCertificateOrderInner>> listAsync() {
@@ -194,7 +210,7 @@ public final class AppServiceCertificateOrdersInner {
             .map(new Func1<ServiceResponse<Page<AppServiceCertificateOrderInner>>, Page<AppServiceCertificateOrderInner>>() {
                 @Override
                 public Page<AppServiceCertificateOrderInner> call(ServiceResponse<Page<AppServiceCertificateOrderInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -203,6 +219,7 @@ public final class AppServiceCertificateOrdersInner {
      * List all certificate orders in a subscription.
      * List all certificate orders in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServiceCertificateOrderInner&gt; object
      */
     public Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>> listWithServiceResponseAsync() {
@@ -210,7 +227,7 @@ public final class AppServiceCertificateOrdersInner {
             .concatMap(new Func1<ServiceResponse<Page<AppServiceCertificateOrderInner>>, Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>> call(ServiceResponse<Page<AppServiceCertificateOrderInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -223,6 +240,7 @@ public final class AppServiceCertificateOrdersInner {
      * List all certificate orders in a subscription.
      * List all certificate orders in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;AppServiceCertificateOrderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>> listSinglePageAsync() {
@@ -236,7 +254,7 @@ public final class AppServiceCertificateOrdersInner {
                 public Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AppServiceCertificateOrderInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AppServiceCertificateOrderInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<AppServiceCertificateOrderInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -245,7 +263,7 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<PageImpl<AppServiceCertificateOrderInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServiceCertificateOrderInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServiceCertificateOrderInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppServiceCertificateOrderInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -256,9 +274,12 @@ public final class AppServiceCertificateOrdersInner {
      * Validate information for a certificate order.
      *
      * @param appServiceCertificateOrder Information for a certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void validatePurchaseInformation(AppServiceCertificateOrderInner appServiceCertificateOrder) {
-        validatePurchaseInformationWithServiceResponseAsync(appServiceCertificateOrder).toBlocking().single().getBody();
+        validatePurchaseInformationWithServiceResponseAsync(appServiceCertificateOrder).toBlocking().single().body();
     }
 
     /**
@@ -267,10 +288,11 @@ public final class AppServiceCertificateOrdersInner {
      *
      * @param appServiceCertificateOrder Information for a certificate order.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> validatePurchaseInformationAsync(AppServiceCertificateOrderInner appServiceCertificateOrder, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(validatePurchaseInformationWithServiceResponseAsync(appServiceCertificateOrder), serviceCallback);
+    public ServiceFuture<Void> validatePurchaseInformationAsync(AppServiceCertificateOrderInner appServiceCertificateOrder, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(validatePurchaseInformationWithServiceResponseAsync(appServiceCertificateOrder), serviceCallback);
     }
 
     /**
@@ -278,13 +300,14 @@ public final class AppServiceCertificateOrdersInner {
      * Validate information for a certificate order.
      *
      * @param appServiceCertificateOrder Information for a certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> validatePurchaseInformationAsync(AppServiceCertificateOrderInner appServiceCertificateOrder) {
         return validatePurchaseInformationWithServiceResponseAsync(appServiceCertificateOrder).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -294,6 +317,7 @@ public final class AppServiceCertificateOrdersInner {
      * Validate information for a certificate order.
      *
      * @param appServiceCertificateOrder Information for a certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> validatePurchaseInformationWithServiceResponseAsync(AppServiceCertificateOrderInner appServiceCertificateOrder) {
@@ -320,8 +344,9 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<Void> validatePurchaseInformationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -330,14 +355,17 @@ public final class AppServiceCertificateOrdersInner {
      * Get certificate orders in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppServiceCertificateOrderInner&gt; object if successful.
      */
     public PagedList<AppServiceCertificateOrderInner> listByResourceGroup(final String resourceGroupName) {
         ServiceResponse<Page<AppServiceCertificateOrderInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<AppServiceCertificateOrderInner>(response.getBody()) {
+        return new PagedList<AppServiceCertificateOrderInner>(response.body()) {
             @Override
             public Page<AppServiceCertificateOrderInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -348,10 +376,11 @@ public final class AppServiceCertificateOrdersInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServiceCertificateOrderInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<AppServiceCertificateOrderInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<AppServiceCertificateOrderInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<AppServiceCertificateOrderInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>>>() {
                 @Override
@@ -367,6 +396,7 @@ public final class AppServiceCertificateOrdersInner {
      * Get certificate orders in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServiceCertificateOrderInner&gt; object
      */
     public Observable<Page<AppServiceCertificateOrderInner>> listByResourceGroupAsync(final String resourceGroupName) {
@@ -374,7 +404,7 @@ public final class AppServiceCertificateOrdersInner {
             .map(new Func1<ServiceResponse<Page<AppServiceCertificateOrderInner>>, Page<AppServiceCertificateOrderInner>>() {
                 @Override
                 public Page<AppServiceCertificateOrderInner> call(ServiceResponse<Page<AppServiceCertificateOrderInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -384,6 +414,7 @@ public final class AppServiceCertificateOrdersInner {
      * Get certificate orders in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServiceCertificateOrderInner&gt; object
      */
     public Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
@@ -391,7 +422,7 @@ public final class AppServiceCertificateOrdersInner {
             .concatMap(new Func1<ServiceResponse<Page<AppServiceCertificateOrderInner>>, Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>> call(ServiceResponse<Page<AppServiceCertificateOrderInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -405,6 +436,7 @@ public final class AppServiceCertificateOrdersInner {
      * Get certificate orders in a resource group.
      *
     ServiceResponse<PageImpl<AppServiceCertificateOrderInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;AppServiceCertificateOrderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
@@ -421,7 +453,7 @@ public final class AppServiceCertificateOrdersInner {
                 public Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AppServiceCertificateOrderInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AppServiceCertificateOrderInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<AppServiceCertificateOrderInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -430,8 +462,360 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<PageImpl<AppServiceCertificateOrderInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServiceCertificateOrderInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServiceCertificateOrderInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppServiceCertificateOrderInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get a certificate order.
+     * Get a certificate order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order..
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AppServiceCertificateOrderInner object if successful.
+     */
+    public AppServiceCertificateOrderInner getByResourceGroup(String resourceGroupName, String certificateOrderName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, certificateOrderName).toBlocking().single().body();
+    }
+
+    /**
+     * Get a certificate order.
+     * Get a certificate order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order..
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AppServiceCertificateOrderInner> getByResourceGroupAsync(String resourceGroupName, String certificateOrderName, final ServiceCallback<AppServiceCertificateOrderInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, certificateOrderName), serviceCallback);
+    }
+
+    /**
+     * Get a certificate order.
+     * Get a certificate order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order..
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AppServiceCertificateOrderInner object
+     */
+    public Observable<AppServiceCertificateOrderInner> getByResourceGroupAsync(String resourceGroupName, String certificateOrderName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, certificateOrderName).map(new Func1<ServiceResponse<AppServiceCertificateOrderInner>, AppServiceCertificateOrderInner>() {
+            @Override
+            public AppServiceCertificateOrderInner call(ServiceResponse<AppServiceCertificateOrderInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get a certificate order.
+     * Get a certificate order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order..
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AppServiceCertificateOrderInner object
+     */
+    public Observable<ServiceResponse<AppServiceCertificateOrderInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String certificateOrderName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (certificateOrderName == null) {
+            throw new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2015-08-01";
+        return service.getByResourceGroup(resourceGroupName, certificateOrderName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppServiceCertificateOrderInner>>>() {
+                @Override
+                public Observable<ServiceResponse<AppServiceCertificateOrderInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<AppServiceCertificateOrderInner> clientResponse = getByResourceGroupDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<AppServiceCertificateOrderInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AppServiceCertificateOrderInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<AppServiceCertificateOrderInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Create or update a certificate purchase order.
+     * Create or update a certificate purchase order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AppServiceCertificateOrderInner object if successful.
+     */
+    public AppServiceCertificateOrderInner createOrUpdate(String resourceGroupName, String certificateOrderName, AppServiceCertificateOrderInner certificateDistinguishedName) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, certificateOrderName, certificateDistinguishedName).toBlocking().last().body();
+    }
+
+    /**
+     * Create or update a certificate purchase order.
+     * Create or update a certificate purchase order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AppServiceCertificateOrderInner> createOrUpdateAsync(String resourceGroupName, String certificateOrderName, AppServiceCertificateOrderInner certificateDistinguishedName, final ServiceCallback<AppServiceCertificateOrderInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, certificateOrderName, certificateDistinguishedName), serviceCallback);
+    }
+
+    /**
+     * Create or update a certificate purchase order.
+     * Create or update a certificate purchase order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<AppServiceCertificateOrderInner> createOrUpdateAsync(String resourceGroupName, String certificateOrderName, AppServiceCertificateOrderInner certificateDistinguishedName) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, certificateOrderName, certificateDistinguishedName).map(new Func1<ServiceResponse<AppServiceCertificateOrderInner>, AppServiceCertificateOrderInner>() {
+            @Override
+            public AppServiceCertificateOrderInner call(ServiceResponse<AppServiceCertificateOrderInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or update a certificate purchase order.
+     * Create or update a certificate purchase order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<AppServiceCertificateOrderInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String certificateOrderName, AppServiceCertificateOrderInner certificateDistinguishedName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (certificateOrderName == null) {
+            throw new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (certificateDistinguishedName == null) {
+            throw new IllegalArgumentException("Parameter certificateDistinguishedName is required and cannot be null.");
+        }
+        Validator.validate(certificateDistinguishedName);
+        final String apiVersion = "2015-08-01";
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, certificateOrderName, this.client.subscriptionId(), certificateDistinguishedName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<AppServiceCertificateOrderInner>() { }.getType());
+    }
+
+    /**
+     * Create or update a certificate purchase order.
+     * Create or update a certificate purchase order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AppServiceCertificateOrderInner object if successful.
+     */
+    public AppServiceCertificateOrderInner beginCreateOrUpdate(String resourceGroupName, String certificateOrderName, AppServiceCertificateOrderInner certificateDistinguishedName) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, certificateOrderName, certificateDistinguishedName).toBlocking().single().body();
+    }
+
+    /**
+     * Create or update a certificate purchase order.
+     * Create or update a certificate purchase order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AppServiceCertificateOrderInner> beginCreateOrUpdateAsync(String resourceGroupName, String certificateOrderName, AppServiceCertificateOrderInner certificateDistinguishedName, final ServiceCallback<AppServiceCertificateOrderInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, certificateOrderName, certificateDistinguishedName), serviceCallback);
+    }
+
+    /**
+     * Create or update a certificate purchase order.
+     * Create or update a certificate purchase order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AppServiceCertificateOrderInner object
+     */
+    public Observable<AppServiceCertificateOrderInner> beginCreateOrUpdateAsync(String resourceGroupName, String certificateOrderName, AppServiceCertificateOrderInner certificateDistinguishedName) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, certificateOrderName, certificateDistinguishedName).map(new Func1<ServiceResponse<AppServiceCertificateOrderInner>, AppServiceCertificateOrderInner>() {
+            @Override
+            public AppServiceCertificateOrderInner call(ServiceResponse<AppServiceCertificateOrderInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or update a certificate purchase order.
+     * Create or update a certificate purchase order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AppServiceCertificateOrderInner object
+     */
+    public Observable<ServiceResponse<AppServiceCertificateOrderInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String certificateOrderName, AppServiceCertificateOrderInner certificateDistinguishedName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (certificateOrderName == null) {
+            throw new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (certificateDistinguishedName == null) {
+            throw new IllegalArgumentException("Parameter certificateDistinguishedName is required and cannot be null.");
+        }
+        Validator.validate(certificateDistinguishedName);
+        final String apiVersion = "2015-08-01";
+        return service.beginCreateOrUpdate(resourceGroupName, certificateOrderName, this.client.subscriptionId(), certificateDistinguishedName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppServiceCertificateOrderInner>>>() {
+                @Override
+                public Observable<ServiceResponse<AppServiceCertificateOrderInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<AppServiceCertificateOrderInner> clientResponse = beginCreateOrUpdateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<AppServiceCertificateOrderInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AppServiceCertificateOrderInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<AppServiceCertificateOrderInner>() { }.getType())
+                .register(201, new TypeToken<AppServiceCertificateOrderInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Delete an existing certificate order.
+     * Delete an existing certificate order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void delete(String resourceGroupName, String certificateOrderName) {
+        deleteWithServiceResponseAsync(resourceGroupName, certificateOrderName).toBlocking().single().body();
+    }
+
+    /**
+     * Delete an existing certificate order.
+     * Delete an existing certificate order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String certificateOrderName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, certificateOrderName), serviceCallback);
+    }
+
+    /**
+     * Delete an existing certificate order.
+     * Delete an existing certificate order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deleteAsync(String resourceGroupName, String certificateOrderName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, certificateOrderName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Delete an existing certificate order.
+     * Delete an existing certificate order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String certificateOrderName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (certificateOrderName == null) {
+            throw new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2015-08-01";
+        return service.delete(resourceGroupName, certificateOrderName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -442,14 +826,17 @@ public final class AppServiceCertificateOrdersInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @return the PagedList&lt;AppServiceCertificateInner&gt; object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;AppServiceCertificateResourceInner&gt; object if successful.
      */
-    public PagedList<AppServiceCertificateInner> listCertificates(final String resourceGroupName, final String certificateOrderName) {
-        ServiceResponse<Page<AppServiceCertificateInner>> response = listCertificatesSinglePageAsync(resourceGroupName, certificateOrderName).toBlocking().single();
-        return new PagedList<AppServiceCertificateInner>(response.getBody()) {
+    public PagedList<AppServiceCertificateResourceInner> listCertificates(final String resourceGroupName, final String certificateOrderName) {
+        ServiceResponse<Page<AppServiceCertificateResourceInner>> response = listCertificatesSinglePageAsync(resourceGroupName, certificateOrderName).toBlocking().single();
+        return new PagedList<AppServiceCertificateResourceInner>(response.body()) {
             @Override
-            public Page<AppServiceCertificateInner> nextPage(String nextPageLink) {
-                return listCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            public Page<AppServiceCertificateResourceInner> nextPage(String nextPageLink) {
+                return listCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -461,14 +848,15 @@ public final class AppServiceCertificateOrdersInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServiceCertificateInner>> listCertificatesAsync(final String resourceGroupName, final String certificateOrderName, final ListOperationCallback<AppServiceCertificateInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<AppServiceCertificateResourceInner>> listCertificatesAsync(final String resourceGroupName, final String certificateOrderName, final ListOperationCallback<AppServiceCertificateResourceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listCertificatesSinglePageAsync(resourceGroupName, certificateOrderName),
-            new Func1<String, Observable<ServiceResponse<Page<AppServiceCertificateInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<AppServiceCertificateResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<AppServiceCertificateInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<AppServiceCertificateResourceInner>>> call(String nextPageLink) {
                     return listCertificatesNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -481,14 +869,15 @@ public final class AppServiceCertificateOrdersInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @return the observable to the PagedList&lt;AppServiceCertificateInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AppServiceCertificateResourceInner&gt; object
      */
-    public Observable<Page<AppServiceCertificateInner>> listCertificatesAsync(final String resourceGroupName, final String certificateOrderName) {
+    public Observable<Page<AppServiceCertificateResourceInner>> listCertificatesAsync(final String resourceGroupName, final String certificateOrderName) {
         return listCertificatesWithServiceResponseAsync(resourceGroupName, certificateOrderName)
-            .map(new Func1<ServiceResponse<Page<AppServiceCertificateInner>>, Page<AppServiceCertificateInner>>() {
+            .map(new Func1<ServiceResponse<Page<AppServiceCertificateResourceInner>>, Page<AppServiceCertificateResourceInner>>() {
                 @Override
-                public Page<AppServiceCertificateInner> call(ServiceResponse<Page<AppServiceCertificateInner>> response) {
-                    return response.getBody();
+                public Page<AppServiceCertificateResourceInner> call(ServiceResponse<Page<AppServiceCertificateResourceInner>> response) {
+                    return response.body();
                 }
             });
     }
@@ -499,14 +888,15 @@ public final class AppServiceCertificateOrdersInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @return the observable to the PagedList&lt;AppServiceCertificateInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AppServiceCertificateResourceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<AppServiceCertificateInner>>> listCertificatesWithServiceResponseAsync(final String resourceGroupName, final String certificateOrderName) {
+    public Observable<ServiceResponse<Page<AppServiceCertificateResourceInner>>> listCertificatesWithServiceResponseAsync(final String resourceGroupName, final String certificateOrderName) {
         return listCertificatesSinglePageAsync(resourceGroupName, certificateOrderName)
-            .concatMap(new Func1<ServiceResponse<Page<AppServiceCertificateInner>>, Observable<ServiceResponse<Page<AppServiceCertificateInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<AppServiceCertificateResourceInner>>, Observable<ServiceResponse<Page<AppServiceCertificateResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<AppServiceCertificateInner>>> call(ServiceResponse<Page<AppServiceCertificateInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                public Observable<ServiceResponse<Page<AppServiceCertificateResourceInner>>> call(ServiceResponse<Page<AppServiceCertificateResourceInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -519,11 +909,12 @@ public final class AppServiceCertificateOrdersInner {
      * List all certificates associated with a certificate order.
      * List all certificates associated with a certificate order.
      *
-    ServiceResponse<PageImpl<AppServiceCertificateInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
-    ServiceResponse<PageImpl<AppServiceCertificateInner>> * @param certificateOrderName Name of the certificate order.
-     * @return the PagedList&lt;AppServiceCertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
+    ServiceResponse<PageImpl<AppServiceCertificateResourceInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+    ServiceResponse<PageImpl<AppServiceCertificateResourceInner>> * @param certificateOrderName Name of the certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;AppServiceCertificateResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<AppServiceCertificateInner>>> listCertificatesSinglePageAsync(final String resourceGroupName, final String certificateOrderName) {
+    public Observable<ServiceResponse<Page<AppServiceCertificateResourceInner>>> listCertificatesSinglePageAsync(final String resourceGroupName, final String certificateOrderName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -535,12 +926,12 @@ public final class AppServiceCertificateOrdersInner {
         }
         final String apiVersion = "2015-08-01";
         return service.listCertificates(resourceGroupName, certificateOrderName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppServiceCertificateInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppServiceCertificateResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<AppServiceCertificateInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<AppServiceCertificateResourceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<AppServiceCertificateInner>> result = listCertificatesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AppServiceCertificateInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<AppServiceCertificateResourceInner>> result = listCertificatesDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<AppServiceCertificateResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -548,9 +939,9 @@ public final class AppServiceCertificateOrdersInner {
             });
     }
 
-    private ServiceResponse<PageImpl<AppServiceCertificateInner>> listCertificatesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServiceCertificateInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl<AppServiceCertificateInner>>() { }.getType())
+    private ServiceResponse<PageImpl<AppServiceCertificateResourceInner>> listCertificatesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServiceCertificateResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<AppServiceCertificateResourceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -562,10 +953,13 @@ public final class AppServiceCertificateOrdersInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
-     * @return the AppServiceCertificateInner object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AppServiceCertificateResourceInner object if successful.
      */
-    public AppServiceCertificateInner getCertificate(String resourceGroupName, String certificateOrderName, String name) {
-        return getCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name).toBlocking().single().getBody();
+    public AppServiceCertificateResourceInner getCertificate(String resourceGroupName, String certificateOrderName, String name) {
+        return getCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name).toBlocking().single().body();
     }
 
     /**
@@ -576,10 +970,11 @@ public final class AppServiceCertificateOrdersInner {
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AppServiceCertificateInner> getCertificateAsync(String resourceGroupName, String certificateOrderName, String name, final ServiceCallback<AppServiceCertificateInner> serviceCallback) {
-        return ServiceCall.create(getCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name), serviceCallback);
+    public ServiceFuture<AppServiceCertificateResourceInner> getCertificateAsync(String resourceGroupName, String certificateOrderName, String name, final ServiceCallback<AppServiceCertificateResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name), serviceCallback);
     }
 
     /**
@@ -589,13 +984,14 @@ public final class AppServiceCertificateOrdersInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
-     * @return the observable to the AppServiceCertificateInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AppServiceCertificateResourceInner object
      */
-    public Observable<AppServiceCertificateInner> getCertificateAsync(String resourceGroupName, String certificateOrderName, String name) {
-        return getCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name).map(new Func1<ServiceResponse<AppServiceCertificateInner>, AppServiceCertificateInner>() {
+    public Observable<AppServiceCertificateResourceInner> getCertificateAsync(String resourceGroupName, String certificateOrderName, String name) {
+        return getCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name).map(new Func1<ServiceResponse<AppServiceCertificateResourceInner>, AppServiceCertificateResourceInner>() {
             @Override
-            public AppServiceCertificateInner call(ServiceResponse<AppServiceCertificateInner> response) {
-                return response.getBody();
+            public AppServiceCertificateResourceInner call(ServiceResponse<AppServiceCertificateResourceInner> response) {
+                return response.body();
             }
         });
     }
@@ -607,9 +1003,10 @@ public final class AppServiceCertificateOrdersInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
-     * @return the observable to the AppServiceCertificateInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AppServiceCertificateResourceInner object
      */
-    public Observable<ServiceResponse<AppServiceCertificateInner>> getCertificateWithServiceResponseAsync(String resourceGroupName, String certificateOrderName, String name) {
+    public Observable<ServiceResponse<AppServiceCertificateResourceInner>> getCertificateWithServiceResponseAsync(String resourceGroupName, String certificateOrderName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -624,11 +1021,11 @@ public final class AppServiceCertificateOrdersInner {
         }
         final String apiVersion = "2015-08-01";
         return service.getCertificate(resourceGroupName, certificateOrderName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppServiceCertificateInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppServiceCertificateResourceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<AppServiceCertificateInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<AppServiceCertificateResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<AppServiceCertificateInner> clientResponse = getCertificateDelegate(response);
+                        ServiceResponse<AppServiceCertificateResourceInner> clientResponse = getCertificateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -637,9 +1034,9 @@ public final class AppServiceCertificateOrdersInner {
             });
     }
 
-    private ServiceResponse<AppServiceCertificateInner> getCertificateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AppServiceCertificateInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<AppServiceCertificateInner>() { }.getType())
+    private ServiceResponse<AppServiceCertificateResourceInner> getCertificateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AppServiceCertificateResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<AppServiceCertificateResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -652,10 +1049,13 @@ public final class AppServiceCertificateOrdersInner {
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
      * @param keyVaultCertificate Key vault certificate resource Id.
-     * @return the AppServiceCertificateInner object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AppServiceCertificateResourceInner object if successful.
      */
-    public AppServiceCertificateInner createOrUpdateCertificate(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateInner keyVaultCertificate) {
-        return createOrUpdateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate).toBlocking().last().getBody();
+    public AppServiceCertificateResourceInner createOrUpdateCertificate(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateResourceInner keyVaultCertificate) {
+        return createOrUpdateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate).toBlocking().last().body();
     }
 
     /**
@@ -667,10 +1067,11 @@ public final class AppServiceCertificateOrdersInner {
      * @param name Name of the certificate.
      * @param keyVaultCertificate Key vault certificate resource Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AppServiceCertificateInner> createOrUpdateCertificateAsync(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateInner keyVaultCertificate, final ServiceCallback<AppServiceCertificateInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate), serviceCallback);
+    public ServiceFuture<AppServiceCertificateResourceInner> createOrUpdateCertificateAsync(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateResourceInner keyVaultCertificate, final ServiceCallback<AppServiceCertificateResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate), serviceCallback);
     }
 
     /**
@@ -681,13 +1082,14 @@ public final class AppServiceCertificateOrdersInner {
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
      * @param keyVaultCertificate Key vault certificate resource Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<AppServiceCertificateInner> createOrUpdateCertificateAsync(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateInner keyVaultCertificate) {
-        return createOrUpdateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate).map(new Func1<ServiceResponse<AppServiceCertificateInner>, AppServiceCertificateInner>() {
+    public Observable<AppServiceCertificateResourceInner> createOrUpdateCertificateAsync(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateResourceInner keyVaultCertificate) {
+        return createOrUpdateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate).map(new Func1<ServiceResponse<AppServiceCertificateResourceInner>, AppServiceCertificateResourceInner>() {
             @Override
-            public AppServiceCertificateInner call(ServiceResponse<AppServiceCertificateInner> response) {
-                return response.getBody();
+            public AppServiceCertificateResourceInner call(ServiceResponse<AppServiceCertificateResourceInner> response) {
+                return response.body();
             }
         });
     }
@@ -700,9 +1102,10 @@ public final class AppServiceCertificateOrdersInner {
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
      * @param keyVaultCertificate Key vault certificate resource Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<AppServiceCertificateInner>> createOrUpdateCertificateWithServiceResponseAsync(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateInner keyVaultCertificate) {
+    public Observable<ServiceResponse<AppServiceCertificateResourceInner>> createOrUpdateCertificateWithServiceResponseAsync(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateResourceInner keyVaultCertificate) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -721,7 +1124,7 @@ public final class AppServiceCertificateOrdersInner {
         Validator.validate(keyVaultCertificate);
         final String apiVersion = "2015-08-01";
         Observable<Response<ResponseBody>> observable = service.createOrUpdateCertificate(resourceGroupName, certificateOrderName, name, this.client.subscriptionId(), keyVaultCertificate, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<AppServiceCertificateInner>() { }.getType());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<AppServiceCertificateResourceInner>() { }.getType());
     }
 
     /**
@@ -732,10 +1135,13 @@ public final class AppServiceCertificateOrdersInner {
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
      * @param keyVaultCertificate Key vault certificate resource Id.
-     * @return the AppServiceCertificateInner object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AppServiceCertificateResourceInner object if successful.
      */
-    public AppServiceCertificateInner beginCreateOrUpdateCertificate(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateInner keyVaultCertificate) {
-        return beginCreateOrUpdateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate).toBlocking().single().getBody();
+    public AppServiceCertificateResourceInner beginCreateOrUpdateCertificate(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateResourceInner keyVaultCertificate) {
+        return beginCreateOrUpdateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate).toBlocking().single().body();
     }
 
     /**
@@ -747,10 +1153,11 @@ public final class AppServiceCertificateOrdersInner {
      * @param name Name of the certificate.
      * @param keyVaultCertificate Key vault certificate resource Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AppServiceCertificateInner> beginCreateOrUpdateCertificateAsync(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateInner keyVaultCertificate, final ServiceCallback<AppServiceCertificateInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate), serviceCallback);
+    public ServiceFuture<AppServiceCertificateResourceInner> beginCreateOrUpdateCertificateAsync(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateResourceInner keyVaultCertificate, final ServiceCallback<AppServiceCertificateResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate), serviceCallback);
     }
 
     /**
@@ -761,13 +1168,14 @@ public final class AppServiceCertificateOrdersInner {
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
      * @param keyVaultCertificate Key vault certificate resource Id.
-     * @return the observable to the AppServiceCertificateInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AppServiceCertificateResourceInner object
      */
-    public Observable<AppServiceCertificateInner> beginCreateOrUpdateCertificateAsync(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateInner keyVaultCertificate) {
-        return beginCreateOrUpdateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate).map(new Func1<ServiceResponse<AppServiceCertificateInner>, AppServiceCertificateInner>() {
+    public Observable<AppServiceCertificateResourceInner> beginCreateOrUpdateCertificateAsync(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateResourceInner keyVaultCertificate) {
+        return beginCreateOrUpdateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate).map(new Func1<ServiceResponse<AppServiceCertificateResourceInner>, AppServiceCertificateResourceInner>() {
             @Override
-            public AppServiceCertificateInner call(ServiceResponse<AppServiceCertificateInner> response) {
-                return response.getBody();
+            public AppServiceCertificateResourceInner call(ServiceResponse<AppServiceCertificateResourceInner> response) {
+                return response.body();
             }
         });
     }
@@ -780,9 +1188,10 @@ public final class AppServiceCertificateOrdersInner {
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
      * @param keyVaultCertificate Key vault certificate resource Id.
-     * @return the observable to the AppServiceCertificateInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AppServiceCertificateResourceInner object
      */
-    public Observable<ServiceResponse<AppServiceCertificateInner>> beginCreateOrUpdateCertificateWithServiceResponseAsync(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateInner keyVaultCertificate) {
+    public Observable<ServiceResponse<AppServiceCertificateResourceInner>> beginCreateOrUpdateCertificateWithServiceResponseAsync(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateResourceInner keyVaultCertificate) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -801,11 +1210,11 @@ public final class AppServiceCertificateOrdersInner {
         Validator.validate(keyVaultCertificate);
         final String apiVersion = "2015-08-01";
         return service.beginCreateOrUpdateCertificate(resourceGroupName, certificateOrderName, name, this.client.subscriptionId(), keyVaultCertificate, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppServiceCertificateInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppServiceCertificateResourceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<AppServiceCertificateInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<AppServiceCertificateResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<AppServiceCertificateInner> clientResponse = beginCreateOrUpdateCertificateDelegate(response);
+                        ServiceResponse<AppServiceCertificateResourceInner> clientResponse = beginCreateOrUpdateCertificateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -814,10 +1223,10 @@ public final class AppServiceCertificateOrdersInner {
             });
     }
 
-    private ServiceResponse<AppServiceCertificateInner> beginCreateOrUpdateCertificateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AppServiceCertificateInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<AppServiceCertificateInner>() { }.getType())
-                .register(201, new TypeToken<AppServiceCertificateInner>() { }.getType())
+    private ServiceResponse<AppServiceCertificateResourceInner> beginCreateOrUpdateCertificateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AppServiceCertificateResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<AppServiceCertificateResourceInner>() { }.getType())
+                .register(201, new TypeToken<AppServiceCertificateResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -829,9 +1238,12 @@ public final class AppServiceCertificateOrdersInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteCertificate(String resourceGroupName, String certificateOrderName, String name) {
-        deleteCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name).toBlocking().single().getBody();
+        deleteCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name).toBlocking().single().body();
     }
 
     /**
@@ -842,10 +1254,11 @@ public final class AppServiceCertificateOrdersInner {
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteCertificateAsync(String resourceGroupName, String certificateOrderName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name), serviceCallback);
+    public ServiceFuture<Void> deleteCertificateAsync(String resourceGroupName, String certificateOrderName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name), serviceCallback);
     }
 
     /**
@@ -855,13 +1268,14 @@ public final class AppServiceCertificateOrdersInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteCertificateAsync(String resourceGroupName, String certificateOrderName, String name) {
         return deleteCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -873,6 +1287,7 @@ public final class AppServiceCertificateOrdersInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteCertificateWithServiceResponseAsync(String resourceGroupName, String certificateOrderName, String name) {
@@ -904,379 +1319,58 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<Void> deleteCertificateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .build(response);
-    }
-
-    /**
-     * Get a certificate order.
-     * Get a certificate order.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate.
-     * @return the AppServiceCertificateOrderInner object if successful.
-     */
-    public AppServiceCertificateOrderInner get(String resourceGroupName, String name) {
-        return getWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
-    }
-
-    /**
-     * Get a certificate order.
-     * Get a certificate order.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<AppServiceCertificateOrderInner> getAsync(String resourceGroupName, String name, final ServiceCallback<AppServiceCertificateOrderInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
-    }
-
-    /**
-     * Get a certificate order.
-     * Get a certificate order.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate.
-     * @return the observable to the AppServiceCertificateOrderInner object
-     */
-    public Observable<AppServiceCertificateOrderInner> getAsync(String resourceGroupName, String name) {
-        return getWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<AppServiceCertificateOrderInner>, AppServiceCertificateOrderInner>() {
-            @Override
-            public AppServiceCertificateOrderInner call(ServiceResponse<AppServiceCertificateOrderInner> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Get a certificate order.
-     * Get a certificate order.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate.
-     * @return the observable to the AppServiceCertificateOrderInner object
-     */
-    public Observable<ServiceResponse<AppServiceCertificateOrderInner>> getWithServiceResponseAsync(String resourceGroupName, String name) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        final String apiVersion = "2015-08-01";
-        return service.get(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppServiceCertificateOrderInner>>>() {
-                @Override
-                public Observable<ServiceResponse<AppServiceCertificateOrderInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<AppServiceCertificateOrderInner> clientResponse = getDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<AppServiceCertificateOrderInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AppServiceCertificateOrderInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<AppServiceCertificateOrderInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Create or update a certificate purchase order.
-     * Create or update a certificate purchase order.
+     * Reissue an existing certificate order.
+     * Reissue an existing certificate order.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate.
-     * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
-     * @return the AppServiceCertificateOrderInner object if successful.
+     * @param certificateOrderName Name of the certificate order.
+     * @param reissueCertificateOrderRequest Parameters for the reissue.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public AppServiceCertificateOrderInner createOrUpdate(String resourceGroupName, String name, AppServiceCertificateOrderInner certificateDistinguishedName) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, certificateDistinguishedName).toBlocking().last().getBody();
+    public void reissue(String resourceGroupName, String certificateOrderName, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest) {
+        reissueWithServiceResponseAsync(resourceGroupName, certificateOrderName, reissueCertificateOrderRequest).toBlocking().single().body();
     }
 
     /**
-     * Create or update a certificate purchase order.
-     * Create or update a certificate purchase order.
+     * Reissue an existing certificate order.
+     * Reissue an existing certificate order.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate.
-     * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
+     * @param certificateOrderName Name of the certificate order.
+     * @param reissueCertificateOrderRequest Parameters for the reissue.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AppServiceCertificateOrderInner> createOrUpdateAsync(String resourceGroupName, String name, AppServiceCertificateOrderInner certificateDistinguishedName, final ServiceCallback<AppServiceCertificateOrderInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, certificateDistinguishedName), serviceCallback);
+    public ServiceFuture<Void> reissueAsync(String resourceGroupName, String certificateOrderName, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(reissueWithServiceResponseAsync(resourceGroupName, certificateOrderName, reissueCertificateOrderRequest), serviceCallback);
     }
 
     /**
-     * Create or update a certificate purchase order.
-     * Create or update a certificate purchase order.
+     * Reissue an existing certificate order.
+     * Reissue an existing certificate order.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate.
-     * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
-     * @return the observable for the request
-     */
-    public Observable<AppServiceCertificateOrderInner> createOrUpdateAsync(String resourceGroupName, String name, AppServiceCertificateOrderInner certificateDistinguishedName) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, certificateDistinguishedName).map(new Func1<ServiceResponse<AppServiceCertificateOrderInner>, AppServiceCertificateOrderInner>() {
-            @Override
-            public AppServiceCertificateOrderInner call(ServiceResponse<AppServiceCertificateOrderInner> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Create or update a certificate purchase order.
-     * Create or update a certificate purchase order.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate.
-     * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
-     * @return the observable for the request
-     */
-    public Observable<ServiceResponse<AppServiceCertificateOrderInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, AppServiceCertificateOrderInner certificateDistinguishedName) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (certificateDistinguishedName == null) {
-            throw new IllegalArgumentException("Parameter certificateDistinguishedName is required and cannot be null.");
-        }
-        Validator.validate(certificateDistinguishedName);
-        final String apiVersion = "2015-08-01";
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, name, this.client.subscriptionId(), certificateDistinguishedName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<AppServiceCertificateOrderInner>() { }.getType());
-    }
-
-    /**
-     * Create or update a certificate purchase order.
-     * Create or update a certificate purchase order.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate.
-     * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
-     * @return the AppServiceCertificateOrderInner object if successful.
-     */
-    public AppServiceCertificateOrderInner beginCreateOrUpdate(String resourceGroupName, String name, AppServiceCertificateOrderInner certificateDistinguishedName) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, certificateDistinguishedName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Create or update a certificate purchase order.
-     * Create or update a certificate purchase order.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate.
-     * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<AppServiceCertificateOrderInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, AppServiceCertificateOrderInner certificateDistinguishedName, final ServiceCallback<AppServiceCertificateOrderInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, certificateDistinguishedName), serviceCallback);
-    }
-
-    /**
-     * Create or update a certificate purchase order.
-     * Create or update a certificate purchase order.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate.
-     * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
-     * @return the observable to the AppServiceCertificateOrderInner object
-     */
-    public Observable<AppServiceCertificateOrderInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, AppServiceCertificateOrderInner certificateDistinguishedName) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, certificateDistinguishedName).map(new Func1<ServiceResponse<AppServiceCertificateOrderInner>, AppServiceCertificateOrderInner>() {
-            @Override
-            public AppServiceCertificateOrderInner call(ServiceResponse<AppServiceCertificateOrderInner> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Create or update a certificate purchase order.
-     * Create or update a certificate purchase order.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate.
-     * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
-     * @return the observable to the AppServiceCertificateOrderInner object
-     */
-    public Observable<ServiceResponse<AppServiceCertificateOrderInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, AppServiceCertificateOrderInner certificateDistinguishedName) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (certificateDistinguishedName == null) {
-            throw new IllegalArgumentException("Parameter certificateDistinguishedName is required and cannot be null.");
-        }
-        Validator.validate(certificateDistinguishedName);
-        final String apiVersion = "2015-08-01";
-        return service.beginCreateOrUpdate(resourceGroupName, name, this.client.subscriptionId(), certificateDistinguishedName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppServiceCertificateOrderInner>>>() {
-                @Override
-                public Observable<ServiceResponse<AppServiceCertificateOrderInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<AppServiceCertificateOrderInner> clientResponse = beginCreateOrUpdateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<AppServiceCertificateOrderInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AppServiceCertificateOrderInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<AppServiceCertificateOrderInner>() { }.getType())
-                .register(201, new TypeToken<AppServiceCertificateOrderInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Delete an existing certificate order.
-     * Delete an existing certificate order.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate.
-     */
-    public void deleteCertificateOrder(String resourceGroupName, String name) {
-        deleteCertificateOrderWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
-    }
-
-    /**
-     * Delete an existing certificate order.
-     * Delete an existing certificate order.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Void> deleteCertificateOrderAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteCertificateOrderWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
-    }
-
-    /**
-     * Delete an existing certificate order.
-     * Delete an existing certificate order.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate.
+     * @param certificateOrderName Name of the certificate order.
+     * @param reissueCertificateOrderRequest Parameters for the reissue.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> deleteCertificateOrderAsync(String resourceGroupName, String name) {
-        return deleteCertificateOrderWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> reissueAsync(String resourceGroupName, String certificateOrderName, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest) {
+        return reissueWithServiceResponseAsync(resourceGroupName, certificateOrderName, reissueCertificateOrderRequest).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Delete an existing certificate order.
-     * Delete an existing certificate order.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate.
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> deleteCertificateOrderWithServiceResponseAsync(String resourceGroupName, String name) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        final String apiVersion = "2015-08-01";
-        return service.deleteCertificateOrder(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = deleteCertificateOrderDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> deleteCertificateOrderDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .register(204, new TypeToken<Void>() { }.getType())
-                .build(response);
-    }
-
-    /**
-     * Reissue an existing certificate order.
-     * Reissue an existing certificate order.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate.
-     * @param reissueCertificateOrderRequest Parameters for the reissue.
-     */
-    public void reissue(String resourceGroupName, String name, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest) {
-        reissueWithServiceResponseAsync(resourceGroupName, name, reissueCertificateOrderRequest).toBlocking().single().getBody();
-    }
-
-    /**
-     * Reissue an existing certificate order.
-     * Reissue an existing certificate order.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate.
-     * @param reissueCertificateOrderRequest Parameters for the reissue.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Void> reissueAsync(String resourceGroupName, String name, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(reissueWithServiceResponseAsync(resourceGroupName, name, reissueCertificateOrderRequest), serviceCallback);
-    }
-
-    /**
-     * Reissue an existing certificate order.
-     * Reissue an existing certificate order.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate.
-     * @param reissueCertificateOrderRequest Parameters for the reissue.
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> reissueAsync(String resourceGroupName, String name, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest) {
-        return reissueWithServiceResponseAsync(resourceGroupName, name, reissueCertificateOrderRequest).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1286,16 +1380,17 @@ public final class AppServiceCertificateOrdersInner {
      * Reissue an existing certificate order.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate.
+     * @param certificateOrderName Name of the certificate order.
      * @param reissueCertificateOrderRequest Parameters for the reissue.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> reissueWithServiceResponseAsync(String resourceGroupName, String name, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest) {
+    public Observable<ServiceResponse<Void>> reissueWithServiceResponseAsync(String resourceGroupName, String certificateOrderName, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        if (certificateOrderName == null) {
+            throw new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
@@ -1305,7 +1400,7 @@ public final class AppServiceCertificateOrdersInner {
         }
         Validator.validate(reissueCertificateOrderRequest);
         final String apiVersion = "2015-08-01";
-        return service.reissue(resourceGroupName, name, this.client.subscriptionId(), reissueCertificateOrderRequest, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.reissue(resourceGroupName, certificateOrderName, this.client.subscriptionId(), reissueCertificateOrderRequest, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -1320,8 +1415,9 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<Void> reissueDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -1330,11 +1426,14 @@ public final class AppServiceCertificateOrdersInner {
      * Renew an existing certificate order.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Certificate name
+     * @param certificateOrderName Name of the certificate order.
      * @param renewCertificateOrderRequest Renew parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void renew(String resourceGroupName, String name, RenewCertificateOrderRequestInner renewCertificateOrderRequest) {
-        renewWithServiceResponseAsync(resourceGroupName, name, renewCertificateOrderRequest).toBlocking().single().getBody();
+    public void renew(String resourceGroupName, String certificateOrderName, RenewCertificateOrderRequestInner renewCertificateOrderRequest) {
+        renewWithServiceResponseAsync(resourceGroupName, certificateOrderName, renewCertificateOrderRequest).toBlocking().single().body();
     }
 
     /**
@@ -1342,13 +1441,14 @@ public final class AppServiceCertificateOrdersInner {
      * Renew an existing certificate order.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Certificate name
+     * @param certificateOrderName Name of the certificate order.
      * @param renewCertificateOrderRequest Renew parameters
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> renewAsync(String resourceGroupName, String name, RenewCertificateOrderRequestInner renewCertificateOrderRequest, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(renewWithServiceResponseAsync(resourceGroupName, name, renewCertificateOrderRequest), serviceCallback);
+    public ServiceFuture<Void> renewAsync(String resourceGroupName, String certificateOrderName, RenewCertificateOrderRequestInner renewCertificateOrderRequest, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(renewWithServiceResponseAsync(resourceGroupName, certificateOrderName, renewCertificateOrderRequest), serviceCallback);
     }
 
     /**
@@ -1356,15 +1456,16 @@ public final class AppServiceCertificateOrdersInner {
      * Renew an existing certificate order.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Certificate name
+     * @param certificateOrderName Name of the certificate order.
      * @param renewCertificateOrderRequest Renew parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> renewAsync(String resourceGroupName, String name, RenewCertificateOrderRequestInner renewCertificateOrderRequest) {
-        return renewWithServiceResponseAsync(resourceGroupName, name, renewCertificateOrderRequest).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> renewAsync(String resourceGroupName, String certificateOrderName, RenewCertificateOrderRequestInner renewCertificateOrderRequest) {
+        return renewWithServiceResponseAsync(resourceGroupName, certificateOrderName, renewCertificateOrderRequest).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1374,16 +1475,17 @@ public final class AppServiceCertificateOrdersInner {
      * Renew an existing certificate order.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Certificate name
+     * @param certificateOrderName Name of the certificate order.
      * @param renewCertificateOrderRequest Renew parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> renewWithServiceResponseAsync(String resourceGroupName, String name, RenewCertificateOrderRequestInner renewCertificateOrderRequest) {
+    public Observable<ServiceResponse<Void>> renewWithServiceResponseAsync(String resourceGroupName, String certificateOrderName, RenewCertificateOrderRequestInner renewCertificateOrderRequest) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        if (certificateOrderName == null) {
+            throw new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
@@ -1393,7 +1495,7 @@ public final class AppServiceCertificateOrdersInner {
         }
         Validator.validate(renewCertificateOrderRequest);
         final String apiVersion = "2015-08-01";
-        return service.renew(resourceGroupName, name, this.client.subscriptionId(), renewCertificateOrderRequest, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.renew(resourceGroupName, certificateOrderName, this.client.subscriptionId(), renewCertificateOrderRequest, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -1408,8 +1510,9 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<Void> renewDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -1418,10 +1521,13 @@ public final class AppServiceCertificateOrdersInner {
      * Resend certificate email.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Certificate order name
+     * @param certificateOrderName Name of the certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void resendEmail(String resourceGroupName, String name) {
-        resendEmailWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+    public void resendEmail(String resourceGroupName, String certificateOrderName) {
+        resendEmailWithServiceResponseAsync(resourceGroupName, certificateOrderName).toBlocking().single().body();
     }
 
     /**
@@ -1429,12 +1535,13 @@ public final class AppServiceCertificateOrdersInner {
      * Resend certificate email.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Certificate order name
+     * @param certificateOrderName Name of the certificate order.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> resendEmailAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(resendEmailWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<Void> resendEmailAsync(String resourceGroupName, String certificateOrderName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(resendEmailWithServiceResponseAsync(resourceGroupName, certificateOrderName), serviceCallback);
     }
 
     /**
@@ -1442,14 +1549,15 @@ public final class AppServiceCertificateOrdersInner {
      * Resend certificate email.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Certificate order name
+     * @param certificateOrderName Name of the certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> resendEmailAsync(String resourceGroupName, String name) {
-        return resendEmailWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> resendEmailAsync(String resourceGroupName, String certificateOrderName) {
+        return resendEmailWithServiceResponseAsync(resourceGroupName, certificateOrderName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1459,21 +1567,22 @@ public final class AppServiceCertificateOrdersInner {
      * Resend certificate email.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Certificate order name
+     * @param certificateOrderName Name of the certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> resendEmailWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<Void>> resendEmailWithServiceResponseAsync(String resourceGroupName, String certificateOrderName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        if (certificateOrderName == null) {
+            throw new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2015-08-01";
-        return service.resendEmail(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.resendEmail(resourceGroupName, certificateOrderName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -1488,8 +1597,368 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<Void> resendEmailDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Verify domain ownership for this certificate order.
+     * Verify domain ownership for this certificate order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void resendRequestEmails(String resourceGroupName, String certificateOrderName) {
+        resendRequestEmailsWithServiceResponseAsync(resourceGroupName, certificateOrderName).toBlocking().single().body();
+    }
+
+    /**
+     * Verify domain ownership for this certificate order.
+     * Verify domain ownership for this certificate order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> resendRequestEmailsAsync(String resourceGroupName, String certificateOrderName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(resendRequestEmailsWithServiceResponseAsync(resourceGroupName, certificateOrderName), serviceCallback);
+    }
+
+    /**
+     * Verify domain ownership for this certificate order.
+     * Verify domain ownership for this certificate order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> resendRequestEmailsAsync(String resourceGroupName, String certificateOrderName) {
+        return resendRequestEmailsWithServiceResponseAsync(resourceGroupName, certificateOrderName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Verify domain ownership for this certificate order.
+     * Verify domain ownership for this certificate order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> resendRequestEmailsWithServiceResponseAsync(String resourceGroupName, String certificateOrderName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (certificateOrderName == null) {
+            throw new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2015-08-01";
+        final String name = null;
+        NameIdentifierInner nameIdentifier = new NameIdentifierInner();
+        nameIdentifier.withName(null);
+        return service.resendRequestEmails(resourceGroupName, certificateOrderName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), nameIdentifier, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = resendRequestEmailsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Verify domain ownership for this certificate order.
+     * Verify domain ownership for this certificate order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param name Name of the object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void resendRequestEmails(String resourceGroupName, String certificateOrderName, String name) {
+        resendRequestEmailsWithServiceResponseAsync(resourceGroupName, certificateOrderName, name).toBlocking().single().body();
+    }
+
+    /**
+     * Verify domain ownership for this certificate order.
+     * Verify domain ownership for this certificate order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param name Name of the object.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> resendRequestEmailsAsync(String resourceGroupName, String certificateOrderName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(resendRequestEmailsWithServiceResponseAsync(resourceGroupName, certificateOrderName, name), serviceCallback);
+    }
+
+    /**
+     * Verify domain ownership for this certificate order.
+     * Verify domain ownership for this certificate order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param name Name of the object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> resendRequestEmailsAsync(String resourceGroupName, String certificateOrderName, String name) {
+        return resendRequestEmailsWithServiceResponseAsync(resourceGroupName, certificateOrderName, name).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Verify domain ownership for this certificate order.
+     * Verify domain ownership for this certificate order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param name Name of the object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> resendRequestEmailsWithServiceResponseAsync(String resourceGroupName, String certificateOrderName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (certificateOrderName == null) {
+            throw new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2015-08-01";
+        NameIdentifierInner nameIdentifier = new NameIdentifierInner();
+        nameIdentifier.withName(name);
+        return service.resendRequestEmails(resourceGroupName, certificateOrderName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), nameIdentifier, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = resendRequestEmailsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> resendRequestEmailsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Verify domain ownership for this certificate order.
+     * Verify domain ownership for this certificate order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param siteSealRequest Site seal request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SiteSealInner object if successful.
+     */
+    public SiteSealInner retrieveSiteSeal(String resourceGroupName, String certificateOrderName, SiteSealRequestInner siteSealRequest) {
+        return retrieveSiteSealWithServiceResponseAsync(resourceGroupName, certificateOrderName, siteSealRequest).toBlocking().single().body();
+    }
+
+    /**
+     * Verify domain ownership for this certificate order.
+     * Verify domain ownership for this certificate order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param siteSealRequest Site seal request.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SiteSealInner> retrieveSiteSealAsync(String resourceGroupName, String certificateOrderName, SiteSealRequestInner siteSealRequest, final ServiceCallback<SiteSealInner> serviceCallback) {
+        return ServiceFuture.fromResponse(retrieveSiteSealWithServiceResponseAsync(resourceGroupName, certificateOrderName, siteSealRequest), serviceCallback);
+    }
+
+    /**
+     * Verify domain ownership for this certificate order.
+     * Verify domain ownership for this certificate order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param siteSealRequest Site seal request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SiteSealInner object
+     */
+    public Observable<SiteSealInner> retrieveSiteSealAsync(String resourceGroupName, String certificateOrderName, SiteSealRequestInner siteSealRequest) {
+        return retrieveSiteSealWithServiceResponseAsync(resourceGroupName, certificateOrderName, siteSealRequest).map(new Func1<ServiceResponse<SiteSealInner>, SiteSealInner>() {
+            @Override
+            public SiteSealInner call(ServiceResponse<SiteSealInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Verify domain ownership for this certificate order.
+     * Verify domain ownership for this certificate order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param siteSealRequest Site seal request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SiteSealInner object
+     */
+    public Observable<ServiceResponse<SiteSealInner>> retrieveSiteSealWithServiceResponseAsync(String resourceGroupName, String certificateOrderName, SiteSealRequestInner siteSealRequest) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (certificateOrderName == null) {
+            throw new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (siteSealRequest == null) {
+            throw new IllegalArgumentException("Parameter siteSealRequest is required and cannot be null.");
+        }
+        Validator.validate(siteSealRequest);
+        final String apiVersion = "2015-08-01";
+        return service.retrieveSiteSeal(resourceGroupName, certificateOrderName, this.client.subscriptionId(), siteSealRequest, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SiteSealInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SiteSealInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SiteSealInner> clientResponse = retrieveSiteSealDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SiteSealInner> retrieveSiteSealDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SiteSealInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SiteSealInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Verify domain ownership for this certificate order.
+     * Verify domain ownership for this certificate order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void verifyDomainOwnership(String resourceGroupName, String certificateOrderName) {
+        verifyDomainOwnershipWithServiceResponseAsync(resourceGroupName, certificateOrderName).toBlocking().single().body();
+    }
+
+    /**
+     * Verify domain ownership for this certificate order.
+     * Verify domain ownership for this certificate order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> verifyDomainOwnershipAsync(String resourceGroupName, String certificateOrderName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(verifyDomainOwnershipWithServiceResponseAsync(resourceGroupName, certificateOrderName), serviceCallback);
+    }
+
+    /**
+     * Verify domain ownership for this certificate order.
+     * Verify domain ownership for this certificate order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> verifyDomainOwnershipAsync(String resourceGroupName, String certificateOrderName) {
+        return verifyDomainOwnershipWithServiceResponseAsync(resourceGroupName, certificateOrderName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Verify domain ownership for this certificate order.
+     * Verify domain ownership for this certificate order.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> verifyDomainOwnershipWithServiceResponseAsync(String resourceGroupName, String certificateOrderName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (certificateOrderName == null) {
+            throw new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2015-08-01";
+        return service.verifyDomainOwnership(resourceGroupName, certificateOrderName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = verifyDomainOwnershipDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> verifyDomainOwnershipDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -1498,11 +1967,14 @@ public final class AppServiceCertificateOrdersInner {
      * Retrieve the list of certificate actions.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Certificate order name
+     * @param name Name of the certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;CertificateOrderActionInner&gt; object if successful.
      */
     public List<CertificateOrderActionInner> retrieveCertificateActions(String resourceGroupName, String name) {
-        return retrieveCertificateActionsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return retrieveCertificateActionsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -1510,12 +1982,13 @@ public final class AppServiceCertificateOrdersInner {
      * Retrieve the list of certificate actions.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Certificate order name
+     * @param name Name of the certificate order.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CertificateOrderActionInner>> retrieveCertificateActionsAsync(String resourceGroupName, String name, final ServiceCallback<List<CertificateOrderActionInner>> serviceCallback) {
-        return ServiceCall.create(retrieveCertificateActionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<List<CertificateOrderActionInner>> retrieveCertificateActionsAsync(String resourceGroupName, String name, final ServiceCallback<List<CertificateOrderActionInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(retrieveCertificateActionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1523,14 +1996,15 @@ public final class AppServiceCertificateOrdersInner {
      * Retrieve the list of certificate actions.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Certificate order name
+     * @param name Name of the certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;CertificateOrderActionInner&gt; object
      */
     public Observable<List<CertificateOrderActionInner>> retrieveCertificateActionsAsync(String resourceGroupName, String name) {
         return retrieveCertificateActionsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<List<CertificateOrderActionInner>>, List<CertificateOrderActionInner>>() {
             @Override
             public List<CertificateOrderActionInner> call(ServiceResponse<List<CertificateOrderActionInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1540,7 +2014,8 @@ public final class AppServiceCertificateOrdersInner {
      * Retrieve the list of certificate actions.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Certificate order name
+     * @param name Name of the certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;CertificateOrderActionInner&gt; object
      */
     public Observable<ServiceResponse<List<CertificateOrderActionInner>>> retrieveCertificateActionsWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -1569,7 +2044,7 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<List<CertificateOrderActionInner>> retrieveCertificateActionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<CertificateOrderActionInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<CertificateOrderActionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<CertificateOrderActionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1580,11 +2055,14 @@ public final class AppServiceCertificateOrdersInner {
      * Retrieve email history.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Certificate order name
+     * @param name Name of the certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;CertificateEmailInner&gt; object if successful.
      */
     public List<CertificateEmailInner> retrieveCertificateEmailHistory(String resourceGroupName, String name) {
-        return retrieveCertificateEmailHistoryWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return retrieveCertificateEmailHistoryWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -1592,12 +2070,13 @@ public final class AppServiceCertificateOrdersInner {
      * Retrieve email history.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Certificate order name
+     * @param name Name of the certificate order.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CertificateEmailInner>> retrieveCertificateEmailHistoryAsync(String resourceGroupName, String name, final ServiceCallback<List<CertificateEmailInner>> serviceCallback) {
-        return ServiceCall.create(retrieveCertificateEmailHistoryWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<List<CertificateEmailInner>> retrieveCertificateEmailHistoryAsync(String resourceGroupName, String name, final ServiceCallback<List<CertificateEmailInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(retrieveCertificateEmailHistoryWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1605,14 +2084,15 @@ public final class AppServiceCertificateOrdersInner {
      * Retrieve email history.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Certificate order name
+     * @param name Name of the certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;CertificateEmailInner&gt; object
      */
     public Observable<List<CertificateEmailInner>> retrieveCertificateEmailHistoryAsync(String resourceGroupName, String name) {
         return retrieveCertificateEmailHistoryWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<List<CertificateEmailInner>>, List<CertificateEmailInner>>() {
             @Override
             public List<CertificateEmailInner> call(ServiceResponse<List<CertificateEmailInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1622,7 +2102,8 @@ public final class AppServiceCertificateOrdersInner {
      * Retrieve email history.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Certificate order name
+     * @param name Name of the certificate order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;CertificateEmailInner&gt; object
      */
     public Observable<ServiceResponse<List<CertificateEmailInner>>> retrieveCertificateEmailHistoryWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -1651,89 +2132,9 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<List<CertificateEmailInner>> retrieveCertificateEmailHistoryDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<CertificateEmailInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<CertificateEmailInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<CertificateEmailInner>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Verify domain ownership for this certificate order.
-     * Verify domain ownership for this certificate order.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Certificate order name
-     */
-    public void verifyDomainOwnership(String resourceGroupName, String name) {
-        verifyDomainOwnershipWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
-    }
-
-    /**
-     * Verify domain ownership for this certificate order.
-     * Verify domain ownership for this certificate order.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Certificate order name
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Void> verifyDomainOwnershipAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(verifyDomainOwnershipWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
-    }
-
-    /**
-     * Verify domain ownership for this certificate order.
-     * Verify domain ownership for this certificate order.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Certificate order name
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> verifyDomainOwnershipAsync(String resourceGroupName, String name) {
-        return verifyDomainOwnershipWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Verify domain ownership for this certificate order.
-     * Verify domain ownership for this certificate order.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Certificate order name
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> verifyDomainOwnershipWithServiceResponseAsync(String resourceGroupName, String name) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        final String apiVersion = "2015-08-01";
-        return service.verifyDomainOwnership(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = verifyDomainOwnershipDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> verifyDomainOwnershipDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
-                .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
 
@@ -1742,14 +2143,17 @@ public final class AppServiceCertificateOrdersInner {
      * List all certificate orders in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppServiceCertificateOrderInner&gt; object if successful.
      */
     public PagedList<AppServiceCertificateOrderInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<AppServiceCertificateOrderInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<AppServiceCertificateOrderInner>(response.getBody()) {
+        return new PagedList<AppServiceCertificateOrderInner>(response.body()) {
             @Override
             public Page<AppServiceCertificateOrderInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1759,12 +2163,13 @@ public final class AppServiceCertificateOrdersInner {
      * List all certificate orders in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServiceCertificateOrderInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<AppServiceCertificateOrderInner>> serviceCall, final ListOperationCallback<AppServiceCertificateOrderInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<AppServiceCertificateOrderInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<AppServiceCertificateOrderInner>> serviceFuture, final ListOperationCallback<AppServiceCertificateOrderInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>>>() {
                 @Override
@@ -1780,6 +2185,7 @@ public final class AppServiceCertificateOrdersInner {
      * List all certificate orders in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServiceCertificateOrderInner&gt; object
      */
     public Observable<Page<AppServiceCertificateOrderInner>> listNextAsync(final String nextPageLink) {
@@ -1787,7 +2193,7 @@ public final class AppServiceCertificateOrdersInner {
             .map(new Func1<ServiceResponse<Page<AppServiceCertificateOrderInner>>, Page<AppServiceCertificateOrderInner>>() {
                 @Override
                 public Page<AppServiceCertificateOrderInner> call(ServiceResponse<Page<AppServiceCertificateOrderInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1797,6 +2203,7 @@ public final class AppServiceCertificateOrdersInner {
      * List all certificate orders in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServiceCertificateOrderInner&gt; object
      */
     public Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1804,7 +2211,7 @@ public final class AppServiceCertificateOrdersInner {
             .concatMap(new Func1<ServiceResponse<Page<AppServiceCertificateOrderInner>>, Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>> call(ServiceResponse<Page<AppServiceCertificateOrderInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1818,19 +2225,21 @@ public final class AppServiceCertificateOrdersInner {
      * List all certificate orders in a subscription.
      *
     ServiceResponse<PageImpl<AppServiceCertificateOrderInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;AppServiceCertificateOrderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AppServiceCertificateOrderInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AppServiceCertificateOrderInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<AppServiceCertificateOrderInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1839,7 +2248,7 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<PageImpl<AppServiceCertificateOrderInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServiceCertificateOrderInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServiceCertificateOrderInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppServiceCertificateOrderInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1850,14 +2259,17 @@ public final class AppServiceCertificateOrdersInner {
      * Get certificate orders in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppServiceCertificateOrderInner&gt; object if successful.
      */
     public PagedList<AppServiceCertificateOrderInner> listByResourceGroupNext(final String nextPageLink) {
         ServiceResponse<Page<AppServiceCertificateOrderInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<AppServiceCertificateOrderInner>(response.getBody()) {
+        return new PagedList<AppServiceCertificateOrderInner>(response.body()) {
             @Override
             public Page<AppServiceCertificateOrderInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1867,12 +2279,13 @@ public final class AppServiceCertificateOrdersInner {
      * Get certificate orders in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServiceCertificateOrderInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<AppServiceCertificateOrderInner>> serviceCall, final ListOperationCallback<AppServiceCertificateOrderInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<AppServiceCertificateOrderInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<AppServiceCertificateOrderInner>> serviceFuture, final ListOperationCallback<AppServiceCertificateOrderInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>>>() {
                 @Override
@@ -1888,6 +2301,7 @@ public final class AppServiceCertificateOrdersInner {
      * Get certificate orders in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServiceCertificateOrderInner&gt; object
      */
     public Observable<Page<AppServiceCertificateOrderInner>> listByResourceGroupNextAsync(final String nextPageLink) {
@@ -1895,7 +2309,7 @@ public final class AppServiceCertificateOrdersInner {
             .map(new Func1<ServiceResponse<Page<AppServiceCertificateOrderInner>>, Page<AppServiceCertificateOrderInner>>() {
                 @Override
                 public Page<AppServiceCertificateOrderInner> call(ServiceResponse<Page<AppServiceCertificateOrderInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1905,6 +2319,7 @@ public final class AppServiceCertificateOrdersInner {
      * Get certificate orders in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServiceCertificateOrderInner&gt; object
      */
     public Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1912,7 +2327,7 @@ public final class AppServiceCertificateOrdersInner {
             .concatMap(new Func1<ServiceResponse<Page<AppServiceCertificateOrderInner>>, Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>> call(ServiceResponse<Page<AppServiceCertificateOrderInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1926,19 +2341,21 @@ public final class AppServiceCertificateOrdersInner {
      * Get certificate orders in a resource group.
      *
     ServiceResponse<PageImpl<AppServiceCertificateOrderInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;AppServiceCertificateOrderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listByResourceGroupNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AppServiceCertificateOrderInner>> result = listByResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AppServiceCertificateOrderInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<AppServiceCertificateOrderInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1947,7 +2364,7 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     private ServiceResponse<PageImpl<AppServiceCertificateOrderInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServiceCertificateOrderInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServiceCertificateOrderInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppServiceCertificateOrderInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1958,14 +2375,17 @@ public final class AppServiceCertificateOrdersInner {
      * List all certificates associated with a certificate order.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;AppServiceCertificateInner&gt; object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;AppServiceCertificateResourceInner&gt; object if successful.
      */
-    public PagedList<AppServiceCertificateInner> listCertificatesNext(final String nextPageLink) {
-        ServiceResponse<Page<AppServiceCertificateInner>> response = listCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<AppServiceCertificateInner>(response.getBody()) {
+    public PagedList<AppServiceCertificateResourceInner> listCertificatesNext(final String nextPageLink) {
+        ServiceResponse<Page<AppServiceCertificateResourceInner>> response = listCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<AppServiceCertificateResourceInner>(response.body()) {
             @Override
-            public Page<AppServiceCertificateInner> nextPage(String nextPageLink) {
-                return listCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            public Page<AppServiceCertificateResourceInner> nextPage(String nextPageLink) {
+                return listCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1975,16 +2395,17 @@ public final class AppServiceCertificateOrdersInner {
      * List all certificates associated with a certificate order.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServiceCertificateInner>> listCertificatesNextAsync(final String nextPageLink, final ServiceCall<List<AppServiceCertificateInner>> serviceCall, final ListOperationCallback<AppServiceCertificateInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<AppServiceCertificateResourceInner>> listCertificatesNextAsync(final String nextPageLink, final ServiceFuture<List<AppServiceCertificateResourceInner>> serviceFuture, final ListOperationCallback<AppServiceCertificateResourceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listCertificatesNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<AppServiceCertificateInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<AppServiceCertificateResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<AppServiceCertificateInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<AppServiceCertificateResourceInner>>> call(String nextPageLink) {
                     return listCertificatesNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -1996,14 +2417,15 @@ public final class AppServiceCertificateOrdersInner {
      * List all certificates associated with a certificate order.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;AppServiceCertificateInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AppServiceCertificateResourceInner&gt; object
      */
-    public Observable<Page<AppServiceCertificateInner>> listCertificatesNextAsync(final String nextPageLink) {
+    public Observable<Page<AppServiceCertificateResourceInner>> listCertificatesNextAsync(final String nextPageLink) {
         return listCertificatesNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<AppServiceCertificateInner>>, Page<AppServiceCertificateInner>>() {
+            .map(new Func1<ServiceResponse<Page<AppServiceCertificateResourceInner>>, Page<AppServiceCertificateResourceInner>>() {
                 @Override
-                public Page<AppServiceCertificateInner> call(ServiceResponse<Page<AppServiceCertificateInner>> response) {
-                    return response.getBody();
+                public Page<AppServiceCertificateResourceInner> call(ServiceResponse<Page<AppServiceCertificateResourceInner>> response) {
+                    return response.body();
                 }
             });
     }
@@ -2013,14 +2435,15 @@ public final class AppServiceCertificateOrdersInner {
      * List all certificates associated with a certificate order.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;AppServiceCertificateInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AppServiceCertificateResourceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<AppServiceCertificateInner>>> listCertificatesNextWithServiceResponseAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<AppServiceCertificateResourceInner>>> listCertificatesNextWithServiceResponseAsync(final String nextPageLink) {
         return listCertificatesNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<AppServiceCertificateInner>>, Observable<ServiceResponse<Page<AppServiceCertificateInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<AppServiceCertificateResourceInner>>, Observable<ServiceResponse<Page<AppServiceCertificateResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<AppServiceCertificateInner>>> call(ServiceResponse<Page<AppServiceCertificateInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                public Observable<ServiceResponse<Page<AppServiceCertificateResourceInner>>> call(ServiceResponse<Page<AppServiceCertificateResourceInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -2033,20 +2456,22 @@ public final class AppServiceCertificateOrdersInner {
      * List all certificates associated with a certificate order.
      * List all certificates associated with a certificate order.
      *
-    ServiceResponse<PageImpl<AppServiceCertificateInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;AppServiceCertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
+    ServiceResponse<PageImpl<AppServiceCertificateResourceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;AppServiceCertificateResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<AppServiceCertificateInner>>> listCertificatesNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<AppServiceCertificateResourceInner>>> listCertificatesNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listCertificatesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppServiceCertificateInner>>>>() {
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listCertificatesNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppServiceCertificateResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<AppServiceCertificateInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<AppServiceCertificateResourceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<AppServiceCertificateInner>> result = listCertificatesNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AppServiceCertificateInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<AppServiceCertificateResourceInner>> result = listCertificatesNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<AppServiceCertificateResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2054,9 +2479,9 @@ public final class AppServiceCertificateOrdersInner {
             });
     }
 
-    private ServiceResponse<PageImpl<AppServiceCertificateInner>> listCertificatesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServiceCertificateInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl<AppServiceCertificateInner>>() { }.getType())
+    private ServiceResponse<PageImpl<AppServiceCertificateResourceInner>> listCertificatesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServiceCertificateResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<AppServiceCertificateResourceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

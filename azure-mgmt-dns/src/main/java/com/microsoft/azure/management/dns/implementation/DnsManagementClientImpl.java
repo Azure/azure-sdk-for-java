@@ -10,13 +10,13 @@ package com.microsoft.azure.management.dns.implementation;
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
-import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
 
 /**
  * Initializes a new instance of the DnsManagementClientImpl class.
  */
-public final class DnsManagementClientImpl extends AzureServiceClient {
+public class DnsManagementClientImpl extends AzureServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -28,11 +28,11 @@ public final class DnsManagementClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. */
+    /** Specifies the Azure subscription ID, which uniquely identifies the Microsoft Azure subscription. */
     private String subscriptionId;
 
     /**
-     * Gets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     * Gets Specifies the Azure subscription ID, which uniquely identifies the Microsoft Azure subscription.
      *
      * @return the subscriptionId value.
      */
@@ -41,7 +41,7 @@ public final class DnsManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     * Sets Specifies the Azure subscription ID, which uniquely identifies the Microsoft Azure subscription.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself
@@ -51,11 +51,11 @@ public final class DnsManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** Client Api Version. */
+    /** Specifies the API version. */
     private String apiVersion;
 
     /**
-     * Gets Client Api Version.
+     * Gets Specifies the API version.
      *
      * @return the apiVersion value.
      */
@@ -174,10 +174,8 @@ public final class DnsManagementClientImpl extends AzureServiceClient {
      * @param credentials the management credentials for Azure
      */
     public DnsManagementClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        this(new RestClient.Builder()
-                .withBaseUrl(baseUrl)
-                .withCredentials(credentials)
-                .build());
+        super(baseUrl, credentials);
+        initialize();
     }
 
     /**
@@ -207,8 +205,6 @@ public final class DnsManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("Azure-SDK-For-Java/%s (%s)",
-                getClass().getPackage().getImplementationVersion(),
-                "DnsManagementClient, 2016-04-01");
+        return String.format("%s (%s, %s)", super.userAgent(), "DnsManagementClient", "2016-04-01");
     }
 }

@@ -8,25 +8,28 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The BgpSettings model.
  */
 public class BgpSettings {
     /**
-     * Gets or sets this BGP speaker's ASN.
+     * The BGP speaker's ASN.
      */
+    @JsonProperty(value = "asn")
     private Long asn;
 
     /**
-     * Gets or sets the BGP peering address and BGP identifier of this BGP
-     * speaker.
+     * The BGP peering address and BGP identifier of this BGP speaker.
      */
+    @JsonProperty(value = "bgpPeeringAddress")
     private String bgpPeeringAddress;
 
     /**
-     * Gets or sets the weight added to routes learned from this BGP speaker.
+     * The weight added to routes learned from this BGP speaker.
      */
+    @JsonProperty(value = "peerWeight")
     private Integer peerWeight;
 
     /**

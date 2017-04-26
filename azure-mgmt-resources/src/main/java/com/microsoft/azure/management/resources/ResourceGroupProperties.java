@@ -17,7 +17,7 @@ public class ResourceGroupProperties {
     /**
      * The provisioning state.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /**

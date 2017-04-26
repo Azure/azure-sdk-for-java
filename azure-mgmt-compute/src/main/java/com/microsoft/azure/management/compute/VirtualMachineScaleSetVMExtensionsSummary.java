@@ -16,15 +16,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class VirtualMachineScaleSetVMExtensionsSummary {
     /**
-     * the extension name.
+     * The extension name.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
-     * the extensions information.
+     * The extensions information.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "statusesSummary", access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualMachineStatusCodeCount> statusesSummary;
 
     /**

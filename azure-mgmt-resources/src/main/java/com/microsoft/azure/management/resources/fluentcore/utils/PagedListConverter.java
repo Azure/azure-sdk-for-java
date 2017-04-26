@@ -34,6 +34,15 @@ public abstract class PagedListConverter<U, V> {
     public abstract V typeConvert(U u);
 
     /**
+     * Override this method to define what items should be fetched.
+     * @param u an original item to test
+     * @return true if this item should be fetched
+     */
+    protected boolean filter(U u) {
+        return true;
+    }
+
+    /**
      * Converts the paged list.
      *
      * @param uList the resource list to convert from
@@ -50,20 +59,24 @@ public abstract class PagedListConverter<U, V> {
         }
         Page<U> uPage = uList.currentPage();
         PageImpl<V> vPage = new PageImpl<>();
-        vPage.setNextPageLink(uPage.getNextPageLink());
+        vPage.setNextPageLink(uPage.nextPageLink());
         vPage.setItems(new ArrayList<V>());
-        for (U u : uPage.getItems()) {
-            vPage.getItems().add(typeConvert(u));
+        for (U u : uPage.items()) {
+            if (filter(u)) {
+                vPage.items().add(typeConvert(u));
+            }
         }
         return new PagedList<V>(vPage) {
             @Override
             public Page<V> nextPage(String nextPageLink) throws RestException, IOException {
                 Page<U> uPage = uList.nextPage(nextPageLink);
                 PageImpl<V> vPage = new PageImpl<>();
-                vPage.setNextPageLink(uPage.getNextPageLink());
+                vPage.setNextPageLink(uPage.nextPageLink());
                 vPage.setItems(new ArrayList<V>());
-                for (U u : uPage.getItems()) {
-                    vPage.getItems().add(typeConvert(u));
+                for (U u : uPage.items()) {
+                    if (filter(u)) {
+                        vPage.items().add(typeConvert(u));
+                    }
                 }
                 return vPage;
             }

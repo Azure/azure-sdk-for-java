@@ -9,34 +9,40 @@
 package com.microsoft.azure.management.compute;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Api error.
  */
 public class ApiError {
     /**
-     * the Api error details.
+     * The Api error details.
      */
+    @JsonProperty(value = "details")
     private List<ApiErrorBase> details;
 
     /**
-     * the Api inner error.
+     * The Api inner error.
      */
+    @JsonProperty(value = "innererror")
     private InnerError innererror;
 
     /**
-     * the error code.
+     * The error code.
      */
+    @JsonProperty(value = "code")
     private String code;
 
     /**
-     * the target of the particular error.
+     * The target of the particular error.
      */
+    @JsonProperty(value = "target")
     private String target;
 
     /**
-     * the error message.
+     * The error message.
      */
+    @JsonProperty(value = "message")
     private String message;
 
     /**

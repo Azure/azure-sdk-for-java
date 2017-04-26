@@ -11,19 +11,19 @@ package com.microsoft.azure.management.storage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The Usage Names.
+ * The usage names that can be used; currently limited to StorageAccount.
  */
 public class UsageName {
     /**
      * Gets a string describing the resource name.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
     /**
      * Gets a localized string describing the resource name.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "localizedValue", access = JsonProperty.Access.WRITE_ONLY)
     private String localizedValue;
 
     /**

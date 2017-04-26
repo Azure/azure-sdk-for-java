@@ -19,35 +19,39 @@ public class ResourceGroupInner {
     /**
      * The ID of the resource group.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
-     * The Name of the resource group.
+     * The name of the resource group.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * The properties property.
      */
+    @JsonProperty(value = "properties")
     private ResourceGroupProperties properties;
 
     /**
      * The location of the resource group. It cannot be changed after the
-     * resource group has been created. Has to be one of the supported Azure
-     * Locations, such as West US, East US, West Europe, East Asia, etc.
+     * resource group has been created. It muct be one of the supported Azure
+     * locations.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "location", required = true)
     private String location;
 
     /**
-     * Id of the resource that manages this resource group.
+     * The ID of the resource that manages this resource group.
      */
+    @JsonProperty(value = "managedBy")
     private String managedBy;
 
     /**
      * The tags attached to the resource group.
      */
+    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**

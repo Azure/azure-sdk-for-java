@@ -8,15 +8,17 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The API entity reference.
  */
 public class ApiEntityReference {
     /**
-     * the ARM resource id in the form of
+     * The ARM resource id in the form of
      * /subscriptions/{SubcriptionId}/resourceGroups/{ResourceGroupName}/...
      */
+    @JsonProperty(value = "id")
     private String id;
 
     /**

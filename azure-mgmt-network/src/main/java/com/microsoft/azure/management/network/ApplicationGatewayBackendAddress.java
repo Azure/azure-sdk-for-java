@@ -8,19 +8,22 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Backend Address of application gateway.
+ * Backend address of an application gateway.
  */
 public class ApplicationGatewayBackendAddress {
     /**
-     * Dns name.
+     * Fully qualified domain name (FQDN).
      */
+    @JsonProperty(value = "fqdn")
     private String fqdn;
 
     /**
-     * Ip address.
+     * IP address.
      */
+    @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
     /**
@@ -58,7 +61,7 @@ public class ApplicationGatewayBackendAddress {
      * @param ipAddress the ipAddress value to set
      * @return the ApplicationGatewayBackendAddress object itself.
      */
-    public ApplicationGatewayBackendAddress withIpAddress(String ipAddress) {
+    public ApplicationGatewayBackendAddress withIPAddress(String ipAddress) {
         this.ipAddress = ipAddress;
         return this;
     }

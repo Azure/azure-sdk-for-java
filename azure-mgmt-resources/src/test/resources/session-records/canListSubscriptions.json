@@ -1,0 +1,29 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3574/subscriptions?api-version=2016-06-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:bc6bbe6f340c6a21e215ca50c26fb109d1a15109103fbef250b01e8bb30bdae6 (SubscriptionClient, 2016-06-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 22:49:36 GMT",
+      "content-length" : "356",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "40fc1182-d838-41e9-bbfc-e4afabaf0910",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-remaining-tenant-reads" : "14999",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T224936Z:40fc1182-d838-41e9-bbfc-e4afabaf0910",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "40fc1182-d838-41e9-bbfc-e4afabaf0910",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"subscriptionId\":\"00000000-0000-0000-0000-000000000000\",\"displayName\":\"Java Mission Critical - Do NOT Clean\",\"state\":\"Enabled\",\"subscriptionPolicies\":{\"locationPlacementId\":\"Internal_2014-09-01\",\"quotaId\":\"Internal_2014-09-01\",\"spendingLimit\":\"Off\"},\"authorizationSource\":\"RoleBased\"}]}"
+    }
+  } ],
+  "variables" : [ ]
+}

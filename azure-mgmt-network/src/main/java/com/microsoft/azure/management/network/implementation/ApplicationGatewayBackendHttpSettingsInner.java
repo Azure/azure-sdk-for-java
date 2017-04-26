@@ -12,11 +12,12 @@ import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewayCookieBasedAffinity;
 import com.microsoft.azure.SubResource;
 import java.util.List;
+import com.microsoft.azure.management.network.ApplicationGatewayConnectionDraining;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Backend address pool settings of application gateway.
+ * Backend address pool settings of an application gateway.
  */
 @JsonFlatten
 public class ApplicationGatewayBackendHttpSettingsInner extends SubResource {
@@ -27,51 +28,63 @@ public class ApplicationGatewayBackendHttpSettingsInner extends SubResource {
     private Integer port;
 
     /**
-     * Protocol. Possible values include: 'Http', 'Https'.
+     * Protocol. Possible values are: 'Http' and 'Https'. Possible values
+     * include: 'Http', 'Https'.
      */
     @JsonProperty(value = "properties.protocol")
     private ApplicationGatewayProtocol protocol;
 
     /**
-     * Cookie affinity. Possible values include: 'Enabled', 'Disabled'.
+     * Cookie based affinity. Possible values are: 'Enabled' and 'Disabled'.
+     * Possible values include: 'Enabled', 'Disabled'.
      */
     @JsonProperty(value = "properties.cookieBasedAffinity")
     private ApplicationGatewayCookieBasedAffinity cookieBasedAffinity;
 
     /**
-     * Request timeout.
+     * Request timeout in seconds. Application Gateway will fail the request if
+     * response is not received within RequestTimeout. Acceptable values are
+     * from 1 second to 86400 seconds.
      */
     @JsonProperty(value = "properties.requestTimeout")
     private Integer requestTimeout;
 
     /**
-     * Probe resource of application gateway.
+     * Probe resource of an application gateway.
      */
     @JsonProperty(value = "properties.probe")
     private SubResource probe;
 
     /**
-     * Array of references to Application Gateway Authentication Certificates.
+     * Array of references to application gateway authentication certificates.
      */
     @JsonProperty(value = "properties.authenticationCertificates")
     private List<SubResource> authenticationCertificates;
 
     /**
-     * Provisioning state of the backend http settings resource
-     * Updating/Deleting/Failed.
+     * Provisioning state of the backend http settings resource. Possible
+     * values are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
+     * Connection draining of the backend http settings resource.
+     */
+    @JsonProperty(value = "properties.connectionDraining")
+    private ApplicationGatewayConnectionDraining connectionDraining;
+
+    /**
      * Name of the resource that is unique within a resource group. This name
      * can be used to access the resource.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * A unique read-only string that changes whenever the resource is updated.
      */
+    @JsonProperty(value = "etag")
     private String etag;
 
     /**
@@ -211,6 +224,26 @@ public class ApplicationGatewayBackendHttpSettingsInner extends SubResource {
      */
     public ApplicationGatewayBackendHttpSettingsInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
+     * Get the connectionDraining value.
+     *
+     * @return the connectionDraining value
+     */
+    public ApplicationGatewayConnectionDraining connectionDraining() {
+        return this.connectionDraining;
+    }
+
+    /**
+     * Set the connectionDraining value.
+     *
+     * @param connectionDraining the connectionDraining value to set
+     * @return the ApplicationGatewayBackendHttpSettingsInner object itself.
+     */
+    public ApplicationGatewayBackendHttpSettingsInner withConnectionDraining(ApplicationGatewayConnectionDraining connectionDraining) {
+        this.connectionDraining = connectionDraining;
         return this;
     }
 

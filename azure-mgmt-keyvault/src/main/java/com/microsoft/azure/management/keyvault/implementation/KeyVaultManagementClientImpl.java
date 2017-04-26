@@ -10,13 +10,13 @@ package com.microsoft.azure.management.keyvault.implementation;
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
-import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
 
 /**
  * Initializes a new instance of the KeyVaultManagementClientImpl class.
  */
-public final class KeyVaultManagementClientImpl extends AzureServiceClient {
+public class KeyVaultManagementClientImpl extends AzureServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -161,10 +161,8 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient {
      * @param credentials the management credentials for Azure
      */
     public KeyVaultManagementClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        this(new RestClient.Builder()
-                .withBaseUrl(baseUrl)
-                .withCredentials(credentials)
-                .build());
+        super(baseUrl, credentials);
+        initialize();
     }
 
     /**
@@ -193,8 +191,6 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("Azure-SDK-For-Java/%s (%s)",
-                getClass().getPackage().getImplementationVersion(),
-                "KeyVaultManagementClient, 2015-06-01");
+        return String.format("%s (%s, %s)", super.userAgent(), "KeyVaultManagementClient", "2015-06-01");
     }
 }

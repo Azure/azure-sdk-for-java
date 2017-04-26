@@ -5,28 +5,30 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.LoadBalancingRuleInner;
 import com.microsoft.azure.management.network.model.HasBackendPort;
-import com.microsoft.azure.management.network.model.HasFloatingIp;
+import com.microsoft.azure.management.network.model.HasFloatingIP;
 import com.microsoft.azure.management.network.model.HasFrontend;
 import com.microsoft.azure.management.network.model.HasFrontendPort;
 import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * An immutable client-side representation of an HTTP load balancing rule.
  */
 @Fluent()
+@Beta
 public interface LoadBalancingRule extends
-    Wrapper<LoadBalancingRuleInner>,
+    HasInner<LoadBalancingRuleInner>,
     ChildResource<LoadBalancer>,
     HasBackendPort,
     HasFrontend,
-    HasFloatingIp,
+    HasFloatingIP,
     HasProtocol<TransportProtocol>,
     HasFrontendPort {
 
@@ -56,14 +58,14 @@ public interface LoadBalancingRule extends
     interface DefinitionStages {
         /**
          * The first stage of the load balancing rule definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithProtocol<ParentT> {
         }
 
         /**
          * The stage of a load balancing rule definition allowing to specify the transport protocol to apply the rule to.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithProtocol<ParentT> extends
             HasProtocol.DefinitionStages.WithProtocol<WithFrontend<ParentT>, TransportProtocol> {
@@ -71,7 +73,7 @@ public interface LoadBalancingRule extends
 
         /**
          * The stage of a load balancing rule definition allowing to specify the frontend port to load balance.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithFrontendPort<ParentT> extends HasFrontendPort.DefinitionStages.WithFrontendPort<WithProbe<ParentT>> {
         }
@@ -113,7 +115,7 @@ public interface LoadBalancingRule extends
 
         /**
          * The stage of a load balancing rule definition allowing to specify the backend port to send the load-balanced traffic to.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithBackendPort<ParentT> extends
             HasBackendPort.DefinitionStages.WithBackendPort<WithAttach<ParentT>>,
@@ -129,7 +131,7 @@ public interface LoadBalancingRule extends
          */
         interface WithAttach<ParentT> extends
             Attachable.InDefinition<ParentT>,
-            DefinitionStages.WithFloatingIp<ParentT>,
+            DefinitionStages.WithFloatingIP<ParentT>,
             DefinitionStages.WithIdleTimeoutInMinutes<ParentT>,
             DefinitionStages.WithLoadDistribution<ParentT> {
         }
@@ -138,7 +140,7 @@ public interface LoadBalancingRule extends
          * The stage of a load balancing rule definition allowing to enable the floating IP functionality.
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        interface WithFloatingIp<ParentT> extends HasFloatingIp.DefinitionStages.WithFloatingIp<WithAttach<ParentT>> {
+        interface WithFloatingIP<ParentT> extends HasFloatingIP.DefinitionStages.WithFloatingIP<WithAttach<ParentT>> {
         }
 
         /**
@@ -216,7 +218,7 @@ public interface LoadBalancingRule extends
         /**
          * The stage of a load balancing rule update allowing to enable the floating IP functionality.
          */
-        interface WithFloatingIp extends HasFloatingIp.UpdateStages.WithFloatingIp<Update> {
+        interface WithFloatingIP extends HasFloatingIP.UpdateStages.WithFloatingIP<Update> {
         }
 
         /**
@@ -253,7 +255,7 @@ public interface LoadBalancingRule extends
         UpdateStages.WithFrontend,
         UpdateStages.WithProtocol,
         UpdateStages.WithBackendPort,
-        UpdateStages.WithFloatingIp,
+        UpdateStages.WithFloatingIP,
         UpdateStages.WithIdleTimeoutInMinutes,
         UpdateStages.WithLoadDistribution {
     }
@@ -264,14 +266,14 @@ public interface LoadBalancingRule extends
     interface UpdateDefinitionStages {
         /**
          * The first stage of the load balancing rule definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithProtocol<ParentT> {
         }
 
         /**
          * The stage of a load balancing rule definition allowing to specify the transport protocol to apply the rule to.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithProtocol<ParentT> extends
             HasProtocol.UpdateDefinitionStages.WithProtocol<WithFrontend<ParentT>, TransportProtocol> {
@@ -279,7 +281,7 @@ public interface LoadBalancingRule extends
 
         /**
          * The stage of a load balancing rule definition allowing to specify the frontend port to load balance.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithFrontendPort<ParentT> extends HasFrontendPort.UpdateDefinitionStages.WithFrontendPort<WithProbe<ParentT>> {
         }
@@ -321,7 +323,7 @@ public interface LoadBalancingRule extends
 
         /**
          * The stage of a load balancing rule definition allowing to specify the backend port to send the load-balanced traffic to.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithBackendPort<ParentT> extends
             HasBackendPort.UpdateDefinitionStages.WithBackendPort<WithAttach<ParentT>>,
@@ -332,7 +334,7 @@ public interface LoadBalancingRule extends
          * The stage of a load balancing rule definition allowing to enable the floating IP functionality.
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        interface WithFloatingIp<ParentT> extends HasFloatingIp.UpdateDefinitionStages.WithFloatingIp<WithAttach<ParentT>> {
+        interface WithFloatingIP<ParentT> extends HasFloatingIP.UpdateDefinitionStages.WithFloatingIP<WithAttach<ParentT>> {
         }
 
         /**
@@ -370,7 +372,7 @@ public interface LoadBalancingRule extends
          */
         interface WithAttach<ParentT> extends
             Attachable.InUpdate<ParentT>,
-            UpdateDefinitionStages.WithFloatingIp<ParentT>,
+            UpdateDefinitionStages.WithFloatingIP<ParentT>,
             UpdateDefinitionStages.WithIdleTimeoutInMinutes<ParentT>,
             UpdateDefinitionStages.WithLoadDistribution<ParentT> {
         }

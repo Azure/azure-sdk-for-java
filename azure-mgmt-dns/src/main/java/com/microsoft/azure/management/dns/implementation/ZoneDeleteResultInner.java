@@ -9,7 +9,8 @@
 package com.microsoft.azure.management.dns.implementation;
 
 import com.microsoft.azure.management.dns.OperationStatus;
-import com.microsoft.azure.management.dns.HtpStatusCode;
+import com.microsoft.azure.management.dns.HttpStatusCode;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The response to a Zone Delete operation.
@@ -19,11 +20,13 @@ public class ZoneDeleteResultInner {
      * Users can perform a Get on Azure-AsyncOperation to get the status of
      * their delete Zone operations.
      */
+    @JsonProperty(value = "azureAsyncOperation")
     private String azureAsyncOperation;
 
     /**
      * Possible values include: 'InProgress', 'Succeeded', 'Failed'.
      */
+    @JsonProperty(value = "status")
     private OperationStatus status;
 
     /**
@@ -37,16 +40,17 @@ public class ZoneDeleteResultInner {
      * 'NotAcceptable', 'ProxyAuthenticationRequired', 'RequestTimeout',
      * 'Conflict', 'Gone', 'LengthRequired', 'PreconditionFailed',
      * 'RequestEntityTooLarge', 'RequestUriTooLong', 'UnsupportedMediaType',
-     * 'RequestedRangeNotSatisfiable', 'ExpectationFailed',
-     * 'UpgradeRequired', 'InternalServerError', 'NotImplemented',
-     * 'BadGateway', 'ServiceUnavailable', 'GatewayTimeout',
-     * 'HttpVersionNotSupported'.
+     * 'RequestedRangeNotSatisfiable', 'ExpectationFailed', 'UpgradeRequired',
+     * 'InternalServerError', 'NotImplemented', 'BadGateway',
+     * 'ServiceUnavailable', 'GatewayTimeout', 'HttpVersionNotSupported'.
      */
-    private HtpStatusCode statusCode;
+    @JsonProperty(value = "statusCode")
+    private HttpStatusCode statusCode;
 
     /**
      * The requestId property.
      */
+    @JsonProperty(value = "requestId")
     private String requestId;
 
     /**
@@ -94,7 +98,7 @@ public class ZoneDeleteResultInner {
      *
      * @return the statusCode value
      */
-    public HtpStatusCode statusCode() {
+    public HttpStatusCode statusCode() {
         return this.statusCode;
     }
 
@@ -104,7 +108,7 @@ public class ZoneDeleteResultInner {
      * @param statusCode the statusCode value to set
      * @return the ZoneDeleteResultInner object itself.
      */
-    public ZoneDeleteResultInner withStatusCode(HtpStatusCode statusCode) {
+    public ZoneDeleteResultInner withStatusCode(HttpStatusCode statusCode) {
         this.statusCode = statusCode;
         return this;
     }

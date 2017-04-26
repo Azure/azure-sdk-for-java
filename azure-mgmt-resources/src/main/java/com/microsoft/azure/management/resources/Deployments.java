@@ -7,14 +7,16 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.implementation.ResourceManager;
 
 /**
  * Entry point to template deployment in Azure.
@@ -23,12 +25,13 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 public interface Deployments extends
         SupportsCreating<Deployment.DefinitionStages.Blank>,
         SupportsListing<Deployment>,
-        SupportsListingByGroup<Deployment>,
+        SupportsListingByResourceGroup<Deployment>,
         SupportsGettingByName<Deployment>,
-        SupportsGettingByGroup<Deployment>,
+        SupportsGettingByResourceGroup<Deployment>,
         SupportsGettingById<Deployment>,
         SupportsDeletingById,
-        SupportsDeletingByGroup {
+        SupportsDeletingByResourceGroup,
+        HasManager<ResourceManager> {
     /**
      * Checks if a deployment exists in a resource group.
      *

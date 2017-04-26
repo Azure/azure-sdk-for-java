@@ -9,68 +9,80 @@
 package com.microsoft.azure.management.network;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Effective NetworkSecurityRules.
+ * Effective network security rules.
  */
 public class EffectiveNetworkSecurityRule {
     /**
-     * Gets the name of the security rule specified by the user (if created by
-     * the user).
+     * The name of the security rule specified by the user (if created by the
+     * user).
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
-     * Gets Network protocol this rule applies to. Possible values include:
-     * 'Tcp', 'Udp', '*'.
+     * The network protocol this rule applies to. Possible values are: 'Tcp',
+     * 'Udp', and '*'. Possible values include: 'Tcp', 'Udp', '*'.
      */
+    @JsonProperty(value = "protocol")
     private SecurityRuleProtocol protocol;
 
     /**
-     * Gets source port or range.
+     * The source port or range.
      */
+    @JsonProperty(value = "sourcePortRange")
     private String sourcePortRange;
 
     /**
-     * Gets destination port or range.
+     * The destination port or range.
      */
+    @JsonProperty(value = "destinationPortRange")
     private String destinationPortRange;
 
     /**
-     * Gets source address prefix.
+     * The source address prefix.
      */
+    @JsonProperty(value = "sourceAddressPrefix")
     private String sourceAddressPrefix;
 
     /**
-     * Gets destination address prefix.
+     * The destination address prefix.
      */
+    @JsonProperty(value = "destinationAddressPrefix")
     private String destinationAddressPrefix;
 
     /**
-     * Gets expanded source address prefix.
+     * The expanded source address prefix.
      */
+    @JsonProperty(value = "expandedSourceAddressPrefix")
     private List<String> expandedSourceAddressPrefix;
 
     /**
-     * Gets expanded destination address prefix.
+     * Expanded destination address prefix.
      */
+    @JsonProperty(value = "expandedDestinationAddressPrefix")
     private List<String> expandedDestinationAddressPrefix;
 
     /**
-     * Gets network traffic is allowed or denied. Possible values include:
-     * 'Allow', 'Deny'.
+     * Whether network traffic is allowed or denied. Possible values are:
+     * 'Allow' and 'Deny'. Possible values include: 'Allow', 'Deny'.
      */
+    @JsonProperty(value = "access")
     private SecurityRuleAccess access;
 
     /**
-     * Gets the priority of the rule.
+     * The priority of the rule.
      */
+    @JsonProperty(value = "priority")
     private Integer priority;
 
     /**
-     * Gets the direction of the rule. Possible values include: 'Inbound',
-     * 'Outbound'.
+     * The direction of the rule. Possible values are: 'Inbound and Outbound'.
+     * Possible values include: 'Inbound', 'Outbound'.
      */
+    @JsonProperty(value = "direction")
     private SecurityRuleDirection direction;
 
     /**

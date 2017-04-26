@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.PagedList;
@@ -10,6 +15,8 @@ import com.microsoft.azure.management.compute.VirtualMachinePublisher;
 import com.microsoft.azure.management.compute.VirtualMachinePublishers;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
+import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * The implementation for {@link VirtualMachineExtensionImages}.
@@ -57,6 +64,32 @@ class VirtualMachineExtensionImagesImpl
                 };
 
         return converter.convert(extensionTypeVersions);
+    }
+
+    @Override
+    public Observable<VirtualMachineExtensionImage> listByRegionAsync(Region region) {
+        return listByRegionAsync(region.name());
+    }
+
+    @Override
+    public Observable<VirtualMachineExtensionImage> listByRegionAsync(String regionName) {
+        return this.publishers().listByRegionAsync(regionName)
+                .flatMap(new Func1<VirtualMachinePublisher, Observable<VirtualMachineExtensionImageType>>() {
+                    @Override
+                    public Observable<VirtualMachineExtensionImageType> call(VirtualMachinePublisher virtualMachinePublisher) {
+                        return virtualMachinePublisher.extensionTypes().listAsync();
+                    }
+                }).flatMap(new Func1<VirtualMachineExtensionImageType, Observable<VirtualMachineExtensionImageVersion>>() {
+                    @Override
+                    public Observable<VirtualMachineExtensionImageVersion> call(VirtualMachineExtensionImageType virtualMachineExtensionImageType) {
+                        return virtualMachineExtensionImageType.versions().listAsync();
+                    }
+                }).map(new Func1<VirtualMachineExtensionImageVersion, VirtualMachineExtensionImage>() {
+                    @Override
+                    public VirtualMachineExtensionImage call(VirtualMachineExtensionImageVersion virtualMachineExtensionImageVersion) {
+                        return virtualMachineExtensionImageVersion.getImage();
+                    }
+                });
     }
 
     @Override

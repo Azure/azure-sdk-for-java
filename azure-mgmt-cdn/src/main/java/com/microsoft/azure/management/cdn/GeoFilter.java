@@ -12,26 +12,28 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Geo filter of a CDN endpoint.
+ * Rules defining user geo access within a CDN endpoint.
  */
 public class GeoFilter {
     /**
      * Relative path applicable to geo filter. (e.g. '/mypictures',
      * '/mypicture/kitty.jpg', and etc.).
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "relativePath", required = true)
     private String relativePath;
 
     /**
-     * Action of the geo filter. Possible values include: 'Block', 'Allow'.
+     * Action of the geo filter, i.e. allow or block access. Possible values
+     * include: 'Block', 'Allow'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "action", required = true)
     private GeoFilterActions action;
 
     /**
-     * Two letter country codes of the geo filter. (e.g. AU, MX, and etc.).
+     * Two letter country codes defining user country access in a geo filter,
+     * e.g. AU, MX, US.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "countryCodes", required = true)
     private List<String> countryCodes;
 
     /**

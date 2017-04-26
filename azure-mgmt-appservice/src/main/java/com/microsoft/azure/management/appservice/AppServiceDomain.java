@@ -6,18 +6,19 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
+import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.implementation.DomainInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-import com.microsoft.azure.management.appservice.implementation.DomainInner;
 import org.joda.time.DateTime;
-import rx.Observable;
+import rx.Completable;
 
 import java.util.List;
 import java.util.Map;
@@ -30,12 +31,12 @@ import java.util.Map;
  * the agreements listed in {@link AppServiceDomains#listAgreements(String)}.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
+@Beta
 public interface AppServiceDomain extends
-        GroupableResource,
+        GroupableResource<AppServiceManager, DomainInner>,
         HasName,
         Refreshable<AppServiceDomain>,
-        Updatable<AppServiceDomain.Update>,
-        Wrapper<DomainInner> {
+        Updatable<AppServiceDomain.Update> {
 
     /**
      * @return admin contact information
@@ -120,9 +121,9 @@ public interface AppServiceDomain extends
      * Verifies the ownership of the domain for a certificate order bound to this domain.
      * @param certificateOrderName the name of the certificate order
      * @param domainVerificationToken the domain verification token for the certificate order
-     * @return the Observable to the result
+     * @return a representation of the deferred computation of this call
      */
-    Observable<Void> verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken);
+    Completable verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken);
 
     /**************************************************************
      * Fluent interfaces to provision a domain

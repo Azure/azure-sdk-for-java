@@ -10,15 +10,14 @@ package com.microsoft.azure.management.dns.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -33,6 +32,7 @@ import retrofit2.http.PATCH;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -41,7 +41,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in RecordSets.
  */
-public final class RecordSetsInner {
+public class RecordSetsInner {
     /** The Retrofit service to perform REST calls. */
     private RecordSetsService service;
     /** The service client containing this operation class. */
@@ -63,96 +63,102 @@ public final class RecordSetsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface RecordSetsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnszones/{zoneName}/{recordType}/{relativeRecordSetName}")
-        Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("zoneName") String zoneName, @Path(value = "relativeRecordSetName", encoded = true) String relativeRecordSetName, @Path("recordType") RecordType recordType, @Path("subscriptionId") String subscriptionId, @Body RecordSetInner parameters, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.dns.RecordSets update" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}/{recordType}/{relativeRecordSetName}")
+        Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("zoneName") String zoneName, @Path(value = "relativeRecordSetName", encoded = true) String relativeRecordSetName, @Path("recordType") RecordType recordType, @Path("subscriptionId") String subscriptionId, @Body RecordSetInner parameters, @Header("If-Match") String ifMatch, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnszones/{zoneName}/{recordType}/{relativeRecordSetName}")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.dns.RecordSets createOrUpdate" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}/{recordType}/{relativeRecordSetName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("zoneName") String zoneName, @Path(value = "relativeRecordSetName", encoded = true) String relativeRecordSetName, @Path("recordType") RecordType recordType, @Path("subscriptionId") String subscriptionId, @Body RecordSetInner parameters, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnszones/{zoneName}/{recordType}/{relativeRecordSetName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("zoneName") String zoneName, @Path(value = "relativeRecordSetName", encoded = true) String relativeRecordSetName, @Path("recordType") RecordType recordType, @Path("subscriptionId") String subscriptionId, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.dns.RecordSets delete" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}/{recordType}/{relativeRecordSetName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("zoneName") String zoneName, @Path(value = "relativeRecordSetName", encoded = true) String relativeRecordSetName, @Path("recordType") RecordType recordType, @Path("subscriptionId") String subscriptionId, @Header("If-Match") String ifMatch, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnszones/{zoneName}/{recordType}/{relativeRecordSetName}")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.dns.RecordSets get" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}/{recordType}/{relativeRecordSetName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("zoneName") String zoneName, @Path(value = "relativeRecordSetName", encoded = true) String relativeRecordSetName, @Path("recordType") RecordType recordType, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnszones/{zoneName}/{recordType}")
-        Observable<Response<ResponseBody>> listByType(@Path("resourceGroupName") String resourceGroupName, @Path("zoneName") String zoneName, @Path("recordType") RecordType recordType, @Path("subscriptionId") String subscriptionId, @Query("$top") String top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.dns.RecordSets listByType" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}/{recordType}")
+        Observable<Response<ResponseBody>> listByType(@Path("resourceGroupName") String resourceGroupName, @Path("zoneName") String zoneName, @Path("recordType") RecordType recordType, @Path("subscriptionId") String subscriptionId, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnszones/{zoneName}/recordsets")
-        Observable<Response<ResponseBody>> listAllInResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("zoneName") String zoneName, @Path("subscriptionId") String subscriptionId, @Query("$top") String top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.dns.RecordSets listByDnsZone" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}/recordsets")
+        Observable<Response<ResponseBody>> listByDnsZone(@Path("resourceGroupName") String resourceGroupName, @Path("zoneName") String zoneName, @Path("subscriptionId") String subscriptionId, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listByTypeNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.dns.RecordSets listByTypeNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByTypeNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listAllInResourceGroupNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.dns.RecordSets listByDnsZoneNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByDnsZoneNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * Updates a RecordSet within a DNS zone.
+     * Updates a record set within a DNS zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param parameters Parameters supplied to the Update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RecordSetInner object if successful.
      */
     public RecordSetInner update(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters) {
-        return updateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters).toBlocking().single().getBody();
+        return updateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters).toBlocking().single().body();
     }
 
     /**
-     * Updates a RecordSet within a DNS zone.
+     * Updates a record set within a DNS zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param parameters Parameters supplied to the Update operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RecordSetInner> updateAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, final ServiceCallback<RecordSetInner> serviceCallback) {
-        return ServiceCall.create(updateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters), serviceCallback);
+    public ServiceFuture<RecordSetInner> updateAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, final ServiceCallback<RecordSetInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters), serviceCallback);
     }
 
     /**
-     * Updates a RecordSet within a DNS zone.
+     * Updates a record set within a DNS zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param parameters Parameters supplied to the Update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecordSetInner object
      */
     public Observable<RecordSetInner> updateAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters) {
         return updateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters).map(new Func1<ServiceResponse<RecordSetInner>, RecordSetInner>() {
             @Override
             public RecordSetInner call(ServiceResponse<RecordSetInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Updates a RecordSet within a DNS zone.
+     * Updates a record set within a DNS zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param parameters Parameters supplied to the Update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecordSetInner object
      */
     public Observable<ServiceResponse<RecordSetInner>> updateWithServiceResponseAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters) {
@@ -179,8 +185,7 @@ public final class RecordSetsInner {
         }
         Validator.validate(parameters);
         final String ifMatch = null;
-        final String ifNoneMatch = null;
-        return service.update(resourceGroupName, zoneName, relativeRecordSetName, recordType, this.client.subscriptionId(), parameters, ifMatch, ifNoneMatch, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.update(resourceGroupName, zoneName, relativeRecordSetName, recordType, this.client.subscriptionId(), parameters, ifMatch, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RecordSetInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RecordSetInner>> call(Response<ResponseBody> response) {
@@ -195,72 +200,74 @@ public final class RecordSetsInner {
     }
 
     /**
-     * Updates a RecordSet within a DNS zone.
+     * Updates a record set within a DNS zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch The etag of Zone.
-     * @param ifNoneMatch Defines the If-None-Match condition. Set to '*' to force Create-If-Not-Exist. Other values will be ignored.
+     * @param ifMatch The etag of the record set. Omit this value to always overwrite the current record set. Specify the last-seen etag value to prevent accidentally overwritting concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RecordSetInner object if successful.
      */
-    public RecordSetInner update(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch, String ifNoneMatch) {
-        return updateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch, ifNoneMatch).toBlocking().single().getBody();
+    public RecordSetInner update(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch) {
+        return updateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch).toBlocking().single().body();
     }
 
     /**
-     * Updates a RecordSet within a DNS zone.
+     * Updates a record set within a DNS zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch The etag of Zone.
-     * @param ifNoneMatch Defines the If-None-Match condition. Set to '*' to force Create-If-Not-Exist. Other values will be ignored.
+     * @param ifMatch The etag of the record set. Omit this value to always overwrite the current record set. Specify the last-seen etag value to prevent accidentally overwritting concurrent changes.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RecordSetInner> updateAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch, String ifNoneMatch, final ServiceCallback<RecordSetInner> serviceCallback) {
-        return ServiceCall.create(updateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch, ifNoneMatch), serviceCallback);
+    public ServiceFuture<RecordSetInner> updateAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch, final ServiceCallback<RecordSetInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch), serviceCallback);
     }
 
     /**
-     * Updates a RecordSet within a DNS zone.
+     * Updates a record set within a DNS zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch The etag of Zone.
-     * @param ifNoneMatch Defines the If-None-Match condition. Set to '*' to force Create-If-Not-Exist. Other values will be ignored.
+     * @param ifMatch The etag of the record set. Omit this value to always overwrite the current record set. Specify the last-seen etag value to prevent accidentally overwritting concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecordSetInner object
      */
-    public Observable<RecordSetInner> updateAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch, String ifNoneMatch) {
-        return updateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch, ifNoneMatch).map(new Func1<ServiceResponse<RecordSetInner>, RecordSetInner>() {
+    public Observable<RecordSetInner> updateAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch) {
+        return updateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch).map(new Func1<ServiceResponse<RecordSetInner>, RecordSetInner>() {
             @Override
             public RecordSetInner call(ServiceResponse<RecordSetInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Updates a RecordSet within a DNS zone.
+     * Updates a record set within a DNS zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch The etag of Zone.
-     * @param ifNoneMatch Defines the If-None-Match condition. Set to '*' to force Create-If-Not-Exist. Other values will be ignored.
+     * @param ifMatch The etag of the record set. Omit this value to always overwrite the current record set. Specify the last-seen etag value to prevent accidentally overwritting concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecordSetInner object
      */
-    public Observable<ServiceResponse<RecordSetInner>> updateWithServiceResponseAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch, String ifNoneMatch) {
+    public Observable<ServiceResponse<RecordSetInner>> updateWithServiceResponseAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -283,7 +290,7 @@ public final class RecordSetsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        return service.update(resourceGroupName, zoneName, relativeRecordSetName, recordType, this.client.subscriptionId(), parameters, ifMatch, ifNoneMatch, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.update(resourceGroupName, zoneName, relativeRecordSetName, recordType, this.client.subscriptionId(), parameters, ifMatch, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RecordSetInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RecordSetInner>> call(Response<ResponseBody> response) {
@@ -298,68 +305,74 @@ public final class RecordSetsInner {
     }
 
     private ServiceResponse<RecordSetInner> updateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RecordSetInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RecordSetInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RecordSetInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Creates or Updates a RecordSet within a DNS zone.
+     * Creates or updates a record set within a DNS zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Record sets of type SOA can be updated but not created (they are created when the DNS zone is created). Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RecordSetInner object if successful.
      */
     public RecordSetInner createOrUpdate(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters).toBlocking().single().body();
     }
 
     /**
-     * Creates or Updates a RecordSet within a DNS zone.
+     * Creates or updates a record set within a DNS zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Record sets of type SOA can be updated but not created (they are created when the DNS zone is created). Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RecordSetInner> createOrUpdateAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, final ServiceCallback<RecordSetInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters), serviceCallback);
+    public ServiceFuture<RecordSetInner> createOrUpdateAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, final ServiceCallback<RecordSetInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters), serviceCallback);
     }
 
     /**
-     * Creates or Updates a RecordSet within a DNS zone.
+     * Creates or updates a record set within a DNS zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Record sets of type SOA can be updated but not created (they are created when the DNS zone is created). Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecordSetInner object
      */
     public Observable<RecordSetInner> createOrUpdateAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters).map(new Func1<ServiceResponse<RecordSetInner>, RecordSetInner>() {
             @Override
             public RecordSetInner call(ServiceResponse<RecordSetInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Creates or Updates a RecordSet within a DNS zone.
+     * Creates or updates a record set within a DNS zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Record sets of type SOA can be updated but not created (they are created when the DNS zone is created). Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecordSetInner object
      */
     public Observable<ServiceResponse<RecordSetInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters) {
@@ -402,69 +415,75 @@ public final class RecordSetsInner {
     }
 
     /**
-     * Creates or Updates a RecordSet within a DNS zone.
+     * Creates or updates a record set within a DNS zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Record sets of type SOA can be updated but not created (they are created when the DNS zone is created). Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch The etag of Recordset.
-     * @param ifNoneMatch Defines the If-None-Match condition. Set to '*' to force Create-If-Not-Exist. Other values will be ignored.
+     * @param ifMatch The etag of the record set. Omit this value to always overwrite the current record set. Specify the last-seen etag value to prevent accidentally overwritting any concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing record set. Other values will be ignored.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RecordSetInner object if successful.
      */
     public RecordSetInner createOrUpdate(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch, String ifNoneMatch) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch, ifNoneMatch).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch, ifNoneMatch).toBlocking().single().body();
     }
 
     /**
-     * Creates or Updates a RecordSet within a DNS zone.
+     * Creates or updates a record set within a DNS zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Record sets of type SOA can be updated but not created (they are created when the DNS zone is created). Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch The etag of Recordset.
-     * @param ifNoneMatch Defines the If-None-Match condition. Set to '*' to force Create-If-Not-Exist. Other values will be ignored.
+     * @param ifMatch The etag of the record set. Omit this value to always overwrite the current record set. Specify the last-seen etag value to prevent accidentally overwritting any concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing record set. Other values will be ignored.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RecordSetInner> createOrUpdateAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch, String ifNoneMatch, final ServiceCallback<RecordSetInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch, ifNoneMatch), serviceCallback);
+    public ServiceFuture<RecordSetInner> createOrUpdateAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch, String ifNoneMatch, final ServiceCallback<RecordSetInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch, ifNoneMatch), serviceCallback);
     }
 
     /**
-     * Creates or Updates a RecordSet within a DNS zone.
+     * Creates or updates a record set within a DNS zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Record sets of type SOA can be updated but not created (they are created when the DNS zone is created). Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch The etag of Recordset.
-     * @param ifNoneMatch Defines the If-None-Match condition. Set to '*' to force Create-If-Not-Exist. Other values will be ignored.
+     * @param ifMatch The etag of the record set. Omit this value to always overwrite the current record set. Specify the last-seen etag value to prevent accidentally overwritting any concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing record set. Other values will be ignored.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecordSetInner object
      */
     public Observable<RecordSetInner> createOrUpdateAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch, String ifNoneMatch) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch, ifNoneMatch).map(new Func1<ServiceResponse<RecordSetInner>, RecordSetInner>() {
             @Override
             public RecordSetInner call(ServiceResponse<RecordSetInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Creates or Updates a RecordSet within a DNS zone.
+     * Creates or updates a record set within a DNS zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Record sets of type SOA can be updated but not created (they are created when the DNS zone is created). Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch The etag of Recordset.
-     * @param ifNoneMatch Defines the If-None-Match condition. Set to '*' to force Create-If-Not-Exist. Other values will be ignored.
+     * @param ifMatch The etag of the record set. Omit this value to always overwrite the current record set. Specify the last-seen etag value to prevent accidentally overwritting any concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing record set. Other values will be ignored.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecordSetInner object
      */
     public Observable<ServiceResponse<RecordSetInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch, String ifNoneMatch) {
@@ -505,7 +524,7 @@ public final class RecordSetsInner {
     }
 
     private ServiceResponse<RecordSetInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RecordSetInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RecordSetInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<RecordSetInner>() { }.getType())
                 .register(200, new TypeToken<RecordSetInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -513,56 +532,62 @@ public final class RecordSetsInner {
     }
 
     /**
-     * Removes a RecordSet from a DNS zone.
+     * Deletes a record set from a DNS zone. This operation cannot be undone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are deleted when the DNS zone is deleted). Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType) {
-        deleteWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType).toBlocking().single().body();
     }
 
     /**
-     * Removes a RecordSet from a DNS zone.
+     * Deletes a record set from a DNS zone. This operation cannot be undone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are deleted when the DNS zone is deleted). Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType), serviceCallback);
     }
 
     /**
-     * Removes a RecordSet from a DNS zone.
+     * Deletes a record set from a DNS zone. This operation cannot be undone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are deleted when the DNS zone is deleted). Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType) {
         return deleteWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Removes a RecordSet from a DNS zone.
+     * Deletes a record set from a DNS zone. This operation cannot be undone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are deleted when the DNS zone is deleted). Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType) {
@@ -585,8 +610,7 @@ public final class RecordSetsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String ifMatch = null;
-        final String ifNoneMatch = null;
-        return service.delete(resourceGroupName, zoneName, relativeRecordSetName, recordType, this.client.subscriptionId(), ifMatch, ifNoneMatch, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.delete(resourceGroupName, zoneName, relativeRecordSetName, recordType, this.client.subscriptionId(), ifMatch, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -601,67 +625,69 @@ public final class RecordSetsInner {
     }
 
     /**
-     * Removes a RecordSet from a DNS zone.
+     * Deletes a record set from a DNS zone. This operation cannot be undone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
-     * @param ifMatch Defines the If-Match condition. The delete operation will be performed only if the ETag of the zone on the server matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The delete operation will be performed only if the ETag of the zone on the server does not match this value.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are deleted when the DNS zone is deleted). Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param ifMatch The etag of the record set. Omit this value to always delete the current record set. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void delete(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, String ifMatch, String ifNoneMatch) {
-        deleteWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, ifMatch, ifNoneMatch).toBlocking().single().getBody();
+    public void delete(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, String ifMatch) {
+        deleteWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, ifMatch).toBlocking().single().body();
     }
 
     /**
-     * Removes a RecordSet from a DNS zone.
+     * Deletes a record set from a DNS zone. This operation cannot be undone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
-     * @param ifMatch Defines the If-Match condition. The delete operation will be performed only if the ETag of the zone on the server matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The delete operation will be performed only if the ETag of the zone on the server does not match this value.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are deleted when the DNS zone is deleted). Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param ifMatch The etag of the record set. Omit this value to always delete the current record set. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, String ifMatch, String ifNoneMatch, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, ifMatch, ifNoneMatch), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, String ifMatch, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, ifMatch), serviceCallback);
     }
 
     /**
-     * Removes a RecordSet from a DNS zone.
+     * Deletes a record set from a DNS zone. This operation cannot be undone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
-     * @param ifMatch Defines the If-Match condition. The delete operation will be performed only if the ETag of the zone on the server matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The delete operation will be performed only if the ETag of the zone on the server does not match this value.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are deleted when the DNS zone is deleted). Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param ifMatch The etag of the record set. Omit this value to always delete the current record set. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> deleteAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, String ifMatch, String ifNoneMatch) {
-        return deleteWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, ifMatch, ifNoneMatch).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> deleteAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, String ifMatch) {
+        return deleteWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType, ifMatch).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Removes a RecordSet from a DNS zone.
+     * Deletes a record set from a DNS zone. This operation cannot be undone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
-     * @param ifMatch Defines the If-Match condition. The delete operation will be performed only if the ETag of the zone on the server matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The delete operation will be performed only if the ETag of the zone on the server does not match this value.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are deleted when the DNS zone is deleted). Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param ifMatch The etag of the record set. Omit this value to always delete the current record set. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, String ifMatch, String ifNoneMatch) {
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, String ifMatch) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -680,7 +706,7 @@ public final class RecordSetsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.delete(resourceGroupName, zoneName, relativeRecordSetName, recordType, this.client.subscriptionId(), ifMatch, ifNoneMatch, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.delete(resourceGroupName, zoneName, relativeRecordSetName, recordType, this.client.subscriptionId(), ifMatch, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -695,7 +721,7 @@ public final class RecordSetsInner {
     }
 
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -703,57 +729,63 @@ public final class RecordSetsInner {
     }
 
     /**
-     * Gets a RecordSet.
+     * Gets a record set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RecordSetInner object if successful.
      */
     public RecordSetInner get(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType) {
-        return getWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType).toBlocking().single().body();
     }
 
     /**
-     * Gets a RecordSet.
+     * Gets a record set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RecordSetInner> getAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, final ServiceCallback<RecordSetInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType), serviceCallback);
+    public ServiceFuture<RecordSetInner> getAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType, final ServiceCallback<RecordSetInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType), serviceCallback);
     }
 
     /**
-     * Gets a RecordSet.
+     * Gets a record set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecordSetInner object
      */
     public Observable<RecordSetInner> getAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType) {
         return getWithServiceResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType).map(new Func1<ServiceResponse<RecordSetInner>, RecordSetInner>() {
             @Override
             public RecordSetInner call(ServiceResponse<RecordSetInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Gets a RecordSet.
+     * Gets a record set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param relativeRecordSetName The name of the RecordSet, relative to the name of the zone.
-     * @param recordType The type of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecordSetInner object
      */
     public Observable<ServiceResponse<RecordSetInner>> getWithServiceResponseAsync(String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType) {
@@ -790,41 +822,45 @@ public final class RecordSetsInner {
     }
 
     private ServiceResponse<RecordSetInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RecordSetInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RecordSetInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RecordSetInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Lists the RecordSets of a specified type in a DNS zone.
+     * Lists the record sets of a specified type in a DNS zone.
      *
-     * @param resourceGroupName The name of the resource group that contains the zone.
-     * @param zoneName The name of the zone from which to enumerate RecordsSets.
+     * @param resourceGroupName The name of the resource group.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param recordType The type of record sets to enumerate. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;RecordSetInner&gt; object if successful.
      */
     public PagedList<RecordSetInner> listByType(final String resourceGroupName, final String zoneName, final RecordType recordType) {
         ServiceResponse<Page<RecordSetInner>> response = listByTypeSinglePageAsync(resourceGroupName, zoneName, recordType).toBlocking().single();
-        return new PagedList<RecordSetInner>(response.getBody()) {
+        return new PagedList<RecordSetInner>(response.body()) {
             @Override
             public Page<RecordSetInner> nextPage(String nextPageLink) {
-                return listByTypeNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByTypeNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Lists the RecordSets of a specified type in a DNS zone.
+     * Lists the record sets of a specified type in a DNS zone.
      *
-     * @param resourceGroupName The name of the resource group that contains the zone.
-     * @param zoneName The name of the zone from which to enumerate RecordsSets.
+     * @param resourceGroupName The name of the resource group.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param recordType The type of record sets to enumerate. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecordSetInner>> listByTypeAsync(final String resourceGroupName, final String zoneName, final RecordType recordType, final ListOperationCallback<RecordSetInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<RecordSetInner>> listByTypeAsync(final String resourceGroupName, final String zoneName, final RecordType recordType, final ListOperationCallback<RecordSetInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByTypeSinglePageAsync(resourceGroupName, zoneName, recordType),
             new Func1<String, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
@@ -836,11 +872,12 @@ public final class RecordSetsInner {
     }
 
     /**
-     * Lists the RecordSets of a specified type in a DNS zone.
+     * Lists the record sets of a specified type in a DNS zone.
      *
-     * @param resourceGroupName The name of the resource group that contains the zone.
-     * @param zoneName The name of the zone from which to enumerate RecordsSets.
+     * @param resourceGroupName The name of the resource group.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param recordType The type of record sets to enumerate. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RecordSetInner&gt; object
      */
     public Observable<Page<RecordSetInner>> listByTypeAsync(final String resourceGroupName, final String zoneName, final RecordType recordType) {
@@ -848,17 +885,18 @@ public final class RecordSetsInner {
             .map(new Func1<ServiceResponse<Page<RecordSetInner>>, Page<RecordSetInner>>() {
                 @Override
                 public Page<RecordSetInner> call(ServiceResponse<Page<RecordSetInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Lists the RecordSets of a specified type in a DNS zone.
+     * Lists the record sets of a specified type in a DNS zone.
      *
-     * @param resourceGroupName The name of the resource group that contains the zone.
-     * @param zoneName The name of the zone from which to enumerate RecordsSets.
+     * @param resourceGroupName The name of the resource group.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param recordType The type of record sets to enumerate. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RecordSetInner&gt; object
      */
     public Observable<ServiceResponse<Page<RecordSetInner>>> listByTypeWithServiceResponseAsync(final String resourceGroupName, final String zoneName, final RecordType recordType) {
@@ -866,7 +904,7 @@ public final class RecordSetsInner {
             .concatMap(new Func1<ServiceResponse<Page<RecordSetInner>>, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(ServiceResponse<Page<RecordSetInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -876,11 +914,12 @@ public final class RecordSetsInner {
     }
 
     /**
-     * Lists the RecordSets of a specified type in a DNS zone.
+     * Lists the record sets of a specified type in a DNS zone.
      *
-     * @param resourceGroupName The name of the resource group that contains the zone.
-     * @param zoneName The name of the zone from which to enumerate RecordsSets.
+     * @param resourceGroupName The name of the resource group.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param recordType The type of record sets to enumerate. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;RecordSetInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<RecordSetInner>>> listByTypeSinglePageAsync(final String resourceGroupName, final String zoneName, final RecordType recordType) {
@@ -899,14 +938,14 @@ public final class RecordSetsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        final String top = null;
+        final Integer top = null;
         return service.listByType(resourceGroupName, zoneName, recordType, this.client.subscriptionId(), top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RecordSetInner>> result = listByTypeDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RecordSetInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RecordSetInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -915,36 +954,40 @@ public final class RecordSetsInner {
     }
 
     /**
-     * Lists the RecordSets of a specified type in a DNS zone.
+     * Lists the record sets of a specified type in a DNS zone.
      *
-     * @param resourceGroupName The name of the resource group that contains the zone.
-     * @param zoneName The name of the zone from which to enumerate RecordsSets.
+     * @param resourceGroupName The name of the resource group.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param recordType The type of record sets to enumerate. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
-     * @param top Query parameters. If null is passed returns the default number of zones.
+     * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;RecordSetInner&gt; object if successful.
      */
-    public PagedList<RecordSetInner> listByType(final String resourceGroupName, final String zoneName, final RecordType recordType, final String top) {
+    public PagedList<RecordSetInner> listByType(final String resourceGroupName, final String zoneName, final RecordType recordType, final Integer top) {
         ServiceResponse<Page<RecordSetInner>> response = listByTypeSinglePageAsync(resourceGroupName, zoneName, recordType, top).toBlocking().single();
-        return new PagedList<RecordSetInner>(response.getBody()) {
+        return new PagedList<RecordSetInner>(response.body()) {
             @Override
             public Page<RecordSetInner> nextPage(String nextPageLink) {
-                return listByTypeNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByTypeNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Lists the RecordSets of a specified type in a DNS zone.
+     * Lists the record sets of a specified type in a DNS zone.
      *
-     * @param resourceGroupName The name of the resource group that contains the zone.
-     * @param zoneName The name of the zone from which to enumerate RecordsSets.
+     * @param resourceGroupName The name of the resource group.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param recordType The type of record sets to enumerate. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
-     * @param top Query parameters. If null is passed returns the default number of zones.
+     * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecordSetInner>> listByTypeAsync(final String resourceGroupName, final String zoneName, final RecordType recordType, final String top, final ListOperationCallback<RecordSetInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<RecordSetInner>> listByTypeAsync(final String resourceGroupName, final String zoneName, final RecordType recordType, final Integer top, final ListOperationCallback<RecordSetInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByTypeSinglePageAsync(resourceGroupName, zoneName, recordType, top),
             new Func1<String, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
@@ -956,39 +999,41 @@ public final class RecordSetsInner {
     }
 
     /**
-     * Lists the RecordSets of a specified type in a DNS zone.
+     * Lists the record sets of a specified type in a DNS zone.
      *
-     * @param resourceGroupName The name of the resource group that contains the zone.
-     * @param zoneName The name of the zone from which to enumerate RecordsSets.
+     * @param resourceGroupName The name of the resource group.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param recordType The type of record sets to enumerate. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
-     * @param top Query parameters. If null is passed returns the default number of zones.
+     * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RecordSetInner&gt; object
      */
-    public Observable<Page<RecordSetInner>> listByTypeAsync(final String resourceGroupName, final String zoneName, final RecordType recordType, final String top) {
+    public Observable<Page<RecordSetInner>> listByTypeAsync(final String resourceGroupName, final String zoneName, final RecordType recordType, final Integer top) {
         return listByTypeWithServiceResponseAsync(resourceGroupName, zoneName, recordType, top)
             .map(new Func1<ServiceResponse<Page<RecordSetInner>>, Page<RecordSetInner>>() {
                 @Override
                 public Page<RecordSetInner> call(ServiceResponse<Page<RecordSetInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Lists the RecordSets of a specified type in a DNS zone.
+     * Lists the record sets of a specified type in a DNS zone.
      *
-     * @param resourceGroupName The name of the resource group that contains the zone.
-     * @param zoneName The name of the zone from which to enumerate RecordsSets.
+     * @param resourceGroupName The name of the resource group.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param recordType The type of record sets to enumerate. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
-     * @param top Query parameters. If null is passed returns the default number of zones.
+     * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RecordSetInner&gt; object
      */
-    public Observable<ServiceResponse<Page<RecordSetInner>>> listByTypeWithServiceResponseAsync(final String resourceGroupName, final String zoneName, final RecordType recordType, final String top) {
+    public Observable<ServiceResponse<Page<RecordSetInner>>> listByTypeWithServiceResponseAsync(final String resourceGroupName, final String zoneName, final RecordType recordType, final Integer top) {
         return listByTypeSinglePageAsync(resourceGroupName, zoneName, recordType, top)
             .concatMap(new Func1<ServiceResponse<Page<RecordSetInner>>, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(ServiceResponse<Page<RecordSetInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -998,15 +1043,16 @@ public final class RecordSetsInner {
     }
 
     /**
-     * Lists the RecordSets of a specified type in a DNS zone.
+     * Lists the record sets of a specified type in a DNS zone.
      *
-    ServiceResponse<PageImpl<RecordSetInner>> * @param resourceGroupName The name of the resource group that contains the zone.
-    ServiceResponse<PageImpl<RecordSetInner>> * @param zoneName The name of the zone from which to enumerate RecordsSets.
+    ServiceResponse<PageImpl<RecordSetInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<RecordSetInner>> * @param zoneName The name of the DNS zone (without a terminating dot).
     ServiceResponse<PageImpl<RecordSetInner>> * @param recordType The type of record sets to enumerate. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
-    ServiceResponse<PageImpl<RecordSetInner>> * @param top Query parameters. If null is passed returns the default number of zones.
+    ServiceResponse<PageImpl<RecordSetInner>> * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;RecordSetInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<RecordSetInner>>> listByTypeSinglePageAsync(final String resourceGroupName, final String zoneName, final RecordType recordType, final String top) {
+    public Observable<ServiceResponse<Page<RecordSetInner>>> listByTypeSinglePageAsync(final String resourceGroupName, final String zoneName, final RecordType recordType, final Integer top) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1028,7 +1074,7 @@ public final class RecordSetsInner {
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RecordSetInner>> result = listByTypeDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RecordSetInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RecordSetInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1037,95 +1083,102 @@ public final class RecordSetsInner {
     }
 
     private ServiceResponse<PageImpl<RecordSetInner>> listByTypeDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<RecordSetInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RecordSetInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<RecordSetInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Lists all RecordSets in a DNS zone.
+     * Lists all record sets in a DNS zone.
      *
-     * @param resourceGroupName The name of the resource group that contains the zone.
-     * @param zoneName The name of the zone from which to enumerate RecordSets.
+     * @param resourceGroupName The name of the resource group.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;RecordSetInner&gt; object if successful.
      */
-    public PagedList<RecordSetInner> listAllInResourceGroup(final String resourceGroupName, final String zoneName) {
-        ServiceResponse<Page<RecordSetInner>> response = listAllInResourceGroupSinglePageAsync(resourceGroupName, zoneName).toBlocking().single();
-        return new PagedList<RecordSetInner>(response.getBody()) {
+    public PagedList<RecordSetInner> listByDnsZone(final String resourceGroupName, final String zoneName) {
+        ServiceResponse<Page<RecordSetInner>> response = listByDnsZoneSinglePageAsync(resourceGroupName, zoneName).toBlocking().single();
+        return new PagedList<RecordSetInner>(response.body()) {
             @Override
             public Page<RecordSetInner> nextPage(String nextPageLink) {
-                return listAllInResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByDnsZoneNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Lists all RecordSets in a DNS zone.
+     * Lists all record sets in a DNS zone.
      *
-     * @param resourceGroupName The name of the resource group that contains the zone.
-     * @param zoneName The name of the zone from which to enumerate RecordSets.
+     * @param resourceGroupName The name of the resource group.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecordSetInner>> listAllInResourceGroupAsync(final String resourceGroupName, final String zoneName, final ListOperationCallback<RecordSetInner> serviceCallback) {
-        return AzureServiceCall.create(
-            listAllInResourceGroupSinglePageAsync(resourceGroupName, zoneName),
+    public ServiceFuture<List<RecordSetInner>> listByDnsZoneAsync(final String resourceGroupName, final String zoneName, final ListOperationCallback<RecordSetInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByDnsZoneSinglePageAsync(resourceGroupName, zoneName),
             new Func1<String, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(String nextPageLink) {
-                    return listAllInResourceGroupNextSinglePageAsync(nextPageLink);
+                    return listByDnsZoneNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
     }
 
     /**
-     * Lists all RecordSets in a DNS zone.
+     * Lists all record sets in a DNS zone.
      *
-     * @param resourceGroupName The name of the resource group that contains the zone.
-     * @param zoneName The name of the zone from which to enumerate RecordSets.
+     * @param resourceGroupName The name of the resource group.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RecordSetInner&gt; object
      */
-    public Observable<Page<RecordSetInner>> listAllInResourceGroupAsync(final String resourceGroupName, final String zoneName) {
-        return listAllInResourceGroupWithServiceResponseAsync(resourceGroupName, zoneName)
+    public Observable<Page<RecordSetInner>> listByDnsZoneAsync(final String resourceGroupName, final String zoneName) {
+        return listByDnsZoneWithServiceResponseAsync(resourceGroupName, zoneName)
             .map(new Func1<ServiceResponse<Page<RecordSetInner>>, Page<RecordSetInner>>() {
                 @Override
                 public Page<RecordSetInner> call(ServiceResponse<Page<RecordSetInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Lists all RecordSets in a DNS zone.
+     * Lists all record sets in a DNS zone.
      *
-     * @param resourceGroupName The name of the resource group that contains the zone.
-     * @param zoneName The name of the zone from which to enumerate RecordSets.
+     * @param resourceGroupName The name of the resource group.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RecordSetInner&gt; object
      */
-    public Observable<ServiceResponse<Page<RecordSetInner>>> listAllInResourceGroupWithServiceResponseAsync(final String resourceGroupName, final String zoneName) {
-        return listAllInResourceGroupSinglePageAsync(resourceGroupName, zoneName)
+    public Observable<ServiceResponse<Page<RecordSetInner>>> listByDnsZoneWithServiceResponseAsync(final String resourceGroupName, final String zoneName) {
+        return listByDnsZoneSinglePageAsync(resourceGroupName, zoneName)
             .concatMap(new Func1<ServiceResponse<Page<RecordSetInner>>, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(ServiceResponse<Page<RecordSetInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listAllInResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByDnsZoneNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
 
     /**
-     * Lists all RecordSets in a DNS zone.
+     * Lists all record sets in a DNS zone.
      *
-     * @param resourceGroupName The name of the resource group that contains the zone.
-     * @param zoneName The name of the zone from which to enumerate RecordSets.
+     * @param resourceGroupName The name of the resource group.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;RecordSetInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<RecordSetInner>>> listAllInResourceGroupSinglePageAsync(final String resourceGroupName, final String zoneName) {
+    public Observable<ServiceResponse<Page<RecordSetInner>>> listByDnsZoneSinglePageAsync(final String resourceGroupName, final String zoneName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1138,14 +1191,14 @@ public final class RecordSetsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        final String top = null;
-        return service.listAllInResourceGroup(resourceGroupName, zoneName, this.client.subscriptionId(), top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final Integer top = null;
+        return service.listByDnsZone(resourceGroupName, zoneName, this.client.subscriptionId(), top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<RecordSetInner>> result = listAllInResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RecordSetInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<RecordSetInner>> result = listByDnsZoneDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<RecordSetInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1154,93 +1207,100 @@ public final class RecordSetsInner {
     }
 
     /**
-     * Lists all RecordSets in a DNS zone.
+     * Lists all record sets in a DNS zone.
      *
-     * @param resourceGroupName The name of the resource group that contains the zone.
-     * @param zoneName The name of the zone from which to enumerate RecordSets.
-     * @param top Query parameters. If null is passed returns the default number of zones.
+     * @param resourceGroupName The name of the resource group.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;RecordSetInner&gt; object if successful.
      */
-    public PagedList<RecordSetInner> listAllInResourceGroup(final String resourceGroupName, final String zoneName, final String top) {
-        ServiceResponse<Page<RecordSetInner>> response = listAllInResourceGroupSinglePageAsync(resourceGroupName, zoneName, top).toBlocking().single();
-        return new PagedList<RecordSetInner>(response.getBody()) {
+    public PagedList<RecordSetInner> listByDnsZone(final String resourceGroupName, final String zoneName, final Integer top) {
+        ServiceResponse<Page<RecordSetInner>> response = listByDnsZoneSinglePageAsync(resourceGroupName, zoneName, top).toBlocking().single();
+        return new PagedList<RecordSetInner>(response.body()) {
             @Override
             public Page<RecordSetInner> nextPage(String nextPageLink) {
-                return listAllInResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByDnsZoneNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Lists all RecordSets in a DNS zone.
+     * Lists all record sets in a DNS zone.
      *
-     * @param resourceGroupName The name of the resource group that contains the zone.
-     * @param zoneName The name of the zone from which to enumerate RecordSets.
-     * @param top Query parameters. If null is passed returns the default number of zones.
+     * @param resourceGroupName The name of the resource group.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecordSetInner>> listAllInResourceGroupAsync(final String resourceGroupName, final String zoneName, final String top, final ListOperationCallback<RecordSetInner> serviceCallback) {
-        return AzureServiceCall.create(
-            listAllInResourceGroupSinglePageAsync(resourceGroupName, zoneName, top),
+    public ServiceFuture<List<RecordSetInner>> listByDnsZoneAsync(final String resourceGroupName, final String zoneName, final Integer top, final ListOperationCallback<RecordSetInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByDnsZoneSinglePageAsync(resourceGroupName, zoneName, top),
             new Func1<String, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(String nextPageLink) {
-                    return listAllInResourceGroupNextSinglePageAsync(nextPageLink);
+                    return listByDnsZoneNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
     }
 
     /**
-     * Lists all RecordSets in a DNS zone.
+     * Lists all record sets in a DNS zone.
      *
-     * @param resourceGroupName The name of the resource group that contains the zone.
-     * @param zoneName The name of the zone from which to enumerate RecordSets.
-     * @param top Query parameters. If null is passed returns the default number of zones.
+     * @param resourceGroupName The name of the resource group.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RecordSetInner&gt; object
      */
-    public Observable<Page<RecordSetInner>> listAllInResourceGroupAsync(final String resourceGroupName, final String zoneName, final String top) {
-        return listAllInResourceGroupWithServiceResponseAsync(resourceGroupName, zoneName, top)
+    public Observable<Page<RecordSetInner>> listByDnsZoneAsync(final String resourceGroupName, final String zoneName, final Integer top) {
+        return listByDnsZoneWithServiceResponseAsync(resourceGroupName, zoneName, top)
             .map(new Func1<ServiceResponse<Page<RecordSetInner>>, Page<RecordSetInner>>() {
                 @Override
                 public Page<RecordSetInner> call(ServiceResponse<Page<RecordSetInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Lists all RecordSets in a DNS zone.
+     * Lists all record sets in a DNS zone.
      *
-     * @param resourceGroupName The name of the resource group that contains the zone.
-     * @param zoneName The name of the zone from which to enumerate RecordSets.
-     * @param top Query parameters. If null is passed returns the default number of zones.
+     * @param resourceGroupName The name of the resource group.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RecordSetInner&gt; object
      */
-    public Observable<ServiceResponse<Page<RecordSetInner>>> listAllInResourceGroupWithServiceResponseAsync(final String resourceGroupName, final String zoneName, final String top) {
-        return listAllInResourceGroupSinglePageAsync(resourceGroupName, zoneName, top)
+    public Observable<ServiceResponse<Page<RecordSetInner>>> listByDnsZoneWithServiceResponseAsync(final String resourceGroupName, final String zoneName, final Integer top) {
+        return listByDnsZoneSinglePageAsync(resourceGroupName, zoneName, top)
             .concatMap(new Func1<ServiceResponse<Page<RecordSetInner>>, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(ServiceResponse<Page<RecordSetInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listAllInResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByDnsZoneNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
 
     /**
-     * Lists all RecordSets in a DNS zone.
+     * Lists all record sets in a DNS zone.
      *
-    ServiceResponse<PageImpl<RecordSetInner>> * @param resourceGroupName The name of the resource group that contains the zone.
-    ServiceResponse<PageImpl<RecordSetInner>> * @param zoneName The name of the zone from which to enumerate RecordSets.
-    ServiceResponse<PageImpl<RecordSetInner>> * @param top Query parameters. If null is passed returns the default number of zones.
+    ServiceResponse<PageImpl<RecordSetInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<RecordSetInner>> * @param zoneName The name of the DNS zone (without a terminating dot).
+    ServiceResponse<PageImpl<RecordSetInner>> * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;RecordSetInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<RecordSetInner>>> listAllInResourceGroupSinglePageAsync(final String resourceGroupName, final String zoneName, final String top) {
+    public Observable<ServiceResponse<Page<RecordSetInner>>> listByDnsZoneSinglePageAsync(final String resourceGroupName, final String zoneName, final Integer top) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1253,13 +1313,13 @@ public final class RecordSetsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listAllInResourceGroup(resourceGroupName, zoneName, this.client.subscriptionId(), top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.listByDnsZone(resourceGroupName, zoneName, this.client.subscriptionId(), top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<RecordSetInner>> result = listAllInResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RecordSetInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<RecordSetInner>> result = listByDnsZoneDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<RecordSetInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1267,39 +1327,43 @@ public final class RecordSetsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<RecordSetInner>> listAllInResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<RecordSetInner>, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<PageImpl<RecordSetInner>> listByDnsZoneDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RecordSetInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<RecordSetInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Lists the RecordSets of a specified type in a DNS zone.
+     * Lists the record sets of a specified type in a DNS zone.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;RecordSetInner&gt; object if successful.
      */
     public PagedList<RecordSetInner> listByTypeNext(final String nextPageLink) {
         ServiceResponse<Page<RecordSetInner>> response = listByTypeNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<RecordSetInner>(response.getBody()) {
+        return new PagedList<RecordSetInner>(response.body()) {
             @Override
             public Page<RecordSetInner> nextPage(String nextPageLink) {
-                return listByTypeNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByTypeNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Lists the RecordSets of a specified type in a DNS zone.
+     * Lists the record sets of a specified type in a DNS zone.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecordSetInner>> listByTypeNextAsync(final String nextPageLink, final ServiceCall<List<RecordSetInner>> serviceCall, final ListOperationCallback<RecordSetInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<RecordSetInner>> listByTypeNextAsync(final String nextPageLink, final ServiceFuture<List<RecordSetInner>> serviceFuture, final ListOperationCallback<RecordSetInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByTypeNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
@@ -1311,9 +1375,10 @@ public final class RecordSetsInner {
     }
 
     /**
-     * Lists the RecordSets of a specified type in a DNS zone.
+     * Lists the record sets of a specified type in a DNS zone.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RecordSetInner&gt; object
      */
     public Observable<Page<RecordSetInner>> listByTypeNextAsync(final String nextPageLink) {
@@ -1321,15 +1386,16 @@ public final class RecordSetsInner {
             .map(new Func1<ServiceResponse<Page<RecordSetInner>>, Page<RecordSetInner>>() {
                 @Override
                 public Page<RecordSetInner> call(ServiceResponse<Page<RecordSetInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Lists the RecordSets of a specified type in a DNS zone.
+     * Lists the record sets of a specified type in a DNS zone.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RecordSetInner&gt; object
      */
     public Observable<ServiceResponse<Page<RecordSetInner>>> listByTypeNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1337,7 +1403,7 @@ public final class RecordSetsInner {
             .concatMap(new Func1<ServiceResponse<Page<RecordSetInner>>, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(ServiceResponse<Page<RecordSetInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1347,22 +1413,24 @@ public final class RecordSetsInner {
     }
 
     /**
-     * Lists the RecordSets of a specified type in a DNS zone.
+     * Lists the record sets of a specified type in a DNS zone.
      *
     ServiceResponse<PageImpl<RecordSetInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;RecordSetInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<RecordSetInner>>> listByTypeNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listByTypeNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByTypeNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RecordSetInner>> result = listByTypeNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RecordSetInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RecordSetInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1371,101 +1439,109 @@ public final class RecordSetsInner {
     }
 
     private ServiceResponse<PageImpl<RecordSetInner>> listByTypeNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<RecordSetInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RecordSetInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<RecordSetInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Lists all RecordSets in a DNS zone.
+     * Lists all record sets in a DNS zone.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;RecordSetInner&gt; object if successful.
      */
-    public PagedList<RecordSetInner> listAllInResourceGroupNext(final String nextPageLink) {
-        ServiceResponse<Page<RecordSetInner>> response = listAllInResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<RecordSetInner>(response.getBody()) {
+    public PagedList<RecordSetInner> listByDnsZoneNext(final String nextPageLink) {
+        ServiceResponse<Page<RecordSetInner>> response = listByDnsZoneNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<RecordSetInner>(response.body()) {
             @Override
             public Page<RecordSetInner> nextPage(String nextPageLink) {
-                return listAllInResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByDnsZoneNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Lists all RecordSets in a DNS zone.
+     * Lists all record sets in a DNS zone.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RecordSetInner>> listAllInResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<RecordSetInner>> serviceCall, final ListOperationCallback<RecordSetInner> serviceCallback) {
-        return AzureServiceCall.create(
-            listAllInResourceGroupNextSinglePageAsync(nextPageLink),
+    public ServiceFuture<List<RecordSetInner>> listByDnsZoneNextAsync(final String nextPageLink, final ServiceFuture<List<RecordSetInner>> serviceFuture, final ListOperationCallback<RecordSetInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByDnsZoneNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(String nextPageLink) {
-                    return listAllInResourceGroupNextSinglePageAsync(nextPageLink);
+                    return listByDnsZoneNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
     }
 
     /**
-     * Lists all RecordSets in a DNS zone.
+     * Lists all record sets in a DNS zone.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RecordSetInner&gt; object
      */
-    public Observable<Page<RecordSetInner>> listAllInResourceGroupNextAsync(final String nextPageLink) {
-        return listAllInResourceGroupNextWithServiceResponseAsync(nextPageLink)
+    public Observable<Page<RecordSetInner>> listByDnsZoneNextAsync(final String nextPageLink) {
+        return listByDnsZoneNextWithServiceResponseAsync(nextPageLink)
             .map(new Func1<ServiceResponse<Page<RecordSetInner>>, Page<RecordSetInner>>() {
                 @Override
                 public Page<RecordSetInner> call(ServiceResponse<Page<RecordSetInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Lists all RecordSets in a DNS zone.
+     * Lists all record sets in a DNS zone.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RecordSetInner&gt; object
      */
-    public Observable<ServiceResponse<Page<RecordSetInner>>> listAllInResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
-        return listAllInResourceGroupNextSinglePageAsync(nextPageLink)
+    public Observable<ServiceResponse<Page<RecordSetInner>>> listByDnsZoneNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByDnsZoneNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<RecordSetInner>>, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(ServiceResponse<Page<RecordSetInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listAllInResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByDnsZoneNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
 
     /**
-     * Lists all RecordSets in a DNS zone.
+     * Lists all record sets in a DNS zone.
      *
     ServiceResponse<PageImpl<RecordSetInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;RecordSetInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<RecordSetInner>>> listAllInResourceGroupNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<RecordSetInner>>> listByDnsZoneNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listAllInResourceGroupNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByDnsZoneNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RecordSetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RecordSetInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<RecordSetInner>> result = listAllInResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RecordSetInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<RecordSetInner>> result = listByDnsZoneNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<RecordSetInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1473,8 +1549,8 @@ public final class RecordSetsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<RecordSetInner>> listAllInResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<RecordSetInner>, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<PageImpl<RecordSetInner>> listByDnsZoneNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RecordSetInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<RecordSetInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

@@ -8,7 +8,7 @@ package com.microsoft.azure.management.resources.fluentcore.arm.models.implement
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 
 import java.util.ArrayList;
@@ -92,7 +92,7 @@ public abstract class ResourceImpl<
     /**
      * Specifies tags for the resource as a {@link Map}.
      * @param tags a {@link Map} of tags
-     * @return the next stage of the resource definition/update
+     * @return the next stage of the definition/update
      */
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withTags(Map<String, String> tags) {
@@ -104,7 +104,7 @@ public abstract class ResourceImpl<
      * Adds a tag to the resource.
      * @param key the key for the tag
      * @param value the value for the tag
-     * @return the next stage of the resource definition/update
+     * @return the next stage of the definition/update
      */
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withTag(String key, String value) {
@@ -115,7 +115,7 @@ public abstract class ResourceImpl<
     /**
      * Removes a tag from the resource.
      * @param key the key of the tag to remove
-     * @return the next stage of the resource definition/update
+     * @return the next stage of the definition/update
      */
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withoutTag(String key) {
@@ -130,7 +130,7 @@ public abstract class ResourceImpl<
     /**
      * Specifies the region for the resource by name.
      * @param regionName The name of the region for the resource
-     * @return the next stage of the resource definition/update
+     * @return the next stage of the definition/update
      */
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withRegion(String regionName) {
@@ -141,7 +141,7 @@ public abstract class ResourceImpl<
     /**
      * Specifies the region for the resource.
      * @param region The location for the resource
-     * @return the next stage of the resource definition
+     * @return the next stage of the definition
      */
     public final FluentModelImplT withRegion(Region region) {
         return this.withRegion(region.toString());
@@ -155,11 +155,11 @@ public abstract class ResourceImpl<
         return this.inner().id() == null;
     }
 
-    protected <InnerT> List<InnerT> innersFromWrappers(Collection<? extends Wrapper<InnerT>> wrappers) {
+    protected <InnerT> List<InnerT> innersFromWrappers(Collection<? extends HasInner<InnerT>> wrappers) {
         return innersFromWrappers(wrappers, null);
     }
 
-    protected <InnerT> List<InnerT> innersFromWrappers(Collection<? extends Wrapper<InnerT>> wrappers,
+    protected <InnerT> List<InnerT> innersFromWrappers(Collection<? extends HasInner<InnerT>> wrappers,
             List<InnerT> inners) {
         if (wrappers == null || wrappers.size() == 0) {
             return inners;
@@ -167,10 +167,14 @@ public abstract class ResourceImpl<
             if (inners == null) {
                 inners = new ArrayList<>();
             }
-            for (Wrapper<InnerT> wrapper : wrappers) {
+            for (HasInner<InnerT> wrapper : wrappers) {
                 inners.add(wrapper.inner());
             }
             return inners;
         }
+    }
+
+    protected Resource createdResource(String key) {
+        return super.createdModel(key);
     }
 }

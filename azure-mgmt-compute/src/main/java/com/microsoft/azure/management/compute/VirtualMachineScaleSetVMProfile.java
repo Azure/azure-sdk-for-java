@@ -8,29 +8,34 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes a virtual machine scale set virtual machine profile.
  */
 public class VirtualMachineScaleSetVMProfile {
     /**
-     * the virtual machine scale set OS profile.
+     * The virtual machine scale set OS profile.
      */
+    @JsonProperty(value = "osProfile")
     private VirtualMachineScaleSetOSProfile osProfile;
 
     /**
-     * the virtual machine scale set storage profile.
+     * The virtual machine scale set storage profile.
      */
+    @JsonProperty(value = "storageProfile")
     private VirtualMachineScaleSetStorageProfile storageProfile;
 
     /**
-     * the virtual machine scale set network profile.
+     * The virtual machine scale set network profile.
      */
+    @JsonProperty(value = "networkProfile")
     private VirtualMachineScaleSetNetworkProfile networkProfile;
 
     /**
-     * the virtual machine scale set extension profile.
+     * The virtual machine scale set extension profile.
      */
+    @JsonProperty(value = "extensionProfile")
     private VirtualMachineScaleSetExtensionProfile extensionProfile;
 
     /**

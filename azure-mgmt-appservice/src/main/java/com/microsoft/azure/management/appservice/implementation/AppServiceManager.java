@@ -7,30 +7,38 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.RestClient;
+import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
+import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.appservice.AppServiceCertificateOrders;
+import com.microsoft.azure.management.appservice.AppServiceCertificates;
+import com.microsoft.azure.management.appservice.AppServiceDomains;
+import com.microsoft.azure.management.appservice.AppServicePlans;
+import com.microsoft.azure.management.appservice.FunctionApps;
+import com.microsoft.azure.management.appservice.WebApps;
 import com.microsoft.azure.management.keyvault.implementation.KeyVaultManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
-import com.microsoft.azure.management.appservice.AppServiceCertificates;
-import com.microsoft.azure.management.appservice.AppServiceDomains;
-import com.microsoft.azure.management.appservice.AppServicePlans;
-import com.microsoft.azure.management.appservice.AppServiceCertificateOrders;
-import com.microsoft.azure.management.appservice.WebApps;
+import com.microsoft.azure.management.storage.implementation.StorageManager;
+import com.microsoft.azure.serializer.AzureJacksonAdapter;
+import com.microsoft.rest.RestClient;
 
 /**
  * Entry point to Azure storage resource management.
  */
+@Beta
 public final class AppServiceManager extends Manager<AppServiceManager, WebSiteManagementClientImpl> {
     // Managers
     private KeyVaultManager keyVaultManager;
+    private StorageManager storageManager;
     // Collections
     private WebApps webApps;
     private AppServicePlans appServicePlans;
     private AppServiceCertificateOrders appServiceCertificateOrders;
     private AppServiceCertificates appServiceCertificates;
     private AppServiceDomains appServiceDomains;
+    private FunctionApps functionApps;
     private RestClient restClient;
 
     /**
@@ -50,9 +58,12 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      * @return the StorageManager
      */
     public static AppServiceManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-        return new AppServiceManager(AzureEnvironment.AZURE.newRestClientBuilder()
+        return new AppServiceManager(new RestClient.Builder()
+                .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
-                .build(), credentials.getDomain(), subscriptionId);
+                .withSerializerAdapter(new AzureJacksonAdapter())
+                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
+                .build(), credentials.domain(), subscriptionId);
     }
 
     /**
@@ -86,7 +97,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public AppServiceManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-            return AppServiceManager.authenticate(buildRestClient(credentials), credentials.getDomain(), subscriptionId);
+            return AppServiceManager.authenticate(buildRestClient(credentials), credentials.domain(), subscriptionId);
         }
     }
 
@@ -96,6 +107,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
                 subscriptionId,
                 new WebSiteManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
         keyVaultManager = KeyVaultManager.authenticate(restClient, tenantId, subscriptionId);
+        storageManager = StorageManager.authenticate(restClient, subscriptionId);
         this.restClient = restClient;
     }
 
@@ -104,6 +116,13 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      */
     KeyVaultManager keyVaultManager() {
         return keyVaultManager;
+    }
+
+    /**
+     * @return the storage manager instance.
+     */
+    StorageManager storageManager() {
+        return storageManager;
     }
 
     RestClient restClient() {
@@ -116,7 +135,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      */
     public WebApps webApps() {
         if (webApps == null) {
-            webApps = new WebAppsImpl(innerManagementClient.webApps(), this, innerManagementClient);
+            webApps = new WebAppsImpl(this);
         }
         return webApps;
     }
@@ -126,7 +145,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      */
     public AppServicePlans appServicePlans() {
         if (appServicePlans == null) {
-            appServicePlans = new AppServicePlansImpl(innerManagementClient.appServicePlans(), this);
+            appServicePlans = new AppServicePlansImpl(this);
         }
         return appServicePlans;
     }
@@ -136,7 +155,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      */
     public AppServiceCertificateOrders certificateOrders() {
         if (appServiceCertificateOrders == null) {
-            appServiceCertificateOrders = new AppServiceCertificateOrdersImpl(innerManagementClient.appServiceCertificateOrders(), this);
+            appServiceCertificateOrders = new AppServiceCertificateOrdersImpl(this);
         }
         return appServiceCertificateOrders;
     }
@@ -146,7 +165,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      */
     public AppServiceCertificates certificates() {
         if (appServiceCertificates == null) {
-            appServiceCertificates = new AppServiceCertificatesImpl(innerManagementClient.certificates(), this);
+            appServiceCertificates = new AppServiceCertificatesImpl(this);
         }
         return appServiceCertificates;
     }
@@ -156,8 +175,17 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      */
     public AppServiceDomains domains() {
         if (appServiceDomains == null) {
-            appServiceDomains = new AppServiceDomainsImpl(innerManagementClient.domains(), innerManagementClient.topLevelDomains(), this);
+            appServiceDomains = new AppServiceDomainsImpl(this);
         }
         return appServiceDomains;
+    }
+    /**
+     * @return the web app management API entry point
+     */
+    public FunctionApps functionApps() {
+        if (functionApps == null) {
+            functionApps = new FunctionAppsImpl(this);
+        }
+        return functionApps;
     }
 }

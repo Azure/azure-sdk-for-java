@@ -1,8 +1,14 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineExtensionInner;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 import java.util.Map;
 
@@ -11,7 +17,7 @@ import java.util.Map;
  */
 @Fluent
 public interface VirtualMachineExtensionBase extends
-        Wrapper<VirtualMachineExtensionInner> {
+        HasInner<VirtualMachineExtensionInner> {
     /**
      * @return the publisher name of the virtual machine extension image this extension is created from
      */
@@ -47,11 +53,6 @@ public interface VirtualMachineExtensionBase extends
      * @return the provisioning state of the virtual machine extension
      */
     String provisioningState();
-
-    /**
-     * @return the instance view of the virtual machine extension
-     */
-    VirtualMachineExtensionInstanceView instanceView();
 
     /**
      * @return the tags for this virtual machine extension

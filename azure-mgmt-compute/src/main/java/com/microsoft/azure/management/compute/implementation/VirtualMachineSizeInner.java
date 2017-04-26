@@ -8,39 +8,47 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes the properties of a VM size.
  */
 public class VirtualMachineSizeInner {
     /**
-     * the VM size name.
+     * The name of the virtual machine size.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
-     * the Number of cores supported by a VM size.
+     * The number of cores supported by the virtual machine size.
      */
+    @JsonProperty(value = "numberOfCores")
     private Integer numberOfCores;
 
     /**
-     * the OS disk size allowed by a VM size.
+     * The OS disk size, in MB, allowed by the virtual machine size.
      */
+    @JsonProperty(value = "osDiskSizeInMB")
     private Integer osDiskSizeInMB;
 
     /**
-     * the Resource disk size allowed by a VM size.
+     * The resource disk size, in MB, allowed by the virtual machine size.
      */
+    @JsonProperty(value = "resourceDiskSizeInMB")
     private Integer resourceDiskSizeInMB;
 
     /**
-     * the Memory size supported by a VM size.
+     * The amount of memory, in MB, supported by the virtual machine size.
      */
+    @JsonProperty(value = "memoryInMB")
     private Integer memoryInMB;
 
     /**
-     * the Maximum number of data disks allowed by a VM size.
+     * The maximum number of data disks that can be attached to the virtual
+     * machine size.
      */
+    @JsonProperty(value = "maxDataDiskCount")
     private Integer maxDataDiskCount;
 
     /**

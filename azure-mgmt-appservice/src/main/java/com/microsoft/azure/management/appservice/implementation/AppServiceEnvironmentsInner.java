@@ -8,16 +8,18 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -32,6 +34,7 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -40,7 +43,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in AppServiceEnvironments.
  */
-public final class AppServiceEnvironmentsInner {
+public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceEnvironmentResourceInner>, InnerSupportsDelete<Void>, InnerSupportsListing<AppServiceEnvironmentInner> {
     /** The Retrofit service to perform REST calls. */
     private AppServiceEnvironmentsService service;
     /** The service client containing this operation class. */
@@ -62,273 +65,273 @@ public final class AppServiceEnvironmentsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface AppServiceEnvironmentsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/hostingEnvironments")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}")
-        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServiceEnvironmentInner hostingEnvironmentEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}")
-        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServiceEnvironmentInner hostingEnvironmentEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("forceDelete") Boolean forceDelete, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments beginDelete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("forceDelete") Boolean forceDelete, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listCapacities" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/capacities/compute")
         Observable<Response<ResponseBody>> listCapacities(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listVips" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/capacities/virtualip")
         Observable<Response<ResponseBody>> listVips(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listDiagnostics" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/diagnostics")
         Observable<Response<ResponseBody>> listDiagnostics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments getDiagnosticsItem" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/diagnostics/{diagnosticsName}")
         Observable<Response<ResponseBody>> getDiagnosticsItem(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("diagnosticsName") String diagnosticsName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listMetricDefinitions" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/metricdefinitions")
         Observable<Response<ResponseBody>> listMetricDefinitions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listMetrics" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/metrics")
         Observable<Response<ResponseBody>> listMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listMultiRolePools" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools")
         Observable<Response<ResponseBody>> listMultiRolePools(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments getMultiRolePool" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default")
         Observable<Response<ResponseBody>> getMultiRolePool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments createOrUpdateMultiRolePool" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default")
-        Observable<Response<ResponseBody>> createOrUpdateMultiRolePool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body WorkerPoolInner multiRolePoolEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdateMultiRolePool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body WorkerPoolResourceInner multiRolePoolEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments beginCreateOrUpdateMultiRolePool" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default")
-        Observable<Response<ResponseBody>> beginCreateOrUpdateMultiRolePool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body WorkerPoolInner multiRolePoolEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreateOrUpdateMultiRolePool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body WorkerPoolResourceInner multiRolePoolEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listMultiRolePoolInstanceMetricDefinitions" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default/instances/{instance}/metricdefinitions")
         Observable<Response<ResponseBody>> listMultiRolePoolInstanceMetricDefinitions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("instance") String instance, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listMultiRolePoolInstanceMetrics" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default/instances/{instance}metrics")
         Observable<Response<ResponseBody>> listMultiRolePoolInstanceMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("instance") String instance, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listMultiRoleMetricDefinitions" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default/metricdefinitions")
         Observable<Response<ResponseBody>> listMultiRoleMetricDefinitions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listMultiRoleMetrics" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default/metrics")
         Observable<Response<ResponseBody>> listMultiRoleMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("startTime") String startTime, @Query("endTime") String endTime, @Query("timeGrain") String timeGrain, @Query("details") Boolean details, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listMultiRolePoolSkus" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default/skus")
         Observable<Response<ResponseBody>> listMultiRolePoolSkus(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listMultiRoleUsages" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default/usages")
         Observable<Response<ResponseBody>> listMultiRoleUsages(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listOperations" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/operations")
         Observable<Response<ResponseBody>> listOperations(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments reboot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/reboot")
         Observable<Response<ResponseBody>> reboot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments resume" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/resume")
         Observable<Response<ResponseBody>> resume(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments beginResume" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/resume")
         Observable<Response<ResponseBody>> beginResume(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listAppServicePlans" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/serverfarms")
         Observable<Response<ResponseBody>> listAppServicePlans(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listWebApps" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/sites")
         Observable<Response<ResponseBody>> listWebApps(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("propertiesToInclude") String propertiesToInclude, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments suspend" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/suspend")
         Observable<Response<ResponseBody>> suspend(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments beginSuspend" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/suspend")
         Observable<Response<ResponseBody>> beginSuspend(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listUsages" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/usages")
         Observable<Response<ResponseBody>> listUsages(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listWorkerPools" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools")
         Observable<Response<ResponseBody>> listWorkerPools(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments getWorkerPool" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}")
         Observable<Response<ResponseBody>> getWorkerPool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments createOrUpdateWorkerPool" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}")
-        Observable<Response<ResponseBody>> createOrUpdateWorkerPool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Body WorkerPoolInner workerPoolEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdateWorkerPool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Body WorkerPoolResourceInner workerPoolEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments beginCreateOrUpdateWorkerPool" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}")
-        Observable<Response<ResponseBody>> beginCreateOrUpdateWorkerPool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Body WorkerPoolInner workerPoolEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreateOrUpdateWorkerPool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Body WorkerPoolResourceInner workerPoolEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listWorkerPoolInstanceMetricDefinitions" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}/instances/{instance}/metricdefinitions")
         Observable<Response<ResponseBody>> listWorkerPoolInstanceMetricDefinitions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("instance") String instance, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listWorkerPoolInstanceMetrics" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}/instances/{instance}metrics")
         Observable<Response<ResponseBody>> listWorkerPoolInstanceMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("instance") String instance, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listWebWorkerMetricDefinitions" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}/metricdefinitions")
         Observable<Response<ResponseBody>> listWebWorkerMetricDefinitions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listWebWorkerMetrics" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}/metrics")
         Observable<Response<ResponseBody>> listWebWorkerMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listWorkerPoolSkus" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}/skus")
         Observable<Response<ResponseBody>> listWorkerPoolSkus(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listWebWorkerUsages" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}/usages")
         Observable<Response<ResponseBody>> listWebWorkerUsages(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listByResourceGroupNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listByResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listCapacitiesNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listCapacitiesNext" })
+        @GET
+        Observable<Response<ResponseBody>> listCapacitiesNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listMetricsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listMetricsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listMetricsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listMultiRolePoolsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listMultiRolePoolsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listMultiRolePoolsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listMultiRolePoolInstanceMetricDefinitionsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listMultiRolePoolInstanceMetricDefinitionsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listMultiRolePoolInstanceMetricDefinitionsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listMultiRolePoolInstanceMetricsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listMultiRolePoolInstanceMetricsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listMultiRolePoolInstanceMetricsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listMultiRoleMetricDefinitionsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listMultiRoleMetricDefinitionsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listMultiRoleMetricDefinitionsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listMultiRoleMetricsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listMultiRoleMetricsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listMultiRoleMetricsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listMultiRolePoolSkusNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listMultiRolePoolSkusNext" })
+        @GET
+        Observable<Response<ResponseBody>> listMultiRolePoolSkusNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listMultiRoleUsagesNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listMultiRoleUsagesNext" })
+        @GET
+        Observable<Response<ResponseBody>> listMultiRoleUsagesNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("{nextLink}")
-        Observable<Response<ResponseBody>> resumeNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments resumeNext" })
+        @GET
+        Observable<Response<ResponseBody>> resumeNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("{nextLink}")
-        Observable<Response<ResponseBody>> beginResumeNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments beginResumeNext" })
+        @GET
+        Observable<Response<ResponseBody>> beginResumeNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listAppServicePlansNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listAppServicePlansNext" })
+        @GET
+        Observable<Response<ResponseBody>> listAppServicePlansNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listWebAppsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listWebAppsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listWebAppsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("{nextLink}")
-        Observable<Response<ResponseBody>> suspendNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments suspendNext" })
+        @GET
+        Observable<Response<ResponseBody>> suspendNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("{nextLink}")
-        Observable<Response<ResponseBody>> beginSuspendNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments beginSuspendNext" })
+        @GET
+        Observable<Response<ResponseBody>> beginSuspendNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listUsagesNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listUsagesNext" })
+        @GET
+        Observable<Response<ResponseBody>> listUsagesNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listWorkerPoolsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listWorkerPoolsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listWorkerPoolsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listWorkerPoolInstanceMetricDefinitionsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listWorkerPoolInstanceMetricDefinitionsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listWorkerPoolInstanceMetricDefinitionsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listWorkerPoolInstanceMetricsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listWorkerPoolInstanceMetricsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listWorkerPoolInstanceMetricsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listWebWorkerMetricDefinitionsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listWebWorkerMetricDefinitionsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listWebWorkerMetricDefinitionsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listWebWorkerMetricsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listWebWorkerMetricsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listWebWorkerMetricsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listWorkerPoolSkusNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listWorkerPoolSkusNext" })
+        @GET
+        Observable<Response<ResponseBody>> listWorkerPoolSkusNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listWebWorkerUsagesNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listWebWorkerUsagesNext" })
+        @GET
+        Observable<Response<ResponseBody>> listWebWorkerUsagesNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -336,14 +339,17 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service Environments for a subscription.
      * Get all App Service Environments for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppServiceEnvironmentInner&gt; object if successful.
      */
     public PagedList<AppServiceEnvironmentInner> list() {
         ServiceResponse<Page<AppServiceEnvironmentInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<AppServiceEnvironmentInner>(response.getBody()) {
+        return new PagedList<AppServiceEnvironmentInner>(response.body()) {
             @Override
             public Page<AppServiceEnvironmentInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -353,10 +359,11 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service Environments for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServiceEnvironmentInner>> listAsync(final ListOperationCallback<AppServiceEnvironmentInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<AppServiceEnvironmentInner>> listAsync(final ListOperationCallback<AppServiceEnvironmentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>>>() {
                 @Override
@@ -371,6 +378,7 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service Environments for a subscription.
      * Get all App Service Environments for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServiceEnvironmentInner&gt; object
      */
     public Observable<Page<AppServiceEnvironmentInner>> listAsync() {
@@ -378,7 +386,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<AppServiceEnvironmentInner>>, Page<AppServiceEnvironmentInner>>() {
                 @Override
                 public Page<AppServiceEnvironmentInner> call(ServiceResponse<Page<AppServiceEnvironmentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -387,6 +395,7 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service Environments for a subscription.
      * Get all App Service Environments for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServiceEnvironmentInner&gt; object
      */
     public Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>> listWithServiceResponseAsync() {
@@ -394,7 +403,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<AppServiceEnvironmentInner>>, Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>> call(ServiceResponse<Page<AppServiceEnvironmentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -407,6 +416,7 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service Environments for a subscription.
      * Get all App Service Environments for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;AppServiceEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>> listSinglePageAsync() {
@@ -420,7 +430,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AppServiceEnvironmentInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AppServiceEnvironmentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<AppServiceEnvironmentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -429,7 +439,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<AppServiceEnvironmentInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServiceEnvironmentInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServiceEnvironmentInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppServiceEnvironmentInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -440,14 +450,17 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service Environments in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppServiceEnvironmentInner&gt; object if successful.
      */
     public PagedList<AppServiceEnvironmentInner> listByResourceGroup(final String resourceGroupName) {
         ServiceResponse<Page<AppServiceEnvironmentInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<AppServiceEnvironmentInner>(response.getBody()) {
+        return new PagedList<AppServiceEnvironmentInner>(response.body()) {
             @Override
             public Page<AppServiceEnvironmentInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -458,10 +471,11 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServiceEnvironmentInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<AppServiceEnvironmentInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<AppServiceEnvironmentInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<AppServiceEnvironmentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>>>() {
                 @Override
@@ -477,6 +491,7 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service Environments in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServiceEnvironmentInner&gt; object
      */
     public Observable<Page<AppServiceEnvironmentInner>> listByResourceGroupAsync(final String resourceGroupName) {
@@ -484,7 +499,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<AppServiceEnvironmentInner>>, Page<AppServiceEnvironmentInner>>() {
                 @Override
                 public Page<AppServiceEnvironmentInner> call(ServiceResponse<Page<AppServiceEnvironmentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -494,6 +509,7 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service Environments in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServiceEnvironmentInner&gt; object
      */
     public Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
@@ -501,7 +517,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<AppServiceEnvironmentInner>>, Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>> call(ServiceResponse<Page<AppServiceEnvironmentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -515,6 +531,7 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service Environments in a resource group.
      *
     ServiceResponse<PageImpl<AppServiceEnvironmentInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;AppServiceEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
@@ -531,7 +548,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AppServiceEnvironmentInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AppServiceEnvironmentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<AppServiceEnvironmentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -540,7 +557,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<AppServiceEnvironmentInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServiceEnvironmentInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServiceEnvironmentInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppServiceEnvironmentInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -552,10 +569,13 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @return the AppServiceEnvironmentInner object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AppServiceEnvironmentResourceInner object if successful.
      */
-    public AppServiceEnvironmentInner get(String resourceGroupName, String name) {
-        return getWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+    public AppServiceEnvironmentResourceInner getByResourceGroup(String resourceGroupName, String name) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -565,10 +585,11 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AppServiceEnvironmentInner> getAsync(String resourceGroupName, String name, final ServiceCallback<AppServiceEnvironmentInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<AppServiceEnvironmentResourceInner> getByResourceGroupAsync(String resourceGroupName, String name, final ServiceCallback<AppServiceEnvironmentResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -577,13 +598,14 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @return the observable to the AppServiceEnvironmentInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AppServiceEnvironmentResourceInner object
      */
-    public Observable<AppServiceEnvironmentInner> getAsync(String resourceGroupName, String name) {
-        return getWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<AppServiceEnvironmentInner>, AppServiceEnvironmentInner>() {
+    public Observable<AppServiceEnvironmentResourceInner> getByResourceGroupAsync(String resourceGroupName, String name) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<AppServiceEnvironmentResourceInner>, AppServiceEnvironmentResourceInner>() {
             @Override
-            public AppServiceEnvironmentInner call(ServiceResponse<AppServiceEnvironmentInner> response) {
-                return response.getBody();
+            public AppServiceEnvironmentResourceInner call(ServiceResponse<AppServiceEnvironmentResourceInner> response) {
+                return response.body();
             }
         });
     }
@@ -594,9 +616,10 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @return the observable to the AppServiceEnvironmentInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AppServiceEnvironmentResourceInner object
      */
-    public Observable<ServiceResponse<AppServiceEnvironmentInner>> getWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<AppServiceEnvironmentResourceInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -607,12 +630,12 @@ public final class AppServiceEnvironmentsInner {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-09-01";
-        return service.get(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppServiceEnvironmentInner>>>() {
+        return service.getByResourceGroup(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppServiceEnvironmentResourceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<AppServiceEnvironmentInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<AppServiceEnvironmentResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<AppServiceEnvironmentInner> clientResponse = getDelegate(response);
+                        ServiceResponse<AppServiceEnvironmentResourceInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -621,9 +644,9 @@ public final class AppServiceEnvironmentsInner {
             });
     }
 
-    private ServiceResponse<AppServiceEnvironmentInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AppServiceEnvironmentInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<AppServiceEnvironmentInner>() { }.getType())
+    private ServiceResponse<AppServiceEnvironmentResourceInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AppServiceEnvironmentResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<AppServiceEnvironmentResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -635,10 +658,13 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
-     * @return the AppServiceEnvironmentInner object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AppServiceEnvironmentResourceInner object if successful.
      */
-    public AppServiceEnvironmentInner createOrUpdate(String resourceGroupName, String name, AppServiceEnvironmentInner hostingEnvironmentEnvelope) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope).toBlocking().last().getBody();
+    public AppServiceEnvironmentResourceInner createOrUpdate(String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope).toBlocking().last().body();
     }
 
     /**
@@ -649,10 +675,11 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AppServiceEnvironmentInner> createOrUpdateAsync(String resourceGroupName, String name, AppServiceEnvironmentInner hostingEnvironmentEnvelope, final ServiceCallback<AppServiceEnvironmentInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope), serviceCallback);
+    public ServiceFuture<AppServiceEnvironmentResourceInner> createOrUpdateAsync(String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope, final ServiceCallback<AppServiceEnvironmentResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope), serviceCallback);
     }
 
     /**
@@ -662,13 +689,14 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<AppServiceEnvironmentInner> createOrUpdateAsync(String resourceGroupName, String name, AppServiceEnvironmentInner hostingEnvironmentEnvelope) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope).map(new Func1<ServiceResponse<AppServiceEnvironmentInner>, AppServiceEnvironmentInner>() {
+    public Observable<AppServiceEnvironmentResourceInner> createOrUpdateAsync(String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope).map(new Func1<ServiceResponse<AppServiceEnvironmentResourceInner>, AppServiceEnvironmentResourceInner>() {
             @Override
-            public AppServiceEnvironmentInner call(ServiceResponse<AppServiceEnvironmentInner> response) {
-                return response.getBody();
+            public AppServiceEnvironmentResourceInner call(ServiceResponse<AppServiceEnvironmentResourceInner> response) {
+                return response.body();
             }
         });
     }
@@ -680,9 +708,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<AppServiceEnvironmentInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, AppServiceEnvironmentInner hostingEnvironmentEnvelope) {
+    public Observable<ServiceResponse<AppServiceEnvironmentResourceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -698,7 +727,7 @@ public final class AppServiceEnvironmentsInner {
         Validator.validate(hostingEnvironmentEnvelope);
         final String apiVersion = "2016-09-01";
         Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, name, this.client.subscriptionId(), hostingEnvironmentEnvelope, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<AppServiceEnvironmentInner>() { }.getType());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<AppServiceEnvironmentResourceInner>() { }.getType());
     }
 
     /**
@@ -708,10 +737,13 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
-     * @return the AppServiceEnvironmentInner object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AppServiceEnvironmentResourceInner object if successful.
      */
-    public AppServiceEnvironmentInner beginCreateOrUpdate(String resourceGroupName, String name, AppServiceEnvironmentInner hostingEnvironmentEnvelope) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope).toBlocking().single().getBody();
+    public AppServiceEnvironmentResourceInner beginCreateOrUpdate(String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -722,10 +754,11 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AppServiceEnvironmentInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, AppServiceEnvironmentInner hostingEnvironmentEnvelope, final ServiceCallback<AppServiceEnvironmentInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope), serviceCallback);
+    public ServiceFuture<AppServiceEnvironmentResourceInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope, final ServiceCallback<AppServiceEnvironmentResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope), serviceCallback);
     }
 
     /**
@@ -735,13 +768,14 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
-     * @return the observable to the AppServiceEnvironmentInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AppServiceEnvironmentResourceInner object
      */
-    public Observable<AppServiceEnvironmentInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, AppServiceEnvironmentInner hostingEnvironmentEnvelope) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope).map(new Func1<ServiceResponse<AppServiceEnvironmentInner>, AppServiceEnvironmentInner>() {
+    public Observable<AppServiceEnvironmentResourceInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope).map(new Func1<ServiceResponse<AppServiceEnvironmentResourceInner>, AppServiceEnvironmentResourceInner>() {
             @Override
-            public AppServiceEnvironmentInner call(ServiceResponse<AppServiceEnvironmentInner> response) {
-                return response.getBody();
+            public AppServiceEnvironmentResourceInner call(ServiceResponse<AppServiceEnvironmentResourceInner> response) {
+                return response.body();
             }
         });
     }
@@ -753,9 +787,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
-     * @return the observable to the AppServiceEnvironmentInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AppServiceEnvironmentResourceInner object
      */
-    public Observable<ServiceResponse<AppServiceEnvironmentInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, AppServiceEnvironmentInner hostingEnvironmentEnvelope) {
+    public Observable<ServiceResponse<AppServiceEnvironmentResourceInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -771,11 +806,11 @@ public final class AppServiceEnvironmentsInner {
         Validator.validate(hostingEnvironmentEnvelope);
         final String apiVersion = "2016-09-01";
         return service.beginCreateOrUpdate(resourceGroupName, name, this.client.subscriptionId(), hostingEnvironmentEnvelope, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppServiceEnvironmentInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppServiceEnvironmentResourceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<AppServiceEnvironmentInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<AppServiceEnvironmentResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<AppServiceEnvironmentInner> clientResponse = beginCreateOrUpdateDelegate(response);
+                        ServiceResponse<AppServiceEnvironmentResourceInner> clientResponse = beginCreateOrUpdateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -784,10 +819,10 @@ public final class AppServiceEnvironmentsInner {
             });
     }
 
-    private ServiceResponse<AppServiceEnvironmentInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AppServiceEnvironmentInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<AppServiceEnvironmentInner>() { }.getType())
-                .register(202, new TypeToken<AppServiceEnvironmentInner>() { }.getType())
+    private ServiceResponse<AppServiceEnvironmentResourceInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AppServiceEnvironmentResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<AppServiceEnvironmentResourceInner>() { }.getType())
+                .register(202, new TypeToken<AppServiceEnvironmentResourceInner>() { }.getType())
                 .register(400, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .register(409, new TypeToken<Void>() { }.getType())
@@ -801,9 +836,12 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String name) {
-        deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().last().body();
     }
 
     /**
@@ -813,10 +851,11 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -825,13 +864,14 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String name) {
         return deleteWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -842,6 +882,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -866,9 +907,12 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String name, Boolean forceDelete) {
-        deleteWithServiceResponseAsync(resourceGroupName, name, forceDelete).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, name, forceDelete).toBlocking().last().body();
     }
 
     /**
@@ -879,10 +923,11 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String name, Boolean forceDelete, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, name, forceDelete), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String name, Boolean forceDelete, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, name, forceDelete), serviceCallback);
     }
 
     /**
@@ -892,13 +937,14 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String name, Boolean forceDelete) {
         return deleteWithServiceResponseAsync(resourceGroupName, name, forceDelete).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -910,6 +956,7 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String name, Boolean forceDelete) {
@@ -933,9 +980,12 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String name) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -945,10 +995,11 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -957,13 +1008,14 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String name) {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -974,6 +1026,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -1009,9 +1062,12 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String name, Boolean forceDelete) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, name, forceDelete).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, name, forceDelete).toBlocking().single().body();
     }
 
     /**
@@ -1022,10 +1078,11 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String name, Boolean forceDelete, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, name, forceDelete), serviceCallback);
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String name, Boolean forceDelete, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, name, forceDelete), serviceCallback);
     }
 
     /**
@@ -1035,13 +1092,14 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String name, Boolean forceDelete) {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, name, forceDelete).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1053,6 +1111,7 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String name, Boolean forceDelete) {
@@ -1081,12 +1140,13 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(400, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .register(409, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -1096,14 +1156,17 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;StampCapacityInner&gt; object if successful.
      */
     public PagedList<StampCapacityInner> listCapacities(final String resourceGroupName, final String name) {
         ServiceResponse<Page<StampCapacityInner>> response = listCapacitiesSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<StampCapacityInner>(response.getBody()) {
+        return new PagedList<StampCapacityInner>(response.body()) {
             @Override
             public Page<StampCapacityInner> nextPage(String nextPageLink) {
-                return listCapacitiesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listCapacitiesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1115,10 +1178,11 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<StampCapacityInner>> listCapacitiesAsync(final String resourceGroupName, final String name, final ListOperationCallback<StampCapacityInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<StampCapacityInner>> listCapacitiesAsync(final String resourceGroupName, final String name, final ListOperationCallback<StampCapacityInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listCapacitiesSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<StampCapacityInner>>>>() {
                 @Override
@@ -1135,6 +1199,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;StampCapacityInner&gt; object
      */
     public Observable<Page<StampCapacityInner>> listCapacitiesAsync(final String resourceGroupName, final String name) {
@@ -1142,7 +1207,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<StampCapacityInner>>, Page<StampCapacityInner>>() {
                 @Override
                 public Page<StampCapacityInner> call(ServiceResponse<Page<StampCapacityInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1153,6 +1218,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;StampCapacityInner&gt; object
      */
     public Observable<ServiceResponse<Page<StampCapacityInner>>> listCapacitiesWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -1160,7 +1226,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<StampCapacityInner>>, Observable<ServiceResponse<Page<StampCapacityInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<StampCapacityInner>>> call(ServiceResponse<Page<StampCapacityInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1175,6 +1241,7 @@ public final class AppServiceEnvironmentsInner {
      *
     ServiceResponse<PageImpl<StampCapacityInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<StampCapacityInner>> * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;StampCapacityInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<StampCapacityInner>>> listCapacitiesSinglePageAsync(final String resourceGroupName, final String name) {
@@ -1194,7 +1261,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<StampCapacityInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<StampCapacityInner>> result = listCapacitiesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<StampCapacityInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<StampCapacityInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1203,7 +1270,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<StampCapacityInner>> listCapacitiesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<StampCapacityInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<StampCapacityInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<StampCapacityInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1215,10 +1282,13 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AddressResponseInner object if successful.
      */
     public AddressResponseInner listVips(String resourceGroupName, String name) {
-        return listVipsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listVipsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -1228,10 +1298,11 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AddressResponseInner> listVipsAsync(String resourceGroupName, String name, final ServiceCallback<AddressResponseInner> serviceCallback) {
-        return ServiceCall.create(listVipsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<AddressResponseInner> listVipsAsync(String resourceGroupName, String name, final ServiceCallback<AddressResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listVipsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1240,13 +1311,14 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AddressResponseInner object
      */
     public Observable<AddressResponseInner> listVipsAsync(String resourceGroupName, String name) {
         return listVipsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<AddressResponseInner>, AddressResponseInner>() {
             @Override
             public AddressResponseInner call(ServiceResponse<AddressResponseInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1257,6 +1329,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AddressResponseInner object
      */
     public Observable<ServiceResponse<AddressResponseInner>> listVipsWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -1285,7 +1358,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<AddressResponseInner> listVipsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AddressResponseInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<AddressResponseInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AddressResponseInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1297,10 +1370,13 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;HostingEnvironmentDiagnosticsInner&gt; object if successful.
      */
     public List<HostingEnvironmentDiagnosticsInner> listDiagnostics(String resourceGroupName, String name) {
-        return listDiagnosticsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listDiagnosticsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -1310,10 +1386,11 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<HostingEnvironmentDiagnosticsInner>> listDiagnosticsAsync(String resourceGroupName, String name, final ServiceCallback<List<HostingEnvironmentDiagnosticsInner>> serviceCallback) {
-        return ServiceCall.create(listDiagnosticsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<List<HostingEnvironmentDiagnosticsInner>> listDiagnosticsAsync(String resourceGroupName, String name, final ServiceCallback<List<HostingEnvironmentDiagnosticsInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listDiagnosticsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1322,13 +1399,14 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;HostingEnvironmentDiagnosticsInner&gt; object
      */
     public Observable<List<HostingEnvironmentDiagnosticsInner>> listDiagnosticsAsync(String resourceGroupName, String name) {
         return listDiagnosticsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<List<HostingEnvironmentDiagnosticsInner>>, List<HostingEnvironmentDiagnosticsInner>>() {
             @Override
             public List<HostingEnvironmentDiagnosticsInner> call(ServiceResponse<List<HostingEnvironmentDiagnosticsInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1339,6 +1417,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;HostingEnvironmentDiagnosticsInner&gt; object
      */
     public Observable<ServiceResponse<List<HostingEnvironmentDiagnosticsInner>>> listDiagnosticsWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -1367,7 +1446,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<List<HostingEnvironmentDiagnosticsInner>> listDiagnosticsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<HostingEnvironmentDiagnosticsInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<HostingEnvironmentDiagnosticsInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<HostingEnvironmentDiagnosticsInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1380,10 +1459,13 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param diagnosticsName Name of the diagnostics item.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the HostingEnvironmentDiagnosticsInner object if successful.
      */
     public HostingEnvironmentDiagnosticsInner getDiagnosticsItem(String resourceGroupName, String name, String diagnosticsName) {
-        return getDiagnosticsItemWithServiceResponseAsync(resourceGroupName, name, diagnosticsName).toBlocking().single().getBody();
+        return getDiagnosticsItemWithServiceResponseAsync(resourceGroupName, name, diagnosticsName).toBlocking().single().body();
     }
 
     /**
@@ -1394,10 +1476,11 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param diagnosticsName Name of the diagnostics item.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<HostingEnvironmentDiagnosticsInner> getDiagnosticsItemAsync(String resourceGroupName, String name, String diagnosticsName, final ServiceCallback<HostingEnvironmentDiagnosticsInner> serviceCallback) {
-        return ServiceCall.create(getDiagnosticsItemWithServiceResponseAsync(resourceGroupName, name, diagnosticsName), serviceCallback);
+    public ServiceFuture<HostingEnvironmentDiagnosticsInner> getDiagnosticsItemAsync(String resourceGroupName, String name, String diagnosticsName, final ServiceCallback<HostingEnvironmentDiagnosticsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getDiagnosticsItemWithServiceResponseAsync(resourceGroupName, name, diagnosticsName), serviceCallback);
     }
 
     /**
@@ -1407,13 +1490,14 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param diagnosticsName Name of the diagnostics item.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HostingEnvironmentDiagnosticsInner object
      */
     public Observable<HostingEnvironmentDiagnosticsInner> getDiagnosticsItemAsync(String resourceGroupName, String name, String diagnosticsName) {
         return getDiagnosticsItemWithServiceResponseAsync(resourceGroupName, name, diagnosticsName).map(new Func1<ServiceResponse<HostingEnvironmentDiagnosticsInner>, HostingEnvironmentDiagnosticsInner>() {
             @Override
             public HostingEnvironmentDiagnosticsInner call(ServiceResponse<HostingEnvironmentDiagnosticsInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1425,6 +1509,7 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param diagnosticsName Name of the diagnostics item.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HostingEnvironmentDiagnosticsInner object
      */
     public Observable<ServiceResponse<HostingEnvironmentDiagnosticsInner>> getDiagnosticsItemWithServiceResponseAsync(String resourceGroupName, String name, String diagnosticsName) {
@@ -1456,7 +1541,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<HostingEnvironmentDiagnosticsInner> getDiagnosticsItemDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HostingEnvironmentDiagnosticsInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<HostingEnvironmentDiagnosticsInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HostingEnvironmentDiagnosticsInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1468,10 +1553,13 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the MetricDefinitionInner object if successful.
      */
     public MetricDefinitionInner listMetricDefinitions(String resourceGroupName, String name) {
-        return listMetricDefinitionsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listMetricDefinitionsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -1481,10 +1569,11 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<MetricDefinitionInner> listMetricDefinitionsAsync(String resourceGroupName, String name, final ServiceCallback<MetricDefinitionInner> serviceCallback) {
-        return ServiceCall.create(listMetricDefinitionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<MetricDefinitionInner> listMetricDefinitionsAsync(String resourceGroupName, String name, final ServiceCallback<MetricDefinitionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listMetricDefinitionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1493,13 +1582,14 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the MetricDefinitionInner object
      */
     public Observable<MetricDefinitionInner> listMetricDefinitionsAsync(String resourceGroupName, String name) {
         return listMetricDefinitionsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<MetricDefinitionInner>, MetricDefinitionInner>() {
             @Override
             public MetricDefinitionInner call(ServiceResponse<MetricDefinitionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1510,6 +1600,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the MetricDefinitionInner object
      */
     public Observable<ServiceResponse<MetricDefinitionInner>> listMetricDefinitionsWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -1538,7 +1629,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<MetricDefinitionInner> listMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<MetricDefinitionInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<MetricDefinitionInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<MetricDefinitionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1550,14 +1641,17 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
     public PagedList<ResourceMetricInner> listMetrics(final String resourceGroupName, final String name) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMetricsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1569,10 +1663,11 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -1589,6 +1684,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<Page<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name) {
@@ -1596,7 +1692,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1607,6 +1703,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -1614,7 +1711,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1629,6 +1726,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -1650,7 +1748,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMetricsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1666,14 +1764,17 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
     public PagedList<ResourceMetricInner> listMetrics(final String resourceGroupName, final String name, final Boolean details, final String filter) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMetricsSinglePageAsync(resourceGroupName, name, details, filter).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1687,10 +1788,11 @@ public final class AppServiceEnvironmentsInner {
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricsSinglePageAsync(resourceGroupName, name, details, filter),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -1709,6 +1811,7 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<Page<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter) {
@@ -1716,7 +1819,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1729,6 +1832,7 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsWithServiceResponseAsync(final String resourceGroupName, final String name, final Boolean details, final String filter) {
@@ -1736,7 +1840,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1753,6 +1857,7 @@ public final class AppServiceEnvironmentsInner {
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param name Name of the App Service Environment.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsSinglePageAsync(final String resourceGroupName, final String name, final Boolean details, final String filter) {
@@ -1772,7 +1877,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMetricsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1781,7 +1886,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricInner>> listMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1793,14 +1898,17 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @return the PagedList&lt;WorkerPoolInner&gt; object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;WorkerPoolResourceInner&gt; object if successful.
      */
-    public PagedList<WorkerPoolInner> listMultiRolePools(final String resourceGroupName, final String name) {
-        ServiceResponse<Page<WorkerPoolInner>> response = listMultiRolePoolsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<WorkerPoolInner>(response.getBody()) {
+    public PagedList<WorkerPoolResourceInner> listMultiRolePools(final String resourceGroupName, final String name) {
+        ServiceResponse<Page<WorkerPoolResourceInner>> response = listMultiRolePoolsSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        return new PagedList<WorkerPoolResourceInner>(response.body()) {
             @Override
-            public Page<WorkerPoolInner> nextPage(String nextPageLink) {
-                return listMultiRolePoolsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            public Page<WorkerPoolResourceInner> nextPage(String nextPageLink) {
+                return listMultiRolePoolsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1812,14 +1920,15 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<WorkerPoolInner>> listMultiRolePoolsAsync(final String resourceGroupName, final String name, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<WorkerPoolResourceInner>> listMultiRolePoolsAsync(final String resourceGroupName, final String name, final ListOperationCallback<WorkerPoolResourceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRolePoolsSinglePageAsync(resourceGroupName, name),
-            new Func1<String, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<WorkerPoolResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> call(String nextPageLink) {
                     return listMultiRolePoolsNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -1832,14 +1941,15 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @return the observable to the PagedList&lt;WorkerPoolInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;WorkerPoolResourceInner&gt; object
      */
-    public Observable<Page<WorkerPoolInner>> listMultiRolePoolsAsync(final String resourceGroupName, final String name) {
+    public Observable<Page<WorkerPoolResourceInner>> listMultiRolePoolsAsync(final String resourceGroupName, final String name) {
         return listMultiRolePoolsWithServiceResponseAsync(resourceGroupName, name)
-            .map(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Page<WorkerPoolInner>>() {
+            .map(new Func1<ServiceResponse<Page<WorkerPoolResourceInner>>, Page<WorkerPoolResourceInner>>() {
                 @Override
-                public Page<WorkerPoolInner> call(ServiceResponse<Page<WorkerPoolInner>> response) {
-                    return response.getBody();
+                public Page<WorkerPoolResourceInner> call(ServiceResponse<Page<WorkerPoolResourceInner>> response) {
+                    return response.body();
                 }
             });
     }
@@ -1850,14 +1960,15 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @return the observable to the PagedList&lt;WorkerPoolInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;WorkerPoolResourceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<WorkerPoolInner>>> listMultiRolePoolsWithServiceResponseAsync(final String resourceGroupName, final String name) {
+    public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> listMultiRolePoolsWithServiceResponseAsync(final String resourceGroupName, final String name) {
         return listMultiRolePoolsSinglePageAsync(resourceGroupName, name)
-            .concatMap(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<WorkerPoolResourceInner>>, Observable<ServiceResponse<Page<WorkerPoolResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(ServiceResponse<Page<WorkerPoolInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> call(ServiceResponse<Page<WorkerPoolResourceInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1870,11 +1981,12 @@ public final class AppServiceEnvironmentsInner {
      * Get all multi-role pools.
      * Get all multi-role pools.
      *
-    ServiceResponse<PageImpl<WorkerPoolInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
-    ServiceResponse<PageImpl<WorkerPoolInner>> * @param name Name of the App Service Environment.
-     * @return the PagedList&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
+    ServiceResponse<PageImpl<WorkerPoolResourceInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+    ServiceResponse<PageImpl<WorkerPoolResourceInner>> * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;WorkerPoolResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<WorkerPoolInner>>> listMultiRolePoolsSinglePageAsync(final String resourceGroupName, final String name) {
+    public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> listMultiRolePoolsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1886,12 +1998,12 @@ public final class AppServiceEnvironmentsInner {
         }
         final String apiVersion = "2016-09-01";
         return service.listMultiRolePools(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<WorkerPoolResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<WorkerPoolInner>> result = listMultiRolePoolsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<WorkerPoolInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<WorkerPoolResourceInner>> result = listMultiRolePoolsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<WorkerPoolResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1899,9 +2011,9 @@ public final class AppServiceEnvironmentsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<WorkerPoolInner>> listMultiRolePoolsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<WorkerPoolInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl<WorkerPoolInner>>() { }.getType())
+    private ServiceResponse<PageImpl<WorkerPoolResourceInner>> listMultiRolePoolsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<WorkerPoolResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<WorkerPoolResourceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1912,10 +2024,13 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @return the WorkerPoolInner object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the WorkerPoolResourceInner object if successful.
      */
-    public WorkerPoolInner getMultiRolePool(String resourceGroupName, String name) {
-        return getMultiRolePoolWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+    public WorkerPoolResourceInner getMultiRolePool(String resourceGroupName, String name) {
+        return getMultiRolePoolWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -1925,10 +2040,11 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<WorkerPoolInner> getMultiRolePoolAsync(String resourceGroupName, String name, final ServiceCallback<WorkerPoolInner> serviceCallback) {
-        return ServiceCall.create(getMultiRolePoolWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<WorkerPoolResourceInner> getMultiRolePoolAsync(String resourceGroupName, String name, final ServiceCallback<WorkerPoolResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getMultiRolePoolWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1937,13 +2053,14 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @return the observable to the WorkerPoolInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the WorkerPoolResourceInner object
      */
-    public Observable<WorkerPoolInner> getMultiRolePoolAsync(String resourceGroupName, String name) {
-        return getMultiRolePoolWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<WorkerPoolInner>, WorkerPoolInner>() {
+    public Observable<WorkerPoolResourceInner> getMultiRolePoolAsync(String resourceGroupName, String name) {
+        return getMultiRolePoolWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<WorkerPoolResourceInner>, WorkerPoolResourceInner>() {
             @Override
-            public WorkerPoolInner call(ServiceResponse<WorkerPoolInner> response) {
-                return response.getBody();
+            public WorkerPoolResourceInner call(ServiceResponse<WorkerPoolResourceInner> response) {
+                return response.body();
             }
         });
     }
@@ -1954,9 +2071,10 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @return the observable to the WorkerPoolInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the WorkerPoolResourceInner object
      */
-    public Observable<ServiceResponse<WorkerPoolInner>> getMultiRolePoolWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<WorkerPoolResourceInner>> getMultiRolePoolWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1968,11 +2086,11 @@ public final class AppServiceEnvironmentsInner {
         }
         final String apiVersion = "2016-09-01";
         return service.getMultiRolePool(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WorkerPoolInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WorkerPoolResourceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<WorkerPoolInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<WorkerPoolResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<WorkerPoolInner> clientResponse = getMultiRolePoolDelegate(response);
+                        ServiceResponse<WorkerPoolResourceInner> clientResponse = getMultiRolePoolDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1981,9 +2099,9 @@ public final class AppServiceEnvironmentsInner {
             });
     }
 
-    private ServiceResponse<WorkerPoolInner> getMultiRolePoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<WorkerPoolInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<WorkerPoolInner>() { }.getType())
+    private ServiceResponse<WorkerPoolResourceInner> getMultiRolePoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<WorkerPoolResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<WorkerPoolResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1995,10 +2113,13 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
-     * @return the WorkerPoolInner object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the WorkerPoolResourceInner object if successful.
      */
-    public WorkerPoolInner createOrUpdateMultiRolePool(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) {
-        return createOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope).toBlocking().last().getBody();
+    public WorkerPoolResourceInner createOrUpdateMultiRolePool(String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
+        return createOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope).toBlocking().last().body();
     }
 
     /**
@@ -2009,10 +2130,11 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<WorkerPoolInner> createOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope), serviceCallback);
+    public ServiceFuture<WorkerPoolResourceInner> createOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope, final ServiceCallback<WorkerPoolResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope), serviceCallback);
     }
 
     /**
@@ -2022,13 +2144,14 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<WorkerPoolInner> createOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) {
-        return createOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope).map(new Func1<ServiceResponse<WorkerPoolInner>, WorkerPoolInner>() {
+    public Observable<WorkerPoolResourceInner> createOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
+        return createOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope).map(new Func1<ServiceResponse<WorkerPoolResourceInner>, WorkerPoolResourceInner>() {
             @Override
-            public WorkerPoolInner call(ServiceResponse<WorkerPoolInner> response) {
-                return response.getBody();
+            public WorkerPoolResourceInner call(ServiceResponse<WorkerPoolResourceInner> response) {
+                return response.body();
             }
         });
     }
@@ -2040,9 +2163,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<WorkerPoolInner>> createOrUpdateMultiRolePoolWithServiceResponseAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) {
+    public Observable<ServiceResponse<WorkerPoolResourceInner>> createOrUpdateMultiRolePoolWithServiceResponseAsync(String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2058,7 +2182,7 @@ public final class AppServiceEnvironmentsInner {
         Validator.validate(multiRolePoolEnvelope);
         final String apiVersion = "2016-09-01";
         Observable<Response<ResponseBody>> observable = service.createOrUpdateMultiRolePool(resourceGroupName, name, this.client.subscriptionId(), multiRolePoolEnvelope, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<WorkerPoolInner>() { }.getType());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<WorkerPoolResourceInner>() { }.getType());
     }
 
     /**
@@ -2068,10 +2192,13 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
-     * @return the WorkerPoolInner object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the WorkerPoolResourceInner object if successful.
      */
-    public WorkerPoolInner beginCreateOrUpdateMultiRolePool(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) {
-        return beginCreateOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope).toBlocking().single().getBody();
+    public WorkerPoolResourceInner beginCreateOrUpdateMultiRolePool(String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
+        return beginCreateOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -2082,10 +2209,11 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<WorkerPoolInner> beginCreateOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope), serviceCallback);
+    public ServiceFuture<WorkerPoolResourceInner> beginCreateOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope, final ServiceCallback<WorkerPoolResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope), serviceCallback);
     }
 
     /**
@@ -2095,13 +2223,14 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
-     * @return the observable to the WorkerPoolInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the WorkerPoolResourceInner object
      */
-    public Observable<WorkerPoolInner> beginCreateOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) {
-        return beginCreateOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope).map(new Func1<ServiceResponse<WorkerPoolInner>, WorkerPoolInner>() {
+    public Observable<WorkerPoolResourceInner> beginCreateOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
+        return beginCreateOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope).map(new Func1<ServiceResponse<WorkerPoolResourceInner>, WorkerPoolResourceInner>() {
             @Override
-            public WorkerPoolInner call(ServiceResponse<WorkerPoolInner> response) {
-                return response.getBody();
+            public WorkerPoolResourceInner call(ServiceResponse<WorkerPoolResourceInner> response) {
+                return response.body();
             }
         });
     }
@@ -2113,9 +2242,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
-     * @return the observable to the WorkerPoolInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the WorkerPoolResourceInner object
      */
-    public Observable<ServiceResponse<WorkerPoolInner>> beginCreateOrUpdateMultiRolePoolWithServiceResponseAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) {
+    public Observable<ServiceResponse<WorkerPoolResourceInner>> beginCreateOrUpdateMultiRolePoolWithServiceResponseAsync(String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2131,11 +2261,11 @@ public final class AppServiceEnvironmentsInner {
         Validator.validate(multiRolePoolEnvelope);
         final String apiVersion = "2016-09-01";
         return service.beginCreateOrUpdateMultiRolePool(resourceGroupName, name, this.client.subscriptionId(), multiRolePoolEnvelope, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WorkerPoolInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WorkerPoolResourceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<WorkerPoolInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<WorkerPoolResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<WorkerPoolInner> clientResponse = beginCreateOrUpdateMultiRolePoolDelegate(response);
+                        ServiceResponse<WorkerPoolResourceInner> clientResponse = beginCreateOrUpdateMultiRolePoolDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -2144,10 +2274,10 @@ public final class AppServiceEnvironmentsInner {
             });
     }
 
-    private ServiceResponse<WorkerPoolInner> beginCreateOrUpdateMultiRolePoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<WorkerPoolInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<WorkerPoolInner>() { }.getType())
-                .register(202, new TypeToken<WorkerPoolInner>() { }.getType())
+    private ServiceResponse<WorkerPoolResourceInner> beginCreateOrUpdateMultiRolePoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<WorkerPoolResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<WorkerPoolResourceInner>() { }.getType())
+                .register(202, new TypeToken<WorkerPoolResourceInner>() { }.getType())
                 .register(400, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .register(409, new TypeToken<Void>() { }.getType())
@@ -2162,14 +2292,17 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param instance Name of the instance in the multi-role pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object if successful.
      */
     public PagedList<ResourceMetricDefinitionInner> listMultiRolePoolInstanceMetricDefinitions(final String resourceGroupName, final String name, final String instance) {
         ServiceResponse<Page<ResourceMetricDefinitionInner>> response = listMultiRolePoolInstanceMetricDefinitionsSinglePageAsync(resourceGroupName, name, instance).toBlocking().single();
-        return new PagedList<ResourceMetricDefinitionInner>(response.getBody()) {
+        return new PagedList<ResourceMetricDefinitionInner>(response.body()) {
             @Override
             public Page<ResourceMetricDefinitionInner> nextPage(String nextPageLink) {
-                return listMultiRolePoolInstanceMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMultiRolePoolInstanceMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -2182,10 +2315,11 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param instance Name of the instance in the multi-role pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricDefinitionInner>> listMultiRolePoolInstanceMetricDefinitionsAsync(final String resourceGroupName, final String name, final String instance, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricDefinitionInner>> listMultiRolePoolInstanceMetricDefinitionsAsync(final String resourceGroupName, final String name, final String instance, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRolePoolInstanceMetricDefinitionsSinglePageAsync(resourceGroupName, name, instance),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -2203,6 +2337,7 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param instance Name of the instance in the multi-role pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<Page<ResourceMetricDefinitionInner>> listMultiRolePoolInstanceMetricDefinitionsAsync(final String resourceGroupName, final String name, final String instance) {
@@ -2210,7 +2345,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Page<ResourceMetricDefinitionInner>>() {
                 @Override
                 public Page<ResourceMetricDefinitionInner> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -2222,6 +2357,7 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param instance Name of the instance in the multi-role pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listMultiRolePoolInstanceMetricDefinitionsWithServiceResponseAsync(final String resourceGroupName, final String name, final String instance) {
@@ -2229,7 +2365,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -2245,6 +2381,7 @@ public final class AppServiceEnvironmentsInner {
     ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param name Name of the App Service Environment.
     ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param instance Name of the instance in the multi-role pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listMultiRolePoolInstanceMetricDefinitionsSinglePageAsync(final String resourceGroupName, final String name, final String instance) {
@@ -2267,7 +2404,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> result = listMultiRolePoolInstanceMetricDefinitionsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2276,7 +2413,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> listMultiRolePoolInstanceMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricDefinitionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricDefinitionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2289,14 +2426,17 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param instance Name of the instance in the multi-role pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
     public PagedList<ResourceMetricInner> listMultiRolePoolInstanceMetrics(final String resourceGroupName, final String name, final String instance) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMultiRolePoolInstanceMetricsSinglePageAsync(resourceGroupName, name, instance).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMultiRolePoolInstanceMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMultiRolePoolInstanceMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -2309,10 +2449,11 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param instance Name of the instance in the multi-role pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMultiRolePoolInstanceMetricsAsync(final String resourceGroupName, final String name, final String instance, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricInner>> listMultiRolePoolInstanceMetricsAsync(final String resourceGroupName, final String name, final String instance, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRolePoolInstanceMetricsSinglePageAsync(resourceGroupName, name, instance),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -2330,6 +2471,7 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param instance Name of the instance in the multi-role pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<Page<ResourceMetricInner>> listMultiRolePoolInstanceMetricsAsync(final String resourceGroupName, final String name, final String instance) {
@@ -2337,7 +2479,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -2349,6 +2491,7 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param instance Name of the instance in the multi-role pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMultiRolePoolInstanceMetricsWithServiceResponseAsync(final String resourceGroupName, final String name, final String instance) {
@@ -2356,7 +2499,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -2372,6 +2515,7 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param instance Name of the instance in the multi-role pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMultiRolePoolInstanceMetricsSinglePageAsync(final String resourceGroupName, final String name, final String instance) {
@@ -2395,7 +2539,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMultiRolePoolInstanceMetricsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2411,14 +2555,17 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param instance Name of the instance in the multi-role pool.
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
     public PagedList<ResourceMetricInner> listMultiRolePoolInstanceMetrics(final String resourceGroupName, final String name, final String instance, final Boolean details) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMultiRolePoolInstanceMetricsSinglePageAsync(resourceGroupName, name, instance, details).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMultiRolePoolInstanceMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMultiRolePoolInstanceMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -2432,10 +2579,11 @@ public final class AppServiceEnvironmentsInner {
      * @param instance Name of the instance in the multi-role pool.
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMultiRolePoolInstanceMetricsAsync(final String resourceGroupName, final String name, final String instance, final Boolean details, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricInner>> listMultiRolePoolInstanceMetricsAsync(final String resourceGroupName, final String name, final String instance, final Boolean details, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRolePoolInstanceMetricsSinglePageAsync(resourceGroupName, name, instance, details),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -2454,6 +2602,7 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param instance Name of the instance in the multi-role pool.
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<Page<ResourceMetricInner>> listMultiRolePoolInstanceMetricsAsync(final String resourceGroupName, final String name, final String instance, final Boolean details) {
@@ -2461,7 +2610,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -2474,6 +2623,7 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param instance Name of the instance in the multi-role pool.
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMultiRolePoolInstanceMetricsWithServiceResponseAsync(final String resourceGroupName, final String name, final String instance, final Boolean details) {
@@ -2481,7 +2631,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -2498,6 +2648,7 @@ public final class AppServiceEnvironmentsInner {
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param name Name of the App Service Environment.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param instance Name of the instance in the multi-role pool.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMultiRolePoolInstanceMetricsSinglePageAsync(final String resourceGroupName, final String name, final String instance, final Boolean details) {
@@ -2520,7 +2671,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMultiRolePoolInstanceMetricsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2529,7 +2680,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricInner>> listMultiRolePoolInstanceMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2541,14 +2692,17 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object if successful.
      */
     public PagedList<ResourceMetricDefinitionInner> listMultiRoleMetricDefinitions(final String resourceGroupName, final String name) {
         ServiceResponse<Page<ResourceMetricDefinitionInner>> response = listMultiRoleMetricDefinitionsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<ResourceMetricDefinitionInner>(response.getBody()) {
+        return new PagedList<ResourceMetricDefinitionInner>(response.body()) {
             @Override
             public Page<ResourceMetricDefinitionInner> nextPage(String nextPageLink) {
-                return listMultiRoleMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMultiRoleMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -2560,10 +2714,11 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricDefinitionInner>> listMultiRoleMetricDefinitionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricDefinitionInner>> listMultiRoleMetricDefinitionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRoleMetricDefinitionsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -2580,6 +2735,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<Page<ResourceMetricDefinitionInner>> listMultiRoleMetricDefinitionsAsync(final String resourceGroupName, final String name) {
@@ -2587,7 +2743,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Page<ResourceMetricDefinitionInner>>() {
                 @Override
                 public Page<ResourceMetricDefinitionInner> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -2598,6 +2754,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listMultiRoleMetricDefinitionsWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -2605,7 +2762,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -2620,6 +2777,7 @@ public final class AppServiceEnvironmentsInner {
      *
     ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listMultiRoleMetricDefinitionsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -2639,7 +2797,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> result = listMultiRoleMetricDefinitionsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2648,7 +2806,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> listMultiRoleMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricDefinitionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricDefinitionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2660,14 +2818,17 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
     public PagedList<ResourceMetricInner> listMultiRoleMetrics(final String resourceGroupName, final String name) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMultiRoleMetricsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMultiRoleMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMultiRoleMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -2679,10 +2840,11 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMultiRoleMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricInner>> listMultiRoleMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRoleMetricsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -2699,6 +2861,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<Page<ResourceMetricInner>> listMultiRoleMetricsAsync(final String resourceGroupName, final String name) {
@@ -2706,7 +2869,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -2717,6 +2880,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMultiRoleMetricsWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -2724,7 +2888,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -2739,6 +2903,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMultiRoleMetricsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -2763,7 +2928,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMultiRoleMetricsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2782,14 +2947,17 @@ public final class AppServiceEnvironmentsInner {
      * @param timeGrain Time granularity of the metrics query.
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
     public PagedList<ResourceMetricInner> listMultiRoleMetrics(final String resourceGroupName, final String name, final String startTime, final String endTime, final String timeGrain, final Boolean details, final String filter) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMultiRoleMetricsSinglePageAsync(resourceGroupName, name, startTime, endTime, timeGrain, details, filter).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMultiRoleMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMultiRoleMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -2806,10 +2974,11 @@ public final class AppServiceEnvironmentsInner {
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMultiRoleMetricsAsync(final String resourceGroupName, final String name, final String startTime, final String endTime, final String timeGrain, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricInner>> listMultiRoleMetricsAsync(final String resourceGroupName, final String name, final String startTime, final String endTime, final String timeGrain, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRoleMetricsSinglePageAsync(resourceGroupName, name, startTime, endTime, timeGrain, details, filter),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -2831,6 +3000,7 @@ public final class AppServiceEnvironmentsInner {
      * @param timeGrain Time granularity of the metrics query.
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<Page<ResourceMetricInner>> listMultiRoleMetricsAsync(final String resourceGroupName, final String name, final String startTime, final String endTime, final String timeGrain, final Boolean details, final String filter) {
@@ -2838,7 +3008,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -2854,6 +3024,7 @@ public final class AppServiceEnvironmentsInner {
      * @param timeGrain Time granularity of the metrics query.
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMultiRoleMetricsWithServiceResponseAsync(final String resourceGroupName, final String name, final String startTime, final String endTime, final String timeGrain, final Boolean details, final String filter) {
@@ -2861,7 +3032,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -2881,6 +3052,7 @@ public final class AppServiceEnvironmentsInner {
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param timeGrain Time granularity of the metrics query.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMultiRoleMetricsSinglePageAsync(final String resourceGroupName, final String name, final String startTime, final String endTime, final String timeGrain, final Boolean details, final String filter) {
@@ -2900,7 +3072,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMultiRoleMetricsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2909,7 +3081,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricInner>> listMultiRoleMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2921,14 +3093,17 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SkuInfoInner&gt; object if successful.
      */
     public PagedList<SkuInfoInner> listMultiRolePoolSkus(final String resourceGroupName, final String name) {
         ServiceResponse<Page<SkuInfoInner>> response = listMultiRolePoolSkusSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<SkuInfoInner>(response.getBody()) {
+        return new PagedList<SkuInfoInner>(response.body()) {
             @Override
             public Page<SkuInfoInner> nextPage(String nextPageLink) {
-                return listMultiRolePoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMultiRolePoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -2940,10 +3115,11 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SkuInfoInner>> listMultiRolePoolSkusAsync(final String resourceGroupName, final String name, final ListOperationCallback<SkuInfoInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<SkuInfoInner>> listMultiRolePoolSkusAsync(final String resourceGroupName, final String name, final ListOperationCallback<SkuInfoInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRolePoolSkusSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
                 @Override
@@ -2960,6 +3136,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SkuInfoInner&gt; object
      */
     public Observable<Page<SkuInfoInner>> listMultiRolePoolSkusAsync(final String resourceGroupName, final String name) {
@@ -2967,7 +3144,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<SkuInfoInner>>, Page<SkuInfoInner>>() {
                 @Override
                 public Page<SkuInfoInner> call(ServiceResponse<Page<SkuInfoInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -2978,6 +3155,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SkuInfoInner&gt; object
      */
     public Observable<ServiceResponse<Page<SkuInfoInner>>> listMultiRolePoolSkusWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -2985,7 +3163,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<SkuInfoInner>>, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SkuInfoInner>>> call(ServiceResponse<Page<SkuInfoInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -3000,6 +3178,7 @@ public final class AppServiceEnvironmentsInner {
      *
     ServiceResponse<PageImpl<SkuInfoInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<SkuInfoInner>> * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SkuInfoInner>>> listMultiRolePoolSkusSinglePageAsync(final String resourceGroupName, final String name) {
@@ -3019,7 +3198,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<SkuInfoInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SkuInfoInner>> result = listMultiRolePoolSkusDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SkuInfoInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SkuInfoInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3028,7 +3207,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<SkuInfoInner>> listMultiRolePoolSkusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SkuInfoInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SkuInfoInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SkuInfoInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3040,14 +3219,17 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;UsageInner&gt; object if successful.
      */
     public PagedList<UsageInner> listMultiRoleUsages(final String resourceGroupName, final String name) {
         ServiceResponse<Page<UsageInner>> response = listMultiRoleUsagesSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<UsageInner>(response.getBody()) {
+        return new PagedList<UsageInner>(response.body()) {
             @Override
             public Page<UsageInner> nextPage(String nextPageLink) {
-                return listMultiRoleUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMultiRoleUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -3059,10 +3241,11 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<UsageInner>> listMultiRoleUsagesAsync(final String resourceGroupName, final String name, final ListOperationCallback<UsageInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<UsageInner>> listMultiRoleUsagesAsync(final String resourceGroupName, final String name, final ListOperationCallback<UsageInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRoleUsagesSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override
@@ -3079,6 +3262,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;UsageInner&gt; object
      */
     public Observable<Page<UsageInner>> listMultiRoleUsagesAsync(final String resourceGroupName, final String name) {
@@ -3086,7 +3270,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<UsageInner>>, Page<UsageInner>>() {
                 @Override
                 public Page<UsageInner> call(ServiceResponse<Page<UsageInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -3097,6 +3281,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;UsageInner&gt; object
      */
     public Observable<ServiceResponse<Page<UsageInner>>> listMultiRoleUsagesWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -3104,7 +3289,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<UsageInner>>, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<UsageInner>>> call(ServiceResponse<Page<UsageInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -3119,6 +3304,7 @@ public final class AppServiceEnvironmentsInner {
      *
     ServiceResponse<PageImpl<UsageInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<UsageInner>> * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UsageInner>>> listMultiRoleUsagesSinglePageAsync(final String resourceGroupName, final String name) {
@@ -3138,7 +3324,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<UsageInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<UsageInner>> result = listMultiRoleUsagesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<UsageInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<UsageInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3147,7 +3333,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<UsageInner>> listMultiRoleUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<UsageInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<UsageInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<UsageInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3159,10 +3345,13 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;OperationInner&gt; object if successful.
      */
     public List<OperationInner> listOperations(String resourceGroupName, String name) {
-        return listOperationsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listOperationsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -3172,10 +3361,11 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<OperationInner>> listOperationsAsync(String resourceGroupName, String name, final ServiceCallback<List<OperationInner>> serviceCallback) {
-        return ServiceCall.create(listOperationsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<List<OperationInner>> listOperationsAsync(String resourceGroupName, String name, final ServiceCallback<List<OperationInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listOperationsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -3184,13 +3374,14 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;OperationInner&gt; object
      */
     public Observable<List<OperationInner>> listOperationsAsync(String resourceGroupName, String name) {
         return listOperationsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<List<OperationInner>>, List<OperationInner>>() {
             @Override
             public List<OperationInner> call(ServiceResponse<List<OperationInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3201,6 +3392,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;OperationInner&gt; object
      */
     public Observable<ServiceResponse<List<OperationInner>>> listOperationsWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -3229,7 +3421,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<List<OperationInner>> listOperationsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<OperationInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<OperationInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<OperationInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3241,9 +3433,12 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void reboot(String resourceGroupName, String name) {
-        rebootWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        rebootWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -3253,10 +3448,11 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> rebootAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(rebootWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<Void> rebootAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(rebootWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -3265,13 +3461,14 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> rebootAsync(String resourceGroupName, String name) {
         return rebootWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3282,6 +3479,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> rebootWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -3310,11 +3508,12 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<Void> rebootDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(400, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .register(409, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -3324,14 +3523,17 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
     public PagedList<SiteInner> resume(final String resourceGroupName, final String name) {
         ServiceResponse<Page<SiteInner>> response = resumeSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return resumeNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return resumeNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -3343,10 +3545,11 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> resumeAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<SiteInner>> resumeAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             resumeSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -3363,6 +3566,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<Page<SiteInner>> resumeAsync(final String resourceGroupName, final String name) {
@@ -3370,7 +3574,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -3381,6 +3585,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInner>>> resumeWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -3388,7 +3593,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -3403,6 +3608,7 @@ public final class AppServiceEnvironmentsInner {
      *
     ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<SiteInner>> * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> resumeSinglePageAsync(final String resourceGroupName, final String name) {
@@ -3422,7 +3628,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = resumeDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3431,7 +3637,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<SiteInner>> resumeDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SiteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .register(202, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -3444,14 +3650,17 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
     public PagedList<SiteInner> beginResume(final String resourceGroupName, final String name) {
         ServiceResponse<Page<SiteInner>> response = beginResumeSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return beginResumeNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return beginResumeNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -3463,10 +3672,11 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> beginResumeAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<SiteInner>> beginResumeAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             beginResumeSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -3483,6 +3693,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<Page<SiteInner>> beginResumeAsync(final String resourceGroupName, final String name) {
@@ -3490,7 +3701,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -3501,6 +3712,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInner>>> beginResumeWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -3508,7 +3720,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -3523,6 +3735,7 @@ public final class AppServiceEnvironmentsInner {
      *
     ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<SiteInner>> * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> beginResumeSinglePageAsync(final String resourceGroupName, final String name) {
@@ -3542,7 +3755,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = beginResumeDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3551,7 +3764,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<SiteInner>> beginResumeDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SiteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .register(202, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -3564,14 +3777,17 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppServicePlanInner&gt; object if successful.
      */
     public PagedList<AppServicePlanInner> listAppServicePlans(final String resourceGroupName, final String name) {
         ServiceResponse<Page<AppServicePlanInner>> response = listAppServicePlansSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<AppServicePlanInner>(response.getBody()) {
+        return new PagedList<AppServicePlanInner>(response.body()) {
             @Override
             public Page<AppServicePlanInner> nextPage(String nextPageLink) {
-                return listAppServicePlansNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAppServicePlansNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -3583,10 +3799,11 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServicePlanInner>> listAppServicePlansAsync(final String resourceGroupName, final String name, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<AppServicePlanInner>> listAppServicePlansAsync(final String resourceGroupName, final String name, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listAppServicePlansSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
@@ -3603,6 +3820,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
      */
     public Observable<Page<AppServicePlanInner>> listAppServicePlansAsync(final String resourceGroupName, final String name) {
@@ -3610,7 +3828,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<AppServicePlanInner>>, Page<AppServicePlanInner>>() {
                 @Override
                 public Page<AppServicePlanInner> call(ServiceResponse<Page<AppServicePlanInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -3621,6 +3839,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
      */
     public Observable<ServiceResponse<Page<AppServicePlanInner>>> listAppServicePlansWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -3628,7 +3847,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<AppServicePlanInner>>, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServicePlanInner>>> call(ServiceResponse<Page<AppServicePlanInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -3643,6 +3862,7 @@ public final class AppServiceEnvironmentsInner {
      *
     ServiceResponse<PageImpl<AppServicePlanInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<AppServicePlanInner>> * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;AppServicePlanInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AppServicePlanInner>>> listAppServicePlansSinglePageAsync(final String resourceGroupName, final String name) {
@@ -3662,7 +3882,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<AppServicePlanInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AppServicePlanInner>> result = listAppServicePlansDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AppServicePlanInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<AppServicePlanInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3671,7 +3891,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<AppServicePlanInner>> listAppServicePlansDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServicePlanInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServicePlanInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppServicePlanInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3683,14 +3903,17 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
     public PagedList<SiteInner> listWebApps(final String resourceGroupName, final String name) {
         ServiceResponse<Page<SiteInner>> response = listWebAppsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return listWebAppsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWebAppsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -3702,10 +3925,11 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> listWebAppsAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<SiteInner>> listWebAppsAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebAppsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -3722,6 +3946,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<Page<SiteInner>> listWebAppsAsync(final String resourceGroupName, final String name) {
@@ -3729,7 +3954,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -3740,6 +3965,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listWebAppsWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -3747,7 +3973,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -3762,6 +3988,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listWebAppsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -3782,7 +4009,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = listWebAppsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3797,14 +4024,17 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param propertiesToInclude Comma separated list of app properties to include.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
     public PagedList<SiteInner> listWebApps(final String resourceGroupName, final String name, final String propertiesToInclude) {
         ServiceResponse<Page<SiteInner>> response = listWebAppsSinglePageAsync(resourceGroupName, name, propertiesToInclude).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return listWebAppsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWebAppsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -3817,10 +4047,11 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param propertiesToInclude Comma separated list of app properties to include.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> listWebAppsAsync(final String resourceGroupName, final String name, final String propertiesToInclude, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<SiteInner>> listWebAppsAsync(final String resourceGroupName, final String name, final String propertiesToInclude, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebAppsSinglePageAsync(resourceGroupName, name, propertiesToInclude),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -3838,6 +4069,7 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param propertiesToInclude Comma separated list of app properties to include.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<Page<SiteInner>> listWebAppsAsync(final String resourceGroupName, final String name, final String propertiesToInclude) {
@@ -3845,7 +4077,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -3857,6 +4089,7 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param propertiesToInclude Comma separated list of app properties to include.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listWebAppsWithServiceResponseAsync(final String resourceGroupName, final String name, final String propertiesToInclude) {
@@ -3864,7 +4097,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -3880,6 +4113,7 @@ public final class AppServiceEnvironmentsInner {
     ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<SiteInner>> * @param name Name of the App Service Environment.
     ServiceResponse<PageImpl<SiteInner>> * @param propertiesToInclude Comma separated list of app properties to include.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listWebAppsSinglePageAsync(final String resourceGroupName, final String name, final String propertiesToInclude) {
@@ -3899,7 +4133,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = listWebAppsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3908,7 +4142,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<SiteInner>> listWebAppsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SiteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3920,14 +4154,17 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
     public PagedList<SiteInner> suspend(final String resourceGroupName, final String name) {
         ServiceResponse<Page<SiteInner>> response = suspendSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return suspendNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return suspendNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -3939,10 +4176,11 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> suspendAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<SiteInner>> suspendAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             suspendSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -3959,6 +4197,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<Page<SiteInner>> suspendAsync(final String resourceGroupName, final String name) {
@@ -3966,7 +4205,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -3977,6 +4216,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInner>>> suspendWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -3984,7 +4224,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -3999,6 +4239,7 @@ public final class AppServiceEnvironmentsInner {
      *
     ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<SiteInner>> * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> suspendSinglePageAsync(final String resourceGroupName, final String name) {
@@ -4018,7 +4259,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = suspendDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -4027,7 +4268,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<SiteInner>> suspendDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SiteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .register(202, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -4040,14 +4281,17 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
     public PagedList<SiteInner> beginSuspend(final String resourceGroupName, final String name) {
         ServiceResponse<Page<SiteInner>> response = beginSuspendSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return beginSuspendNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return beginSuspendNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -4059,10 +4303,11 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> beginSuspendAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<SiteInner>> beginSuspendAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             beginSuspendSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -4079,6 +4324,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<Page<SiteInner>> beginSuspendAsync(final String resourceGroupName, final String name) {
@@ -4086,7 +4332,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -4097,6 +4343,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInner>>> beginSuspendWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -4104,7 +4351,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -4119,6 +4366,7 @@ public final class AppServiceEnvironmentsInner {
      *
     ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<SiteInner>> * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> beginSuspendSinglePageAsync(final String resourceGroupName, final String name) {
@@ -4138,7 +4386,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = beginSuspendDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -4147,7 +4395,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<SiteInner>> beginSuspendDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SiteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .register(202, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -4160,14 +4408,17 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object if successful.
      */
     public PagedList<CsmUsageQuotaInner> listUsages(final String resourceGroupName, final String name) {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = listUsagesSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+        return new PagedList<CsmUsageQuotaInner>(response.body()) {
             @Override
             public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) {
-                return listUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -4179,10 +4430,11 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CsmUsageQuotaInner>> listUsagesAsync(final String resourceGroupName, final String name, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<CsmUsageQuotaInner>> listUsagesAsync(final String resourceGroupName, final String name, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listUsagesSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
@@ -4199,6 +4451,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
     public Observable<Page<CsmUsageQuotaInner>> listUsagesAsync(final String resourceGroupName, final String name) {
@@ -4206,7 +4459,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Page<CsmUsageQuotaInner>>() {
                 @Override
                 public Page<CsmUsageQuotaInner> call(ServiceResponse<Page<CsmUsageQuotaInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -4217,6 +4470,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> listUsagesWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -4224,7 +4478,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -4239,6 +4493,7 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> listUsagesSinglePageAsync(final String resourceGroupName, final String name) {
@@ -4259,7 +4514,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<CsmUsageQuotaInner>> result = listUsagesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -4274,14 +4529,17 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object if successful.
      */
     public PagedList<CsmUsageQuotaInner> listUsages(final String resourceGroupName, final String name, final String filter) {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = listUsagesSinglePageAsync(resourceGroupName, name, filter).toBlocking().single();
-        return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+        return new PagedList<CsmUsageQuotaInner>(response.body()) {
             @Override
             public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) {
-                return listUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -4294,10 +4552,11 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CsmUsageQuotaInner>> listUsagesAsync(final String resourceGroupName, final String name, final String filter, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<CsmUsageQuotaInner>> listUsagesAsync(final String resourceGroupName, final String name, final String filter, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listUsagesSinglePageAsync(resourceGroupName, name, filter),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
@@ -4315,6 +4574,7 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
     public Observable<Page<CsmUsageQuotaInner>> listUsagesAsync(final String resourceGroupName, final String name, final String filter) {
@@ -4322,7 +4582,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Page<CsmUsageQuotaInner>>() {
                 @Override
                 public Page<CsmUsageQuotaInner> call(ServiceResponse<Page<CsmUsageQuotaInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -4334,6 +4594,7 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> listUsagesWithServiceResponseAsync(final String resourceGroupName, final String name, final String filter) {
@@ -4341,7 +4602,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -4357,6 +4618,7 @@ public final class AppServiceEnvironmentsInner {
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param name Name of the App Service Environment.
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> listUsagesSinglePageAsync(final String resourceGroupName, final String name, final String filter) {
@@ -4376,7 +4638,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<CsmUsageQuotaInner>> result = listUsagesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -4385,7 +4647,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<CsmUsageQuotaInner>> listUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CsmUsageQuotaInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CsmUsageQuotaInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<CsmUsageQuotaInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4397,14 +4659,17 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @return the PagedList&lt;WorkerPoolInner&gt; object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;WorkerPoolResourceInner&gt; object if successful.
      */
-    public PagedList<WorkerPoolInner> listWorkerPools(final String resourceGroupName, final String name) {
-        ServiceResponse<Page<WorkerPoolInner>> response = listWorkerPoolsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<WorkerPoolInner>(response.getBody()) {
+    public PagedList<WorkerPoolResourceInner> listWorkerPools(final String resourceGroupName, final String name) {
+        ServiceResponse<Page<WorkerPoolResourceInner>> response = listWorkerPoolsSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        return new PagedList<WorkerPoolResourceInner>(response.body()) {
             @Override
-            public Page<WorkerPoolInner> nextPage(String nextPageLink) {
-                return listWorkerPoolsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            public Page<WorkerPoolResourceInner> nextPage(String nextPageLink) {
+                return listWorkerPoolsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -4416,14 +4681,15 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<WorkerPoolInner>> listWorkerPoolsAsync(final String resourceGroupName, final String name, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<WorkerPoolResourceInner>> listWorkerPoolsAsync(final String resourceGroupName, final String name, final ListOperationCallback<WorkerPoolResourceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWorkerPoolsSinglePageAsync(resourceGroupName, name),
-            new Func1<String, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<WorkerPoolResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> call(String nextPageLink) {
                     return listWorkerPoolsNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -4436,14 +4702,15 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @return the observable to the PagedList&lt;WorkerPoolInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;WorkerPoolResourceInner&gt; object
      */
-    public Observable<Page<WorkerPoolInner>> listWorkerPoolsAsync(final String resourceGroupName, final String name) {
+    public Observable<Page<WorkerPoolResourceInner>> listWorkerPoolsAsync(final String resourceGroupName, final String name) {
         return listWorkerPoolsWithServiceResponseAsync(resourceGroupName, name)
-            .map(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Page<WorkerPoolInner>>() {
+            .map(new Func1<ServiceResponse<Page<WorkerPoolResourceInner>>, Page<WorkerPoolResourceInner>>() {
                 @Override
-                public Page<WorkerPoolInner> call(ServiceResponse<Page<WorkerPoolInner>> response) {
-                    return response.getBody();
+                public Page<WorkerPoolResourceInner> call(ServiceResponse<Page<WorkerPoolResourceInner>> response) {
+                    return response.body();
                 }
             });
     }
@@ -4454,14 +4721,15 @@ public final class AppServiceEnvironmentsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @return the observable to the PagedList&lt;WorkerPoolInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;WorkerPoolResourceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<WorkerPoolInner>>> listWorkerPoolsWithServiceResponseAsync(final String resourceGroupName, final String name) {
+    public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> listWorkerPoolsWithServiceResponseAsync(final String resourceGroupName, final String name) {
         return listWorkerPoolsSinglePageAsync(resourceGroupName, name)
-            .concatMap(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<WorkerPoolResourceInner>>, Observable<ServiceResponse<Page<WorkerPoolResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(ServiceResponse<Page<WorkerPoolInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> call(ServiceResponse<Page<WorkerPoolResourceInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -4474,11 +4742,12 @@ public final class AppServiceEnvironmentsInner {
      * Get all worker pools of an App Service Environment.
      * Get all worker pools of an App Service Environment.
      *
-    ServiceResponse<PageImpl<WorkerPoolInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
-    ServiceResponse<PageImpl<WorkerPoolInner>> * @param name Name of the App Service Environment.
-     * @return the PagedList&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
+    ServiceResponse<PageImpl<WorkerPoolResourceInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+    ServiceResponse<PageImpl<WorkerPoolResourceInner>> * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;WorkerPoolResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<WorkerPoolInner>>> listWorkerPoolsSinglePageAsync(final String resourceGroupName, final String name) {
+    public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> listWorkerPoolsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4490,12 +4759,12 @@ public final class AppServiceEnvironmentsInner {
         }
         final String apiVersion = "2016-09-01";
         return service.listWorkerPools(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<WorkerPoolResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<WorkerPoolInner>> result = listWorkerPoolsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<WorkerPoolInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<WorkerPoolResourceInner>> result = listWorkerPoolsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<WorkerPoolResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -4503,9 +4772,9 @@ public final class AppServiceEnvironmentsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<WorkerPoolInner>> listWorkerPoolsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<WorkerPoolInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl<WorkerPoolInner>>() { }.getType())
+    private ServiceResponse<PageImpl<WorkerPoolResourceInner>> listWorkerPoolsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<WorkerPoolResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<WorkerPoolResourceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -4517,10 +4786,13 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
-     * @return the WorkerPoolInner object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the WorkerPoolResourceInner object if successful.
      */
-    public WorkerPoolInner getWorkerPool(String resourceGroupName, String name, String workerPoolName) {
-        return getWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName).toBlocking().single().getBody();
+    public WorkerPoolResourceInner getWorkerPool(String resourceGroupName, String name, String workerPoolName) {
+        return getWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName).toBlocking().single().body();
     }
 
     /**
@@ -4531,10 +4803,11 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<WorkerPoolInner> getWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, final ServiceCallback<WorkerPoolInner> serviceCallback) {
-        return ServiceCall.create(getWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName), serviceCallback);
+    public ServiceFuture<WorkerPoolResourceInner> getWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, final ServiceCallback<WorkerPoolResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName), serviceCallback);
     }
 
     /**
@@ -4544,13 +4817,14 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
-     * @return the observable to the WorkerPoolInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the WorkerPoolResourceInner object
      */
-    public Observable<WorkerPoolInner> getWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName) {
-        return getWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName).map(new Func1<ServiceResponse<WorkerPoolInner>, WorkerPoolInner>() {
+    public Observable<WorkerPoolResourceInner> getWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName) {
+        return getWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName).map(new Func1<ServiceResponse<WorkerPoolResourceInner>, WorkerPoolResourceInner>() {
             @Override
-            public WorkerPoolInner call(ServiceResponse<WorkerPoolInner> response) {
-                return response.getBody();
+            public WorkerPoolResourceInner call(ServiceResponse<WorkerPoolResourceInner> response) {
+                return response.body();
             }
         });
     }
@@ -4562,9 +4836,10 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
-     * @return the observable to the WorkerPoolInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the WorkerPoolResourceInner object
      */
-    public Observable<ServiceResponse<WorkerPoolInner>> getWorkerPoolWithServiceResponseAsync(String resourceGroupName, String name, String workerPoolName) {
+    public Observable<ServiceResponse<WorkerPoolResourceInner>> getWorkerPoolWithServiceResponseAsync(String resourceGroupName, String name, String workerPoolName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4579,11 +4854,11 @@ public final class AppServiceEnvironmentsInner {
         }
         final String apiVersion = "2016-09-01";
         return service.getWorkerPool(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WorkerPoolInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WorkerPoolResourceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<WorkerPoolInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<WorkerPoolResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<WorkerPoolInner> clientResponse = getWorkerPoolDelegate(response);
+                        ServiceResponse<WorkerPoolResourceInner> clientResponse = getWorkerPoolDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -4592,9 +4867,9 @@ public final class AppServiceEnvironmentsInner {
             });
     }
 
-    private ServiceResponse<WorkerPoolInner> getWorkerPoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<WorkerPoolInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<WorkerPoolInner>() { }.getType())
+    private ServiceResponse<WorkerPoolResourceInner> getWorkerPoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<WorkerPoolResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<WorkerPoolResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -4607,10 +4882,13 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @param workerPoolEnvelope Properties of the worker pool.
-     * @return the WorkerPoolInner object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the WorkerPoolResourceInner object if successful.
      */
-    public WorkerPoolInner createOrUpdateWorkerPool(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) {
-        return createOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope).toBlocking().last().getBody();
+    public WorkerPoolResourceInner createOrUpdateWorkerPool(String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
+        return createOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope).toBlocking().last().body();
     }
 
     /**
@@ -4622,10 +4900,11 @@ public final class AppServiceEnvironmentsInner {
      * @param workerPoolName Name of the worker pool.
      * @param workerPoolEnvelope Properties of the worker pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<WorkerPoolInner> createOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope), serviceCallback);
+    public ServiceFuture<WorkerPoolResourceInner> createOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope, final ServiceCallback<WorkerPoolResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope), serviceCallback);
     }
 
     /**
@@ -4636,13 +4915,14 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @param workerPoolEnvelope Properties of the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<WorkerPoolInner> createOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) {
-        return createOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope).map(new Func1<ServiceResponse<WorkerPoolInner>, WorkerPoolInner>() {
+    public Observable<WorkerPoolResourceInner> createOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
+        return createOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope).map(new Func1<ServiceResponse<WorkerPoolResourceInner>, WorkerPoolResourceInner>() {
             @Override
-            public WorkerPoolInner call(ServiceResponse<WorkerPoolInner> response) {
-                return response.getBody();
+            public WorkerPoolResourceInner call(ServiceResponse<WorkerPoolResourceInner> response) {
+                return response.body();
             }
         });
     }
@@ -4655,9 +4935,10 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @param workerPoolEnvelope Properties of the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<WorkerPoolInner>> createOrUpdateWorkerPoolWithServiceResponseAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) {
+    public Observable<ServiceResponse<WorkerPoolResourceInner>> createOrUpdateWorkerPoolWithServiceResponseAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4676,7 +4957,7 @@ public final class AppServiceEnvironmentsInner {
         Validator.validate(workerPoolEnvelope);
         final String apiVersion = "2016-09-01";
         Observable<Response<ResponseBody>> observable = service.createOrUpdateWorkerPool(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), workerPoolEnvelope, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<WorkerPoolInner>() { }.getType());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<WorkerPoolResourceInner>() { }.getType());
     }
 
     /**
@@ -4687,10 +4968,13 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @param workerPoolEnvelope Properties of the worker pool.
-     * @return the WorkerPoolInner object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the WorkerPoolResourceInner object if successful.
      */
-    public WorkerPoolInner beginCreateOrUpdateWorkerPool(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) {
-        return beginCreateOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope).toBlocking().single().getBody();
+    public WorkerPoolResourceInner beginCreateOrUpdateWorkerPool(String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
+        return beginCreateOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -4702,10 +4986,11 @@ public final class AppServiceEnvironmentsInner {
      * @param workerPoolName Name of the worker pool.
      * @param workerPoolEnvelope Properties of the worker pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<WorkerPoolInner> beginCreateOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope), serviceCallback);
+    public ServiceFuture<WorkerPoolResourceInner> beginCreateOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope, final ServiceCallback<WorkerPoolResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope), serviceCallback);
     }
 
     /**
@@ -4716,13 +5001,14 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @param workerPoolEnvelope Properties of the worker pool.
-     * @return the observable to the WorkerPoolInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the WorkerPoolResourceInner object
      */
-    public Observable<WorkerPoolInner> beginCreateOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) {
-        return beginCreateOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope).map(new Func1<ServiceResponse<WorkerPoolInner>, WorkerPoolInner>() {
+    public Observable<WorkerPoolResourceInner> beginCreateOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
+        return beginCreateOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope).map(new Func1<ServiceResponse<WorkerPoolResourceInner>, WorkerPoolResourceInner>() {
             @Override
-            public WorkerPoolInner call(ServiceResponse<WorkerPoolInner> response) {
-                return response.getBody();
+            public WorkerPoolResourceInner call(ServiceResponse<WorkerPoolResourceInner> response) {
+                return response.body();
             }
         });
     }
@@ -4735,9 +5021,10 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @param workerPoolEnvelope Properties of the worker pool.
-     * @return the observable to the WorkerPoolInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the WorkerPoolResourceInner object
      */
-    public Observable<ServiceResponse<WorkerPoolInner>> beginCreateOrUpdateWorkerPoolWithServiceResponseAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) {
+    public Observable<ServiceResponse<WorkerPoolResourceInner>> beginCreateOrUpdateWorkerPoolWithServiceResponseAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4756,11 +5043,11 @@ public final class AppServiceEnvironmentsInner {
         Validator.validate(workerPoolEnvelope);
         final String apiVersion = "2016-09-01";
         return service.beginCreateOrUpdateWorkerPool(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), workerPoolEnvelope, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WorkerPoolInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WorkerPoolResourceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<WorkerPoolInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<WorkerPoolResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<WorkerPoolInner> clientResponse = beginCreateOrUpdateWorkerPoolDelegate(response);
+                        ServiceResponse<WorkerPoolResourceInner> clientResponse = beginCreateOrUpdateWorkerPoolDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -4769,10 +5056,10 @@ public final class AppServiceEnvironmentsInner {
             });
     }
 
-    private ServiceResponse<WorkerPoolInner> beginCreateOrUpdateWorkerPoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<WorkerPoolInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<WorkerPoolInner>() { }.getType())
-                .register(202, new TypeToken<WorkerPoolInner>() { }.getType())
+    private ServiceResponse<WorkerPoolResourceInner> beginCreateOrUpdateWorkerPoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<WorkerPoolResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<WorkerPoolResourceInner>() { }.getType())
+                .register(202, new TypeToken<WorkerPoolResourceInner>() { }.getType())
                 .register(400, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .register(409, new TypeToken<Void>() { }.getType())
@@ -4788,14 +5075,17 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @param instance Name of the instance in the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object if successful.
      */
     public PagedList<ResourceMetricDefinitionInner> listWorkerPoolInstanceMetricDefinitions(final String resourceGroupName, final String name, final String workerPoolName, final String instance) {
         ServiceResponse<Page<ResourceMetricDefinitionInner>> response = listWorkerPoolInstanceMetricDefinitionsSinglePageAsync(resourceGroupName, name, workerPoolName, instance).toBlocking().single();
-        return new PagedList<ResourceMetricDefinitionInner>(response.getBody()) {
+        return new PagedList<ResourceMetricDefinitionInner>(response.body()) {
             @Override
             public Page<ResourceMetricDefinitionInner> nextPage(String nextPageLink) {
-                return listWorkerPoolInstanceMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWorkerPoolInstanceMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -4809,10 +5099,11 @@ public final class AppServiceEnvironmentsInner {
      * @param workerPoolName Name of the worker pool.
      * @param instance Name of the instance in the worker pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricDefinitionInner>> listWorkerPoolInstanceMetricDefinitionsAsync(final String resourceGroupName, final String name, final String workerPoolName, final String instance, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricDefinitionInner>> listWorkerPoolInstanceMetricDefinitionsAsync(final String resourceGroupName, final String name, final String workerPoolName, final String instance, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWorkerPoolInstanceMetricDefinitionsSinglePageAsync(resourceGroupName, name, workerPoolName, instance),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -4831,6 +5122,7 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @param instance Name of the instance in the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<Page<ResourceMetricDefinitionInner>> listWorkerPoolInstanceMetricDefinitionsAsync(final String resourceGroupName, final String name, final String workerPoolName, final String instance) {
@@ -4838,7 +5130,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Page<ResourceMetricDefinitionInner>>() {
                 @Override
                 public Page<ResourceMetricDefinitionInner> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -4851,6 +5143,7 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @param instance Name of the instance in the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listWorkerPoolInstanceMetricDefinitionsWithServiceResponseAsync(final String resourceGroupName, final String name, final String workerPoolName, final String instance) {
@@ -4858,7 +5151,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -4875,6 +5168,7 @@ public final class AppServiceEnvironmentsInner {
     ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param name Name of the App Service Environment.
     ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param workerPoolName Name of the worker pool.
     ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param instance Name of the instance in the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listWorkerPoolInstanceMetricDefinitionsSinglePageAsync(final String resourceGroupName, final String name, final String workerPoolName, final String instance) {
@@ -4900,7 +5194,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> result = listWorkerPoolInstanceMetricDefinitionsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -4909,7 +5203,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> listWorkerPoolInstanceMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricDefinitionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricDefinitionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4923,14 +5217,17 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @param instance Name of the instance in the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
     public PagedList<ResourceMetricInner> listWorkerPoolInstanceMetrics(final String resourceGroupName, final String name, final String workerPoolName, final String instance) {
         ServiceResponse<Page<ResourceMetricInner>> response = listWorkerPoolInstanceMetricsSinglePageAsync(resourceGroupName, name, workerPoolName, instance).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listWorkerPoolInstanceMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWorkerPoolInstanceMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -4944,10 +5241,11 @@ public final class AppServiceEnvironmentsInner {
      * @param workerPoolName Name of the worker pool.
      * @param instance Name of the instance in the worker pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listWorkerPoolInstanceMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final String instance, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricInner>> listWorkerPoolInstanceMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final String instance, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWorkerPoolInstanceMetricsSinglePageAsync(resourceGroupName, name, workerPoolName, instance),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -4966,6 +5264,7 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @param instance Name of the instance in the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<Page<ResourceMetricInner>> listWorkerPoolInstanceMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final String instance) {
@@ -4973,7 +5272,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -4986,6 +5285,7 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @param instance Name of the instance in the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listWorkerPoolInstanceMetricsWithServiceResponseAsync(final String resourceGroupName, final String name, final String workerPoolName, final String instance) {
@@ -4993,7 +5293,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -5010,6 +5310,7 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @param instance Name of the instance in the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listWorkerPoolInstanceMetricsSinglePageAsync(final String resourceGroupName, final String name, final String workerPoolName, final String instance) {
@@ -5037,7 +5338,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listWorkerPoolInstanceMetricsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -5055,14 +5356,17 @@ public final class AppServiceEnvironmentsInner {
      * @param instance Name of the instance in the worker pool.
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
     public PagedList<ResourceMetricInner> listWorkerPoolInstanceMetrics(final String resourceGroupName, final String name, final String workerPoolName, final String instance, final Boolean details, final String filter) {
         ServiceResponse<Page<ResourceMetricInner>> response = listWorkerPoolInstanceMetricsSinglePageAsync(resourceGroupName, name, workerPoolName, instance, details, filter).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listWorkerPoolInstanceMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWorkerPoolInstanceMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -5078,10 +5382,11 @@ public final class AppServiceEnvironmentsInner {
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listWorkerPoolInstanceMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final String instance, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricInner>> listWorkerPoolInstanceMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final String instance, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWorkerPoolInstanceMetricsSinglePageAsync(resourceGroupName, name, workerPoolName, instance, details, filter),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -5102,6 +5407,7 @@ public final class AppServiceEnvironmentsInner {
      * @param instance Name of the instance in the worker pool.
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<Page<ResourceMetricInner>> listWorkerPoolInstanceMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final String instance, final Boolean details, final String filter) {
@@ -5109,7 +5415,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -5124,6 +5430,7 @@ public final class AppServiceEnvironmentsInner {
      * @param instance Name of the instance in the worker pool.
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listWorkerPoolInstanceMetricsWithServiceResponseAsync(final String resourceGroupName, final String name, final String workerPoolName, final String instance, final Boolean details, final String filter) {
@@ -5131,7 +5438,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -5150,6 +5457,7 @@ public final class AppServiceEnvironmentsInner {
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param instance Name of the instance in the worker pool.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listWorkerPoolInstanceMetricsSinglePageAsync(final String resourceGroupName, final String name, final String workerPoolName, final String instance, final Boolean details, final String filter) {
@@ -5175,7 +5483,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listWorkerPoolInstanceMetricsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -5184,7 +5492,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricInner>> listWorkerPoolInstanceMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -5197,14 +5505,17 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object if successful.
      */
     public PagedList<ResourceMetricDefinitionInner> listWebWorkerMetricDefinitions(final String resourceGroupName, final String name, final String workerPoolName) {
         ServiceResponse<Page<ResourceMetricDefinitionInner>> response = listWebWorkerMetricDefinitionsSinglePageAsync(resourceGroupName, name, workerPoolName).toBlocking().single();
-        return new PagedList<ResourceMetricDefinitionInner>(response.getBody()) {
+        return new PagedList<ResourceMetricDefinitionInner>(response.body()) {
             @Override
             public Page<ResourceMetricDefinitionInner> nextPage(String nextPageLink) {
-                return listWebWorkerMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWebWorkerMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -5217,10 +5528,11 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricDefinitionInner>> listWebWorkerMetricDefinitionsAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricDefinitionInner>> listWebWorkerMetricDefinitionsAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebWorkerMetricDefinitionsSinglePageAsync(resourceGroupName, name, workerPoolName),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -5238,6 +5550,7 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<Page<ResourceMetricDefinitionInner>> listWebWorkerMetricDefinitionsAsync(final String resourceGroupName, final String name, final String workerPoolName) {
@@ -5245,7 +5558,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Page<ResourceMetricDefinitionInner>>() {
                 @Override
                 public Page<ResourceMetricDefinitionInner> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -5257,6 +5570,7 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listWebWorkerMetricDefinitionsWithServiceResponseAsync(final String resourceGroupName, final String name, final String workerPoolName) {
@@ -5264,7 +5578,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -5280,6 +5594,7 @@ public final class AppServiceEnvironmentsInner {
     ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param name Name of the App Service Environment.
     ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param workerPoolName Name of the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listWebWorkerMetricDefinitionsSinglePageAsync(final String resourceGroupName, final String name, final String workerPoolName) {
@@ -5302,7 +5617,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> result = listWebWorkerMetricDefinitionsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -5311,7 +5626,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> listWebWorkerMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricDefinitionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricDefinitionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -5324,14 +5639,17 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of worker pool
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
     public PagedList<ResourceMetricInner> listWebWorkerMetrics(final String resourceGroupName, final String name, final String workerPoolName) {
         ServiceResponse<Page<ResourceMetricInner>> response = listWebWorkerMetricsSinglePageAsync(resourceGroupName, name, workerPoolName).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listWebWorkerMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWebWorkerMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -5344,10 +5662,11 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of worker pool
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listWebWorkerMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricInner>> listWebWorkerMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebWorkerMetricsSinglePageAsync(resourceGroupName, name, workerPoolName),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -5365,6 +5684,7 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of worker pool
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<Page<ResourceMetricInner>> listWebWorkerMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName) {
@@ -5372,7 +5692,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -5384,6 +5704,7 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of worker pool
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listWebWorkerMetricsWithServiceResponseAsync(final String resourceGroupName, final String name, final String workerPoolName) {
@@ -5391,7 +5712,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -5407,6 +5728,7 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of worker pool
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listWebWorkerMetricsSinglePageAsync(final String resourceGroupName, final String name, final String workerPoolName) {
@@ -5431,7 +5753,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listWebWorkerMetricsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -5448,14 +5770,17 @@ public final class AppServiceEnvironmentsInner {
      * @param workerPoolName Name of worker pool
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
     public PagedList<ResourceMetricInner> listWebWorkerMetrics(final String resourceGroupName, final String name, final String workerPoolName, final Boolean details, final String filter) {
         ServiceResponse<Page<ResourceMetricInner>> response = listWebWorkerMetricsSinglePageAsync(resourceGroupName, name, workerPoolName, details, filter).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listWebWorkerMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWebWorkerMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -5470,10 +5795,11 @@ public final class AppServiceEnvironmentsInner {
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listWebWorkerMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricInner>> listWebWorkerMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebWorkerMetricsSinglePageAsync(resourceGroupName, name, workerPoolName, details, filter),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -5493,6 +5819,7 @@ public final class AppServiceEnvironmentsInner {
      * @param workerPoolName Name of worker pool
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<Page<ResourceMetricInner>> listWebWorkerMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final Boolean details, final String filter) {
@@ -5500,7 +5827,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -5514,6 +5841,7 @@ public final class AppServiceEnvironmentsInner {
      * @param workerPoolName Name of worker pool
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listWebWorkerMetricsWithServiceResponseAsync(final String resourceGroupName, final String name, final String workerPoolName, final Boolean details, final String filter) {
@@ -5521,7 +5849,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -5539,6 +5867,7 @@ public final class AppServiceEnvironmentsInner {
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param workerPoolName Name of worker pool
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listWebWorkerMetricsSinglePageAsync(final String resourceGroupName, final String name, final String workerPoolName, final Boolean details, final String filter) {
@@ -5561,7 +5890,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listWebWorkerMetricsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -5570,7 +5899,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricInner>> listWebWorkerMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -5583,14 +5912,17 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SkuInfoInner&gt; object if successful.
      */
     public PagedList<SkuInfoInner> listWorkerPoolSkus(final String resourceGroupName, final String name, final String workerPoolName) {
         ServiceResponse<Page<SkuInfoInner>> response = listWorkerPoolSkusSinglePageAsync(resourceGroupName, name, workerPoolName).toBlocking().single();
-        return new PagedList<SkuInfoInner>(response.getBody()) {
+        return new PagedList<SkuInfoInner>(response.body()) {
             @Override
             public Page<SkuInfoInner> nextPage(String nextPageLink) {
-                return listWorkerPoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWorkerPoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -5603,10 +5935,11 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SkuInfoInner>> listWorkerPoolSkusAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<SkuInfoInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<SkuInfoInner>> listWorkerPoolSkusAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<SkuInfoInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWorkerPoolSkusSinglePageAsync(resourceGroupName, name, workerPoolName),
             new Func1<String, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
                 @Override
@@ -5624,6 +5957,7 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SkuInfoInner&gt; object
      */
     public Observable<Page<SkuInfoInner>> listWorkerPoolSkusAsync(final String resourceGroupName, final String name, final String workerPoolName) {
@@ -5631,7 +5965,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<SkuInfoInner>>, Page<SkuInfoInner>>() {
                 @Override
                 public Page<SkuInfoInner> call(ServiceResponse<Page<SkuInfoInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -5643,6 +5977,7 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SkuInfoInner&gt; object
      */
     public Observable<ServiceResponse<Page<SkuInfoInner>>> listWorkerPoolSkusWithServiceResponseAsync(final String resourceGroupName, final String name, final String workerPoolName) {
@@ -5650,7 +5985,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<SkuInfoInner>>, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SkuInfoInner>>> call(ServiceResponse<Page<SkuInfoInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -5666,6 +6001,7 @@ public final class AppServiceEnvironmentsInner {
     ServiceResponse<PageImpl<SkuInfoInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<SkuInfoInner>> * @param name Name of the App Service Environment.
     ServiceResponse<PageImpl<SkuInfoInner>> * @param workerPoolName Name of the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SkuInfoInner>>> listWorkerPoolSkusSinglePageAsync(final String resourceGroupName, final String name, final String workerPoolName) {
@@ -5688,7 +6024,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<SkuInfoInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SkuInfoInner>> result = listWorkerPoolSkusDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SkuInfoInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SkuInfoInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -5697,7 +6033,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<SkuInfoInner>> listWorkerPoolSkusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SkuInfoInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SkuInfoInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SkuInfoInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -5710,14 +6046,17 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;UsageInner&gt; object if successful.
      */
     public PagedList<UsageInner> listWebWorkerUsages(final String resourceGroupName, final String name, final String workerPoolName) {
         ServiceResponse<Page<UsageInner>> response = listWebWorkerUsagesSinglePageAsync(resourceGroupName, name, workerPoolName).toBlocking().single();
-        return new PagedList<UsageInner>(response.getBody()) {
+        return new PagedList<UsageInner>(response.body()) {
             @Override
             public Page<UsageInner> nextPage(String nextPageLink) {
-                return listWebWorkerUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWebWorkerUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -5730,10 +6069,11 @@ public final class AppServiceEnvironmentsInner {
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<UsageInner>> listWebWorkerUsagesAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<UsageInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<UsageInner>> listWebWorkerUsagesAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<UsageInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebWorkerUsagesSinglePageAsync(resourceGroupName, name, workerPoolName),
             new Func1<String, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override
@@ -5751,6 +6091,7 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;UsageInner&gt; object
      */
     public Observable<Page<UsageInner>> listWebWorkerUsagesAsync(final String resourceGroupName, final String name, final String workerPoolName) {
@@ -5758,7 +6099,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<UsageInner>>, Page<UsageInner>>() {
                 @Override
                 public Page<UsageInner> call(ServiceResponse<Page<UsageInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -5770,6 +6111,7 @@ public final class AppServiceEnvironmentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;UsageInner&gt; object
      */
     public Observable<ServiceResponse<Page<UsageInner>>> listWebWorkerUsagesWithServiceResponseAsync(final String resourceGroupName, final String name, final String workerPoolName) {
@@ -5777,7 +6119,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<UsageInner>>, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<UsageInner>>> call(ServiceResponse<Page<UsageInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -5793,6 +6135,7 @@ public final class AppServiceEnvironmentsInner {
     ServiceResponse<PageImpl<UsageInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<UsageInner>> * @param name Name of the App Service Environment.
     ServiceResponse<PageImpl<UsageInner>> * @param workerPoolName Name of the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UsageInner>>> listWebWorkerUsagesSinglePageAsync(final String resourceGroupName, final String name, final String workerPoolName) {
@@ -5815,7 +6158,7 @@ public final class AppServiceEnvironmentsInner {
                 public Observable<ServiceResponse<Page<UsageInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<UsageInner>> result = listWebWorkerUsagesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<UsageInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<UsageInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -5824,7 +6167,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<UsageInner>> listWebWorkerUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<UsageInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<UsageInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<UsageInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -5835,14 +6178,17 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service Environments for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppServiceEnvironmentInner&gt; object if successful.
      */
     public PagedList<AppServiceEnvironmentInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<AppServiceEnvironmentInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<AppServiceEnvironmentInner>(response.getBody()) {
+        return new PagedList<AppServiceEnvironmentInner>(response.body()) {
             @Override
             public Page<AppServiceEnvironmentInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -5852,12 +6198,13 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service Environments for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServiceEnvironmentInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<AppServiceEnvironmentInner>> serviceCall, final ListOperationCallback<AppServiceEnvironmentInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<AppServiceEnvironmentInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<AppServiceEnvironmentInner>> serviceFuture, final ListOperationCallback<AppServiceEnvironmentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>>>() {
                 @Override
@@ -5873,6 +6220,7 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service Environments for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServiceEnvironmentInner&gt; object
      */
     public Observable<Page<AppServiceEnvironmentInner>> listNextAsync(final String nextPageLink) {
@@ -5880,7 +6228,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<AppServiceEnvironmentInner>>, Page<AppServiceEnvironmentInner>>() {
                 @Override
                 public Page<AppServiceEnvironmentInner> call(ServiceResponse<Page<AppServiceEnvironmentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -5890,6 +6238,7 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service Environments for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServiceEnvironmentInner&gt; object
      */
     public Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -5897,7 +6246,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<AppServiceEnvironmentInner>>, Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>> call(ServiceResponse<Page<AppServiceEnvironmentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -5911,19 +6260,21 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service Environments for a subscription.
      *
     ServiceResponse<PageImpl<AppServiceEnvironmentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;AppServiceEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AppServiceEnvironmentInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AppServiceEnvironmentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<AppServiceEnvironmentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -5932,7 +6283,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<AppServiceEnvironmentInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServiceEnvironmentInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServiceEnvironmentInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppServiceEnvironmentInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -5943,14 +6294,17 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service Environments in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppServiceEnvironmentInner&gt; object if successful.
      */
     public PagedList<AppServiceEnvironmentInner> listByResourceGroupNext(final String nextPageLink) {
         ServiceResponse<Page<AppServiceEnvironmentInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<AppServiceEnvironmentInner>(response.getBody()) {
+        return new PagedList<AppServiceEnvironmentInner>(response.body()) {
             @Override
             public Page<AppServiceEnvironmentInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -5960,12 +6314,13 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service Environments in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServiceEnvironmentInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<AppServiceEnvironmentInner>> serviceCall, final ListOperationCallback<AppServiceEnvironmentInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<AppServiceEnvironmentInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<AppServiceEnvironmentInner>> serviceFuture, final ListOperationCallback<AppServiceEnvironmentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>>>() {
                 @Override
@@ -5981,6 +6336,7 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service Environments in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServiceEnvironmentInner&gt; object
      */
     public Observable<Page<AppServiceEnvironmentInner>> listByResourceGroupNextAsync(final String nextPageLink) {
@@ -5988,7 +6344,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<AppServiceEnvironmentInner>>, Page<AppServiceEnvironmentInner>>() {
                 @Override
                 public Page<AppServiceEnvironmentInner> call(ServiceResponse<Page<AppServiceEnvironmentInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -5998,6 +6354,7 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service Environments in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServiceEnvironmentInner&gt; object
      */
     public Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
@@ -6005,7 +6362,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<AppServiceEnvironmentInner>>, Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>> call(ServiceResponse<Page<AppServiceEnvironmentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -6019,19 +6376,21 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service Environments in a resource group.
      *
     ServiceResponse<PageImpl<AppServiceEnvironmentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;AppServiceEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listByResourceGroupNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServiceEnvironmentInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AppServiceEnvironmentInner>> result = listByResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AppServiceEnvironmentInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<AppServiceEnvironmentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -6040,7 +6399,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<AppServiceEnvironmentInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServiceEnvironmentInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServiceEnvironmentInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppServiceEnvironmentInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6051,14 +6410,17 @@ public final class AppServiceEnvironmentsInner {
      * Get the used, available, and total worker capacity an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;StampCapacityInner&gt; object if successful.
      */
     public PagedList<StampCapacityInner> listCapacitiesNext(final String nextPageLink) {
         ServiceResponse<Page<StampCapacityInner>> response = listCapacitiesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<StampCapacityInner>(response.getBody()) {
+        return new PagedList<StampCapacityInner>(response.body()) {
             @Override
             public Page<StampCapacityInner> nextPage(String nextPageLink) {
-                return listCapacitiesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listCapacitiesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -6068,12 +6430,13 @@ public final class AppServiceEnvironmentsInner {
      * Get the used, available, and total worker capacity an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<StampCapacityInner>> listCapacitiesNextAsync(final String nextPageLink, final ServiceCall<List<StampCapacityInner>> serviceCall, final ListOperationCallback<StampCapacityInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<StampCapacityInner>> listCapacitiesNextAsync(final String nextPageLink, final ServiceFuture<List<StampCapacityInner>> serviceFuture, final ListOperationCallback<StampCapacityInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listCapacitiesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<StampCapacityInner>>>>() {
                 @Override
@@ -6089,6 +6452,7 @@ public final class AppServiceEnvironmentsInner {
      * Get the used, available, and total worker capacity an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;StampCapacityInner&gt; object
      */
     public Observable<Page<StampCapacityInner>> listCapacitiesNextAsync(final String nextPageLink) {
@@ -6096,7 +6460,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<StampCapacityInner>>, Page<StampCapacityInner>>() {
                 @Override
                 public Page<StampCapacityInner> call(ServiceResponse<Page<StampCapacityInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -6106,6 +6470,7 @@ public final class AppServiceEnvironmentsInner {
      * Get the used, available, and total worker capacity an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;StampCapacityInner&gt; object
      */
     public Observable<ServiceResponse<Page<StampCapacityInner>>> listCapacitiesNextWithServiceResponseAsync(final String nextPageLink) {
@@ -6113,7 +6478,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<StampCapacityInner>>, Observable<ServiceResponse<Page<StampCapacityInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<StampCapacityInner>>> call(ServiceResponse<Page<StampCapacityInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -6127,19 +6492,21 @@ public final class AppServiceEnvironmentsInner {
      * Get the used, available, and total worker capacity an App Service Environment.
      *
     ServiceResponse<PageImpl<StampCapacityInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;StampCapacityInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<StampCapacityInner>>> listCapacitiesNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listCapacitiesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listCapacitiesNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<StampCapacityInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<StampCapacityInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<StampCapacityInner>> result = listCapacitiesNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<StampCapacityInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<StampCapacityInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -6148,7 +6515,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<StampCapacityInner>> listCapacitiesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<StampCapacityInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<StampCapacityInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<StampCapacityInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6159,14 +6526,17 @@ public final class AppServiceEnvironmentsInner {
      * Get global metrics of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
     public PagedList<ResourceMetricInner> listMetricsNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -6176,12 +6546,13 @@ public final class AppServiceEnvironmentsInner {
      * Get global metrics of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMetricsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricInner>> listMetricsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricInner>> serviceFuture, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -6197,6 +6568,7 @@ public final class AppServiceEnvironmentsInner {
      * Get global metrics of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<Page<ResourceMetricInner>> listMetricsNextAsync(final String nextPageLink) {
@@ -6204,7 +6576,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -6214,6 +6586,7 @@ public final class AppServiceEnvironmentsInner {
      * Get global metrics of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -6221,7 +6594,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -6235,19 +6608,21 @@ public final class AppServiceEnvironmentsInner {
      * Get global metrics of an App Service Environment.
      *
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listMetricsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listMetricsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMetricsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -6256,7 +6631,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricInner>> listMetricsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6267,14 +6642,17 @@ public final class AppServiceEnvironmentsInner {
      * Get all multi-role pools.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;WorkerPoolInner&gt; object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;WorkerPoolResourceInner&gt; object if successful.
      */
-    public PagedList<WorkerPoolInner> listMultiRolePoolsNext(final String nextPageLink) {
-        ServiceResponse<Page<WorkerPoolInner>> response = listMultiRolePoolsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<WorkerPoolInner>(response.getBody()) {
+    public PagedList<WorkerPoolResourceInner> listMultiRolePoolsNext(final String nextPageLink) {
+        ServiceResponse<Page<WorkerPoolResourceInner>> response = listMultiRolePoolsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<WorkerPoolResourceInner>(response.body()) {
             @Override
-            public Page<WorkerPoolInner> nextPage(String nextPageLink) {
-                return listMultiRolePoolsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            public Page<WorkerPoolResourceInner> nextPage(String nextPageLink) {
+                return listMultiRolePoolsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -6284,16 +6662,17 @@ public final class AppServiceEnvironmentsInner {
      * Get all multi-role pools.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<WorkerPoolInner>> listMultiRolePoolsNextAsync(final String nextPageLink, final ServiceCall<List<WorkerPoolInner>> serviceCall, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<WorkerPoolResourceInner>> listMultiRolePoolsNextAsync(final String nextPageLink, final ServiceFuture<List<WorkerPoolResourceInner>> serviceFuture, final ListOperationCallback<WorkerPoolResourceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRolePoolsNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<WorkerPoolResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> call(String nextPageLink) {
                     return listMultiRolePoolsNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -6305,14 +6684,15 @@ public final class AppServiceEnvironmentsInner {
      * Get all multi-role pools.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;WorkerPoolInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;WorkerPoolResourceInner&gt; object
      */
-    public Observable<Page<WorkerPoolInner>> listMultiRolePoolsNextAsync(final String nextPageLink) {
+    public Observable<Page<WorkerPoolResourceInner>> listMultiRolePoolsNextAsync(final String nextPageLink) {
         return listMultiRolePoolsNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Page<WorkerPoolInner>>() {
+            .map(new Func1<ServiceResponse<Page<WorkerPoolResourceInner>>, Page<WorkerPoolResourceInner>>() {
                 @Override
-                public Page<WorkerPoolInner> call(ServiceResponse<Page<WorkerPoolInner>> response) {
-                    return response.getBody();
+                public Page<WorkerPoolResourceInner> call(ServiceResponse<Page<WorkerPoolResourceInner>> response) {
+                    return response.body();
                 }
             });
     }
@@ -6322,14 +6702,15 @@ public final class AppServiceEnvironmentsInner {
      * Get all multi-role pools.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;WorkerPoolInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;WorkerPoolResourceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<WorkerPoolInner>>> listMultiRolePoolsNextWithServiceResponseAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> listMultiRolePoolsNextWithServiceResponseAsync(final String nextPageLink) {
         return listMultiRolePoolsNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<WorkerPoolResourceInner>>, Observable<ServiceResponse<Page<WorkerPoolResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(ServiceResponse<Page<WorkerPoolInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> call(ServiceResponse<Page<WorkerPoolResourceInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -6342,20 +6723,22 @@ public final class AppServiceEnvironmentsInner {
      * Get all multi-role pools.
      * Get all multi-role pools.
      *
-    ServiceResponse<PageImpl<WorkerPoolInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
+    ServiceResponse<PageImpl<WorkerPoolResourceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;WorkerPoolResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<WorkerPoolInner>>> listMultiRolePoolsNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> listMultiRolePoolsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listMultiRolePoolsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listMultiRolePoolsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<WorkerPoolResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<WorkerPoolInner>> result = listMultiRolePoolsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<WorkerPoolInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<WorkerPoolResourceInner>> result = listMultiRolePoolsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<WorkerPoolResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -6363,9 +6746,9 @@ public final class AppServiceEnvironmentsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<WorkerPoolInner>> listMultiRolePoolsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<WorkerPoolInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl<WorkerPoolInner>>() { }.getType())
+    private ServiceResponse<PageImpl<WorkerPoolResourceInner>> listMultiRolePoolsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<WorkerPoolResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<WorkerPoolResourceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -6375,14 +6758,17 @@ public final class AppServiceEnvironmentsInner {
      * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object if successful.
      */
     public PagedList<ResourceMetricDefinitionInner> listMultiRolePoolInstanceMetricDefinitionsNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceMetricDefinitionInner>> response = listMultiRolePoolInstanceMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceMetricDefinitionInner>(response.getBody()) {
+        return new PagedList<ResourceMetricDefinitionInner>(response.body()) {
             @Override
             public Page<ResourceMetricDefinitionInner> nextPage(String nextPageLink) {
-                return listMultiRolePoolInstanceMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMultiRolePoolInstanceMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -6392,12 +6778,13 @@ public final class AppServiceEnvironmentsInner {
      * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricDefinitionInner>> listMultiRolePoolInstanceMetricDefinitionsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricDefinitionInner>> serviceCall, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricDefinitionInner>> listMultiRolePoolInstanceMetricDefinitionsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricDefinitionInner>> serviceFuture, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRolePoolInstanceMetricDefinitionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -6413,6 +6800,7 @@ public final class AppServiceEnvironmentsInner {
      * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<Page<ResourceMetricDefinitionInner>> listMultiRolePoolInstanceMetricDefinitionsNextAsync(final String nextPageLink) {
@@ -6420,7 +6808,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Page<ResourceMetricDefinitionInner>>() {
                 @Override
                 public Page<ResourceMetricDefinitionInner> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -6430,6 +6818,7 @@ public final class AppServiceEnvironmentsInner {
      * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listMultiRolePoolInstanceMetricDefinitionsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -6437,7 +6826,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -6451,19 +6840,21 @@ public final class AppServiceEnvironmentsInner {
      * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
      *
     ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listMultiRolePoolInstanceMetricDefinitionsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listMultiRolePoolInstanceMetricDefinitionsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listMultiRolePoolInstanceMetricDefinitionsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> result = listMultiRolePoolInstanceMetricDefinitionsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -6472,7 +6863,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> listMultiRolePoolInstanceMetricDefinitionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricDefinitionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricDefinitionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6483,14 +6874,17 @@ public final class AppServiceEnvironmentsInner {
      * Get metrics for a specific instance of a multi-role pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
     public PagedList<ResourceMetricInner> listMultiRolePoolInstanceMetricsNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMultiRolePoolInstanceMetricsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMultiRolePoolInstanceMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMultiRolePoolInstanceMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -6500,12 +6894,13 @@ public final class AppServiceEnvironmentsInner {
      * Get metrics for a specific instance of a multi-role pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMultiRolePoolInstanceMetricsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricInner>> listMultiRolePoolInstanceMetricsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricInner>> serviceFuture, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRolePoolInstanceMetricsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -6521,6 +6916,7 @@ public final class AppServiceEnvironmentsInner {
      * Get metrics for a specific instance of a multi-role pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<Page<ResourceMetricInner>> listMultiRolePoolInstanceMetricsNextAsync(final String nextPageLink) {
@@ -6528,7 +6924,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -6538,6 +6934,7 @@ public final class AppServiceEnvironmentsInner {
      * Get metrics for a specific instance of a multi-role pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMultiRolePoolInstanceMetricsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -6545,7 +6942,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -6559,19 +6956,21 @@ public final class AppServiceEnvironmentsInner {
      * Get metrics for a specific instance of a multi-role pool of an App Service Environment.
      *
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMultiRolePoolInstanceMetricsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listMultiRolePoolInstanceMetricsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listMultiRolePoolInstanceMetricsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMultiRolePoolInstanceMetricsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -6580,7 +6979,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricInner>> listMultiRolePoolInstanceMetricsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6591,14 +6990,17 @@ public final class AppServiceEnvironmentsInner {
      * Get metric definitions for a multi-role pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object if successful.
      */
     public PagedList<ResourceMetricDefinitionInner> listMultiRoleMetricDefinitionsNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceMetricDefinitionInner>> response = listMultiRoleMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceMetricDefinitionInner>(response.getBody()) {
+        return new PagedList<ResourceMetricDefinitionInner>(response.body()) {
             @Override
             public Page<ResourceMetricDefinitionInner> nextPage(String nextPageLink) {
-                return listMultiRoleMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMultiRoleMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -6608,12 +7010,13 @@ public final class AppServiceEnvironmentsInner {
      * Get metric definitions for a multi-role pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricDefinitionInner>> listMultiRoleMetricDefinitionsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricDefinitionInner>> serviceCall, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricDefinitionInner>> listMultiRoleMetricDefinitionsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricDefinitionInner>> serviceFuture, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRoleMetricDefinitionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -6629,6 +7032,7 @@ public final class AppServiceEnvironmentsInner {
      * Get metric definitions for a multi-role pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<Page<ResourceMetricDefinitionInner>> listMultiRoleMetricDefinitionsNextAsync(final String nextPageLink) {
@@ -6636,7 +7040,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Page<ResourceMetricDefinitionInner>>() {
                 @Override
                 public Page<ResourceMetricDefinitionInner> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -6646,6 +7050,7 @@ public final class AppServiceEnvironmentsInner {
      * Get metric definitions for a multi-role pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listMultiRoleMetricDefinitionsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -6653,7 +7058,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -6667,19 +7072,21 @@ public final class AppServiceEnvironmentsInner {
      * Get metric definitions for a multi-role pool of an App Service Environment.
      *
     ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listMultiRoleMetricDefinitionsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listMultiRoleMetricDefinitionsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listMultiRoleMetricDefinitionsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> result = listMultiRoleMetricDefinitionsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -6688,7 +7095,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> listMultiRoleMetricDefinitionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricDefinitionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricDefinitionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6699,14 +7106,17 @@ public final class AppServiceEnvironmentsInner {
      * Get metrics for a multi-role pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
     public PagedList<ResourceMetricInner> listMultiRoleMetricsNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMultiRoleMetricsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMultiRoleMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMultiRoleMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -6716,12 +7126,13 @@ public final class AppServiceEnvironmentsInner {
      * Get metrics for a multi-role pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMultiRoleMetricsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricInner>> listMultiRoleMetricsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricInner>> serviceFuture, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRoleMetricsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -6737,6 +7148,7 @@ public final class AppServiceEnvironmentsInner {
      * Get metrics for a multi-role pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<Page<ResourceMetricInner>> listMultiRoleMetricsNextAsync(final String nextPageLink) {
@@ -6744,7 +7156,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -6754,6 +7166,7 @@ public final class AppServiceEnvironmentsInner {
      * Get metrics for a multi-role pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMultiRoleMetricsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -6761,7 +7174,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -6775,19 +7188,21 @@ public final class AppServiceEnvironmentsInner {
      * Get metrics for a multi-role pool of an App Service Environment.
      *
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMultiRoleMetricsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listMultiRoleMetricsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listMultiRoleMetricsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMultiRoleMetricsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -6796,7 +7211,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricInner>> listMultiRoleMetricsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6807,14 +7222,17 @@ public final class AppServiceEnvironmentsInner {
      * Get available SKUs for scaling a multi-role pool.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SkuInfoInner&gt; object if successful.
      */
     public PagedList<SkuInfoInner> listMultiRolePoolSkusNext(final String nextPageLink) {
         ServiceResponse<Page<SkuInfoInner>> response = listMultiRolePoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SkuInfoInner>(response.getBody()) {
+        return new PagedList<SkuInfoInner>(response.body()) {
             @Override
             public Page<SkuInfoInner> nextPage(String nextPageLink) {
-                return listMultiRolePoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMultiRolePoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -6824,12 +7242,13 @@ public final class AppServiceEnvironmentsInner {
      * Get available SKUs for scaling a multi-role pool.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SkuInfoInner>> listMultiRolePoolSkusNextAsync(final String nextPageLink, final ServiceCall<List<SkuInfoInner>> serviceCall, final ListOperationCallback<SkuInfoInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<SkuInfoInner>> listMultiRolePoolSkusNextAsync(final String nextPageLink, final ServiceFuture<List<SkuInfoInner>> serviceFuture, final ListOperationCallback<SkuInfoInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRolePoolSkusNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
                 @Override
@@ -6845,6 +7264,7 @@ public final class AppServiceEnvironmentsInner {
      * Get available SKUs for scaling a multi-role pool.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SkuInfoInner&gt; object
      */
     public Observable<Page<SkuInfoInner>> listMultiRolePoolSkusNextAsync(final String nextPageLink) {
@@ -6852,7 +7272,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<SkuInfoInner>>, Page<SkuInfoInner>>() {
                 @Override
                 public Page<SkuInfoInner> call(ServiceResponse<Page<SkuInfoInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -6862,6 +7282,7 @@ public final class AppServiceEnvironmentsInner {
      * Get available SKUs for scaling a multi-role pool.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SkuInfoInner&gt; object
      */
     public Observable<ServiceResponse<Page<SkuInfoInner>>> listMultiRolePoolSkusNextWithServiceResponseAsync(final String nextPageLink) {
@@ -6869,7 +7290,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<SkuInfoInner>>, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SkuInfoInner>>> call(ServiceResponse<Page<SkuInfoInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -6883,19 +7304,21 @@ public final class AppServiceEnvironmentsInner {
      * Get available SKUs for scaling a multi-role pool.
      *
     ServiceResponse<PageImpl<SkuInfoInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SkuInfoInner>>> listMultiRolePoolSkusNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listMultiRolePoolSkusNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listMultiRolePoolSkusNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SkuInfoInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SkuInfoInner>> result = listMultiRolePoolSkusNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SkuInfoInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SkuInfoInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -6904,7 +7327,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<SkuInfoInner>> listMultiRolePoolSkusNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SkuInfoInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SkuInfoInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SkuInfoInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -6915,14 +7338,17 @@ public final class AppServiceEnvironmentsInner {
      * Get usage metrics for a multi-role pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;UsageInner&gt; object if successful.
      */
     public PagedList<UsageInner> listMultiRoleUsagesNext(final String nextPageLink) {
         ServiceResponse<Page<UsageInner>> response = listMultiRoleUsagesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<UsageInner>(response.getBody()) {
+        return new PagedList<UsageInner>(response.body()) {
             @Override
             public Page<UsageInner> nextPage(String nextPageLink) {
-                return listMultiRoleUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMultiRoleUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -6932,12 +7358,13 @@ public final class AppServiceEnvironmentsInner {
      * Get usage metrics for a multi-role pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<UsageInner>> listMultiRoleUsagesNextAsync(final String nextPageLink, final ServiceCall<List<UsageInner>> serviceCall, final ListOperationCallback<UsageInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<UsageInner>> listMultiRoleUsagesNextAsync(final String nextPageLink, final ServiceFuture<List<UsageInner>> serviceFuture, final ListOperationCallback<UsageInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMultiRoleUsagesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override
@@ -6953,6 +7380,7 @@ public final class AppServiceEnvironmentsInner {
      * Get usage metrics for a multi-role pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;UsageInner&gt; object
      */
     public Observable<Page<UsageInner>> listMultiRoleUsagesNextAsync(final String nextPageLink) {
@@ -6960,7 +7388,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<UsageInner>>, Page<UsageInner>>() {
                 @Override
                 public Page<UsageInner> call(ServiceResponse<Page<UsageInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -6970,6 +7398,7 @@ public final class AppServiceEnvironmentsInner {
      * Get usage metrics for a multi-role pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;UsageInner&gt; object
      */
     public Observable<ServiceResponse<Page<UsageInner>>> listMultiRoleUsagesNextWithServiceResponseAsync(final String nextPageLink) {
@@ -6977,7 +7406,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<UsageInner>>, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<UsageInner>>> call(ServiceResponse<Page<UsageInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -6991,19 +7420,21 @@ public final class AppServiceEnvironmentsInner {
      * Get usage metrics for a multi-role pool of an App Service Environment.
      *
     ServiceResponse<PageImpl<UsageInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UsageInner>>> listMultiRoleUsagesNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listMultiRoleUsagesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listMultiRoleUsagesNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<UsageInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<UsageInner>> result = listMultiRoleUsagesNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<UsageInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<UsageInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -7012,7 +7443,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<UsageInner>> listMultiRoleUsagesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<UsageInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<UsageInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<UsageInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -7023,14 +7454,17 @@ public final class AppServiceEnvironmentsInner {
      * Resume an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
     public PagedList<SiteInner> resumeNext(final String nextPageLink) {
         ServiceResponse<Page<SiteInner>> response = resumeNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return resumeNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return resumeNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -7040,12 +7474,13 @@ public final class AppServiceEnvironmentsInner {
      * Resume an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> resumeNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<SiteInner>> resumeNextAsync(final String nextPageLink, final ServiceFuture<List<SiteInner>> serviceFuture, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             resumeNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -7061,6 +7496,7 @@ public final class AppServiceEnvironmentsInner {
      * Resume an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<Page<SiteInner>> resumeNextAsync(final String nextPageLink) {
@@ -7068,7 +7504,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -7078,6 +7514,7 @@ public final class AppServiceEnvironmentsInner {
      * Resume an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInner>>> resumeNextWithServiceResponseAsync(final String nextPageLink) {
@@ -7085,7 +7522,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -7099,19 +7536,21 @@ public final class AppServiceEnvironmentsInner {
      * Resume an App Service Environment.
      *
     ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> resumeNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.resumeNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.resumeNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = resumeNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -7120,7 +7559,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<SiteInner>> resumeNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SiteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .register(202, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -7132,14 +7571,17 @@ public final class AppServiceEnvironmentsInner {
      * Resume an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
     public PagedList<SiteInner> beginResumeNext(final String nextPageLink) {
         ServiceResponse<Page<SiteInner>> response = beginResumeNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return beginResumeNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return beginResumeNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -7149,12 +7591,13 @@ public final class AppServiceEnvironmentsInner {
      * Resume an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> beginResumeNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<SiteInner>> beginResumeNextAsync(final String nextPageLink, final ServiceFuture<List<SiteInner>> serviceFuture, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             beginResumeNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -7170,6 +7613,7 @@ public final class AppServiceEnvironmentsInner {
      * Resume an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<Page<SiteInner>> beginResumeNextAsync(final String nextPageLink) {
@@ -7177,7 +7621,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -7187,6 +7631,7 @@ public final class AppServiceEnvironmentsInner {
      * Resume an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInner>>> beginResumeNextWithServiceResponseAsync(final String nextPageLink) {
@@ -7194,7 +7639,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -7208,19 +7653,21 @@ public final class AppServiceEnvironmentsInner {
      * Resume an App Service Environment.
      *
     ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> beginResumeNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.beginResumeNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.beginResumeNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = beginResumeNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -7229,7 +7676,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<SiteInner>> beginResumeNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SiteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .register(202, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -7241,14 +7688,17 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service plans in an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppServicePlanInner&gt; object if successful.
      */
     public PagedList<AppServicePlanInner> listAppServicePlansNext(final String nextPageLink) {
         ServiceResponse<Page<AppServicePlanInner>> response = listAppServicePlansNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<AppServicePlanInner>(response.getBody()) {
+        return new PagedList<AppServicePlanInner>(response.body()) {
             @Override
             public Page<AppServicePlanInner> nextPage(String nextPageLink) {
-                return listAppServicePlansNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAppServicePlansNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -7258,12 +7708,13 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service plans in an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServicePlanInner>> listAppServicePlansNextAsync(final String nextPageLink, final ServiceCall<List<AppServicePlanInner>> serviceCall, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<AppServicePlanInner>> listAppServicePlansNextAsync(final String nextPageLink, final ServiceFuture<List<AppServicePlanInner>> serviceFuture, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listAppServicePlansNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
@@ -7279,6 +7730,7 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service plans in an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
      */
     public Observable<Page<AppServicePlanInner>> listAppServicePlansNextAsync(final String nextPageLink) {
@@ -7286,7 +7738,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<AppServicePlanInner>>, Page<AppServicePlanInner>>() {
                 @Override
                 public Page<AppServicePlanInner> call(ServiceResponse<Page<AppServicePlanInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -7296,6 +7748,7 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service plans in an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
      */
     public Observable<ServiceResponse<Page<AppServicePlanInner>>> listAppServicePlansNextWithServiceResponseAsync(final String nextPageLink) {
@@ -7303,7 +7756,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<AppServicePlanInner>>, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServicePlanInner>>> call(ServiceResponse<Page<AppServicePlanInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -7317,19 +7770,21 @@ public final class AppServiceEnvironmentsInner {
      * Get all App Service plans in an App Service Environment.
      *
     ServiceResponse<PageImpl<AppServicePlanInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;AppServicePlanInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AppServicePlanInner>>> listAppServicePlansNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listAppServicePlansNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listAppServicePlansNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServicePlanInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AppServicePlanInner>> result = listAppServicePlansNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AppServicePlanInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<AppServicePlanInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -7338,7 +7793,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<AppServicePlanInner>> listAppServicePlansNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServicePlanInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServicePlanInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppServicePlanInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -7349,14 +7804,17 @@ public final class AppServiceEnvironmentsInner {
      * Get all apps in an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
     public PagedList<SiteInner> listWebAppsNext(final String nextPageLink) {
         ServiceResponse<Page<SiteInner>> response = listWebAppsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return listWebAppsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWebAppsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -7366,12 +7824,13 @@ public final class AppServiceEnvironmentsInner {
      * Get all apps in an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> listWebAppsNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<SiteInner>> listWebAppsNextAsync(final String nextPageLink, final ServiceFuture<List<SiteInner>> serviceFuture, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebAppsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -7387,6 +7846,7 @@ public final class AppServiceEnvironmentsInner {
      * Get all apps in an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<Page<SiteInner>> listWebAppsNextAsync(final String nextPageLink) {
@@ -7394,7 +7854,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -7404,6 +7864,7 @@ public final class AppServiceEnvironmentsInner {
      * Get all apps in an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listWebAppsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -7411,7 +7872,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -7425,19 +7886,21 @@ public final class AppServiceEnvironmentsInner {
      * Get all apps in an App Service Environment.
      *
     ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listWebAppsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listWebAppsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listWebAppsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = listWebAppsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -7446,7 +7909,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<SiteInner>> listWebAppsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SiteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -7457,14 +7920,17 @@ public final class AppServiceEnvironmentsInner {
      * Suspend an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
     public PagedList<SiteInner> suspendNext(final String nextPageLink) {
         ServiceResponse<Page<SiteInner>> response = suspendNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return suspendNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return suspendNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -7474,12 +7940,13 @@ public final class AppServiceEnvironmentsInner {
      * Suspend an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> suspendNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<SiteInner>> suspendNextAsync(final String nextPageLink, final ServiceFuture<List<SiteInner>> serviceFuture, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             suspendNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -7495,6 +7962,7 @@ public final class AppServiceEnvironmentsInner {
      * Suspend an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<Page<SiteInner>> suspendNextAsync(final String nextPageLink) {
@@ -7502,7 +7970,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -7512,6 +7980,7 @@ public final class AppServiceEnvironmentsInner {
      * Suspend an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInner>>> suspendNextWithServiceResponseAsync(final String nextPageLink) {
@@ -7519,7 +7988,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -7533,19 +8002,21 @@ public final class AppServiceEnvironmentsInner {
      * Suspend an App Service Environment.
      *
     ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> suspendNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.suspendNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.suspendNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = suspendNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -7554,7 +8025,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<SiteInner>> suspendNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SiteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .register(202, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -7566,14 +8037,17 @@ public final class AppServiceEnvironmentsInner {
      * Suspend an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
     public PagedList<SiteInner> beginSuspendNext(final String nextPageLink) {
         ServiceResponse<Page<SiteInner>> response = beginSuspendNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return beginSuspendNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return beginSuspendNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -7583,12 +8057,13 @@ public final class AppServiceEnvironmentsInner {
      * Suspend an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> beginSuspendNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<SiteInner>> beginSuspendNextAsync(final String nextPageLink, final ServiceFuture<List<SiteInner>> serviceFuture, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             beginSuspendNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -7604,6 +8079,7 @@ public final class AppServiceEnvironmentsInner {
      * Suspend an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<Page<SiteInner>> beginSuspendNextAsync(final String nextPageLink) {
@@ -7611,7 +8087,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -7621,6 +8097,7 @@ public final class AppServiceEnvironmentsInner {
      * Suspend an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInner>>> beginSuspendNextWithServiceResponseAsync(final String nextPageLink) {
@@ -7628,7 +8105,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -7642,19 +8119,21 @@ public final class AppServiceEnvironmentsInner {
      * Suspend an App Service Environment.
      *
     ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> beginSuspendNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.beginSuspendNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.beginSuspendNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = beginSuspendNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -7663,7 +8142,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<SiteInner>> beginSuspendNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SiteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .register(202, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -7675,14 +8154,17 @@ public final class AppServiceEnvironmentsInner {
      * Get global usage metrics of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object if successful.
      */
     public PagedList<CsmUsageQuotaInner> listUsagesNext(final String nextPageLink) {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = listUsagesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+        return new PagedList<CsmUsageQuotaInner>(response.body()) {
             @Override
             public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) {
-                return listUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -7692,12 +8174,13 @@ public final class AppServiceEnvironmentsInner {
      * Get global usage metrics of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CsmUsageQuotaInner>> listUsagesNextAsync(final String nextPageLink, final ServiceCall<List<CsmUsageQuotaInner>> serviceCall, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<CsmUsageQuotaInner>> listUsagesNextAsync(final String nextPageLink, final ServiceFuture<List<CsmUsageQuotaInner>> serviceFuture, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listUsagesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
@@ -7713,6 +8196,7 @@ public final class AppServiceEnvironmentsInner {
      * Get global usage metrics of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
     public Observable<Page<CsmUsageQuotaInner>> listUsagesNextAsync(final String nextPageLink) {
@@ -7720,7 +8204,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Page<CsmUsageQuotaInner>>() {
                 @Override
                 public Page<CsmUsageQuotaInner> call(ServiceResponse<Page<CsmUsageQuotaInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -7730,6 +8214,7 @@ public final class AppServiceEnvironmentsInner {
      * Get global usage metrics of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> listUsagesNextWithServiceResponseAsync(final String nextPageLink) {
@@ -7737,7 +8222,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -7751,19 +8236,21 @@ public final class AppServiceEnvironmentsInner {
      * Get global usage metrics of an App Service Environment.
      *
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> listUsagesNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listUsagesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listUsagesNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<CsmUsageQuotaInner>> result = listUsagesNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -7772,7 +8259,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<CsmUsageQuotaInner>> listUsagesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CsmUsageQuotaInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CsmUsageQuotaInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<CsmUsageQuotaInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -7783,14 +8270,17 @@ public final class AppServiceEnvironmentsInner {
      * Get all worker pools of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;WorkerPoolInner&gt; object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;WorkerPoolResourceInner&gt; object if successful.
      */
-    public PagedList<WorkerPoolInner> listWorkerPoolsNext(final String nextPageLink) {
-        ServiceResponse<Page<WorkerPoolInner>> response = listWorkerPoolsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<WorkerPoolInner>(response.getBody()) {
+    public PagedList<WorkerPoolResourceInner> listWorkerPoolsNext(final String nextPageLink) {
+        ServiceResponse<Page<WorkerPoolResourceInner>> response = listWorkerPoolsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<WorkerPoolResourceInner>(response.body()) {
             @Override
-            public Page<WorkerPoolInner> nextPage(String nextPageLink) {
-                return listWorkerPoolsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            public Page<WorkerPoolResourceInner> nextPage(String nextPageLink) {
+                return listWorkerPoolsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -7800,16 +8290,17 @@ public final class AppServiceEnvironmentsInner {
      * Get all worker pools of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<WorkerPoolInner>> listWorkerPoolsNextAsync(final String nextPageLink, final ServiceCall<List<WorkerPoolInner>> serviceCall, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<WorkerPoolResourceInner>> listWorkerPoolsNextAsync(final String nextPageLink, final ServiceFuture<List<WorkerPoolResourceInner>> serviceFuture, final ListOperationCallback<WorkerPoolResourceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWorkerPoolsNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<WorkerPoolResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> call(String nextPageLink) {
                     return listWorkerPoolsNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -7821,14 +8312,15 @@ public final class AppServiceEnvironmentsInner {
      * Get all worker pools of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;WorkerPoolInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;WorkerPoolResourceInner&gt; object
      */
-    public Observable<Page<WorkerPoolInner>> listWorkerPoolsNextAsync(final String nextPageLink) {
+    public Observable<Page<WorkerPoolResourceInner>> listWorkerPoolsNextAsync(final String nextPageLink) {
         return listWorkerPoolsNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Page<WorkerPoolInner>>() {
+            .map(new Func1<ServiceResponse<Page<WorkerPoolResourceInner>>, Page<WorkerPoolResourceInner>>() {
                 @Override
-                public Page<WorkerPoolInner> call(ServiceResponse<Page<WorkerPoolInner>> response) {
-                    return response.getBody();
+                public Page<WorkerPoolResourceInner> call(ServiceResponse<Page<WorkerPoolResourceInner>> response) {
+                    return response.body();
                 }
             });
     }
@@ -7838,14 +8330,15 @@ public final class AppServiceEnvironmentsInner {
      * Get all worker pools of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;WorkerPoolInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;WorkerPoolResourceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<WorkerPoolInner>>> listWorkerPoolsNextWithServiceResponseAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> listWorkerPoolsNextWithServiceResponseAsync(final String nextPageLink) {
         return listWorkerPoolsNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<WorkerPoolResourceInner>>, Observable<ServiceResponse<Page<WorkerPoolResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(ServiceResponse<Page<WorkerPoolInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> call(ServiceResponse<Page<WorkerPoolResourceInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -7858,20 +8351,22 @@ public final class AppServiceEnvironmentsInner {
      * Get all worker pools of an App Service Environment.
      * Get all worker pools of an App Service Environment.
      *
-    ServiceResponse<PageImpl<WorkerPoolInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
+    ServiceResponse<PageImpl<WorkerPoolResourceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;WorkerPoolResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<WorkerPoolInner>>> listWorkerPoolsNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> listWorkerPoolsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listWorkerPoolsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listWorkerPoolsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<WorkerPoolResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<WorkerPoolInner>> result = listWorkerPoolsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<WorkerPoolInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<WorkerPoolResourceInner>> result = listWorkerPoolsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<WorkerPoolResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -7879,9 +8374,9 @@ public final class AppServiceEnvironmentsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<WorkerPoolInner>> listWorkerPoolsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<WorkerPoolInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl<WorkerPoolInner>>() { }.getType())
+    private ServiceResponse<PageImpl<WorkerPoolResourceInner>> listWorkerPoolsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<WorkerPoolResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<WorkerPoolResourceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -7891,14 +8386,17 @@ public final class AppServiceEnvironmentsInner {
      * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object if successful.
      */
     public PagedList<ResourceMetricDefinitionInner> listWorkerPoolInstanceMetricDefinitionsNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceMetricDefinitionInner>> response = listWorkerPoolInstanceMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceMetricDefinitionInner>(response.getBody()) {
+        return new PagedList<ResourceMetricDefinitionInner>(response.body()) {
             @Override
             public Page<ResourceMetricDefinitionInner> nextPage(String nextPageLink) {
-                return listWorkerPoolInstanceMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWorkerPoolInstanceMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -7908,12 +8406,13 @@ public final class AppServiceEnvironmentsInner {
      * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricDefinitionInner>> listWorkerPoolInstanceMetricDefinitionsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricDefinitionInner>> serviceCall, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricDefinitionInner>> listWorkerPoolInstanceMetricDefinitionsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricDefinitionInner>> serviceFuture, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWorkerPoolInstanceMetricDefinitionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -7929,6 +8428,7 @@ public final class AppServiceEnvironmentsInner {
      * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<Page<ResourceMetricDefinitionInner>> listWorkerPoolInstanceMetricDefinitionsNextAsync(final String nextPageLink) {
@@ -7936,7 +8436,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Page<ResourceMetricDefinitionInner>>() {
                 @Override
                 public Page<ResourceMetricDefinitionInner> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -7946,6 +8446,7 @@ public final class AppServiceEnvironmentsInner {
      * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listWorkerPoolInstanceMetricDefinitionsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -7953,7 +8454,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -7967,19 +8468,21 @@ public final class AppServiceEnvironmentsInner {
      * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
      *
     ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listWorkerPoolInstanceMetricDefinitionsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listWorkerPoolInstanceMetricDefinitionsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listWorkerPoolInstanceMetricDefinitionsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> result = listWorkerPoolInstanceMetricDefinitionsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -7988,7 +8491,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> listWorkerPoolInstanceMetricDefinitionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricDefinitionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricDefinitionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -7999,14 +8502,17 @@ public final class AppServiceEnvironmentsInner {
      * Get metrics for a specific instance of a worker pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
     public PagedList<ResourceMetricInner> listWorkerPoolInstanceMetricsNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceMetricInner>> response = listWorkerPoolInstanceMetricsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listWorkerPoolInstanceMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWorkerPoolInstanceMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -8016,12 +8522,13 @@ public final class AppServiceEnvironmentsInner {
      * Get metrics for a specific instance of a worker pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listWorkerPoolInstanceMetricsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricInner>> listWorkerPoolInstanceMetricsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricInner>> serviceFuture, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWorkerPoolInstanceMetricsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -8037,6 +8544,7 @@ public final class AppServiceEnvironmentsInner {
      * Get metrics for a specific instance of a worker pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<Page<ResourceMetricInner>> listWorkerPoolInstanceMetricsNextAsync(final String nextPageLink) {
@@ -8044,7 +8552,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -8054,6 +8562,7 @@ public final class AppServiceEnvironmentsInner {
      * Get metrics for a specific instance of a worker pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listWorkerPoolInstanceMetricsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -8061,7 +8570,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -8075,19 +8584,21 @@ public final class AppServiceEnvironmentsInner {
      * Get metrics for a specific instance of a worker pool of an App Service Environment.
      *
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listWorkerPoolInstanceMetricsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listWorkerPoolInstanceMetricsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listWorkerPoolInstanceMetricsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listWorkerPoolInstanceMetricsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -8096,7 +8607,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricInner>> listWorkerPoolInstanceMetricsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -8107,14 +8618,17 @@ public final class AppServiceEnvironmentsInner {
      * Get metric definitions for a worker pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object if successful.
      */
     public PagedList<ResourceMetricDefinitionInner> listWebWorkerMetricDefinitionsNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceMetricDefinitionInner>> response = listWebWorkerMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceMetricDefinitionInner>(response.getBody()) {
+        return new PagedList<ResourceMetricDefinitionInner>(response.body()) {
             @Override
             public Page<ResourceMetricDefinitionInner> nextPage(String nextPageLink) {
-                return listWebWorkerMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWebWorkerMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -8124,12 +8638,13 @@ public final class AppServiceEnvironmentsInner {
      * Get metric definitions for a worker pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricDefinitionInner>> listWebWorkerMetricDefinitionsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricDefinitionInner>> serviceCall, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricDefinitionInner>> listWebWorkerMetricDefinitionsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricDefinitionInner>> serviceFuture, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebWorkerMetricDefinitionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -8145,6 +8660,7 @@ public final class AppServiceEnvironmentsInner {
      * Get metric definitions for a worker pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<Page<ResourceMetricDefinitionInner>> listWebWorkerMetricDefinitionsNextAsync(final String nextPageLink) {
@@ -8152,7 +8668,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Page<ResourceMetricDefinitionInner>>() {
                 @Override
                 public Page<ResourceMetricDefinitionInner> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -8162,6 +8678,7 @@ public final class AppServiceEnvironmentsInner {
      * Get metric definitions for a worker pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listWebWorkerMetricDefinitionsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -8169,7 +8686,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -8183,19 +8700,21 @@ public final class AppServiceEnvironmentsInner {
      * Get metric definitions for a worker pool of an App Service Environment.
      *
     ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listWebWorkerMetricDefinitionsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listWebWorkerMetricDefinitionsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listWebWorkerMetricDefinitionsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> result = listWebWorkerMetricDefinitionsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -8204,7 +8723,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> listWebWorkerMetricDefinitionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricDefinitionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricDefinitionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -8215,14 +8734,17 @@ public final class AppServiceEnvironmentsInner {
      * Get metrics for a worker pool of a AppServiceEnvironment (App Service Environment).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
     public PagedList<ResourceMetricInner> listWebWorkerMetricsNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceMetricInner>> response = listWebWorkerMetricsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listWebWorkerMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWebWorkerMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -8232,12 +8754,13 @@ public final class AppServiceEnvironmentsInner {
      * Get metrics for a worker pool of a AppServiceEnvironment (App Service Environment).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listWebWorkerMetricsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricInner>> listWebWorkerMetricsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricInner>> serviceFuture, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebWorkerMetricsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -8253,6 +8776,7 @@ public final class AppServiceEnvironmentsInner {
      * Get metrics for a worker pool of a AppServiceEnvironment (App Service Environment).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<Page<ResourceMetricInner>> listWebWorkerMetricsNextAsync(final String nextPageLink) {
@@ -8260,7 +8784,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -8270,6 +8794,7 @@ public final class AppServiceEnvironmentsInner {
      * Get metrics for a worker pool of a AppServiceEnvironment (App Service Environment).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listWebWorkerMetricsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -8277,7 +8802,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -8291,19 +8816,21 @@ public final class AppServiceEnvironmentsInner {
      * Get metrics for a worker pool of a AppServiceEnvironment (App Service Environment).
      *
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listWebWorkerMetricsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listWebWorkerMetricsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listWebWorkerMetricsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listWebWorkerMetricsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -8312,7 +8839,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricInner>> listWebWorkerMetricsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -8323,14 +8850,17 @@ public final class AppServiceEnvironmentsInner {
      * Get available SKUs for scaling a worker pool.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SkuInfoInner&gt; object if successful.
      */
     public PagedList<SkuInfoInner> listWorkerPoolSkusNext(final String nextPageLink) {
         ServiceResponse<Page<SkuInfoInner>> response = listWorkerPoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SkuInfoInner>(response.getBody()) {
+        return new PagedList<SkuInfoInner>(response.body()) {
             @Override
             public Page<SkuInfoInner> nextPage(String nextPageLink) {
-                return listWorkerPoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWorkerPoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -8340,12 +8870,13 @@ public final class AppServiceEnvironmentsInner {
      * Get available SKUs for scaling a worker pool.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SkuInfoInner>> listWorkerPoolSkusNextAsync(final String nextPageLink, final ServiceCall<List<SkuInfoInner>> serviceCall, final ListOperationCallback<SkuInfoInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<SkuInfoInner>> listWorkerPoolSkusNextAsync(final String nextPageLink, final ServiceFuture<List<SkuInfoInner>> serviceFuture, final ListOperationCallback<SkuInfoInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWorkerPoolSkusNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
                 @Override
@@ -8361,6 +8892,7 @@ public final class AppServiceEnvironmentsInner {
      * Get available SKUs for scaling a worker pool.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SkuInfoInner&gt; object
      */
     public Observable<Page<SkuInfoInner>> listWorkerPoolSkusNextAsync(final String nextPageLink) {
@@ -8368,7 +8900,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<SkuInfoInner>>, Page<SkuInfoInner>>() {
                 @Override
                 public Page<SkuInfoInner> call(ServiceResponse<Page<SkuInfoInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -8378,6 +8910,7 @@ public final class AppServiceEnvironmentsInner {
      * Get available SKUs for scaling a worker pool.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SkuInfoInner&gt; object
      */
     public Observable<ServiceResponse<Page<SkuInfoInner>>> listWorkerPoolSkusNextWithServiceResponseAsync(final String nextPageLink) {
@@ -8385,7 +8918,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<SkuInfoInner>>, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SkuInfoInner>>> call(ServiceResponse<Page<SkuInfoInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -8399,19 +8932,21 @@ public final class AppServiceEnvironmentsInner {
      * Get available SKUs for scaling a worker pool.
      *
     ServiceResponse<PageImpl<SkuInfoInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SkuInfoInner>>> listWorkerPoolSkusNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listWorkerPoolSkusNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listWorkerPoolSkusNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SkuInfoInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SkuInfoInner>> result = listWorkerPoolSkusNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SkuInfoInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SkuInfoInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -8420,7 +8955,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<SkuInfoInner>> listWorkerPoolSkusNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SkuInfoInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SkuInfoInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SkuInfoInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -8431,14 +8966,17 @@ public final class AppServiceEnvironmentsInner {
      * Get usage metrics for a worker pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;UsageInner&gt; object if successful.
      */
     public PagedList<UsageInner> listWebWorkerUsagesNext(final String nextPageLink) {
         ServiceResponse<Page<UsageInner>> response = listWebWorkerUsagesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<UsageInner>(response.getBody()) {
+        return new PagedList<UsageInner>(response.body()) {
             @Override
             public Page<UsageInner> nextPage(String nextPageLink) {
-                return listWebWorkerUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWebWorkerUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -8448,12 +8986,13 @@ public final class AppServiceEnvironmentsInner {
      * Get usage metrics for a worker pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<UsageInner>> listWebWorkerUsagesNextAsync(final String nextPageLink, final ServiceCall<List<UsageInner>> serviceCall, final ListOperationCallback<UsageInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<UsageInner>> listWebWorkerUsagesNextAsync(final String nextPageLink, final ServiceFuture<List<UsageInner>> serviceFuture, final ListOperationCallback<UsageInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebWorkerUsagesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override
@@ -8469,6 +9008,7 @@ public final class AppServiceEnvironmentsInner {
      * Get usage metrics for a worker pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;UsageInner&gt; object
      */
     public Observable<Page<UsageInner>> listWebWorkerUsagesNextAsync(final String nextPageLink) {
@@ -8476,7 +9016,7 @@ public final class AppServiceEnvironmentsInner {
             .map(new Func1<ServiceResponse<Page<UsageInner>>, Page<UsageInner>>() {
                 @Override
                 public Page<UsageInner> call(ServiceResponse<Page<UsageInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -8486,6 +9026,7 @@ public final class AppServiceEnvironmentsInner {
      * Get usage metrics for a worker pool of an App Service Environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;UsageInner&gt; object
      */
     public Observable<ServiceResponse<Page<UsageInner>>> listWebWorkerUsagesNextWithServiceResponseAsync(final String nextPageLink) {
@@ -8493,7 +9034,7 @@ public final class AppServiceEnvironmentsInner {
             .concatMap(new Func1<ServiceResponse<Page<UsageInner>>, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<UsageInner>>> call(ServiceResponse<Page<UsageInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -8507,19 +9048,21 @@ public final class AppServiceEnvironmentsInner {
      * Get usage metrics for a worker pool of an App Service Environment.
      *
     ServiceResponse<PageImpl<UsageInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UsageInner>>> listWebWorkerUsagesNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listWebWorkerUsagesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listWebWorkerUsagesNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<UsageInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<UsageInner>> result = listWebWorkerUsagesNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<UsageInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<UsageInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -8528,7 +9071,7 @@ public final class AppServiceEnvironmentsInner {
     }
 
     private ServiceResponse<PageImpl<UsageInner>> listWebWorkerUsagesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<UsageInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<UsageInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<UsageInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

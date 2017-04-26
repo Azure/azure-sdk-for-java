@@ -9,8 +9,10 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.management.compute.Sku;
+import com.microsoft.azure.management.compute.Plan;
 import com.microsoft.azure.management.compute.UpgradePolicy;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVMProfile;
+import com.microsoft.azure.management.compute.VirtualMachineScaleSetIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -21,24 +23,32 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class VirtualMachineScaleSetInner extends Resource {
     /**
-     * the virtual machine scale set sku.
+     * The virtual machine scale set sku.
      */
+    @JsonProperty(value = "sku")
     private Sku sku;
 
     /**
-     * the upgrade policy.
+     * The purchase plan when deploying a virtual machine scale set from VM
+     * Marketplace images.
+     */
+    @JsonProperty(value = "plan")
+    private Plan plan;
+
+    /**
+     * The upgrade policy.
      */
     @JsonProperty(value = "properties.upgradePolicy")
     private UpgradePolicy upgradePolicy;
 
     /**
-     * the virtual machine profile.
+     * The virtual machine profile.
      */
     @JsonProperty(value = "properties.virtualMachineProfile")
     private VirtualMachineScaleSetVMProfile virtualMachineProfile;
 
     /**
-     * the provisioning state, which only appears in the response.
+     * The provisioning state, which only appears in the response.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
@@ -47,8 +57,21 @@ public class VirtualMachineScaleSetInner extends Resource {
      * Specifies whether the Virtual Machine Scale Set should be
      * overprovisioned.
      */
-    @JsonProperty(value = "properties.overProvision")
-    private Boolean overProvision;
+    @JsonProperty(value = "properties.overprovision")
+    private Boolean overprovision;
+
+    /**
+     * When true this limits the scale set to a single placement group, of max
+     * size 100 virtual machines.
+     */
+    @JsonProperty(value = "properties.singlePlacementGroup")
+    private Boolean singlePlacementGroup;
+
+    /**
+     * The identity of the virtual machine scale set, if configured.
+     */
+    @JsonProperty(value = "identity")
+    private VirtualMachineScaleSetIdentity identity;
 
     /**
      * Get the sku value.
@@ -67,6 +90,26 @@ public class VirtualMachineScaleSetInner extends Resource {
      */
     public VirtualMachineScaleSetInner withSku(Sku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the plan value.
+     *
+     * @return the plan value
+     */
+    public Plan plan() {
+        return this.plan;
+    }
+
+    /**
+     * Set the plan value.
+     *
+     * @param plan the plan value to set
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withPlan(Plan plan) {
+        this.plan = plan;
         return this;
     }
 
@@ -120,22 +163,62 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Get the overProvision value.
+     * Get the overprovision value.
      *
-     * @return the overProvision value
+     * @return the overprovision value
      */
-    public Boolean overProvision() {
-        return this.overProvision;
+    public Boolean overprovision() {
+        return this.overprovision;
     }
 
     /**
-     * Set the overProvision value.
+     * Set the overprovision value.
      *
-     * @param overProvision the overProvision value to set
+     * @param overprovision the overprovision value to set
      * @return the VirtualMachineScaleSetInner object itself.
      */
-    public VirtualMachineScaleSetInner withOverProvision(Boolean overProvision) {
-        this.overProvision = overProvision;
+    public VirtualMachineScaleSetInner withOverprovision(Boolean overprovision) {
+        this.overprovision = overprovision;
+        return this;
+    }
+
+    /**
+     * Get the singlePlacementGroup value.
+     *
+     * @return the singlePlacementGroup value
+     */
+    public Boolean singlePlacementGroup() {
+        return this.singlePlacementGroup;
+    }
+
+    /**
+     * Set the singlePlacementGroup value.
+     *
+     * @param singlePlacementGroup the singlePlacementGroup value to set
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withSinglePlacementGroup(Boolean singlePlacementGroup) {
+        this.singlePlacementGroup = singlePlacementGroup;
+        return this;
+    }
+
+    /**
+     * Get the identity value.
+     *
+     * @return the identity value
+     */
+    public VirtualMachineScaleSetIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity value.
+     *
+     * @param identity the identity value to set
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withIdentity(VirtualMachineScaleSetIdentity identity) {
+        this.identity = identity;
         return this;
     }
 

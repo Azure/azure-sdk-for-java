@@ -9,19 +9,22 @@
 package com.microsoft.azure.management.compute;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The instance view of the disk.
  */
 public class DiskInstanceView {
     /**
-     * the disk name.
+     * The disk name.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
-     * the resource status information.
+     * The resource status information.
      */
+    @JsonProperty(value = "statuses")
     private List<InstanceViewStatus> statuses;
 
     /**

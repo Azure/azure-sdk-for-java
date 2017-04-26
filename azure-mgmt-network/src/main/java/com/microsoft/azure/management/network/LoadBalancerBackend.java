@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network;
 
 import java.util.Set;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.BackendAddressPoolInner;
 import com.microsoft.azure.management.network.model.HasBackendNics;
@@ -14,14 +15,15 @@ import com.microsoft.azure.management.network.model.HasLoadBalancingRules;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * An immutable client-side representation of a load balancer backend address pool.
  */
 @Fluent()
+@Beta
 public interface LoadBalancerBackend extends
-    Wrapper<BackendAddressPoolInner>,
+    HasInner<BackendAddressPoolInner>,
     ChildResource<LoadBalancer>,
     HasLoadBalancingRules,
     HasBackendNics {
@@ -37,7 +39,7 @@ public interface LoadBalancerBackend extends
     interface DefinitionStages {
         /**
          * The first stage of a load balancer backend definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithAttach<ParentT> {
         }
@@ -80,7 +82,7 @@ public interface LoadBalancerBackend extends
     interface UpdateDefinitionStages {
         /**
          * The first stage of a load balancer backend definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithAttach<ParentT> {
         }

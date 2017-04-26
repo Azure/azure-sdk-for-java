@@ -6,9 +6,12 @@
 
 package com.microsoft.azure.management.graphrbac;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import rx.Observable;
 
@@ -16,9 +19,10 @@ import rx.Observable;
  * Entry point to AD user management API.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
+@Beta
 public interface Users extends
-        //SupportsCreating<User.DefinitionStages.Blank>,
-        SupportsListing<User> {
+        SupportsListing<User>,
+        HasManager<GraphRbacManager> {
     /**
      * Gets the information about a user.
      *
@@ -42,7 +46,7 @@ public interface Users extends
      * @param callback the callback to handle the response
      * @return an Future based service call
      */
-    ServiceCall<User> getByUserPrincipalNameAsync(String upn, ServiceCallback<User> callback);
+    ServiceFuture<User> getByUserPrincipalNameAsync(String upn, ServiceCallback<User> callback);
 
     /**
      * Gets the information about a user.

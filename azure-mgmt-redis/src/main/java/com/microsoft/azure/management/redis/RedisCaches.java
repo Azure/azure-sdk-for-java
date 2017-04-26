@@ -7,26 +7,34 @@
 package com.microsoft.azure.management.redis;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.redis.implementation.RedisInner;
+import com.microsoft.azure.management.redis.implementation.RedisManager;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
- * Entry point for Redis Caches management API.
+ * Entry point for Redis Cache management API.
  */
 @Fluent
 public interface RedisCaches extends
         SupportsCreating<RedisCache.DefinitionStages.Blank>,
         SupportsListing<RedisCache>,
-        SupportsListingByGroup<RedisCache>,
-        SupportsGettingByGroup<RedisCache>,
+        SupportsListingByResourceGroup<RedisCache>,
+        SupportsGettingByResourceGroup<RedisCache>,
         SupportsGettingById<RedisCache>,
         SupportsDeletingById,
-        SupportsDeletingByGroup,
-        SupportsBatchCreation<RedisCache> {
+        SupportsDeletingByResourceGroup,
+        SupportsBatchCreation<RedisCache>,
+        SupportsBatchDeletion,
+        HasManager<RedisManager>,
+        HasInner<RedisInner> {
 }

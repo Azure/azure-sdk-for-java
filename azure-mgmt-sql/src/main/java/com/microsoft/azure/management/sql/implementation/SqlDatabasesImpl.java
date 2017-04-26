@@ -12,10 +12,13 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildResourcesImpl;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.sql.SqlDatabase;
 import com.microsoft.azure.management.sql.SqlDatabases;
+import com.microsoft.azure.management.sql.SqlServer;
+
+import rx.Completable;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.List;
 
@@ -28,31 +31,34 @@ class SqlDatabasesImpl extends IndependentChildResourcesImpl<
             SqlDatabaseImpl,
             DatabaseInner,
             DatabasesInner,
-            SqlServerManager>
+            SqlServerManager,
+            SqlServer>
         implements SqlDatabases.SqlDatabaseCreatable,
-        SupportsGettingByParent<SqlDatabase>,
-        SupportsListingByParent<SqlDatabase> {
-    protected SqlDatabasesImpl(DatabasesInner innerCollection, SqlServerManager manager) {
-        super(innerCollection, manager);
+        SupportsGettingByParent<SqlDatabase, SqlServer, SqlServerManager>,
+        SupportsListingByParent<SqlDatabase, SqlServer, SqlServerManager> {
+    protected SqlDatabasesImpl(SqlServerManager manager) {
+        super(manager.inner().databases(), manager);
     }
 
     @Override
     protected SqlDatabaseImpl wrapModel(String name) {
         DatabaseInner inner = new DatabaseInner();
-        return new SqlDatabaseImpl(
-                name,
-                inner,
-                this.innerCollection);
+        return new SqlDatabaseImpl(name, inner, this.manager());
     }
 
     @Override
-    public SqlDatabase getByParent(String resourceGroup, String parentName, String name) {
-        return wrapModel(this.innerCollection.get(resourceGroup, parentName, name));
+    public Observable<SqlDatabase> getByParentAsync(String resourceGroup, String parentName, String name) {
+        return this.inner().getAsync(resourceGroup, parentName, name).map(new Func1<DatabaseInner, SqlDatabase>() {
+            @Override
+            public SqlDatabase call(DatabaseInner databaseInner) {
+                return wrapModel(databaseInner);
+            }
+        });
     }
 
     @Override
     public PagedList<SqlDatabase> listByParent(String resourceGroupName, String parentName) {
-        return wrapList(this.innerCollection.listByServer(resourceGroupName, parentName));
+        return wrapList(this.inner().listByServer(resourceGroupName, parentName));
     }
 
     @Override
@@ -61,7 +67,7 @@ class SqlDatabasesImpl extends IndependentChildResourcesImpl<
             return null;
         }
 
-        return new SqlWarehouseImpl(inner.name(), inner, this.innerCollection);
+        return new SqlWarehouseImpl(inner.name(), inner, this.manager());
     }
 
     @Override
@@ -70,8 +76,8 @@ class SqlDatabasesImpl extends IndependentChildResourcesImpl<
     }
 
     @Override
-    public Observable<Void> deleteByParentAsync(String groupName, String parentName, String name) {
-        return this.innerCollection.deleteAsync(groupName, parentName, name);
+    public Completable deleteByParentAsync(String groupName, String parentName, String name) {
+        return this.inner().deleteAsync(groupName, parentName, name).toCompletable();
     }
 
     @Override
@@ -80,7 +86,7 @@ class SqlDatabasesImpl extends IndependentChildResourcesImpl<
     }
 
     @Override
-    public SqlDatabase getBySqlServer(GroupableResource sqlServer, String name) {
+    public SqlDatabase getBySqlServer(SqlServer sqlServer, String name) {
         return this.getByParent(sqlServer, name);
     }
 
@@ -90,7 +96,7 @@ class SqlDatabasesImpl extends IndependentChildResourcesImpl<
     }
 
     @Override
-    public List<SqlDatabase> listBySqlServer(GroupableResource sqlServer) {
+    public List<SqlDatabase> listBySqlServer(SqlServer sqlServer) {
         return this.listByParent(sqlServer);
     }
 
@@ -99,9 +105,7 @@ class SqlDatabasesImpl extends IndependentChildResourcesImpl<
         DatabaseInner inner = new DatabaseInner();
         inner.withLocation(region.name());
 
-        return new SqlDatabaseImpl(
-                databaseName,
-                inner,
-                this.innerCollection).withExistingParentResource(resourceGroupName, sqlServerName);
+        return new SqlDatabaseImpl(databaseName, inner, this.manager())
+                .withExistingParentResource(resourceGroupName, sqlServerName);
     }
 }

@@ -8,16 +8,21 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineImageInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * An immutable client-side representation of an Azure virtual machine image.
  */
 @Fluent
 public interface VirtualMachineImage extends
-        Wrapper<VirtualMachineImageInner> {
+        HasInner<VirtualMachineImageInner> {
+    /**
+     * @return the resource ID of this image
+     */
+    String id();
+
     /**
      * @return the region in which virtual machine image is available
      */
@@ -59,7 +64,7 @@ public interface VirtualMachineImage extends
     OSDiskImage osDiskImage();
 
     /**
-     * @return data disk images in the virtual machine image
+     * @return data disk images in the virtual machine image, indexed by the disk LUN
      */
-    List<DataDiskImage> dataDiskImages();
+    Map<Integer, DataDiskImage> dataDiskImages();
 }

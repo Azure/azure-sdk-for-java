@@ -7,7 +7,7 @@
 package com.microsoft.azure.management.sql;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 import java.util.UUID;
 
@@ -17,7 +17,7 @@ import java.util.UUID;
  */
 @Fluent
 public interface UpgradeHintInterface extends
-        Wrapper<UpgradeHint> {
+        HasInner<UpgradeHint> {
     /**
      * @return Target ServiceLevelObjective for upgrade hint.
      */

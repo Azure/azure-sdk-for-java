@@ -12,13 +12,13 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Profile properties required for profile update.
+ * Properties required to update a profile.
  */
 public class ProfileUpdateParameters {
     /**
      * Profile tags.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "tags", required = true)
     private Map<String, String> tags;
 
     /**

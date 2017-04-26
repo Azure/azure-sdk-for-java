@@ -16,93 +16,94 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.SubResource;
 
 /**
- * Peering in a ExpressRouteCircuit resource.
+ * Peering in an ExpressRouteCircuit resource.
  */
 @JsonFlatten
 public class ExpressRouteCircuitPeeringInner extends SubResource {
     /**
-     * Gets or sets PeeringType. Possible values include:
+     * The PeeringType. Possible values are: 'AzurePublicPeering',
+     * 'AzurePrivatePeering', and 'MicrosoftPeering'. Possible values include:
      * 'AzurePublicPeering', 'AzurePrivatePeering', 'MicrosoftPeering'.
      */
     @JsonProperty(value = "properties.peeringType")
     private ExpressRouteCircuitPeeringType peeringType;
 
     /**
-     * Gets or sets state of Peering. Possible values include: 'Disabled',
-     * 'Enabled'.
+     * The state of peering. Possible values are: 'Disabled' and 'Enabled'.
+     * Possible values include: 'Disabled', 'Enabled'.
      */
     @JsonProperty(value = "properties.state")
     private ExpressRouteCircuitPeeringState state;
 
     /**
-     * Gets or sets the azure ASN.
+     * The Azure ASN.
      */
     @JsonProperty(value = "properties.azureASN")
     private Integer azureASN;
 
     /**
-     * Gets or sets the peer ASN.
+     * The peer ASN.
      */
     @JsonProperty(value = "properties.peerASN")
     private Integer peerASN;
 
     /**
-     * Gets or sets the primary address prefix.
+     * The primary address prefix.
      */
     @JsonProperty(value = "properties.primaryPeerAddressPrefix")
     private String primaryPeerAddressPrefix;
 
     /**
-     * Gets or sets the secondary address prefix.
+     * The secondary address prefix.
      */
     @JsonProperty(value = "properties.secondaryPeerAddressPrefix")
     private String secondaryPeerAddressPrefix;
 
     /**
-     * Gets or sets the primary port.
+     * The primary port.
      */
     @JsonProperty(value = "properties.primaryAzurePort")
     private String primaryAzurePort;
 
     /**
-     * Gets or sets the secondary port.
+     * The secondary port.
      */
     @JsonProperty(value = "properties.secondaryAzurePort")
     private String secondaryAzurePort;
 
     /**
-     * Gets or sets the shared key.
+     * The shared key.
      */
     @JsonProperty(value = "properties.sharedKey")
     private String sharedKey;
 
     /**
-     * Gets or sets the vlan id.
+     * The VLAN ID.
      */
     @JsonProperty(value = "properties.vlanId")
     private Integer vlanId;
 
     /**
-     * Gets or sets the mircosoft peering config.
+     * The Microsoft peering configuration.
      */
     @JsonProperty(value = "properties.microsoftPeeringConfig")
     private ExpressRouteCircuitPeeringConfig microsoftPeeringConfig;
 
     /**
-     * Gets or peering stats.
+     * Gets peering stats.
      */
     @JsonProperty(value = "properties.stats")
     private ExpressRouteCircuitStatsInner stats;
 
     /**
-     * Gets provisioning state of the PublicIP resource
-     * Updating/Deleting/Failed.
+     * Gets the provisioning state of the public IP resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets or sets the GatewayManager Etag.
+     * The GatewayManager Etag.
      */
     @JsonProperty(value = "properties.gatewayManagerEtag")
     private String gatewayManagerEtag;
@@ -114,14 +115,22 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
     private String lastModifiedBy;
 
     /**
+     * The reference of the RouteFilter resource.
+     */
+    @JsonProperty(value = "properties.routeFilter")
+    private RouteFilterInner routeFilter;
+
+    /**
      * Gets name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * A unique read-only string that changes whenever the resource is updated.
      */
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /**
@@ -425,6 +434,26 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
     }
 
     /**
+     * Get the routeFilter value.
+     *
+     * @return the routeFilter value
+     */
+    public RouteFilterInner routeFilter() {
+        return this.routeFilter;
+    }
+
+    /**
+     * Set the routeFilter value.
+     *
+     * @param routeFilter the routeFilter value to set
+     * @return the ExpressRouteCircuitPeeringInner object itself.
+     */
+    public ExpressRouteCircuitPeeringInner withRouteFilter(RouteFilterInner routeFilter) {
+        this.routeFilter = routeFilter;
+        return this;
+    }
+
+    /**
      * Get the name value.
      *
      * @return the name value
@@ -451,17 +480,6 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Set the etag value.
-     *
-     * @param etag the etag value to set
-     * @return the ExpressRouteCircuitPeeringInner object itself.
-     */
-    public ExpressRouteCircuitPeeringInner withEtag(String etag) {
-        this.etag = etag;
-        return this;
     }
 
 }

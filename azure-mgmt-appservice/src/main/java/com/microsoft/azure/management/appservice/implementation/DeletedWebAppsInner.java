@@ -8,15 +8,15 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
@@ -27,6 +27,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -35,7 +36,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in DeletedWebApps.
  */
-public final class DeletedWebAppsInner {
+public class DeletedWebAppsInner implements InnerSupportsListing<DeletedSiteInner> {
     /** The Retrofit service to perform REST calls. */
     private DeletedWebAppsService service;
     /** The service client containing this operation class. */
@@ -57,21 +58,21 @@ public final class DeletedWebAppsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface DeletedWebAppsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.DeletedWebApps list" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.Web/deletedSites")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.DeletedWebApps listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/deletedSites")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.DeletedWebApps listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listByResourceGroupNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.DeletedWebApps listByResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -79,14 +80,17 @@ public final class DeletedWebAppsInner {
      * Get all deleted apps for a subscription.
      * Get all deleted apps for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DeletedSiteInner&gt; object if successful.
      */
     public PagedList<DeletedSiteInner> list() {
         ServiceResponse<Page<DeletedSiteInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<DeletedSiteInner>(response.getBody()) {
+        return new PagedList<DeletedSiteInner>(response.body()) {
             @Override
             public Page<DeletedSiteInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -96,10 +100,11 @@ public final class DeletedWebAppsInner {
      * Get all deleted apps for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DeletedSiteInner>> listAsync(final ListOperationCallback<DeletedSiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<DeletedSiteInner>> listAsync(final ListOperationCallback<DeletedSiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<DeletedSiteInner>>>>() {
                 @Override
@@ -114,6 +119,7 @@ public final class DeletedWebAppsInner {
      * Get all deleted apps for a subscription.
      * Get all deleted apps for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeletedSiteInner&gt; object
      */
     public Observable<Page<DeletedSiteInner>> listAsync() {
@@ -121,7 +127,7 @@ public final class DeletedWebAppsInner {
             .map(new Func1<ServiceResponse<Page<DeletedSiteInner>>, Page<DeletedSiteInner>>() {
                 @Override
                 public Page<DeletedSiteInner> call(ServiceResponse<Page<DeletedSiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -130,6 +136,7 @@ public final class DeletedWebAppsInner {
      * Get all deleted apps for a subscription.
      * Get all deleted apps for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeletedSiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<DeletedSiteInner>>> listWithServiceResponseAsync() {
@@ -137,7 +144,7 @@ public final class DeletedWebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeletedSiteInner>>, Observable<ServiceResponse<Page<DeletedSiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeletedSiteInner>>> call(ServiceResponse<Page<DeletedSiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -150,6 +157,7 @@ public final class DeletedWebAppsInner {
      * Get all deleted apps for a subscription.
      * Get all deleted apps for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeletedSiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeletedSiteInner>>> listSinglePageAsync() {
@@ -163,7 +171,7 @@ public final class DeletedWebAppsInner {
                 public Observable<ServiceResponse<Page<DeletedSiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeletedSiteInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeletedSiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeletedSiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -172,7 +180,7 @@ public final class DeletedWebAppsInner {
     }
 
     private ServiceResponse<PageImpl<DeletedSiteInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DeletedSiteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DeletedSiteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DeletedSiteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -183,14 +191,17 @@ public final class DeletedWebAppsInner {
      * Gets deleted web apps in subscription.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DeletedSiteInner&gt; object if successful.
      */
     public PagedList<DeletedSiteInner> listByResourceGroup(final String resourceGroupName) {
         ServiceResponse<Page<DeletedSiteInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<DeletedSiteInner>(response.getBody()) {
+        return new PagedList<DeletedSiteInner>(response.body()) {
             @Override
             public Page<DeletedSiteInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -201,10 +212,11 @@ public final class DeletedWebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DeletedSiteInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DeletedSiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<DeletedSiteInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DeletedSiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<DeletedSiteInner>>>>() {
                 @Override
@@ -220,6 +232,7 @@ public final class DeletedWebAppsInner {
      * Gets deleted web apps in subscription.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeletedSiteInner&gt; object
      */
     public Observable<Page<DeletedSiteInner>> listByResourceGroupAsync(final String resourceGroupName) {
@@ -227,7 +240,7 @@ public final class DeletedWebAppsInner {
             .map(new Func1<ServiceResponse<Page<DeletedSiteInner>>, Page<DeletedSiteInner>>() {
                 @Override
                 public Page<DeletedSiteInner> call(ServiceResponse<Page<DeletedSiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -237,6 +250,7 @@ public final class DeletedWebAppsInner {
      * Gets deleted web apps in subscription.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeletedSiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<DeletedSiteInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
@@ -244,7 +258,7 @@ public final class DeletedWebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeletedSiteInner>>, Observable<ServiceResponse<Page<DeletedSiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeletedSiteInner>>> call(ServiceResponse<Page<DeletedSiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -258,6 +272,7 @@ public final class DeletedWebAppsInner {
      * Gets deleted web apps in subscription.
      *
     ServiceResponse<PageImpl<DeletedSiteInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeletedSiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeletedSiteInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
@@ -274,7 +289,7 @@ public final class DeletedWebAppsInner {
                 public Observable<ServiceResponse<Page<DeletedSiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeletedSiteInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeletedSiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeletedSiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -283,7 +298,7 @@ public final class DeletedWebAppsInner {
     }
 
     private ServiceResponse<PageImpl<DeletedSiteInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DeletedSiteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DeletedSiteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DeletedSiteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -294,14 +309,17 @@ public final class DeletedWebAppsInner {
      * Get all deleted apps for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DeletedSiteInner&gt; object if successful.
      */
     public PagedList<DeletedSiteInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<DeletedSiteInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<DeletedSiteInner>(response.getBody()) {
+        return new PagedList<DeletedSiteInner>(response.body()) {
             @Override
             public Page<DeletedSiteInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -311,12 +329,13 @@ public final class DeletedWebAppsInner {
      * Get all deleted apps for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DeletedSiteInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<DeletedSiteInner>> serviceCall, final ListOperationCallback<DeletedSiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<DeletedSiteInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<DeletedSiteInner>> serviceFuture, final ListOperationCallback<DeletedSiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DeletedSiteInner>>>>() {
                 @Override
@@ -332,6 +351,7 @@ public final class DeletedWebAppsInner {
      * Get all deleted apps for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeletedSiteInner&gt; object
      */
     public Observable<Page<DeletedSiteInner>> listNextAsync(final String nextPageLink) {
@@ -339,7 +359,7 @@ public final class DeletedWebAppsInner {
             .map(new Func1<ServiceResponse<Page<DeletedSiteInner>>, Page<DeletedSiteInner>>() {
                 @Override
                 public Page<DeletedSiteInner> call(ServiceResponse<Page<DeletedSiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -349,6 +369,7 @@ public final class DeletedWebAppsInner {
      * Get all deleted apps for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeletedSiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<DeletedSiteInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -356,7 +377,7 @@ public final class DeletedWebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeletedSiteInner>>, Observable<ServiceResponse<Page<DeletedSiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeletedSiteInner>>> call(ServiceResponse<Page<DeletedSiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -370,19 +391,21 @@ public final class DeletedWebAppsInner {
      * Get all deleted apps for a subscription.
      *
     ServiceResponse<PageImpl<DeletedSiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeletedSiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeletedSiteInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DeletedSiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeletedSiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeletedSiteInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeletedSiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeletedSiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -391,7 +414,7 @@ public final class DeletedWebAppsInner {
     }
 
     private ServiceResponse<PageImpl<DeletedSiteInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DeletedSiteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DeletedSiteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DeletedSiteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -402,14 +425,17 @@ public final class DeletedWebAppsInner {
      * Gets deleted web apps in subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DeletedSiteInner&gt; object if successful.
      */
     public PagedList<DeletedSiteInner> listByResourceGroupNext(final String nextPageLink) {
         ServiceResponse<Page<DeletedSiteInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<DeletedSiteInner>(response.getBody()) {
+        return new PagedList<DeletedSiteInner>(response.body()) {
             @Override
             public Page<DeletedSiteInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -419,12 +445,13 @@ public final class DeletedWebAppsInner {
      * Gets deleted web apps in subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DeletedSiteInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<DeletedSiteInner>> serviceCall, final ListOperationCallback<DeletedSiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<DeletedSiteInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<DeletedSiteInner>> serviceFuture, final ListOperationCallback<DeletedSiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DeletedSiteInner>>>>() {
                 @Override
@@ -440,6 +467,7 @@ public final class DeletedWebAppsInner {
      * Gets deleted web apps in subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeletedSiteInner&gt; object
      */
     public Observable<Page<DeletedSiteInner>> listByResourceGroupNextAsync(final String nextPageLink) {
@@ -447,7 +475,7 @@ public final class DeletedWebAppsInner {
             .map(new Func1<ServiceResponse<Page<DeletedSiteInner>>, Page<DeletedSiteInner>>() {
                 @Override
                 public Page<DeletedSiteInner> call(ServiceResponse<Page<DeletedSiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -457,6 +485,7 @@ public final class DeletedWebAppsInner {
      * Gets deleted web apps in subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeletedSiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<DeletedSiteInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
@@ -464,7 +493,7 @@ public final class DeletedWebAppsInner {
             .concatMap(new Func1<ServiceResponse<Page<DeletedSiteInner>>, Observable<ServiceResponse<Page<DeletedSiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeletedSiteInner>>> call(ServiceResponse<Page<DeletedSiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -478,19 +507,21 @@ public final class DeletedWebAppsInner {
      * Gets deleted web apps in subscription.
      *
     ServiceResponse<PageImpl<DeletedSiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeletedSiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeletedSiteInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listByResourceGroupNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DeletedSiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeletedSiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<DeletedSiteInner>> result = listByResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeletedSiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<DeletedSiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -499,7 +530,7 @@ public final class DeletedWebAppsInner {
     }
 
     private ServiceResponse<PageImpl<DeletedSiteInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DeletedSiteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DeletedSiteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DeletedSiteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

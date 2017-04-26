@@ -1,0 +1,143 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:3342/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsatd6226169a6a0b?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "201",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgrsatd6226169a6a0b\",\"name\":\"rgrsatd6226169a6a0b\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T010523Z:305f949d-8277-4714-a52d-ff80027de380",
+      "date" : "Thu, 13 Apr 2017 01:05:22 GMT",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "305f949d-8277-4714-a52d-ff80027de380",
+      "content-length" : "191",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "305f949d-8277-4714-a52d-ff80027de380"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:3342/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsatd6226169a6a0b/providers/Microsoft.Resources/deployments/dprsatd4c27521b6667?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "201",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgrsatd6226169a6a0b/providers/Microsoft.Resources/deployments/dprsatd4c27521b6667\",\"name\":\"dprsatd4c27521b6667\",\"properties\":{\"templateHash\":\"16798450926687303330\",\"parameters\":{\"hostingPlanName\":{\"type\":\"String\",\"value\":\"hprsat1955732109306\"},\"webSiteName\":{\"type\":\"String\",\"value\":\"wnrsat869097873d1fd\"},\"skuName\":{\"type\":\"String\",\"value\":\"F1\"},\"skuCapacity\":{\"type\":\"Int\",\"value\":1}},\"mode\":\"Incremental\",\"provisioningState\":\"Accepted\",\"timestamp\":\"2017-04-13T01:05:24.4129116Z\",\"duration\":\"PT0.6365946S\",\"correlationId\":\"8ce9b5e8-ae13-49ef-8825-441cd3448eed\",\"providers\":[{\"namespace\":\"Microsoft.Web\",\"resourceTypes\":[{\"resourceType\":\"serverfarms\",\"locations\":[\"westus\"]},{\"resourceType\":\"sites\",\"locations\":[\"westus\"]},{\"resourceType\":\"sites/config\",\"locations\":[null]}]}],\"dependencies\":[{\"dependsOn\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgrsatd6226169a6a0b/providers/Microsoft.Web/serverfarms/hprsat1955732109306\",\"resourceType\":\"Microsoft.Web/serverfarms\",\"resourceName\":\"hprsat1955732109306\"}],\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgrsatd6226169a6a0b/providers/Microsoft.Web/sites/wnrsat869097873d1fd\",\"resourceType\":\"Microsoft.Web/sites\",\"resourceName\":\"wnrsat869097873d1fd\"},{\"dependsOn\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgrsatd6226169a6a0b/providers/Microsoft.Web/sites/wnrsat869097873d1fd\",\"resourceType\":\"Microsoft.Web/sites\",\"resourceName\":\"wnrsat869097873d1fd\"}],\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgrsatd6226169a6a0b/providers/Microsoft.Web/sites/wnrsat869097873d1fd/config/web\",\"resourceType\":\"Microsoft.Web/sites/config\",\"resourceName\":\"wnrsat869097873d1fd/web\"}]}}",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "azure-asyncoperation" : "http://localhost:3342/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsatd6226169a6a0b/providers/Microsoft.Resources/deployments/dprsatd4c27521b6667/operationStatuses/08587095613617012989?api-version=2016-09-01",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T010524Z:8ce9b5e8-ae13-49ef-8825-441cd3448eed",
+      "date" : "Thu, 13 Apr 2017 01:05:23 GMT",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "8ce9b5e8-ae13-49ef-8825-441cd3448eed",
+      "content-length" : "1812",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "8ce9b5e8-ae13-49ef-8825-441cd3448eed"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3342/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsatd6226169a6a0b/providers/Microsoft.Resources/deployments/dprsatd4c27521b6667/operationStatuses/08587095613617012989?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"status\":\"Accepted\"}",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14999",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T010524Z:b0c95d68-2596-4864-88e1-54df99efd26d",
+      "date" : "Thu, 13 Apr 2017 01:05:24 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "b0c95d68-2596-4864-88e1-54df99efd26d",
+      "content-length" : "21",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "b0c95d68-2596-4864-88e1-54df99efd26d"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3342/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsatd6226169a6a0b/providers/Microsoft.Resources/deployments/dprsatd4c27521b6667/operationStatuses/08587095613617012989?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"status\":\"Succeeded\"}",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14998",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T010554Z:d37ed121-d082-4857-8590-a911da8b9013",
+      "date" : "Thu, 13 Apr 2017 01:05:54 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "d37ed121-d082-4857-8590-a911da8b9013",
+      "content-length" : "22",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "d37ed121-d082-4857-8590-a911da8b9013"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3342/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsatd6226169a6a0b/providers/Microsoft.Resources/deployments/dprsatd4c27521b6667?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgrsatd6226169a6a0b/providers/Microsoft.Resources/deployments/dprsatd4c27521b6667\",\"name\":\"dprsatd4c27521b6667\",\"properties\":{\"templateHash\":\"16798450926687303330\",\"parameters\":{\"hostingPlanName\":{\"type\":\"String\",\"value\":\"hprsat1955732109306\"},\"webSiteName\":{\"type\":\"String\",\"value\":\"wnrsat869097873d1fd\"},\"skuName\":{\"type\":\"String\",\"value\":\"F1\"},\"skuCapacity\":{\"type\":\"Int\",\"value\":1}},\"mode\":\"Incremental\",\"provisioningState\":\"Succeeded\",\"timestamp\":\"2017-04-13T01:05:45.525785Z\",\"duration\":\"PT21.749468S\",\"correlationId\":\"8ce9b5e8-ae13-49ef-8825-441cd3448eed\",\"providers\":[{\"namespace\":\"Microsoft.Web\",\"resourceTypes\":[{\"resourceType\":\"serverfarms\",\"locations\":[\"westus\"]},{\"resourceType\":\"sites\",\"locations\":[\"westus\"]},{\"resourceType\":\"sites/config\",\"locations\":[null]}]}],\"dependencies\":[{\"dependsOn\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgrsatd6226169a6a0b/providers/Microsoft.Web/serverfarms/hprsat1955732109306\",\"resourceType\":\"Microsoft.Web/serverfarms\",\"resourceName\":\"hprsat1955732109306\"}],\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgrsatd6226169a6a0b/providers/Microsoft.Web/sites/wnrsat869097873d1fd\",\"resourceType\":\"Microsoft.Web/sites\",\"resourceName\":\"wnrsat869097873d1fd\"},{\"dependsOn\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgrsatd6226169a6a0b/providers/Microsoft.Web/sites/wnrsat869097873d1fd\",\"resourceType\":\"Microsoft.Web/sites\",\"resourceName\":\"wnrsat869097873d1fd\"}],\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgrsatd6226169a6a0b/providers/Microsoft.Web/sites/wnrsat869097873d1fd/config/web\",\"resourceType\":\"Microsoft.Web/sites/config\",\"resourceName\":\"wnrsat869097873d1fd/web\"}],\"outputResources\":[{\"id\":\"Microsoft.Web/serverfarms/hprsat1955732109306\"},{\"id\":\"Microsoft.Web/sites/wnrsat869097873d1fd\"},{\"id\":\"Microsoft.Web/sites/wnrsat869097873d1fd/config/web\"}]}}",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14997",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T010555Z:699f32e8-3f09-4a55-8b20-74b7321bc975",
+      "date" : "Thu, 13 Apr 2017 01:05:55 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "699f32e8-3f09-4a55-8b20-74b7321bc975",
+      "content-length" : "1996",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "699f32e8-3f09-4a55-8b20-74b7321bc975"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:3342/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsatd6226169a6a0b?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "202",
+      "Body" : "",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1197",
+      "location" : "http://localhost:3342/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR1JTQVRENjIyNjE2OUE2QTBCLVdFU1RVUyIsImpvYkxvY2F0aW9uIjoid2VzdHVzIn0?api-version=2016-09-01",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T010555Z:373b840c-3c15-420d-844b-389c5c731a1d",
+      "date" : "Thu, 13 Apr 2017 01:05:55 GMT",
+      "pragma" : "no-cache",
+      "cache-control" : "no-cache",
+      "retry-after" : "0",
+      "expires" : "-1",
+      "x-ms-request-id" : "373b840c-3c15-420d-844b-389c5c731a1d",
+      "content-length" : "0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "373b840c-3c15-420d-844b-389c5c731a1d"
+    }
+  } ],
+  "variables" : [ "rgrsatd6226169a6a0b", "dprsatd4c27521b6667", "hprsat1955732109306", "wnrsat869097873d1fd" ]
+}

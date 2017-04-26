@@ -22,10 +22,10 @@ import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRuleType;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
-import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 
 /**
  *  Implementation for ApplicationGatewayRequestRoutingRule.
@@ -100,15 +100,15 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public String publicIpAddressId() {
+    public String publicIPAddressId() {
         final ApplicationGatewayListener listener = this.listener();
-        return (listener != null) ? listener.publicIpAddressId() : null;
+        return (listener != null) ? listener.publicIPAddressId() : null;
     }
 
     @Override
-    public PublicIpAddress getPublicIpAddress() {
-        final String pipId = this.publicIpAddressId();
-        return (pipId != null) ? this.parent().manager().publicIpAddresses().getById(pipId) : null;
+    public PublicIPAddress getPublicIPAddress() {
+        final String pipId = this.publicIPAddressId();
+        return (pipId != null) ? this.parent().manager().publicIPAddresses().getById(pipId) : null;
     }
 
     @Override
@@ -200,7 +200,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     private ApplicationGatewayBackendHttpConfigurationImpl ensureBackendHttpConfig() {
         ApplicationGatewayBackendHttpConfigurationImpl config = this.backendHttpConfiguration();
         if (config == null) {
-            final String name = ResourceNamer.randomResourceName("bckcfg", 11);
+            final String name = SdkContext.randomResourceName("bckcfg", 11);
             config = this.parent().defineBackendHttpConfiguration(name);
             config.attach();
             this.toBackendHttpConfiguration(name);
@@ -210,7 +210,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl toBackendHttpPort(int portNumber) {
-        String name = ResourceNamer.randomResourceName("backcfg", 12);
+        String name = SdkContext.randomResourceName("backcfg", 12);
         this.parent().defineBackendHttpConfiguration(name)
             .withPort(portNumber)
             .attach();
@@ -254,7 +254,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
         if (Boolean.TRUE.equals(needToCreate)) {
             // If no listener exists for the requested port number yet and the name, create one
             if (name == null) {
-                name = ResourceNamer.randomResourceName("listener", 13);
+                name = SdkContext.randomResourceName("listener", 13);
             }
 
             listenerByPort = this.parent().defineListener(name)
@@ -270,7 +270,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
             // Determine frontend
             if (Boolean.TRUE.equals(this.associateWithPublicFrontend)) {
                 listenerByPort.withPublicFrontend();
-                this.parent().withNewPublicIpAddress();
+                this.parent().withNewPublicIPAddress();
             } else if (Boolean.FALSE.equals(this.associateWithPublicFrontend)) {
                 listenerByPort.withPrivateFrontend();
             }
@@ -287,7 +287,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     private ApplicationGatewayListenerImpl ensureListener() {
         ApplicationGatewayListenerImpl listener = this.listener();
         if (listener == null) {
-            final String name = ResourceNamer.randomResourceName("listener", 13);
+            final String name = SdkContext.randomResourceName("listener", 13);
             listener = this.parent().defineListener(name);
             listener.attach();
             this.fromListener(name);
@@ -336,7 +336,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     private ApplicationGatewayBackendImpl ensureBackend() {
         ApplicationGatewayBackendImpl backend = (ApplicationGatewayBackendImpl) this.backend();
         if (backend == null) {
-            String name = ResourceNamer.randomResourceName("backend", 12);
+            String name = SdkContext.randomResourceName("backend", 12);
             backend = this.parent().defineBackend(name);
             backend.attach();
             this.toBackend(name);
@@ -354,8 +354,8 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public ApplicationGatewayRequestRoutingRuleImpl toBackendIpAddress(String ipAddress) {
-        this.parent().updateBackend(ensureBackend().name()).withIpAddress(ipAddress);
+    public ApplicationGatewayRequestRoutingRuleImpl toBackendIPAddress(String ipAddress) {
+        this.parent().updateBackend(ensureBackend().name()).withIPAddress(ipAddress);
         return this;
     }
 

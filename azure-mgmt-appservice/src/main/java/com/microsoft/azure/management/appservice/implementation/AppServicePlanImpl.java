@@ -7,14 +7,15 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.appservice.OperatingSystem;
+import com.microsoft.azure.management.appservice.PricingTier;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.appservice.AppServicePlan;
-import com.microsoft.azure.management.appservice.AppServicePricingTier;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 
 /**
- * The implementation for {@link AppServicePlan}.
+ * The implementation for AppServicePlan.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class AppServicePlanImpl
@@ -29,23 +30,19 @@ class AppServicePlanImpl
         AppServicePlan.Definition,
         AppServicePlan.Update {
 
-    private final AppServicePlansInner client;
-
-    AppServicePlanImpl(String name, AppServicePlanInner innerObject, final AppServicePlansInner client, AppServiceManager manager) {
+    AppServicePlanImpl(String name, AppServicePlanInner innerObject, AppServiceManager manager) {
         super(name, innerObject, manager);
-        this.client = client;
     }
 
     @Override
     public Observable<AppServicePlan> createResourceAsync() {
-        return client.createOrUpdateAsync(resourceGroupName(), name(), inner())
+        return this.manager().inner().appServicePlans().createOrUpdateAsync(resourceGroupName(), name(), inner())
                 .map(innerToFluentMap(this));
     }
 
     @Override
-    public AppServicePlanImpl refresh() {
-        this.setInner(client.get(resourceGroupName(), name()));
-        return this;
+    protected Observable<AppServicePlanInner> getInnerAsync() {
+        return this.manager().inner().appServicePlans().getByResourceGroupAsync(resourceGroupName(), name());
     }
 
     @Override
@@ -69,12 +66,31 @@ class AppServicePlanImpl
     }
 
     @Override
-    public AppServicePricingTier pricingTier() {
-        return AppServicePricingTier.fromSkuDescription(inner().sku());
+    public PricingTier pricingTier() {
+        return PricingTier.fromSkuDescription(inner().sku());
     }
 
     @Override
-    public AppServicePlanImpl withPricingTier(AppServicePricingTier pricingTier) {
+    public OperatingSystem operatingSystem() {
+        if (inner().reserved() != null && inner().reserved()) {
+            return OperatingSystem.LINUX;
+        } else {
+            return OperatingSystem.WINDOWS;
+        }
+    }
+
+    @Override
+    public AppServicePlanImpl withFreePricingTier() {
+        return withPricingTier(PricingTier.FREE_F1);
+    }
+
+    @Override
+    public AppServicePlanImpl withSharedPricingTier() {
+        return withPricingTier(PricingTier.SHARED_D1);
+    }
+
+    @Override
+    public AppServicePlanImpl withPricingTier(PricingTier pricingTier) {
         if (pricingTier == null) {
             throw new IllegalArgumentException("pricingTier == null");
         }
@@ -94,6 +110,14 @@ class AppServicePlanImpl
             throw new IllegalArgumentException("Capacity is at least 1.");
         }
         inner().sku().withCapacity(capacity);
+        return this;
+    }
+
+    @Override
+    public AppServicePlanImpl withOperatingSystem(OperatingSystem operatingSystem) {
+        if (OperatingSystem.LINUX.equals(operatingSystem)) {
+            inner().withReserved(true);
+        }
         return this;
     }
 }

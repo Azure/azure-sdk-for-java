@@ -12,6 +12,9 @@ import com.microsoft.azure.management.resources.PolicyAssignments;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -38,13 +41,8 @@ final class PolicyAssignmentsImpl
     }
 
     @Override
-    public Observable<Void> deleteByIdAsync(String id) {
-        return client.deleteByIdAsync(id).map(new Func1<PolicyAssignmentInner, Void>() {
-            @Override
-            public Void call(PolicyAssignmentInner policyAssignmentInner) {
-                return null;
-            }
-        });
+    public Completable deleteByIdAsync(String id) {
+        return client.deleteByIdAsync(id).toCompletable();
     }
 
     @Override
@@ -77,11 +75,36 @@ final class PolicyAssignmentsImpl
 
     @Override
     public PolicyAssignment getById(String id) {
-        return wrapModel(client.getById(id));
+        return getByIdAsync(id).toBlocking().last();
     }
 
     @Override
-    public PagedList<PolicyAssignment> listByGroup(String resourceGroupName) {
-        return wrapList(client.listForResourceGroup(resourceGroupName));
+    public Observable<PolicyAssignment> getByIdAsync(String id) {
+        return client.getByIdAsync(id).map(new Func1<PolicyAssignmentInner, PolicyAssignment>() {
+            @Override
+            public PolicyAssignment call(PolicyAssignmentInner policyAssignmentInner) {
+                return wrapModel(policyAssignmentInner);
+            }
+        });
+    }
+
+    @Override
+    public ServiceFuture<PolicyAssignment> getByIdAsync(String id, ServiceCallback<PolicyAssignment> callback) {
+        return ServiceFuture.fromBody(getByIdAsync(id), callback);
+    }
+
+    @Override
+    public PagedList<PolicyAssignment> listByResourceGroup(String resourceGroupName) {
+        return wrapList(client.listByResourceGroup(resourceGroupName));
+    }
+
+    @Override
+    public Observable<PolicyAssignment> listAsync() {
+        return wrapPageAsync(this.client.listAsync());
+    }
+
+    @Override
+    public Observable<PolicyAssignment> listByResourceGroupAsync(String resourceGroupName) {
+        return wrapPageAsync(this.client.listByResourceGroupAsync(resourceGroupName));
     }
 }

@@ -8,29 +8,34 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Contains Stats associated with the peering.
+ * Contains stats associated with the peering.
  */
 public class ExpressRouteCircuitStatsInner {
     /**
      * Gets BytesIn of the peering.
      */
+    @JsonProperty(value = "primarybytesIn")
     private Long primarybytesIn;
 
     /**
      * Gets BytesOut of the peering.
      */
+    @JsonProperty(value = "primarybytesOut")
     private Long primarybytesOut;
 
     /**
      * Gets BytesIn of the peering.
      */
+    @JsonProperty(value = "secondarybytesIn")
     private Long secondarybytesIn;
 
     /**
      * Gets BytesOut of the peering.
      */
+    @JsonProperty(value = "secondarybytesOut")
     private Long secondarybytesOut;
 
     /**

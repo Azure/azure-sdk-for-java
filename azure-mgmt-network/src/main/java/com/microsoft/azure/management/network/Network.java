@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.network.implementation.VirtualNetworkInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -16,16 +17,14 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 /**
  * Entry point for Virtual Network management API in Azure.
  */
 @Fluent()
 public interface Network extends
-        GroupableResource,
+        GroupableResource<NetworkManager, VirtualNetworkInner>,
         Refreshable<Network>,
-        Wrapper<VirtualNetworkInner>,
         Updatable<Network.Update> {
 
     /***********************************************************
@@ -39,7 +38,7 @@ public interface Network extends
     /**
      * @return list of DNS server IP addresses associated with this virtual network
      */
-    List<String> dnsServerIps();
+    List<String> dnsServerIPs();
 
     /**
      * @return subnets of this virtual network as a map indexed by subnet name
@@ -91,14 +90,14 @@ public interface Network extends
              * Note this method's effect is additive, i.e. each time it is used, a new subnet is added to the network.
              * @param name the name to assign to the subnet
              * @param cidr the address space of the subnet, within the address space of the network, using the CIDR notation
-             * @return the next stage of the virtual network definition
+             * @return the next stage of the definition
              */
             DefinitionStages.WithCreateAndSubnet withSubnet(String name, String cidr);
 
             /**
              * Explicitly defines subnets in the virtual network based on the provided map.
              * @param nameCidrPairs a {@link Map} of CIDR addresses for the subnets, indexed by the name of each subnet to be defined
-             * @return the next stage of the virtual network definition
+             * @return the next stage of the definition
              */
             DefinitionStages.WithCreateAndSubnet withSubnets(Map<String, String> nameCidrPairs);
 
@@ -130,7 +129,7 @@ public interface Network extends
              * Note this method's effect is additive, i.e. each time it is used, a new dns server is added
              * to the network.
              * @param ipAddress the IP address of the DNS server
-             * @return the next stage of the virtual network definition
+             * @return the next stage of the definition
              */
             WithCreate withDnsServer(String ipAddress);
 
@@ -144,7 +143,7 @@ public interface Network extends
              * This method does not check for conflicts or overlaps with other address spaces. If there is a conflict,
              * a cloud exception may be thrown at the time the network is created.
              * @param cidr the CIDR representation of the address space
-             * @return the next stage of the virtual network definition
+             * @return the next stage of the definition
              */
             WithCreateAndSubnet withAddressSpace(String cidr);
         }

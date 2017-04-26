@@ -9,44 +9,52 @@
 package com.microsoft.azure.management.compute;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes a virtual machine scale set OS profile.
  */
 public class VirtualMachineScaleSetOSProfile {
     /**
-     * the computer name prefix.
+     * The computer name prefix.
      */
+    @JsonProperty(value = "computerNamePrefix")
     private String computerNamePrefix;
 
     /**
-     * the admin user name.
+     * The admin user name.
      */
+    @JsonProperty(value = "adminUsername")
     private String adminUsername;
 
     /**
-     * the admin user password.
+     * The admin user password.
      */
+    @JsonProperty(value = "adminPassword")
     private String adminPassword;
 
     /**
-     * a base-64 encoded string of custom data.
+     * A base-64 encoded string of custom data.
      */
+    @JsonProperty(value = "customData")
     private String customData;
 
     /**
-     * the Windows Configuration of the OS profile.
+     * The Windows Configuration of the OS profile.
      */
+    @JsonProperty(value = "windowsConfiguration")
     private WindowsConfiguration windowsConfiguration;
 
     /**
-     * the Linux Configuration of the OS profile.
+     * The Linux Configuration of the OS profile.
      */
+    @JsonProperty(value = "linuxConfiguration")
     private LinuxConfiguration linuxConfiguration;
 
     /**
-     * the List of certificates for addition to the VM.
+     * The List of certificates for addition to the VM.
      */
+    @JsonProperty(value = "secrets")
     private List<VaultSecretGroup> secrets;
 
     /**

@@ -11,6 +11,8 @@ import com.microsoft.azure.management.batch.Application;
 import com.microsoft.azure.management.batch.ApplicationPackage;
 import com.microsoft.azure.management.batch.BatchAccount;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.RXMapper;
+
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -30,18 +32,14 @@ public class ApplicationImpl
                 Application.Definition<BatchAccount.DefinitionStages.WithApplicationAndStorage>,
                 Application.UpdateDefinition<BatchAccount.Update>,
                 Application.Update {
-    private final ApplicationsInner client;
     private final ApplicationPackagesImpl applicationPackages;
 
     protected ApplicationImpl(
             String name,
             BatchAccountImpl batchAccount,
-            ApplicationInner inner,
-            ApplicationsInner client,
-            ApplicationPackagesInner applicationPackagesClient) {
+            ApplicationInner inner) {
         super(name, batchAccount, inner);
-        this.client = client;
-        applicationPackages = new ApplicationPackagesImpl(applicationPackagesClient, this);
+        applicationPackages = new ApplicationPackagesImpl(this);
     }
 
     @Override
@@ -76,7 +74,7 @@ public class ApplicationImpl
         createParameter.withDisplayName(this.inner().displayName());
         createParameter.withAllowUpdates(this.inner().allowUpdates());
 
-        return this.client.createAsync(
+        return this.parent().manager().inner().applications().createAsync(
                 this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name(), createParameter)
@@ -109,14 +107,11 @@ public class ApplicationImpl
         updateParameter.withDisplayName(this.inner().displayName());
         updateParameter.withAllowUpdates(this.inner().allowUpdates());
 
-        return this.client.updateAsync(this.parent().resourceGroupName(),
-                this.parent().name(), this.name(), updateParameter)
-                .map(new Func1<Void, Application>() {
-                    @Override
-                    public Application call(Void result) {
-                        return self;
-                    }
-                })
+        return RXMapper.map(this.parent().manager().inner().applications().updateAsync(
+                    this.parent().resourceGroupName(),
+                    this.parent().name(),
+                    this.name(),
+                    updateParameter), self)
                 .flatMap(new Func1<Application, Observable<? extends Application>>() {
                     @Override
                     public Observable<? extends Application> call(Application application) {
@@ -133,18 +128,29 @@ public class ApplicationImpl
 
     @Override
     public Observable<Void> deleteAsync() {
-        return this.client.deleteAsync(this.parent().resourceGroupName(),
+        return this.parent().manager().inner().applications().deleteAsync(
+                this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name());
     }
 
     @Override
-    public Application refresh() {
-        ApplicationInner inner =
-                this.client.get(this.parent().resourceGroupName(), this.parent().name(), this.inner().id());
-        this.setInner(inner);
-        this.applicationPackages.refresh();
-        return this;
+    public Observable<Application> refreshAsync() {
+        return super.refreshAsync().map(new Func1<Application, Application>() {
+            @Override
+            public Application call(Application application) {
+                ApplicationImpl impl = (ApplicationImpl) application;
+
+                impl.applicationPackages.refresh();
+                return impl;
+            }
+        });
+    }
+
+    @Override
+    protected Observable<ApplicationInner> getInnerAsync() {
+        return this.parent().manager().inner().applications().getAsync(
+                this.parent().resourceGroupName(), this.parent().name(), this.inner().id());
     }
 
     @Override
@@ -166,15 +172,10 @@ public class ApplicationImpl
 
     protected static ApplicationImpl newApplication(
             String name,
-            BatchAccountImpl parent,
-            ApplicationsInner client,
-            ApplicationPackagesInner applicationPackagesClient) {
+            BatchAccountImpl parent) {
         ApplicationInner inner = new ApplicationInner();
         inner.withId(name);
-        ApplicationImpl applicationImpl = new ApplicationImpl(name,
-                parent,
-                inner,
-                client, applicationPackagesClient);
+        ApplicationImpl applicationImpl = new ApplicationImpl(name, parent, inner);
         return applicationImpl;
     }
 

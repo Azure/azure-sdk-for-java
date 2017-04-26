@@ -12,7 +12,6 @@ import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.appservice.AppServiceCertificate;
 import com.microsoft.azure.management.appservice.AppServiceCertificateKeyVaultBinding;
 import com.microsoft.azure.management.appservice.AppServiceCertificateOrder;
-import com.microsoft.azure.management.appservice.AppServicePlan;
 import com.microsoft.azure.management.appservice.HostingEnvironmentProfile;
 import org.joda.time.DateTime;
 import rx.Observable;
@@ -25,7 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * The implementation for {@link AppServicePlan}.
+ * The implementation for AppServiceCertificate.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class AppServiceCertificateImpl
@@ -39,13 +38,11 @@ class AppServiceCertificateImpl
         AppServiceCertificate,
         AppServiceCertificate.Definition {
 
-    private final CertificatesInner client;
     private String pfxFileUrl;
     private AppServiceCertificateOrder certificateOrder;
 
-    AppServiceCertificateImpl(String name, CertificateInner innerObject, final CertificatesInner client, AppServiceManager manager) {
+    AppServiceCertificateImpl(String name, CertificateInner innerObject, AppServiceManager manager) {
         super(name, innerObject, manager);
-        this.client = client;
     }
 
     @Override
@@ -124,16 +121,15 @@ class AppServiceCertificateImpl
     }
 
     @Override
-    public AppServiceCertificate refresh() {
-        this.setInner(client.get(resourceGroupName(), name()));
-        return this;
+    protected Observable<CertificateInner> getInnerAsync() {
+        return this.manager().inner().certificates().getAsync(resourceGroupName(), name());
     }
 
     @Override
     public Observable<AppServiceCertificate> createResourceAsync() {
         Observable<Void> pfxBytes = Observable.just(null);
         if (pfxFileUrl != null) {
-            pfxBytes = Utils.downloadFileAsync(pfxFileUrl, myManager.restClient().retrofit())
+            pfxBytes = Utils.downloadFileAsync(pfxFileUrl, this.manager().restClient().retrofit())
                     .map(new Func1<byte[], Void>() {
                         @Override
                         public Void call(byte[] bytes) {
@@ -153,6 +149,7 @@ class AppServiceCertificateImpl
                         }
                     });
         }
+        final CertificatesInner client = this.manager().inner().certificates();
         return pfxBytes.concatWith(keyVaultBinding).last()
                 .flatMap(new Func1<Void, Observable<CertificateInner>>() {
                     @Override

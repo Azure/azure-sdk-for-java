@@ -6,32 +6,29 @@
 
 package com.microsoft.azure.management.storage;
 
-import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import org.junit.AfterClass;
+import com.microsoft.rest.RestClient;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import rx.Observable;
 
 import java.util.List;
 
-import static org.junit.Assert.fail;
+public class StorageAccountOperationsTests extends StorageManagementTest {
+    private static String RG_NAME = "";
+    private static String SA_NAME = "";
 
-public class StorageAccountOperationsTests extends StorageManagementTestBase {
-    private static final String RG_NAME = "javacsmrg385";
-    private static final String SA_NAME = "javacsmsa385";
-    private static ResourceGroup resourceGroup;
+    @Override
+    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+        RG_NAME = generateRandomResourceName("javacsmrg", 15);
+        SA_NAME = generateRandomResourceName("javacsmsa", 15);
 
-    @BeforeClass
-    public static void setup() throws Exception {
-        createClients();
+        super.initializeClients(restClient, defaultSubscription, domain);
     }
-
-    @AfterClass
-    public static void cleanup() throws Exception {
+    @Override
+    protected void cleanUpResources() {
         resourceManager.resourceGroups().deleteByName(RG_NAME);
     }
 
@@ -46,13 +43,14 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
                 .define(SA_NAME)
                 .withRegion(Region.ASIA_EAST)
                 .withNewResourceGroup(RG_NAME)
+                .withTag("tag1", "value1")
                 .createAsync();
         StorageAccount storageAccount = Utils.<StorageAccount>rootResource(resourceStream)
                 .toBlocking().last();
         Assert.assertEquals(RG_NAME, storageAccount.resourceGroupName());
         Assert.assertEquals(SkuName.STANDARD_GRS, storageAccount.sku().name());
         // List
-        List<StorageAccount> accounts = storageManager.storageAccounts().listByGroup(RG_NAME);
+        List<StorageAccount> accounts = storageManager.storageAccounts().listByResourceGroup(RG_NAME);
         boolean found = false;
         for (StorageAccount account : accounts) {
             if (account.name().equals(SA_NAME)) {
@@ -60,8 +58,10 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
             }
         }
         Assert.assertTrue(found);
+        Assert.assertEquals(1, storageAccount.tags().size());
+
         // Get
-        storageAccount = storageManager.storageAccounts().getByGroup(RG_NAME, SA_NAME);
+        storageAccount = storageManager.storageAccounts().getByResourceGroup(RG_NAME, SA_NAME);
         Assert.assertNotNull(storageAccount);
 
         // Get Keys
@@ -80,17 +80,11 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
         }
 
         // Update
-        try {
-            storageAccount.update()
-                    .withAccessTier(AccessTier.COOL)
-                    .apply();
-            fail();
-        } catch (UnsupportedOperationException e) {
-            // expected
-        }
         storageAccount = storageAccount.update()
                 .withSku(SkuName.STANDARD_LRS)
+                .withTag("tag2", "value2")
                 .apply();
         Assert.assertEquals(SkuName.STANDARD_LRS, storageAccount.sku().name());
+        Assert.assertEquals(2, storageAccount.tags().size());
     }
 }

@@ -9,20 +9,29 @@
 package com.microsoft.azure.management.keyvault;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Permissions the identity has for keys and secrets.
+ * Permissions the identity has for keys, secrets and certificates.
  */
 public class Permissions {
     /**
      * Permissions to keys.
      */
+    @JsonProperty(value = "keys")
     private List<KeyPermissions> keys;
 
     /**
      * Permissions to secrets.
      */
+    @JsonProperty(value = "secrets")
     private List<SecretPermissions> secrets;
+
+    /**
+     * Permissions to certificates.
+     */
+    @JsonProperty(value = "certificates")
+    private List<CertificatePermissions> certificates;
 
     /**
      * Get the keys value.
@@ -61,6 +70,26 @@ public class Permissions {
      */
     public Permissions withSecrets(List<SecretPermissions> secrets) {
         this.secrets = secrets;
+        return this;
+    }
+
+    /**
+     * Get the certificates value.
+     *
+     * @return the certificates value
+     */
+    public List<CertificatePermissions> certificates() {
+        return this.certificates;
+    }
+
+    /**
+     * Set the certificates value.
+     *
+     * @param certificates the certificates value to set
+     * @return the Permissions object itself.
+     */
+    public Permissions withCertificates(List<CertificatePermissions> certificates) {
+        this.certificates = certificates;
         return this;
     }
 

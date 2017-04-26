@@ -23,9 +23,10 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class ProfileInner extends Resource {
     /**
-     * The SKU (pricing tier) of the CDN profile.
+     * The pricing tier (defines a CDN provider, feature list and rate) of the
+     * CDN profile.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
     /**

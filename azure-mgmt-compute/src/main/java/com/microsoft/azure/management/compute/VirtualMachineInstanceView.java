@@ -9,49 +9,58 @@
 package com.microsoft.azure.management.compute;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The instance view of a virtual machine.
  */
 public class VirtualMachineInstanceView {
     /**
-     * the Update Domain count.
+     * Specifies the update domain of the virtual machine.
      */
+    @JsonProperty(value = "platformUpdateDomain")
     private Integer platformUpdateDomain;
 
     /**
-     * the Fault Domain count.
+     * Specifies the fault domain of the virtual machine.
      */
+    @JsonProperty(value = "platformFaultDomain")
     private Integer platformFaultDomain;
 
     /**
-     * the Remote desktop certificate thumbprint.
+     * The Remote desktop certificate thumbprint.
      */
+    @JsonProperty(value = "rdpThumbPrint")
     private String rdpThumbPrint;
 
     /**
-     * the VM Agent running on the virtual machine.
+     * The VM Agent running on the virtual machine.
      */
+    @JsonProperty(value = "vmAgent")
     private VirtualMachineAgentInstanceView vmAgent;
 
     /**
-     * the disks information.
+     * The virtual machine disk information.
      */
+    @JsonProperty(value = "disks")
     private List<DiskInstanceView> disks;
 
     /**
-     * the extensions information.
+     * The extensions information.
      */
+    @JsonProperty(value = "extensions")
     private List<VirtualMachineExtensionInstanceView> extensions;
 
     /**
-     * the boot diagnostics.
+     * The boot diagnostics.
      */
+    @JsonProperty(value = "bootDiagnostics")
     private BootDiagnosticsInstanceView bootDiagnostics;
 
     /**
-     * the resource status information.
+     * The resource status information.
      */
+    @JsonProperty(value = "statuses")
     private List<InstanceViewStatus> statuses;
 
     /**

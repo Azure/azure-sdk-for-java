@@ -8,15 +8,16 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes the uri of a disk.
  */
 public class VirtualHardDisk {
     /**
-     * the virtual hard disk's uri. It should be a valid Uri to a virtual hard
-     * disk.
+     * The virtual hard disk's URI. Must be a valid URI to a virtual hard disk.
      */
+    @JsonProperty(value = "uri")
     private String uri;
 
     /**

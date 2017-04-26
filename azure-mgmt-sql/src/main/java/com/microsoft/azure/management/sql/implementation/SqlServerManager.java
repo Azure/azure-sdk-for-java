@@ -6,12 +6,15 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
-import com.microsoft.azure.RestClient;
+import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.microsoft.azure.management.sql.SqlServers;
+import com.microsoft.azure.serializer.AzureJacksonAdapter;
+import com.microsoft.rest.RestClient;
 
 /**
  * Entry point to Azure SQLServer resource management.
@@ -43,8 +46,11 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
      * @return the SqlServer
      */
     public static SqlServerManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-        return new SqlServerManager(credentials.getEnvironment().newRestClientBuilder()
+        return new SqlServerManager(new RestClient.Builder()
+                .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
+                .withSerializerAdapter(new AzureJacksonAdapter())
+                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                 .build(), subscriptionId);
     }
 
@@ -90,12 +96,7 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
      */
     public SqlServers sqlServers() {
         if (sqlServers == null) {
-            sqlServers = new SqlServersImpl(
-                    super.innerManagementClient.servers(),
-                    super.innerManagementClient.elasticPools(),
-                    super.innerManagementClient.databases(),
-                    super.innerManagementClient.recommendedElasticPools(),
-                    this);
+            sqlServers = new SqlServersImpl(this);
         }
 
         return sqlServers;

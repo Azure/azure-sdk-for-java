@@ -5,50 +5,26 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancers;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import rx.Observable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /**
  *  Implementation for {@link LoadBalancers}.
  */
 @LangDefinition
 class LoadBalancersImpl
-        extends GroupableResourcesImpl<
-            LoadBalancer,
-            LoadBalancerImpl,
-            LoadBalancerInner,
-            LoadBalancersInner,
-            NetworkManager>
-        implements LoadBalancers {
+    extends TopLevelModifiableResourcesImpl<
+        LoadBalancer,
+        LoadBalancerImpl,
+        LoadBalancerInner,
+        LoadBalancersInner,
+        NetworkManager>
+    implements LoadBalancers {
 
-    LoadBalancersImpl(
-            final NetworkManagementClientImpl networkClient,
-            final NetworkManager networkManager) {
-        super(networkClient.loadBalancers(), networkManager);
-    }
-
-    @Override
-    public PagedList<LoadBalancer> list() {
-        return wrapList(this.innerCollection.listAll());
-    }
-
-    @Override
-    public PagedList<LoadBalancer> listByGroup(String groupName) {
-        return wrapList(this.innerCollection.list(groupName));
-    }
-
-    @Override
-    public LoadBalancerImpl getByGroup(String groupName, String name) {
-        return wrapModel(this.innerCollection.get(groupName, name));
-    }
-
-    @Override
-    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name);
+    LoadBalancersImpl(final NetworkManager networkManager) {
+        super(networkManager.inner().loadBalancers(), networkManager);
     }
 
     @Override
@@ -64,8 +40,7 @@ class LoadBalancersImpl
         return new LoadBalancerImpl(
                 name,
                 inner,
-                this.innerCollection,
-                super.myManager);
+                this.manager());
     }
 
     @Override
@@ -76,7 +51,6 @@ class LoadBalancersImpl
         return new LoadBalancerImpl(
                 inner.name(),
                 inner,
-                this.innerCollection,
-                this.myManager);
+                this.manager());
     }
 }

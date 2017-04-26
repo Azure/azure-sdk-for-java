@@ -20,6 +20,7 @@ public class DataLakeStoreAccountUpdateParameters {
     /**
      * Resource tags.
      */
+    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**
@@ -32,11 +33,10 @@ public class DataLakeStoreAccountUpdateParameters {
     private FirewallState firewallState;
 
     /**
-     * The current state of the trusted identity provider feature for this
-     * Data Lake store account. Disabling trusted identity provider
-     * functionality does not remove the providers, they will just be ignored
-     * until this feature is re-enabled. Possible values include: 'Enabled',
-     * 'Disabled'.
+     * The current state of the trusted identity provider feature for this Data
+     * Lake store account. Disabling trusted identity provider functionality
+     * does not remove the providers, they will just be ignored until this
+     * feature is re-enabled. Possible values include: 'Enabled', 'Disabled'.
      */
     @JsonProperty(value = "properties.trustedIdProviderState")
     private TrustedIdProviderState trustedIdProviderState;
@@ -47,6 +47,14 @@ public class DataLakeStoreAccountUpdateParameters {
      */
     @JsonProperty(value = "properties.defaultGroup")
     private String defaultGroup;
+
+    /**
+     * the commitment tier to use for next month. Possible values include:
+     * 'Consumption', 'Commitment_1TB', 'Commitment_10TB', 'Commitment_100TB',
+     * 'Commitment_500TB', 'Commitment_1PB', 'Commitment_5PB'.
+     */
+    @JsonProperty(value = "properties.newTier")
+    private TierType newTier;
 
     /**
      * Get the tags value.
@@ -125,6 +133,26 @@ public class DataLakeStoreAccountUpdateParameters {
      */
     public DataLakeStoreAccountUpdateParameters withDefaultGroup(String defaultGroup) {
         this.defaultGroup = defaultGroup;
+        return this;
+    }
+
+    /**
+     * Get the newTier value.
+     *
+     * @return the newTier value
+     */
+    public TierType newTier() {
+        return this.newTier;
+    }
+
+    /**
+     * Set the newTier value.
+     *
+     * @param newTier the newTier value to set
+     * @return the DataLakeStoreAccountUpdateParameters object itself.
+     */
+    public DataLakeStoreAccountUpdateParameters withNewTier(TierType newTier) {
+        this.newTier = newTier;
         return this;
     }
 

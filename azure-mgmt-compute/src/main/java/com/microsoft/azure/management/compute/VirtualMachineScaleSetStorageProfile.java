@@ -8,27 +8,38 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.management.compute.implementation.ImageReferenceInner;
+import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes a virtual machine scale set storage profile.
  */
 public class VirtualMachineScaleSetStorageProfile {
     /**
-     * the image reference.
+     * The image reference.
      */
-    private ImageReference imageReference;
+    @JsonProperty(value = "imageReference")
+    private ImageReferenceInner imageReference;
 
     /**
-     * the OS disk.
+     * The OS disk.
      */
+    @JsonProperty(value = "osDisk")
     private VirtualMachineScaleSetOSDisk osDisk;
+
+    /**
+     * The data disks.
+     */
+    @JsonProperty(value = "dataDisks")
+    private List<VirtualMachineScaleSetDataDisk> dataDisks;
 
     /**
      * Get the imageReference value.
      *
      * @return the imageReference value
      */
-    public ImageReference imageReference() {
+    public ImageReferenceInner imageReference() {
         return this.imageReference;
     }
 
@@ -38,7 +49,7 @@ public class VirtualMachineScaleSetStorageProfile {
      * @param imageReference the imageReference value to set
      * @return the VirtualMachineScaleSetStorageProfile object itself.
      */
-    public VirtualMachineScaleSetStorageProfile withImageReference(ImageReference imageReference) {
+    public VirtualMachineScaleSetStorageProfile withImageReference(ImageReferenceInner imageReference) {
         this.imageReference = imageReference;
         return this;
     }
@@ -60,6 +71,26 @@ public class VirtualMachineScaleSetStorageProfile {
      */
     public VirtualMachineScaleSetStorageProfile withOsDisk(VirtualMachineScaleSetOSDisk osDisk) {
         this.osDisk = osDisk;
+        return this;
+    }
+
+    /**
+     * Get the dataDisks value.
+     *
+     * @return the dataDisks value
+     */
+    public List<VirtualMachineScaleSetDataDisk> dataDisks() {
+        return this.dataDisks;
+    }
+
+    /**
+     * Set the dataDisks value.
+     *
+     * @param dataDisks the dataDisks value to set
+     * @return the VirtualMachineScaleSetStorageProfile object itself.
+     */
+    public VirtualMachineScaleSetStorageProfile withDataDisks(List<VirtualMachineScaleSetDataDisk> dataDisks) {
+        this.dataDisks = dataDisks;
         return this;
     }
 

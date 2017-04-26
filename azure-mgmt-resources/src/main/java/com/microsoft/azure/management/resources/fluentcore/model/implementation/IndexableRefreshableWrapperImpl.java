@@ -6,19 +6,21 @@
 
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import rx.Observable;
+import rx.functions.Func1;
 
 /**
- * The implementation for {@link Indexable}, {@link Refreshable}, and {@link Wrapper}.
+ * The implementation for {@link Indexable}, {@link Refreshable}, and {@link HasInner}.
  *
  * @param <FluentModelT> The fluent model type
  * @param <InnerModelT> Azure inner resource class type
  */
 public abstract class IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
     extends IndexableRefreshableImpl<FluentModelT>
-    implements Wrapper<InnerModelT> {
+    implements HasInner<InnerModelT> {
 
     private InnerModelT innerObject;
     protected IndexableRefreshableWrapperImpl(InnerModelT innerObject) {
@@ -36,8 +38,26 @@ public abstract class IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
      *
      * @param inner the new inner model
      */
-    @Override
     public void setInner(InnerModelT inner) {
         this.innerObject = inner;
     }
+
+    @Override
+    public final FluentModelT refresh() {
+        return refreshAsync().toBlocking().last();
+    }
+
+    @Override
+    public Observable<FluentModelT> refreshAsync() {
+        final IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT> self = this;
+        return getInnerAsync().map(new Func1<InnerModelT, FluentModelT>() {
+            @Override
+            public FluentModelT call(InnerModelT innerModelT) {
+                self.setInner(innerModelT);
+                return (FluentModelT) self;
+            }
+        });
+    }
+
+    protected abstract Observable<InnerModelT> getInnerAsync();
 }

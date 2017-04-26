@@ -9,39 +9,46 @@
 package com.microsoft.azure.management.graphrbac.implementation;
 
 import org.joda.time.DateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Active Directory Key Credential information.
  */
 public class KeyCredentialInner {
     /**
-     * start date.
+     * Start date.
      */
+    @JsonProperty(value = "startDate")
     private DateTime startDate;
 
     /**
-     * end date.
+     * End date.
      */
+    @JsonProperty(value = "endDate")
     private DateTime endDate;
 
     /**
-     * value.
+     * Key value.
      */
+    @JsonProperty(value = "value")
     private String value;
 
     /**
-     * key Id.
+     * Key ID.
      */
+    @JsonProperty(value = "keyId")
     private String keyId;
 
     /**
-     * usage. Acceptable values are 'Verify' and 'Sign'.
+     * Usage. Acceptable values are 'Verify' and 'Sign'.
      */
+    @JsonProperty(value = "usage")
     private String usage;
 
     /**
-     * type. Acceptable values are 'AsymmetricX509Cert' and 'Symmetric'.
+     * Type. Acceptable values are 'AsymmetricX509Cert' and 'Symmetric'.
      */
+    @JsonProperty(value = "type")
     private String type;
 
     /**

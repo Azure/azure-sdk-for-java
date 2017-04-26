@@ -7,17 +7,19 @@
 package com.microsoft.azure.management.graphrbac.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.RequestIdHeaderInterceptor;
-import com.microsoft.azure.RestClient;
+import com.microsoft.rest.interceptors.RequestIdHeaderInterceptor;
+import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.graphrbac.ServicePrincipals;
 import com.microsoft.azure.management.graphrbac.Users;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 
 /**
- * Entry point to Azure resource management.
+ * Entry point to Azure Graph RBAC management.
  */
+@Beta
 public final class GraphRbacManager {
     private String tenantId;
     // The sdk clients
@@ -34,10 +36,10 @@ public final class GraphRbacManager {
      */
     public static GraphRbacManager authenticate(AzureTokenCredentials credentials) {
         return new GraphRbacManager(new RestClient.Builder()
-                .withBaseUrl(credentials.getEnvironment().getGraphEndpoint())
+                .withBaseUrl(credentials.environment().graphEndpoint())
                 .withInterceptor(new RequestIdHeaderInterceptor())
                 .withCredentials(credentials)
-                .build(), credentials.getDomain());
+                .build(), credentials.domain());
     }
 
     /**
@@ -80,7 +82,7 @@ public final class GraphRbacManager {
         public GraphRbacManager authenticate(AzureTokenCredentials credentials) {
             return GraphRbacManager.authenticate(
                     buildRestClient(credentials, AzureEnvironment.Endpoint.GRAPH),
-                    credentials.getDomain());
+                    credentials.domain());
         }
     }
 

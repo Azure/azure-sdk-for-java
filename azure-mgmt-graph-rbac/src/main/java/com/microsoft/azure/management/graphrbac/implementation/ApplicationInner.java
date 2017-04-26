@@ -9,54 +9,64 @@
 package com.microsoft.azure.management.graphrbac.implementation;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Active Directory user information.
+ * Active Directory application information.
  */
 public class ApplicationInner {
     /**
-     * object Id.
+     * The object ID.
      */
+    @JsonProperty(value = "objectId")
     private String objectId;
 
     /**
-     * object type.
+     * The object type.
      */
+    @JsonProperty(value = "objectType")
     private String objectType;
 
     /**
-     * application Id.
+     * The application ID.
      */
+    @JsonProperty(value = "appId")
     private String appId;
 
     /**
-     * application permissions.
+     * The application permissions.
      */
+    @JsonProperty(value = "appPermissions")
     private List<String> appPermissions;
 
     /**
-     * Indicates if the application will be available to other tenants.
+     * Whether the application is be available to other tenants.
      */
+    @JsonProperty(value = "availableToOtherTenants")
     private Boolean availableToOtherTenants;
 
     /**
-     * the displayName.
+     * The display name of the application.
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /**
-     * the application identifier Uris.
+     * A collection of URIs for the application.
      */
+    @JsonProperty(value = "identifierUris")
     private List<String> identifierUris;
 
     /**
-     * the application reply Urls.
+     * A collection of reply URLs for the application.
      */
+    @JsonProperty(value = "replyUrls")
     private List<String> replyUrls;
 
     /**
-     * Application homepage.
+     * The home page of the application.
      */
+    @JsonProperty(value = "homepage")
     private String homepage;
 
     /**

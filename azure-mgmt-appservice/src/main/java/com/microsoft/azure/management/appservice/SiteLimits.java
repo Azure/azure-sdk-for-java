@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Metric limits set on an app.
@@ -16,16 +17,19 @@ public class SiteLimits {
     /**
      * Maximum allowed CPU usage percentage.
      */
+    @JsonProperty(value = "maxPercentageCpu")
     private Double maxPercentageCpu;
 
     /**
      * Maximum allowed memory usage in MB.
      */
+    @JsonProperty(value = "maxMemoryInMb")
     private Long maxMemoryInMb;
 
     /**
      * Maximum allowed disk size usage in MB.
      */
+    @JsonProperty(value = "maxDiskSizeInMb")
     private Long maxDiskSizeInMb;
 
     /**

@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.PagedList;
@@ -9,6 +14,8 @@ import com.microsoft.azure.management.compute.VirtualMachinePublisher;
 import com.microsoft.azure.management.compute.VirtualMachinePublishers;
 import com.microsoft.azure.management.compute.VirtualMachineSku;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * The implementation for {@link VirtualMachineImages}.
@@ -68,6 +75,32 @@ class VirtualMachineImagesImpl
                 }).flatten();
 
         return images;
+    }
+
+    @Override
+    public Observable<VirtualMachineImage> listByRegionAsync(Region region) {
+        return listByRegionAsync(region.name());
+    }
+
+    @Override
+    public Observable<VirtualMachineImage> listByRegionAsync(String regionName) {
+        return this.publishers().listByRegionAsync(regionName)
+                .flatMap(new Func1<VirtualMachinePublisher, Observable<VirtualMachineOffer>>() {
+                    @Override
+                    public Observable<VirtualMachineOffer> call(VirtualMachinePublisher virtualMachinePublisher) {
+                        return virtualMachinePublisher.offers().listAsync();
+                    }
+                }).flatMap(new Func1<VirtualMachineOffer, Observable<VirtualMachineSku>>() {
+                    @Override
+                    public Observable<VirtualMachineSku> call(VirtualMachineOffer virtualMachineExtensionImageType) {
+                        return virtualMachineExtensionImageType.skus().listAsync();
+                    }
+                }).flatMap(new Func1<VirtualMachineSku, Observable<VirtualMachineImage>>() {
+                    @Override
+                    public Observable<VirtualMachineImage> call(VirtualMachineSku virtualMachineSku) {
+                        return virtualMachineSku.images().listAsync();
+                    }
+                });
     }
 
     @Override

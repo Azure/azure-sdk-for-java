@@ -16,20 +16,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class DeploymentOperationInner {
     /**
-     * Full deployment operation id.
+     * Full deployment operation ID.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
-     * Deployment operation id.
+     * Deployment operation ID.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "operationId", access = JsonProperty.Access.WRITE_ONLY)
     private String operationId;
 
     /**
      * Deployment properties.
      */
+    @JsonProperty(value = "properties")
     private DeploymentOperationProperties properties;
 
     /**

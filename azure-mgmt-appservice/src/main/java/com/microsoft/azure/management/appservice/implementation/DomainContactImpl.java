@@ -10,7 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.appservice.Address;
 import com.microsoft.azure.management.appservice.AppServiceDomain;
 import com.microsoft.azure.management.appservice.Contact;
-import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
+import com.microsoft.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryPhoneCode;
 import com.microsoft.azure.management.appservice.DomainContact;
 
@@ -134,7 +134,7 @@ class DomainContactImpl
     }
 
     @Override
-    public DomainContactImpl withCountry(CountryISOCode country) {
+    public DomainContactImpl withCountry(CountryIsoCode country) {
         inner().addressMailing().withCountry(country.toString());
         return this;
     }

@@ -6,14 +6,14 @@
 
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * Base implementation for Wrapper interface.
  *
  * @param <InnerT> wrapped type
  */
-public abstract class WrapperImpl<InnerT> implements Wrapper<InnerT> {
+public abstract class WrapperImpl<InnerT> implements HasInner<InnerT> {
     private InnerT innerObject;
 
     protected WrapperImpl(InnerT innerObject) {
@@ -25,7 +25,12 @@ public abstract class WrapperImpl<InnerT> implements Wrapper<InnerT> {
         return this.innerObject;
     }
 
-    @Override
+    /**
+     * Sets the inner object of the wrapper.
+     * <p>
+     * (Internal use only)
+     * @param inner an inner object
+     */
     public void setInner(InnerT inner) {
         this.innerObject = inner;
     }

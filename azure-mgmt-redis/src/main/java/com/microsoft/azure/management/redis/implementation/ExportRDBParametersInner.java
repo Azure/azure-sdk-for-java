@@ -11,24 +11,25 @@ package com.microsoft.azure.management.redis.implementation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters for redis export operation.
+ * Parameters for Redis export operation.
  */
 public class ExportRDBParametersInner {
     /**
      * File format.
      */
+    @JsonProperty(value = "format")
     private String format;
 
     /**
      * Prefix to use for exported files.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "prefix", required = true)
     private String prefix;
 
     /**
      * Container name to export to.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "container", required = true)
     private String container;
 
     /**

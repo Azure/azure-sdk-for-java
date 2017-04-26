@@ -8,15 +8,16 @@
 
 package com.microsoft.azure.management.dns;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A PTR record.
  */
 public class PtrRecord {
     /**
-     * Gets or sets the PTR target domain name for this record without a
-     * terminating dot.
+     * The PTR target domain name for this PTR record.
      */
+    @JsonProperty(value = "ptrdname")
     private String ptrdname;
 
     /**

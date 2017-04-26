@@ -8,70 +8,79 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.appservice.WebApps;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import rx.Observable;
 import rx.functions.Func1;
 
 /**
- * The implementation for {@link WebApps}.
+ * The implementation for WebApps.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class WebAppsImpl
-        extends GroupableResourcesImpl<
-        WebApp,
-        WebAppImpl,
-        SiteInner,
-        WebAppsInner,
-        AppServiceManager>
+        extends TopLevelModifiableResourcesImpl<
+                    WebApp,
+                    WebAppImpl,
+                    SiteInner,
+                    WebAppsInner,
+                    AppServiceManager>
         implements WebApps {
 
     private final PagedListConverter<SiteInner, WebApp> converter;
-    private final WebSiteManagementClientImpl serviceClient;
 
-    WebAppsImpl(final WebAppsInner innerCollection, AppServiceManager manager, WebSiteManagementClientImpl serviceClient) {
-        super(innerCollection, manager);
-        this.serviceClient = serviceClient;
-
+    WebAppsImpl(final AppServiceManager manager) {
+        super(manager.inner().webApps(), manager);
         converter = new PagedListConverter<SiteInner, WebApp>() {
             @Override
             public WebApp typeConvert(SiteInner siteInner) {
-                siteInner.withSiteConfig(innerCollection.getConfiguration(siteInner.resourceGroup(), siteInner.name()));
-                WebAppImpl impl = wrapModel(siteInner);
-                return impl.cacheAppSettingsAndConnectionStrings().toBlocking().single();
+                WebAppImpl impl = wrapModel(siteInner, manager.inner().webApps().getConfiguration(siteInner.resourceGroup(), siteInner.name()));
+                return impl.cacheSiteProperties().toBlocking().single();
+            }
+
+            @Override
+            protected boolean filter(SiteInner inner) {
+                return "app".equals(inner.kind());
             }
         };
     }
 
     @Override
-    public PagedList<WebApp> listByGroup(String resourceGroupName) {
-        return wrapList(innerCollection.listByResourceGroup(resourceGroupName));
-    }
+    public Observable<WebApp> getByResourceGroupAsync(final String groupName, final String name) {
+        final WebAppsImpl self = this;
+        return this.inner().getByResourceGroupAsync(groupName, name).flatMap(new Func1<SiteInner, Observable<WebApp>>() {
+            @Override
+            public Observable<WebApp> call(final SiteInner siteInner) {
+                if (siteInner == null) {
+                    return null;
+                }
+                return self.inner().getConfigurationAsync(groupName, name).flatMap(new Func1<SiteConfigResourceInner, Observable<WebApp>>() {
+                    @Override
+                    public Observable<WebApp> call(SiteConfigResourceInner siteConfigInner) {
+                        return wrapModel(siteInner, siteConfigInner).cacheSiteProperties();
+                    }
+                });
+            }
+        });
 
-    @Override
-    public WebApp getByGroup(String groupName, String name) {
-        SiteInner siteInner = innerCollection.get(groupName, name);
-        if (siteInner == null) {
-            return null;
-        }
-        siteInner.withSiteConfig(innerCollection.getConfiguration(groupName, name));
-        return wrapModel(siteInner).cacheAppSettingsAndConnectionStrings().toBlocking().single();
     }
 
     @Override
     protected WebAppImpl wrapModel(String name) {
-        return new WebAppImpl(name, new SiteInner(), null, innerCollection, super.myManager, serviceClient);
+        return new WebAppImpl(name, new SiteInner(), null, this.manager());
+    }
+
+    protected WebAppImpl wrapModel(SiteInner inner, SiteConfigResourceInner configResourceInner) {
+        if (inner == null) {
+            return null;
+        }
+        return new WebAppImpl(inner.name(), inner, configResourceInner, this.manager());
     }
 
     @Override
     protected WebAppImpl wrapModel(SiteInner inner) {
-        if (inner == null) {
-            return null;
-        }
-        SiteConfigInner configInner = inner.siteConfig();
-        return new WebAppImpl(inner.name(), inner, configInner, innerCollection, super.myManager, serviceClient);
+        return wrapModel(inner, null);
     }
 
     protected PagedList<WebApp> wrapList(PagedList<SiteInner> pagedList) {
@@ -82,16 +91,5 @@ class WebAppsImpl
     @Override
     public WebAppImpl define(String name) {
         return wrapModel(name);
-    }
-
-    @Override
-    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return innerCollection.deleteAsync(groupName, name)
-                .map(new Func1<Object, Void>() {
-                    @Override
-                    public Void call(Object o) {
-                        return null;
-                    }
-                });
     }
 }

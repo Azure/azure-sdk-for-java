@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.keyvault.implementation;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.graphrbac.User;
@@ -17,17 +18,16 @@ import com.microsoft.azure.management.keyvault.SkuName;
 import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.keyvault.VaultProperties;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.functions.FuncN;
-import rx.schedulers.Schedulers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.UUID;
 
 /**
  * Implementation for Vault and its parent interfaces.
@@ -43,13 +43,11 @@ class VaultImpl
         Vault,
         Vault.Definition,
         Vault.Update {
-    private VaultsInner client;
     private GraphRbacManager graphRbacManager;
     private List<AccessPolicyImpl> accessPolicies;
 
-    VaultImpl(String key, VaultInner innerObject, VaultsInner client, KeyVaultManager manager, GraphRbacManager graphRbacManager) {
+    VaultImpl(String key, VaultInner innerObject, KeyVaultManager manager, GraphRbacManager graphRbacManager) {
         super(key, innerObject, manager);
-        this.client = client;
         this.graphRbacManager = graphRbacManager;
         this.accessPolicies = new ArrayList<>();
         if (innerObject != null && innerObject.properties() != null && innerObject.properties().accessPolicies() != null) {
@@ -205,20 +203,28 @@ class VaultImpl
             if (accessPolicy.objectId() == null) {
                 if (accessPolicy.userPrincipalName() != null) {
                     observables.add(graphRbacManager.users().getByUserPrincipalNameAsync(accessPolicy.userPrincipalName())
-                            .subscribeOn(Schedulers.io())
+                            .subscribeOn(SdkContext.getRxScheduler())
                             .doOnNext(new Action1<User>() {
                                 @Override
                                 public void call(User user) {
-                                    accessPolicy.forObjectId(UUID.fromString(user.objectId()));
+                                    if (user == null) {
+                                        throw new CloudException(String.format("User principal name %s is not found in tenant %s",
+                                                accessPolicy.userPrincipalName(), graphRbacManager.tenantId()), null);
+                                    }
+                                    accessPolicy.forObjectId(user.objectId());
                                 }
                             }));
                 } else if (accessPolicy.servicePrincipalName() != null) {
                     observables.add(graphRbacManager.servicePrincipals().getByServicePrincipalNameAsync(accessPolicy.servicePrincipalName())
-                            .subscribeOn(Schedulers.io())
+                            .subscribeOn(SdkContext.getRxScheduler())
                             .doOnNext(new Action1<ServicePrincipal>() {
                                 @Override
                                 public void call(ServicePrincipal sp) {
-                                    accessPolicy.forObjectId(UUID.fromString(sp.objectId()));
+                                    if (sp == null) {
+                                        throw new CloudException(String.format("User principal name %s is not found in tenant %s",
+                                                accessPolicy.userPrincipalName(), graphRbacManager.tenantId()), null);
+                                    }
+                                    accessPolicy.forObjectId(sp.objectId());
                                 }
                             }));
                 } else {
@@ -240,6 +246,7 @@ class VaultImpl
 
     @Override
     public Observable<Vault> createResourceAsync() {
+        final VaultsInner client = this.manager().inner().vaults();
         return populateAccessPolicies()
                 .flatMap(new Func1<Object, Observable<VaultInner>>() {
                     @Override
@@ -259,8 +266,7 @@ class VaultImpl
     }
 
     @Override
-    public VaultImpl refresh() {
-        setInner(client.get(resourceGroupName(), name()));
-        return this;
+    protected Observable<VaultInner> getInnerAsync() {
+        return this.manager().inner().vaults().getByResourceGroupAsync(resourceGroupName(), name());
     }
 }

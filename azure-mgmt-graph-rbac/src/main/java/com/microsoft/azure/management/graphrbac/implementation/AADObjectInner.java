@@ -9,59 +9,70 @@
 package com.microsoft.azure.management.graphrbac.implementation;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Active Directory object information.
+ * The properties of an Active Directory object.
  */
 public class AADObjectInner {
     /**
-     * object Id.
+     * The ID of the object.
      */
+    @JsonProperty(value = "objectId")
     private String objectId;
 
     /**
-     * object type.
+     * The type of AAD object.
      */
+    @JsonProperty(value = "objectType")
     private String objectType;
 
     /**
-     * object display name.
+     * The display name of the object.
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /**
-     * principal name.
+     * The principal name of the object.
      */
+    @JsonProperty(value = "userPrincipalName")
     private String userPrincipalName;
 
     /**
-     * mail.
+     * The primary email address of the object.
      */
+    @JsonProperty(value = "mail")
     private String mail;
 
     /**
-     * MailEnabled field.
+     * Whether the AAD object is mail-enabled.
      */
+    @JsonProperty(value = "mailEnabled")
     private Boolean mailEnabled;
 
     /**
-     * SecurityEnabled field.
+     * Whether the AAD object is security-enabled.
      */
+    @JsonProperty(value = "securityEnabled")
     private Boolean securityEnabled;
 
     /**
-     * signIn name.
+     * The sign-in name of the object.
      */
+    @JsonProperty(value = "signInName")
     private String signInName;
 
     /**
-     * the list of service principal names.
+     * A collection of service principal names associated with the object.
      */
+    @JsonProperty(value = "servicePrincipalNames")
     private List<String> servicePrincipalNames;
 
     /**
-     * the user type.
+     * The user type of the object.
      */
+    @JsonProperty(value = "userType")
     private String userType;
 
     /**

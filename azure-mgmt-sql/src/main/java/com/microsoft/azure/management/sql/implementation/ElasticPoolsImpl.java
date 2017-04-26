@@ -11,7 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.sql.SqlElasticPool;
 import com.microsoft.azure.management.sql.SqlElasticPools;
 import com.microsoft.azure.management.sql.SqlServer;
-import rx.Observable;
+import rx.Completable;
 
 import java.util.List;
 
@@ -26,9 +26,7 @@ public class ElasticPoolsImpl implements SqlServer.ElasticPools {
     private final SqlElasticPools.SqlElasticPoolsCreatable elasticPools;
     private final Region region;
 
-    ElasticPoolsImpl(ElasticPoolsInner innerCollection,
-                     SqlServerManager manager,
-                     DatabasesInner databasesInner,
+    ElasticPoolsImpl(SqlServerManager manager,
                      DatabasesImpl databasesImpl,
                      String resourceGroupName,
                      String sqlServerName,
@@ -36,7 +34,7 @@ public class ElasticPoolsImpl implements SqlServer.ElasticPools {
         this.resourceGroupName = resourceGroupName;
         this.sqlServerName = sqlServerName;
         this.region = region;
-        this.elasticPools = new SqlElasticPoolsImpl(innerCollection, manager, databasesInner, databasesImpl);
+        this.elasticPools = new SqlElasticPoolsImpl(manager, databasesImpl);
     }
 
     protected SqlElasticPools elasticPools() {
@@ -63,7 +61,7 @@ public class ElasticPoolsImpl implements SqlServer.ElasticPools {
     }
 
     @Override
-    public Observable<Void> deleteAsync(String elasticPoolName) {
+    public Completable deleteAsync(String elasticPoolName) {
         return this.elasticPools.deleteByParentAsync(this.resourceGroupName, this.sqlServerName, elasticPoolName);
     }
 }

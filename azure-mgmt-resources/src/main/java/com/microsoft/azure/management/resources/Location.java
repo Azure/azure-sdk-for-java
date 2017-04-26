@@ -7,9 +7,10 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.implementation.LocationInner;
 
 /**
@@ -18,7 +19,7 @@ import com.microsoft.azure.management.resources.implementation.LocationInner;
 @Fluent
 public interface Location extends
         Indexable,
-        Wrapper<LocationInner>,
+        HasInner<LocationInner>,
         HasName {
     /**
      * @return the subscription UUID
@@ -29,6 +30,11 @@ public interface Location extends
      * @return the display name of the location readable by humans
      */
     String displayName();
+
+    /**
+     * @return the region of the data center location
+     */
+    Region region();
 
     /**
      * @return the latitude of the location

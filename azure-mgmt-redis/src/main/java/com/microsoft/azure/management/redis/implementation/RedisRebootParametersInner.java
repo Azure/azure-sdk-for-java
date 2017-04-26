@@ -12,21 +12,21 @@ import com.microsoft.azure.management.redis.RebootType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Specifies which redis node(s) to reboot.
+ * Specifies which Redis node(s) to reboot.
  */
 public class RedisRebootParametersInner {
     /**
-     * Which redis node(s) to reboot. Depending on this value data loss is
+     * Which Redis node(s) to reboot. Depending on this value data loss is
      * possible. Possible values include: 'PrimaryNode', 'SecondaryNode',
      * 'AllNodes'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "rebootType", required = true)
     private RebootType rebootType;
 
     /**
-     * In case of cluster cache, this specifies shard id which should be
-     * rebooted.
+     * If clustering is enabled, the ID of the shard to be rebooted.
      */
+    @JsonProperty(value = "shardId")
     private Integer shardId;
 
     /**

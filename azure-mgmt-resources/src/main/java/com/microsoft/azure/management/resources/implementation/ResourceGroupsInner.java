@@ -10,14 +10,13 @@ package com.microsoft.azure.management.resources.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -34,6 +33,7 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -42,7 +42,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in ResourceGroups.
  */
-public final class ResourceGroupsInner {
+public class ResourceGroupsInner {
     /** The Retrofit service to perform REST calls. */
     private ResourceGroupsService service;
     /** The service client containing this operation class. */
@@ -64,130 +64,137 @@ public final class ResourceGroupsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface ResourceGroupsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.ResourceGroups listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/resources")
-        Observable<Response<ResponseBody>> listResources(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$expand") String expand, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$expand") String expand, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.ResourceGroups checkExistence" })
         @HEAD("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
         Observable<Response<Void>> checkExistence(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.ResourceGroups createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Body ResourceGroupInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.ResourceGroups delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.ResourceGroups beginDelete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.ResourceGroups get" })
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.ResourceGroups patch" })
         @PATCH("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
         Observable<Response<ResponseBody>> patch(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Body ResourceGroupInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.ResourceGroups exportTemplate" })
         @POST("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/exportTemplate")
         Observable<Response<ResponseBody>> exportTemplate(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Body ExportTemplateRequestInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.ResourceGroups list" })
         @GET("subscriptions/{subscriptionId}/resourcegroups")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listResourcesNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.ResourceGroups listByResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.ResourceGroups listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources for a resource group.
      *
-     * @param resourceGroupName Query parameters. If null is passed returns all resource groups.
+     * @param resourceGroupName The resource group with the resources to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;GenericResourceInner&gt; object if successful.
      */
-    public PagedList<GenericResourceInner> listResources(final String resourceGroupName) {
-        ServiceResponse<Page<GenericResourceInner>> response = listResourcesSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<GenericResourceInner>(response.getBody()) {
+    public PagedList<GenericResourceInner> listByResourceGroup(final String resourceGroupName) {
+        ServiceResponse<Page<GenericResourceInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
+        return new PagedList<GenericResourceInner>(response.body()) {
             @Override
             public Page<GenericResourceInner> nextPage(String nextPageLink) {
-                return listResourcesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources for a resource group.
      *
-     * @param resourceGroupName Query parameters. If null is passed returns all resource groups.
+     * @param resourceGroupName The resource group with the resources to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<GenericResourceInner>> listResourcesAsync(final String resourceGroupName, final ListOperationCallback<GenericResourceInner> serviceCallback) {
-        return AzureServiceCall.create(
-            listResourcesSinglePageAsync(resourceGroupName),
+    public ServiceFuture<List<GenericResourceInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<GenericResourceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GenericResourceInner>>> call(String nextPageLink) {
-                    return listResourcesNextSinglePageAsync(nextPageLink);
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources for a resource group.
      *
-     * @param resourceGroupName Query parameters. If null is passed returns all resource groups.
+     * @param resourceGroupName The resource group with the resources to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;GenericResourceInner&gt; object
      */
-    public Observable<Page<GenericResourceInner>> listResourcesAsync(final String resourceGroupName) {
-        return listResourcesWithServiceResponseAsync(resourceGroupName)
+    public Observable<Page<GenericResourceInner>> listByResourceGroupAsync(final String resourceGroupName) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName)
             .map(new Func1<ServiceResponse<Page<GenericResourceInner>>, Page<GenericResourceInner>>() {
                 @Override
                 public Page<GenericResourceInner> call(ServiceResponse<Page<GenericResourceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources for a resource group.
      *
-     * @param resourceGroupName Query parameters. If null is passed returns all resource groups.
+     * @param resourceGroupName The resource group with the resources to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;GenericResourceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<GenericResourceInner>>> listResourcesWithServiceResponseAsync(final String resourceGroupName) {
-        return listResourcesSinglePageAsync(resourceGroupName)
+    public Observable<ServiceResponse<Page<GenericResourceInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
+        return listByResourceGroupSinglePageAsync(resourceGroupName)
             .concatMap(new Func1<ServiceResponse<Page<GenericResourceInner>>, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GenericResourceInner>>> call(ServiceResponse<Page<GenericResourceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listResourcesNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources for a resource group.
      *
-     * @param resourceGroupName Query parameters. If null is passed returns all resource groups.
+     * @param resourceGroupName The resource group with the resources to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;GenericResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<GenericResourceInner>>> listResourcesSinglePageAsync(final String resourceGroupName) {
+    public Observable<ServiceResponse<Page<GenericResourceInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -200,13 +207,13 @@ public final class ResourceGroupsInner {
         final String filter = null;
         final String expand = null;
         final Integer top = null;
-        return service.listResources(resourceGroupName, this.client.subscriptionId(), filter, expand, top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, expand, top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GenericResourceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<GenericResourceInner>> result = listResourcesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<GenericResourceInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<GenericResourceInner>> result = listByResourceGroupDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<GenericResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -215,98 +222,105 @@ public final class ResourceGroupsInner {
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources for a resource group.
      *
-     * @param resourceGroupName Query parameters. If null is passed returns all resource groups.
+     * @param resourceGroupName The resource group with the resources to get.
      * @param filter The filter to apply on the operation.
      * @param expand The $expand query parameter
-     * @param top Query parameters. If null is passed returns all resource groups.
+     * @param top The number of results to return. If null is passed, returns all resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;GenericResourceInner&gt; object if successful.
      */
-    public PagedList<GenericResourceInner> listResources(final String resourceGroupName, final String filter, final String expand, final Integer top) {
-        ServiceResponse<Page<GenericResourceInner>> response = listResourcesSinglePageAsync(resourceGroupName, filter, expand, top).toBlocking().single();
-        return new PagedList<GenericResourceInner>(response.getBody()) {
+    public PagedList<GenericResourceInner> listByResourceGroup(final String resourceGroupName, final String filter, final String expand, final Integer top) {
+        ServiceResponse<Page<GenericResourceInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName, filter, expand, top).toBlocking().single();
+        return new PagedList<GenericResourceInner>(response.body()) {
             @Override
             public Page<GenericResourceInner> nextPage(String nextPageLink) {
-                return listResourcesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources for a resource group.
      *
-     * @param resourceGroupName Query parameters. If null is passed returns all resource groups.
+     * @param resourceGroupName The resource group with the resources to get.
      * @param filter The filter to apply on the operation.
      * @param expand The $expand query parameter
-     * @param top Query parameters. If null is passed returns all resource groups.
+     * @param top The number of results to return. If null is passed, returns all resources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<GenericResourceInner>> listResourcesAsync(final String resourceGroupName, final String filter, final String expand, final Integer top, final ListOperationCallback<GenericResourceInner> serviceCallback) {
-        return AzureServiceCall.create(
-            listResourcesSinglePageAsync(resourceGroupName, filter, expand, top),
+    public ServiceFuture<List<GenericResourceInner>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final String expand, final Integer top, final ListOperationCallback<GenericResourceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupSinglePageAsync(resourceGroupName, filter, expand, top),
             new Func1<String, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GenericResourceInner>>> call(String nextPageLink) {
-                    return listResourcesNextSinglePageAsync(nextPageLink);
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources for a resource group.
      *
-     * @param resourceGroupName Query parameters. If null is passed returns all resource groups.
+     * @param resourceGroupName The resource group with the resources to get.
      * @param filter The filter to apply on the operation.
      * @param expand The $expand query parameter
-     * @param top Query parameters. If null is passed returns all resource groups.
+     * @param top The number of results to return. If null is passed, returns all resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;GenericResourceInner&gt; object
      */
-    public Observable<Page<GenericResourceInner>> listResourcesAsync(final String resourceGroupName, final String filter, final String expand, final Integer top) {
-        return listResourcesWithServiceResponseAsync(resourceGroupName, filter, expand, top)
+    public Observable<Page<GenericResourceInner>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final String expand, final Integer top) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName, filter, expand, top)
             .map(new Func1<ServiceResponse<Page<GenericResourceInner>>, Page<GenericResourceInner>>() {
                 @Override
                 public Page<GenericResourceInner> call(ServiceResponse<Page<GenericResourceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources for a resource group.
      *
-     * @param resourceGroupName Query parameters. If null is passed returns all resource groups.
+     * @param resourceGroupName The resource group with the resources to get.
      * @param filter The filter to apply on the operation.
      * @param expand The $expand query parameter
-     * @param top Query parameters. If null is passed returns all resource groups.
+     * @param top The number of results to return. If null is passed, returns all resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;GenericResourceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<GenericResourceInner>>> listResourcesWithServiceResponseAsync(final String resourceGroupName, final String filter, final String expand, final Integer top) {
-        return listResourcesSinglePageAsync(resourceGroupName, filter, expand, top)
+    public Observable<ServiceResponse<Page<GenericResourceInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName, final String filter, final String expand, final Integer top) {
+        return listByResourceGroupSinglePageAsync(resourceGroupName, filter, expand, top)
             .concatMap(new Func1<ServiceResponse<Page<GenericResourceInner>>, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GenericResourceInner>>> call(ServiceResponse<Page<GenericResourceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listResourcesNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources for a resource group.
      *
-    ServiceResponse<PageImpl<GenericResourceInner>> * @param resourceGroupName Query parameters. If null is passed returns all resource groups.
+    ServiceResponse<PageImpl<GenericResourceInner>> * @param resourceGroupName The resource group with the resources to get.
     ServiceResponse<PageImpl<GenericResourceInner>> * @param filter The filter to apply on the operation.
     ServiceResponse<PageImpl<GenericResourceInner>> * @param expand The $expand query parameter
-    ServiceResponse<PageImpl<GenericResourceInner>> * @param top Query parameters. If null is passed returns all resource groups.
+    ServiceResponse<PageImpl<GenericResourceInner>> * @param top The number of results to return. If null is passed, returns all resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;GenericResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<GenericResourceInner>>> listResourcesSinglePageAsync(final String resourceGroupName, final String filter, final String expand, final Integer top) {
+    public Observable<ServiceResponse<Page<GenericResourceInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName, final String filter, final String expand, final Integer top) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -316,13 +330,13 @@ public final class ResourceGroupsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listResources(resourceGroupName, this.client.subscriptionId(), filter, expand, top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, expand, top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GenericResourceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<GenericResourceInner>> result = listResourcesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<GenericResourceInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<GenericResourceInner>> result = listByResourceGroupDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<GenericResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -330,54 +344,60 @@ public final class ResourceGroupsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<GenericResourceInner>> listResourcesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<GenericResourceInner>, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<PageImpl<GenericResourceInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<GenericResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<GenericResourceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Checks whether resource group exists.
+     * Checks whether a resource group exists.
      *
      * @param resourceGroupName The name of the resource group to check. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the boolean object if successful.
      */
     public boolean checkExistence(String resourceGroupName) {
-        return checkExistenceWithServiceResponseAsync(resourceGroupName).toBlocking().single().getBody();
+        return checkExistenceWithServiceResponseAsync(resourceGroupName).toBlocking().single().body();
     }
 
     /**
-     * Checks whether resource group exists.
+     * Checks whether a resource group exists.
      *
      * @param resourceGroupName The name of the resource group to check. The name is case insensitive.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Boolean> checkExistenceAsync(String resourceGroupName, final ServiceCallback<Boolean> serviceCallback) {
-        return ServiceCall.create(checkExistenceWithServiceResponseAsync(resourceGroupName), serviceCallback);
+    public ServiceFuture<Boolean> checkExistenceAsync(String resourceGroupName, final ServiceCallback<Boolean> serviceCallback) {
+        return ServiceFuture.fromResponse(checkExistenceWithServiceResponseAsync(resourceGroupName), serviceCallback);
     }
 
     /**
-     * Checks whether resource group exists.
+     * Checks whether a resource group exists.
      *
      * @param resourceGroupName The name of the resource group to check. The name is case insensitive.
-     * @return the observable to the boolean object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Boolean object
      */
     public Observable<Boolean> checkExistenceAsync(String resourceGroupName) {
         return checkExistenceWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<Boolean>, Boolean>() {
             @Override
             public Boolean call(ServiceResponse<Boolean> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Checks whether resource group exists.
+     * Checks whether a resource group exists.
      *
      * @param resourceGroupName The name of the resource group to check. The name is case insensitive.
-     * @return the observable to the boolean object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Boolean object
      */
     public Observable<ServiceResponse<Boolean>> checkExistenceWithServiceResponseAsync(String resourceGroupName) {
         if (resourceGroupName == null) {
@@ -404,7 +424,7 @@ public final class ResourceGroupsInner {
     }
 
     private ServiceResponse<Boolean> checkExistenceDelegate(Response<Void> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Boolean, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Boolean, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -412,49 +432,55 @@ public final class ResourceGroupsInner {
     }
 
     /**
-     * Create a resource group.
+     * Creates a resource group.
      *
-     * @param resourceGroupName The name of the resource group to be created or updated.
-     * @param parameters Parameters supplied to the create or update resource group service operation.
+     * @param resourceGroupName The name of the resource group to create or update.
+     * @param parameters Parameters supplied to the create or update a resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ResourceGroupInner object if successful.
      */
     public ResourceGroupInner createOrUpdate(String resourceGroupName, ResourceGroupInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, parameters).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, parameters).toBlocking().single().body();
     }
 
     /**
-     * Create a resource group.
+     * Creates a resource group.
      *
-     * @param resourceGroupName The name of the resource group to be created or updated.
-     * @param parameters Parameters supplied to the create or update resource group service operation.
+     * @param resourceGroupName The name of the resource group to create or update.
+     * @param parameters Parameters supplied to the create or update a resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ResourceGroupInner> createOrUpdateAsync(String resourceGroupName, ResourceGroupInner parameters, final ServiceCallback<ResourceGroupInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, parameters), serviceCallback);
+    public ServiceFuture<ResourceGroupInner> createOrUpdateAsync(String resourceGroupName, ResourceGroupInner parameters, final ServiceCallback<ResourceGroupInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, parameters), serviceCallback);
     }
 
     /**
-     * Create a resource group.
+     * Creates a resource group.
      *
-     * @param resourceGroupName The name of the resource group to be created or updated.
-     * @param parameters Parameters supplied to the create or update resource group service operation.
+     * @param resourceGroupName The name of the resource group to create or update.
+     * @param parameters Parameters supplied to the create or update a resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceGroupInner object
      */
     public Observable<ResourceGroupInner> createOrUpdateAsync(String resourceGroupName, ResourceGroupInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, parameters).map(new Func1<ServiceResponse<ResourceGroupInner>, ResourceGroupInner>() {
             @Override
             public ResourceGroupInner call(ServiceResponse<ResourceGroupInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Create a resource group.
+     * Creates a resource group.
      *
-     * @param resourceGroupName The name of the resource group to be created or updated.
-     * @param parameters Parameters supplied to the create or update resource group service operation.
+     * @param resourceGroupName The name of the resource group to create or update.
+     * @param parameters Parameters supplied to the create or update a resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceGroupInner object
      */
     public Observable<ServiceResponse<ResourceGroupInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, ResourceGroupInner parameters) {
@@ -486,7 +512,7 @@ public final class ResourceGroupsInner {
     }
 
     private ServiceResponse<ResourceGroupInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceGroupInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ResourceGroupInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<ResourceGroupInner>() { }.getType())
                 .register(200, new TypeToken<ResourceGroupInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -494,44 +520,54 @@ public final class ResourceGroupsInner {
     }
 
     /**
-     * Delete resource group.
+     * Deletes a resource group.
+     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of its template deployments and currently stored operations.
      *
-     * @param resourceGroupName The name of the resource group to be deleted. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName) {
-        deleteWithServiceResponseAsync(resourceGroupName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName).toBlocking().last().body();
     }
 
     /**
-     * Delete resource group.
+     * Deletes a resource group.
+     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of its template deployments and currently stored operations.
      *
-     * @param resourceGroupName The name of the resource group to be deleted. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName), serviceCallback);
     }
 
     /**
-     * Delete resource group.
+     * Deletes a resource group.
+     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of its template deployments and currently stored operations.
      *
-     * @param resourceGroupName The name of the resource group to be deleted. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName) {
         return deleteWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Delete resource group.
+     * Deletes a resource group.
+     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of its template deployments and currently stored operations.
      *
-     * @param resourceGroupName The name of the resource group to be deleted. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName) {
@@ -549,44 +585,54 @@ public final class ResourceGroupsInner {
     }
 
     /**
-     * Delete resource group.
+     * Deletes a resource group.
+     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of its template deployments and currently stored operations.
      *
-     * @param resourceGroupName The name of the resource group to be deleted. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName).toBlocking().single().body();
     }
 
     /**
-     * Delete resource group.
+     * Deletes a resource group.
+     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of its template deployments and currently stored operations.
      *
-     * @param resourceGroupName The name of the resource group to be deleted. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName), serviceCallback);
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName), serviceCallback);
     }
 
     /**
-     * Delete resource group.
+     * Deletes a resource group.
+     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of its template deployments and currently stored operations.
      *
-     * @param resourceGroupName The name of the resource group to be deleted. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName) {
         return beginDeleteWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Delete resource group.
+     * Deletes a resource group.
+     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of its template deployments and currently stored operations.
      *
-     * @param resourceGroupName The name of the resource group to be deleted. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName) {
@@ -614,52 +660,59 @@ public final class ResourceGroupsInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Get a resource group.
+     * Gets a resource group.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ResourceGroupInner object if successful.
      */
     public ResourceGroupInner get(String resourceGroupName) {
-        return getWithServiceResponseAsync(resourceGroupName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName).toBlocking().single().body();
     }
 
     /**
-     * Get a resource group.
+     * Gets a resource group.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ResourceGroupInner> getAsync(String resourceGroupName, final ServiceCallback<ResourceGroupInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName), serviceCallback);
+    public ServiceFuture<ResourceGroupInner> getAsync(String resourceGroupName, final ServiceCallback<ResourceGroupInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName), serviceCallback);
     }
 
     /**
-     * Get a resource group.
+     * Gets a resource group.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceGroupInner object
      */
     public Observable<ResourceGroupInner> getAsync(String resourceGroupName) {
         return getWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<ResourceGroupInner>, ResourceGroupInner>() {
             @Override
             public ResourceGroupInner call(ServiceResponse<ResourceGroupInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Get a resource group.
+     * Gets a resource group.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceGroupInner object
      */
     public Observable<ServiceResponse<ResourceGroupInner>> getWithServiceResponseAsync(String resourceGroupName) {
@@ -687,56 +740,66 @@ public final class ResourceGroupsInner {
     }
 
     private ServiceResponse<ResourceGroupInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceGroupInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ResourceGroupInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ResourceGroupInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Resource groups can be updated through a simple PATCH operation to a group address. The format of the request is the same as that for creating a resource groups, though if a field is unspecified current value will be carried over.
+     * Updates a resource group.
+     * Resource groups can be updated through a simple PATCH operation to a group address. The format of the request is the same as that for creating a resource group. If a field is unspecified, the current value is retained.
      *
-     * @param resourceGroupName The name of the resource group to be created or updated. The name is case insensitive.
-     * @param parameters Parameters supplied to the update state resource group service operation.
+     * @param resourceGroupName The name of the resource group to update. The name is case insensitive.
+     * @param parameters Parameters supplied to update a resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ResourceGroupInner object if successful.
      */
     public ResourceGroupInner patch(String resourceGroupName, ResourceGroupInner parameters) {
-        return patchWithServiceResponseAsync(resourceGroupName, parameters).toBlocking().single().getBody();
+        return patchWithServiceResponseAsync(resourceGroupName, parameters).toBlocking().single().body();
     }
 
     /**
-     * Resource groups can be updated through a simple PATCH operation to a group address. The format of the request is the same as that for creating a resource groups, though if a field is unspecified current value will be carried over.
+     * Updates a resource group.
+     * Resource groups can be updated through a simple PATCH operation to a group address. The format of the request is the same as that for creating a resource group. If a field is unspecified, the current value is retained.
      *
-     * @param resourceGroupName The name of the resource group to be created or updated. The name is case insensitive.
-     * @param parameters Parameters supplied to the update state resource group service operation.
+     * @param resourceGroupName The name of the resource group to update. The name is case insensitive.
+     * @param parameters Parameters supplied to update a resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ResourceGroupInner> patchAsync(String resourceGroupName, ResourceGroupInner parameters, final ServiceCallback<ResourceGroupInner> serviceCallback) {
-        return ServiceCall.create(patchWithServiceResponseAsync(resourceGroupName, parameters), serviceCallback);
+    public ServiceFuture<ResourceGroupInner> patchAsync(String resourceGroupName, ResourceGroupInner parameters, final ServiceCallback<ResourceGroupInner> serviceCallback) {
+        return ServiceFuture.fromResponse(patchWithServiceResponseAsync(resourceGroupName, parameters), serviceCallback);
     }
 
     /**
-     * Resource groups can be updated through a simple PATCH operation to a group address. The format of the request is the same as that for creating a resource groups, though if a field is unspecified current value will be carried over.
+     * Updates a resource group.
+     * Resource groups can be updated through a simple PATCH operation to a group address. The format of the request is the same as that for creating a resource group. If a field is unspecified, the current value is retained.
      *
-     * @param resourceGroupName The name of the resource group to be created or updated. The name is case insensitive.
-     * @param parameters Parameters supplied to the update state resource group service operation.
+     * @param resourceGroupName The name of the resource group to update. The name is case insensitive.
+     * @param parameters Parameters supplied to update a resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceGroupInner object
      */
     public Observable<ResourceGroupInner> patchAsync(String resourceGroupName, ResourceGroupInner parameters) {
         return patchWithServiceResponseAsync(resourceGroupName, parameters).map(new Func1<ServiceResponse<ResourceGroupInner>, ResourceGroupInner>() {
             @Override
             public ResourceGroupInner call(ServiceResponse<ResourceGroupInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Resource groups can be updated through a simple PATCH operation to a group address. The format of the request is the same as that for creating a resource groups, though if a field is unspecified current value will be carried over.
+     * Updates a resource group.
+     * Resource groups can be updated through a simple PATCH operation to a group address. The format of the request is the same as that for creating a resource group. If a field is unspecified, the current value is retained.
      *
-     * @param resourceGroupName The name of the resource group to be created or updated. The name is case insensitive.
-     * @param parameters Parameters supplied to the update state resource group service operation.
+     * @param resourceGroupName The name of the resource group to update. The name is case insensitive.
+     * @param parameters Parameters supplied to update a resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceGroupInner object
      */
     public Observable<ServiceResponse<ResourceGroupInner>> patchWithServiceResponseAsync(String resourceGroupName, ResourceGroupInner parameters) {
@@ -768,7 +831,7 @@ public final class ResourceGroupsInner {
     }
 
     private ServiceResponse<ResourceGroupInner> patchDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceGroupInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ResourceGroupInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ResourceGroupInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -777,38 +840,43 @@ public final class ResourceGroupsInner {
     /**
      * Captures the specified resource group as a template.
      *
-     * @param resourceGroupName The name of the resource group to be created or updated.
-     * @param parameters Parameters supplied to the export template resource group operation.
+     * @param resourceGroupName The name of the resource group to export as a template.
+     * @param parameters Parameters for exporting the template.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ResourceGroupExportResultInner object if successful.
      */
     public ResourceGroupExportResultInner exportTemplate(String resourceGroupName, ExportTemplateRequestInner parameters) {
-        return exportTemplateWithServiceResponseAsync(resourceGroupName, parameters).toBlocking().single().getBody();
+        return exportTemplateWithServiceResponseAsync(resourceGroupName, parameters).toBlocking().single().body();
     }
 
     /**
      * Captures the specified resource group as a template.
      *
-     * @param resourceGroupName The name of the resource group to be created or updated.
-     * @param parameters Parameters supplied to the export template resource group operation.
+     * @param resourceGroupName The name of the resource group to export as a template.
+     * @param parameters Parameters for exporting the template.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ResourceGroupExportResultInner> exportTemplateAsync(String resourceGroupName, ExportTemplateRequestInner parameters, final ServiceCallback<ResourceGroupExportResultInner> serviceCallback) {
-        return ServiceCall.create(exportTemplateWithServiceResponseAsync(resourceGroupName, parameters), serviceCallback);
+    public ServiceFuture<ResourceGroupExportResultInner> exportTemplateAsync(String resourceGroupName, ExportTemplateRequestInner parameters, final ServiceCallback<ResourceGroupExportResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(exportTemplateWithServiceResponseAsync(resourceGroupName, parameters), serviceCallback);
     }
 
     /**
      * Captures the specified resource group as a template.
      *
-     * @param resourceGroupName The name of the resource group to be created or updated.
-     * @param parameters Parameters supplied to the export template resource group operation.
+     * @param resourceGroupName The name of the resource group to export as a template.
+     * @param parameters Parameters for exporting the template.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceGroupExportResultInner object
      */
     public Observable<ResourceGroupExportResultInner> exportTemplateAsync(String resourceGroupName, ExportTemplateRequestInner parameters) {
         return exportTemplateWithServiceResponseAsync(resourceGroupName, parameters).map(new Func1<ServiceResponse<ResourceGroupExportResultInner>, ResourceGroupExportResultInner>() {
             @Override
             public ResourceGroupExportResultInner call(ServiceResponse<ResourceGroupExportResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -816,8 +884,9 @@ public final class ResourceGroupsInner {
     /**
      * Captures the specified resource group as a template.
      *
-     * @param resourceGroupName The name of the resource group to be created or updated.
-     * @param parameters Parameters supplied to the export template resource group operation.
+     * @param resourceGroupName The name of the resource group to export as a template.
+     * @param parameters Parameters for exporting the template.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceGroupExportResultInner object
      */
     public Observable<ServiceResponse<ResourceGroupExportResultInner>> exportTemplateWithServiceResponseAsync(String resourceGroupName, ExportTemplateRequestInner parameters) {
@@ -849,35 +918,39 @@ public final class ResourceGroupsInner {
     }
 
     private ServiceResponse<ResourceGroupExportResultInner> exportTemplateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceGroupExportResultInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ResourceGroupExportResultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ResourceGroupExportResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Gets a collection of resource groups.
+     * Gets all the resource groups for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceGroupInner&gt; object if successful.
      */
     public PagedList<ResourceGroupInner> list() {
         ServiceResponse<Page<ResourceGroupInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<ResourceGroupInner>(response.getBody()) {
+        return new PagedList<ResourceGroupInner>(response.body()) {
             @Override
             public Page<ResourceGroupInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Gets a collection of resource groups.
+     * Gets all the resource groups for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceGroupInner>> listAsync(final ListOperationCallback<ResourceGroupInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceGroupInner>> listAsync(final ListOperationCallback<ResourceGroupInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ResourceGroupInner>>>>() {
                 @Override
@@ -889,8 +962,9 @@ public final class ResourceGroupsInner {
     }
 
     /**
-     * Gets a collection of resource groups.
+     * Gets all the resource groups for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceGroupInner&gt; object
      */
     public Observable<Page<ResourceGroupInner>> listAsync() {
@@ -898,14 +972,15 @@ public final class ResourceGroupsInner {
             .map(new Func1<ServiceResponse<Page<ResourceGroupInner>>, Page<ResourceGroupInner>>() {
                 @Override
                 public Page<ResourceGroupInner> call(ServiceResponse<Page<ResourceGroupInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Gets a collection of resource groups.
+     * Gets all the resource groups for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceGroupInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceGroupInner>>> listWithServiceResponseAsync() {
@@ -913,7 +988,7 @@ public final class ResourceGroupsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceGroupInner>>, Observable<ServiceResponse<Page<ResourceGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceGroupInner>>> call(ServiceResponse<Page<ResourceGroupInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -923,8 +998,9 @@ public final class ResourceGroupsInner {
     }
 
     /**
-     * Gets a collection of resource groups.
+     * Gets all the resource groups for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceGroupInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceGroupInner>>> listSinglePageAsync() {
@@ -942,7 +1018,7 @@ public final class ResourceGroupsInner {
                 public Observable<ServiceResponse<Page<ResourceGroupInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceGroupInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceGroupInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceGroupInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -951,32 +1027,36 @@ public final class ResourceGroupsInner {
     }
 
     /**
-     * Gets a collection of resource groups.
+     * Gets all the resource groups for a subscription.
      *
      * @param filter The filter to apply on the operation.
-     * @param top Query parameters. If null is passed returns all resource groups.
+     * @param top The number of results to return. If null is passed, returns all resource groups.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceGroupInner&gt; object if successful.
      */
     public PagedList<ResourceGroupInner> list(final String filter, final Integer top) {
         ServiceResponse<Page<ResourceGroupInner>> response = listSinglePageAsync(filter, top).toBlocking().single();
-        return new PagedList<ResourceGroupInner>(response.getBody()) {
+        return new PagedList<ResourceGroupInner>(response.body()) {
             @Override
             public Page<ResourceGroupInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Gets a collection of resource groups.
+     * Gets all the resource groups for a subscription.
      *
      * @param filter The filter to apply on the operation.
-     * @param top Query parameters. If null is passed returns all resource groups.
+     * @param top The number of results to return. If null is passed, returns all resource groups.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceGroupInner>> listAsync(final String filter, final Integer top, final ListOperationCallback<ResourceGroupInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceGroupInner>> listAsync(final String filter, final Integer top, final ListOperationCallback<ResourceGroupInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(filter, top),
             new Func1<String, Observable<ServiceResponse<Page<ResourceGroupInner>>>>() {
                 @Override
@@ -988,10 +1068,11 @@ public final class ResourceGroupsInner {
     }
 
     /**
-     * Gets a collection of resource groups.
+     * Gets all the resource groups for a subscription.
      *
      * @param filter The filter to apply on the operation.
-     * @param top Query parameters. If null is passed returns all resource groups.
+     * @param top The number of results to return. If null is passed, returns all resource groups.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceGroupInner&gt; object
      */
     public Observable<Page<ResourceGroupInner>> listAsync(final String filter, final Integer top) {
@@ -999,16 +1080,17 @@ public final class ResourceGroupsInner {
             .map(new Func1<ServiceResponse<Page<ResourceGroupInner>>, Page<ResourceGroupInner>>() {
                 @Override
                 public Page<ResourceGroupInner> call(ServiceResponse<Page<ResourceGroupInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Gets a collection of resource groups.
+     * Gets all the resource groups for a subscription.
      *
      * @param filter The filter to apply on the operation.
-     * @param top Query parameters. If null is passed returns all resource groups.
+     * @param top The number of results to return. If null is passed, returns all resource groups.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceGroupInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceGroupInner>>> listWithServiceResponseAsync(final String filter, final Integer top) {
@@ -1016,7 +1098,7 @@ public final class ResourceGroupsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceGroupInner>>, Observable<ServiceResponse<Page<ResourceGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceGroupInner>>> call(ServiceResponse<Page<ResourceGroupInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1026,10 +1108,11 @@ public final class ResourceGroupsInner {
     }
 
     /**
-     * Gets a collection of resource groups.
+     * Gets all the resource groups for a subscription.
      *
     ServiceResponse<PageImpl<ResourceGroupInner>> * @param filter The filter to apply on the operation.
-    ServiceResponse<PageImpl<ResourceGroupInner>> * @param top Query parameters. If null is passed returns all resource groups.
+    ServiceResponse<PageImpl<ResourceGroupInner>> * @param top The number of results to return. If null is passed, returns all resource groups.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceGroupInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceGroupInner>>> listSinglePageAsync(final String filter, final Integer top) {
@@ -1045,7 +1128,7 @@ public final class ResourceGroupsInner {
                 public Observable<ServiceResponse<Page<ResourceGroupInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceGroupInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceGroupInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceGroupInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1054,101 +1137,109 @@ public final class ResourceGroupsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceGroupInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceGroupInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceGroupInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceGroupInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources for a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;GenericResourceInner&gt; object if successful.
      */
-    public PagedList<GenericResourceInner> listResourcesNext(final String nextPageLink) {
-        ServiceResponse<Page<GenericResourceInner>> response = listResourcesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<GenericResourceInner>(response.getBody()) {
+    public PagedList<GenericResourceInner> listByResourceGroupNext(final String nextPageLink) {
+        ServiceResponse<Page<GenericResourceInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<GenericResourceInner>(response.body()) {
             @Override
             public Page<GenericResourceInner> nextPage(String nextPageLink) {
-                return listResourcesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources for a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<GenericResourceInner>> listResourcesNextAsync(final String nextPageLink, final ServiceCall<List<GenericResourceInner>> serviceCall, final ListOperationCallback<GenericResourceInner> serviceCallback) {
-        return AzureServiceCall.create(
-            listResourcesNextSinglePageAsync(nextPageLink),
+    public ServiceFuture<List<GenericResourceInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<GenericResourceInner>> serviceFuture, final ListOperationCallback<GenericResourceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GenericResourceInner>>> call(String nextPageLink) {
-                    return listResourcesNextSinglePageAsync(nextPageLink);
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources for a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;GenericResourceInner&gt; object
      */
-    public Observable<Page<GenericResourceInner>> listResourcesNextAsync(final String nextPageLink) {
-        return listResourcesNextWithServiceResponseAsync(nextPageLink)
+    public Observable<Page<GenericResourceInner>> listByResourceGroupNextAsync(final String nextPageLink) {
+        return listByResourceGroupNextWithServiceResponseAsync(nextPageLink)
             .map(new Func1<ServiceResponse<Page<GenericResourceInner>>, Page<GenericResourceInner>>() {
                 @Override
                 public Page<GenericResourceInner> call(ServiceResponse<Page<GenericResourceInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources for a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;GenericResourceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<GenericResourceInner>>> listResourcesNextWithServiceResponseAsync(final String nextPageLink) {
-        return listResourcesNextSinglePageAsync(nextPageLink)
+    public Observable<ServiceResponse<Page<GenericResourceInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByResourceGroupNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<GenericResourceInner>>, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GenericResourceInner>>> call(ServiceResponse<Page<GenericResourceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listResourcesNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
 
     /**
-     * Get all of the resources under a subscription.
+     * Get all the resources for a resource group.
      *
     ServiceResponse<PageImpl<GenericResourceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;GenericResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<GenericResourceInner>>> listResourcesNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<GenericResourceInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listResourcesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GenericResourceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<GenericResourceInner>> result = listResourcesNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<GenericResourceInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<GenericResourceInner>> result = listByResourceGroupNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<GenericResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1156,39 +1247,43 @@ public final class ResourceGroupsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<GenericResourceInner>> listResourcesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<GenericResourceInner>, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<PageImpl<GenericResourceInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<GenericResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<GenericResourceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Gets a collection of resource groups.
+     * Gets all the resource groups for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceGroupInner&gt; object if successful.
      */
     public PagedList<ResourceGroupInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceGroupInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceGroupInner>(response.getBody()) {
+        return new PagedList<ResourceGroupInner>(response.body()) {
             @Override
             public Page<ResourceGroupInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Gets a collection of resource groups.
+     * Gets all the resource groups for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceGroupInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<ResourceGroupInner>> serviceCall, final ListOperationCallback<ResourceGroupInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceGroupInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceGroupInner>> serviceFuture, final ListOperationCallback<ResourceGroupInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceGroupInner>>>>() {
                 @Override
@@ -1200,9 +1295,10 @@ public final class ResourceGroupsInner {
     }
 
     /**
-     * Gets a collection of resource groups.
+     * Gets all the resource groups for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceGroupInner&gt; object
      */
     public Observable<Page<ResourceGroupInner>> listNextAsync(final String nextPageLink) {
@@ -1210,15 +1306,16 @@ public final class ResourceGroupsInner {
             .map(new Func1<ServiceResponse<Page<ResourceGroupInner>>, Page<ResourceGroupInner>>() {
                 @Override
                 public Page<ResourceGroupInner> call(ServiceResponse<Page<ResourceGroupInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Gets a collection of resource groups.
+     * Gets all the resource groups for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceGroupInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceGroupInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1226,7 +1323,7 @@ public final class ResourceGroupsInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceGroupInner>>, Observable<ServiceResponse<Page<ResourceGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceGroupInner>>> call(ServiceResponse<Page<ResourceGroupInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1236,22 +1333,24 @@ public final class ResourceGroupsInner {
     }
 
     /**
-     * Gets a collection of resource groups.
+     * Gets all the resource groups for a subscription.
      *
     ServiceResponse<PageImpl<ResourceGroupInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceGroupInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceGroupInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceGroupInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceGroupInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceGroupInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceGroupInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1260,7 +1359,7 @@ public final class ResourceGroupsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceGroupInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceGroupInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceGroupInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceGroupInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

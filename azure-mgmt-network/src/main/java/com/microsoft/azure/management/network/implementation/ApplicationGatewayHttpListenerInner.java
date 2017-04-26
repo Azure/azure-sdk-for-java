@@ -14,49 +14,50 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Http listener of application gateway.
+ * Http listener of an application gateway.
  */
 @JsonFlatten
 public class ApplicationGatewayHttpListenerInner extends SubResource {
     /**
-     * Frontend IP configuration resource of application gateway.
+     * Frontend IP configuration resource of an application gateway.
      */
     @JsonProperty(value = "properties.frontendIPConfiguration")
     private SubResource frontendIPConfiguration;
 
     /**
-     * Frontend port resource of application gateway.
+     * Frontend port resource of an application gateway.
      */
     @JsonProperty(value = "properties.frontendPort")
     private SubResource frontendPort;
 
     /**
-     * Protocol. Possible values include: 'Http', 'Https'.
+     * Protocol. Possible values are: 'Http' and 'Https'. Possible values
+     * include: 'Http', 'Https'.
      */
     @JsonProperty(value = "properties.protocol")
     private ApplicationGatewayProtocol protocol;
 
     /**
-     * Host name of http listener.
+     * Host name of HTTP listener.
      */
     @JsonProperty(value = "properties.hostName")
     private String hostName;
 
     /**
-     * Ssl certificate resource of application gateway.
+     * SSL certificate resource of an application gateway.
      */
     @JsonProperty(value = "properties.sslCertificate")
     private SubResource sslCertificate;
 
     /**
-     * RequireServerNameIndication of http listener.
+     * Applicable only if protocol is https. Enables SNI for multi-hosting.
      */
     @JsonProperty(value = "properties.requireServerNameIndication")
     private Boolean requireServerNameIndication;
 
     /**
-     * Provisioning state of the http listener resource
-     * Updating/Deleting/Failed.
+     * Provisioning state of the HTTP listener resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
@@ -65,11 +66,13 @@ public class ApplicationGatewayHttpListenerInner extends SubResource {
      * Name of the resource that is unique within a resource group. This name
      * can be used to access the resource.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * A unique read-only string that changes whenever the resource is updated.
      */
+    @JsonProperty(value = "etag")
     private String etag;
 
     /**

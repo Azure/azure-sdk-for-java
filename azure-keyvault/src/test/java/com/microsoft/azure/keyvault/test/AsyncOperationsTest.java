@@ -117,7 +117,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
             Throwable t = ex.getCause();
             if(t instanceof KeyVaultErrorException)
             {
-                Assert.assertEquals("KeyNotFound", ((KeyVaultErrorException) t).getBody().error().code());
+                Assert.assertEquals("KeyNotFound", ((KeyVaultErrorException) t).body().error().code());
             }
             else throw ex;
         }
@@ -157,7 +157,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
             Throwable t = ex.getCause();
             if(t instanceof KeyVaultErrorException)
             {
-                Assert.assertEquals("SecretNotFound", ((KeyVaultErrorException) t).getBody().error().code());
+                Assert.assertEquals("SecretNotFound", ((KeyVaultErrorException) t).body().error().code());
             }
             else throw ex;
         }
@@ -225,7 +225,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
             Throwable t = ex.getCause();
             if(t instanceof KeyVaultErrorException)
             {
-                Assert.assertEquals("CertificateNotFound", ((KeyVaultErrorException) t).getBody().error().code());
+                Assert.assertEquals("CertificateNotFound", ((KeyVaultErrorException) t).body().error().code());
             }
             else throw ex;
         }

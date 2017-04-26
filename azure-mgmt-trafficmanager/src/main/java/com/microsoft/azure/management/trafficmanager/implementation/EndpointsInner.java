@@ -10,10 +10,9 @@ package com.microsoft.azure.management.trafficmanager.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
-import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -35,7 +34,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Endpoints.
  */
-public final class EndpointsInner {
+public class EndpointsInner {
     /** The Retrofit service to perform REST calls. */
     private EndpointsService service;
     /** The service client containing this operation class. */
@@ -57,19 +56,19 @@ public final class EndpointsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface EndpointsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.Endpoints update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
         Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointType") String endpointType, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Body EndpointInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.Endpoints get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointType") String endpointType, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.Endpoints createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointType") String endpointType, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Body EndpointInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.Endpoints delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointType") String endpointType, @Path("endpointName") String endpointName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -83,10 +82,13 @@ public final class EndpointsInner {
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
      * @param parameters The Traffic Manager endpoint parameters supplied to the Update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the EndpointInner object if successful.
      */
     public EndpointInner update(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters) {
-        return updateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters).toBlocking().single().getBody();
+        return updateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -98,10 +100,11 @@ public final class EndpointsInner {
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
      * @param parameters The Traffic Manager endpoint parameters supplied to the Update operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<EndpointInner> updateAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.create(updateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters), serviceCallback);
+    public ServiceFuture<EndpointInner> updateAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters, final ServiceCallback<EndpointInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters), serviceCallback);
     }
 
     /**
@@ -112,13 +115,14 @@ public final class EndpointsInner {
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
      * @param parameters The Traffic Manager endpoint parameters supplied to the Update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EndpointInner object
      */
     public Observable<EndpointInner> updateAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters) {
         return updateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -131,6 +135,7 @@ public final class EndpointsInner {
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
      * @param parameters The Traffic Manager endpoint parameters supplied to the Update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EndpointInner object
      */
     public Observable<ServiceResponse<EndpointInner>> updateWithServiceResponseAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters) {
@@ -171,7 +176,7 @@ public final class EndpointsInner {
     }
 
     private ServiceResponse<EndpointInner> updateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<EndpointInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<EndpointInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<EndpointInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -184,10 +189,13 @@ public final class EndpointsInner {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint.
      * @param endpointName The name of the Traffic Manager endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the EndpointInner object if successful.
      */
     public EndpointInner get(String resourceGroupName, String profileName, String endpointType, String endpointName) {
-        return getWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName).toBlocking().single().body();
     }
 
     /**
@@ -198,10 +206,11 @@ public final class EndpointsInner {
      * @param endpointType The type of the Traffic Manager endpoint.
      * @param endpointName The name of the Traffic Manager endpoint.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<EndpointInner> getAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName), serviceCallback);
+    public ServiceFuture<EndpointInner> getAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, final ServiceCallback<EndpointInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName), serviceCallback);
     }
 
     /**
@@ -211,13 +220,14 @@ public final class EndpointsInner {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint.
      * @param endpointName The name of the Traffic Manager endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EndpointInner object
      */
     public Observable<EndpointInner> getAsync(String resourceGroupName, String profileName, String endpointType, String endpointName) {
         return getWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -229,6 +239,7 @@ public final class EndpointsInner {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint.
      * @param endpointName The name of the Traffic Manager endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EndpointInner object
      */
     public Observable<ServiceResponse<EndpointInner>> getWithServiceResponseAsync(String resourceGroupName, String profileName, String endpointType, String endpointName) {
@@ -265,7 +276,7 @@ public final class EndpointsInner {
     }
 
     private ServiceResponse<EndpointInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<EndpointInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<EndpointInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<EndpointInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -279,10 +290,13 @@ public final class EndpointsInner {
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
      * @param parameters The Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the EndpointInner object if successful.
      */
     public EndpointInner createOrUpdate(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -294,10 +308,11 @@ public final class EndpointsInner {
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
      * @param parameters The Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<EndpointInner> createOrUpdateAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters, final ServiceCallback<EndpointInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters), serviceCallback);
+    public ServiceFuture<EndpointInner> createOrUpdateAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters, final ServiceCallback<EndpointInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters), serviceCallback);
     }
 
     /**
@@ -308,13 +323,14 @@ public final class EndpointsInner {
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
      * @param parameters The Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EndpointInner object
      */
     public Observable<EndpointInner> createOrUpdateAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters).map(new Func1<ServiceResponse<EndpointInner>, EndpointInner>() {
             @Override
             public EndpointInner call(ServiceResponse<EndpointInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -327,6 +343,7 @@ public final class EndpointsInner {
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
      * @param parameters The Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EndpointInner object
      */
     public Observable<ServiceResponse<EndpointInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters) {
@@ -367,7 +384,7 @@ public final class EndpointsInner {
     }
 
     private ServiceResponse<EndpointInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<EndpointInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<EndpointInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<EndpointInner>() { }.getType())
                 .register(201, new TypeToken<EndpointInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -381,9 +398,12 @@ public final class EndpointsInner {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be deleted.
      * @param endpointName The name of the Traffic Manager endpoint to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String profileName, String endpointType, String endpointName) {
-        deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName).toBlocking().single().body();
     }
 
     /**
@@ -394,10 +414,11 @@ public final class EndpointsInner {
      * @param endpointType The type of the Traffic Manager endpoint to be deleted.
      * @param endpointName The name of the Traffic Manager endpoint to be deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName), serviceCallback);
     }
 
     /**
@@ -407,13 +428,14 @@ public final class EndpointsInner {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be deleted.
      * @param endpointName The name of the Traffic Manager endpoint to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String profileName, String endpointType, String endpointName) {
         return deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -425,6 +447,7 @@ public final class EndpointsInner {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be deleted.
      * @param endpointName The name of the Traffic Manager endpoint to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String profileName, String endpointType, String endpointName) {
@@ -461,9 +484,10 @@ public final class EndpointsInner {
     }
 
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 

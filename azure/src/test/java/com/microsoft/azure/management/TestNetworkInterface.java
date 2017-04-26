@@ -6,14 +6,17 @@
 package com.microsoft.azure.management;
 
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Assert;
 
 import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
+import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkInterfaces;
-import com.microsoft.azure.management.network.NicIpConfiguration;
+import com.microsoft.azure.management.network.NicIPConfiguration;
+import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 public class TestNetworkInterface extends TestTemplate<NetworkInterface, NetworkInterfaces> {
@@ -21,23 +24,38 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
     @Override
     public NetworkInterface createResource(NetworkInterfaces networkInterfaces) throws Exception {
         final String newName = "nic" + this.testId;
-        return networkInterfaces.define(newName)
+        NetworkInterface nic = networkInterfaces.define(newName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
                 .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withNewPrimaryPublicIpAddress("pipdns" + this.testId)
-                .withIpForwarding()
+                .withPrimaryPrivateIPAddressDynamic()
+                .withNewPrimaryPublicIPAddress("pipdns" + this.testId)
+                .withIPForwarding()
                 .create();
+
+        // Verify NIC is properly referenced by subnet
+        NicIPConfiguration ipConfig = nic.primaryIPConfiguration();
+        Assert.assertNotNull(ipConfig);
+        Network network = ipConfig.getNetwork();
+        Assert.assertNotNull(network);
+        Subnet subnet = network.subnets().get(ipConfig.subnetName());
+        Assert.assertNotNull(subnet);
+        Assert.assertEquals(1, subnet.networkInterfaceIPConfigurationCount());
+        Set<NicIPConfiguration> ipConfigs = subnet.getNetworkInterfaceIPConfigurations();
+        Assert.assertNotNull(ipConfigs);
+        Assert.assertEquals(1, ipConfigs.size());
+        NicIPConfiguration ipConfig2 = ipConfigs.iterator().next();
+        Assert.assertEquals(ipConfig.name().toLowerCase(), ipConfig2.name().toLowerCase());
+        return nic;
     }
 
     @Override
     public NetworkInterface updateResource(NetworkInterface resource) throws Exception {
         resource =  resource.update()
-                .withoutIpForwarding()
-                .updateIpConfiguration("primary") // Updating the primary ip configuration
-                    .withPrivateIpAddressDynamic() // Equivalent to ..update().withPrimaryPrivateIpAddressDynamic()
-                    .withoutPublicIpAddress()      // Equivalent to ..update().withoutPrimaryPublicIpAddress()
+                .withoutIPForwarding()
+                .updateIPConfiguration("primary") // Updating the primary ip configuration
+                    .withPrivateIPAddressDynamic() // Equivalent to ..update().withPrimaryPrivateIPAddressDynamic()
+                    .withoutPublicIPAddress()      // Equivalent to ..update().withoutPrimaryPublicIPAddress()
                     .parent()
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
@@ -65,21 +83,21 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
             info.append("\n\t\t").append(dnsServerIp);
         }
 
-        info.append("\n\tIP forwarding enabled: ").append(resource.isIpForwardingEnabled())
+        info.append("\n\tIP forwarding enabled: ").append(resource.isIPForwardingEnabled())
                 .append("\n\tMAC Address:").append(resource.macAddress())
-                .append("\n\tPrivate IP:").append(resource.primaryPrivateIp())
-                .append("\n\tPrivate allocation method:").append(resource.primaryPrivateIpAllocationMethod())
-                .append("\n\tPrimary virtual network ID: ").append(resource.primaryIpConfiguration().networkId())
-                .append("\n\tPrimary subnet name: ").append(resource.primaryIpConfiguration().subnetName())
+                .append("\n\tPrivate IP:").append(resource.primaryPrivateIP())
+                .append("\n\tPrivate allocation method:").append(resource.primaryPrivateIPAllocationMethod())
+                .append("\n\tPrimary virtual network ID: ").append(resource.primaryIPConfiguration().networkId())
+                .append("\n\tPrimary subnet name: ").append(resource.primaryIPConfiguration().subnetName())
                 .append("\n\tIP configurations: ");
 
         // Output IP configs
-        for (NicIpConfiguration ipConfig : resource.ipConfigurations().values()) {
+        for (NicIPConfiguration ipConfig : resource.ipConfigurations().values()) {
             info.append("\n\t\tName: ").append(ipConfig.name())
-                .append("\n\t\tPrivate IP: ").append(ipConfig.privateIpAddress())
-                .append("\n\t\tPrivate IP allocation method: ").append(ipConfig.privateIpAllocationMethod().toString())
-                .append("\n\t\tPrivate IP version: ").append(ipConfig.privateIpAddressVersion().toString())
-                .append("\n\t\tPIP id: ").append(ipConfig.publicIpAddressId())
+                .append("\n\t\tPrivate IP: ").append(ipConfig.privateIPAddress())
+                .append("\n\t\tPrivate IP allocation method: ").append(ipConfig.privateIPAllocationMethod().toString())
+                .append("\n\t\tPrivate IP version: ").append(ipConfig.privateIPAddressVersion().toString())
+                .append("\n\t\tPIP id: ").append(ipConfig.publicIPAddressId())
                 .append("\n\t\tAssociated network ID: ").append(ipConfig.networkId())
                 .append("\n\t\tAssociated subnet name: ").append(ipConfig.subnetName());
 
@@ -100,7 +118,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
             }
         }
 
-        System.out.println(info.toString());        
+        System.out.println(info.toString());
     }
 
     @Override

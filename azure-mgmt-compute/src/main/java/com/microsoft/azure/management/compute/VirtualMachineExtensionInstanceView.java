@@ -9,35 +9,41 @@
 package com.microsoft.azure.management.compute;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The instance view of a virtual machine extension.
  */
 public class VirtualMachineExtensionInstanceView {
     /**
-     * the virtual machine extension name.
+     * The virtual machine extension name.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
-     * the full type of the extension handler which includes both publisher
-     * and type.
+     * The full type of the extension handler which includes both publisher and
+     * type.
      */
+    @JsonProperty(value = "type")
     private String type;
 
     /**
-     * the type version of the extension handler.
+     * The type version of the extension handler.
      */
+    @JsonProperty(value = "typeHandlerVersion")
     private String typeHandlerVersion;
 
     /**
-     * the resource status information.
+     * The resource status information.
      */
+    @JsonProperty(value = "substatuses")
     private List<InstanceViewStatus> substatuses;
 
     /**
-     * the resource status information.
+     * The resource status information.
      */
+    @JsonProperty(value = "statuses")
     private List<InstanceViewStatus> statuses;
 
     /**

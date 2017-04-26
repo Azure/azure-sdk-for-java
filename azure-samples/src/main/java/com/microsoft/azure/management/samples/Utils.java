@@ -1,6 +1,7 @@
 /**
  * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for license information.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
  */
 
 package com.microsoft.azure.management.samples;
@@ -16,6 +17,7 @@ import com.microsoft.azure.management.appservice.ConnectionString;
 import com.microsoft.azure.management.appservice.Contact;
 import com.microsoft.azure.management.appservice.HostNameBinding;
 import com.microsoft.azure.management.appservice.HostNameSslState;
+import com.microsoft.azure.management.appservice.PublishingProfile;
 import com.microsoft.azure.management.appservice.SslState;
 import com.microsoft.azure.management.appservice.WebAppBase;
 import com.microsoft.azure.management.batch.Application;
@@ -24,15 +26,17 @@ import com.microsoft.azure.management.batch.BatchAccount;
 import com.microsoft.azure.management.batch.BatchAccountKeys;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.DataDisk;
+import com.microsoft.azure.management.compute.ImageDataDisk;
 import com.microsoft.azure.management.compute.VirtualMachine;
+import com.microsoft.azure.management.compute.VirtualMachineCustomImage;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.dns.ARecordSet;
 import com.microsoft.azure.management.dns.AaaaRecordSet;
-import com.microsoft.azure.management.dns.CnameRecordSet;
+import com.microsoft.azure.management.dns.CNameRecordSet;
 import com.microsoft.azure.management.dns.DnsZone;
+import com.microsoft.azure.management.dns.MXRecordSet;
 import com.microsoft.azure.management.dns.MxRecord;
-import com.microsoft.azure.management.dns.MxRecordSet;
-import com.microsoft.azure.management.dns.NsRecordSet;
+import com.microsoft.azure.management.dns.NSRecordSet;
 import com.microsoft.azure.management.dns.PtrRecordSet;
 import com.microsoft.azure.management.dns.SoaRecord;
 import com.microsoft.azure.management.dns.SoaRecordSet;
@@ -46,9 +50,9 @@ import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendAddress;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
-import com.microsoft.azure.management.network.ApplicationGatewayListener;
-import com.microsoft.azure.management.network.ApplicationGatewayIpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
+import com.microsoft.azure.management.network.ApplicationGatewayIPConfiguration;
+import com.microsoft.azure.management.network.ApplicationGatewayListener;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
 import com.microsoft.azure.management.network.LoadBalancer;
@@ -66,12 +70,22 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
-import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.redis.RedisAccessKeys;
 import com.microsoft.azure.management.redis.RedisCache;
 import com.microsoft.azure.management.redis.RedisCachePremium;
 import com.microsoft.azure.management.redis.ScheduleEntry;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
+import com.microsoft.azure.management.servicebus.AccessRights;
+import com.microsoft.azure.management.servicebus.AuthorizationKeys;
+import com.microsoft.azure.management.servicebus.NamespaceAuthorizationRule;
+import com.microsoft.azure.management.servicebus.Queue;
+import com.microsoft.azure.management.servicebus.QueueAuthorizationRule;
+import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
+import com.microsoft.azure.management.servicebus.Subscription;
+import com.microsoft.azure.management.servicebus.Topic;
+import com.microsoft.azure.management.servicebus.TopicAuthorizationRule;
 import com.microsoft.azure.management.sql.ElasticPoolActivity;
 import com.microsoft.azure.management.sql.ElasticPoolDatabaseActivity;
 import com.microsoft.azure.management.sql.SqlDatabase;
@@ -85,6 +99,8 @@ import com.microsoft.azure.management.trafficmanager.TrafficManagerExternalEndpo
 import com.microsoft.azure.management.trafficmanager.TrafficManagerNestedProfileEndpoint;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -92,11 +108,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * Common utils for Azure management samples.
@@ -157,8 +171,14 @@ public final class Utils {
                 storageProfile.append("\n\t\t\tCreateOption: ").append(disk.createOption());
                 storageProfile.append("\n\t\t\tDiskSizeGB: ").append(disk.diskSizeGB());
                 storageProfile.append("\n\t\t\tLun: ").append(disk.lun());
-                if (disk.vhd().uri() != null) {
-                    storageProfile.append("\n\t\t\tVhd Uri: ").append(disk.vhd().uri());
+                if (resource.isManagedDiskEnabled()) {
+                    if (disk.managedDisk() != null) {
+                        storageProfile.append("\n\t\t\tManaged Disk Id: ").append(disk.managedDisk().id());
+                    }
+                } else {
+                    if (disk.vhd().uri() != null) {
+                        storageProfile.append("\n\t\t\tVhd Uri: ").append(disk.vhd().uri());
+                    }
                 }
                 if (disk.image() != null) {
                     storageProfile.append("\n\t\t\tImage Uri: ").append(disk.image().uri());
@@ -195,7 +215,7 @@ public final class Utils {
         }
 
         StringBuilder extensions = new StringBuilder().append("\n\tExtensions: ");
-        for (Map.Entry<String, VirtualMachineExtension> extensionEntry : resource.extensions().entrySet()) {
+        for (Map.Entry<String, VirtualMachineExtension> extensionEntry : resource.listExtensions().entrySet()) {
             VirtualMachineExtension extension = extensionEntry.getValue();
             extensions.append("\n\t\tExtension: ").append(extension.id())
                     .append("\n\t\t\tName: ").append(extension.name())
@@ -246,7 +266,7 @@ public final class Utils {
      * @throws IOException IO errors
      * @throws CloudException Cloud errors
      */
-    public static void print(Network resource) throws CloudException, IOException {
+    public static void print(Network resource) {
         StringBuilder info = new StringBuilder();
         info.append("Network: ").append(resource.id())
                 .append("Name: ").append(resource.name())
@@ -254,7 +274,7 @@ public final class Utils {
                 .append("\n\tRegion: ").append(resource.region())
                 .append("\n\tTags: ").append(resource.tags())
                 .append("\n\tAddress spaces: ").append(resource.addressSpaces())
-                .append("\n\tDNS server IPs: ").append(resource.dnsServerIps());
+                .append("\n\tDNS server IPs: ").append(resource.dnsServerIPs());
 
         // Output subnets
         for (Subnet subnet : resource.subnets().values()) {
@@ -291,12 +311,12 @@ public final class Utils {
         for (String dnsServerIp : resource.dnsServers()) {
             info.append("\n\t\t").append(dnsServerIp);
         }
-        info.append("\n\t IP forwarding enabled: ").append(resource.isIpForwardingEnabled())
+        info.append("\n\t IP forwarding enabled: ").append(resource.isIPForwardingEnabled())
                 .append("\n\tMAC Address:").append(resource.macAddress())
-                .append("\n\tPrivate IP:").append(resource.primaryPrivateIp())
-                .append("\n\tPrivate allocation method:").append(resource.primaryPrivateIpAllocationMethod())
-                .append("\n\tPrimary virtual network ID: ").append(resource.primaryIpConfiguration().networkId())
-                .append("\n\tPrimary subnet name:").append(resource.primaryIpConfiguration().subnetName());
+                .append("\n\tPrivate IP:").append(resource.primaryPrivateIP())
+                .append("\n\tPrivate allocation method:").append(resource.primaryPrivateIPAllocationMethod())
+                .append("\n\tPrimary virtual network ID: ").append(resource.primaryIPConfiguration().networkId())
+                .append("\n\tPrimary subnet name:").append(resource.primaryIPConfiguration().subnetName());
 
         System.out.println(info.toString());
     }
@@ -333,7 +353,7 @@ public final class Utils {
      * Print public IP address.
      * @param resource a public IP address
      */
-    public static void print(PublicIpAddress resource) {
+    public static void print(PublicIPAddress resource) {
         System.out.println(new StringBuilder().append("Public IP Address: ").append(resource.id())
                 .append("Name: ").append(resource.name())
                 .append("\n\tResource group: ").append(resource.resourceGroupName())
@@ -457,8 +477,8 @@ public final class Utils {
 
         // Show public IP addresses
         info.append("\n\tPublic IP address IDs: ")
-                .append(resource.publicIpAddressIds().size());
-        for (String pipId : resource.publicIpAddressIds()) {
+                .append(resource.publicIPAddressIds().size());
+        for (String pipId : resource.publicIPAddressIds()) {
             info.append("\n\t\tPIP id: ").append(pipId);
         }
 
@@ -503,7 +523,7 @@ public final class Utils {
         for (LoadBalancingRule rule : resource.loadBalancingRules().values()) {
             info.append("\n\t\tLB rule name: ").append(rule.name())
                     .append("\n\t\t\tProtocol: ").append(rule.protocol())
-                    .append("\n\t\t\tFloating IP enabled? ").append(rule.floatingIpEnabled())
+                    .append("\n\t\t\tFloating IP enabled? ").append(rule.floatingIPEnabled())
                     .append("\n\t\t\tIdle timeout in minutes: ").append(rule.idleTimeoutInMinutes())
                     .append("\n\t\t\tLoad distribution method: ").append(rule.loadDistribution().toString());
 
@@ -543,12 +563,12 @@ public final class Utils {
             info.append("\n\t\tFrontend name: ").append(frontend.name())
                     .append("\n\t\t\tInternet facing: ").append(frontend.isPublic());
             if (frontend.isPublic()) {
-                info.append("\n\t\t\tPublic IP Address ID: ").append(((LoadBalancerPublicFrontend) frontend).publicIpAddressId());
+                info.append("\n\t\t\tPublic IP Address ID: ").append(((LoadBalancerPublicFrontend) frontend).publicIPAddressId());
             } else {
                 info.append("\n\t\t\tVirtual network ID: ").append(((LoadBalancerPrivateFrontend) frontend).networkId())
                         .append("\n\t\t\tSubnet name: ").append(((LoadBalancerPrivateFrontend) frontend).subnetName())
-                        .append("\n\t\t\tPrivate IP address: ").append(((LoadBalancerPrivateFrontend) frontend).privateIpAddress())
-                        .append("\n\t\t\tPrivate IP allocation method: ").append(((LoadBalancerPrivateFrontend) frontend).privateIpAllocationMethod());
+                        .append("\n\t\t\tPrivate IP address: ").append(((LoadBalancerPrivateFrontend) frontend).privateIPAddress())
+                        .append("\n\t\t\tPrivate IP allocation method: ").append(((LoadBalancerPrivateFrontend) frontend).privateIPAllocationMethod());
             }
 
             // Inbound NAT pool references
@@ -583,8 +603,8 @@ public final class Utils {
                     .append("\n\t\t\tFrontend port: ").append(natRule.frontendPort())
                     .append("\n\t\t\tBackend port: ").append(natRule.backendPort())
                     .append("\n\t\t\tBackend NIC ID: ").append(natRule.backendNetworkInterfaceId())
-                    .append("\n\t\t\tBackend NIC IP config name: ").append(natRule.backendNicIpConfigurationName())
-                    .append("\n\t\t\tFloating IP? ").append(natRule.floatingIpEnabled())
+                    .append("\n\t\t\tBackend NIC IP config name: ").append(natRule.backendNicIPConfigurationName())
+                    .append("\n\t\t\tFloating IP? ").append(natRule.floatingIPEnabled())
                     .append("\n\t\t\tIdle timeout in minutes: ").append(natRule.idleTimeoutInMinutes());
         }
 
@@ -610,8 +630,8 @@ public final class Utils {
 
             // Show assigned backend NICs
             info.append("\n\t\t\tReferenced NICs: ")
-                    .append(backend.backendNicIpConfigurationNames().entrySet().size());
-            for (Map.Entry<String, String> entry : backend.backendNicIpConfigurationNames().entrySet()) {
+                    .append(backend.backendNicIPConfigurationNames().entrySet().size());
+            for (Map.Entry<String, String> entry : backend.backendNicIPConfigurationNames().entrySet()) {
                 info.append("\n\t\t\t\tNIC ID: ").append(entry.getKey())
                         .append(" - IP Config: ").append(entry.getValue());
             }
@@ -854,7 +874,7 @@ public final class Utils {
      */
     public static void print(DnsZone dnsZone) {
         StringBuilder info = new StringBuilder();
-        info.append("Dns Zone: ").append(dnsZone.id())
+        info.append("DNS Zone: ").append(dnsZone.id())
                 .append("\n\tName (Top level domain): ").append(dnsZone.name())
                 .append("\n\tResource group: ").append(dnsZone.resourceGroupName())
                 .append("\n\tRegion: ").append(dnsZone.regionName())
@@ -872,15 +892,15 @@ public final class Utils {
                 .append("\n\t\tRefresh time (seconds):").append(soaRecord.refreshTime())
                 .append("\n\t\tRetry time (seconds):").append(soaRecord.retryTime())
                 .append("\n\t\tNegative response cache ttl (seconds):").append(soaRecord.minimumTtl())
-                .append("\n\t\tTtl (seconds):").append(soaRecordSet.timeToLive());
+                .append("\n\t\tTTL (seconds):").append(soaRecordSet.timeToLive());
 
         PagedList<ARecordSet> aRecordSets = dnsZone.aRecordSets().list();
         info.append("\n\tA Record sets:");
         for (ARecordSet aRecordSet : aRecordSets) {
             info.append("\n\t\tId: ").append(aRecordSet.id())
                     .append("\n\t\tName: ").append(aRecordSet.name())
-                    .append("\n\t\tTtl (seconds): ").append(aRecordSet.timeToLive())
-                    .append("\n\t\tIp v4 addresses: ");
+                    .append("\n\t\tTTL (seconds): ").append(aRecordSet.timeToLive())
+                    .append("\n\t\tIP v4 addresses: ");
             for (String ipAddress : aRecordSet.ipv4Addresses()) {
                 info.append("\n\t\t\t").append(ipAddress);
             }
@@ -891,28 +911,28 @@ public final class Utils {
         for (AaaaRecordSet aaaaRecordSet : aaaaRecordSets) {
             info.append("\n\t\tId: ").append(aaaaRecordSet.id())
                     .append("\n\t\tName: ").append(aaaaRecordSet.name())
-                    .append("\n\t\tTtl (seconds): ").append(aaaaRecordSet.timeToLive())
-                    .append("\n\t\tIp v6 addresses: ");
+                    .append("\n\t\tTTL (seconds): ").append(aaaaRecordSet.timeToLive())
+                    .append("\n\t\tIP v6 addresses: ");
             for (String ipAddress : aaaaRecordSet.ipv6Addresses()) {
                 info.append("\n\t\t\t").append(ipAddress);
             }
         }
 
-        PagedList<CnameRecordSet> cnameRecordSets = dnsZone.cnameRecordSets().list();
+        PagedList<CNameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
         info.append("\n\tCNAME Record sets:");
-        for (CnameRecordSet cnameRecordSet : cnameRecordSets) {
+        for (CNameRecordSet cnameRecordSet : cnameRecordSets) {
             info.append("\n\t\tId: ").append(cnameRecordSet.id())
                     .append("\n\t\tName: ").append(cnameRecordSet.name())
-                    .append("\n\t\tTtl (seconds): ").append(cnameRecordSet.timeToLive())
+                    .append("\n\t\tTTL (seconds): ").append(cnameRecordSet.timeToLive())
                     .append("\n\t\tCanonical name: ").append(cnameRecordSet.canonicalName());
         }
 
-        PagedList<MxRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
+        PagedList<MXRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
         info.append("\n\tMX Record sets:");
-        for (MxRecordSet mxRecordSet : mxRecordSets) {
+        for (MXRecordSet mxRecordSet : mxRecordSets) {
             info.append("\n\t\tId: ").append(mxRecordSet.id())
                     .append("\n\t\tName: ").append(mxRecordSet.name())
-                    .append("\n\t\tTtl (seconds): ").append(mxRecordSet.timeToLive())
+                    .append("\n\t\tTTL (seconds): ").append(mxRecordSet.timeToLive())
                     .append("\n\t\tRecords: ");
             for (MxRecord mxRecord : mxRecordSet.records()) {
                 info.append("\n\t\t\tExchange server, Preference: ")
@@ -922,12 +942,12 @@ public final class Utils {
             }
         }
 
-        PagedList<NsRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
+        PagedList<NSRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
         info.append("\n\tNS Record sets:");
-        for (NsRecordSet nsRecordSet : nsRecordSets) {
+        for (NSRecordSet nsRecordSet : nsRecordSets) {
             info.append("\n\t\tId: ").append(nsRecordSet.id())
                     .append("\n\t\tName: ").append(nsRecordSet.name())
-                    .append("\n\t\tTtl (seconds): ").append(nsRecordSet.timeToLive())
+                    .append("\n\t\tTTL (seconds): ").append(nsRecordSet.timeToLive())
                     .append("\n\t\tName servers: ");
             for (String nameServer : nsRecordSet.nameServers()) {
                 info.append("\n\t\t\t").append(nameServer);
@@ -939,7 +959,7 @@ public final class Utils {
         for (PtrRecordSet ptrRecordSet : ptrRecordSets) {
             info.append("\n\t\tId: ").append(ptrRecordSet.id())
                     .append("\n\t\tName: ").append(ptrRecordSet.name())
-                    .append("\n\t\tTtl (seconds): ").append(ptrRecordSet.timeToLive())
+                    .append("\n\t\tTTL (seconds): ").append(ptrRecordSet.timeToLive())
                     .append("\n\t\tTarget domain names: ");
             for (String domainNames : ptrRecordSet.targetDomainNames()) {
                 info.append("\n\t\t\t").append(domainNames);
@@ -951,7 +971,7 @@ public final class Utils {
         for (SrvRecordSet srvRecordSet : srvRecordSets) {
             info.append("\n\t\tId: ").append(srvRecordSet.id())
                     .append("\n\t\tName: ").append(srvRecordSet.name())
-                    .append("\n\t\tTtl (seconds): ").append(srvRecordSet.timeToLive())
+                    .append("\n\t\tTTL (seconds): ").append(srvRecordSet.timeToLive())
                     .append("\n\t\tRecords: ");
             for (SrvRecord srvRecord : srvRecordSet.records()) {
                 info.append("\n\t\t\tTarget, Port, Priority, Weight: ")
@@ -970,7 +990,7 @@ public final class Utils {
         for (TxtRecordSet txtRecordSet : txtRecordSets) {
             info.append("\n\t\tId: ").append(txtRecordSet.id())
                     .append("\n\t\tName: ").append(txtRecordSet.name())
-                    .append("\n\t\tTtl (seconds): ").append(txtRecordSet.timeToLive())
+                    .append("\n\t\tTTL (seconds): ").append(txtRecordSet.timeToLive())
                     .append("\n\t\tRecords: ");
             for (TxtRecord txtRecord : txtRecordSet.records()) {
                 if (txtRecord.value().size() > 0) {
@@ -987,10 +1007,7 @@ public final class Utils {
      * @return a random name
      * */
     public static String createRandomName(String namePrefix) {
-        String root = UUID.randomUUID().toString().replace("-", "");
-        long millis = Calendar.getInstance().getTimeInMillis();
-        long datePart = millis % 10000000L;
-        return namePrefix + root.toLowerCase().substring(0, 3) + datePart;
+        return SdkContext.randomResourceName(namePrefix, 30);
     }
 
     /**
@@ -1005,7 +1022,9 @@ public final class Utils {
      */
     public static void createCertificate(String certPath, String pfxPath,
                                          String alias, String password, String cnName) throws Exception {
-
+        if (new File(pfxPath).exists()) {
+            return;
+        }
         String validityInDays = "3650";
         String keyAlg = "RSA";
         String sigAlg = "SHA1withRSA";
@@ -1152,8 +1171,8 @@ public final class Utils {
                 .append("\n\tResource group: ").append(firewallRule.resourceGroupName())
                 .append("\n\tRegion: ").append(firewallRule.region())
                 .append("\n\tSqlServer Name: ").append(firewallRule.sqlServerName())
-                .append("\n\tStart IP Address of the firewall rule: ").append(firewallRule.startIpAddress())
-                .append("\n\tEnd IP Address of the firewall rule: ").append(firewallRule.endIpAddress());
+                .append("\n\tStart IP Address of the firewall rule: ").append(firewallRule.startIPAddress())
+                .append("\n\tEnd IP Address of the firewall rule: ").append(firewallRule.endIPAddress());
 
         System.out.println(builder.toString());
     }
@@ -1226,7 +1245,6 @@ public final class Utils {
         System.out.println(builder.toString());
     }
 
-
     /**
      * Print an application gateway.
      * @param resource an application gateway
@@ -1243,13 +1261,13 @@ public final class Utils {
                 .append("\n\tSSL policy: ").append(resource.sslPolicy())
                 .append("\n\tInternet-facing? ").append(resource.isPublic())
                 .append("\n\tInternal? ").append(resource.isPrivate())
-                .append("\n\tDefault private IP address: ").append(resource.privateIpAddress())
-                .append("\n\tPrivate IP address allocation method: ").append(resource.privateIpAllocationMethod());
+                .append("\n\tDefault private IP address: ").append(resource.privateIPAddress())
+                .append("\n\tPrivate IP address allocation method: ").append(resource.privateIPAllocationMethod());
 
         // Show IP configs
-        Map<String, ApplicationGatewayIpConfiguration> ipConfigs = resource.ipConfigurations();
+        Map<String, ApplicationGatewayIPConfiguration> ipConfigs = resource.ipConfigurations();
         info.append("\n\tIP configurations: ").append(ipConfigs.size());
-        for (ApplicationGatewayIpConfiguration ipConfig : ipConfigs.values()) {
+        for (ApplicationGatewayIPConfiguration ipConfig : ipConfigs.values()) {
             info.append("\n\t\tName: ").append(ipConfig.name())
                     .append("\n\t\t\tNetwork id: ").append(ipConfig.networkId())
                     .append("\n\t\t\tSubnet name: ").append(ipConfig.subnetName());
@@ -1264,13 +1282,13 @@ public final class Utils {
 
             if (frontend.isPublic()) {
                 // Show public frontend info
-                info.append("\n\t\t\tPublic IP address ID: ").append(frontend.publicIpAddressId());
+                info.append("\n\t\t\tPublic IP address ID: ").append(frontend.publicIPAddressId());
             }
 
             if (frontend.isPrivate()) {
                 // Show private frontend info
-                info.append("\n\t\t\tPrivate IP address: ").append(frontend.privateIpAddress())
-                        .append("\n\t\t\tPrivate IP allocation method: ").append(frontend.privateIpAllocationMethod())
+                info.append("\n\t\t\tPrivate IP address: ").append(frontend.privateIPAddress())
+                        .append("\n\t\t\tPrivate IP allocation method: ").append(frontend.privateIPAllocationMethod())
                         .append("\n\t\t\tSubnet name: ").append(frontend.subnetName())
                         .append("\n\t\t\tVirtual network ID: ").append(frontend.networkId());
             }
@@ -1281,7 +1299,7 @@ public final class Utils {
         info.append("\n\tBackends: ").append(backends.size());
         for (ApplicationGatewayBackend backend : backends.values()) {
             info.append("\n\t\tName: ").append(backend.name())
-                    .append("\n\t\t\tAssociated NIC IP configuration IDs: ").append(backend.backendNicIpConfigurationNames().keySet());
+                    .append("\n\t\t\tAssociated NIC IP configuration IDs: ").append(backend.backendNicIPConfigurationNames().keySet());
 
             // Show addresses
             List<ApplicationGatewayBackendAddress> addresses = backend.addresses();
@@ -1333,7 +1351,7 @@ public final class Utils {
         for (ApplicationGatewayRequestRoutingRule rule : rules.values()) {
             info.append("\n\t\tName: ").append(rule.name())
                     .append("\n\t\t\tType: ").append(rule.ruleType())
-                    .append("\n\t\t\tPublic IP address ID: ").append(rule.publicIpAddressId())
+                    .append("\n\t\t\tPublic IP address ID: ").append(rule.publicIPAddressId())
                     .append("\n\t\t\tHost name: ").append(rule.hostName())
                     .append("\n\t\t\tServer name indication required? ").append(rule.requiresServerNameIndication())
                     .append("\n\t\t\tFrontend port: ").append(rule.frontendPort())
@@ -1389,8 +1407,287 @@ public final class Utils {
         System.out.println(info.toString());
     }
 
+    /**
+     * Prints information of a virtual machine custom image.
+     *
+     * @param image the image
+     */
+    public static void print(VirtualMachineCustomImage image) {
+        StringBuilder builder = new StringBuilder().append("Virtual machine custom image: ").append(image.id())
+                .append("Name: ").append(image.name())
+                .append("\n\tResource group: ").append(image.resourceGroupName())
+                .append("\n\tCreated from virtual machine: ").append(image.sourceVirtualMachineId());
+
+        builder.append("\n\tOS disk image: ")
+                .append("\n\t\tOperating system: ").append(image.osDiskImage().osType())
+                .append("\n\t\tOperating system state: ").append(image.osDiskImage().osState())
+                .append("\n\t\tCaching: ").append(image.osDiskImage().caching())
+                .append("\n\t\tSize (GB): ").append(image.osDiskImage().diskSizeGB());
+        if (image.isCreatedFromVirtualMachine()) {
+            builder.append("\n\t\tSource virtual machine: ").append(image.sourceVirtualMachineId());
+        }
+        if (image.osDiskImage().managedDisk() != null) {
+            builder.append("\n\t\tSource managed disk: ").append(image.osDiskImage().managedDisk().id());
+        }
+        if (image.osDiskImage().snapshot() != null) {
+            builder.append("\n\t\tSource snapshot: ").append(image.osDiskImage().snapshot().id());
+        }
+        if (image.osDiskImage().blobUri() != null) {
+            builder.append("\n\t\tSource un-managed vhd: ").append(image.osDiskImage().blobUri());
+        }
+        if (image.dataDiskImages() != null) {
+            for (ImageDataDisk diskImage : image.dataDiskImages().values()) {
+                builder.append("\n\tDisk Image (Lun) #: ").append(diskImage.lun())
+                        .append("\n\t\tCaching: ").append(diskImage.caching())
+                        .append("\n\t\tSize (GB): ").append(diskImage.diskSizeGB());
+                if (image.isCreatedFromVirtualMachine()) {
+                    builder.append("\n\t\tSource virtual machine: ").append(image.sourceVirtualMachineId());
+                }
+                if (diskImage.managedDisk() != null) {
+                    builder.append("\n\t\tSource managed disk: ").append(diskImage.managedDisk().id());
+                }
+                if (diskImage.snapshot() != null) {
+                    builder.append("\n\t\tSource snapshot: ").append(diskImage.snapshot().id());
+                }
+                if (diskImage.blobUri() != null) {
+                    builder.append("\n\t\tSource un-managed vhd: ").append(diskImage.blobUri());
+                }
+            }
+        }
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Uploads a file to an Azure web app.
+     * @param profile the publishing profile for the web app.
+     * @param fileName the name of the file on server
+     * @param file the local file
+     */
+    public static void uploadFileToFtp(PublishingProfile profile, String fileName, InputStream file) {
+        FTPClient ftpClient = new FTPClient();
+        String[] ftpUrlSegments = profile.ftpUrl().split("/", 2);
+        String server = ftpUrlSegments[0];
+        String path = "./site/wwwroot/webapps";
+        if (fileName.contains("/")) {
+            int lastslash = fileName.lastIndexOf('/');
+            path = path + "/" + fileName.substring(0, lastslash);
+            fileName = fileName.substring(lastslash);
+        }
+        try {
+            ftpClient.connect(server);
+            ftpClient.login(profile.ftpUsername(), profile.ftpPassword());
+            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+            ftpClient.changeWorkingDirectory(path);
+            ftpClient.storeFile(fileName, file);
+            ftpClient.disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private Utils() {
 
+    }
+
+    /**
+     * Print service bus namespace info.
+     * @param serviceBusNamespace a service bus namespace
+     */
+    public static void print(ServiceBusNamespace serviceBusNamespace) {
+        StringBuilder builder = new StringBuilder()
+                .append("Service bus Namespace: ").append(serviceBusNamespace.id())
+                .append("\n\tName: ").append(serviceBusNamespace.name())
+                .append("\n\tRegion: ").append(serviceBusNamespace.regionName())
+                .append("\n\tResourceGroupName: ").append(serviceBusNamespace.resourceGroupName())
+                .append("\n\tCreatedAt: ").append(serviceBusNamespace.createdAt())
+                .append("\n\tUpdatedAt: ").append(serviceBusNamespace.updatedAt())
+                .append("\n\tDnsLabel: ").append(serviceBusNamespace.dnsLabel())
+                .append("\n\tFQDN: ").append(serviceBusNamespace.fqdn())
+                .append("\n\tSku: ")
+                .append("\n\t\tCapacity: ").append(serviceBusNamespace.sku().capacity())
+                .append("\n\t\tSkuName: ").append(serviceBusNamespace.sku().name())
+                .append("\n\t\tTier: ").append(serviceBusNamespace.sku().tier());
+
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print service bus queue info.
+     * @param queue a service bus queue
+     */
+    public static void print(Queue queue) {
+        StringBuilder builder = new StringBuilder()
+                .append("Service bus Queue: ").append(queue.id())
+                .append("\n\tName: ").append(queue.name())
+                .append("\n\tResourceGroupName: ").append(queue.resourceGroupName())
+                .append("\n\tCreatedAt: ").append(queue.createdAt())
+                .append("\n\tUpdatedAt: ").append(queue.updatedAt())
+                .append("\n\tAccessedAt: ").append(queue.accessedAt())
+                .append("\n\tActiveMessageCount: ").append(queue.activeMessageCount())
+                .append("\n\tCurrentSizeInBytes: ").append(queue.currentSizeInBytes())
+                .append("\n\tDeadLetterMessageCount: ").append(queue.deadLetterMessageCount())
+                .append("\n\tDefaultMessageTtlDuration: ").append(queue.defaultMessageTtlDuration())
+                .append("\n\tDuplicateMessageDetectionHistoryDuration: ").append(queue.duplicateMessageDetectionHistoryDuration())
+                .append("\n\tIsBatchedOperationsEnabled: ").append(queue.isBatchedOperationsEnabled())
+                .append("\n\tIsDeadLetteringEnabledForExpiredMessages: ").append(queue.isDeadLetteringEnabledForExpiredMessages())
+                .append("\n\tIsDuplicateDetectionEnabled: ").append(queue.isDuplicateDetectionEnabled())
+                .append("\n\tIsExpressEnabled: ").append(queue.isExpressEnabled())
+                .append("\n\tIsPartitioningEnabled: ").append(queue.isPartitioningEnabled())
+                .append("\n\tIsSessionEnabled: ").append(queue.isSessionEnabled())
+                .append("\n\tDeleteOnIdleDurationInMinutes: ").append(queue.deleteOnIdleDurationInMinutes())
+                .append("\n\tMaxDeliveryCountBeforeDeadLetteringMessage: ").append(queue.maxDeliveryCountBeforeDeadLetteringMessage())
+                .append("\n\tMaxSizeInMB: ").append(queue.maxSizeInMB())
+                .append("\n\tMessageCount: ").append(queue.messageCount())
+                .append("\n\tScheduledMessageCount: ").append(queue.scheduledMessageCount())
+                .append("\n\tStatus: ").append(queue.status())
+                .append("\n\tTransferMessageCount: ").append(queue.transferMessageCount())
+                .append("\n\tLockDurationInSeconds: ").append(queue.lockDurationInSeconds())
+                .append("\n\tTransferDeadLetterMessageCount: ").append(queue.transferDeadLetterMessageCount());
+
+        System.out.println(builder.toString());
+
+    }
+
+    /**
+     * Print service bus queue authorization keys info.
+     * @param queueAuthorizationRule a service bus queue authorization keys
+     */
+    public static void print(QueueAuthorizationRule queueAuthorizationRule) {
+        StringBuilder builder = new StringBuilder()
+                .append("Service bus queue authorization rule: ").append(queueAuthorizationRule.id())
+                .append("\n\tName: ").append(queueAuthorizationRule.name())
+                .append("\n\tResourceGroupName: ").append(queueAuthorizationRule.resourceGroupName())
+                .append("\n\tNamespace Name: ").append(queueAuthorizationRule.namespaceName())
+                .append("\n\tQueue Name: ").append(queueAuthorizationRule.queueName());
+
+        List<AccessRights> rights = queueAuthorizationRule.rights();
+        builder.append("\n\tNumber of access rights in queue: ").append(rights.size());
+        for (AccessRights right: rights) {
+            builder.append("\n\t\tAccessRight: ")
+                    .append("\n\t\t\tName :").append(right.name());
+        }
+
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print service bus namespace authorization keys info.
+     * @param keys a service bus namespace authorization keys
+     */
+    public static void print(AuthorizationKeys keys) {
+        StringBuilder builder = new StringBuilder()
+                .append("Authorization keys: ")
+                .append("\n\tPrimaryKey: ").append(keys.primaryKey())
+                .append("\n\tPrimaryConnectionString: ").append(keys.primaryConnectionString())
+                .append("\n\tSecondaryKey: ").append(keys.secondaryKey())
+                .append("\n\tSecondaryConnectionString: ").append(keys.secondaryConnectionString());
+
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print service bus namespace authorization rule info.
+     * @param namespaceAuthorizationRule a service bus namespace authorization rule
+     */
+    public static void print(NamespaceAuthorizationRule namespaceAuthorizationRule) {
+        StringBuilder builder = new StringBuilder()
+                .append("Service bus queue authorization rule: ").append(namespaceAuthorizationRule.id())
+                .append("\n\tName: ").append(namespaceAuthorizationRule.name())
+                .append("\n\tResourceGroupName: ").append(namespaceAuthorizationRule.resourceGroupName())
+                .append("\n\tNamespace Name: ").append(namespaceAuthorizationRule.namespaceName());
+
+        List<AccessRights> rights = namespaceAuthorizationRule.rights();
+        builder.append("\n\tNumber of access rights in queue: ").append(rights.size());
+        for (AccessRights right: rights) {
+            builder.append("\n\t\tAccessRight: ")
+                    .append("\n\t\t\tName :").append(right.name());
+        }
+
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print service bus topic info.
+     * @param topic a service bus topic
+     */
+    public static void print(Topic topic) {
+        StringBuilder builder = new StringBuilder()
+                .append("Service bus topic: ").append(topic.id())
+                .append("\n\tName: ").append(topic.name())
+                .append("\n\tResourceGroupName: ").append(topic.resourceGroupName())
+                .append("\n\tCreatedAt: ").append(topic.createdAt())
+                .append("\n\tUpdatedAt: ").append(topic.updatedAt())
+                .append("\n\tAccessedAt: ").append(topic.accessedAt())
+                .append("\n\tActiveMessageCount: ").append(topic.activeMessageCount())
+                .append("\n\tCurrentSizeInBytes: ").append(topic.currentSizeInBytes())
+                .append("\n\tDeadLetterMessageCount: ").append(topic.deadLetterMessageCount())
+                .append("\n\tDefaultMessageTtlDuration: ").append(topic.defaultMessageTtlDuration())
+                .append("\n\tDuplicateMessageDetectionHistoryDuration: ").append(topic.duplicateMessageDetectionHistoryDuration())
+                .append("\n\tIsBatchedOperationsEnabled: ").append(topic.isBatchedOperationsEnabled())
+                .append("\n\tIsDuplicateDetectionEnabled: ").append(topic.isDuplicateDetectionEnabled())
+                .append("\n\tIsExpressEnabled: ").append(topic.isExpressEnabled())
+                .append("\n\tIsPartitioningEnabled: ").append(topic.isPartitioningEnabled())
+                .append("\n\tDeleteOnIdleDurationInMinutes: ").append(topic.deleteOnIdleDurationInMinutes())
+                .append("\n\tMaxSizeInMB: ").append(topic.maxSizeInMB())
+                .append("\n\tScheduledMessageCount: ").append(topic.scheduledMessageCount())
+                .append("\n\tStatus: ").append(topic.status())
+                .append("\n\tTransferMessageCount: ").append(topic.transferMessageCount())
+                .append("\n\tSubscriptionCount: ").append(topic.subscriptionCount())
+                .append("\n\tTransferDeadLetterMessageCount: ").append(topic.transferDeadLetterMessageCount());
+
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print service bus subscription info.
+     * @param serviceBusSubscription a service bus subscription
+     */
+    public static void print(Subscription serviceBusSubscription) {
+        StringBuilder builder = new StringBuilder()
+                .append("Service bus subscription: ").append(serviceBusSubscription.id())
+                .append("\n\tName: ").append(serviceBusSubscription.name())
+                .append("\n\tResourceGroupName: ").append(serviceBusSubscription.resourceGroupName())
+                .append("\n\tCreatedAt: ").append(serviceBusSubscription.createdAt())
+                .append("\n\tUpdatedAt: ").append(serviceBusSubscription.updatedAt())
+                .append("\n\tAccessedAt: ").append(serviceBusSubscription.accessedAt())
+                .append("\n\tActiveMessageCount: ").append(serviceBusSubscription.activeMessageCount())
+                .append("\n\tDeadLetterMessageCount: ").append(serviceBusSubscription.deadLetterMessageCount())
+                .append("\n\tDefaultMessageTtlDuration: ").append(serviceBusSubscription.defaultMessageTtlDuration())
+                .append("\n\tIsBatchedOperationsEnabled: ").append(serviceBusSubscription.isBatchedOperationsEnabled())
+                .append("\n\tDeleteOnIdleDurationInMinutes: ").append(serviceBusSubscription.deleteOnIdleDurationInMinutes())
+                .append("\n\tScheduledMessageCount: ").append(serviceBusSubscription.scheduledMessageCount())
+                .append("\n\tStatus: ").append(serviceBusSubscription.status())
+                .append("\n\tTransferMessageCount: ").append(serviceBusSubscription.transferMessageCount())
+                .append("\n\tIsDeadLetteringEnabledForExpiredMessages: ").append(serviceBusSubscription.isDeadLetteringEnabledForExpiredMessages())
+                .append("\n\tIsSessionEnabled: ").append(serviceBusSubscription.isSessionEnabled())
+                .append("\n\tLockDurationInSeconds: ").append(serviceBusSubscription.lockDurationInSeconds())
+                .append("\n\tMaxDeliveryCountBeforeDeadLetteringMessage: ").append(serviceBusSubscription.maxDeliveryCountBeforeDeadLetteringMessage())
+                .append("\n\tIsDeadLetteringEnabledForFilterEvaluationFailedMessages: ").append(serviceBusSubscription.isDeadLetteringEnabledForFilterEvaluationFailedMessages())
+                .append("\n\tTransferMessageCount: ").append(serviceBusSubscription.transferMessageCount())
+                .append("\n\tTransferDeadLetterMessageCount: ").append(serviceBusSubscription.transferDeadLetterMessageCount());
+
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print topic Authorization Rule info.
+     * @param topicAuthorizationRule a topic Authorization Rule
+     */
+    public static void print(TopicAuthorizationRule topicAuthorizationRule) {
+        StringBuilder builder = new StringBuilder()
+                .append("Service bus topic authorization rule: ").append(topicAuthorizationRule.id())
+                .append("\n\tName: ").append(topicAuthorizationRule.name())
+                .append("\n\tResourceGroupName: ").append(topicAuthorizationRule.resourceGroupName())
+                .append("\n\tNamespace Name: ").append(topicAuthorizationRule.namespaceName())
+                .append("\n\tTopic Name: ").append(topicAuthorizationRule.topicName());
+
+        List<AccessRights> rights = topicAuthorizationRule.rights();
+        builder.append("\n\tNumber of access rights in queue: ").append(rights.size());
+        for (AccessRights right: rights) {
+            builder.append("\n\t\tAccessRight: ")
+                    .append("\n\t\t\tName :").append(right.name());
+        }
+
+        System.out.println(builder.toString());
     }
 }

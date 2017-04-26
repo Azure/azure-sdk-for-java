@@ -8,14 +8,17 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.azure.Resource;
+import com.microsoft.azure.management.appservice.CertificateDetails;
+import com.microsoft.azure.management.appservice.CertificateOrderStatus;
 import com.microsoft.azure.management.appservice.CertificateProductType;
 import com.microsoft.azure.management.appservice.ProvisioningState;
-import com.microsoft.azure.management.appservice.CertificateOrderStatus;
-import org.joda.time.DateTime;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.Resource;
+import org.joda.time.DateTime;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * SSL certificate purchase order.
@@ -60,9 +63,8 @@ public class AppServiceCertificateOrderInner extends Resource {
     private CertificateProductType productType;
 
     /**
-     * &lt;code&gt;true&lt;/code&gt; if the certificate should be
-     * automatically renewed when it expires; otherwise,
-     * &lt;code&gt;false&lt;/code&gt;.
+     * &lt;code&gt;true&lt;/code&gt; if the certificate should be automatically
+     * renewed when it expires; otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.autoRenew")
     private Boolean autoRenew;
@@ -86,7 +88,7 @@ public class AppServiceCertificateOrderInner extends Resource {
      * Signed certificate.
      */
     @JsonProperty(value = "properties.signedCertificate", access = JsonProperty.Access.WRITE_ONLY)
-    private CertificateDetailsInner signedCertificate;
+    private CertificateDetails signedCertificate;
 
     /**
      * Last CSR that was created for this order.
@@ -98,13 +100,13 @@ public class AppServiceCertificateOrderInner extends Resource {
      * Intermediate certificate.
      */
     @JsonProperty(value = "properties.intermediate", access = JsonProperty.Access.WRITE_ONLY)
-    private CertificateDetailsInner intermediate;
+    private CertificateDetails intermediate;
 
     /**
      * Root certificate.
      */
     @JsonProperty(value = "properties.root", access = JsonProperty.Access.WRITE_ONLY)
-    private CertificateDetailsInner root;
+    private CertificateDetails root;
 
     /**
      * Current serial number of the certificate.
@@ -130,6 +132,13 @@ public class AppServiceCertificateOrderInner extends Resource {
      */
     @JsonProperty(value = "properties.isPrivateKeyExternal")
     private Boolean isPrivateKeyExternal;
+
+    /**
+     * Reasons why App Service Certificate is not renewable at the current
+     * moment.
+     */
+    @JsonProperty(value = "properties.appServiceCertificateNotRenewableReasons")
+    private List<String> appServiceCertificateNotRenewableReasons;
 
     /**
      * Get the certificates value.
@@ -283,7 +292,7 @@ public class AppServiceCertificateOrderInner extends Resource {
      *
      * @return the signedCertificate value
      */
-    public CertificateDetailsInner signedCertificate() {
+    public CertificateDetails signedCertificate() {
         return this.signedCertificate;
     }
 
@@ -312,7 +321,7 @@ public class AppServiceCertificateOrderInner extends Resource {
      *
      * @return the intermediate value
      */
-    public CertificateDetailsInner intermediate() {
+    public CertificateDetails intermediate() {
         return this.intermediate;
     }
 
@@ -321,7 +330,7 @@ public class AppServiceCertificateOrderInner extends Resource {
      *
      * @return the root value
      */
-    public CertificateDetailsInner root() {
+    public CertificateDetails root() {
         return this.root;
     }
 
@@ -369,6 +378,26 @@ public class AppServiceCertificateOrderInner extends Resource {
      */
     public AppServiceCertificateOrderInner withIsPrivateKeyExternal(Boolean isPrivateKeyExternal) {
         this.isPrivateKeyExternal = isPrivateKeyExternal;
+        return this;
+    }
+
+    /**
+     * Get the appServiceCertificateNotRenewableReasons value.
+     *
+     * @return the appServiceCertificateNotRenewableReasons value
+     */
+    public List<String> appServiceCertificateNotRenewableReasons() {
+        return this.appServiceCertificateNotRenewableReasons;
+    }
+
+    /**
+     * Set the appServiceCertificateNotRenewableReasons value.
+     *
+     * @param appServiceCertificateNotRenewableReasons the appServiceCertificateNotRenewableReasons value to set
+     * @return the AppServiceCertificateOrderInner object itself.
+     */
+    public AppServiceCertificateOrderInner withAppServiceCertificateNotRenewableReasons(List<String> appServiceCertificateNotRenewableReasons) {
+        this.appServiceCertificateNotRenewableReasons = appServiceCertificateNotRenewableReasons;
         return this;
     }
 

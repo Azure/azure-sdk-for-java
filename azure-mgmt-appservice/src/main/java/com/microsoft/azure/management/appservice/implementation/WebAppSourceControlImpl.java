@@ -14,7 +14,7 @@ import com.microsoft.azure.management.appservice.WebAppSourceControl;
 import rx.Observable;
 
 /**
- *  Implementation for {@link WebAppSourceControl} and its create and update interfaces.
+ *  Implementation for WebAppSourceControl and its create and update interfaces.
  *  @param <FluentT> the fluent interface of the parent web app
  *  @param <FluentImplT> the fluent implementation of the parent web app
  */
@@ -29,13 +29,11 @@ class WebAppSourceControlImpl<
         WebAppSourceControl.UpdateDefinition<WebAppBase.Update<FluentT>> {
 
     private final WebAppBaseImpl<FluentT, FluentImplT> parent;
-    private final WebSiteManagementClientImpl serviceClient;
     private String githubAccessToken;
 
-    WebAppSourceControlImpl(SiteSourceControlInner inner, WebAppBaseImpl<FluentT, FluentImplT> parent, WebSiteManagementClientImpl serviceClient) {
+    WebAppSourceControlImpl(SiteSourceControlInner inner, WebAppBaseImpl<FluentT, FluentImplT> parent) {
         super(inner);
         this.parent = parent;
-        this.serviceClient = serviceClient;
     }
 
     @Override
@@ -81,7 +79,7 @@ class WebAppSourceControlImpl<
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT parent() {
-        return (FluentImplT) parent;
+        return (FluentImplT) this.parent;
     }
 
     @Override
@@ -125,6 +123,6 @@ class WebAppSourceControlImpl<
         }
         SourceControlInner sourceControlInner = new SourceControlInner().withToken(githubAccessToken);
         sourceControlInner.withLocation(parent().regionName());
-        return serviceClient.updateSourceControlAsync("Github", sourceControlInner);
+        return this.parent().manager().inner().updateSourceControlAsync("Github", sourceControlInner);
     }
 }

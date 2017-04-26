@@ -11,9 +11,10 @@ import com.microsoft.azure.management.dns.AaaaRecordSet;
 import com.microsoft.azure.management.dns.AaaaRecordSets;
 import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import rx.Observable;
 
 /**
- * Implementation of {@link AaaaRecordSets}.
+ * Implementation of AaaaRecordSets.
  */
 @LangDefinition
 class AaaaRecordSetsImpl
@@ -21,31 +22,42 @@ class AaaaRecordSetsImpl
         implements AaaaRecordSets {
 
     private final DnsZoneImpl dnsZone;
-    private final RecordSetsInner client;
 
-    AaaaRecordSetsImpl(DnsZoneImpl dnsZone, RecordSetsInner client) {
+    AaaaRecordSetsImpl(DnsZoneImpl dnsZone) {
         this.dnsZone = dnsZone;
-        this.client = client;
     }
 
     @Override
     public AaaaRecordSetImpl getByName(String name) {
-        RecordSetInner inner = this.client.get(this.dnsZone.resourceGroupName(),
+        RecordSetInner inner = this.parent().manager().inner().recordSets().get(this.dnsZone.resourceGroupName(),
                 this.dnsZone.name(),
                 name,
                 RecordType.AAAA);
-        return new AaaaRecordSetImpl(this.dnsZone, inner, this.client);
+        return new AaaaRecordSetImpl(this.dnsZone, inner);
     }
 
     @Override
     public PagedList<AaaaRecordSet> list() {
-        return super.wrapList(this.client.listByType(this.dnsZone.resourceGroupName(),
+        return super.wrapList(this.parent().manager().inner().recordSets().listByType(this.dnsZone.resourceGroupName(),
                 this.dnsZone.name(),
                 RecordType.AAAA));
     }
 
     @Override
     protected AaaaRecordSetImpl wrapModel(RecordSetInner inner) {
-        return new AaaaRecordSetImpl(this.dnsZone, inner, this.client);
+        return new AaaaRecordSetImpl(this.dnsZone, inner);
+    }
+
+    @Override
+    public DnsZoneImpl parent() {
+        return this.dnsZone;
+    }
+
+    @Override
+    public Observable<AaaaRecordSet> listAsync() {
+        return wrapPageAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
+                this.dnsZone.resourceGroupName(),
+                this.dnsZone.name(),
+                RecordType.AAAA));
     }
 }

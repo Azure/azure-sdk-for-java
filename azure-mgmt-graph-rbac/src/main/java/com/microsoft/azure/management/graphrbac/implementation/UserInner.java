@@ -8,44 +8,52 @@
 
 package com.microsoft.azure.management.graphrbac.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Active Directory user information.
  */
 public class UserInner {
     /**
-     * object Id.
+     * The object ID.
      */
+    @JsonProperty(value = "objectId")
     private String objectId;
 
     /**
-     * object type.
+     * The object type.
      */
+    @JsonProperty(value = "objectType")
     private String objectType;
 
     /**
-     * user principal name.
+     * The principal name of the user.
      */
+    @JsonProperty(value = "userPrincipalName")
     private String userPrincipalName;
 
     /**
-     * user display name.
+     * The display name of the user.
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /**
-     * user signIn name.
+     * The sign-in name of the user.
      */
+    @JsonProperty(value = "signInName")
     private String signInName;
 
     /**
-     * user mail.
+     * The primary email address of the user.
      */
+    @JsonProperty(value = "mail")
     private String mail;
 
     /**
      * The mail alias for the user.
      */
+    @JsonProperty(value = "mailNickname")
     private String mailNickname;
 
     /**

@@ -8,25 +8,30 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.management.compute.implementation.ImageReferenceInner;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes a storage profile.
  */
 public class StorageProfile {
     /**
-     * the image reference.
+     * The image reference.
      */
-    private ImageReference imageReference;
+    @JsonProperty(value = "imageReference")
+    private ImageReferenceInner imageReference;
 
     /**
-     * the OS disk.
+     * The OS disk.
      */
+    @JsonProperty(value = "osDisk")
     private OSDisk osDisk;
 
     /**
-     * the data disks.
+     * The data disks.
      */
+    @JsonProperty(value = "dataDisks")
     private List<DataDisk> dataDisks;
 
     /**
@@ -34,7 +39,7 @@ public class StorageProfile {
      *
      * @return the imageReference value
      */
-    public ImageReference imageReference() {
+    public ImageReferenceInner imageReference() {
         return this.imageReference;
     }
 
@@ -44,7 +49,7 @@ public class StorageProfile {
      * @param imageReference the imageReference value to set
      * @return the StorageProfile object itself.
      */
-    public StorageProfile withImageReference(ImageReference imageReference) {
+    public StorageProfile withImageReference(ImageReferenceInner imageReference) {
         this.imageReference = imageReference;
         return this;
     }

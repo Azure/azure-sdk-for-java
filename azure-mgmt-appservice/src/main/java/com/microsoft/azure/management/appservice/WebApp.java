@@ -6,8 +6,12 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
@@ -15,6 +19,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
  * An immutable client-side representation of an Azure Web App.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
+@Beta
 public interface WebApp extends
         WebAppBase,
         Refreshable<WebApp>,
@@ -33,9 +38,12 @@ public interface WebApp extends
      */
     interface Definition extends
             DefinitionStages.Blank,
-            DefinitionStages.WithRegion,
-            DefinitionStages.WithAppServicePlan,
-            DefinitionStages.WithNewAppServicePlan {
+            DefinitionStages.NewAppServicePlanWithGroup,
+            DefinitionStages.WithNewAppServicePlan,
+            DefinitionStages.WithDockerContainerImage,
+            DefinitionStages.WithCredentials,
+            DefinitionStages.WithStartUpCommand,
+            DefinitionStages.WithCreate {
     }
 
     /**
@@ -45,50 +53,236 @@ public interface WebApp extends
         /**
          * The first stage of the web app definition.
          */
-        interface Blank extends GroupableResource.DefinitionStages.WithGroup<WithAppServicePlan> {
+        interface Blank extends DefinitionWithRegion<NewAppServicePlanWithGroup> {
+            /**
+             * Uses an existing app service plan for the web app.
+             * @param appServicePlan the existing app service plan
+             * @return the next stage of the definition
+             */
+            ExistingWindowsPlanWithGroup withExistingWindowsPlan(AppServicePlan appServicePlan);
+
+            /**
+             * Uses an existing app service plan for the web app.
+             * @param appServicePlan the existing app service plan
+             * @return the next stage of the definition
+             */
+            ExistingLinuxPlanWithGroup withExistingLinuxPlan(AppServicePlan appServicePlan);
         }
 
         /**
-         * A web app definition allowing new app service plan's region to be set.
+         * A web app definition allowing resource group to be specified when an existing app service plan is used.
          */
-        interface WithRegion extends GroupableResource.DefinitionWithRegion<WithNewAppServicePlan> {
+        interface NewAppServicePlanWithGroup extends GroupableResource.DefinitionStages.WithGroup<WithNewAppServicePlan> {
+        }
+
+        /**
+         * A web app definition allowing resource group to be specified when a new app service plan is to be created.
+         */
+        interface ExistingWindowsPlanWithGroup {
+            /**
+             * Associates the resource with an existing resource group.
+             * @param groupName the name of an existing resource group to put this resource in.
+             * @return the next stage of the definition
+             */
+            WithCreate withExistingResourceGroup(String groupName);
+
+            /**
+             * Associates the resource with an existing resource group.
+             * @param group an existing resource group to put the resource in
+             * @return the next stage of the definition
+             */
+            WithCreate withExistingResourceGroup(ResourceGroup group);
+
+            /**
+             * Creates a new resource group to put the resource in.
+             * <p>
+             * The group will be created in the same location as the resource.
+             * @param name the name of the new group
+             * @return the next stage of the definition
+             */
+            WithCreate withNewResourceGroup(String name);
+
+            /**
+             * Creates a new resource group to put the resource in.
+             * <p>
+             * The group will be created in the same location as the resource.
+             * The group's name is automatically derived from the resource's name.
+             * @return the next stage of the definition
+             */
+            WithCreate withNewResourceGroup();
+
+            /**
+             * Creates a new resource group to put the resource in, based on the definition specified.
+             * @param groupDefinition a creatable definition for a new resource group
+             * @return the next stage of the definition
+             */
+            WithCreate withNewResourceGroup(Creatable<ResourceGroup> groupDefinition);
+        }
+
+        /**
+         * A web app definition allowing resource group to be specified when a new app service plan is to be created.
+         */
+        interface ExistingLinuxPlanWithGroup {
+            /**
+             * Associates the resource with an existing resource group.
+             * @param groupName the name of an existing resource group to put this resource in.
+             * @return the next stage of the definition
+             */
+            WithDockerContainerImage withExistingResourceGroup(String groupName);
+
+            /**
+             * Associates the resource with an existing resource group.
+             * @param group an existing resource group to put the resource in
+             * @return the next stage of the definition
+             */
+            WithDockerContainerImage withExistingResourceGroup(ResourceGroup group);
+
+            /**
+             * Creates a new resource group to put the resource in.
+             * <p>
+             * The group will be created in the same location as the resource.
+             * @param name the name of the new group
+             * @return the next stage of the definition
+             */
+            WithDockerContainerImage withNewResourceGroup(String name);
+
+            /**
+             * Creates a new resource group to put the resource in.
+             * <p>
+             * The group will be created in the same location as the resource.
+             * The group's name is automatically derived from the resource's name.
+             * @return the next stage of the definition
+             */
+            WithDockerContainerImage withNewResourceGroup();
+
+            /**
+             * Creates a new resource group to put the resource in, based on the definition specified.
+             * @param groupDefinition a creatable definition for a new resource group
+             * @return the next stage of the definition
+             */
+            WithDockerContainerImage withNewResourceGroup(Creatable<ResourceGroup> groupDefinition);
         }
 
         /**
          * A web app definition allowing app service plan to be set.
          */
-        interface WithAppServicePlan {
+        interface WithNewAppServicePlan {
             /**
-             * Creates a new app service plan to use.
-             * @return the next stage of the web app definition
-             * @param name the name of the app service plan
+             * Creates a new free app service plan. This will fail if there are 10 or more
+             * free plans in the current subscription.
+             *
+             * @return the next stage of the definition
              */
-            WithRegion withNewAppServicePlan(String name);
+            WithCreate withNewFreeAppServicePlan();
 
             /**
-             * Uses an existing app service plan for the web app.
-             * @param appServicePlan the existing app service plan
-             * @return the next stage of the web app definition
+             * Creates a new shared app service plan.
+             *
+             * @return the next stage of the definition
              */
-            WebAppBase.DefinitionStages.WithHostNameBinding<WebApp> withExistingAppServicePlan(AppServicePlan appServicePlan);
+            WithCreate withNewSharedAppServicePlan();
+
+            /**
+             * Creates a new app service plan to use.
+             *
+             * @param pricingTier the sku of the app service plan
+             * @return the next stage of the definition
+             */
+            WithCreate withNewWindowsPlan(PricingTier pricingTier);
+
+            /**
+             * Creates a new app service plan to use.
+             *
+             * @param appServicePlanCreatable the new app service plan creatable
+             * @return the next stage of the definition
+             */
+            WithCreate withNewWindowsPlan(Creatable<AppServicePlan> appServicePlanCreatable);
+
+            /**
+             * Creates a new app service plan to use.
+             *
+             * @param pricingTier the sku of the app service plan
+             * @return the next stage of the definition
+             */
+            WithDockerContainerImage withNewLinuxPlan(PricingTier pricingTier);
+
+            /**
+             * Creates a new app service plan to use.
+             *
+             * @param appServicePlanCreatable the new app service plan creatable
+             * @return the next stage of the definition
+             */
+            WithDockerContainerImage withNewLinuxPlan(Creatable<AppServicePlan> appServicePlanCreatable);
         }
 
         /**
-         * As web app definition allowing more information of a new app service plan to be set.
+         * A web app definition allowing docker image source to be specified.
          */
-        interface WithNewAppServicePlan {
+        interface WithDockerContainerImage {
             /**
-             * Creates a new free app service plan to use. No custom domains or SSL bindings are available in this plan.
-             * @return the next stage of the web app definition
+             * Specifies the docker container image to be a built in one.
+             * @param runtimeStack the runtime stack installed on the image
+             * @return the next stage of the definition
              */
-            WebAppBase.DefinitionStages.WithCreate<WebApp> withFreePricingTier();
+            WithCreate withBuiltInImage(RuntimeStack runtimeStack);
 
             /**
-             * Creates a new app service plan to use.
-             * @param pricingTier the pricing tier to use
-             * @return the next stage of the web app definition
+             * Specifies the docker container image to be one from Docker Hub.
+             * @param imageAndTag image and optional tag (eg 'image:tag')
+             * @return the next stage of the definition
              */
-            WebAppBase.DefinitionStages.WithHostNameBinding<WebApp> withPricingTier(AppServicePricingTier pricingTier);
+            WithStartUpCommand withPublicDockerHubImage(String imageAndTag);
+
+            /**
+             * Specifies the docker container image to be one from Docker Hub.
+             * @param imageAndTag image and optional tag (eg 'image:tag')
+             * @return the next stage of the definition
+             */
+            WithCredentials withPrivateDockerHubImage(String imageAndTag);
+
+            /**
+             * Specifies the docker container image to be one from a private registry.
+             * @param imageAndTag image and optional tag (eg 'image:tag')
+             * @param serverUrl the URL to the private registry server
+             * @return the next stage of the definition
+             */
+            WithCredentials withPrivateRegistryImage(String imageAndTag, String serverUrl);
+        }
+
+        /**
+         * A web app definition allowing docker registry credentials to be set.
+         */
+        interface WithCredentials {
+            /**
+             * Specifies the username and password for Docker Hub or the docker registry.
+             * @param username the username for Docker Hub or the docker registry
+             * @param password the password for Docker Hub or the docker registry
+             * @return the next stage of the definition
+             */
+            WithStartUpCommand withCredentials(String username, String password);
+        }
+
+        /**
+         * A web app definition allowing docker startup command to be specified.
+         * This will replace the "CMD" section in the Dockerfile.
+         */
+        interface WithStartUpCommand extends WithCreate {
+            /**
+             * Specifies the startup command.
+             * @param startUpCommand startup command to replace "CMD" in Dockerfile
+             * @return the next stage of the definition
+             */
+            WithCreate withStartUpCommand(String startUpCommand);
+        }
+
+        /**
+         * A site definition with sufficient inputs to create a new web app /
+         * deployments slot in the cloud, but exposing additional optional
+         * inputs to specify.
+         */
+        interface WithCreate extends
+            Creatable<WebApp>,
+            WebAppBase.DefinitionStages.WithCreate<WebApp> {
         }
     }
 
@@ -101,11 +295,35 @@ public interface WebApp extends
          */
         interface WithAppServicePlan {
             /**
-             * Creates a new app service plan to use.
+             * Creates a new free app service plan. This will fail if there are 10 or more
+             * free plans in the current subscription.
+             *
              * @return the next stage of the web app update
-             * @param name the name of the app service plan
              */
-            WithNewAppServicePlan withNewAppServicePlan(String name);
+            Update withNewFreeAppServicePlan();
+
+            /**
+             * Creates a new shared app service plan.
+             *
+             * @return the next stage of the web app update
+             */
+            Update withNewSharedAppServicePlan();
+
+            /**
+             * Creates a new app service plan to use.
+             *
+             * @param pricingTier the sku of the app service plan
+             * @return the next stage of the web app update
+             */
+            Update withNewAppServicePlan(PricingTier pricingTier);
+
+            /**
+             * Creates a new app service plan to use.
+             *
+             * @param appServicePlanCreatable the new app service plan creatable
+             * @return the next stage of the web app update
+             */
+            Update withNewAppServicePlan(Creatable<AppServicePlan> appServicePlanCreatable);
 
             /**
              * Uses an existing app service plan for the web app.
@@ -116,21 +334,63 @@ public interface WebApp extends
         }
 
         /**
-         * As web app update allowing more information of a new app service plan to be set.
+         * A web app update allowing docker image source to be specified.
          */
-        interface WithNewAppServicePlan {
+        interface WithDockerContainerImage {
             /**
-             * Creates a new free app service plan to use. No custom domains or SSL bindings are available in this plan.
+             * Specifies the docker container image to be a built in one.
+             * @param runtimeStack the runtime stack installed on the image
              * @return the next stage of the web app update
              */
-            Update withFreePricingTier();
+            Update withBuiltInImage(RuntimeStack runtimeStack);
 
             /**
-             * Creates a new app service plan to use.
-             * @param pricingTier the pricing tier to use
+             * Specifies the docker container image to be one from Docker Hub.
+             * @param imageAndTag image and optional tag (eg 'image:tag')
              * @return the next stage of the web app update
              */
-            Update withPricingTier(AppServicePricingTier pricingTier);
+            WithStartUpCommand withPublicDockerHubImage(String imageAndTag);
+
+            /**
+             * Specifies the docker container image to be one from Docker Hub.
+             * @param imageAndTag image and optional tag (eg 'image:tag')
+             * @return the next stage of the web app update
+             */
+            WithCredentials withPrivateDockerHubImage(String imageAndTag);
+
+            /**
+             * Specifies the docker container image to be one from a private registry.
+             * @param imageAndTag image and optional tag (eg 'image:tag')
+             * @param serverUrl the URL to the private registry server
+             * @return the next stage of the web app update
+             */
+            WithCredentials withPrivateRegistryImage(String imageAndTag, String serverUrl);
+        }
+
+        /**
+         * A web app update allowing docker hub credentials to be set.
+         */
+        interface WithCredentials {
+            /**
+             * Specifies the username and password for Docker Hub.
+             * @param username the username for Docker Hub
+             * @param password the password for Docker Hub
+             * @return the next stage of the web app update
+             */
+            WithStartUpCommand withCredentials(String username, String password);
+        }
+
+        /**
+         * A web app definition allowing docker startup command to be specified.
+         * This will replace the "CMD" section in the Dockerfile.
+         */
+        interface WithStartUpCommand extends Update {
+            /**
+             * Specifies the startup command.
+             * @param startUpCommand startup command to replace "CMD" in Dockerfile
+             * @return the next stage of the definition
+             */
+            Update withStartUpCommand(String startUpCommand);
         }
     }
 
@@ -138,8 +398,9 @@ public interface WebApp extends
      * The template for a web app update operation, containing all the settings that can be modified.
      */
     interface Update extends
-            WebAppBase.Update<WebApp>,
-            UpdateStages.WithAppServicePlan,
-            UpdateStages.WithNewAppServicePlan {
+        Appliable<WebApp>,
+        UpdateStages.WithAppServicePlan,
+        WebAppBase.Update<WebApp>,
+        UpdateStages.WithDockerContainerImage {
     }
 }

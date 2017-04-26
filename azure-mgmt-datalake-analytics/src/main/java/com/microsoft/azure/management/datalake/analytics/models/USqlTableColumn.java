@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.datalake.analytics.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A Data Lake Analytics catalog U-SQL table column item.
@@ -16,11 +17,13 @@ public class USqlTableColumn {
     /**
      * the name of the column in the table.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * the object type of the specified column (such as System.String).
      */
+    @JsonProperty(value = "type")
     private String type;
 
     /**

@@ -8,16 +8,18 @@
 
 package com.microsoft.azure.management.dns.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -31,6 +33,7 @@ import retrofit2.http.HTTP;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -39,7 +42,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Zones.
  */
-public final class ZonesInner {
+public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDelete<ZoneDeleteResultInner>, InnerSupportsListing<ZoneInner> {
     /** The Retrofit service to perform REST calls. */
     private ZonesService service;
     /** The service client containing this operation class. */
@@ -61,88 +64,94 @@ public final class ZonesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface ZonesService {
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnszones/{zoneName}")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.dns.Zones createOrUpdate" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("zoneName") String zoneName, @Path("subscriptionId") String subscriptionId, @Body ZoneInner parameters, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnszones/{zoneName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("zoneName") String zoneName, @Path("subscriptionId") String subscriptionId, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.dns.Zones delete" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("zoneName") String zoneName, @Path("subscriptionId") String subscriptionId, @Header("If-Match") String ifMatch, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnszones/{zoneName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("zoneName") String zoneName, @Path("subscriptionId") String subscriptionId, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.dns.Zones beginDelete" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("zoneName") String zoneName, @Path("subscriptionId") String subscriptionId, @Header("If-Match") String ifMatch, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnszones/{zoneName}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("zoneName") String zoneName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.dns.Zones getByResourceGroup" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}")
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("zoneName") String zoneName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnszones")
-        Observable<Response<ResponseBody>> listInResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$top") String top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.dns.Zones listByResourceGroup" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones")
+        Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.dns.Zones list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/dnszones")
-        Observable<Response<ResponseBody>> listInSubscription(@Path("subscriptionId") String subscriptionId, @Query("$top") String top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listInResourceGroupNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.dns.Zones listByResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listInSubscriptionNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.dns.Zones listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * Creates or Updates a DNS zone within a resource group.
+     * Creates or updates a DNS zone. Does not modify DNS records within the zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ZoneInner object if successful.
      */
     public ZoneInner createOrUpdate(String resourceGroupName, String zoneName, ZoneInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, parameters).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, parameters).toBlocking().single().body();
     }
 
     /**
-     * Creates or Updates a DNS zone within a resource group.
+     * Creates or updates a DNS zone. Does not modify DNS records within the zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ZoneInner> createOrUpdateAsync(String resourceGroupName, String zoneName, ZoneInner parameters, final ServiceCallback<ZoneInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, parameters), serviceCallback);
+    public ServiceFuture<ZoneInner> createOrUpdateAsync(String resourceGroupName, String zoneName, ZoneInner parameters, final ServiceCallback<ZoneInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, parameters), serviceCallback);
     }
 
     /**
-     * Creates or Updates a DNS zone within a resource group.
+     * Creates or updates a DNS zone. Does not modify DNS records within the zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneInner object
      */
     public Observable<ZoneInner> createOrUpdateAsync(String resourceGroupName, String zoneName, ZoneInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, parameters).map(new Func1<ServiceResponse<ZoneInner>, ZoneInner>() {
             @Override
             public ZoneInner call(ServiceResponse<ZoneInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Creates or Updates a DNS zone within a resource group.
+     * Creates or updates a DNS zone. Does not modify DNS records within the zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneInner object
      */
     public Observable<ServiceResponse<ZoneInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String zoneName, ZoneInner parameters) {
@@ -179,61 +188,67 @@ public final class ZonesInner {
     }
 
     /**
-     * Creates or Updates a DNS zone within a resource group.
+     * Creates or updates a DNS zone. Does not modify DNS records within the zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch The etag of Zone.
-     * @param ifNoneMatch Defines the If-None-Match condition. Set to '*' to force Create-If-Not-Exist. Other values will be ignored.
+     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwritting any concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new DNS zone to be created, but to prevent updating an existing zone. Other values will be ignored.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ZoneInner object if successful.
      */
     public ZoneInner createOrUpdate(String resourceGroupName, String zoneName, ZoneInner parameters, String ifMatch, String ifNoneMatch) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch).toBlocking().single().body();
     }
 
     /**
-     * Creates or Updates a DNS zone within a resource group.
+     * Creates or updates a DNS zone. Does not modify DNS records within the zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch The etag of Zone.
-     * @param ifNoneMatch Defines the If-None-Match condition. Set to '*' to force Create-If-Not-Exist. Other values will be ignored.
+     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwritting any concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new DNS zone to be created, but to prevent updating an existing zone. Other values will be ignored.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ZoneInner> createOrUpdateAsync(String resourceGroupName, String zoneName, ZoneInner parameters, String ifMatch, String ifNoneMatch, final ServiceCallback<ZoneInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch), serviceCallback);
+    public ServiceFuture<ZoneInner> createOrUpdateAsync(String resourceGroupName, String zoneName, ZoneInner parameters, String ifMatch, String ifNoneMatch, final ServiceCallback<ZoneInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch), serviceCallback);
     }
 
     /**
-     * Creates or Updates a DNS zone within a resource group.
+     * Creates or updates a DNS zone. Does not modify DNS records within the zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch The etag of Zone.
-     * @param ifNoneMatch Defines the If-None-Match condition. Set to '*' to force Create-If-Not-Exist. Other values will be ignored.
+     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwritting any concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new DNS zone to be created, but to prevent updating an existing zone. Other values will be ignored.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneInner object
      */
     public Observable<ZoneInner> createOrUpdateAsync(String resourceGroupName, String zoneName, ZoneInner parameters, String ifMatch, String ifNoneMatch) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch).map(new Func1<ServiceResponse<ZoneInner>, ZoneInner>() {
             @Override
             public ZoneInner call(ServiceResponse<ZoneInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Creates or Updates a DNS zone within a resource group.
+     * Creates or updates a DNS zone. Does not modify DNS records within the zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch The etag of Zone.
-     * @param ifNoneMatch Defines the If-None-Match condition. Set to '*' to force Create-If-Not-Exist. Other values will be ignored.
+     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwritting any concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new DNS zone to be created, but to prevent updating an existing zone. Other values will be ignored.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneInner object
      */
     public Observable<ServiceResponse<ZoneInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String zoneName, ZoneInner parameters, String ifMatch, String ifNoneMatch) {
@@ -268,7 +283,7 @@ public final class ZonesInner {
     }
 
     private ServiceResponse<ZoneInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ZoneInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ZoneInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ZoneInner>() { }.getType())
                 .register(201, new TypeToken<ZoneInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -276,49 +291,55 @@ public final class ZonesInner {
     }
 
     /**
-     * Removes a DNS zone from a resource group.
+     * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @return the ZoneDeleteResultInner object  if successful.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ZoneDeleteResultInner object if successful.
      */
     public ZoneDeleteResultInner delete(String resourceGroupName, String zoneName) {
-        return deleteWithServiceResponseAsync(resourceGroupName, zoneName).toBlocking().last().getBody();
+        return deleteWithServiceResponseAsync(resourceGroupName, zoneName).toBlocking().last().body();
     }
 
     /**
-     * Removes a DNS zone from a resource group.
+     * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ZoneDeleteResultInner> deleteAsync(String resourceGroupName, String zoneName, final ServiceCallback<ZoneDeleteResultInner> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, zoneName), serviceCallback);
+    public ServiceFuture<ZoneDeleteResultInner> deleteAsync(String resourceGroupName, String zoneName, final ServiceCallback<ZoneDeleteResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, zoneName), serviceCallback);
     }
 
     /**
-     * Removes a DNS zone from a resource group.
+     * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ZoneDeleteResultInner> deleteAsync(String resourceGroupName, String zoneName) {
         return deleteWithServiceResponseAsync(resourceGroupName, zoneName).map(new Func1<ServiceResponse<ZoneDeleteResultInner>, ZoneDeleteResultInner>() {
             @Override
             public ZoneDeleteResultInner call(ServiceResponse<ZoneDeleteResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Removes a DNS zone from a resource group.
+     * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<ZoneDeleteResultInner>> deleteWithServiceResponseAsync(String resourceGroupName, String zoneName) {
@@ -335,65 +356,66 @@ public final class ZonesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String ifMatch = null;
-        final String ifNoneMatch = null;
-        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, zoneName, this.client.subscriptionId(), ifMatch, ifNoneMatch, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, zoneName, this.client.subscriptionId(), ifMatch, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<ZoneDeleteResultInner>() { }.getType());
     }
     /**
-     * Removes a DNS zone from a resource group.
+     * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param ifMatch Defines the If-Match condition. The delete operation will be performed only if the ETag of the zone on the server matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The delete operation will be performed only if the ETag of the zone on the server does not match this value.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ZoneDeleteResultInner object if successful.
      */
-    public ZoneDeleteResultInner delete(String resourceGroupName, String zoneName, String ifMatch, String ifNoneMatch) {
-        return deleteWithServiceResponseAsync(resourceGroupName, zoneName, ifMatch, ifNoneMatch).toBlocking().last().getBody();
+    public ZoneDeleteResultInner delete(String resourceGroupName, String zoneName, String ifMatch) {
+        return deleteWithServiceResponseAsync(resourceGroupName, zoneName, ifMatch).toBlocking().last().body();
     }
 
     /**
-     * Removes a DNS zone from a resource group.
+     * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param ifMatch Defines the If-Match condition. The delete operation will be performed only if the ETag of the zone on the server matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The delete operation will be performed only if the ETag of the zone on the server does not match this value.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ZoneDeleteResultInner> deleteAsync(String resourceGroupName, String zoneName, String ifMatch, String ifNoneMatch, final ServiceCallback<ZoneDeleteResultInner> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, zoneName, ifMatch, ifNoneMatch), serviceCallback);
+    public ServiceFuture<ZoneDeleteResultInner> deleteAsync(String resourceGroupName, String zoneName, String ifMatch, final ServiceCallback<ZoneDeleteResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, zoneName, ifMatch), serviceCallback);
     }
 
     /**
-     * Removes a DNS zone from a resource group.
+     * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param ifMatch Defines the If-Match condition. The delete operation will be performed only if the ETag of the zone on the server matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The delete operation will be performed only if the ETag of the zone on the server does not match this value.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ZoneDeleteResultInner> deleteAsync(String resourceGroupName, String zoneName, String ifMatch, String ifNoneMatch) {
-        return deleteWithServiceResponseAsync(resourceGroupName, zoneName, ifMatch, ifNoneMatch).map(new Func1<ServiceResponse<ZoneDeleteResultInner>, ZoneDeleteResultInner>() {
+    public Observable<ZoneDeleteResultInner> deleteAsync(String resourceGroupName, String zoneName, String ifMatch) {
+        return deleteWithServiceResponseAsync(resourceGroupName, zoneName, ifMatch).map(new Func1<ServiceResponse<ZoneDeleteResultInner>, ZoneDeleteResultInner>() {
             @Override
             public ZoneDeleteResultInner call(ServiceResponse<ZoneDeleteResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Removes a DNS zone from a resource group.
+     * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param ifMatch Defines the If-Match condition. The delete operation will be performed only if the ETag of the zone on the server matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The delete operation will be performed only if the ETag of the zone on the server does not match this value.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<ZoneDeleteResultInner>> deleteWithServiceResponseAsync(String resourceGroupName, String zoneName, String ifMatch, String ifNoneMatch) {
+    public Observable<ServiceResponse<ZoneDeleteResultInner>> deleteWithServiceResponseAsync(String resourceGroupName, String zoneName, String ifMatch) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -406,54 +428,60 @@ public final class ZonesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, zoneName, this.client.subscriptionId(), ifMatch, ifNoneMatch, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, zoneName, this.client.subscriptionId(), ifMatch, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<ZoneDeleteResultInner>() { }.getType());
     }
 
     /**
-     * Removes a DNS zone from a resource group.
+     * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ZoneDeleteResultInner object if successful.
      */
     public ZoneDeleteResultInner beginDelete(String resourceGroupName, String zoneName) {
-        return beginDeleteWithServiceResponseAsync(resourceGroupName, zoneName).toBlocking().single().getBody();
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, zoneName).toBlocking().single().body();
     }
 
     /**
-     * Removes a DNS zone from a resource group.
+     * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ZoneDeleteResultInner> beginDeleteAsync(String resourceGroupName, String zoneName, final ServiceCallback<ZoneDeleteResultInner> serviceCallback) {
-        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, zoneName), serviceCallback);
+    public ServiceFuture<ZoneDeleteResultInner> beginDeleteAsync(String resourceGroupName, String zoneName, final ServiceCallback<ZoneDeleteResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, zoneName), serviceCallback);
     }
 
     /**
-     * Removes a DNS zone from a resource group.
+     * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneDeleteResultInner object
      */
     public Observable<ZoneDeleteResultInner> beginDeleteAsync(String resourceGroupName, String zoneName) {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, zoneName).map(new Func1<ServiceResponse<ZoneDeleteResultInner>, ZoneDeleteResultInner>() {
             @Override
             public ZoneDeleteResultInner call(ServiceResponse<ZoneDeleteResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Removes a DNS zone from a resource group.
+     * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneDeleteResultInner object
      */
     public Observable<ServiceResponse<ZoneDeleteResultInner>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String zoneName) {
@@ -470,8 +498,7 @@ public final class ZonesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String ifMatch = null;
-        final String ifNoneMatch = null;
-        return service.beginDelete(resourceGroupName, zoneName, this.client.subscriptionId(), ifMatch, ifNoneMatch, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.beginDelete(resourceGroupName, zoneName, this.client.subscriptionId(), ifMatch, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ZoneDeleteResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ZoneDeleteResultInner>> call(Response<ResponseBody> response) {
@@ -486,60 +513,62 @@ public final class ZonesInner {
     }
 
     /**
-     * Removes a DNS zone from a resource group.
+     * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param ifMatch Defines the If-Match condition. The delete operation will be performed only if the ETag of the zone on the server matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The delete operation will be performed only if the ETag of the zone on the server does not match this value.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ZoneDeleteResultInner object if successful.
      */
-    public ZoneDeleteResultInner beginDelete(String resourceGroupName, String zoneName, String ifMatch, String ifNoneMatch) {
-        return beginDeleteWithServiceResponseAsync(resourceGroupName, zoneName, ifMatch, ifNoneMatch).toBlocking().single().getBody();
+    public ZoneDeleteResultInner beginDelete(String resourceGroupName, String zoneName, String ifMatch) {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, zoneName, ifMatch).toBlocking().single().body();
     }
 
     /**
-     * Removes a DNS zone from a resource group.
+     * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param ifMatch Defines the If-Match condition. The delete operation will be performed only if the ETag of the zone on the server matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The delete operation will be performed only if the ETag of the zone on the server does not match this value.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ZoneDeleteResultInner> beginDeleteAsync(String resourceGroupName, String zoneName, String ifMatch, String ifNoneMatch, final ServiceCallback<ZoneDeleteResultInner> serviceCallback) {
-        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, zoneName, ifMatch, ifNoneMatch), serviceCallback);
+    public ServiceFuture<ZoneDeleteResultInner> beginDeleteAsync(String resourceGroupName, String zoneName, String ifMatch, final ServiceCallback<ZoneDeleteResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, zoneName, ifMatch), serviceCallback);
     }
 
     /**
-     * Removes a DNS zone from a resource group.
+     * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param ifMatch Defines the If-Match condition. The delete operation will be performed only if the ETag of the zone on the server matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The delete operation will be performed only if the ETag of the zone on the server does not match this value.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneDeleteResultInner object
      */
-    public Observable<ZoneDeleteResultInner> beginDeleteAsync(String resourceGroupName, String zoneName, String ifMatch, String ifNoneMatch) {
-        return beginDeleteWithServiceResponseAsync(resourceGroupName, zoneName, ifMatch, ifNoneMatch).map(new Func1<ServiceResponse<ZoneDeleteResultInner>, ZoneDeleteResultInner>() {
+    public Observable<ZoneDeleteResultInner> beginDeleteAsync(String resourceGroupName, String zoneName, String ifMatch) {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, zoneName, ifMatch).map(new Func1<ServiceResponse<ZoneDeleteResultInner>, ZoneDeleteResultInner>() {
             @Override
             public ZoneDeleteResultInner call(ServiceResponse<ZoneDeleteResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Removes a DNS zone from a resource group.
+     * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
-     * @param ifMatch Defines the If-Match condition. The delete operation will be performed only if the ETag of the zone on the server matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The delete operation will be performed only if the ETag of the zone on the server does not match this value.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneDeleteResultInner object
      */
-    public Observable<ServiceResponse<ZoneDeleteResultInner>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String zoneName, String ifMatch, String ifNoneMatch) {
+    public Observable<ServiceResponse<ZoneDeleteResultInner>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String zoneName, String ifMatch) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -552,7 +581,7 @@ public final class ZonesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.beginDelete(resourceGroupName, zoneName, this.client.subscriptionId(), ifMatch, ifNoneMatch, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.beginDelete(resourceGroupName, zoneName, this.client.subscriptionId(), ifMatch, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ZoneDeleteResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ZoneDeleteResultInner>> call(Response<ResponseBody> response) {
@@ -567,7 +596,7 @@ public final class ZonesInner {
     }
 
     private ServiceResponse<ZoneDeleteResultInner> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ZoneDeleteResultInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ZoneDeleteResultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<ZoneDeleteResultInner>() { }.getType())
@@ -576,52 +605,58 @@ public final class ZonesInner {
     }
 
     /**
-     * Gets a DNS zone.
+     * Gets a DNS zone. Retrieves the zone properties, but not the record sets within the zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ZoneInner object if successful.
      */
-    public ZoneInner get(String resourceGroupName, String zoneName) {
-        return getWithServiceResponseAsync(resourceGroupName, zoneName).toBlocking().single().getBody();
+    public ZoneInner getByResourceGroup(String resourceGroupName, String zoneName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, zoneName).toBlocking().single().body();
     }
 
     /**
-     * Gets a DNS zone.
+     * Gets a DNS zone. Retrieves the zone properties, but not the record sets within the zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ZoneInner> getAsync(String resourceGroupName, String zoneName, final ServiceCallback<ZoneInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, zoneName), serviceCallback);
+    public ServiceFuture<ZoneInner> getByResourceGroupAsync(String resourceGroupName, String zoneName, final ServiceCallback<ZoneInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, zoneName), serviceCallback);
     }
 
     /**
-     * Gets a DNS zone.
+     * Gets a DNS zone. Retrieves the zone properties, but not the record sets within the zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneInner object
      */
-    public Observable<ZoneInner> getAsync(String resourceGroupName, String zoneName) {
-        return getWithServiceResponseAsync(resourceGroupName, zoneName).map(new Func1<ServiceResponse<ZoneInner>, ZoneInner>() {
+    public Observable<ZoneInner> getByResourceGroupAsync(String resourceGroupName, String zoneName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, zoneName).map(new Func1<ServiceResponse<ZoneInner>, ZoneInner>() {
             @Override
             public ZoneInner call(ServiceResponse<ZoneInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Gets a DNS zone.
+     * Gets a DNS zone. Retrieves the zone properties, but not the record sets within the zone.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the zone without a terminating dot.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneInner object
      */
-    public Observable<ServiceResponse<ZoneInner>> getWithServiceResponseAsync(String resourceGroupName, String zoneName) {
+    public Observable<ServiceResponse<ZoneInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String zoneName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -634,12 +669,12 @@ public final class ZonesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.get(resourceGroupName, zoneName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(resourceGroupName, zoneName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ZoneInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ZoneInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ZoneInner> clientResponse = getDelegate(response);
+                        ServiceResponse<ZoneInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -648,8 +683,8 @@ public final class ZonesInner {
             });
     }
 
-    private ServiceResponse<ZoneInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ZoneInner, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<ZoneInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ZoneInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ZoneInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -659,14 +694,17 @@ public final class ZonesInner {
      * Lists the DNS zones within a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ZoneInner&gt; object if successful.
      */
-    public PagedList<ZoneInner> listInResourceGroup(final String resourceGroupName) {
-        ServiceResponse<Page<ZoneInner>> response = listInResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<ZoneInner>(response.getBody()) {
+    public PagedList<ZoneInner> listByResourceGroup(final String resourceGroupName) {
+        ServiceResponse<Page<ZoneInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
+        return new PagedList<ZoneInner>(response.body()) {
             @Override
             public Page<ZoneInner> nextPage(String nextPageLink) {
-                return listInResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -676,15 +714,16 @@ public final class ZonesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ZoneInner>> listInResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<ZoneInner> serviceCallback) {
-        return AzureServiceCall.create(
-            listInResourceGroupSinglePageAsync(resourceGroupName),
+    public ServiceFuture<List<ZoneInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<ZoneInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<ZoneInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ZoneInner>>> call(String nextPageLink) {
-                    return listInResourceGroupNextSinglePageAsync(nextPageLink);
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -694,14 +733,15 @@ public final class ZonesInner {
      * Lists the DNS zones within a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ZoneInner&gt; object
      */
-    public Observable<Page<ZoneInner>> listInResourceGroupAsync(final String resourceGroupName) {
-        return listInResourceGroupWithServiceResponseAsync(resourceGroupName)
+    public Observable<Page<ZoneInner>> listByResourceGroupAsync(final String resourceGroupName) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName)
             .map(new Func1<ServiceResponse<Page<ZoneInner>>, Page<ZoneInner>>() {
                 @Override
                 public Page<ZoneInner> call(ServiceResponse<Page<ZoneInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -710,18 +750,19 @@ public final class ZonesInner {
      * Lists the DNS zones within a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ZoneInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ZoneInner>>> listInResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
-        return listInResourceGroupSinglePageAsync(resourceGroupName)
+    public Observable<ServiceResponse<Page<ZoneInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
+        return listByResourceGroupSinglePageAsync(resourceGroupName)
             .concatMap(new Func1<ServiceResponse<Page<ZoneInner>>, Observable<ServiceResponse<Page<ZoneInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ZoneInner>>> call(ServiceResponse<Page<ZoneInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listInResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -730,9 +771,10 @@ public final class ZonesInner {
      * Lists the DNS zones within a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ZoneInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<ZoneInner>>> listInResourceGroupSinglePageAsync(final String resourceGroupName) {
+    public Observable<ServiceResponse<Page<ZoneInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -742,14 +784,14 @@ public final class ZonesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        final String top = null;
-        return service.listInResourceGroup(resourceGroupName, this.client.subscriptionId(), top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final Integer top = null;
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ZoneInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ZoneInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<ZoneInner>> result = listInResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ZoneInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<ZoneInner>> result = listByResourceGroupDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ZoneInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -761,15 +803,18 @@ public final class ZonesInner {
      * Lists the DNS zones within a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param top Query parameters. If null is passed returns the default number of zones.
+     * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ZoneInner&gt; object if successful.
      */
-    public PagedList<ZoneInner> listInResourceGroup(final String resourceGroupName, final String top) {
-        ServiceResponse<Page<ZoneInner>> response = listInResourceGroupSinglePageAsync(resourceGroupName, top).toBlocking().single();
-        return new PagedList<ZoneInner>(response.getBody()) {
+    public PagedList<ZoneInner> listByResourceGroup(final String resourceGroupName, final Integer top) {
+        ServiceResponse<Page<ZoneInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName, top).toBlocking().single();
+        return new PagedList<ZoneInner>(response.body()) {
             @Override
             public Page<ZoneInner> nextPage(String nextPageLink) {
-                return listInResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -778,17 +823,18 @@ public final class ZonesInner {
      * Lists the DNS zones within a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param top Query parameters. If null is passed returns the default number of zones.
+     * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ZoneInner>> listInResourceGroupAsync(final String resourceGroupName, final String top, final ListOperationCallback<ZoneInner> serviceCallback) {
-        return AzureServiceCall.create(
-            listInResourceGroupSinglePageAsync(resourceGroupName, top),
+    public ServiceFuture<List<ZoneInner>> listByResourceGroupAsync(final String resourceGroupName, final Integer top, final ListOperationCallback<ZoneInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupSinglePageAsync(resourceGroupName, top),
             new Func1<String, Observable<ServiceResponse<Page<ZoneInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ZoneInner>>> call(String nextPageLink) {
-                    return listInResourceGroupNextSinglePageAsync(nextPageLink);
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -798,15 +844,16 @@ public final class ZonesInner {
      * Lists the DNS zones within a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param top Query parameters. If null is passed returns the default number of zones.
+     * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ZoneInner&gt; object
      */
-    public Observable<Page<ZoneInner>> listInResourceGroupAsync(final String resourceGroupName, final String top) {
-        return listInResourceGroupWithServiceResponseAsync(resourceGroupName, top)
+    public Observable<Page<ZoneInner>> listByResourceGroupAsync(final String resourceGroupName, final Integer top) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName, top)
             .map(new Func1<ServiceResponse<Page<ZoneInner>>, Page<ZoneInner>>() {
                 @Override
                 public Page<ZoneInner> call(ServiceResponse<Page<ZoneInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -815,19 +862,20 @@ public final class ZonesInner {
      * Lists the DNS zones within a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param top Query parameters. If null is passed returns the default number of zones.
+     * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ZoneInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ZoneInner>>> listInResourceGroupWithServiceResponseAsync(final String resourceGroupName, final String top) {
-        return listInResourceGroupSinglePageAsync(resourceGroupName, top)
+    public Observable<ServiceResponse<Page<ZoneInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName, final Integer top) {
+        return listByResourceGroupSinglePageAsync(resourceGroupName, top)
             .concatMap(new Func1<ServiceResponse<Page<ZoneInner>>, Observable<ServiceResponse<Page<ZoneInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ZoneInner>>> call(ServiceResponse<Page<ZoneInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listInResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -836,10 +884,11 @@ public final class ZonesInner {
      * Lists the DNS zones within a resource group.
      *
     ServiceResponse<PageImpl<ZoneInner>> * @param resourceGroupName The name of the resource group.
-    ServiceResponse<PageImpl<ZoneInner>> * @param top Query parameters. If null is passed returns the default number of zones.
+    ServiceResponse<PageImpl<ZoneInner>> * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ZoneInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<ZoneInner>>> listInResourceGroupSinglePageAsync(final String resourceGroupName, final String top) {
+    public Observable<ServiceResponse<Page<ZoneInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName, final Integer top) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -849,13 +898,13 @@ public final class ZonesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listInResourceGroup(resourceGroupName, this.client.subscriptionId(), top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ZoneInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ZoneInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<ZoneInner>> result = listInResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ZoneInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<ZoneInner>> result = listByResourceGroupDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ZoneInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -863,8 +912,221 @@ public final class ZonesInner {
             });
     }
 
-    private ServiceResponse<PageImpl<ZoneInner>> listInResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ZoneInner>, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<PageImpl<ZoneInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ZoneInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<ZoneInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists the DNS zones in all resource groups in a subscription.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;ZoneInner&gt; object if successful.
+     */
+    public PagedList<ZoneInner> list() {
+        ServiceResponse<Page<ZoneInner>> response = listSinglePageAsync().toBlocking().single();
+        return new PagedList<ZoneInner>(response.body()) {
+            @Override
+            public Page<ZoneInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists the DNS zones in all resource groups in a subscription.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ZoneInner>> listAsync(final ListOperationCallback<ZoneInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<ZoneInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ZoneInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the DNS zones in all resource groups in a subscription.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ZoneInner&gt; object
+     */
+    public Observable<Page<ZoneInner>> listAsync() {
+        return listWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<ZoneInner>>, Page<ZoneInner>>() {
+                @Override
+                public Page<ZoneInner> call(ServiceResponse<Page<ZoneInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists the DNS zones in all resource groups in a subscription.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ZoneInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ZoneInner>>> listWithServiceResponseAsync() {
+        return listSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<ZoneInner>>, Observable<ServiceResponse<Page<ZoneInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ZoneInner>>> call(ServiceResponse<Page<ZoneInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists the DNS zones in all resource groups in a subscription.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ZoneInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ZoneInner>>> listSinglePageAsync() {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final Integer top = null;
+        return service.list(this.client.subscriptionId(), top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ZoneInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ZoneInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ZoneInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ZoneInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Lists the DNS zones in all resource groups in a subscription.
+     *
+     * @param top The maximum number of DNS zones to return. If not specified, returns up to 100 zones.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;ZoneInner&gt; object if successful.
+     */
+    public PagedList<ZoneInner> list(final Integer top) {
+        ServiceResponse<Page<ZoneInner>> response = listSinglePageAsync(top).toBlocking().single();
+        return new PagedList<ZoneInner>(response.body()) {
+            @Override
+            public Page<ZoneInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists the DNS zones in all resource groups in a subscription.
+     *
+     * @param top The maximum number of DNS zones to return. If not specified, returns up to 100 zones.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ZoneInner>> listAsync(final Integer top, final ListOperationCallback<ZoneInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSinglePageAsync(top),
+            new Func1<String, Observable<ServiceResponse<Page<ZoneInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ZoneInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the DNS zones in all resource groups in a subscription.
+     *
+     * @param top The maximum number of DNS zones to return. If not specified, returns up to 100 zones.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ZoneInner&gt; object
+     */
+    public Observable<Page<ZoneInner>> listAsync(final Integer top) {
+        return listWithServiceResponseAsync(top)
+            .map(new Func1<ServiceResponse<Page<ZoneInner>>, Page<ZoneInner>>() {
+                @Override
+                public Page<ZoneInner> call(ServiceResponse<Page<ZoneInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists the DNS zones in all resource groups in a subscription.
+     *
+     * @param top The maximum number of DNS zones to return. If not specified, returns up to 100 zones.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ZoneInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ZoneInner>>> listWithServiceResponseAsync(final Integer top) {
+        return listSinglePageAsync(top)
+            .concatMap(new Func1<ServiceResponse<Page<ZoneInner>>, Observable<ServiceResponse<Page<ZoneInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ZoneInner>>> call(ServiceResponse<Page<ZoneInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists the DNS zones in all resource groups in a subscription.
+     *
+    ServiceResponse<PageImpl<ZoneInner>> * @param top The maximum number of DNS zones to return. If not specified, returns up to 100 zones.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ZoneInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ZoneInner>>> listSinglePageAsync(final Integer top) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.list(this.client.subscriptionId(), top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ZoneInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ZoneInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ZoneInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ZoneInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ZoneInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ZoneInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ZoneInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -873,214 +1135,18 @@ public final class ZonesInner {
     /**
      * Lists the DNS zones within a resource group.
      *
-     * @return the PagedList&lt;ZoneInner&gt; object if successful.
-     */
-    public PagedList<ZoneInner> listInSubscription() {
-        ServiceResponse<Page<ZoneInner>> response = listInSubscriptionSinglePageAsync().toBlocking().single();
-        return new PagedList<ZoneInner>(response.getBody()) {
-            @Override
-            public Page<ZoneInner> nextPage(String nextPageLink) {
-                return listInSubscriptionNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
-            }
-        };
-    }
-
-    /**
-     * Lists the DNS zones within a resource group.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<List<ZoneInner>> listInSubscriptionAsync(final ListOperationCallback<ZoneInner> serviceCallback) {
-        return AzureServiceCall.create(
-            listInSubscriptionSinglePageAsync(),
-            new Func1<String, Observable<ServiceResponse<Page<ZoneInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<ZoneInner>>> call(String nextPageLink) {
-                    return listInSubscriptionNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Lists the DNS zones within a resource group.
-     *
-     * @return the observable to the PagedList&lt;ZoneInner&gt; object
-     */
-    public Observable<Page<ZoneInner>> listInSubscriptionAsync() {
-        return listInSubscriptionWithServiceResponseAsync()
-            .map(new Func1<ServiceResponse<Page<ZoneInner>>, Page<ZoneInner>>() {
-                @Override
-                public Page<ZoneInner> call(ServiceResponse<Page<ZoneInner>> response) {
-                    return response.getBody();
-                }
-            });
-    }
-
-    /**
-     * Lists the DNS zones within a resource group.
-     *
-     * @return the observable to the PagedList&lt;ZoneInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<ZoneInner>>> listInSubscriptionWithServiceResponseAsync() {
-        return listInSubscriptionSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<ZoneInner>>, Observable<ServiceResponse<Page<ZoneInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<ZoneInner>>> call(ServiceResponse<Page<ZoneInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listInSubscriptionNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Lists the DNS zones within a resource group.
-     *
-     * @return the PagedList&lt;ZoneInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<Page<ZoneInner>>> listInSubscriptionSinglePageAsync() {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final String top = null;
-        return service.listInSubscription(this.client.subscriptionId(), top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ZoneInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<ZoneInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<ZoneInner>> result = listInSubscriptionDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ZoneInner>>(result.getBody(), result.getResponse()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Lists the DNS zones within a resource group.
-     *
-     * @param top Query parameters. If null is passed returns the default number of zones.
-     * @return the PagedList&lt;ZoneInner&gt; object if successful.
-     */
-    public PagedList<ZoneInner> listInSubscription(final String top) {
-        ServiceResponse<Page<ZoneInner>> response = listInSubscriptionSinglePageAsync(top).toBlocking().single();
-        return new PagedList<ZoneInner>(response.getBody()) {
-            @Override
-            public Page<ZoneInner> nextPage(String nextPageLink) {
-                return listInSubscriptionNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
-            }
-        };
-    }
-
-    /**
-     * Lists the DNS zones within a resource group.
-     *
-     * @param top Query parameters. If null is passed returns the default number of zones.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<List<ZoneInner>> listInSubscriptionAsync(final String top, final ListOperationCallback<ZoneInner> serviceCallback) {
-        return AzureServiceCall.create(
-            listInSubscriptionSinglePageAsync(top),
-            new Func1<String, Observable<ServiceResponse<Page<ZoneInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<ZoneInner>>> call(String nextPageLink) {
-                    return listInSubscriptionNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Lists the DNS zones within a resource group.
-     *
-     * @param top Query parameters. If null is passed returns the default number of zones.
-     * @return the observable to the PagedList&lt;ZoneInner&gt; object
-     */
-    public Observable<Page<ZoneInner>> listInSubscriptionAsync(final String top) {
-        return listInSubscriptionWithServiceResponseAsync(top)
-            .map(new Func1<ServiceResponse<Page<ZoneInner>>, Page<ZoneInner>>() {
-                @Override
-                public Page<ZoneInner> call(ServiceResponse<Page<ZoneInner>> response) {
-                    return response.getBody();
-                }
-            });
-    }
-
-    /**
-     * Lists the DNS zones within a resource group.
-     *
-     * @param top Query parameters. If null is passed returns the default number of zones.
-     * @return the observable to the PagedList&lt;ZoneInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<ZoneInner>>> listInSubscriptionWithServiceResponseAsync(final String top) {
-        return listInSubscriptionSinglePageAsync(top)
-            .concatMap(new Func1<ServiceResponse<Page<ZoneInner>>, Observable<ServiceResponse<Page<ZoneInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<ZoneInner>>> call(ServiceResponse<Page<ZoneInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listInSubscriptionNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Lists the DNS zones within a resource group.
-     *
-    ServiceResponse<PageImpl<ZoneInner>> * @param top Query parameters. If null is passed returns the default number of zones.
-     * @return the PagedList&lt;ZoneInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<Page<ZoneInner>>> listInSubscriptionSinglePageAsync(final String top) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.listInSubscription(this.client.subscriptionId(), top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ZoneInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<ZoneInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<ZoneInner>> result = listInSubscriptionDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ZoneInner>>(result.getBody(), result.getResponse()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl<ZoneInner>> listInSubscriptionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ZoneInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl<ZoneInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Lists the DNS zones within a resource group.
-     *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ZoneInner&gt; object if successful.
      */
-    public PagedList<ZoneInner> listInResourceGroupNext(final String nextPageLink) {
-        ServiceResponse<Page<ZoneInner>> response = listInResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ZoneInner>(response.getBody()) {
+    public PagedList<ZoneInner> listByResourceGroupNext(final String nextPageLink) {
+        ServiceResponse<Page<ZoneInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<ZoneInner>(response.body()) {
             @Override
             public Page<ZoneInner> nextPage(String nextPageLink) {
-                return listInResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1089,17 +1155,18 @@ public final class ZonesInner {
      * Lists the DNS zones within a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ZoneInner>> listInResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<ZoneInner>> serviceCall, final ListOperationCallback<ZoneInner> serviceCallback) {
-        return AzureServiceCall.create(
-            listInResourceGroupNextSinglePageAsync(nextPageLink),
+    public ServiceFuture<List<ZoneInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<ZoneInner>> serviceFuture, final ListOperationCallback<ZoneInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ZoneInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ZoneInner>>> call(String nextPageLink) {
-                    return listInResourceGroupNextSinglePageAsync(nextPageLink);
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -1109,14 +1176,15 @@ public final class ZonesInner {
      * Lists the DNS zones within a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ZoneInner&gt; object
      */
-    public Observable<Page<ZoneInner>> listInResourceGroupNextAsync(final String nextPageLink) {
-        return listInResourceGroupNextWithServiceResponseAsync(nextPageLink)
+    public Observable<Page<ZoneInner>> listByResourceGroupNextAsync(final String nextPageLink) {
+        return listByResourceGroupNextWithServiceResponseAsync(nextPageLink)
             .map(new Func1<ServiceResponse<Page<ZoneInner>>, Page<ZoneInner>>() {
                 @Override
                 public Page<ZoneInner> call(ServiceResponse<Page<ZoneInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1125,18 +1193,19 @@ public final class ZonesInner {
      * Lists the DNS zones within a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ZoneInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ZoneInner>>> listInResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
-        return listInResourceGroupNextSinglePageAsync(nextPageLink)
+    public Observable<ServiceResponse<Page<ZoneInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByResourceGroupNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<ZoneInner>>, Observable<ServiceResponse<Page<ZoneInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ZoneInner>>> call(ServiceResponse<Page<ZoneInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listInResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1145,19 +1214,21 @@ public final class ZonesInner {
      * Lists the DNS zones within a resource group.
      *
     ServiceResponse<PageImpl<ZoneInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ZoneInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<ZoneInner>>> listInResourceGroupNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<ZoneInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listInResourceGroupNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ZoneInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ZoneInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<ZoneInner>> result = listInResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ZoneInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<ZoneInner>> result = listByResourceGroupNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ZoneInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1165,102 +1236,110 @@ public final class ZonesInner {
             });
     }
 
-    private ServiceResponse<PageImpl<ZoneInner>> listInResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ZoneInner>, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<PageImpl<ZoneInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ZoneInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ZoneInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Lists the DNS zones within a resource group.
+     * Lists the DNS zones in all resource groups in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ZoneInner&gt; object if successful.
      */
-    public PagedList<ZoneInner> listInSubscriptionNext(final String nextPageLink) {
-        ServiceResponse<Page<ZoneInner>> response = listInSubscriptionNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ZoneInner>(response.getBody()) {
+    public PagedList<ZoneInner> listNext(final String nextPageLink) {
+        ServiceResponse<Page<ZoneInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<ZoneInner>(response.body()) {
             @Override
             public Page<ZoneInner> nextPage(String nextPageLink) {
-                return listInSubscriptionNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Lists the DNS zones within a resource group.
+     * Lists the DNS zones in all resource groups in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ZoneInner>> listInSubscriptionNextAsync(final String nextPageLink, final ServiceCall<List<ZoneInner>> serviceCall, final ListOperationCallback<ZoneInner> serviceCallback) {
-        return AzureServiceCall.create(
-            listInSubscriptionNextSinglePageAsync(nextPageLink),
+    public ServiceFuture<List<ZoneInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ZoneInner>> serviceFuture, final ListOperationCallback<ZoneInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ZoneInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ZoneInner>>> call(String nextPageLink) {
-                    return listInSubscriptionNextSinglePageAsync(nextPageLink);
+                    return listNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
     }
 
     /**
-     * Lists the DNS zones within a resource group.
+     * Lists the DNS zones in all resource groups in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ZoneInner&gt; object
      */
-    public Observable<Page<ZoneInner>> listInSubscriptionNextAsync(final String nextPageLink) {
-        return listInSubscriptionNextWithServiceResponseAsync(nextPageLink)
+    public Observable<Page<ZoneInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
             .map(new Func1<ServiceResponse<Page<ZoneInner>>, Page<ZoneInner>>() {
                 @Override
                 public Page<ZoneInner> call(ServiceResponse<Page<ZoneInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Lists the DNS zones within a resource group.
+     * Lists the DNS zones in all resource groups in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ZoneInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ZoneInner>>> listInSubscriptionNextWithServiceResponseAsync(final String nextPageLink) {
-        return listInSubscriptionNextSinglePageAsync(nextPageLink)
+    public Observable<ServiceResponse<Page<ZoneInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
+        return listNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<ZoneInner>>, Observable<ServiceResponse<Page<ZoneInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ZoneInner>>> call(ServiceResponse<Page<ZoneInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listInSubscriptionNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
 
     /**
-     * Lists the DNS zones within a resource group.
+     * Lists the DNS zones in all resource groups in a subscription.
      *
     ServiceResponse<PageImpl<ZoneInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ZoneInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<ZoneInner>>> listInSubscriptionNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<ZoneInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listInSubscriptionNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ZoneInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ZoneInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<ZoneInner>> result = listInSubscriptionNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ZoneInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<ZoneInner>> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ZoneInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1268,8 +1347,8 @@ public final class ZonesInner {
             });
     }
 
-    private ServiceResponse<PageImpl<ZoneInner>> listInSubscriptionNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ZoneInner>, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<PageImpl<ZoneInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ZoneInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ZoneInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

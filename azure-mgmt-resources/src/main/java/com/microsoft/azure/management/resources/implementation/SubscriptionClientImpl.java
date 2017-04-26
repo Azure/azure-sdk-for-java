@@ -10,13 +10,13 @@ package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
-import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
 
 /**
  * Initializes a new instance of the SubscriptionClientImpl class.
  */
-public final class SubscriptionClientImpl extends AzureServiceClient {
+public class SubscriptionClientImpl extends AzureServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -28,11 +28,11 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** Client Api Version. */
+    /** The API version to use for the operation. */
     private String apiVersion;
 
     /**
-     * Gets Client Api Version.
+     * Gets The API version to use for the operation.
      *
      * @return the apiVersion value.
      */
@@ -151,10 +151,8 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
      * @param credentials the management credentials for Azure
      */
     public SubscriptionClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        this(new RestClient.Builder()
-                .withBaseUrl(baseUrl)
-                .withCredentials(credentials)
-                .build());
+        super(baseUrl, credentials);
+        initialize();
     }
 
     /**
@@ -184,8 +182,6 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("Azure-SDK-For-Java/%s (%s)",
-                getClass().getPackage().getImplementationVersion(),
-                "SubscriptionClient, 2016-06-01");
+        return String.format("%s (%s, %s)", super.userAgent(), "SubscriptionClient", "2016-06-01");
     }
 }

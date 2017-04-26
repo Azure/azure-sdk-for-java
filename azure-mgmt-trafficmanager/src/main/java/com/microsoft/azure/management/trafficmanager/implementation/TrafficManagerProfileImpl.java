@@ -21,34 +21,26 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Implementation for {@link TrafficManagerProfile}.
+ * Implementation for TrafficManagerProfile.
  */
 @LangDefinition
 class TrafficManagerProfileImpl
         extends GroupableResourceImpl<
-        TrafficManagerProfile,
-        ProfileInner,
-        TrafficManagerProfileImpl,
-        TrafficManager>
+            TrafficManagerProfile,
+            ProfileInner,
+            TrafficManagerProfileImpl,
+            TrafficManager>
         implements
-        TrafficManagerProfile,
-        TrafficManagerProfile.Definition,
-        TrafficManagerProfile.Update {
-    private final ProfilesInner innerCollection;
-    private final EndpointsInner endpointsClient;
+            TrafficManagerProfile,
+            TrafficManagerProfile.Definition,
+            TrafficManagerProfile.Update {
     private final String profileStatusDisabled = "Disabled";
     private final String profileStatusEnabled = "Enabled";
     private TrafficManagerEndpointsImpl endpoints;
 
-    TrafficManagerProfileImpl(String name,
-                              final ProfileInner innerModel,
-                              final ProfilesInner innerCollection,
-                              final EndpointsInner endpointsClient,
-                              final TrafficManager trafficManager) {
+    TrafficManagerProfileImpl(String name, final ProfileInner innerModel, final TrafficManager trafficManager) {
         super(name, innerModel, trafficManager);
-        this.innerCollection = innerCollection;
-        this.endpointsClient = endpointsClient;
-        this.endpoints = new TrafficManagerEndpointsImpl(endpointsClient, this);
+        this.endpoints = new TrafficManagerEndpointsImpl(trafficManager.inner().endpoints(), this);
     }
 
     @Override
@@ -109,11 +101,21 @@ class TrafficManagerProfileImpl
     }
 
     @Override
-    public TrafficManagerProfile refresh() {
-        ProfileInner inner = this.innerCollection.get(this.resourceGroupName(), this.name());
-        this.setInner(inner);
-        this.endpoints.refresh();
-        return this;
+    public Observable<TrafficManagerProfile> refreshAsync() {
+        return super.refreshAsync().map(new Func1<TrafficManagerProfile, TrafficManagerProfile>() {
+            @Override
+            public TrafficManagerProfile call(TrafficManagerProfile trafficManagerProfile) {
+                TrafficManagerProfileImpl impl = (TrafficManagerProfileImpl) trafficManagerProfile;
+                impl.endpoints.refresh();
+                return impl;
+            }
+        });
+    }
+
+    @Override
+    protected Observable<ProfileInner> getInnerAsync() {
+        return this.manager().inner().profiles().getByResourceGroupAsync(
+                this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -231,7 +233,8 @@ class TrafficManagerProfileImpl
     @Override
     public Observable<TrafficManagerProfile> createResourceAsync() {
         final TrafficManagerProfileImpl self = this;
-        return innerCollection.createOrUpdateAsync(resourceGroupName(), name(), inner())
+        return this.manager().inner().profiles().createOrUpdateAsync(
+                resourceGroupName(), name(), inner())
                 .map(new Func1<ProfileInner, TrafficManagerProfile>() {
                     @Override
                     public TrafficManagerProfile call(ProfileInner profileInner) {
@@ -259,6 +262,7 @@ class TrafficManagerProfileImpl
         // call one can create endpoints without properties those are not applicable for the profile's current routing
         // method. We cannot update the routing method of the profile until existing endpoints contains the properties
         // required for the new routing method.
+        final ProfilesInner innerCollection = this.manager().inner().profiles();
         return self.endpoints.commitAndGetAllAsync()
                 .flatMap(new Func1<List<TrafficManagerEndpointImpl>, Observable<? extends TrafficManagerProfile>>() {
                     public Observable<? extends TrafficManagerProfile> call(List<TrafficManagerEndpointImpl> endpoints) {

@@ -12,7 +12,8 @@ import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConvers
 
 /**
  * Provides access to getting a specific Azure resource based on its name within the current resource group.
- *
+ * <p>
+ * (Note this interface is not intended to be implemented by user code.)
  * @param <T> the type of the resource collection
  */
 @LangDefinition(ContainerName = "CollectionActions", CreateAsyncMethods = true, MethodConversionType = MethodConversion.OnlyMethod)

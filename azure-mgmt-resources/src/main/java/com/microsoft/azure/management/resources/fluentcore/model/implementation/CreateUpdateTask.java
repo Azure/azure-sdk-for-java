@@ -1,9 +1,15 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.dag.TaskItem;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import rx.Observable;
 import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 /**
  * Represents a task that creates or updates a resource when executed.
@@ -11,7 +17,13 @@ import rx.schedulers.Schedulers;
  * @param <ResourceT> the type of the resource that this task creates or update
  */
 public class CreateUpdateTask<ResourceT> implements TaskItem<ResourceT> {
-    private CreateUpdateTaskGroup.ResourceCreatorUpdator<ResourceT> resourceCreatorUpdator;
+    /**
+     * the underlying instance that can create and update the resource.
+     */
+    private ResourceCreatorUpdator<ResourceT> resourceCreatorUpdator;
+    /**
+     * created or updated resource.
+     */
     private ResourceT resource;
 
     /**
@@ -19,7 +31,7 @@ public class CreateUpdateTask<ResourceT> implements TaskItem<ResourceT> {
      *
      * @param resourceCreatorUpdator the resource creator and updator
      */
-    public CreateUpdateTask(CreateUpdateTaskGroup.ResourceCreatorUpdator<ResourceT> resourceCreatorUpdator) {
+    public CreateUpdateTask(ResourceCreatorUpdator<ResourceT> resourceCreatorUpdator) {
         this.resourceCreatorUpdator = resourceCreatorUpdator;
     }
 
@@ -34,10 +46,15 @@ public class CreateUpdateTask<ResourceT> implements TaskItem<ResourceT> {
     }
 
     @Override
+    public boolean isHot() {
+        return this.resourceCreatorUpdator.isHot();
+    }
+
+    @Override
     public Observable<ResourceT> executeAsync() {
         if (this.resourceCreatorUpdator.isInCreateMode()) {
             return this.resourceCreatorUpdator.createResourceAsync()
-                    .subscribeOn(Schedulers.io())
+                    .subscribeOn(SdkContext.getRxScheduler())
                     .doOnNext(new Action1<ResourceT>() {
                         @Override
                         public void call(ResourceT resourceT) {
@@ -46,7 +63,7 @@ public class CreateUpdateTask<ResourceT> implements TaskItem<ResourceT> {
                     });
         } else {
             return this.resourceCreatorUpdator.updateResourceAsync()
-                    .subscribeOn(Schedulers.io())
+                    .subscribeOn(SdkContext.getRxScheduler())
                     .doOnNext(new Action1<ResourceT>() {
                         @Override
                         public void call(ResourceT resourceT) {
@@ -54,5 +71,42 @@ public class CreateUpdateTask<ResourceT> implements TaskItem<ResourceT> {
                         }
                     });
         }
+    }
+
+    /**
+     * Represents a type that know how to create or update a resource of type {@link ResultT}.
+     *
+     * @param <ResultT> the resource type
+     */
+    public interface ResourceCreatorUpdator<ResultT> {
+        /**
+         * @return true if this creatorUpdator is in create mode.
+         */
+        boolean isInCreateMode();
+
+        /**
+         * prepare for create or update.
+         */
+        void prepare();
+
+        /**
+         * @return true if the observable returned by {@link this#createResourceAsync()} and
+         * {@link this#updateResourceAsync()} are hot observables, false if they are cold observables.
+         */
+        boolean isHot();
+
+        /**
+         * Creates the resource asynchronously.
+         *
+         * @return the observable reference
+         */
+        Observable<ResultT> createResourceAsync();
+
+        /**
+         * Update the resource asynchronously.
+         *
+         * @return the observable reference
+         */
+        Observable<ResultT> updateResourceAsync();
     }
 }

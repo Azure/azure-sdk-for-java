@@ -17,11 +17,13 @@ public class SkuCapacity {
     /**
      * Minimum number of workers for this App Service plan SKU.
      */
+    @JsonProperty(value = "minimum")
     private Integer minimum;
 
     /**
      * Maximum number of workers for this App Service plan SKU.
      */
+    @JsonProperty(value = "maximum")
     private Integer maximum;
 
     /**
@@ -33,6 +35,7 @@ public class SkuCapacity {
     /**
      * Available scale configurations for an App Service plan.
      */
+    @JsonProperty(value = "scaleType")
     private String scaleType;
 
     /**

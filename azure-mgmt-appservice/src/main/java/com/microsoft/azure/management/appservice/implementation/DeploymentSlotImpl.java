@@ -9,6 +9,7 @@ package com.microsoft.azure.management.appservice.implementation;
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.google.common.io.CharStreams;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.AppSetting;
 import com.microsoft.azure.management.appservice.ConnectionString;
@@ -17,19 +18,20 @@ import com.microsoft.azure.management.appservice.HostNameBinding;
 import com.microsoft.azure.management.appservice.PublishingProfile;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.appservice.WebAppSourceControl;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 /**
- * The implementation for {@link DeploymentSlot}.
+ * The implementation for DeploymentSlot.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class DeploymentSlotImpl
@@ -41,8 +43,8 @@ class DeploymentSlotImpl
     private final WebAppImpl parent;
     private final String name;
 
-    DeploymentSlotImpl(String name, SiteInner innerObject, SiteConfigInner configObject, final WebAppImpl parent, final WebAppsInner client, AppServiceManager manager, WebSiteManagementClientImpl serviceClient) {
-        super(name.replaceAll(".*/", ""), innerObject, configObject, client, manager, serviceClient);
+    DeploymentSlotImpl(String name, SiteInner innerObject, SiteConfigResourceInner configObject, final WebAppImpl parent) {
+        super(name.replaceAll(".*/", ""), innerObject, configObject, parent.manager());
         this.name = name.replaceAll(".*/", "");
         this.parent = parent;
         inner().withServerFarmId(parent.appServicePlanId());
@@ -56,73 +58,130 @@ class DeploymentSlotImpl
 
     @Override
     public Map<String, HostNameBinding> getHostNameBindings() {
-        List<HostNameBindingInner> collectionInner = client.listHostNameBindingsSlot(resourceGroupName(), parent.name(), name());
-        List<HostNameBinding> hostNameBindings = new ArrayList<>();
-        for (HostNameBindingInner inner : collectionInner) {
-            hostNameBindings.add(new HostNameBindingImpl<>(inner, this, client));
-        }
-        return Maps.uniqueIndex(hostNameBindings, new Function<HostNameBinding, String>() {
-            @Override
-            public String apply(HostNameBinding input) {
-                return input.name().replace(name() + "/", "");
-            }
-        });
+        return getHostNameBindingsAsync().toBlocking().single();
+    }
+
+    @Override
+    public Observable<Map<String, HostNameBinding>> getHostNameBindingsAsync() {
+        return this.manager().inner().webApps().listHostNameBindingsSlotAsync(resourceGroupName(), parent().name(), name())
+                .flatMap(new Func1<Page<HostNameBindingInner>, Observable<HostNameBindingInner>>() {
+                    @Override
+                    public Observable<HostNameBindingInner> call(Page<HostNameBindingInner> hostNameBindingInnerPage) {
+                        return Observable.from(hostNameBindingInnerPage.items());
+                    }
+                })
+                .map(new Func1<HostNameBindingInner, HostNameBinding>() {
+                    @Override
+                    public HostNameBinding call(HostNameBindingInner hostNameBindingInner) {
+                        return new HostNameBindingImpl<>(hostNameBindingInner, DeploymentSlotImpl.this);
+                    }
+                }).toList()
+                .map(new Func1<List<HostNameBinding>, Map<String, HostNameBinding>>() {
+                    @Override
+                    public Map<String, HostNameBinding> call(List<HostNameBinding> hostNameBindings) {
+                        return Collections.unmodifiableMap(Maps.uniqueIndex(hostNameBindings, new Function<HostNameBinding, String>() {
+                            @Override
+                            public String apply(HostNameBinding input) {
+                                return input.name().replace(name() + "/", "");
+                            }
+                        }));
+                    }
+                });
     }
 
     @Override
     public PublishingProfile getPublishingProfile() {
-        InputStream stream = client.listPublishingProfileXmlWithSecretsSlot(resourceGroupName(), parent().name(), name());
-        try {
-            String xml = CharStreams.toString(new InputStreamReader(stream));
-            return new PublishingProfileImpl(xml, this);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return getPublishingProfileAsync().toBlocking().single();
+    }
+
+    public Observable<PublishingProfile> getPublishingProfileAsync() {
+        return manager().inner().webApps().listPublishingProfileXmlWithSecretsSlotAsync(resourceGroupName(), this.parent().name(), name())
+                .map(new Func1<InputStream, PublishingProfile>() {
+                    @Override
+                    public PublishingProfile call(InputStream stream) {
+                        try {
+                            String xml = CharStreams.toString(new InputStreamReader(stream));
+                            return new PublishingProfileImpl(xml, DeploymentSlotImpl.this);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
     }
 
     @Override
     public void start() {
-        client.startSlot(resourceGroupName(), parent.name(), name());
-        refresh();
+        startAsync().toObservable().toBlocking().subscribe();
+    }
+
+    @Override
+    public Completable startAsync() {
+        return manager().inner().webApps().startSlotAsync(resourceGroupName(), this.parent().name(), name())
+                .flatMap(new Func1<Void, Observable<?>>() {
+                    @Override
+                    public Observable<?> call(Void aVoid) {
+                        return refreshAsync();
+                    }
+                }).toCompletable();
     }
 
     @Override
     public void stop() {
-        client.stopSlot(resourceGroupName(), parent.name(), name());
-        refresh();
+        stopAsync().toObservable().toBlocking().subscribe();
+    }
+
+    @Override
+    public Completable stopAsync() {
+        return manager().inner().webApps().stopSlotAsync(resourceGroupName(), this.parent().name(), name())
+                .flatMap(new Func1<Void, Observable<?>>() {
+                    @Override
+                    public Observable<?> call(Void aVoid) {
+                        return refreshAsync();
+                    }
+                }).toCompletable();
     }
 
     @Override
     public void restart() {
-        client.restartSlot(resourceGroupName(), parent.name(), name());
-        refresh();
+        restartAsync().toObservable().toBlocking().subscribe();
+    }
+
+    @Override
+    public Completable restartAsync() {
+        return manager().inner().webApps().restartSlotAsync(resourceGroupName(), this.parent().name(), name())
+                .flatMap(new Func1<Void, Observable<?>>() {
+                    @Override
+                    public Observable<?> call(Void aVoid) {
+                        return refreshAsync();
+                    }
+                }).toCompletable();
     }
 
     @Override
     public DeploymentSlotImpl withBrandNewConfiguration() {
-        inner().withSiteConfig(null);
+        this.siteConfig = null;
         return this;
     }
 
     @Override
     public DeploymentSlotImpl withConfigurationFromParent() {
-        return withConfigurationFromWebApp(parent);
+        return withConfigurationFromWebApp(this.parent());
     }
 
     @Override
     public DeploymentSlotImpl withConfigurationFromWebApp(WebApp webApp) {
-        copyConfigurations(webApp.inner().siteConfig(), webApp.appSettings().values(), webApp.connectionStrings().values());
+        copyConfigurations(((WebAppBaseImpl) webApp).siteConfig, webApp.appSettings().values(), webApp.connectionStrings().values());
         return this;
     }
 
     @Override
     public DeploymentSlotImpl withConfigurationFromDeploymentSlot(DeploymentSlot slot) {
-        copyConfigurations(slot.inner().siteConfig(), slot.appSettings().values(), slot.connectionStrings().values());
+        copyConfigurations(((WebAppBaseImpl) slot).siteConfig, slot.appSettings().values(), slot.connectionStrings().values());
         return this;
     }
 
-    private void copyConfigurations(SiteConfigInner configInner, Collection<AppSetting> appSettings, Collection<ConnectionString> connectionStrings) {
-        inner().withSiteConfig(configInner);
+    private void copyConfigurations(SiteConfigResourceInner configInner, Collection<AppSetting> appSettings, Collection<ConnectionString> connectionStrings) {
+        this.siteConfig = configInner;
         // app settings
         for (AppSetting appSetting : appSettings) {
             if (appSetting.sticky()) {
@@ -143,89 +202,120 @@ class DeploymentSlotImpl
 
     @Override
     public WebAppImpl parent() {
-        return parent;
+        return this.parent;
     }
 
     @Override
     Observable<SiteInner> createOrUpdateInner(SiteInner site) {
-        return client.createOrUpdateSlotAsync(resourceGroupName(), parent.name(), name(), site);
+        return manager().inner().webApps().createOrUpdateSlotAsync(resourceGroupName(), this.parent().name(), name(), site);
     }
 
     @Override
     Observable<SiteInner> getInner() {
-        return client.getSlotAsync(resourceGroupName(), parent.name(), name());
+        return manager().inner().webApps().getSlotAsync(resourceGroupName(), this.parent().name(), name());
     }
 
     @Override
-    Observable<SiteConfigInner> getConfigInner() {
-        return client.getConfigurationSlotAsync(resourceGroupName(), parent().name(), name());
+    Observable<SiteConfigResourceInner> getConfigInner() {
+        return manager().inner().webApps().getConfigurationSlotAsync(resourceGroupName(), parent().name(), name());
     }
 
     @Override
-    Observable<SiteConfigInner> createOrUpdateSiteConfig(SiteConfigInner siteConfig) {
-        return client.createOrUpdateConfigurationSlotAsync(resourceGroupName(), parent.name(), name(), siteConfig);
+    Observable<SiteConfigResourceInner> createOrUpdateSiteConfig(SiteConfigResourceInner siteConfig) {
+        return manager().inner().webApps().createOrUpdateConfigurationSlotAsync(resourceGroupName(), this.parent().name(), name(), siteConfig);
     }
 
     @Override
     Observable<Void> deleteHostNameBinding(String hostname) {
-        return client.deleteHostNameBindingSlotAsync(resourceGroupName(), parent().name(), name(), hostname);
+        return manager().inner().webApps().deleteHostNameBindingSlotAsync(resourceGroupName(), parent().name(), name(), hostname);
     }
 
     @Override
     Observable<StringDictionaryInner> listAppSettings() {
-        return client.listApplicationSettingsSlotAsync(resourceGroupName(), parent().name(), name());
+        return manager().inner().webApps().listApplicationSettingsSlotAsync(resourceGroupName(), parent().name(), name());
     }
 
     @Override
     Observable<StringDictionaryInner> updateAppSettings(StringDictionaryInner inner) {
-        return client.updateApplicationSettingsSlotAsync(resourceGroupName(), parent().name(), name(), inner);
+        return manager().inner().webApps().updateApplicationSettingsSlotAsync(resourceGroupName(), parent().name(), name(), inner);
     }
 
     @Override
     Observable<ConnectionStringDictionaryInner> listConnectionStrings() {
-        return client.listConnectionStringsSlotAsync(resourceGroupName(), parent().name(), name());
+        return manager().inner().webApps().listConnectionStringsSlotAsync(resourceGroupName(), parent().name(), name());
     }
 
     @Override
     Observable<ConnectionStringDictionaryInner> updateConnectionStrings(ConnectionStringDictionaryInner inner) {
-        return client.updateConnectionStringsSlotAsync(resourceGroupName(), parent().name(), name(), inner);
+        return manager().inner().webApps().updateConnectionStringsSlotAsync(resourceGroupName(), parent().name(), name(), inner);
     }
 
     @Override
     Observable<SlotConfigNamesResourceInner> listSlotConfigurations() {
-        return client.listSlotConfigurationNamesAsync(resourceGroupName(), parent().name());
+        return manager().inner().webApps().listSlotConfigurationNamesAsync(resourceGroupName(), parent().name());
     }
 
     @Override
     Observable<SlotConfigNamesResourceInner> updateSlotConfigurations(SlotConfigNamesResourceInner inner) {
-        return client.updateSlotConfigurationNamesAsync(resourceGroupName(), parent().name(), inner);
+        return manager().inner().webApps().updateSlotConfigurationNamesAsync(resourceGroupName(), parent().name(), inner);
     }
 
     @Override
     Observable<SiteSourceControlInner> createOrUpdateSourceControl(SiteSourceControlInner inner) {
-        return client.createOrUpdateSourceControlSlotAsync(resourceGroupName(), parent().name(), name(), inner);
+        return manager().inner().webApps().createOrUpdateSourceControlSlotAsync(resourceGroupName(), parent().name(), name(), inner);
     }
 
     @Override
     public void swap(String slotName) {
-        client.swapSlotSlot(resourceGroupName(), parent().name(), name(), new CsmSlotEntityInner().withTargetSlot(slotName));
-        refresh();
+        swapAsync(slotName).toObservable().toBlocking().subscribe();
+    }
+
+    @Override
+    public Completable swapAsync(String slotName) {
+        return manager().inner().webApps().swapSlotSlotAsync(resourceGroupName(), this.parent().name(), name(), new CsmSlotEntityInner().withTargetSlot(slotName))
+                .flatMap(new Func1<Void, Observable<?>>() {
+                    @Override
+                    public Observable<?> call(Void aVoid) {
+                        return refreshAsync();
+                    }
+                }).toCompletable();
     }
 
     @Override
     public void applySlotConfigurations(String slotName) {
-        client.applySlotConfigurationSlot(resourceGroupName(), parent().name(), name(), new CsmSlotEntityInner().withTargetSlot(slotName));
-        refresh();
+        applySlotConfigurationsAsync(slotName).toObservable().toBlocking().subscribe();
+    }
+
+    @Override
+    public Completable applySlotConfigurationsAsync(String slotName) {
+        return manager().inner().webApps().applySlotConfigurationSlotAsync(resourceGroupName(), this.parent().name(), name(), new CsmSlotEntityInner().withTargetSlot(slotName))
+                .flatMap(new Func1<Void, Observable<?>>() {
+                    @Override
+                    public Observable<?> call(Void aVoid) {
+                        return refreshAsync();
+                    }
+                }).toCompletable();
     }
 
     @Override
     public void resetSlotConfigurations() {
-        client.resetSlotConfigurationSlot(resourceGroupName(), parent().name(), name());
+        resetSlotConfigurationsAsync().toObservable().toBlocking().subscribe();
+    }
+
+    @Override
+    public Completable resetSlotConfigurationsAsync() {
+        return manager().inner().webApps().resetSlotConfigurationSlotAsync(resourceGroupName(), this.parent().name(), name())
+                .flatMap(new Func1<Void, Observable<?>>() {
+                    @Override
+                    public Observable<?> call(Void aVoid) {
+                        return refreshAsync();
+                    }
+                }).toCompletable();
     }
 
     @Override
     Observable<Void> deleteSourceControl() {
-        return client.deleteSourceControlSlotAsync(resourceGroupName(), parent().name(), name()).map(new Func1<Object, Void>() {
+        return manager().inner().webApps().deleteSourceControlSlotAsync(resourceGroupName(), parent().name(), name()).map(new Func1<Object, Void>() {
             @Override
             public Void call(Object o) {
                 return null;
@@ -234,26 +324,46 @@ class DeploymentSlotImpl
     }
 
     @Override
+    Observable<SiteAuthSettingsInner> updateAuthentication(SiteAuthSettingsInner inner) {
+        return manager().inner().webApps().updateAuthSettingsSlotAsync(resourceGroupName(), parent().name(), name(), inner);
+    }
+
+    @Override
+    Observable<SiteAuthSettingsInner> getAuthentication() {
+        return manager().inner().webApps().getAuthSettingsSlotAsync(resourceGroupName(), parent().name(), name());
+    }
+
+    @Override
     public WebAppSourceControl getSourceControl() {
-        SiteSourceControlInner siteSourceControlInner = client.getSourceControlSlot(resourceGroupName(), parent().name(), name());
-        return new WebAppSourceControlImpl<>(siteSourceControlInner, this, serviceClient);
+        return getSourceControlAsync().toBlocking().single();
+    }
+
+    @Override
+    public Observable<WebAppSourceControl> getSourceControlAsync() {
+        return manager().inner().webApps().getSourceControlSlotAsync(resourceGroupName(), parent().name(), name())
+                .map(new Func1<SiteSourceControlInner, WebAppSourceControl>() {
+                    @Override
+                    public WebAppSourceControl call(SiteSourceControlInner siteSourceControlInner) {
+                        return new WebAppSourceControlImpl<>(siteSourceControlInner, DeploymentSlotImpl.this);
+                    }
+                });
     }
 
     @Override
     public void verifyDomainOwnership(String certificateOrderName, String domainVerificationToken) {
-        verifyDomainOwnershipAsync(certificateOrderName, domainVerificationToken).toBlocking().subscribe();
+        verifyDomainOwnershipAsync(certificateOrderName, domainVerificationToken).toObservable().toBlocking().subscribe();
     }
 
     @Override
-    public Observable<Void> verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken) {
+    public Completable verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken) {
         IdentifierInner identifierInner = new IdentifierInner().withIdentifierId(domainVerificationToken);
         identifierInner.withLocation("global");
-        return client.createOrUpdateDomainOwnershipIdentifierSlotAsync(resourceGroupName(), parent().name(), name(), certificateOrderName, identifierInner)
+        return manager().inner().webApps().createOrUpdateDomainOwnershipIdentifierSlotAsync(resourceGroupName(), parent().name(), name(), certificateOrderName, identifierInner)
                 .map(new Func1<IdentifierInner, Void>() {
                     @Override
                     public Void call(IdentifierInner identifierInner) {
                         return null;
                     }
-                });
+                }).toCompletable();
     }
 }

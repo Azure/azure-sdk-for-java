@@ -22,6 +22,11 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class AppServicePlanInner extends Resource {
     /**
+     * Kind of resource.
+     */
+    private String kind;
+
+    /**
      * Name for the App Service plan.
      */
     @JsonProperty(value = "properties.name")
@@ -52,8 +57,8 @@ public class AppServicePlanInner extends Resource {
     private String adminSiteName;
 
     /**
-     * Specification for the App Service Environment to use for the App
-     * Service plan.
+     * Specification for the App Service Environment to use for the App Service
+     * plan.
      */
     @JsonProperty(value = "properties.hostingEnvironmentProfile")
     private HostingEnvironmentProfile hostingEnvironmentProfile;
@@ -72,8 +77,8 @@ public class AppServicePlanInner extends Resource {
     private String geoRegion;
 
     /**
-     * If &lt;code&gt;true&lt;/code&gt;, apps assigned to this App Service
-     * plan can be scaled independently.
+     * If &lt;code&gt;true&lt;/code&gt;, apps assigned to this App Service plan
+     * can be scaled independently.
      * If &lt;code&gt;false&lt;/code&gt;, apps assigned to this App Service
      * plan will scale to all instances of the plan.
      */
@@ -91,6 +96,12 @@ public class AppServicePlanInner extends Resource {
      */
     @JsonProperty(value = "properties.resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGroup;
+
+    /**
+     * Reserved.
+     */
+    @JsonProperty(value = "properties.reserved")
+    private Boolean reserved;
 
     /**
      * Scaling worker count.
@@ -114,7 +125,28 @@ public class AppServicePlanInner extends Resource {
     /**
      * The sku property.
      */
+    @JsonProperty(value = "sku")
     private SkuDescription sku;
+
+    /**
+     * Get the kind value.
+     *
+     * @return the kind value
+     */
+    public String kind() {
+        return kind;
+    }
+
+    /**
+     * Set the kind value.
+     *
+     * @param kind the kind value to set
+     * @return the SiteInner object itself
+     */
+    public AppServicePlanInner withKind(String kind) {
+        this.kind = kind;
+        return this;
+    }
 
     /**
      * Get the appServicePlanName value.
@@ -268,6 +300,26 @@ public class AppServicePlanInner extends Resource {
      */
     public String resourceGroup() {
         return this.resourceGroup;
+    }
+
+    /**
+     * Get the reserved value.
+     *
+     * @return the reserved value
+     */
+    public Boolean reserved() {
+        return this.reserved;
+    }
+
+    /**
+     * Set the reserved value.
+     *
+     * @param reserved the reserved value to set
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withReserved(Boolean reserved) {
+        this.reserved = reserved;
+        return this;
     }
 
     /**

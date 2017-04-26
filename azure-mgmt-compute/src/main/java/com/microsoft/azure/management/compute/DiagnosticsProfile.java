@@ -8,14 +8,18 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes a diagnostics profile.
  */
 public class DiagnosticsProfile {
     /**
-     * the boot diagnostics.
+     * Boot Diagnostics is a debugging feature which allows the user to view
+     * console output and/or a screenshot of the virtual machine from the
+     * hypervisor.
      */
+    @JsonProperty(value = "bootDiagnostics")
     private BootDiagnostics bootDiagnostics;
 
     /**

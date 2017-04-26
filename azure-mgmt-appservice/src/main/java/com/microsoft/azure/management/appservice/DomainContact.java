@@ -5,19 +5,21 @@
  */
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
+import com.microsoft.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryPhoneCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * A domain contact definition.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
+@Beta
 public interface DomainContact extends
-    Wrapper<Contact>,
+    HasInner<Contact>,
     ChildResource<AppServiceDomain> {
 
     /**
@@ -91,170 +93,170 @@ public interface DomainContact extends
     interface DefinitionStages {
         /**
          * The first stage of a domain contact definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching
          */
         interface Blank<ParentT> extends WithFirstName<ParentT> {
         }
 
         /**
          * The stage of contact definition allowing first name to be set.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching
          */
         interface WithFirstName<ParentT> {
             /**
              * Specifies the first name.
              * @param firstName the first name
-             * @return the next stage of the contact definition
+             * @return the next stage of the definition
              */
             WithMiddleName<ParentT> withFirstName(String firstName);
         }
 
         /**
          * The stage of contact definition allowing middle name to be set.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching
          */
         interface WithMiddleName<ParentT> extends WithLastName<ParentT> {
             /**
              * Specifies the middle name.
              * @param middleName the middle name
-             * @return the next stage of the contact definition
+             * @return the next stage of the definition
              */
             WithLastName<ParentT> withMiddleName(String middleName);
         }
 
         /**
          * The stage of contact definition allowing last name to be set.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching
          */
         interface WithLastName<ParentT> {
             /**
              * Specifies the last name.
              * @param lastName the last name
-             * @return the next stage of the contact definition
+             * @return the next stage of the definition
              */
             WithEmail<ParentT> withLastName(String lastName);
         }
 
         /**
          * The stage of contact definition allowing email to be set.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching
          */
         interface WithEmail<ParentT> {
             /**
              * Specifies the email.
              * @param email contact's email address
-             * @return the next stage of the contact definition
+             * @return the next stage of the definition
              */
             WithAddressLine1<ParentT> withEmail(String email);
         }
 
         /**
          * The stage of contact definition allowing 1st line of address to be set.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching
          */
         interface WithAddressLine1<ParentT> {
             /**
              * Specifies the 1st line of the address.
              * @param addressLine1 the 1st line of the address
-             * @return the next stage of the contact definition
+             * @return the next stage of the definition
              */
             WithAddressLine2<ParentT> withAddressLine1(String addressLine1);
         }
 
         /**
          * The stage of contact definition allowing 2nd line of address to be set.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching
          */
         interface WithAddressLine2<ParentT> extends WithCity<ParentT> {
             /**
              * Specifies the 2nd line of the address.
              * @param addressLine2 the 2nd line of the address
-             * @return the next stage of the contact definition
+             * @return the next stage of the definition
              */
             WithCity<ParentT> withAddressLine2(String addressLine2);
         }
 
         /**
          * The stage of contact definition allowing city to be set.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching
          */
         interface WithCity<ParentT> {
             /**
              * Specifies the city of the address.
              * @param city the city of the address
-             * @return the next stage of the contact definition
+             * @return the next stage of the definition
              */
             WithStateOrProvince<ParentT> withCity(String city);
         }
 
         /**
          * The stage of contact definition allowing state/province to be set.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching
          */
         interface WithStateOrProvince<ParentT> {
             /**
              * Specifies the state or province of the address.
              * @param stateOrProvince the state or province of the address
-             * @return the next stage of the contact definition
+             * @return the next stage of the definition
              */
             WithCountry<ParentT> withStateOrProvince(String stateOrProvince);
         }
 
         /**
          * The stage of contact definition allowing country to be set.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching
          */
         interface WithCountry<ParentT> {
             /**
              * Specifies the country of the address.
              * @param country the country of the address
-             * @return the next stage of the contact definition
+             * @return the next stage of the definition
              */
-            WithPostalCode<ParentT> withCountry(CountryISOCode country);
+            WithPostalCode<ParentT> withCountry(CountryIsoCode country);
         }
 
         /**
          * The stage of contact definition allowing postal/zip code to be set.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching
          */
         interface WithPostalCode<ParentT> {
             /**
              * Specifies the postal code or zip code of the address.
              * @param postalCode the postal code of the address
-             * @return the next stage of the contact definition
+             * @return the next stage of the definition
              */
             WithPhoneCountryCode<ParentT> withPostalCode(String postalCode);
         }
 
         /**
          * The stage of contact definition allowing phone country code to be set.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching
          */
         interface WithPhoneCountryCode<ParentT> {
             /**
              * Specifies the country code of the phone number.
              * @param code the country code
-             * @return the next stage of the contact definition
+             * @return the next stage of the definition
              */
             WithPhoneNumber<ParentT> withPhoneCountryCode(CountryPhoneCode code);
         }
 
         /**
          * The stage of contact definition allowing phone number to be set.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching
          */
         interface WithPhoneNumber<ParentT> {
             /**
              * Specifies the phone number.
              * @param phoneNumber phone number
-             * @return the next stage of the contact definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withPhoneNumber(String phoneNumber);
         }
 
         /**
          * The stage of contact definition allowing fax number to be set.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching
          */
         interface WithFaxNumber<ParentT> {
             WithAttach<ParentT> withFaxNumber(String faxNumber);
@@ -262,7 +264,7 @@ public interface DomainContact extends
 
         /**
          * The stage of contact definition allowing organization to be set.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching
          */
         interface WithOrganization<ParentT> {
             WithAttach<ParentT> withOrganization(String organziation);
@@ -270,7 +272,7 @@ public interface DomainContact extends
 
         /**
          * The stage of contact definition allowing job title to be set.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching
          */
         interface WithJobTitle<ParentT> {
             WithAttach<ParentT> withJobTitle(String jobTitle);

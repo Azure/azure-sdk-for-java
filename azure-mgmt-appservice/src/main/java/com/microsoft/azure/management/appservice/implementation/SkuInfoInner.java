@@ -10,6 +10,7 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.management.appservice.SkuDescription;
 import com.microsoft.azure.management.appservice.SkuCapacity;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * SKU discovery information.
@@ -18,16 +19,19 @@ public class SkuInfoInner {
     /**
      * Resource type that this SKU applies to.
      */
+    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /**
      * Name and tier of the SKU.
      */
+    @JsonProperty(value = "sku")
     private SkuDescription sku;
 
     /**
      * Min, max, and default scale values of the SKU.
      */
+    @JsonProperty(value = "capacity")
     private SkuCapacity capacity;
 
     /**

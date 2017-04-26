@@ -12,10 +12,13 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildResourcesImpl;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.sql.SqlElasticPool;
 import com.microsoft.azure.management.sql.SqlElasticPools;
+import com.microsoft.azure.management.sql.SqlServer;
+
+import rx.Completable;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.List;
 
@@ -28,16 +31,15 @@ class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
             SqlElasticPoolImpl,
             ElasticPoolInner,
             ElasticPoolsInner,
-            SqlServerManager>
+            SqlServerManager,
+            SqlServer>
         implements SqlElasticPools.SqlElasticPoolsCreatable,
-        SupportsGettingByParent<SqlElasticPool>,
-        SupportsListingByParent<SqlElasticPool> {
-    private final DatabasesInner databasesInner;
+        SupportsGettingByParent<SqlElasticPool, SqlServer, SqlServerManager>,
+        SupportsListingByParent<SqlElasticPool, SqlServer, SqlServerManager> {
     private final DatabasesImpl databasesImpl;
 
-    protected SqlElasticPoolsImpl(ElasticPoolsInner innerCollection, SqlServerManager manager, DatabasesInner databasesInner, DatabasesImpl databasesImpl) {
-        super(innerCollection, manager);
-        this.databasesInner = databasesInner;
+    protected SqlElasticPoolsImpl(SqlServerManager manager, DatabasesImpl databasesImpl) {
+        super(manager.inner().elasticPools(), manager);
         this.databasesImpl = databasesImpl;
     }
 
@@ -47,14 +49,18 @@ class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
         return new SqlElasticPoolImpl(
                 name,
                 inner,
-                this.innerCollection,
-                this.databasesInner,
-                this.databasesImpl);
+                this.databasesImpl,
+                this.manager());
     }
 
     @Override
-    public SqlElasticPool getByParent(String resourceGroup, String parentName, String name) {
-        return wrapModel(this.innerCollection.get(resourceGroup, parentName, name));
+    public Observable<SqlElasticPool> getByParentAsync(String resourceGroup, String parentName, String name) {
+        return this.innerCollection.getAsync(resourceGroup, parentName, name).map(new Func1<ElasticPoolInner, SqlElasticPool>() {
+            @Override
+            public SqlElasticPool call(ElasticPoolInner elasticPoolInner) {
+                return wrapModel(elasticPoolInner);
+            }
+        });
     }
 
     @Override
@@ -68,7 +74,11 @@ class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
             return null;
         }
 
-        return new SqlElasticPoolImpl(inner.name(), inner, this.innerCollection, this.databasesInner, this.databasesImpl);
+        return new SqlElasticPoolImpl(
+                inner.name(),
+                inner,
+                this.databasesImpl,
+                this.manager());
     }
 
     @Override
@@ -77,8 +87,8 @@ class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
     }
 
     @Override
-    public Observable<Void> deleteByParentAsync(String groupName, String parentName, String name) {
-        return this.innerCollection.deleteAsync(groupName, parentName, name);
+    public Completable deleteByParentAsync(String groupName, String parentName, String name) {
+        return this.innerCollection.deleteAsync(groupName, parentName, name).toCompletable();
     }
 
     @Override
@@ -87,7 +97,7 @@ class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
     }
 
     @Override
-    public SqlElasticPool getBySqlServer(GroupableResource sqlServer, String name) {
+    public SqlElasticPool getBySqlServer(SqlServer sqlServer, String name) {
         return this.getByParent(sqlServer, name);
     }
 
@@ -97,7 +107,7 @@ class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
     }
 
     @Override
-    public List<SqlElasticPool> listBySqlServer(GroupableResource sqlServer) {
+    public List<SqlElasticPool> listBySqlServer(SqlServer sqlServer) {
         return this.listByParent(sqlServer);
     }
 
@@ -109,8 +119,7 @@ class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
         return new SqlElasticPoolImpl(
                 elasticPoolName,
                 inner,
-                this.innerCollection,
-                this.databasesInner,
-                this.databasesImpl).withExistingParentResource(resourceGroupName, sqlServerName);
+                this.databasesImpl,
+                this.manager()).withExistingParentResource(resourceGroupName, sqlServerName);
     }
 }

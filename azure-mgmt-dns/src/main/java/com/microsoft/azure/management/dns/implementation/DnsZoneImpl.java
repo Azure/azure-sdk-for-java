@@ -8,10 +8,10 @@ package com.microsoft.azure.management.dns.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.ARecordSets;
 import com.microsoft.azure.management.dns.AaaaRecordSets;
-import com.microsoft.azure.management.dns.CnameRecordSets;
+import com.microsoft.azure.management.dns.CNameRecordSets;
 import com.microsoft.azure.management.dns.DnsZone;
-import com.microsoft.azure.management.dns.MxRecordSets;
-import com.microsoft.azure.management.dns.NsRecordSets;
+import com.microsoft.azure.management.dns.MXRecordSets;
+import com.microsoft.azure.management.dns.NSRecordSets;
 import com.microsoft.azure.management.dns.PtrRecordSets;
 import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.dns.SoaRecordSet;
@@ -29,36 +29,28 @@ import java.util.List;
 @LangDefinition
 public class DnsZoneImpl
         extends GroupableResourceImpl<
-        DnsZone,
-        ZoneInner,
-        DnsZoneImpl,
-        DnsZoneManager>
+            DnsZone,
+            ZoneInner,
+            DnsZoneImpl,
+            DnsZoneManager>
         implements
-        DnsZone,
-        DnsZone.Definition,
-        DnsZone.Update {
-    private final ZonesInner innerCollection;
-    private final RecordSetsInner recordSetsClient;
+            DnsZone,
+            DnsZone.Definition,
+            DnsZone.Update {
 
     private ARecordSets aRecordSets;
     private AaaaRecordSets aaaaRecordSets;
-    private CnameRecordSets cnameRecordSets;
-    private MxRecordSets mxRecordSets;
-    private NsRecordSets nsRecordSets;
+    private CNameRecordSets cnameRecordSets;
+    private MXRecordSets mxRecordSets;
+    private NSRecordSets nsRecordSets;
     private PtrRecordSets ptrRecordSets;
     private SrvRecordSets srvRecordSets;
     private TxtRecordSets txtRecordSets;
     private DnsRecordSetsImpl recordSetsImpl;
 
-    DnsZoneImpl(String name,
-                final ZoneInner innerModel,
-                final ZonesInner innerCollection,
-                final RecordSetsInner recordSetsClient,
-                final DnsZoneManager trafficManager) {
-        super(name, innerModel, trafficManager);
-        this.innerCollection = innerCollection;
-        this.recordSetsClient = recordSetsClient;
-        this.recordSetsImpl = new DnsRecordSetsImpl(recordSetsClient, this);
+    DnsZoneImpl(String name, final ZoneInner innerModel, final DnsZoneManager manager) {
+        super(name, innerModel, manager);
+        this.recordSetsImpl = new DnsRecordSetsImpl(this);
         initRecordSets();
     }
 
@@ -88,17 +80,17 @@ public class DnsZoneImpl
     }
 
     @Override
-    public CnameRecordSets cnameRecordSets() {
+    public CNameRecordSets cNameRecordSets() {
         return this.cnameRecordSets;
     }
 
     @Override
-    public MxRecordSets mxRecordSets() {
+    public MXRecordSets mxRecordSets() {
         return this.mxRecordSets;
     }
 
     @Override
-    public NsRecordSets nsRecordSets() {
+    public NSRecordSets nsRecordSets() {
         return this.nsRecordSets;
     }
 
@@ -119,8 +111,8 @@ public class DnsZoneImpl
 
     @Override
     public SoaRecordSet getSoaRecordSet() {
-        RecordSetInner inner = this.recordSetsClient.get(this.resourceGroupName(), this.name(), "@", RecordType.SOA);
-        return new SoaRecordSetImpl(this, inner, this.recordSetsClient);
+        RecordSetInner inner = this.manager().inner().recordSets().get(this.resourceGroupName(), this.name(), "@", RecordType.SOA);
+        return new SoaRecordSetImpl(this, inner);
     }
 
     // Setters
@@ -136,19 +128,19 @@ public class DnsZoneImpl
     }
 
     @Override
-    public DnsZoneImpl withCnameRecordSet(String name, String alias) {
-        recordSetsImpl.withCnameRecordSet(name, alias);
+    public DnsZoneImpl withCNameRecordSet(String name, String alias) {
+        recordSetsImpl.withCNameRecordSet(name, alias);
         return this;
     }
 
     @Override
-    public DnsRecordSetImpl defineMxRecordSet(String name) {
-        return recordSetsImpl.defineMxRecordSet(name);
+    public DnsRecordSetImpl defineMXRecordSet(String name) {
+        return recordSetsImpl.defineMXRecordSet(name);
     }
 
     @Override
-    public DnsRecordSetImpl defineNsRecordSet(String name) {
-        return recordSetsImpl.defineNsRecordSet(name);
+    public DnsRecordSetImpl defineNSRecordSet(String name) {
+        return recordSetsImpl.defineNSRecordSet(name);
     }
 
     @Override
@@ -177,13 +169,13 @@ public class DnsZoneImpl
     }
 
     @Override
-    public DnsRecordSetImpl updateMxRecordSet(String name) {
-        return recordSetsImpl.updateMxRecordSet(name);
+    public DnsRecordSetImpl updateMXRecordSet(String name) {
+        return recordSetsImpl.updateMXRecordSet(name);
     }
 
     @Override
-    public DnsRecordSetImpl updateNsRecordSet(String name) {
-        return recordSetsImpl.updateNsRecordSet(name);
+    public DnsRecordSetImpl updateNSRecordSet(String name) {
+        return recordSetsImpl.updateNSRecordSet(name);
     }
 
     @Override
@@ -219,20 +211,20 @@ public class DnsZoneImpl
     }
 
     @Override
-    public DnsZoneImpl withoutCnameRecordSet(String name) {
-        recordSetsImpl.withoutCnameRecordSet(name);
+    public DnsZoneImpl withoutCNameRecordSet(String name) {
+        recordSetsImpl.withoutCNameRecordSet(name);
         return this;
     }
 
     @Override
-    public DnsZoneImpl withoutMxRecordSet(String name) {
-        recordSetsImpl.withoutMxRecordSet(name);
+    public DnsZoneImpl withoutMXRecordSet(String name) {
+        recordSetsImpl.withoutMXRecordSet(name);
         return this;
     }
 
     @Override
-    public DnsZoneImpl withoutNsRecordSet(String name) {
-        recordSetsImpl.withoutNsRecordSet(name);
+    public DnsZoneImpl withoutNSRecordSet(String name) {
+        recordSetsImpl.withoutNSRecordSet(name);
         return this;
     }
 
@@ -257,7 +249,7 @@ public class DnsZoneImpl
     @Override
     public Observable<DnsZone> createResourceAsync() {
         final DnsZoneImpl self = this;
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+        return this.manager().inner().zones().createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
                 .map(innerToFluentMap(this))
                 .flatMap(new Func1<DnsZone, Observable<? extends DnsZone>>() {
                     @Override
@@ -274,22 +266,31 @@ public class DnsZoneImpl
     }
 
     @Override
-    public DnsZone refresh() {
-        ZoneInner inner = this.innerCollection.get(this.resourceGroupName(), this.name());
-        this.setInner(inner);
-        this.initRecordSets();
-        return this;
+    public Observable<DnsZone> refreshAsync() {
+        return super.refreshAsync().map(new Func1<DnsZone, DnsZone>() {
+            @Override
+            public DnsZone call(DnsZone dnsZone) {
+                DnsZoneImpl impl = (DnsZoneImpl) dnsZone;
+                impl.initRecordSets();
+                return impl;
+            }
+        });
+    }
+
+    @Override
+    protected Observable<ZoneInner> getInnerAsync() {
+        return this.manager().inner().zones().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     private void initRecordSets() {
-        this.aRecordSets = new ARecordSetsImpl(this, this.recordSetsClient);
-        this.aaaaRecordSets = new AaaaRecordSetsImpl(this, this.recordSetsClient);
-        this.cnameRecordSets = new CnameRecordSetsImpl(this, this.recordSetsClient);
-        this.mxRecordSets = new MxRecordSetsImpl(this, this.recordSetsClient);
-        this.nsRecordSets = new NsRecordSetsImpl(this, this.recordSetsClient);
-        this.ptrRecordSets = new PtrRecordSetsImpl(this, this.recordSetsClient);
-        this.srvRecordSets = new SrvRecordSetsImpl(this, this.recordSetsClient);
-        this.txtRecordSets = new TxtRecordSetsImpl(this, this.recordSetsClient);
+        this.aRecordSets = new ARecordSetsImpl(this);
+        this.aaaaRecordSets = new AaaaRecordSetsImpl(this);
+        this.cnameRecordSets = new CNameRecordSetsImpl(this);
+        this.mxRecordSets = new MXRecordSetsImpl(this);
+        this.nsRecordSets = new NSRecordSetsImpl(this);
+        this.ptrRecordSets = new PtrRecordSetsImpl(this);
+        this.srvRecordSets = new SrvRecordSetsImpl(this);
+        this.txtRecordSets = new TxtRecordSetsImpl(this);
         this.recordSetsImpl.clearPendingOperations();
     }
 }

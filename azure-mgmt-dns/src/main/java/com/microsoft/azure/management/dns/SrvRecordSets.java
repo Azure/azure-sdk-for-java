@@ -7,13 +7,15 @@ package com.microsoft.azure.management.dns;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 /**
- *  Entry point to Srv record sets in a Dns zone.
+ *  Entry point to SRV record sets in a DNS zone.
  */
 @Fluent
 public interface SrvRecordSets extends
         SupportsListing<SrvRecordSet>,
-        SupportsGettingByName<SrvRecordSet> {
+        SupportsGettingByName<SrvRecordSet>,
+        HasParent<DnsZone> {
 }

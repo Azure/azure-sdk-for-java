@@ -10,9 +10,10 @@ import com.microsoft.azure.management.network.NetworkUsage;
 import com.microsoft.azure.management.network.NetworkUsages;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import rx.Observable;
 
 /**
- * The implementation of {@link NetworkUsages}.
+ * The implementation of NetworkUsages.
  */
 class NetworkUsagesImpl extends ReadableWrappersImpl<NetworkUsage, NetworkUsageImpl, UsageInner>
         implements NetworkUsages {
@@ -30,6 +31,16 @@ class NetworkUsagesImpl extends ReadableWrappersImpl<NetworkUsage, NetworkUsageI
     @Override
     public PagedList<NetworkUsage> listByRegion(String regionName) {
         return wrapList(client.usages().list(regionName));
+    }
+
+    @Override
+    public Observable<NetworkUsage> listByRegionAsync(Region region) {
+        return listByRegionAsync(region.name());
+    }
+
+    @Override
+    public Observable<NetworkUsage> listByRegionAsync(String regionName) {
+        return wrapPageAsync(client.usages().listAsync(regionName));
     }
 
     @Override

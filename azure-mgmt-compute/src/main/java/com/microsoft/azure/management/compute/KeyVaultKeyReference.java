@@ -16,15 +16,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class KeyVaultKeyReference {
     /**
-     * the URL referencing a key in a Key Vault.
+     * The URL referencing a key in a Key Vault.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "keyUrl", required = true)
     private String keyUrl;
 
     /**
-     * the Relative URL of the Key Vault containing the key.
+     * The relative URL of the Key Vault containing the key.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "sourceVault", required = true)
     private SubResource sourceVault;
 
     /**

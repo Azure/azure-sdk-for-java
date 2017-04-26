@@ -40,7 +40,6 @@ public class BatchAccountImpl
             BatchAccount,
             BatchAccount.Definition,
             BatchAccount.Update {
-    private final BatchAccountsInner innerCollection;
     private final StorageManager storageManager;
     private String creatableStorageAccountKey;
     private StorageAccount existingStorageAccountToAssociate;
@@ -48,25 +47,28 @@ public class BatchAccountImpl
 
     protected BatchAccountImpl(String name,
                                BatchAccountInner innerObject,
-                               BatchAccountsInner innerCollection,
                                BatchManager manager,
-                               ApplicationsInner applicationsClient,
-                               ApplicationPackagesInner applicationPackagesClient,
                                final StorageManager storageManager) {
         super(name, innerObject, manager);
-        this.innerCollection = innerCollection;
         this.storageManager = storageManager;
-        this.applicationsImpl = new ApplicationsImpl(applicationsClient, applicationPackagesClient, this);
+        this.applicationsImpl = new ApplicationsImpl(this);
     }
 
     @Override
-    public BatchAccount refresh() {
-        BatchAccountInner response =
-                this.innerCollection.get(this.resourceGroupName(), this.name());
-        this.setInner(response);
-        this.applicationsImpl.refresh();
+    public Observable<BatchAccount> refreshAsync() {
+        return super.refreshAsync().map(new Func1<BatchAccount, BatchAccount>() {
+            @Override
+            public BatchAccount call(BatchAccount batchAccount) {
+                BatchAccountImpl impl = (BatchAccountImpl) batchAccount;
+                impl.applicationsImpl.refresh();
+                return impl;
+            }
+        });
+    }
 
-        return this;
+    @Override
+    protected Observable<BatchAccountInner> getInnerAsync() {
+        return this.manager().inner().batchAccounts().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -86,7 +88,7 @@ public class BatchAccountImpl
         batchAccountCreateParametersInner.withLocation(this.inner().location());
         batchAccountCreateParametersInner.withTags(this.inner().getTags());
 
-        return this.innerCollection.createAsync(this.resourceGroupName(), this.name(), batchAccountCreateParametersInner)
+        return this.manager().inner().batchAccounts().createAsync(this.resourceGroupName(), this.name(), batchAccountCreateParametersInner)
                 .map(new Func1<BatchAccountInner, BatchAccount>() {
                     @Override
                     public BatchAccount call(BatchAccountInner batchAccountInner) {
@@ -169,20 +171,22 @@ public class BatchAccountImpl
 
     @Override
     public BatchAccountKeys getKeys() {
-        BatchAccountKeysInner keys = this.innerCollection.getKeys(this.resourceGroupName(), this.name());
+        BatchAccountKeysInner keys = this.manager().inner().batchAccounts().getKeys(
+                this.resourceGroupName(), this.name());
 
         return new BatchAccountKeys(keys.primary(), keys.secondary());
     }
 
     @Override
     public BatchAccountKeys regenerateKeys(AccountKeyType keyType) {
-        BatchAccountKeysInner keys = this.innerCollection.regenerateKey(this.resourceGroupName(), this.name(), keyType);
+        BatchAccountKeysInner keys = this.manager().inner().batchAccounts().regenerateKey(
+                this.resourceGroupName(), this.name(), keyType);
         return new BatchAccountKeys(keys.primary(), keys.secondary());
     }
 
     @Override
     public void synchronizeAutoStorageKeys() {
-        this.innerCollection.synchronizeAutoStorageKeys(this.resourceGroupName(), this.name());
+        this.manager().inner().batchAccounts().synchronizeAutoStorageKeys(this.resourceGroupName(), this.name());
     }
 
     @Override

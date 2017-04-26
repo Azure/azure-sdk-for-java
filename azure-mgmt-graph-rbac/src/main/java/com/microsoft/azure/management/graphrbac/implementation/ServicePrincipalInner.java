@@ -9,34 +9,40 @@
 package com.microsoft.azure.management.graphrbac.implementation;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Active Directory service principal information.
  */
 public class ServicePrincipalInner {
     /**
-     * object Id.
+     * The object ID.
      */
+    @JsonProperty(value = "objectId")
     private String objectId;
 
     /**
-     * object type.
+     * The object type.
      */
+    @JsonProperty(value = "objectType")
     private String objectType;
 
     /**
-     * service principal display name.
+     * The display name of the service principal.
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /**
-     * app id.
+     * The application ID.
      */
+    @JsonProperty(value = "appId")
     private String appId;
 
     /**
-     * the list of names.
+     * A collection of service principal names.
      */
+    @JsonProperty(value = "servicePrincipalNames")
     private List<String> servicePrincipalNames;
 
     /**

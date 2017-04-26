@@ -10,7 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.trafficmanager.implementation.EndpointInner;
 
 /**
@@ -19,7 +19,7 @@ import com.microsoft.azure.management.trafficmanager.implementation.EndpointInne
 @Fluent
 public interface TrafficManagerEndpoint extends
         ExternalChildResource<TrafficManagerEndpoint, TrafficManagerProfile>,
-        Wrapper<EndpointInner> {
+        HasInner<EndpointInner> {
     /**
      * @return the endpoint type
      */
@@ -122,7 +122,7 @@ public interface TrafficManagerEndpoint extends
              * Specifies the FQDN of an external endpoint.
              *
              * @param externalFqdn the external FQDN
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithSourceTrafficRegion<ParentT> toFqdn(String externalFqdn);
         }
@@ -139,7 +139,7 @@ public interface TrafficManagerEndpoint extends
              * Performance routing method {@link TrafficRoutingMethod#PERFORMANCE}.
              *
              * @param region the location
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> fromRegion(Region region);
         }
@@ -171,7 +171,7 @@ public interface TrafficManagerEndpoint extends
              * Performance routing method {@link TrafficRoutingMethod#PERFORMANCE}.
              *
              * @param region the location
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithEndpointThreshold<ParentT> fromRegion(Region region);
         }
@@ -187,7 +187,7 @@ public interface TrafficManagerEndpoint extends
              * Specifies the minimum number of endpoints to be online for the nested profile to be considered healthy.
              *
              * @param count the number of endpoints
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withMinimumEndpointsToEnableTraffic(int count);
         }
@@ -203,7 +203,7 @@ public interface TrafficManagerEndpoint extends
              * Weighted routing method {@link TrafficRoutingMethod#WEIGHTED}.
              *
              * @param weight the endpoint weight
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withRoutingWeight(int weight);
         }
@@ -219,7 +219,7 @@ public interface TrafficManagerEndpoint extends
              * Priority routing method {@link TrafficRoutingMethod#PRIORITY}.
              *
              * @param priority the endpoint priority
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT>  withRoutingPriority(int priority);
         }
@@ -233,7 +233,7 @@ public interface TrafficManagerEndpoint extends
             /**
              * Specifies that this endpoint should be excluded from receiving traffic.
              *
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withTrafficDisabled();
         }
@@ -327,7 +327,7 @@ public interface TrafficManagerEndpoint extends
              * Specifies the FQDN of an external endpoint.
              *
              * @param externalFqdn the external FQDN
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithSourceTrafficRegion<ParentT> toFqdn(String externalFqdn);
         }
@@ -344,7 +344,7 @@ public interface TrafficManagerEndpoint extends
              * Performance routing method {@link TrafficRoutingMethod#PERFORMANCE}.
              *
              * @param region the location
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> fromRegion(Region region);
         }
@@ -376,7 +376,7 @@ public interface TrafficManagerEndpoint extends
              * Performance routing method {@link TrafficRoutingMethod#PERFORMANCE}.
              *
              * @param region the location
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithEndpointThreshold<ParentT> fromRegion(Region region);
         }
@@ -392,7 +392,7 @@ public interface TrafficManagerEndpoint extends
              * Specifies the minimum number of endpoints to be online for the nested profile to be considered healthy.
              *
              * @param count the number of endpoints
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withMinimumEndpointsToEnableTraffic(int count);
         }

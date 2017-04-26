@@ -8,14 +8,16 @@
 
 package com.microsoft.azure.management.cdn.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * SSO URI required to login to third party web portal.
+ * SSO URI required to login to the supplemental portal.
  */
 public class SsoUriInner {
     /**
-     * The URI used to login to third party web portal.
+     * The URI used to login to the supplemental portal.
      */
+    @JsonProperty(value = "ssoUriValue")
     private String ssoUriValue;
 
     /**

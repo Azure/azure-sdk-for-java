@@ -17,6 +17,7 @@ import com.microsoft.azure.management.compute.DiagnosticsProfile;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.compute.VirtualMachineInstanceView;
 import java.util.List;
+import com.microsoft.azure.management.compute.VirtualMachineIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -27,77 +28,88 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class VirtualMachineInner extends Resource {
     /**
-     * the purchase plan when deploying virtual machine from VM Marketplace
+     * The purchase plan when deploying virtual machine from VM Marketplace
      * images.
      */
+    @JsonProperty(value = "plan")
     private Plan plan;
 
     /**
-     * the hardware profile.
+     * The hardware profile.
      */
     @JsonProperty(value = "properties.hardwareProfile")
     private HardwareProfile hardwareProfile;
 
     /**
-     * the storage profile.
+     * The storage profile.
      */
     @JsonProperty(value = "properties.storageProfile")
     private StorageProfile storageProfile;
 
     /**
-     * the OS profile.
+     * The OS profile.
      */
     @JsonProperty(value = "properties.osProfile")
     private OSProfile osProfile;
 
     /**
-     * the network profile.
+     * The network profile.
      */
     @JsonProperty(value = "properties.networkProfile")
     private NetworkProfile networkProfile;
 
     /**
-     * the diagnostics profile.
+     * The diagnostics profile.
      */
     @JsonProperty(value = "properties.diagnosticsProfile")
     private DiagnosticsProfile diagnosticsProfile;
 
     /**
-     * the reference Id of the availability set to which this virtual machine
+     * The reference Id of the availability set to which the virtual machine
      * belongs.
      */
     @JsonProperty(value = "properties.availabilitySet")
     private SubResource availabilitySet;
 
     /**
-     * the provisioning state, which only appears in the response.
+     * The provisioning state, which only appears in the response.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /**
-     * the virtual machine instance view.
+     * The virtual machine instance view.
      */
     @JsonProperty(value = "properties.instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineInstanceView instanceView;
 
     /**
-     * the license type, which is for bring your own license scenario.
+     * Specifies that the image or disk that is being used was licensed
+     * on-premises. This element is only used for images that contain the
+     * Windows Server operating system.
      */
     @JsonProperty(value = "properties.licenseType")
     private String licenseType;
 
     /**
-     * the virtual machine unique id.
+     * Specifies the VM unique ID which is a 128-bits identifier that is
+     * encoded and stored in all Azure IaaS VMs SMBIOS and can be read using
+     * platform BIOS commands.
      */
     @JsonProperty(value = "properties.vmId", access = JsonProperty.Access.WRITE_ONLY)
     private String vmId;
 
     /**
-     * the virtual machine child extension resources.
+     * The virtual machine child extension resources.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "resources", access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualMachineExtensionInner> resources;
+
+    /**
+     * The identity of the virtual machine, if configured.
+     */
+    @JsonProperty(value = "identity")
+    private VirtualMachineIdentity identity;
 
     /**
      * Get the plan value.
@@ -293,6 +305,26 @@ public class VirtualMachineInner extends Resource {
      */
     public List<VirtualMachineExtensionInner> resources() {
         return this.resources;
+    }
+
+    /**
+     * Get the identity value.
+     *
+     * @return the identity value
+     */
+    public VirtualMachineIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity value.
+     *
+     * @param identity the identity value to set
+     * @return the VirtualMachineInner object itself.
+     */
+    public VirtualMachineInner withIdentity(VirtualMachineIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
 }

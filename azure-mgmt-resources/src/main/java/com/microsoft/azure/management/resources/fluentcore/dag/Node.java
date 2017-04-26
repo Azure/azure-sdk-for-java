@@ -1,8 +1,7 @@
 /**
- *
  * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for license information.
- *
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
  */
 
 package com.microsoft.azure.management.resources.fluentcore.dag;
@@ -14,14 +13,14 @@ import java.util.List;
 /**
  * Type represents a node in a {@link Graph}.
  *
- * @param <T> the type of the data stored in the node
- * @param <U> the type of the node
+ * @param <DataT> the type of the data stored in the node
+ * @param <NodeT> the type of the node
  */
-public class Node<T, U extends Node<T, U>> {
+public class Node<DataT, NodeT extends Node<DataT, NodeT>> {
     /**
      * The graph that owns this node.
      */
-    private Graph<T, U> ownerGraph;
+    private Graph<DataT, NodeT> ownerGraph;
     /**
      * A key that uniquely identifies this node in the owner graph {@link this#ownerGraph}.
      */
@@ -29,7 +28,7 @@ public class Node<T, U extends Node<T, U>> {
     /**
      * reference to the data stored in the node.
      */
-    private final T data;
+    private final DataT data;
     /**
      * the collection of child node keys.
      */
@@ -41,7 +40,7 @@ public class Node<T, U extends Node<T, U>> {
      * @param key unique id of the node
      * @param data data to be stored in the node
      */
-    public Node(final String key, final T data) {
+    public Node(final String key, final DataT data) {
         this.key = key;
         this.data = data;
         this.children = new ArrayList<>();
@@ -57,7 +56,7 @@ public class Node<T, U extends Node<T, U>> {
     /**
      * @return data stored in this node
      */
-    public T data() {
+    public DataT data() {
         return data;
     }
 
@@ -87,7 +86,7 @@ public class Node<T, U extends Node<T, U>> {
      *
      * @param ownerGraph the owning graph
      */
-    public void setOwner(Graph<T, U> ownerGraph) {
+    public void setOwner(Graph<DataT, NodeT> ownerGraph) {
         if (this.ownerGraph != null) {
             throw new RuntimeException("Changing owner graph is not allowed");
         }
@@ -97,7 +96,7 @@ public class Node<T, U extends Node<T, U>> {
     /**
      * @return the owner (container) graph of this node.
      */
-    public Graph<T, U> owner() {
+    public Graph<DataT, NodeT> owner() {
         if (this.ownerGraph == null) {
             throw new RuntimeException("Required owner graph is not set");
         }

@@ -9,31 +9,37 @@
 package com.microsoft.azure.management.network;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Specifies the peering config.
+ * Specifies the peering configuration.
  */
 public class ExpressRouteCircuitPeeringConfig {
     /**
-     * Gets or sets the reference of AdvertisedPublicPrefixes.
+     * The reference of AdvertisedPublicPrefixes.
      */
+    @JsonProperty(value = "advertisedPublicPrefixes")
     private List<String> advertisedPublicPrefixes;
 
     /**
-     * Gets or sets AdvertisedPublicPrefixState of the Peering resource .
+     * AdvertisedPublicPrefixState of the Peering resource. Possible values are
+     * 'NotConfigured', 'Configuring', 'Configured', and 'ValidationNeeded'.
      * Possible values include: 'NotConfigured', 'Configuring', 'Configured',
      * 'ValidationNeeded'.
      */
+    @JsonProperty(value = "advertisedPublicPrefixesState")
     private ExpressRouteCircuitPeeringAdvertisedPublicPrefixState advertisedPublicPrefixesState;
 
     /**
-     * Gets or Sets CustomerAsn of the peering.
+     * The CustomerASN of the peering.
      */
+    @JsonProperty(value = "customerASN")
     private Integer customerASN;
 
     /**
-     * Gets or Sets RoutingRegistryName of the config.
+     * The RoutingRegistryName of the configuration.
      */
+    @JsonProperty(value = "routingRegistryName")
     private String routingRegistryName;
 
     /**

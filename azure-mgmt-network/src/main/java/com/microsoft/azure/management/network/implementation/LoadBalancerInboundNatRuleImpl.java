@@ -39,7 +39,7 @@ class LoadBalancerInboundNatRuleImpl
     }
 
     @Override
-    public String backendNicIpConfigurationName() {
+    public String backendNicIPConfigurationName() {
         if (this.inner().backendIPConfiguration() == null) {
             return null;
         } else {
@@ -72,7 +72,7 @@ class LoadBalancerInboundNatRuleImpl
     }
 
     @Override
-    public boolean floatingIpEnabled() {
+    public boolean floatingIPEnabled() {
         return this.inner().enableFloatingIP().booleanValue();
     }
 
@@ -97,17 +97,17 @@ class LoadBalancerInboundNatRuleImpl
     }
 
     @Override
-    public LoadBalancerInboundNatRuleImpl withFloatingIpEnabled() {
-        return withFloatingIp(true);
+    public LoadBalancerInboundNatRuleImpl withFloatingIPEnabled() {
+        return withFloatingIP(true);
     }
 
     @Override
-    public LoadBalancerInboundNatRuleImpl withFloatingIpDisabled() {
-        return withFloatingIp(false);
+    public LoadBalancerInboundNatRuleImpl withFloatingIPDisabled() {
+        return withFloatingIP(false);
     }
 
     @Override
-    public LoadBalancerInboundNatRuleImpl withFloatingIp(boolean enabled) {
+    public LoadBalancerInboundNatRuleImpl withFloatingIP(boolean enabled) {
         this.inner().withEnableFloatingIP(enabled);
         return this;
     }

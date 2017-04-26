@@ -8,24 +8,28 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Api error base.
  */
 public class ApiErrorBase {
     /**
-     * the error code.
+     * The error code.
      */
+    @JsonProperty(value = "code")
     private String code;
 
     /**
-     * the target of the particular error.
+     * The target of the particular error.
      */
+    @JsonProperty(value = "target")
     private String target;
 
     /**
-     * the error message.
+     * The error message.
      */
+    @JsonProperty(value = "message")
     private String message;
 
     /**

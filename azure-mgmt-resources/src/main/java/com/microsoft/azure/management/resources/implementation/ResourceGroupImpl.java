@@ -11,7 +11,10 @@ import com.microsoft.azure.management.resources.ResourceGroupExportResult;
 import com.microsoft.azure.management.resources.ResourceGroupExportTemplateOptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -67,17 +70,34 @@ class ResourceGroupImpl extends
 
     @Override
     public Map<String, String> tags() {
-        return Collections.unmodifiableMap(this.inner().tags());
+        Map<String, String> tags = this.inner().tags();
+        if (tags == null) {
+            tags = new HashMap<>();
+        }
+        return Collections.unmodifiableMap(tags);
     }
 
     @Override
     public ResourceGroupExportResult exportTemplate(ResourceGroupExportTemplateOptions options) {
+        return this.exportTemplateAsync(options).toBlocking().last();
+    }
+
+    @Override
+    public Observable<ResourceGroupExportResult> exportTemplateAsync(ResourceGroupExportTemplateOptions options) {
         ExportTemplateRequestInner inner = new ExportTemplateRequestInner()
                 .withResources(Arrays.asList("*"))
                 .withOptions(options.toString());
-        ResourceGroupExportResultInner resultInner =
-                client.exportTemplate(name(), inner);
-        return new ResourceGroupExportResultImpl(resultInner);
+        return client.exportTemplateAsync(name(), inner).map(new Func1<ResourceGroupExportResultInner, ResourceGroupExportResult>() {
+            @Override
+            public ResourceGroupExportResult call(ResourceGroupExportResultInner resourceGroupExportResultInner) {
+                return new ResourceGroupExportResultImpl(resourceGroupExportResultInner);
+            }
+        });
+    }
+
+    @Override
+    public ServiceFuture<ResourceGroupExportResult> exportTemplateAsync(ResourceGroupExportTemplateOptions options, ServiceCallback<ResourceGroupExportResult> callback) {
+        return ServiceFuture.fromBody(this.exportTemplateAsync(options), callback);
     }
 
     @Override
@@ -132,8 +152,7 @@ class ResourceGroupImpl extends
     }
 
     @Override
-    public ResourceGroupImpl refresh() {
-        this.setInner(client.get(this.key));
-        return this;
+    protected Observable<ResourceGroupInner> getInnerAsync() {
+        return client.getAsync(this.key);
     }
 }

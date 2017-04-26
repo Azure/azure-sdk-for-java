@@ -6,7 +6,9 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -14,20 +16,22 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.appservice.implementation.AppServiceCertificateOrderInner;
+import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
+
 import org.joda.time.DateTime;
+import rx.Completable;
 import rx.Observable;
 
 /**
- * An immutable client-side representation of an Azure App Service Certificate Order.
+ * An immutable client-side representation of an Azure App Service certificate order.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
+@Beta
 public interface AppServiceCertificateOrder extends
-        GroupableResource,
+        GroupableResource<AppServiceManager, AppServiceCertificateOrderInner>,
         Refreshable<AppServiceCertificateOrder>,
-        Updatable<AppServiceCertificateOrder.Update>,
-        Wrapper<AppServiceCertificateOrderInner> {
+        Updatable<AppServiceCertificateOrder.Update> {
 
     /**
      * @return certificate's distinguished name
@@ -118,11 +122,13 @@ public interface AppServiceCertificateOrder extends
     /**
      * @return the state of the Key Vault secret
      */
+    @Method
     AppServiceCertificateKeyVaultBinding getKeyVaultBinding();
 
     /**
      * @return the state of the Key Vault secret
      */
+    @Method
     Observable<AppServiceCertificateKeyVaultBinding> getKeyVaultBindingAsync();
 
     /**
@@ -136,7 +142,7 @@ public interface AppServiceCertificateOrder extends
      * @param domain the Azure managed domain
      * @return an Observable to the result
      */
-    Observable<Void> verifyDomainOwnershipAsync(AppServiceDomain domain);
+    Completable verifyDomainOwnershipAsync(AppServiceDomain domain);
 
     /**************************************************************
      * Fluent interfaces to provision a App service certificate order
@@ -171,7 +177,7 @@ public interface AppServiceCertificateOrder extends
             /**
              * Specifies the hostname the certificate binds to.
              * @param hostName the bare host name, without "www". Use *. prefix if it's a wild card certificate
-             * @return the next stage of the app service certificate definition
+             * @return the next stage of the definition
              */
             WithCertificateSku withHostName(String hostName);
         }
@@ -184,14 +190,14 @@ public interface AppServiceCertificateOrder extends
              * Specifies the SKU of the certificate to be standard. It will only provide
              * SSL support to the hostname, and www.hostname. Wildcard type will provide
              * SSL support to any sub-domain under the hostname.
-             * @return the next stage of the app service certificate definition
+             * @return the next stage of the definition
              */
             WithDomainVerificationFromWebApp withStandardSku();
 
             /**
              * Specifies the SKU of the certificate to be wildcard. It will provide
              * SSL support to any sub-domain under the hostname.
-             * @return the next stage of the app service certificate definition
+             * @return the next stage of the definition
              */
             WithDomainVerification withWildcardSku();
         }
@@ -203,7 +209,7 @@ public interface AppServiceCertificateOrder extends
             /**
              * Specifies the Azure managed domain to verify the ownership of the domain.
              * @param domain the Azure managed domain
-             * @return the next stage of the app service certificate definition
+             * @return the next stage of the definition
              */
             WithKeyVault withDomainVerification(AppServiceDomain domain);
         }
@@ -216,7 +222,7 @@ public interface AppServiceCertificateOrder extends
              * Specifies the web app to verify the ownership of the domain. The web app needs to
              * be bound to the hostname for the certificate.
              * @param webApp the web app bound to the hostname
-             * @return the next stage of the app service certificate definition
+             * @return the next stage of the definition
              */
             WithKeyVault withWebAppVerification(WebAppBase webApp);
         }
@@ -235,7 +241,7 @@ public interface AppServiceCertificateOrder extends
              * attempt will fail.
              *
              * @param vault the vault to store the private key
-             * @return the next stage of the app service certificate definition
+             * @return the next stage of the definition
              */
             WithCreate withExistingKeyVault(Vault vault);
 
@@ -247,7 +253,7 @@ public interface AppServiceCertificateOrder extends
              *
              * @param vaultName the name of the new key vault
              * @param region the region to create the vault
-             * @return the next stage of the app service certificate definition
+             * @return the next stage of the definition
              */
             WithCreate withNewKeyVault(String vaultName, Region region);
         }
@@ -259,7 +265,7 @@ public interface AppServiceCertificateOrder extends
             /**
              * Specifies the valid years of the certificate.
              * @param years minimum 1 year, and maximum 3 years
-             * @return the next stage of the app service certificate definition
+             * @return the next stage of the definition
              */
             WithCreate withValidYears(int years);
         }
@@ -271,7 +277,7 @@ public interface AppServiceCertificateOrder extends
             /**
              * Specifies if the certificate should be auto-renewed.
              * @param enabled true if the certificate order should be auto-renewed
-             * @return the next stage of the app service certificate definition
+             * @return the next stage of the definition
              */
             WithCreate withAutoRenew(boolean enabled);
         }
@@ -300,7 +306,7 @@ public interface AppServiceCertificateOrder extends
             /**
              * Specifies if the certificate should be auto-renewed.
              * @param enabled true if the certificate order should be auto-renewed
-             * @return the next stage of the app service certificate definition
+             * @return the next stage of the update
              */
             Update withAutoRenew(boolean enabled);
         }

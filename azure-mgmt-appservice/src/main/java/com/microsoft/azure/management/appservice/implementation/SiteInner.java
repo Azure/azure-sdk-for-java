@@ -8,23 +8,30 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
-import java.util.List;
-import com.microsoft.azure.management.appservice.UsageState;
-import com.microsoft.azure.management.appservice.SiteAvailabilityState;
-import com.microsoft.azure.management.appservice.HostNameSslState;
-import org.joda.time.DateTime;
-import com.microsoft.azure.management.appservice.HostingEnvironmentProfile;
-import com.microsoft.azure.management.appservice.CloningInfo;
-import com.microsoft.azure.management.appservice.SlotSwapStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
+import com.microsoft.azure.management.appservice.CloningInfo;
+import com.microsoft.azure.management.appservice.HostNameSslState;
+import com.microsoft.azure.management.appservice.HostingEnvironmentProfile;
+import com.microsoft.azure.management.appservice.SiteAvailabilityState;
+import com.microsoft.azure.management.appservice.SiteConfig;
+import com.microsoft.azure.management.appservice.SlotSwapStatus;
+import com.microsoft.azure.management.appservice.UsageState;
+import com.microsoft.rest.serializer.JsonFlatten;
+import org.joda.time.DateTime;
+
+import java.util.List;
 
 /**
  * A web app, a mobile app backend, or an API app.
  */
 @JsonFlatten
 public class SiteInner extends Resource {
+    /**
+     * Kind of resource.
+     */
+    private String kind;
+
     /**
      * Current state of the app.
      */
@@ -52,8 +59,8 @@ public class SiteInner extends Resource {
 
     /**
      * &lt;code&gt;true&lt;/code&gt; if the app is enabled; otherwise,
-     * &lt;code&gt;false&lt;/code&gt;. Setting this value to false disables
-     * the app (takes the app offline).
+     * &lt;code&gt;false&lt;/code&gt;. Setting this value to false disables the
+     * app (takes the app offline).
      */
     @JsonProperty(value = "properties.enabled")
     private Boolean enabled;
@@ -104,7 +111,7 @@ public class SiteInner extends Resource {
      * Configuration of the app.
      */
     @JsonProperty(value = "properties.siteConfig")
-    private SiteConfigInner siteConfig;
+    private SiteConfig siteConfig;
 
     /**
      * Azure Traffic Manager hostnames associated with the app. Read-only.
@@ -152,9 +159,9 @@ public class SiteInner extends Resource {
 
     /**
      * &lt;code&gt;true&lt;/code&gt; to enable client affinity;
-     * &lt;code&gt;false&lt;/code&gt; to stop sending session affinity
-     * cookies, which route client requests in the same session to the same
-     * instance. Default is &lt;code&gt;true&lt;/code&gt;.
+     * &lt;code&gt;false&lt;/code&gt; to stop sending session affinity cookies,
+     * which route client requests in the same session to the same instance.
+     * Default is &lt;code&gt;true&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.clientAffinityEnabled")
     private Boolean clientAffinityEnabled;
@@ -240,6 +247,26 @@ public class SiteInner extends Resource {
      */
     @JsonProperty(value = "properties.slotSwapStatus", access = JsonProperty.Access.WRITE_ONLY)
     private SlotSwapStatus slotSwapStatus;
+
+    /**
+     * Get the kind value.
+     *
+     * @return the kind value
+     */
+    public String kind() {
+        return kind;
+    }
+
+    /**
+     * Set the kind value.
+     *
+     * @param kind the kind value to set
+     * @return the SiteInner object itself
+     */
+    public SiteInner withKind(String kind) {
+        this.kind = kind;
+        return this;
+    }
 
     /**
      * Get the state value.
@@ -389,7 +416,7 @@ public class SiteInner extends Resource {
      *
      * @return the siteConfig value
      */
-    public SiteConfigInner siteConfig() {
+    public SiteConfig siteConfig() {
         return this.siteConfig;
     }
 
@@ -399,7 +426,7 @@ public class SiteInner extends Resource {
      * @param siteConfig the siteConfig value to set
      * @return the SiteInner object itself.
      */
-    public SiteInner withSiteConfig(SiteConfigInner siteConfig) {
+    public SiteInner withSiteConfig(SiteConfig siteConfig) {
         this.siteConfig = siteConfig;
         return this;
     }

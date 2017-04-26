@@ -8,16 +8,18 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -33,6 +35,7 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -41,7 +44,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in AppServicePlans.
  */
-public final class AppServicePlansInner {
+public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInner>, InnerSupportsDelete<Void>, InnerSupportsListing<AppServicePlanInner> {
     /** The Retrofit service to perform REST calls. */
     private AppServicePlansService service;
     /** The service client containing this operation class. */
@@ -63,145 +66,141 @@ public final class AppServicePlansInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface AppServicePlansService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/serverfarms")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("detailed") Boolean detailed, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServicePlanInner appServicePlan, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServicePlanInner appServicePlan, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listCapabilities" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/capabilities")
         Observable<Response<ResponseBody>> listCapabilities(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans getHybridConnection" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}")
         Observable<Response<ResponseBody>> getHybridConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("namespaceName") String namespaceName, @Path("relayName") String relayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}")
-        Observable<Response<ResponseBody>> updateHybridConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("namespaceName") String namespaceName, @Path("relayName") String relayName, @Path("subscriptionId") String subscriptionId, @Body HybridConnectionInner connection, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans deleteHybridConnection" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteHybridConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("namespaceName") String namespaceName, @Path("relayName") String relayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listHybridConnectionKeys" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/listKeys")
         Observable<Response<ResponseBody>> listHybridConnectionKeys(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("namespaceName") String namespaceName, @Path("relayName") String relayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listWebAppsByHybridConnection" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/sites")
         Observable<Response<ResponseBody>> listWebAppsByHybridConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("namespaceName") String namespaceName, @Path("relayName") String relayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans getHybridConnectionPlanLimit" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionPlanLimits/limit")
         Observable<Response<ResponseBody>> getHybridConnectionPlanLimit(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listHybridConnections" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionRelays")
         Observable<Response<ResponseBody>> listHybridConnections(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listMetricDefintions" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/metricdefinitions")
         Observable<Response<ResponseBody>> listMetricDefintions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listMetrics" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/metrics")
         Observable<Response<ResponseBody>> listMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans restartWebApps" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/restartSites")
         Observable<Response<ResponseBody>> restartWebApps(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("softRestart") Boolean softRestart, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listWebApps" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/sites")
         Observable<Response<ResponseBody>> listWebApps(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("$skipToken") String skipToken, @Query(value = "$filter", encoded = true) String filter, @Query("$top") String top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listVnets" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections")
         Observable<Response<ResponseBody>> listVnets(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans getVnetFromServerFarm" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}")
         Observable<Response<ResponseBody>> getVnetFromServerFarm(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans getVnetGateway" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
         Observable<Response<ResponseBody>> getVnetGateway(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans updateVnetGateway" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
         Observable<Response<ResponseBody>> updateVnetGateway(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("subscriptionId") String subscriptionId, @Body VnetGatewayInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listRoutesForVnet" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes")
         Observable<Response<ResponseBody>> listRoutesForVnet(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans getRouteForVnet" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
         Observable<Response<ResponseBody>> getRouteForVnet(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("routeName") String routeName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans createOrUpdateVnetRoute" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
         Observable<Response<ResponseBody>> createOrUpdateVnetRoute(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("routeName") String routeName, @Path("subscriptionId") String subscriptionId, @Body VnetRouteInner route, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans deleteVnetRoute" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteVnetRoute(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("routeName") String routeName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans updateVnetRoute" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
         Observable<Response<ResponseBody>> updateVnetRoute(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("routeName") String routeName, @Path("subscriptionId") String subscriptionId, @Body VnetRouteInner route, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans rebootWorker" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/workers/{workerName}/reboot")
         Observable<Response<ResponseBody>> rebootWorker(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerName") String workerName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listByResourceGroupNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listByResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listWebAppsByHybridConnectionNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listWebAppsByHybridConnectionNext" })
+        @GET
+        Observable<Response<ResponseBody>> listWebAppsByHybridConnectionNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listHybridConnectionsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listHybridConnectionsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listHybridConnectionsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listMetricDefintionsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listMetricDefintionsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listMetricDefintionsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listMetricsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listMetricsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listMetricsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listWebAppsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServicePlans listWebAppsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listWebAppsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -209,14 +208,17 @@ public final class AppServicePlansInner {
      * Get all App Service plans for a subcription.
      * Get all App Service plans for a subcription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppServicePlanInner&gt; object if successful.
      */
     public PagedList<AppServicePlanInner> list() {
         ServiceResponse<Page<AppServicePlanInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<AppServicePlanInner>(response.getBody()) {
+        return new PagedList<AppServicePlanInner>(response.body()) {
             @Override
             public Page<AppServicePlanInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -226,10 +228,11 @@ public final class AppServicePlansInner {
      * Get all App Service plans for a subcription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServicePlanInner>> listAsync(final ListOperationCallback<AppServicePlanInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<AppServicePlanInner>> listAsync(final ListOperationCallback<AppServicePlanInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
@@ -244,6 +247,7 @@ public final class AppServicePlansInner {
      * Get all App Service plans for a subcription.
      * Get all App Service plans for a subcription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
      */
     public Observable<Page<AppServicePlanInner>> listAsync() {
@@ -251,7 +255,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<AppServicePlanInner>>, Page<AppServicePlanInner>>() {
                 @Override
                 public Page<AppServicePlanInner> call(ServiceResponse<Page<AppServicePlanInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -260,6 +264,7 @@ public final class AppServicePlansInner {
      * Get all App Service plans for a subcription.
      * Get all App Service plans for a subcription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
      */
     public Observable<ServiceResponse<Page<AppServicePlanInner>>> listWithServiceResponseAsync() {
@@ -267,7 +272,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<AppServicePlanInner>>, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServicePlanInner>>> call(ServiceResponse<Page<AppServicePlanInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -280,6 +285,7 @@ public final class AppServicePlansInner {
      * Get all App Service plans for a subcription.
      * Get all App Service plans for a subcription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;AppServicePlanInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AppServicePlanInner>>> listSinglePageAsync() {
@@ -294,7 +300,7 @@ public final class AppServicePlansInner {
                 public Observable<ServiceResponse<Page<AppServicePlanInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AppServicePlanInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AppServicePlanInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<AppServicePlanInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -308,14 +314,17 @@ public final class AppServicePlansInner {
      *
      * @param detailed Specify &lt;code&gt;true&lt;/code&gt; to return all App Service plan properties. The default is &lt;code&gt;false&lt;/code&gt;, which returns a subset of the properties.
       Retrieval of all properties may increase the API latency.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppServicePlanInner&gt; object if successful.
      */
     public PagedList<AppServicePlanInner> list(final Boolean detailed) {
         ServiceResponse<Page<AppServicePlanInner>> response = listSinglePageAsync(detailed).toBlocking().single();
-        return new PagedList<AppServicePlanInner>(response.getBody()) {
+        return new PagedList<AppServicePlanInner>(response.body()) {
             @Override
             public Page<AppServicePlanInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -327,10 +336,11 @@ public final class AppServicePlansInner {
      * @param detailed Specify &lt;code&gt;true&lt;/code&gt; to return all App Service plan properties. The default is &lt;code&gt;false&lt;/code&gt;, which returns a subset of the properties.
       Retrieval of all properties may increase the API latency.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServicePlanInner>> listAsync(final Boolean detailed, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<AppServicePlanInner>> listAsync(final Boolean detailed, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(detailed),
             new Func1<String, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
@@ -347,6 +357,7 @@ public final class AppServicePlansInner {
      *
      * @param detailed Specify &lt;code&gt;true&lt;/code&gt; to return all App Service plan properties. The default is &lt;code&gt;false&lt;/code&gt;, which returns a subset of the properties.
       Retrieval of all properties may increase the API latency.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
      */
     public Observable<Page<AppServicePlanInner>> listAsync(final Boolean detailed) {
@@ -354,7 +365,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<AppServicePlanInner>>, Page<AppServicePlanInner>>() {
                 @Override
                 public Page<AppServicePlanInner> call(ServiceResponse<Page<AppServicePlanInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -365,6 +376,7 @@ public final class AppServicePlansInner {
      *
      * @param detailed Specify &lt;code&gt;true&lt;/code&gt; to return all App Service plan properties. The default is &lt;code&gt;false&lt;/code&gt;, which returns a subset of the properties.
       Retrieval of all properties may increase the API latency.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
      */
     public Observable<ServiceResponse<Page<AppServicePlanInner>>> listWithServiceResponseAsync(final Boolean detailed) {
@@ -372,7 +384,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<AppServicePlanInner>>, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServicePlanInner>>> call(ServiceResponse<Page<AppServicePlanInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -387,6 +399,7 @@ public final class AppServicePlansInner {
      *
     ServiceResponse<PageImpl<AppServicePlanInner>> * @param detailed Specify &lt;code&gt;true&lt;/code&gt; to return all App Service plan properties. The default is &lt;code&gt;false&lt;/code&gt;, which returns a subset of the properties.
       Retrieval of all properties may increase the API latency.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;AppServicePlanInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AppServicePlanInner>>> listSinglePageAsync(final Boolean detailed) {
@@ -400,7 +413,7 @@ public final class AppServicePlansInner {
                 public Observable<ServiceResponse<Page<AppServicePlanInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AppServicePlanInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AppServicePlanInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<AppServicePlanInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -409,7 +422,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<AppServicePlanInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServicePlanInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServicePlanInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppServicePlanInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -420,14 +433,17 @@ public final class AppServicePlansInner {
      * Get all App Service plans in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppServicePlanInner&gt; object if successful.
      */
     public PagedList<AppServicePlanInner> listByResourceGroup(final String resourceGroupName) {
         ServiceResponse<Page<AppServicePlanInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<AppServicePlanInner>(response.getBody()) {
+        return new PagedList<AppServicePlanInner>(response.body()) {
             @Override
             public Page<AppServicePlanInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -438,10 +454,11 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServicePlanInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<AppServicePlanInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
@@ -457,6 +474,7 @@ public final class AppServicePlansInner {
      * Get all App Service plans in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
      */
     public Observable<Page<AppServicePlanInner>> listByResourceGroupAsync(final String resourceGroupName) {
@@ -464,7 +482,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<AppServicePlanInner>>, Page<AppServicePlanInner>>() {
                 @Override
                 public Page<AppServicePlanInner> call(ServiceResponse<Page<AppServicePlanInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -474,6 +492,7 @@ public final class AppServicePlansInner {
      * Get all App Service plans in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
      */
     public Observable<ServiceResponse<Page<AppServicePlanInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
@@ -481,7 +500,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<AppServicePlanInner>>, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServicePlanInner>>> call(ServiceResponse<Page<AppServicePlanInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -495,6 +514,7 @@ public final class AppServicePlansInner {
      * Get all App Service plans in a resource group.
      *
     ServiceResponse<PageImpl<AppServicePlanInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;AppServicePlanInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AppServicePlanInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
@@ -511,7 +531,7 @@ public final class AppServicePlansInner {
                 public Observable<ServiceResponse<Page<AppServicePlanInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AppServicePlanInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AppServicePlanInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<AppServicePlanInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -520,7 +540,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<AppServicePlanInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServicePlanInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServicePlanInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppServicePlanInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -532,10 +552,13 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AppServicePlanInner object if successful.
      */
-    public AppServicePlanInner get(String resourceGroupName, String name) {
-        return getWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+    public AppServicePlanInner getByResourceGroup(String resourceGroupName, String name) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -545,10 +568,11 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AppServicePlanInner> getAsync(String resourceGroupName, String name, final ServiceCallback<AppServicePlanInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<AppServicePlanInner> getByResourceGroupAsync(String resourceGroupName, String name, final ServiceCallback<AppServicePlanInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -557,13 +581,14 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AppServicePlanInner object
      */
-    public Observable<AppServicePlanInner> getAsync(String resourceGroupName, String name) {
-        return getWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<AppServicePlanInner>, AppServicePlanInner>() {
+    public Observable<AppServicePlanInner> getByResourceGroupAsync(String resourceGroupName, String name) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<AppServicePlanInner>, AppServicePlanInner>() {
             @Override
             public AppServicePlanInner call(ServiceResponse<AppServicePlanInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -574,9 +599,10 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AppServicePlanInner object
      */
-    public Observable<ServiceResponse<AppServicePlanInner>> getWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<AppServicePlanInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -587,12 +613,12 @@ public final class AppServicePlansInner {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-09-01";
-        return service.get(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppServicePlanInner>>>() {
                 @Override
                 public Observable<ServiceResponse<AppServicePlanInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<AppServicePlanInner> clientResponse = getDelegate(response);
+                        ServiceResponse<AppServicePlanInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -601,8 +627,8 @@ public final class AppServicePlansInner {
             });
     }
 
-    private ServiceResponse<AppServicePlanInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AppServicePlanInner, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<AppServicePlanInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AppServicePlanInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AppServicePlanInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -615,10 +641,13 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AppServicePlanInner object if successful.
      */
     public AppServicePlanInner createOrUpdate(String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan).toBlocking().last().body();
     }
 
     /**
@@ -629,10 +658,11 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AppServicePlanInner> createOrUpdateAsync(String resourceGroupName, String name, AppServicePlanInner appServicePlan, final ServiceCallback<AppServicePlanInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan), serviceCallback);
+    public ServiceFuture<AppServicePlanInner> createOrUpdateAsync(String resourceGroupName, String name, AppServicePlanInner appServicePlan, final ServiceCallback<AppServicePlanInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan), serviceCallback);
     }
 
     /**
@@ -642,13 +672,14 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<AppServicePlanInner> createOrUpdateAsync(String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan).map(new Func1<ServiceResponse<AppServicePlanInner>, AppServicePlanInner>() {
             @Override
             public AppServicePlanInner call(ServiceResponse<AppServicePlanInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -660,6 +691,7 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<AppServicePlanInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
@@ -688,10 +720,13 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AppServicePlanInner object if successful.
      */
     public AppServicePlanInner beginCreateOrUpdate(String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan).toBlocking().single().body();
     }
 
     /**
@@ -702,10 +737,11 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AppServicePlanInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, AppServicePlanInner appServicePlan, final ServiceCallback<AppServicePlanInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan), serviceCallback);
+    public ServiceFuture<AppServicePlanInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, AppServicePlanInner appServicePlan, final ServiceCallback<AppServicePlanInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan), serviceCallback);
     }
 
     /**
@@ -715,13 +751,14 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AppServicePlanInner object
      */
     public Observable<AppServicePlanInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan).map(new Func1<ServiceResponse<AppServicePlanInner>, AppServicePlanInner>() {
             @Override
             public AppServicePlanInner call(ServiceResponse<AppServicePlanInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -733,6 +770,7 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AppServicePlanInner object
      */
     public Observable<ServiceResponse<AppServicePlanInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
@@ -765,7 +803,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<AppServicePlanInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AppServicePlanInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<AppServicePlanInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AppServicePlanInner>() { }.getType())
                 .register(202, new TypeToken<AppServicePlanInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -778,9 +816,12 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String name) {
-        deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -790,10 +831,11 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -802,13 +844,14 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String name) {
         return deleteWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -819,6 +862,7 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -847,8 +891,9 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
-                .register(204, new TypeToken<Void>() { }.getType())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -858,10 +903,13 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;CapabilityInner&gt; object if successful.
      */
     public List<CapabilityInner> listCapabilities(String resourceGroupName, String name) {
-        return listCapabilitiesWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listCapabilitiesWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -871,10 +919,11 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CapabilityInner>> listCapabilitiesAsync(String resourceGroupName, String name, final ServiceCallback<List<CapabilityInner>> serviceCallback) {
-        return ServiceCall.create(listCapabilitiesWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<List<CapabilityInner>> listCapabilitiesAsync(String resourceGroupName, String name, final ServiceCallback<List<CapabilityInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listCapabilitiesWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -883,13 +932,14 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;CapabilityInner&gt; object
      */
     public Observable<List<CapabilityInner>> listCapabilitiesAsync(String resourceGroupName, String name) {
         return listCapabilitiesWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<List<CapabilityInner>>, List<CapabilityInner>>() {
             @Override
             public List<CapabilityInner> call(ServiceResponse<List<CapabilityInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -900,6 +950,7 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;CapabilityInner&gt; object
      */
     public Observable<ServiceResponse<List<CapabilityInner>>> listCapabilitiesWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -928,7 +979,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<List<CapabilityInner>> listCapabilitiesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<CapabilityInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<CapabilityInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<CapabilityInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -942,10 +993,13 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner getHybridConnection(String resourceGroupName, String name, String namespaceName, String relayName) {
-        return getHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().getBody();
+        return getHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().body();
     }
 
     /**
@@ -957,10 +1011,11 @@ public final class AppServicePlansInner {
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<HybridConnectionInner> getHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<HybridConnectionInner> serviceCallback) {
-        return ServiceCall.create(getHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
+    public ServiceFuture<HybridConnectionInner> getHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<HybridConnectionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
     }
 
     /**
@@ -971,13 +1026,14 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionInner object
      */
     public Observable<HybridConnectionInner> getHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName) {
         return getHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).map(new Func1<ServiceResponse<HybridConnectionInner>, HybridConnectionInner>() {
             @Override
             public HybridConnectionInner call(ServiceResponse<HybridConnectionInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -990,6 +1046,7 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionInner object
      */
     public Observable<ServiceResponse<HybridConnectionInner>> getHybridConnectionWithServiceResponseAsync(String resourceGroupName, String name, String namespaceName, String relayName) {
@@ -1024,111 +1081,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<HybridConnectionInner> getHybridConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HybridConnectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<HybridConnectionInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Update a Hybrid Connection in use in an App Service plan. This operation will fail if the Hybrid Connection does not already exist.
-     * Update a Hybrid Connection in use in an App Service plan. This operation will fail if the Hybrid Connection does not already exist.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param namespaceName Name of the Service Bus namespace.
-     * @param relayName Name of the Service Bus relay.
-     * @param connection The Hybrid Connection entity.
-     * @return the HybridConnectionInner object if successful.
-     */
-    public HybridConnectionInner updateHybridConnection(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connection) {
-        return updateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connection).toBlocking().single().getBody();
-    }
-
-    /**
-     * Update a Hybrid Connection in use in an App Service plan. This operation will fail if the Hybrid Connection does not already exist.
-     * Update a Hybrid Connection in use in an App Service plan. This operation will fail if the Hybrid Connection does not already exist.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param namespaceName Name of the Service Bus namespace.
-     * @param relayName Name of the Service Bus relay.
-     * @param connection The Hybrid Connection entity.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<HybridConnectionInner> updateHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connection, final ServiceCallback<HybridConnectionInner> serviceCallback) {
-        return ServiceCall.create(updateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connection), serviceCallback);
-    }
-
-    /**
-     * Update a Hybrid Connection in use in an App Service plan. This operation will fail if the Hybrid Connection does not already exist.
-     * Update a Hybrid Connection in use in an App Service plan. This operation will fail if the Hybrid Connection does not already exist.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param namespaceName Name of the Service Bus namespace.
-     * @param relayName Name of the Service Bus relay.
-     * @param connection The Hybrid Connection entity.
-     * @return the observable to the HybridConnectionInner object
-     */
-    public Observable<HybridConnectionInner> updateHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connection) {
-        return updateHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, connection).map(new Func1<ServiceResponse<HybridConnectionInner>, HybridConnectionInner>() {
-            @Override
-            public HybridConnectionInner call(ServiceResponse<HybridConnectionInner> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Update a Hybrid Connection in use in an App Service plan. This operation will fail if the Hybrid Connection does not already exist.
-     * Update a Hybrid Connection in use in an App Service plan. This operation will fail if the Hybrid Connection does not already exist.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param namespaceName Name of the Service Bus namespace.
-     * @param relayName Name of the Service Bus relay.
-     * @param connection The Hybrid Connection entity.
-     * @return the observable to the HybridConnectionInner object
-     */
-    public Observable<ServiceResponse<HybridConnectionInner>> updateHybridConnectionWithServiceResponseAsync(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connection) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (namespaceName == null) {
-            throw new IllegalArgumentException("Parameter namespaceName is required and cannot be null.");
-        }
-        if (relayName == null) {
-            throw new IllegalArgumentException("Parameter relayName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (connection == null) {
-            throw new IllegalArgumentException("Parameter connection is required and cannot be null.");
-        }
-        Validator.validate(connection);
-        final String apiVersion = "2016-09-01";
-        return service.updateHybridConnection(resourceGroupName, name, namespaceName, relayName, this.client.subscriptionId(), connection, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<HybridConnectionInner>>>() {
-                @Override
-                public Observable<ServiceResponse<HybridConnectionInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<HybridConnectionInner> clientResponse = updateHybridConnectionDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<HybridConnectionInner> updateHybridConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HybridConnectionInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<HybridConnectionInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HybridConnectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1142,9 +1095,12 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteHybridConnection(String resourceGroupName, String name, String namespaceName, String relayName) {
-        deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().getBody();
+        deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().body();
     }
 
     /**
@@ -1156,10 +1112,11 @@ public final class AppServicePlansInner {
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
+    public ServiceFuture<Void> deleteHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
     }
 
     /**
@@ -1170,13 +1127,14 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName) {
         return deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1189,6 +1147,7 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteHybridConnectionWithServiceResponseAsync(String resourceGroupName, String name, String namespaceName, String relayName) {
@@ -1223,9 +1182,10 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<Void> deleteHybridConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -1237,10 +1197,13 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param namespaceName The name of the Service Bus namespace.
      * @param relayName The name of the Service Bus relay.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the HybridConnectionKeyInner object if successful.
      */
     public HybridConnectionKeyInner listHybridConnectionKeys(String resourceGroupName, String name, String namespaceName, String relayName) {
-        return listHybridConnectionKeysWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().getBody();
+        return listHybridConnectionKeysWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().body();
     }
 
     /**
@@ -1252,10 +1215,11 @@ public final class AppServicePlansInner {
      * @param namespaceName The name of the Service Bus namespace.
      * @param relayName The name of the Service Bus relay.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<HybridConnectionKeyInner> listHybridConnectionKeysAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<HybridConnectionKeyInner> serviceCallback) {
-        return ServiceCall.create(listHybridConnectionKeysWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
+    public ServiceFuture<HybridConnectionKeyInner> listHybridConnectionKeysAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<HybridConnectionKeyInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listHybridConnectionKeysWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
     }
 
     /**
@@ -1266,13 +1230,14 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param namespaceName The name of the Service Bus namespace.
      * @param relayName The name of the Service Bus relay.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionKeyInner object
      */
     public Observable<HybridConnectionKeyInner> listHybridConnectionKeysAsync(String resourceGroupName, String name, String namespaceName, String relayName) {
         return listHybridConnectionKeysWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).map(new Func1<ServiceResponse<HybridConnectionKeyInner>, HybridConnectionKeyInner>() {
             @Override
             public HybridConnectionKeyInner call(ServiceResponse<HybridConnectionKeyInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1285,6 +1250,7 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param namespaceName The name of the Service Bus namespace.
      * @param relayName The name of the Service Bus relay.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionKeyInner object
      */
     public Observable<ServiceResponse<HybridConnectionKeyInner>> listHybridConnectionKeysWithServiceResponseAsync(String resourceGroupName, String name, String namespaceName, String relayName) {
@@ -1319,7 +1285,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<HybridConnectionKeyInner> listHybridConnectionKeysDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HybridConnectionKeyInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<HybridConnectionKeyInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HybridConnectionKeyInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1333,14 +1299,17 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Hybrid Connection namespace.
      * @param relayName Name of the Hybrid Connection relay.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;String&gt; object if successful.
      */
     public PagedList<String> listWebAppsByHybridConnection(final String resourceGroupName, final String name, final String namespaceName, final String relayName) {
         ServiceResponse<Page<String>> response = listWebAppsByHybridConnectionSinglePageAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single();
-        return new PagedList<String>(response.getBody()) {
+        return new PagedList<String>(response.body()) {
             @Override
             public Page<String> nextPage(String nextPageLink) {
-                return listWebAppsByHybridConnectionNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWebAppsByHybridConnectionNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1354,10 +1323,11 @@ public final class AppServicePlansInner {
      * @param namespaceName Name of the Hybrid Connection namespace.
      * @param relayName Name of the Hybrid Connection relay.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<String>> listWebAppsByHybridConnectionAsync(final String resourceGroupName, final String name, final String namespaceName, final String relayName, final ListOperationCallback<String> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<String>> listWebAppsByHybridConnectionAsync(final String resourceGroupName, final String name, final String namespaceName, final String relayName, final ListOperationCallback<String> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebAppsByHybridConnectionSinglePageAsync(resourceGroupName, name, namespaceName, relayName),
             new Func1<String, Observable<ServiceResponse<Page<String>>>>() {
                 @Override
@@ -1376,6 +1346,7 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Hybrid Connection namespace.
      * @param relayName Name of the Hybrid Connection relay.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;String&gt; object
      */
     public Observable<Page<String>> listWebAppsByHybridConnectionAsync(final String resourceGroupName, final String name, final String namespaceName, final String relayName) {
@@ -1383,7 +1354,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<String>>, Page<String>>() {
                 @Override
                 public Page<String> call(ServiceResponse<Page<String>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1396,6 +1367,7 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Hybrid Connection namespace.
      * @param relayName Name of the Hybrid Connection relay.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;String&gt; object
      */
     public Observable<ServiceResponse<Page<String>>> listWebAppsByHybridConnectionWithServiceResponseAsync(final String resourceGroupName, final String name, final String namespaceName, final String relayName) {
@@ -1403,7 +1375,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<String>>, Observable<ServiceResponse<Page<String>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<String>>> call(ServiceResponse<Page<String>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1420,6 +1392,7 @@ public final class AppServicePlansInner {
     ServiceResponse<PageImpl<String>> * @param name Name of the App Service plan.
     ServiceResponse<PageImpl<String>> * @param namespaceName Name of the Hybrid Connection namespace.
     ServiceResponse<PageImpl<String>> * @param relayName Name of the Hybrid Connection relay.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;String&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<String>>> listWebAppsByHybridConnectionSinglePageAsync(final String resourceGroupName, final String name, final String namespaceName, final String relayName) {
@@ -1445,7 +1418,7 @@ public final class AppServicePlansInner {
                 public Observable<ServiceResponse<Page<String>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<String>> result = listWebAppsByHybridConnectionDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<String>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<String>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1454,7 +1427,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<String>> listWebAppsByHybridConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<String>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<String>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<String>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1466,10 +1439,13 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the HybridConnectionLimitsInner object if successful.
      */
     public HybridConnectionLimitsInner getHybridConnectionPlanLimit(String resourceGroupName, String name) {
-        return getHybridConnectionPlanLimitWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return getHybridConnectionPlanLimitWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -1479,10 +1455,11 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<HybridConnectionLimitsInner> getHybridConnectionPlanLimitAsync(String resourceGroupName, String name, final ServiceCallback<HybridConnectionLimitsInner> serviceCallback) {
-        return ServiceCall.create(getHybridConnectionPlanLimitWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<HybridConnectionLimitsInner> getHybridConnectionPlanLimitAsync(String resourceGroupName, String name, final ServiceCallback<HybridConnectionLimitsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getHybridConnectionPlanLimitWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1491,13 +1468,14 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionLimitsInner object
      */
     public Observable<HybridConnectionLimitsInner> getHybridConnectionPlanLimitAsync(String resourceGroupName, String name) {
         return getHybridConnectionPlanLimitWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<HybridConnectionLimitsInner>, HybridConnectionLimitsInner>() {
             @Override
             public HybridConnectionLimitsInner call(ServiceResponse<HybridConnectionLimitsInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -1508,6 +1486,7 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionLimitsInner object
      */
     public Observable<ServiceResponse<HybridConnectionLimitsInner>> getHybridConnectionPlanLimitWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -1536,7 +1515,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<HybridConnectionLimitsInner> getHybridConnectionPlanLimitDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HybridConnectionLimitsInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<HybridConnectionLimitsInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HybridConnectionLimitsInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1548,14 +1527,17 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;HybridConnectionInner&gt; object if successful.
      */
     public PagedList<HybridConnectionInner> listHybridConnections(final String resourceGroupName, final String name) {
         ServiceResponse<Page<HybridConnectionInner>> response = listHybridConnectionsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<HybridConnectionInner>(response.getBody()) {
+        return new PagedList<HybridConnectionInner>(response.body()) {
             @Override
             public Page<HybridConnectionInner> nextPage(String nextPageLink) {
-                return listHybridConnectionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listHybridConnectionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1567,10 +1549,11 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<HybridConnectionInner>> listHybridConnectionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<HybridConnectionInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<HybridConnectionInner>> listHybridConnectionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<HybridConnectionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listHybridConnectionsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<HybridConnectionInner>>>>() {
                 @Override
@@ -1587,6 +1570,7 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;HybridConnectionInner&gt; object
      */
     public Observable<Page<HybridConnectionInner>> listHybridConnectionsAsync(final String resourceGroupName, final String name) {
@@ -1594,7 +1578,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<HybridConnectionInner>>, Page<HybridConnectionInner>>() {
                 @Override
                 public Page<HybridConnectionInner> call(ServiceResponse<Page<HybridConnectionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1605,6 +1589,7 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;HybridConnectionInner&gt; object
      */
     public Observable<ServiceResponse<Page<HybridConnectionInner>>> listHybridConnectionsWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -1612,7 +1597,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<HybridConnectionInner>>, Observable<ServiceResponse<Page<HybridConnectionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<HybridConnectionInner>>> call(ServiceResponse<Page<HybridConnectionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1627,6 +1612,7 @@ public final class AppServicePlansInner {
      *
     ServiceResponse<PageImpl<HybridConnectionInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<HybridConnectionInner>> * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;HybridConnectionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<HybridConnectionInner>>> listHybridConnectionsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -1646,7 +1632,7 @@ public final class AppServicePlansInner {
                 public Observable<ServiceResponse<Page<HybridConnectionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<HybridConnectionInner>> result = listHybridConnectionsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<HybridConnectionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<HybridConnectionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1655,7 +1641,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<HybridConnectionInner>> listHybridConnectionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<HybridConnectionInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<HybridConnectionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<HybridConnectionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1667,14 +1653,17 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object if successful.
      */
     public PagedList<ResourceMetricDefinitionInner> listMetricDefintions(final String resourceGroupName, final String name) {
         ServiceResponse<Page<ResourceMetricDefinitionInner>> response = listMetricDefintionsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<ResourceMetricDefinitionInner>(response.getBody()) {
+        return new PagedList<ResourceMetricDefinitionInner>(response.body()) {
             @Override
             public Page<ResourceMetricDefinitionInner> nextPage(String nextPageLink) {
-                return listMetricDefintionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricDefintionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1686,10 +1675,11 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricDefinitionInner>> listMetricDefintionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricDefinitionInner>> listMetricDefintionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricDefintionsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -1706,6 +1696,7 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<Page<ResourceMetricDefinitionInner>> listMetricDefintionsAsync(final String resourceGroupName, final String name) {
@@ -1713,7 +1704,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Page<ResourceMetricDefinitionInner>>() {
                 @Override
                 public Page<ResourceMetricDefinitionInner> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1724,6 +1715,7 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listMetricDefintionsWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -1731,7 +1723,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1746,6 +1738,7 @@ public final class AppServicePlansInner {
      *
     ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listMetricDefintionsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -1765,7 +1758,7 @@ public final class AppServicePlansInner {
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> result = listMetricDefintionsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1774,7 +1767,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> listMetricDefintionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricDefinitionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricDefinitionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1786,14 +1779,17 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
     public PagedList<ResourceMetricInner> listMetrics(final String resourceGroupName, final String name) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMetricsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1805,10 +1801,11 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -1825,6 +1822,7 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<Page<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name) {
@@ -1832,7 +1830,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1843,6 +1841,7 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -1850,7 +1849,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1865,6 +1864,7 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -1886,7 +1886,7 @@ public final class AppServicePlansInner {
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMetricsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1902,14 +1902,17 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
     public PagedList<ResourceMetricInner> listMetrics(final String resourceGroupName, final String name, final Boolean details, final String filter) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMetricsSinglePageAsync(resourceGroupName, name, details, filter).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1923,10 +1926,11 @@ public final class AppServicePlansInner {
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricsSinglePageAsync(resourceGroupName, name, details, filter),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -1945,6 +1949,7 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<Page<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter) {
@@ -1952,7 +1957,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -1965,6 +1970,7 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsWithServiceResponseAsync(final String resourceGroupName, final String name, final Boolean details, final String filter) {
@@ -1972,7 +1978,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -1989,6 +1995,7 @@ public final class AppServicePlansInner {
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param name Name of the App Service plan.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsSinglePageAsync(final String resourceGroupName, final String name, final Boolean details, final String filter) {
@@ -2008,7 +2015,7 @@ public final class AppServicePlansInner {
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMetricsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2017,7 +2024,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricInner>> listMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2029,9 +2036,12 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void restartWebApps(String resourceGroupName, String name) {
-        restartWebAppsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        restartWebAppsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -2041,10 +2051,11 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> restartWebAppsAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(restartWebAppsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<Void> restartWebAppsAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(restartWebAppsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -2053,13 +2064,14 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> restartWebAppsAsync(String resourceGroupName, String name) {
         return restartWebAppsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2070,6 +2082,7 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> restartWebAppsWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -2105,9 +2118,12 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to performa a soft restart, applies the configuration settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always restarts and reprovisions the apps
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void restartWebApps(String resourceGroupName, String name, Boolean softRestart) {
-        restartWebAppsWithServiceResponseAsync(resourceGroupName, name, softRestart).toBlocking().single().getBody();
+        restartWebAppsWithServiceResponseAsync(resourceGroupName, name, softRestart).toBlocking().single().body();
     }
 
     /**
@@ -2118,10 +2134,11 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to performa a soft restart, applies the configuration settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always restarts and reprovisions the apps
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> restartWebAppsAsync(String resourceGroupName, String name, Boolean softRestart, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(restartWebAppsWithServiceResponseAsync(resourceGroupName, name, softRestart), serviceCallback);
+    public ServiceFuture<Void> restartWebAppsAsync(String resourceGroupName, String name, Boolean softRestart, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(restartWebAppsWithServiceResponseAsync(resourceGroupName, name, softRestart), serviceCallback);
     }
 
     /**
@@ -2131,13 +2148,14 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to performa a soft restart, applies the configuration settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always restarts and reprovisions the apps
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> restartWebAppsAsync(String resourceGroupName, String name, Boolean softRestart) {
         return restartWebAppsWithServiceResponseAsync(resourceGroupName, name, softRestart).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2149,6 +2167,7 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to performa a soft restart, applies the configuration settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always restarts and reprovisions the apps
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> restartWebAppsWithServiceResponseAsync(String resourceGroupName, String name, Boolean softRestart) {
@@ -2177,8 +2196,9 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<Void> restartWebAppsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -2188,14 +2208,17 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
     public PagedList<SiteInner> listWebApps(final String resourceGroupName, final String name) {
         ServiceResponse<Page<SiteInner>> response = listWebAppsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return listWebAppsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWebAppsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -2207,10 +2230,11 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> listWebAppsAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<SiteInner>> listWebAppsAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebAppsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -2227,6 +2251,7 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<Page<SiteInner>> listWebAppsAsync(final String resourceGroupName, final String name) {
@@ -2234,7 +2259,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -2245,6 +2270,7 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listWebAppsWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -2252,7 +2278,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -2267,6 +2293,7 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listWebAppsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -2289,7 +2316,7 @@ public final class AppServicePlansInner {
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = listWebAppsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2306,14 +2333,17 @@ public final class AppServicePlansInner {
      * @param skipToken Skip to a web app in the list of webapps associated with app service plan. If specified, the resulting list will contain web apps starting from (including) the skipToken. Otherwise, the resulting list contains web apps from the start of the list
      * @param filter Supported filter: $filter=state eq running. Returns only web apps that are currently running
      * @param top List page size. If specified, results are paged.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
     public PagedList<SiteInner> listWebApps(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top) {
         ServiceResponse<Page<SiteInner>> response = listWebAppsSinglePageAsync(resourceGroupName, name, skipToken, filter, top).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return listWebAppsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWebAppsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -2328,10 +2358,11 @@ public final class AppServicePlansInner {
      * @param filter Supported filter: $filter=state eq running. Returns only web apps that are currently running
      * @param top List page size. If specified, results are paged.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> listWebAppsAsync(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<SiteInner>> listWebAppsAsync(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebAppsSinglePageAsync(resourceGroupName, name, skipToken, filter, top),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -2351,6 +2382,7 @@ public final class AppServicePlansInner {
      * @param skipToken Skip to a web app in the list of webapps associated with app service plan. If specified, the resulting list will contain web apps starting from (including) the skipToken. Otherwise, the resulting list contains web apps from the start of the list
      * @param filter Supported filter: $filter=state eq running. Returns only web apps that are currently running
      * @param top List page size. If specified, results are paged.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<Page<SiteInner>> listWebAppsAsync(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top) {
@@ -2358,7 +2390,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -2372,6 +2404,7 @@ public final class AppServicePlansInner {
      * @param skipToken Skip to a web app in the list of webapps associated with app service plan. If specified, the resulting list will contain web apps starting from (including) the skipToken. Otherwise, the resulting list contains web apps from the start of the list
      * @param filter Supported filter: $filter=state eq running. Returns only web apps that are currently running
      * @param top List page size. If specified, results are paged.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listWebAppsWithServiceResponseAsync(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top) {
@@ -2379,7 +2412,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -2397,6 +2430,7 @@ public final class AppServicePlansInner {
     ServiceResponse<PageImpl<SiteInner>> * @param skipToken Skip to a web app in the list of webapps associated with app service plan. If specified, the resulting list will contain web apps starting from (including) the skipToken. Otherwise, the resulting list contains web apps from the start of the list
     ServiceResponse<PageImpl<SiteInner>> * @param filter Supported filter: $filter=state eq running. Returns only web apps that are currently running
     ServiceResponse<PageImpl<SiteInner>> * @param top List page size. If specified, results are paged.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listWebAppsSinglePageAsync(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top) {
@@ -2416,7 +2450,7 @@ public final class AppServicePlansInner {
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = listWebAppsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2425,7 +2459,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<SiteInner>> listWebAppsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SiteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2437,10 +2471,13 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;VnetInfoInner&gt; object if successful.
      */
     public List<VnetInfoInner> listVnets(String resourceGroupName, String name) {
-        return listVnetsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+        return listVnetsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -2450,10 +2487,11 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VnetInfoInner>> listVnetsAsync(String resourceGroupName, String name, final ServiceCallback<List<VnetInfoInner>> serviceCallback) {
-        return ServiceCall.create(listVnetsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<List<VnetInfoInner>> listVnetsAsync(String resourceGroupName, String name, final ServiceCallback<List<VnetInfoInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listVnetsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -2462,13 +2500,14 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VnetInfoInner&gt; object
      */
     public Observable<List<VnetInfoInner>> listVnetsAsync(String resourceGroupName, String name) {
         return listVnetsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<List<VnetInfoInner>>, List<VnetInfoInner>>() {
             @Override
             public List<VnetInfoInner> call(ServiceResponse<List<VnetInfoInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2479,6 +2518,7 @@ public final class AppServicePlansInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VnetInfoInner&gt; object
      */
     public Observable<ServiceResponse<List<VnetInfoInner>>> listVnetsWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -2507,7 +2547,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<List<VnetInfoInner>> listVnetsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VnetInfoInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<VnetInfoInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<VnetInfoInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2520,10 +2560,13 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VnetInfoInner object if successful.
      */
     public VnetInfoInner getVnetFromServerFarm(String resourceGroupName, String name, String vnetName) {
-        return getVnetFromServerFarmWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().getBody();
+        return getVnetFromServerFarmWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().body();
     }
 
     /**
@@ -2534,10 +2577,11 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VnetInfoInner> getVnetFromServerFarmAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<VnetInfoInner> serviceCallback) {
-        return ServiceCall.create(getVnetFromServerFarmWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
+    public ServiceFuture<VnetInfoInner> getVnetFromServerFarmAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<VnetInfoInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getVnetFromServerFarmWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
     }
 
     /**
@@ -2547,13 +2591,14 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetInfoInner object
      */
     public Observable<VnetInfoInner> getVnetFromServerFarmAsync(String resourceGroupName, String name, String vnetName) {
         return getVnetFromServerFarmWithServiceResponseAsync(resourceGroupName, name, vnetName).map(new Func1<ServiceResponse<VnetInfoInner>, VnetInfoInner>() {
             @Override
             public VnetInfoInner call(ServiceResponse<VnetInfoInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2565,6 +2610,7 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetInfoInner object
      */
     public Observable<ServiceResponse<VnetInfoInner>> getVnetFromServerFarmWithServiceResponseAsync(String resourceGroupName, String name, String vnetName) {
@@ -2596,7 +2642,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<VnetInfoInner> getVnetFromServerFarmDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetInfoInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VnetInfoInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VnetInfoInner>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -2611,10 +2657,13 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VnetGatewayInner object if successful.
      */
     public VnetGatewayInner getVnetGateway(String resourceGroupName, String name, String vnetName, String gatewayName) {
-        return getVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName).toBlocking().single().getBody();
+        return getVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName).toBlocking().single().body();
     }
 
     /**
@@ -2626,10 +2675,11 @@ public final class AppServicePlansInner {
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VnetGatewayInner> getVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, final ServiceCallback<VnetGatewayInner> serviceCallback) {
-        return ServiceCall.create(getVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName), serviceCallback);
+    public ServiceFuture<VnetGatewayInner> getVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, final ServiceCallback<VnetGatewayInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName), serviceCallback);
     }
 
     /**
@@ -2640,13 +2690,14 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetGatewayInner object
      */
     public Observable<VnetGatewayInner> getVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName) {
         return getVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName).map(new Func1<ServiceResponse<VnetGatewayInner>, VnetGatewayInner>() {
             @Override
             public VnetGatewayInner call(ServiceResponse<VnetGatewayInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2659,6 +2710,7 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetGatewayInner object
      */
     public Observable<ServiceResponse<VnetGatewayInner>> getVnetGatewayWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String gatewayName) {
@@ -2693,7 +2745,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<VnetGatewayInner> getVnetGatewayDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetGatewayInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VnetGatewayInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VnetGatewayInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2708,10 +2760,13 @@ public final class AppServicePlansInner {
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
      * @param connectionEnvelope Definition of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VnetGatewayInner object if successful.
      */
     public VnetGatewayInner updateVnetGateway(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
-        return updateVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).toBlocking().single().getBody();
+        return updateVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).toBlocking().single().body();
     }
 
     /**
@@ -2724,10 +2779,11 @@ public final class AppServicePlansInner {
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
      * @param connectionEnvelope Definition of the gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VnetGatewayInner> updateVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
-        return ServiceCall.create(updateVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope), serviceCallback);
+    public ServiceFuture<VnetGatewayInner> updateVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -2739,13 +2795,14 @@ public final class AppServicePlansInner {
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
      * @param connectionEnvelope Definition of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetGatewayInner object
      */
     public Observable<VnetGatewayInner> updateVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
         return updateVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).map(new Func1<ServiceResponse<VnetGatewayInner>, VnetGatewayInner>() {
             @Override
             public VnetGatewayInner call(ServiceResponse<VnetGatewayInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2759,6 +2816,7 @@ public final class AppServicePlansInner {
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
      * @param connectionEnvelope Definition of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetGatewayInner object
      */
     public Observable<ServiceResponse<VnetGatewayInner>> updateVnetGatewayWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
@@ -2797,7 +2855,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<VnetGatewayInner> updateVnetGatewayDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetGatewayInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VnetGatewayInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VnetGatewayInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2810,10 +2868,13 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;VnetRouteInner&gt; object if successful.
      */
     public List<VnetRouteInner> listRoutesForVnet(String resourceGroupName, String name, String vnetName) {
-        return listRoutesForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().getBody();
+        return listRoutesForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().body();
     }
 
     /**
@@ -2824,10 +2885,11 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VnetRouteInner>> listRoutesForVnetAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<List<VnetRouteInner>> serviceCallback) {
-        return ServiceCall.create(listRoutesForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
+    public ServiceFuture<List<VnetRouteInner>> listRoutesForVnetAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<List<VnetRouteInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listRoutesForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
     }
 
     /**
@@ -2837,13 +2899,14 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VnetRouteInner&gt; object
      */
     public Observable<List<VnetRouteInner>> listRoutesForVnetAsync(String resourceGroupName, String name, String vnetName) {
         return listRoutesForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName).map(new Func1<ServiceResponse<List<VnetRouteInner>>, List<VnetRouteInner>>() {
             @Override
             public List<VnetRouteInner> call(ServiceResponse<List<VnetRouteInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2855,6 +2918,7 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VnetRouteInner&gt; object
      */
     public Observable<ServiceResponse<List<VnetRouteInner>>> listRoutesForVnetWithServiceResponseAsync(String resourceGroupName, String name, String vnetName) {
@@ -2886,7 +2950,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<List<VnetRouteInner>> listRoutesForVnetDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VnetRouteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<VnetRouteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<VnetRouteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2900,10 +2964,13 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;VnetRouteInner&gt; object if successful.
      */
     public List<VnetRouteInner> getRouteForVnet(String resourceGroupName, String name, String vnetName, String routeName) {
-        return getRouteForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName).toBlocking().single().getBody();
+        return getRouteForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName).toBlocking().single().body();
     }
 
     /**
@@ -2915,10 +2982,11 @@ public final class AppServicePlansInner {
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<VnetRouteInner>> getRouteForVnetAsync(String resourceGroupName, String name, String vnetName, String routeName, final ServiceCallback<List<VnetRouteInner>> serviceCallback) {
-        return ServiceCall.create(getRouteForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName), serviceCallback);
+    public ServiceFuture<List<VnetRouteInner>> getRouteForVnetAsync(String resourceGroupName, String name, String vnetName, String routeName, final ServiceCallback<List<VnetRouteInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(getRouteForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName), serviceCallback);
     }
 
     /**
@@ -2929,13 +2997,14 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VnetRouteInner&gt; object
      */
     public Observable<List<VnetRouteInner>> getRouteForVnetAsync(String resourceGroupName, String name, String vnetName, String routeName) {
         return getRouteForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName).map(new Func1<ServiceResponse<List<VnetRouteInner>>, List<VnetRouteInner>>() {
             @Override
             public List<VnetRouteInner> call(ServiceResponse<List<VnetRouteInner>> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -2948,6 +3017,7 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VnetRouteInner&gt; object
      */
     public Observable<ServiceResponse<List<VnetRouteInner>>> getRouteForVnetWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String routeName) {
@@ -2982,7 +3052,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<List<VnetRouteInner>> getRouteForVnetDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VnetRouteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<List<VnetRouteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<VnetRouteInner>>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -2998,10 +3068,13 @@ public final class AppServicePlansInner {
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
      * @param route Definition of the Virtual Network route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VnetRouteInner object if successful.
      */
     public VnetRouteInner createOrUpdateVnetRoute(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
-        return createOrUpdateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route).toBlocking().single().getBody();
+        return createOrUpdateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route).toBlocking().single().body();
     }
 
     /**
@@ -3014,10 +3087,11 @@ public final class AppServicePlansInner {
      * @param routeName Name of the Virtual Network route.
      * @param route Definition of the Virtual Network route.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VnetRouteInner> createOrUpdateVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route, final ServiceCallback<VnetRouteInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route), serviceCallback);
+    public ServiceFuture<VnetRouteInner> createOrUpdateVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route, final ServiceCallback<VnetRouteInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route), serviceCallback);
     }
 
     /**
@@ -3029,13 +3103,14 @@ public final class AppServicePlansInner {
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
      * @param route Definition of the Virtual Network route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetRouteInner object
      */
     public Observable<VnetRouteInner> createOrUpdateVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
         return createOrUpdateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route).map(new Func1<ServiceResponse<VnetRouteInner>, VnetRouteInner>() {
             @Override
             public VnetRouteInner call(ServiceResponse<VnetRouteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3049,6 +3124,7 @@ public final class AppServicePlansInner {
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
      * @param route Definition of the Virtual Network route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetRouteInner object
      */
     public Observable<ServiceResponse<VnetRouteInner>> createOrUpdateVnetRouteWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
@@ -3087,7 +3163,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<VnetRouteInner> createOrUpdateVnetRouteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetRouteInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VnetRouteInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VnetRouteInner>() { }.getType())
                 .register(400, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
@@ -3103,9 +3179,12 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteVnetRoute(String resourceGroupName, String name, String vnetName, String routeName) {
-        deleteVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName).toBlocking().single().getBody();
+        deleteVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName).toBlocking().single().body();
     }
 
     /**
@@ -3117,10 +3196,11 @@ public final class AppServicePlansInner {
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName), serviceCallback);
+    public ServiceFuture<Void> deleteVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName), serviceCallback);
     }
 
     /**
@@ -3131,13 +3211,14 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName) {
         return deleteVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3150,6 +3231,7 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteVnetRouteWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String routeName) {
@@ -3184,9 +3266,10 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<Void> deleteVnetRouteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -3199,10 +3282,13 @@ public final class AppServicePlansInner {
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
      * @param route Definition of the Virtual Network route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VnetRouteInner object if successful.
      */
     public VnetRouteInner updateVnetRoute(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
-        return updateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route).toBlocking().single().getBody();
+        return updateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route).toBlocking().single().body();
     }
 
     /**
@@ -3215,10 +3301,11 @@ public final class AppServicePlansInner {
      * @param routeName Name of the Virtual Network route.
      * @param route Definition of the Virtual Network route.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<VnetRouteInner> updateVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route, final ServiceCallback<VnetRouteInner> serviceCallback) {
-        return ServiceCall.create(updateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route), serviceCallback);
+    public ServiceFuture<VnetRouteInner> updateVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route, final ServiceCallback<VnetRouteInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route), serviceCallback);
     }
 
     /**
@@ -3230,13 +3317,14 @@ public final class AppServicePlansInner {
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
      * @param route Definition of the Virtual Network route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetRouteInner object
      */
     public Observable<VnetRouteInner> updateVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
         return updateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route).map(new Func1<ServiceResponse<VnetRouteInner>, VnetRouteInner>() {
             @Override
             public VnetRouteInner call(ServiceResponse<VnetRouteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3250,6 +3338,7 @@ public final class AppServicePlansInner {
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
      * @param route Definition of the Virtual Network route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetRouteInner object
      */
     public Observable<ServiceResponse<VnetRouteInner>> updateVnetRouteWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
@@ -3288,7 +3377,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<VnetRouteInner> updateVnetRouteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetRouteInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<VnetRouteInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VnetRouteInner>() { }.getType())
                 .register(400, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
@@ -3303,9 +3392,12 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param workerName Name of worker machine, which typically starts with RD.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void rebootWorker(String resourceGroupName, String name, String workerName) {
-        rebootWorkerWithServiceResponseAsync(resourceGroupName, name, workerName).toBlocking().single().getBody();
+        rebootWorkerWithServiceResponseAsync(resourceGroupName, name, workerName).toBlocking().single().body();
     }
 
     /**
@@ -3316,10 +3408,11 @@ public final class AppServicePlansInner {
      * @param name Name of the App Service plan.
      * @param workerName Name of worker machine, which typically starts with RD.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> rebootWorkerAsync(String resourceGroupName, String name, String workerName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(rebootWorkerWithServiceResponseAsync(resourceGroupName, name, workerName), serviceCallback);
+    public ServiceFuture<Void> rebootWorkerAsync(String resourceGroupName, String name, String workerName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(rebootWorkerWithServiceResponseAsync(resourceGroupName, name, workerName), serviceCallback);
     }
 
     /**
@@ -3329,13 +3422,14 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param workerName Name of worker machine, which typically starts with RD.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> rebootWorkerAsync(String resourceGroupName, String name, String workerName) {
         return rebootWorkerWithServiceResponseAsync(resourceGroupName, name, workerName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -3347,6 +3441,7 @@ public final class AppServicePlansInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param workerName Name of worker machine, which typically starts with RD.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> rebootWorkerWithServiceResponseAsync(String resourceGroupName, String name, String workerName) {
@@ -3378,8 +3473,9 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<Void> rebootWorkerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -3388,14 +3484,17 @@ public final class AppServicePlansInner {
      * Get all App Service plans for a subcription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppServicePlanInner&gt; object if successful.
      */
     public PagedList<AppServicePlanInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<AppServicePlanInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<AppServicePlanInner>(response.getBody()) {
+        return new PagedList<AppServicePlanInner>(response.body()) {
             @Override
             public Page<AppServicePlanInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -3405,12 +3504,13 @@ public final class AppServicePlansInner {
      * Get all App Service plans for a subcription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServicePlanInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<AppServicePlanInner>> serviceCall, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<AppServicePlanInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<AppServicePlanInner>> serviceFuture, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
@@ -3426,6 +3526,7 @@ public final class AppServicePlansInner {
      * Get all App Service plans for a subcription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
      */
     public Observable<Page<AppServicePlanInner>> listNextAsync(final String nextPageLink) {
@@ -3433,7 +3534,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<AppServicePlanInner>>, Page<AppServicePlanInner>>() {
                 @Override
                 public Page<AppServicePlanInner> call(ServiceResponse<Page<AppServicePlanInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -3443,6 +3544,7 @@ public final class AppServicePlansInner {
      * Get all App Service plans for a subcription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
      */
     public Observable<ServiceResponse<Page<AppServicePlanInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -3450,7 +3552,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<AppServicePlanInner>>, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServicePlanInner>>> call(ServiceResponse<Page<AppServicePlanInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -3464,19 +3566,21 @@ public final class AppServicePlansInner {
      * Get all App Service plans for a subcription.
      *
     ServiceResponse<PageImpl<AppServicePlanInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;AppServicePlanInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AppServicePlanInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServicePlanInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AppServicePlanInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AppServicePlanInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<AppServicePlanInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3485,7 +3589,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<AppServicePlanInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServicePlanInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServicePlanInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppServicePlanInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3496,14 +3600,17 @@ public final class AppServicePlansInner {
      * Get all App Service plans in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppServicePlanInner&gt; object if successful.
      */
     public PagedList<AppServicePlanInner> listByResourceGroupNext(final String nextPageLink) {
         ServiceResponse<Page<AppServicePlanInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<AppServicePlanInner>(response.getBody()) {
+        return new PagedList<AppServicePlanInner>(response.body()) {
             @Override
             public Page<AppServicePlanInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -3513,12 +3620,13 @@ public final class AppServicePlansInner {
      * Get all App Service plans in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<AppServicePlanInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<AppServicePlanInner>> serviceCall, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<AppServicePlanInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<AppServicePlanInner>> serviceFuture, final ListOperationCallback<AppServicePlanInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
@@ -3534,6 +3642,7 @@ public final class AppServicePlansInner {
      * Get all App Service plans in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
      */
     public Observable<Page<AppServicePlanInner>> listByResourceGroupNextAsync(final String nextPageLink) {
@@ -3541,7 +3650,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<AppServicePlanInner>>, Page<AppServicePlanInner>>() {
                 @Override
                 public Page<AppServicePlanInner> call(ServiceResponse<Page<AppServicePlanInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -3551,6 +3660,7 @@ public final class AppServicePlansInner {
      * Get all App Service plans in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
      */
     public Observable<ServiceResponse<Page<AppServicePlanInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
@@ -3558,7 +3668,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<AppServicePlanInner>>, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServicePlanInner>>> call(ServiceResponse<Page<AppServicePlanInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -3572,19 +3682,21 @@ public final class AppServicePlansInner {
      * Get all App Service plans in a resource group.
      *
     ServiceResponse<PageImpl<AppServicePlanInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;AppServicePlanInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AppServicePlanInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listByResourceGroupNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppServicePlanInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppServicePlanInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AppServicePlanInner>> result = listByResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AppServicePlanInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<AppServicePlanInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3593,7 +3705,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<AppServicePlanInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AppServicePlanInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppServicePlanInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppServicePlanInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3604,14 +3716,17 @@ public final class AppServicePlansInner {
      * Get all apps that use a Hybrid Connection in an App Service Plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;String&gt; object if successful.
      */
     public PagedList<String> listWebAppsByHybridConnectionNext(final String nextPageLink) {
         ServiceResponse<Page<String>> response = listWebAppsByHybridConnectionNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<String>(response.getBody()) {
+        return new PagedList<String>(response.body()) {
             @Override
             public Page<String> nextPage(String nextPageLink) {
-                return listWebAppsByHybridConnectionNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWebAppsByHybridConnectionNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -3621,12 +3736,13 @@ public final class AppServicePlansInner {
      * Get all apps that use a Hybrid Connection in an App Service Plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<String>> listWebAppsByHybridConnectionNextAsync(final String nextPageLink, final ServiceCall<List<String>> serviceCall, final ListOperationCallback<String> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<String>> listWebAppsByHybridConnectionNextAsync(final String nextPageLink, final ServiceFuture<List<String>> serviceFuture, final ListOperationCallback<String> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebAppsByHybridConnectionNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<String>>>>() {
                 @Override
@@ -3642,6 +3758,7 @@ public final class AppServicePlansInner {
      * Get all apps that use a Hybrid Connection in an App Service Plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;String&gt; object
      */
     public Observable<Page<String>> listWebAppsByHybridConnectionNextAsync(final String nextPageLink) {
@@ -3649,7 +3766,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<String>>, Page<String>>() {
                 @Override
                 public Page<String> call(ServiceResponse<Page<String>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -3659,6 +3776,7 @@ public final class AppServicePlansInner {
      * Get all apps that use a Hybrid Connection in an App Service Plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;String&gt; object
      */
     public Observable<ServiceResponse<Page<String>>> listWebAppsByHybridConnectionNextWithServiceResponseAsync(final String nextPageLink) {
@@ -3666,7 +3784,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<String>>, Observable<ServiceResponse<Page<String>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<String>>> call(ServiceResponse<Page<String>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -3680,19 +3798,21 @@ public final class AppServicePlansInner {
      * Get all apps that use a Hybrid Connection in an App Service Plan.
      *
     ServiceResponse<PageImpl<String>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;String&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<String>>> listWebAppsByHybridConnectionNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listWebAppsByHybridConnectionNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listWebAppsByHybridConnectionNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<String>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<String>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<String>> result = listWebAppsByHybridConnectionNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<String>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<String>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3701,7 +3821,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<String>> listWebAppsByHybridConnectionNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<String>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<String>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<String>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3712,14 +3832,17 @@ public final class AppServicePlansInner {
      * Retrieve all Hybrid Connections in use in an App Service plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;HybridConnectionInner&gt; object if successful.
      */
     public PagedList<HybridConnectionInner> listHybridConnectionsNext(final String nextPageLink) {
         ServiceResponse<Page<HybridConnectionInner>> response = listHybridConnectionsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<HybridConnectionInner>(response.getBody()) {
+        return new PagedList<HybridConnectionInner>(response.body()) {
             @Override
             public Page<HybridConnectionInner> nextPage(String nextPageLink) {
-                return listHybridConnectionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listHybridConnectionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -3729,12 +3852,13 @@ public final class AppServicePlansInner {
      * Retrieve all Hybrid Connections in use in an App Service plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<HybridConnectionInner>> listHybridConnectionsNextAsync(final String nextPageLink, final ServiceCall<List<HybridConnectionInner>> serviceCall, final ListOperationCallback<HybridConnectionInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<HybridConnectionInner>> listHybridConnectionsNextAsync(final String nextPageLink, final ServiceFuture<List<HybridConnectionInner>> serviceFuture, final ListOperationCallback<HybridConnectionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listHybridConnectionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<HybridConnectionInner>>>>() {
                 @Override
@@ -3750,6 +3874,7 @@ public final class AppServicePlansInner {
      * Retrieve all Hybrid Connections in use in an App Service plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;HybridConnectionInner&gt; object
      */
     public Observable<Page<HybridConnectionInner>> listHybridConnectionsNextAsync(final String nextPageLink) {
@@ -3757,7 +3882,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<HybridConnectionInner>>, Page<HybridConnectionInner>>() {
                 @Override
                 public Page<HybridConnectionInner> call(ServiceResponse<Page<HybridConnectionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -3767,6 +3892,7 @@ public final class AppServicePlansInner {
      * Retrieve all Hybrid Connections in use in an App Service plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;HybridConnectionInner&gt; object
      */
     public Observable<ServiceResponse<Page<HybridConnectionInner>>> listHybridConnectionsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -3774,7 +3900,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<HybridConnectionInner>>, Observable<ServiceResponse<Page<HybridConnectionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<HybridConnectionInner>>> call(ServiceResponse<Page<HybridConnectionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -3788,19 +3914,21 @@ public final class AppServicePlansInner {
      * Retrieve all Hybrid Connections in use in an App Service plan.
      *
     ServiceResponse<PageImpl<HybridConnectionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;HybridConnectionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<HybridConnectionInner>>> listHybridConnectionsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listHybridConnectionsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listHybridConnectionsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<HybridConnectionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<HybridConnectionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<HybridConnectionInner>> result = listHybridConnectionsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<HybridConnectionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<HybridConnectionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3809,7 +3937,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<HybridConnectionInner>> listHybridConnectionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<HybridConnectionInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<HybridConnectionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<HybridConnectionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3820,14 +3948,17 @@ public final class AppServicePlansInner {
      * Get metrics that can be queried for an App Service plan, and their definitions.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object if successful.
      */
     public PagedList<ResourceMetricDefinitionInner> listMetricDefintionsNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceMetricDefinitionInner>> response = listMetricDefintionsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceMetricDefinitionInner>(response.getBody()) {
+        return new PagedList<ResourceMetricDefinitionInner>(response.body()) {
             @Override
             public Page<ResourceMetricDefinitionInner> nextPage(String nextPageLink) {
-                return listMetricDefintionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricDefintionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -3837,12 +3968,13 @@ public final class AppServicePlansInner {
      * Get metrics that can be queried for an App Service plan, and their definitions.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricDefinitionInner>> listMetricDefintionsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricDefinitionInner>> serviceCall, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricDefinitionInner>> listMetricDefintionsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricDefinitionInner>> serviceFuture, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricDefintionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
@@ -3858,6 +3990,7 @@ public final class AppServicePlansInner {
      * Get metrics that can be queried for an App Service plan, and their definitions.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<Page<ResourceMetricDefinitionInner>> listMetricDefintionsNextAsync(final String nextPageLink) {
@@ -3865,7 +3998,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Page<ResourceMetricDefinitionInner>>() {
                 @Override
                 public Page<ResourceMetricDefinitionInner> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -3875,6 +4008,7 @@ public final class AppServicePlansInner {
      * Get metrics that can be queried for an App Service plan, and their definitions.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listMetricDefintionsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -3882,7 +4016,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -3896,19 +4030,21 @@ public final class AppServicePlansInner {
      * Get metrics that can be queried for an App Service plan, and their definitions.
      *
     ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listMetricDefintionsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listMetricDefintionsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listMetricDefintionsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> result = listMetricDefintionsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3917,7 +4053,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> listMetricDefintionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricDefinitionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricDefinitionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3928,14 +4064,17 @@ public final class AppServicePlansInner {
      * Get metrics for an App Serice plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
     public PagedList<ResourceMetricInner> listMetricsNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceMetricInner>> response = listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.body()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) {
-                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -3945,12 +4084,13 @@ public final class AppServicePlansInner {
      * Get metrics for an App Serice plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ResourceMetricInner>> listMetricsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ResourceMetricInner>> listMetricsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricInner>> serviceFuture, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listMetricsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
@@ -3966,6 +4106,7 @@ public final class AppServicePlansInner {
      * Get metrics for an App Serice plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<Page<ResourceMetricInner>> listMetricsNextAsync(final String nextPageLink) {
@@ -3973,7 +4114,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
                 public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -3983,6 +4124,7 @@ public final class AppServicePlansInner {
      * Get metrics for an App Serice plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -3990,7 +4132,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -4004,19 +4146,21 @@ public final class AppServicePlansInner {
      * Get metrics for an App Serice plan.
      *
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listMetricsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listMetricsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ResourceMetricInner>> result = listMetricsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -4025,7 +4169,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<ResourceMetricInner>> listMetricsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ResourceMetricInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4036,14 +4180,17 @@ public final class AppServicePlansInner {
      * Get all apps associated with an App Service plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
     public PagedList<SiteInner> listWebAppsNext(final String nextPageLink) {
         ServiceResponse<Page<SiteInner>> response = listWebAppsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.body()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) {
-                return listWebAppsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listWebAppsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -4053,12 +4200,13 @@ public final class AppServicePlansInner {
      * Get all apps associated with an App Service plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SiteInner>> listWebAppsNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<SiteInner>> listWebAppsNextAsync(final String nextPageLink, final ServiceFuture<List<SiteInner>> serviceFuture, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listWebAppsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
@@ -4074,6 +4222,7 @@ public final class AppServicePlansInner {
      * Get all apps associated with an App Service plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<Page<SiteInner>> listWebAppsNextAsync(final String nextPageLink) {
@@ -4081,7 +4230,7 @@ public final class AppServicePlansInner {
             .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
                 public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
@@ -4091,6 +4240,7 @@ public final class AppServicePlansInner {
      * Get all apps associated with an App Service plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listWebAppsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -4098,7 +4248,7 @@ public final class AppServicePlansInner {
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -4112,19 +4262,21 @@ public final class AppServicePlansInner {
      * Get all apps associated with an App Service plan.
      *
     ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listWebAppsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listWebAppsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listWebAppsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<SiteInner>> result = listWebAppsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -4133,7 +4285,7 @@ public final class AppServicePlansInner {
     }
 
     private ServiceResponse<PageImpl<SiteInner>> listWebAppsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SiteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

@@ -7,9 +7,10 @@ var fs = require('fs');
 var mappings = {
     'compute': {
         'dir': 'azure-mgmt-compute',
-        'source': 'arm-compute/2016-03-30/swagger/compute.json',
+        'source': 'arm-compute/compositeComputeClient.json',
         'package': 'com.microsoft.azure.management.compute',
-        'args': '-FT 1'
+        'args': '-FT 1',
+        'modeler': 'CompositeSwagger'
     },
     'graphrbac': {
         'dir': 'azure-mgmt-graph-rbac',
@@ -51,15 +52,17 @@ var mappings = {
     },
     'network': {
         'dir': 'azure-mgmt-network',
-        'source': 'arm-network/2016-06-01/swagger/network.json',
+        'source': 'arm-network/compositeNetworkClient.json',
         'package': 'com.microsoft.azure.management.network',
-        'args': '-FT 1'
+        'args': '-FT 1',
+        'modeler': 'CompositeSwagger'
     },
     'appservice': {
         'dir': 'azure-mgmt-appservice',
         'source': 'arm-web/compositeWebAppClient.json',
         'package': 'com.microsoft.azure.management.appservice',
-        'args': '-FT 1'
+        'args': '-FT 1',
+        'modeler': 'CompositeSwagger'
     },
     'graph.rbac': {
         'dir': 'azure-mgmt-graph-rbac',
@@ -133,67 +136,65 @@ var mappings = {
         'dir': 'azure-mgmt-sql',
         'source': 'arm-sql/compositeSql.json',
         'package': 'com.microsoft.azure.management.sql',
-        'args': '-FT 1'
+        'args': '-FT 1',
+        'modeler': 'CompositeSwagger'
     },
     'cdn': {
         'dir': 'azure-mgmt-cdn',
         'source': 'arm-cdn/2016-10-02/swagger/cdn.json',
         'package': 'com.microsoft.azure.management.cdn',
         'args': '-FT 2'
+    },
+    'dns': {
+        'dir': 'azure-mgmt-dns',
+        'source': 'arm-dns/2016-04-01/swagger/dns.json',
+        'package': 'com.microsoft.azure.management.dns',
+        'args': '-FT 1'
+    },
+    'servicebus': {
+        'dir': 'azure-mgmt-servicebus',
+        'source': 'arm-servicebus/2015-08-01/swagger/servicebus.json',
+        'package': 'com.microsoft.azure.management.servicebus',
+        'args': '-FT 1'
+    },
+    'monitor': {
+        'dir': 'azure-mgmt-monitor',
+        'source': 'arm-monitor/compositeMonitorManagementClient.json',
+        'package': 'com.microsoft.azure.management.monitor',
+        'args': '-FT 1',
+        'modeler': 'CompositeSwagger'
     }
 };
 
 gulp.task('default', function() {
-    console.log("Usage: gulp codegen [--spec-root <swagger specs root>] [--projects <project names>] [--autorest <autorest info>] [--modeler <modeler name>] [--autorest-args <AutoRest arguments>]\n");
+    console.log("Usage: gulp codegen [--spec-root <swagger specs root>] [--projects <project names>] [--autorest <autorest info>] [--autorest-args <AutoRest arguments>]\n");
     console.log("--spec-root");
     console.log("\tRoot location of Swagger API specs, default value is \"https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master\"");
     console.log("--projects\n\tComma separated projects to regenerate, default is all. List of available project names:");
     Object.keys(mappings).forEach(function(i) {
         console.log('\t' + i.magenta);
     });
-    console.log("--autorest\n\tThe version of AutoRest. E.g. 0.15.0, or the location of AutoRest repo, E.g. E:\\repo\\autorest");
-    console.log("--modeler\n\tSpecifies which modeler to use. Default is 'Swagger'");
+    console.log("--autorest\n\tThe version of AutoRest. E.g. 1.0.1-20170222-2300-nightly, or the location of AutoRest repo, E.g. E:\\repo\\autorest");
     console.log("--autorest-args\n\tPasses additional argument to AutoRest generator");
 });
 
-var isWindows = (process.platform.lastIndexOf('win') === 0);
-var isLinux= (process.platform.lastIndexOf('linux') === 0);
-var isMac = (process.platform.lastIndexOf('darwin') === 0);
-
 var specRoot = args['spec-root'] || "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master";
 var projects = args['projects'];
-var autoRestVersion = '0.17.3-Nightly20161101'; // default
+var autoRestVersion = 'latest'; // default
 if (args['autorest'] !== undefined) {
     autoRestVersion = args['autorest'];
-}
-var modeler = 'Swagger'; // default
-if (args['modeler'] !== undefined) {
-	modeler = args['modeler'];
 }
 var autoRestArgs = args['autorest-args'];
 var autoRestExe;
 
 gulp.task('codegen', function(cb) {
-    var nugetSource = 'https://www.myget.org/F/autorest/api/v2';
-    if (autoRestVersion.match(/[0-9]+\.[0-9]+\.[0-9]+.*/)) {
-        autoRestExe = 'packages\\autorest.' + autoRestVersion + '\\tools\\AutoRest.exe';
-        nugetExe = "tools\\nuget.exe";
-        if (process.platform !== 'win32') {
-            nugetExe = "mono tools/nuget.exe";
-            autoRestExe = autoRestExe.replace(/\\/g, "/");
-            exec('chmod +x ' + autoRestExe);
-            autoRestExe = "mono " + autoRestExe;
-        }
-        exec(nugetExe + ' install AutoRest -Source ' + nugetSource + ' -Version ' + autoRestVersion + ' -o packages', function(err, stdout, stderr) {
-            console.log(stdout);
-            console.error(stderr);
-            handleInput(projects, cb);
-        });
+    if (autoRestVersion.match(/[0-9]+\.[0-9]+\.[0-9]+.*/) ||
+        autoRestVersion == 'latest') {
+        autoRestExe = 'autorest ---version=' + autoRestVersion;
+        handleInput(projects, cb);
     } else {
-        autoRestExe = autoRestVersion + "/" + GetAutoRestFolder() + "AutoRest.exe";
-        if (process.platform !== 'win32') {
-            autoRestExe = "mono " + autoRestExe;
-        }
+        autoRestExe = autoRestVersion + "/src/core/AutoRest/bin/Debug/netcoreapp1.0/AutoRest.dll";
+        autoRestExe = "dotnet " + autoRestExe;
         handleInput(projects, cb);
     }
 
@@ -224,12 +225,17 @@ var codegen = function(project, cb) {
     if (mappings[project].fluent !== null && mappings[project].fluent === false) {
         generator = 'Azure.Java';
     }
+    var modeler = 'Swagger'; // default
+    if (mappings[project].modeler !== undefined) {
+        modeler = mappings[project].modeler;
+    }
     cmd = autoRestExe + ' -Modeler ' + modeler +
                         ' -CodeGenerator ' + generator +
                         ' -Namespace ' + mappings[project].package +
                         ' -Input ' + specRoot + '/' + mappings[project].source +
                         ' -outputDirectory ' + mappings[project].dir + '/src/main/java/' + mappings[project].package.replace(/\./g, '/') +
                         ' -Header MICROSOFT_MIT_NO_CODEGEN' +
+                        ' -skipValidation true' +
                         ' -' + autoRestArgs;
     if (mappings[project].args !== undefined) {
         cmd = cmd + ' ' + mappings[project].args;
@@ -257,16 +263,3 @@ var deleteFolderRecursive = function(path) {
         });
     }
 };
-
-function GetAutoRestFolder() {
-  if (isWindows) {
-    return "src/core/AutoRest/bin/Debug/net451/win7-x64/";
-  }
-  if( isMac ) {
-	return "src/core/AutoRest/bin/Debug/net451/osx.10.11-x64/";
-  }
-  if( isLinux ) {
-	return "src/core/AutoRest/bin/Debug/net451/ubuntu.14.04-x64/"
-  }
-   throw new Error("Unknown platform?");
-}

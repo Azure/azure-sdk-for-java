@@ -8,25 +8,32 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * SKU of application gateway.
+ * SKU of an application gateway.
  */
 public class ApplicationGatewaySku {
     /**
-     * Name of application gateway SKU. Possible values include:
-     * 'Standard_Small', 'Standard_Medium', 'Standard_Large'.
+     * Name of an application gateway SKU. Possible values are:
+     * 'Standard_Small', 'Standard_Medium', 'Standard_Large', 'WAF_Medium', and
+     * 'WAF_Large'. Possible values include: 'Standard_Small',
+     * 'Standard_Medium', 'Standard_Large', 'WAF_Medium', 'WAF_Large'.
      */
+    @JsonProperty(value = "name")
     private ApplicationGatewaySkuName name;
 
     /**
-     * Tier of application gateway. Possible values include: 'Standard'.
+     * Tier of an application gateway. Possible values are: 'Standard' and
+     * 'WAF'. Possible values include: 'Standard', 'WAF'.
      */
+    @JsonProperty(value = "tier")
     private ApplicationGatewayTier tier;
 
     /**
-     * Capacity (instance count) of application gateway.
+     * Capacity (instance count) of an application gateway.
      */
+    @JsonProperty(value = "capacity")
     private Integer capacity;
 
     /**

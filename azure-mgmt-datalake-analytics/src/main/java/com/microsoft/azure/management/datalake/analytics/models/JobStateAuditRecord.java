@@ -19,25 +19,25 @@ public class JobStateAuditRecord {
     /**
      * the new state the job is in.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "newState", access = JsonProperty.Access.WRITE_ONLY)
     private String newState;
 
     /**
      * the time stamp that the state change took place.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "timeStamp", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime timeStamp;
 
     /**
      * the user who requests the change.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "requestedByUser", access = JsonProperty.Access.WRITE_ONLY)
     private String requestedByUser;
 
     /**
      * the details of the audit log.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private String details;
 
     /**

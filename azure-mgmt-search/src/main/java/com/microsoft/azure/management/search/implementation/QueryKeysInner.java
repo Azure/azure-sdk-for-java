@@ -10,9 +10,8 @@ package com.microsoft.azure.management.search.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
@@ -52,7 +51,7 @@ public final class QueryKeysInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface QueryKeysService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.search.QueryKeys list" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{serviceName}/listQueryKeys")
         Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -66,7 +65,7 @@ public final class QueryKeysInner {
      * @return the ListQueryKeysResultInner object if successful.
      */
     public ListQueryKeysResultInner list(String resourceGroupName, String serviceName) {
-        return listWithServiceResponseAsync(resourceGroupName, serviceName).toBlocking().single().getBody();
+        return listWithServiceResponseAsync(resourceGroupName, serviceName).toBlocking().single().body();
     }
 
     /**
@@ -75,10 +74,10 @@ public final class QueryKeysInner {
      * @param resourceGroupName The name of the resource group within the current subscription.
      * @param serviceName The name of the Search service for which to list query keys.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ListQueryKeysResultInner> listAsync(String resourceGroupName, String serviceName, final ServiceCallback<ListQueryKeysResultInner> serviceCallback) {
-        return ServiceCall.create(listWithServiceResponseAsync(resourceGroupName, serviceName), serviceCallback);
+    public ServiceFuture<ListQueryKeysResultInner> listAsync(String resourceGroupName, String serviceName, final ServiceCallback<ListQueryKeysResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(resourceGroupName, serviceName), serviceCallback);
     }
 
     /**
@@ -92,7 +91,7 @@ public final class QueryKeysInner {
         return listWithServiceResponseAsync(resourceGroupName, serviceName).map(new Func1<ServiceResponse<ListQueryKeysResultInner>, ListQueryKeysResultInner>() {
             @Override
             public ListQueryKeysResultInner call(ServiceResponse<ListQueryKeysResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -132,7 +131,7 @@ public final class QueryKeysInner {
     }
 
     private ServiceResponse<ListQueryKeysResultInner> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ListQueryKeysResultInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ListQueryKeysResultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ListQueryKeysResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

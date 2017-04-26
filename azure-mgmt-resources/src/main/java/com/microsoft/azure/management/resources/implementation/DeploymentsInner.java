@@ -8,16 +8,17 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -33,6 +34,7 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -41,7 +43,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Deployments.
  */
-public final class DeploymentsInner {
+public class DeploymentsInner implements InnerSupportsGet<DeploymentExtendedInner>, InnerSupportsDelete<Void> {
     /** The Retrofit service to perform REST calls. */
     private DeploymentsService service;
     /** The service client containing this operation class. */
@@ -63,95 +65,105 @@ public final class DeploymentsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface DeploymentsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Deployments delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("deploymentName") String deploymentName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Deployments beginDelete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("deploymentName") String deploymentName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Deployments checkExistence" })
         @HEAD("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}")
         Observable<Response<Void>> checkExistence(@Path("resourceGroupName") String resourceGroupName, @Path("deploymentName") String deploymentName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Deployments createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("deploymentName") String deploymentName, @Path("subscriptionId") String subscriptionId, @Body DeploymentInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Deployments beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("deploymentName") String deploymentName, @Path("subscriptionId") String subscriptionId, @Body DeploymentInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Deployments getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("deploymentName") String deploymentName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("deploymentName") String deploymentName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Deployments cancel" })
         @POST("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}/cancel")
         Observable<Response<ResponseBody>> cancel(@Path("resourceGroupName") String resourceGroupName, @Path("deploymentName") String deploymentName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Deployments validate" })
         @POST("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}/validate")
         Observable<Response<ResponseBody>> validate(@Path("resourceGroupName") String resourceGroupName, @Path("deploymentName") String deploymentName, @Path("subscriptionId") String subscriptionId, @Body DeploymentInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Deployments exportTemplate" })
         @POST("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}/exportTemplate")
         Observable<Response<ResponseBody>> exportTemplate(@Path("resourceGroupName") String resourceGroupName, @Path("deploymentName") String deploymentName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Deployments listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/")
-        Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.Deployments listByResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * Delete deployment.
+     * Deletes a deployment from the deployment history.
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. Deleting a template deployment does not affect the state of the resource group. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment to be deleted.
+     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case insensitive.
+     * @param deploymentName The name of the deployment to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String deploymentName) {
-        deleteWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().last().body();
     }
 
     /**
-     * Delete deployment.
+     * Deletes a deployment from the deployment history.
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. Deleting a template deployment does not affect the state of the resource group. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment to be deleted.
+     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case insensitive.
+     * @param deploymentName The name of the deployment to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String deploymentName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String deploymentName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
     }
 
     /**
-     * Delete deployment.
+     * Deletes a deployment from the deployment history.
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. Deleting a template deployment does not affect the state of the resource group. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment to be deleted.
+     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case insensitive.
+     * @param deploymentName The name of the deployment to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String deploymentName) {
         return deleteWithServiceResponseAsync(resourceGroupName, deploymentName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Delete deployment.
+     * Deletes a deployment from the deployment history.
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. Deleting a template deployment does not affect the state of the resource group. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment to be deleted.
+     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case insensitive.
+     * @param deploymentName The name of the deployment to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String deploymentName) {
@@ -172,48 +184,58 @@ public final class DeploymentsInner {
     }
 
     /**
-     * Delete deployment.
+     * Deletes a deployment from the deployment history.
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. Deleting a template deployment does not affect the state of the resource group. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment to be deleted.
+     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case insensitive.
+     * @param deploymentName The name of the deployment to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String deploymentName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().body();
     }
 
     /**
-     * Delete deployment.
+     * Deletes a deployment from the deployment history.
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. Deleting a template deployment does not affect the state of the resource group. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment to be deleted.
+     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case insensitive.
+     * @param deploymentName The name of the deployment to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String deploymentName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String deploymentName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
     }
 
     /**
-     * Delete deployment.
+     * Deletes a deployment from the deployment history.
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. Deleting a template deployment does not affect the state of the resource group. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment to be deleted.
+     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case insensitive.
+     * @param deploymentName The name of the deployment to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String deploymentName) {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, deploymentName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Delete deployment.
+     * Deletes a deployment from the deployment history.
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. Deleting a template deployment does not affect the state of the resource group. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment to be deleted.
+     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case insensitive.
+     * @param deploymentName The name of the deployment to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String deploymentName) {
@@ -244,57 +266,64 @@ public final class DeploymentsInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Checks whether deployment exists.
+     * Checks whether the deployment exists.
      *
-     * @param resourceGroupName The name of the resource group to check. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
+     * @param resourceGroupName The name of the resource group with the deployment to check. The name is case insensitive.
+     * @param deploymentName The name of the deployment to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the boolean object if successful.
      */
     public boolean checkExistence(String resourceGroupName, String deploymentName) {
-        return checkExistenceWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().getBody();
+        return checkExistenceWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().body();
     }
 
     /**
-     * Checks whether deployment exists.
+     * Checks whether the deployment exists.
      *
-     * @param resourceGroupName The name of the resource group to check. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
+     * @param resourceGroupName The name of the resource group with the deployment to check. The name is case insensitive.
+     * @param deploymentName The name of the deployment to check.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Boolean> checkExistenceAsync(String resourceGroupName, String deploymentName, final ServiceCallback<Boolean> serviceCallback) {
-        return ServiceCall.create(checkExistenceWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
+    public ServiceFuture<Boolean> checkExistenceAsync(String resourceGroupName, String deploymentName, final ServiceCallback<Boolean> serviceCallback) {
+        return ServiceFuture.fromResponse(checkExistenceWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
     }
 
     /**
-     * Checks whether deployment exists.
+     * Checks whether the deployment exists.
      *
-     * @param resourceGroupName The name of the resource group to check. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
-     * @return the observable to the boolean object
+     * @param resourceGroupName The name of the resource group with the deployment to check. The name is case insensitive.
+     * @param deploymentName The name of the deployment to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Boolean object
      */
     public Observable<Boolean> checkExistenceAsync(String resourceGroupName, String deploymentName) {
         return checkExistenceWithServiceResponseAsync(resourceGroupName, deploymentName).map(new Func1<ServiceResponse<Boolean>, Boolean>() {
             @Override
             public Boolean call(ServiceResponse<Boolean> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Checks whether deployment exists.
+     * Checks whether the deployment exists.
      *
-     * @param resourceGroupName The name of the resource group to check. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
-     * @return the observable to the boolean object
+     * @param resourceGroupName The name of the resource group with the deployment to check. The name is case insensitive.
+     * @param deploymentName The name of the deployment to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Boolean object
      */
     public Observable<ServiceResponse<Boolean>> checkExistenceWithServiceResponseAsync(String resourceGroupName, String deploymentName) {
         if (resourceGroupName == null) {
@@ -324,7 +353,7 @@ public final class DeploymentsInner {
     }
 
     private ServiceResponse<Boolean> checkExistenceDelegate(Response<Void> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Boolean, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Boolean, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -332,53 +361,63 @@ public final class DeploymentsInner {
     }
 
     /**
-     * Create a named template deployment using a template.
+     * Deploys resources to a resource group.
+     * You can provide the template and parameters directly in the request or link to JSON files.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive. The resource group must already exist.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DeploymentExtendedInner object if successful.
      */
     public DeploymentExtendedInner createOrUpdate(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).toBlocking().last().body();
     }
 
     /**
-     * Create a named template deployment using a template.
+     * Deploys resources to a resource group.
+     * You can provide the template and parameters directly in the request or link to JSON files.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive. The resource group must already exist.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DeploymentExtendedInner> createOrUpdateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters, final ServiceCallback<DeploymentExtendedInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters), serviceCallback);
+    public ServiceFuture<DeploymentExtendedInner> createOrUpdateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters, final ServiceCallback<DeploymentExtendedInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters), serviceCallback);
     }
 
     /**
-     * Create a named template deployment using a template.
+     * Deploys resources to a resource group.
+     * You can provide the template and parameters directly in the request or link to JSON files.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive. The resource group must already exist.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<DeploymentExtendedInner> createOrUpdateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).map(new Func1<ServiceResponse<DeploymentExtendedInner>, DeploymentExtendedInner>() {
             @Override
             public DeploymentExtendedInner call(ServiceResponse<DeploymentExtendedInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Create a named template deployment using a template.
+     * Deploys resources to a resource group.
+     * You can provide the template and parameters directly in the request or link to JSON files.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive. The resource group must already exist.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<DeploymentExtendedInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
@@ -403,53 +442,63 @@ public final class DeploymentsInner {
     }
 
     /**
-     * Create a named template deployment using a template.
+     * Deploys resources to a resource group.
+     * You can provide the template and parameters directly in the request or link to JSON files.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive. The resource group must already exist.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DeploymentExtendedInner object if successful.
      */
     public DeploymentExtendedInner beginCreateOrUpdate(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).toBlocking().single().body();
     }
 
     /**
-     * Create a named template deployment using a template.
+     * Deploys resources to a resource group.
+     * You can provide the template and parameters directly in the request or link to JSON files.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive. The resource group must already exist.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DeploymentExtendedInner> beginCreateOrUpdateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters, final ServiceCallback<DeploymentExtendedInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters), serviceCallback);
+    public ServiceFuture<DeploymentExtendedInner> beginCreateOrUpdateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters, final ServiceCallback<DeploymentExtendedInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters), serviceCallback);
     }
 
     /**
-     * Create a named template deployment using a template.
+     * Deploys resources to a resource group.
+     * You can provide the template and parameters directly in the request or link to JSON files.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive. The resource group must already exist.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentExtendedInner object
      */
     public Observable<DeploymentExtendedInner> beginCreateOrUpdateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).map(new Func1<ServiceResponse<DeploymentExtendedInner>, DeploymentExtendedInner>() {
             @Override
             public DeploymentExtendedInner call(ServiceResponse<DeploymentExtendedInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Create a named template deployment using a template.
+     * Deploys resources to a resource group.
+     * You can provide the template and parameters directly in the request or link to JSON files.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive. The resource group must already exist.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentExtendedInner object
      */
     public Observable<ServiceResponse<DeploymentExtendedInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
@@ -484,7 +533,7 @@ public final class DeploymentsInner {
     }
 
     private ServiceResponse<DeploymentExtendedInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DeploymentExtendedInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DeploymentExtendedInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DeploymentExtendedInner>() { }.getType())
                 .register(201, new TypeToken<DeploymentExtendedInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -492,52 +541,58 @@ public final class DeploymentsInner {
     }
 
     /**
-     * Get a deployment.
+     * Gets a deployment.
      *
-     * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of the deployment to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DeploymentExtendedInner object if successful.
      */
-    public DeploymentExtendedInner get(String resourceGroupName, String deploymentName) {
-        return getWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().getBody();
+    public DeploymentExtendedInner getByResourceGroup(String resourceGroupName, String deploymentName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().body();
     }
 
     /**
-     * Get a deployment.
+     * Gets a deployment.
      *
-     * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of the deployment to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DeploymentExtendedInner> getAsync(String resourceGroupName, String deploymentName, final ServiceCallback<DeploymentExtendedInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
+    public ServiceFuture<DeploymentExtendedInner> getByResourceGroupAsync(String resourceGroupName, String deploymentName, final ServiceCallback<DeploymentExtendedInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
     }
 
     /**
-     * Get a deployment.
+     * Gets a deployment.
      *
-     * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of the deployment to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentExtendedInner object
      */
-    public Observable<DeploymentExtendedInner> getAsync(String resourceGroupName, String deploymentName) {
-        return getWithServiceResponseAsync(resourceGroupName, deploymentName).map(new Func1<ServiceResponse<DeploymentExtendedInner>, DeploymentExtendedInner>() {
+    public Observable<DeploymentExtendedInner> getByResourceGroupAsync(String resourceGroupName, String deploymentName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, deploymentName).map(new Func1<ServiceResponse<DeploymentExtendedInner>, DeploymentExtendedInner>() {
             @Override
             public DeploymentExtendedInner call(ServiceResponse<DeploymentExtendedInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Get a deployment.
+     * Gets a deployment.
      *
-     * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of the deployment to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentExtendedInner object
      */
-    public Observable<ServiceResponse<DeploymentExtendedInner>> getWithServiceResponseAsync(String resourceGroupName, String deploymentName) {
+    public Observable<ServiceResponse<DeploymentExtendedInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String deploymentName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -550,12 +605,12 @@ public final class DeploymentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.get(resourceGroupName, deploymentName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(resourceGroupName, deploymentName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DeploymentExtendedInner>>>() {
                 @Override
                 public Observable<ServiceResponse<DeploymentExtendedInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<DeploymentExtendedInner> clientResponse = getDelegate(response);
+                        ServiceResponse<DeploymentExtendedInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -564,56 +619,66 @@ public final class DeploymentsInner {
             });
     }
 
-    private ServiceResponse<DeploymentExtendedInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DeploymentExtendedInner, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<DeploymentExtendedInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<DeploymentExtendedInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DeploymentExtendedInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Cancel a currently running template deployment.
+     * Cancels a currently running template deployment.
+     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resource group partially deployed.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
+     * @param deploymentName The name of the deployment to cancel.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void cancel(String resourceGroupName, String deploymentName) {
-        cancelWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().getBody();
+        cancelWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().body();
     }
 
     /**
-     * Cancel a currently running template deployment.
+     * Cancels a currently running template deployment.
+     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resource group partially deployed.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
+     * @param deploymentName The name of the deployment to cancel.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> cancelAsync(String resourceGroupName, String deploymentName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(cancelWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
+    public ServiceFuture<Void> cancelAsync(String resourceGroupName, String deploymentName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(cancelWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
     }
 
     /**
-     * Cancel a currently running template deployment.
+     * Cancels a currently running template deployment.
+     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resource group partially deployed.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
+     * @param deploymentName The name of the deployment to cancel.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> cancelAsync(String resourceGroupName, String deploymentName) {
         return cancelWithServiceResponseAsync(resourceGroupName, deploymentName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Cancel a currently running template deployment.
+     * Cancels a currently running template deployment.
+     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resource group partially deployed.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
+     * @param deploymentName The name of the deployment to cancel.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> cancelWithServiceResponseAsync(String resourceGroupName, String deploymentName) {
@@ -644,59 +709,66 @@ public final class DeploymentsInner {
     }
 
     private ServiceResponse<Void> cancelDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Validate a deployment template.
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case insensitive.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment to validate.
+     * @param parameters Parameters to validate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DeploymentValidateResultInner object if successful.
      */
     public DeploymentValidateResultInner validate(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
-        return validateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).toBlocking().single().getBody();
+        return validateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).toBlocking().single().body();
     }
 
     /**
-     * Validate a deployment template.
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case insensitive.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment to validate.
+     * @param parameters Parameters to validate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DeploymentValidateResultInner> validateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters, final ServiceCallback<DeploymentValidateResultInner> serviceCallback) {
-        return ServiceCall.create(validateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters), serviceCallback);
+    public ServiceFuture<DeploymentValidateResultInner> validateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters, final ServiceCallback<DeploymentValidateResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(validateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters), serviceCallback);
     }
 
     /**
-     * Validate a deployment template.
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case insensitive.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment to validate.
+     * @param parameters Parameters to validate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentValidateResultInner object
      */
     public Observable<DeploymentValidateResultInner> validateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
         return validateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).map(new Func1<ServiceResponse<DeploymentValidateResultInner>, DeploymentValidateResultInner>() {
             @Override
             public DeploymentValidateResultInner call(ServiceResponse<DeploymentValidateResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Validate a deployment template.
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case insensitive.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment to validate.
+     * @param parameters Parameters to validate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentValidateResultInner object
      */
     public Observable<ServiceResponse<DeploymentValidateResultInner>> validateWithServiceResponseAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
@@ -731,7 +803,7 @@ public final class DeploymentsInner {
     }
 
     private ServiceResponse<DeploymentValidateResultInner> validateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DeploymentValidateResultInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DeploymentValidateResultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DeploymentValidateResultInner>() { }.getType())
                 .register(400, new TypeToken<DeploymentValidateResultInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -739,49 +811,55 @@ public final class DeploymentsInner {
     }
 
     /**
-     * Exports a deployment template.
+     * Exports the template used for specified deployment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
+     * @param deploymentName The name of the deployment from which to get the template.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DeploymentExportResultInner object if successful.
      */
     public DeploymentExportResultInner exportTemplate(String resourceGroupName, String deploymentName) {
-        return exportTemplateWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().getBody();
+        return exportTemplateWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().body();
     }
 
     /**
-     * Exports a deployment template.
+     * Exports the template used for specified deployment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
+     * @param deploymentName The name of the deployment from which to get the template.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<DeploymentExportResultInner> exportTemplateAsync(String resourceGroupName, String deploymentName, final ServiceCallback<DeploymentExportResultInner> serviceCallback) {
-        return ServiceCall.create(exportTemplateWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
+    public ServiceFuture<DeploymentExportResultInner> exportTemplateAsync(String resourceGroupName, String deploymentName, final ServiceCallback<DeploymentExportResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(exportTemplateWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
     }
 
     /**
-     * Exports a deployment template.
+     * Exports the template used for specified deployment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
+     * @param deploymentName The name of the deployment from which to get the template.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentExportResultInner object
      */
     public Observable<DeploymentExportResultInner> exportTemplateAsync(String resourceGroupName, String deploymentName) {
         return exportTemplateWithServiceResponseAsync(resourceGroupName, deploymentName).map(new Func1<ServiceResponse<DeploymentExportResultInner>, DeploymentExportResultInner>() {
             @Override
             public DeploymentExportResultInner call(ServiceResponse<DeploymentExportResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * Exports a deployment template.
+     * Exports the template used for specified deployment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
+     * @param deploymentName The name of the deployment from which to get the template.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentExportResultInner object
      */
     public Observable<ServiceResponse<DeploymentExportResultInner>> exportTemplateWithServiceResponseAsync(String resourceGroupName, String deploymentName) {
@@ -812,90 +890,97 @@ public final class DeploymentsInner {
     }
 
     private ServiceResponse<DeploymentExportResultInner> exportTemplateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DeploymentExportResultInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<DeploymentExportResultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DeploymentExportResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Get a list of deployments.
+     * Get all the deployments for a resource group.
      *
-     * @param resourceGroupName The name of the resource group to filter by. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group with the deployments to get. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DeploymentExtendedInner&gt; object if successful.
      */
-    public PagedList<DeploymentExtendedInner> list(final String resourceGroupName) {
-        ServiceResponse<Page<DeploymentExtendedInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<DeploymentExtendedInner>(response.getBody()) {
+    public PagedList<DeploymentExtendedInner> listByResourceGroup(final String resourceGroupName) {
+        ServiceResponse<Page<DeploymentExtendedInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
+        return new PagedList<DeploymentExtendedInner>(response.body()) {
             @Override
             public Page<DeploymentExtendedInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Get a list of deployments.
+     * Get all the deployments for a resource group.
      *
-     * @param resourceGroupName The name of the resource group to filter by. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group with the deployments to get. The name is case insensitive.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DeploymentExtendedInner>> listAsync(final String resourceGroupName, final ListOperationCallback<DeploymentExtendedInner> serviceCallback) {
-        return AzureServiceCall.create(
-            listSinglePageAsync(resourceGroupName),
+    public ServiceFuture<List<DeploymentExtendedInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DeploymentExtendedInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentExtendedInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink);
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
     }
 
     /**
-     * Get a list of deployments.
+     * Get all the deployments for a resource group.
      *
-     * @param resourceGroupName The name of the resource group to filter by. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group with the deployments to get. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentExtendedInner&gt; object
      */
-    public Observable<Page<DeploymentExtendedInner>> listAsync(final String resourceGroupName) {
-        return listWithServiceResponseAsync(resourceGroupName)
+    public Observable<Page<DeploymentExtendedInner>> listByResourceGroupAsync(final String resourceGroupName) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName)
             .map(new Func1<ServiceResponse<Page<DeploymentExtendedInner>>, Page<DeploymentExtendedInner>>() {
                 @Override
                 public Page<DeploymentExtendedInner> call(ServiceResponse<Page<DeploymentExtendedInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Get a list of deployments.
+     * Get all the deployments for a resource group.
      *
-     * @param resourceGroupName The name of the resource group to filter by. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group with the deployments to get. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentExtendedInner&gt; object
      */
-    public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> listWithServiceResponseAsync(final String resourceGroupName) {
-        return listSinglePageAsync(resourceGroupName)
+    public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
+        return listByResourceGroupSinglePageAsync(resourceGroupName)
             .concatMap(new Func1<ServiceResponse<Page<DeploymentExtendedInner>>, Observable<ServiceResponse<Page<DeploymentExtendedInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> call(ServiceResponse<Page<DeploymentExtendedInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
 
     /**
-     * Get a list of deployments.
+     * Get all the deployments for a resource group.
      *
-     * @param resourceGroupName The name of the resource group to filter by. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group with the deployments to get. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeploymentExtendedInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> listSinglePageAsync(final String resourceGroupName) {
+    public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -907,13 +992,13 @@ public final class DeploymentsInner {
         }
         final String filter = null;
         final Integer top = null;
-        return service.list(resourceGroupName, this.client.subscriptionId(), filter, top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DeploymentExtendedInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<DeploymentExtendedInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentExtendedInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<DeploymentExtendedInner>> result = listByResourceGroupDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<DeploymentExtendedInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -922,93 +1007,100 @@ public final class DeploymentsInner {
     }
 
     /**
-     * Get a list of deployments.
+     * Get all the deployments for a resource group.
      *
-     * @param resourceGroupName The name of the resource group to filter by. The name is case insensitive.
-     * @param filter The filter to apply on the operation.
-     * @param top Query parameters. If null is passed returns all deployments.
+     * @param resourceGroupName The name of the resource group with the deployments to get. The name is case insensitive.
+     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
+     * @param top The number of results to get. If null is passed, returns all deployments.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DeploymentExtendedInner&gt; object if successful.
      */
-    public PagedList<DeploymentExtendedInner> list(final String resourceGroupName, final String filter, final Integer top) {
-        ServiceResponse<Page<DeploymentExtendedInner>> response = listSinglePageAsync(resourceGroupName, filter, top).toBlocking().single();
-        return new PagedList<DeploymentExtendedInner>(response.getBody()) {
+    public PagedList<DeploymentExtendedInner> listByResourceGroup(final String resourceGroupName, final String filter, final Integer top) {
+        ServiceResponse<Page<DeploymentExtendedInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName, filter, top).toBlocking().single();
+        return new PagedList<DeploymentExtendedInner>(response.body()) {
             @Override
             public Page<DeploymentExtendedInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Get a list of deployments.
+     * Get all the deployments for a resource group.
      *
-     * @param resourceGroupName The name of the resource group to filter by. The name is case insensitive.
-     * @param filter The filter to apply on the operation.
-     * @param top Query parameters. If null is passed returns all deployments.
+     * @param resourceGroupName The name of the resource group with the deployments to get. The name is case insensitive.
+     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
+     * @param top The number of results to get. If null is passed, returns all deployments.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DeploymentExtendedInner>> listAsync(final String resourceGroupName, final String filter, final Integer top, final ListOperationCallback<DeploymentExtendedInner> serviceCallback) {
-        return AzureServiceCall.create(
-            listSinglePageAsync(resourceGroupName, filter, top),
+    public ServiceFuture<List<DeploymentExtendedInner>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final ListOperationCallback<DeploymentExtendedInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentExtendedInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink);
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
     }
 
     /**
-     * Get a list of deployments.
+     * Get all the deployments for a resource group.
      *
-     * @param resourceGroupName The name of the resource group to filter by. The name is case insensitive.
-     * @param filter The filter to apply on the operation.
-     * @param top Query parameters. If null is passed returns all deployments.
+     * @param resourceGroupName The name of the resource group with the deployments to get. The name is case insensitive.
+     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
+     * @param top The number of results to get. If null is passed, returns all deployments.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentExtendedInner&gt; object
      */
-    public Observable<Page<DeploymentExtendedInner>> listAsync(final String resourceGroupName, final String filter, final Integer top) {
-        return listWithServiceResponseAsync(resourceGroupName, filter, top)
+    public Observable<Page<DeploymentExtendedInner>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName, filter, top)
             .map(new Func1<ServiceResponse<Page<DeploymentExtendedInner>>, Page<DeploymentExtendedInner>>() {
                 @Override
                 public Page<DeploymentExtendedInner> call(ServiceResponse<Page<DeploymentExtendedInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Get a list of deployments.
+     * Get all the deployments for a resource group.
      *
-     * @param resourceGroupName The name of the resource group to filter by. The name is case insensitive.
-     * @param filter The filter to apply on the operation.
-     * @param top Query parameters. If null is passed returns all deployments.
+     * @param resourceGroupName The name of the resource group with the deployments to get. The name is case insensitive.
+     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
+     * @param top The number of results to get. If null is passed, returns all deployments.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentExtendedInner&gt; object
      */
-    public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String filter, final Integer top) {
-        return listSinglePageAsync(resourceGroupName, filter, top)
+    public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName, final String filter, final Integer top) {
+        return listByResourceGroupSinglePageAsync(resourceGroupName, filter, top)
             .concatMap(new Func1<ServiceResponse<Page<DeploymentExtendedInner>>, Observable<ServiceResponse<Page<DeploymentExtendedInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> call(ServiceResponse<Page<DeploymentExtendedInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
 
     /**
-     * Get a list of deployments.
+     * Get all the deployments for a resource group.
      *
-    ServiceResponse<PageImpl<DeploymentExtendedInner>> * @param resourceGroupName The name of the resource group to filter by. The name is case insensitive.
-    ServiceResponse<PageImpl<DeploymentExtendedInner>> * @param filter The filter to apply on the operation.
-    ServiceResponse<PageImpl<DeploymentExtendedInner>> * @param top Query parameters. If null is passed returns all deployments.
+    ServiceResponse<PageImpl<DeploymentExtendedInner>> * @param resourceGroupName The name of the resource group with the deployments to get. The name is case insensitive.
+    ServiceResponse<PageImpl<DeploymentExtendedInner>> * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
+    ServiceResponse<PageImpl<DeploymentExtendedInner>> * @param top The number of results to get. If null is passed, returns all deployments.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeploymentExtendedInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> listSinglePageAsync(final String resourceGroupName, final String filter, final Integer top) {
+    public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName, final String filter, final Integer top) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1018,13 +1110,13 @@ public final class DeploymentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(resourceGroupName, this.client.subscriptionId(), filter, top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DeploymentExtendedInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<DeploymentExtendedInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentExtendedInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<DeploymentExtendedInner>> result = listByResourceGroupDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<DeploymentExtendedInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1032,102 +1124,110 @@ public final class DeploymentsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<DeploymentExtendedInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DeploymentExtendedInner>, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<PageImpl<DeploymentExtendedInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DeploymentExtendedInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DeploymentExtendedInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Get a list of deployments.
+     * Get all the deployments for a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DeploymentExtendedInner&gt; object if successful.
      */
-    public PagedList<DeploymentExtendedInner> listNext(final String nextPageLink) {
-        ServiceResponse<Page<DeploymentExtendedInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<DeploymentExtendedInner>(response.getBody()) {
+    public PagedList<DeploymentExtendedInner> listByResourceGroupNext(final String nextPageLink) {
+        ServiceResponse<Page<DeploymentExtendedInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<DeploymentExtendedInner>(response.body()) {
             @Override
             public Page<DeploymentExtendedInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Get a list of deployments.
+     * Get all the deployments for a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<DeploymentExtendedInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<DeploymentExtendedInner>> serviceCall, final ListOperationCallback<DeploymentExtendedInner> serviceCallback) {
-        return AzureServiceCall.create(
-            listNextSinglePageAsync(nextPageLink),
+    public ServiceFuture<List<DeploymentExtendedInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<DeploymentExtendedInner>> serviceFuture, final ListOperationCallback<DeploymentExtendedInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentExtendedInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink);
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
     }
 
     /**
-     * Get a list of deployments.
+     * Get all the deployments for a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentExtendedInner&gt; object
      */
-    public Observable<Page<DeploymentExtendedInner>> listNextAsync(final String nextPageLink) {
-        return listNextWithServiceResponseAsync(nextPageLink)
+    public Observable<Page<DeploymentExtendedInner>> listByResourceGroupNextAsync(final String nextPageLink) {
+        return listByResourceGroupNextWithServiceResponseAsync(nextPageLink)
             .map(new Func1<ServiceResponse<Page<DeploymentExtendedInner>>, Page<DeploymentExtendedInner>>() {
                 @Override
                 public Page<DeploymentExtendedInner> call(ServiceResponse<Page<DeploymentExtendedInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * Get a list of deployments.
+     * Get all the deployments for a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentExtendedInner&gt; object
      */
-    public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
-        return listNextSinglePageAsync(nextPageLink)
+    public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByResourceGroupNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<DeploymentExtendedInner>>, Observable<ServiceResponse<Page<DeploymentExtendedInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> call(ServiceResponse<Page<DeploymentExtendedInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
 
     /**
-     * Get a list of deployments.
+     * Get all the deployments for a resource group.
      *
     ServiceResponse<PageImpl<DeploymentExtendedInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeploymentExtendedInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> listNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DeploymentExtendedInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<DeploymentExtendedInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DeploymentExtendedInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<DeploymentExtendedInner>> result = listByResourceGroupNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<DeploymentExtendedInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1135,8 +1235,8 @@ public final class DeploymentsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<DeploymentExtendedInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DeploymentExtendedInner>, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<PageImpl<DeploymentExtendedInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DeploymentExtendedInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DeploymentExtendedInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

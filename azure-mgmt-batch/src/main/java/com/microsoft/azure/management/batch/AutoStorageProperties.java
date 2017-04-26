@@ -17,17 +17,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class AutoStorageProperties {
     /**
-     * The resource id of the storage account to be used for auto storage
+     * The resource ID of the storage account to be used for auto storage
      * account.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "storageAccountId", required = true)
     private String storageAccountId;
 
     /**
-     * The UTC time at which storage keys were last synchronized with the
-     * Batch account.
+     * The UTC time at which storage keys were last synchronized with the Batch
+     * account.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "lastKeySync", required = true)
     private DateTime lastKeySync;
 
     /**

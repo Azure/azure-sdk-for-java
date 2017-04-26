@@ -6,54 +6,26 @@
 
 package com.microsoft.azure.management.redis.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.redis.RedisCache;
 import com.microsoft.azure.management.redis.RedisCaches;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import rx.Observable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /**
  * The implementation of RedisCaches and its parent interfaces.
  */
 @LangDefinition
 class RedisCachesImpl
-        extends GroupableResourcesImpl<
+    extends TopLevelModifiableResourcesImpl<
         RedisCache,
         RedisCacheImpl,
         RedisResourceInner,
         RedisInner,
         RedisManager>
-        implements RedisCaches {
+    implements RedisCaches {
 
-    private final PatchSchedulesInner pathcSchedulesClient;
-
-    RedisCachesImpl(
-            final RedisInner client,
-            final PatchSchedulesInner patchClient,
-            final RedisManager redisManager) {
-        super(client, redisManager);
-        this.pathcSchedulesClient = patchClient;
-    }
-
-    @Override
-    public PagedList<RedisCache> list() {
-        return wrapList(this.innerCollection.list());
-    }
-
-    @Override
-    public PagedList<RedisCache> listByGroup(String groupName) {
-        return wrapList(this.innerCollection.listByResourceGroup(groupName));
-    }
-
-    @Override
-    public RedisCache getByGroup(String groupName, String name) {
-        return wrapModel(this.innerCollection.get(groupName, name));
-    }
-
-    @Override
-    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name);
+    RedisCachesImpl(final RedisManager redisManager) {
+        super(redisManager.inner().redis(), redisManager);
     }
 
     @Override
@@ -66,9 +38,7 @@ class RedisCachesImpl
         return new RedisCacheImpl(
                 name,
                 new RedisResourceInner(),
-                this.pathcSchedulesClient,
-                this.innerCollection,
-                super.myManager);
+                this.manager());
     }
 
     @Override
@@ -79,8 +49,6 @@ class RedisCachesImpl
         return new RedisCacheImpl(
                 redisResourceInner.name(),
                 redisResourceInner,
-                this.pathcSchedulesClient,
-                this.innerCollection,
-                super.myManager);
+                this.manager());
     }
 }

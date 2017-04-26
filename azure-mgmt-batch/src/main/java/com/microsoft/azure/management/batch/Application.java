@@ -11,25 +11,25 @@ import com.microsoft.azure.management.batch.implementation.ApplicationInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 import java.util.Map;
 
 /**
- * An immutable client-side representation of an Azure batch account application.
+ * An immutable client-side representation of an Azure Batch account application.
  */
 @Fluent
 public interface Application extends
         ExternalChildResource<Application, BatchAccount>,
-        Wrapper<ApplicationInner> {
+        HasInner<ApplicationInner> {
 
     /**
-     * @return the display name for application
+     * @return the display name of the application
      */
     String displayName();
 
     /**
-     * @return the list of application packages
+     * @return application packages
      */
     Map<String, ApplicationPackage> applicationPackages();
 
@@ -39,18 +39,14 @@ public interface Application extends
     boolean updatesAllowed();
 
     /**
-     * @return the default version for application.
+     * @return the default version for the application.
      */
     String defaultVersion();
 
-    /**************************************************************
-     * Fluent interfaces to provision an Application
-     **************************************************************/
-
     /**
-     * The entirety of a application definition as a part of parent definition.
+     * The entirety of a Batch application definition as a part of a Batch account definition.
      *
-     * @param <ParentT> the return type of the final {@link Attachable#attach()}
+     * @param <ParentT> the stage of the parent Batch account definition to return to after attaching this definition
      */
     interface Definition<ParentT> extends
             DefinitionStages.Blank<ParentT>,
@@ -58,28 +54,28 @@ public interface Application extends
     }
 
     /**
-     * Grouping of all the storage account definition stages.
+     * Grouping of all the application package definition stages.
      */
     interface DefinitionStages {
         /**
-         * The first stage of a batch account application definition.
+         * The first stage of a batch application definition.
          *
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent Batch account definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithAttach<ParentT> {
         }
 
         /**
-         * A application definition to allow creation of application package.
+         * The stage of a Batch application definition that allows the creation of an application package.
          *
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent Batch account definition to return to after attaching this definition
          */
         interface WithApplicationPackage<ParentT> {
             /**
-             * First stage to create new application package in Batch account application.
+             * The first stage of a new application package definition in a Batch account application.
              *
              * @param applicationPackageName the version of the application
-             * @return next stage to create the application.
+             * @return the next stage of the definition
              */
             DefinitionStages.WithAttach<ParentT> defineNewApplicationPackage(String applicationPackageName);
         }
@@ -88,33 +84,33 @@ public interface Application extends
          * The final stage of the application definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the application definition
-         * can be attached to the parent batch account definition using {@link Application.DefinitionStages.WithAttach#attach()}.
-         * @param <ParentT> the return type of {@link Application.DefinitionStages.WithAttach#attach()}
+         * can be attached to the parent batch account definition.
+         * @param <ParentT> the stage of the parent Batch account definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends
                 Attachable.InDefinition<ParentT>,
                 WithApplicationPackage<ParentT> {
             /**
-             * Allow automatic application updates.
+             * The stage of a Batch application definition allowing automatic application updates.
              *
              * @param allowUpdates true to allow the automatic updates of application, otherwise false
-             * @return parent batch account definition.
+             * @return the next stage of the definition
              */
             DefinitionStages.WithAttach<ParentT> withAllowUpdates(boolean allowUpdates);
 
             /**
-             * Specifies the display name for the application.
+             * Specifies a display name for the Batch application.
              *
-             * @param displayName the displayName value to set
-             * @return parent batch account definition.
+             * @param displayName a display name
+             * @return the next stage of the definition
              */
             DefinitionStages.WithAttach<ParentT> withDisplayName(String displayName);
         }
     }
 
     /**
-     * The entirety of a application definition as a part of parent update.
-     * @param <ParentT> the return type of the final {@link Attachable#attach()}
+     * The entirety of a Batch application definition as a part of parent update.
+     * @param <ParentT> the stage of the parent Batch account update to return to after attaching this definition
      */
     interface UpdateDefinition<ParentT> extends
             UpdateDefinitionStages.Blank<ParentT>,
@@ -122,22 +118,22 @@ public interface Application extends
     }
 
     /**
-     * Grouping of application definition stages as part of parent batch account update.
+     * Grouping of application definition stages as part of a Batch account update.
      */
     interface UpdateDefinitionStages {
         /**
-         * The first stage of a application definition.
+         * The first stage of a Batch application definition.
          *
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent Batch account definition to return to after attaching this definition
          */
         interface Blank<ParentT>
                 extends WithAttach<ParentT> {
         }
 
         /**
-         * A application definition to allow creation of application package.
+         * The stage of a Batch application definition allowing the creation of an application package.
          *
-         * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
+         * @param <ParentT> the stage of the parent Batch account definition to return to after attaching this definition
          */
         interface WithApplicationPackage<ParentT> {
             /**
@@ -149,41 +145,41 @@ public interface Application extends
             UpdateDefinitionStages.WithAttach<ParentT> defineNewApplicationPackage(String version);
         }
 
-        /** The final stage of the application definition.
+        /** The final stage of a Batch application definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the application definition
-         * can be attached to the parent batch account definition using {@link Application.DefinitionStages.WithAttach#attach()}.
-         * @param <ParentT> the return type of {@link Application.DefinitionStages.WithAttach#attach()}
+         * can be attached to the parent batch Account update.
+         * @param <ParentT> the stage of the parent Batch account update to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends
             Attachable.InUpdate<ParentT>,
             WithApplicationPackage<ParentT> {
 
             /**
-             * Allow automatic application updates.
+             * Allows automatic application updates.
              *
-             * @param allowUpdates true to allow the automatic updates of application, otherwise false
-             * @return parent batch account update definition.
+             * @param allowUpdates true to allow automatic updates of a Batch application, otherwise false
+             * @return the next stage of the definition
              */
             UpdateDefinitionStages.WithAttach<ParentT> withAllowUpdates(boolean allowUpdates);
 
             /**
-             * Specifies the display name for the application.
+             * Specifies the display name for the Batch application.
              *
-             * @param displayName display name for the application.
-             * @return parent batch account update definition.
+             * @param displayName a display name for the application.
+             * @return the next stage of the definition
              */
             UpdateDefinitionStages.WithAttach<ParentT> withDisplayName(String displayName);
         }
     }
 
     /**
-     * Grouping of application update stages.
+     * Grouping of Batch application update stages.
      */
     interface UpdateStages {
 
         /**
-         * A application definition to allow creation of application package.
+         * The stage of a Batch application update allowing the creation of an application package.
          */
         interface WithApplicationPackage {
             /**
@@ -203,14 +199,14 @@ public interface Application extends
             Update withoutApplicationPackage(String version);
         }
         /**
-         * The stage of the application update allowing to enable or disable auto upgrade of the
+         * The stage of an application update allowing to enable or disable auto upgrade of the
          * application.
          */
         interface WithOptionalProperties {
             /**
-             * Allow automatic application updates.
+             * Allows automatic application updates.
              *
-             * @param allowUpdates true to allow the automatic updates of application, otherwise false
+             * @param allowUpdates true to allow the automatic updates of the application, otherwise false
              * @return the next stage of the update
              */
             Update withAllowUpdates(boolean allowUpdates);
@@ -218,7 +214,7 @@ public interface Application extends
             /**
              * Specifies the display name for the application.
              *
-             * @param displayName the displayName value to set
+             * @param displayName a display name
              * @return the next stage of the update
              */
             Update withDisplayName(String displayName);
@@ -226,7 +222,7 @@ public interface Application extends
 
     }
     /**
-     * The entirety of application update as a part of parent batch account update.
+     * The entirety of a Batch application update as a part of a Batch account update.
      */
     interface Update extends
             Settable<BatchAccount.Update>,

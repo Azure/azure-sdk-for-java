@@ -21,6 +21,7 @@ public class BatchAccountUpdateParametersInner {
     /**
      * The user specified tags associated with the account.
      */
+    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**

@@ -12,7 +12,7 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.datalake.store.models.TrustedIdProvider;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.util.List;
@@ -42,9 +42,9 @@ public interface TrustedIdProviders {
      * @param trustedIdProviderName The name of the trusted identity provider. This is used for differentiation of providers in the account.
      * @param parameters Parameters supplied to create the create the trusted identity provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<TrustedIdProvider> createOrUpdateAsync(String resourceGroupName, String accountName, String trustedIdProviderName, TrustedIdProvider parameters, final ServiceCallback<TrustedIdProvider> serviceCallback);
+    ServiceFuture<TrustedIdProvider> createOrUpdateAsync(String resourceGroupName, String accountName, String trustedIdProviderName, TrustedIdProvider parameters, final ServiceCallback<TrustedIdProvider> serviceCallback);
 
     /**
      * Creates or updates the specified trusted identity provider. During update, the trusted identity provider with the specified name will be replaced with this new provider.
@@ -84,9 +84,9 @@ public interface TrustedIdProviders {
      * @param accountName The name of the Data Lake Store account from which to delete the trusted identity provider.
      * @param trustedIdProviderName The name of the trusted identity provider to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<Void> deleteAsync(String resourceGroupName, String accountName, String trustedIdProviderName, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteAsync(String resourceGroupName, String accountName, String trustedIdProviderName, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Deletes the specified trusted identity provider from the specified Data Lake Store account.
@@ -125,9 +125,9 @@ public interface TrustedIdProviders {
      * @param accountName The name of the Data Lake Store account from which to get the trusted identity provider.
      * @param trustedIdProviderName The name of the trusted identity provider to retrieve.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<TrustedIdProvider> getAsync(String resourceGroupName, String accountName, String trustedIdProviderName, final ServiceCallback<TrustedIdProvider> serviceCallback);
+    ServiceFuture<TrustedIdProvider> getAsync(String resourceGroupName, String accountName, String trustedIdProviderName, final ServiceCallback<TrustedIdProvider> serviceCallback);
 
     /**
      * Gets the specified Data Lake Store trusted identity provider.
@@ -164,9 +164,9 @@ public interface TrustedIdProviders {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param accountName The name of the Data Lake Store account from which to get the trusted identity providers.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<TrustedIdProvider>> listByAccountAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<TrustedIdProvider> serviceCallback);
+    ServiceFuture<List<TrustedIdProvider>> listByAccountAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<TrustedIdProvider> serviceCallback);
 
     /**
      * Lists the Data Lake Store trusted identity providers within the specified Data Lake Store account.
@@ -198,11 +198,11 @@ public interface TrustedIdProviders {
      * Lists the Data Lake Store trusted identity providers within the specified Data Lake Store account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall<List<TrustedIdProvider>> listByAccountNextAsync(final String nextPageLink, final ServiceCall<List<TrustedIdProvider>> serviceCall, final ListOperationCallback<TrustedIdProvider> serviceCallback);
+    ServiceFuture<List<TrustedIdProvider>> listByAccountNextAsync(final String nextPageLink, final ServiceFuture<List<TrustedIdProvider>> serviceFuture, final ListOperationCallback<TrustedIdProvider> serviceCallback);
 
     /**
      * Lists the Data Lake Store trusted identity providers within the specified Data Lake Store account.

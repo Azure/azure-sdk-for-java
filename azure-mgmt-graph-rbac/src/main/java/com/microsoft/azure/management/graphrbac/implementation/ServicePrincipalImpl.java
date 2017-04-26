@@ -6,10 +6,12 @@
 
 package com.microsoft.azure.management.graphrbac.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.List;
 
@@ -70,9 +72,13 @@ class ServicePrincipalImpl
     }
 
     @Override
-    public ServicePrincipal refresh() {
-        setInner(client.list(String.format("servicePrincipalNames/any(c:c eq '%s')", name())).get(0));
-        return this;
+    protected Observable<ServicePrincipalInner> getInnerAsync() {
+        return client.listAsync(String.format("servicePrincipalNames/any(c:c eq '%s')", name())).map(new Func1<Page<ServicePrincipalInner>, ServicePrincipalInner>() {
+            @Override
+            public ServicePrincipalInner call(Page<ServicePrincipalInner> servicePrincipalInnerPage) {
+                return servicePrincipalInnerPage.items().get(0);
+            }
+        });
     }
 
     @Override

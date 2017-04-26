@@ -6,21 +6,29 @@
 
 package com.microsoft.azure.management.resources;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
 import com.microsoft.azure.management.apigeneration.LangMethodDefinition.LangMethodType;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.implementation.DeploymentExtendedInner;
+import com.microsoft.azure.management.resources.implementation.ResourceManager;
+
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import org.joda.time.DateTime;
+import rx.Completable;
+import rx.Observable;
 
 import java.io.IOException;
 import java.util.List;
@@ -33,7 +41,8 @@ public interface Deployment extends
         Indexable,
         Refreshable<Deployment>,
         Updatable<Deployment.Update>,
-        Wrapper<DeploymentExtendedInner>,
+        HasInner<DeploymentExtendedInner>,
+        HasManager<ResourceManager>,
         HasName {
 
     /**
@@ -106,7 +115,26 @@ public interface Deployment extends
     /**
      * Cancel a currently running template deployment.
      */
+    @Method
     void cancel();
+
+    /**
+     * Cancel a currently running template deployment asynchronously.
+     * @return a representation of the deferred computation of this call
+     */
+    @Beta
+    @Method
+    Completable cancelAsync();
+
+    /**
+     * Cancel a currently running template deployment asynchronously.
+     *
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     */
+    @Beta
+    @Method
+    ServiceFuture<Void> cancelAsync(ServiceCallback<Void> callback);
 
     /**
      * Exports a deployment template.
@@ -115,6 +143,25 @@ public interface Deployment extends
      */
     @Method
     DeploymentExportResult exportTemplate();
+
+    /**
+     * Exports a deployment template asynchronously.
+     *
+     * @return observable to the export result
+     */
+    @Method
+    @Beta
+    Observable<DeploymentExportResult> exportTemplateAsync();
+
+    /**
+     * Exports a deployment template asynchronously.
+     *
+     * @param callback the callback to call on success or failure with export result as parameter
+     * @return a handle to cancel the request
+     */
+    @Method
+    @Beta
+    ServiceFuture<DeploymentExportResult> exportTemplateAsync(ServiceCallback<DeploymentExportResult> callback);
 
     /**
      * Container interface for all the deployment definitions.
@@ -146,14 +193,14 @@ public interface Deployment extends
              * Creates a new resource group to put the deployment in.
              * @param name the name of the new group
              * @param region the region to create the resource group in
-             * @return the next stage of the deployment definition
+             * @return the next stage of the definition
              */
             WithTemplate withNewResourceGroup(String name, Region region);
 
             /**
              * Creates a new resource group to put the resource in, based on the definition specified.
              * @param groupDefinition a creatable definition for a new resource group
-             * @return the next stage of the deployment definition
+             * @return the next stage of the definition
              */
             WithTemplate withNewResourceGroup(Creatable<ResourceGroup> groupDefinition);
         }
@@ -166,7 +213,7 @@ public interface Deployment extends
              * Specifies the template as a Java object.
              *
              * @param template the Java object
-             * @return the next stage of the deployment definition
+             * @return the next stage of the definition
              */
             WithParameters withTemplate(Object template);
 
@@ -174,7 +221,7 @@ public interface Deployment extends
              * Specifies the template as a JSON string.
              *
              * @param templateJson the JSON string
-             * @return the next stage of the deployment definition
+             * @return the next stage of the definition
              * @throws IOException exception thrown from serialization/deserialization
              */
             WithParameters withTemplate(String templateJson) throws IOException;
@@ -184,7 +231,7 @@ public interface Deployment extends
              *
              * @param uri the location of the remote template file
              * @param contentVersion the version of the template file
-             * @return the next stage of the deployment definition
+             * @return the next stage of the definition
              */
             WithParameters withTemplateLink(String uri, String contentVersion);
         }
@@ -197,14 +244,14 @@ public interface Deployment extends
              * Specifies the parameters as a Java object.
              *
              * @param parameters the Java object
-             * @return the next stage of the deployment definition
+             * @return the next stage of the definition
              */
             WithMode withParameters(Object parameters);
 
             /**
              * Specifies the parameters as a JSON string.
              * @param parametersJson the JSON string
-             * @return the next stage of the deployment definition
+             * @return the next stage of the definition
              * @throws IOException exception thrown from serialization/deserialization
              */
             WithMode withParameters(String parametersJson) throws IOException;
@@ -214,7 +261,7 @@ public interface Deployment extends
              *
              * @param uri the location of the remote parameters file
              * @param contentVersion the version of the parameters file
-             * @return the next stage of the deployment definition
+             * @return the next stage of the definition
              */
             WithMode withParametersLink(String uri, String contentVersion);
         }
@@ -227,7 +274,7 @@ public interface Deployment extends
              * Specifies the deployment mode.
              *
              * @param mode the mode of the deployment
-             * @return the next stage of the deployment definition
+             * @return the next stage of the definition
              */
             WithCreate withMode(DeploymentMode mode);
         }

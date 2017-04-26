@@ -15,23 +15,22 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Implementation of {@link TxtRecordSet}.
+ * Implementation of TxtRecordSet.
  */
 @LangDefinition
 class TxtRecordSetImpl
         extends DnsRecordSetImpl
         implements TxtRecordSet {
-    TxtRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel, final RecordSetsInner client) {
-        super(parent, innerModel, client);
+    TxtRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel) {
+        super(parent, innerModel);
     }
 
-    static TxtRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent, final RecordSetsInner client) {
+    static TxtRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent) {
         return new TxtRecordSetImpl(parent,
                 new RecordSetInner()
                         .withName(name)
                         .withType(RecordType.TXT.toString())
-                        .withTxtRecords(new ArrayList<TxtRecord>()),
-                    client);
+                        .withTxtRecords(new ArrayList<TxtRecord>()));
     }
 
     @Override

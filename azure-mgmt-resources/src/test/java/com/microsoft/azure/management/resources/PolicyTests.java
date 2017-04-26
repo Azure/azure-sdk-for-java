@@ -1,40 +1,43 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.resources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.credentials.UserTokenCredentials;
+import com.microsoft.azure.management.resources.core.TestBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import okhttp3.logging.HttpLoggingInterceptor;
+import com.microsoft.rest.RestClient;
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
 
 import static org.junit.Assert.fail;
 
-public class PolicyTests {
+public class PolicyTests extends TestBase {
     protected static ResourceManager resourceManager;
     private String policyRule = "{\"if\":{\"not\":{\"field\":\"location\",\"in\":[\"northeurope\",\"westeurope\"]}},\"then\":{\"effect\":\"deny\"}}";
 
-    @BeforeClass
-    public static void setup() throws Exception {
+    @Override
+    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
         resourceManager = ResourceManager
-                .configure()
-                .withLogLevel(HttpLoggingInterceptor.Level.BODY)
-                .authenticate(
-                        new UserTokenCredentials(
-                                System.getenv("client-id"),
-                                System.getenv("domain"),
-                                System.getenv("username"),
-                                System.getenv("password"),
-                                AzureEnvironment.AZURE)
-                ).withSubscription(System.getenv("subscription-id"));
+                .authenticate(restClient)
+                .withSubscription(defaultSubscription);
+    }
+
+    @Override
+    protected void cleanUpResources() {
+
     }
 
     @Test
+    @Ignore("Not authorized for scope - 'Microsoft.Authorization/policydefinitions/write'")
     public void canCRUDPolicyDefinition() throws Exception {
         // Create
         PolicyDefinition definition = resourceManager.policyDefinitions().define("policy1")
@@ -65,6 +68,7 @@ public class PolicyTests {
     }
 
     @Test
+    @Ignore("Not authorized for scope - 'Microsoft.Authorization/policydefinitions/write'")
     public void canCRUDPolicyAssignment() throws Exception {
         // Create definition
         PolicyDefinition definition = resourceManager.policyDefinitions().define("policy1")

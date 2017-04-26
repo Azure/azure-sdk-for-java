@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network;
 
 import java.util.List;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayRequestRoutingRuleInner;
@@ -14,22 +15,23 @@ import com.microsoft.azure.management.network.model.HasBackendPort;
 import com.microsoft.azure.management.network.model.HasCookieBasedAffinity;
 import com.microsoft.azure.management.network.model.HasFrontendPort;
 import com.microsoft.azure.management.network.model.HasHostName;
-import com.microsoft.azure.management.network.model.HasPublicIpAddress;
+import com.microsoft.azure.management.network.model.HasPublicIPAddress;
 import com.microsoft.azure.management.network.model.HasServerNameIndication;
 import com.microsoft.azure.management.network.model.HasSslCertificate;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * An immutable client-side representation of an application gateway request routing rule.
  */
 @Fluent()
+@Beta()
 public interface ApplicationGatewayRequestRoutingRule extends
-    Wrapper<ApplicationGatewayRequestRoutingRuleInner>,
+    HasInner<ApplicationGatewayRequestRoutingRuleInner>,
     ChildResource<ApplicationGateway>,
-    HasPublicIpAddress,
+    HasPublicIPAddress,
     HasSslCertificate<ApplicationGatewaySslCertificate>,
     HasFrontendPort,
     HasBackendPort,
@@ -83,7 +85,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
         /** The final stage of an application gateway request routing rule definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the definition
-         * can be attached to the parent application gateway definition using {@link WithAttach#attach()}.
+         * can be attached to the parent application gateway definition.
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends
@@ -134,7 +136,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * <p>
              * If the application gateway does not have a public IP address specified for its public frontend, one will be created
              * automatically, unless a specific public IP address is specified in the application gateway definition's optional settings using
-             * {@code withExistingPublicIpAddress(...)} or {@code withNewPublicIpAddress(...)}.
+             * {@code withExistingPublicIPAddress(...)} or {@code withNewPublicIPAddress(...)}.
              * @return the next stage of the definition
              */
             @Method
@@ -229,7 +231,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * @param ipAddress an IP address
              * @return the next stage of the definition
              */
-            WithBackendAddressOrAttach<ParentT> toBackendIpAddress(String ipAddress);
+            WithBackendAddressOrAttach<ParentT> toBackendIPAddress(String ipAddress);
 
             /**
              * Adds an FQDN (fully qualified domain name) to the backend associated with this rule.
@@ -454,7 +456,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * <p>
              * If the application gateway does not have a public IP address specified for its public frontend, one will be created
              * automatically, unless a specific public IP address is specified in the application gateway definition's optional settings using
-             * {@code withExistingPublicIpAddress(...)} or {@code withNewPublicIpAddress(...)}.
+             * {@code withExistingPublicIPAddress(...)} or {@code withNewPublicIPAddress(...)}.
              * @return the next stage of the definition
              */
             @Method
@@ -549,7 +551,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * @param ipAddress an IP address
              * @return the next stage of the definition
              */
-            WithBackendAddressOrAttach<ParentT> toBackendIpAddress(String ipAddress);
+            WithBackendAddressOrAttach<ParentT> toBackendIPAddress(String ipAddress);
 
             /**
              * Adds an FQDN (fully qualified domain name) to the backend associated with this rule.

@@ -12,8 +12,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.sql.implementation.ElasticPoolInner;
+import com.microsoft.azure.management.sql.implementation.SqlServerManager;
+
 import org.joda.time.DateTime;
 
 import java.util.List;
@@ -23,10 +24,9 @@ import java.util.List;
  */
 @Fluent
 public interface SqlElasticPool extends
-        IndependentChildResource,
+        IndependentChildResource<SqlServerManager, ElasticPoolInner>,
         Refreshable<SqlElasticPool>,
-        Updatable<SqlElasticPool.Update>,
-        Wrapper<ElasticPoolInner> {
+        Updatable<SqlElasticPool.Update> {
 
     /**
      * @return name of the SQL Server to which this elastic pool belongs

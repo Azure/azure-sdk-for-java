@@ -8,15 +8,16 @@
 
 package com.microsoft.azure.management.dns;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * An NS record.
  */
 public class NsRecord {
     /**
-     * Gets or sets the name server name for this record, without a
-     * terminating dot.
+     * The name server name for this NS record.
      */
+    @JsonProperty(value = "nsdname")
     private String nsdname;
 
     /**

@@ -15,10 +15,10 @@ import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayListener;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
-import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 
 /**
  *  Implementation for ApplicationGatewayListener.
@@ -72,22 +72,22 @@ class ApplicationGatewayListenerImpl
     }
 
     @Override
-    public String publicIpAddressId() {
+    public String publicIPAddressId() {
         final ApplicationGatewayFrontend frontend = this.frontend();
         if (frontend == null) {
             return null;
         } else {
-            return frontend.publicIpAddressId();
+            return frontend.publicIPAddressId();
         }
     }
 
     @Override
-    public PublicIpAddress getPublicIpAddress() {
-        final String pipId = this.publicIpAddressId();
+    public PublicIPAddress getPublicIPAddress() {
+        final String pipId = this.publicIPAddressId();
         if (pipId == null) {
             return null;
         } else {
-            return this.parent().manager().publicIpAddresses().getById(pipId);
+            return this.parent().manager().publicIPAddresses().getById(pipId);
         }
     }
 
@@ -177,7 +177,7 @@ class ApplicationGatewayListenerImpl
         String portName = this.parent().frontendPortNameFromNumber(portNumber);
         if (portName == null) {
             // Existing frontend port with this number not found so create one
-            portName = ResourceNamer.randomResourceName("port", 9);
+            portName = SdkContext.randomResourceName("port", 9);
             this.parent().withFrontendPort(portNumber, portName);
         }
 
@@ -199,7 +199,7 @@ class ApplicationGatewayListenerImpl
 
     private ApplicationGatewayListenerImpl withSslCertificateFromPfxFile(File pfxFile, String name) throws IOException {
         if (name == null) {
-            name = ResourceNamer.randomResourceName("cert", 10);
+            name = SdkContext.randomResourceName("cert", 10);
         }
         this.parent().defineSslCertificate(name)
             .withPfxFromFile(pfxFile)

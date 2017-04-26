@@ -21,7 +21,7 @@ public interface VirtualMachineImages extends
      * @param region the region
      * @param publisherName publisher name
      * @param offerName offer name
-     * @param skuName sku name
+     * @param skuName SKU name
      * @param version version name
      * @return the virtual machine image
      */

@@ -11,13 +11,13 @@ package com.microsoft.azure.management.cdn;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Input of the custom domain to be validated.
+ * Input of the custom domain to be validated for DNS mapping.
  */
 public class ValidateCustomDomainInput {
     /**
      * The host name of the custom domain. Must be a domain name.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "hostName", required = true)
     private String hostName;
 
     /**

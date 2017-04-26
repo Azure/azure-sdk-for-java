@@ -9,19 +9,22 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.SubResource;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Effective NetworkSecurityGroup association.
+ * The effective network security group association.
  */
 public class EffectiveNetworkSecurityGroupAssociation {
     /**
-     * Gets the id of subnet if assigned.
+     * The ID of the subnet if assigned.
      */
+    @JsonProperty(value = "subnet")
     private SubResource subnet;
 
     /**
-     * Gets the id of network interface if assigned.
+     * The ID of the network interface if assigned.
      */
+    @JsonProperty(value = "networkInterface")
     private SubResource networkInterface;
 
     /**

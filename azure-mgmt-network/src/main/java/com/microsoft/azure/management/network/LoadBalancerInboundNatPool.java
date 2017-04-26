@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.InboundNatPoolInner;
 import com.microsoft.azure.management.network.model.HasBackendPort;
@@ -13,17 +14,18 @@ import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * An immutable client-side representation of an inbound NAT rule.
  */
 @Fluent()
+@Beta
 public interface LoadBalancerInboundNatPool extends
     HasFrontend,
     HasBackendPort,
     HasProtocol<TransportProtocol>,
-    Wrapper<InboundNatPoolInner>,
+    HasInner<InboundNatPoolInner>,
     ChildResource<LoadBalancer> {
 
     /**
@@ -42,7 +44,7 @@ public interface LoadBalancerInboundNatPool extends
     interface DefinitionStages {
         /**
          * The first stage of the inbound NAT pool definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithProtocol<ParentT> {
         }
@@ -165,7 +167,7 @@ public interface LoadBalancerInboundNatPool extends
     interface UpdateDefinitionStages {
         /**
          * The first stage of the inbound NAT pool definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithProtocol<ParentT> {
         }

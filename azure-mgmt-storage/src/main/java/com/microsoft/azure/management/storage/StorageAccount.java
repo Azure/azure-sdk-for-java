@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.storage;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -13,10 +14,13 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.storage.implementation.AccountStatuses;
 import com.microsoft.azure.management.storage.implementation.StorageAccountInner;
+import com.microsoft.azure.management.storage.implementation.StorageManager;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import org.joda.time.DateTime;
+import rx.Observable;
 
 import java.util.List;
 
@@ -25,10 +29,9 @@ import java.util.List;
  */
 @Fluent
 public interface StorageAccount extends
-        GroupableResource,
+        GroupableResource<StorageManager, StorageAccountInner>,
         Refreshable<StorageAccount>,
-        Updatable<StorageAccount.Update>,
-        Wrapper<StorageAccountInner> {
+        Updatable<StorageAccount.Update> {
 
     /**
      * @return the status indicating whether the primary and secondary location of
@@ -104,12 +107,48 @@ public interface StorageAccount extends
     List<StorageAccountKey> getKeys();
 
     /**
+     * Fetch the up-to-date access keys from Azure for this storage account asynchronously.
+     *
+     * @return observable to the access keys for this storage account
+     */
+    @Beta
+    Observable<List<StorageAccountKey>> getKeysAsync();
+
+    /**
+     * Fetch the up-to-date access keys from Azure for this storage account asynchronously.
+     *
+     * @param callback the callback to call on success or failure, with access keys as parameter.
+     * @return a handle to cancel the request
+     */
+    @Beta
+    ServiceFuture<List<StorageAccountKey>> getKeysAsync(ServiceCallback<List<StorageAccountKey>> callback);
+
+    /**
      * Regenerates the access keys for this storage account.
      *
      * @param keyName if the key name
      * @return the generated access keys for this storage account
      */
     List<StorageAccountKey> regenerateKey(String keyName);
+
+    /**
+     * Regenerates the access keys for this storage account asynchronously.
+     *
+     * @param keyName if the key name
+     * @return observable to the access keys for this storage account
+     */
+    @Beta
+    Observable<List<StorageAccountKey>> regenerateKeyAsync(String keyName);
+
+    /**
+     * Regenerates the access keys for this storage account asynchronously.
+     *
+     * @param keyName if the key name
+     * @param callback the callback to call on success or failure, with access keys as parameter.
+     * @return a handle to cancel the request
+     */
+    @Beta
+    ServiceFuture<List<StorageAccountKey>> regenerateKeyAsync(String keyName, ServiceCallback<List<StorageAccountKey>> callback);
 
     /**
      * Container interface for all the definitions that need to be implemented.
@@ -188,6 +227,7 @@ public interface StorageAccount extends
              * @param encryption the encryption setting
              * @return the nest stage of storage account definition
              */
+            @Beta
             WithCreate withEncryption(Encryption encryption);
         }
 
@@ -299,13 +339,6 @@ public interface StorageAccount extends
              * @return the next stage of storage account update
              */
             Update withCustomDomain(String name, boolean useSubDomain);
-
-            /**
-             * Clears the existing user domain assigned to the storage account.
-             *
-             * @return the next stage of storage account update
-             */
-            Update withoutCustomDomain();
         }
 
         /**
@@ -320,6 +353,7 @@ public interface StorageAccount extends
              * @param encryption the encryption setting
              * @return the nest stage of storage account update
              */
+            @Beta
             Update withEncryption(Encryption encryption);
         }
 

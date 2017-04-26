@@ -9,19 +9,22 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Parameters of move resources.
  */
 public class ResourcesMoveInfoInner {
     /**
-     * The ids of the resources.
+     * The IDs of the resources.
      */
+    @JsonProperty(value = "resources")
     private List<String> resources;
 
     /**
      * The target resource group.
      */
+    @JsonProperty(value = "targetResourceGroup")
     private String targetResourceGroup;
 
     /**

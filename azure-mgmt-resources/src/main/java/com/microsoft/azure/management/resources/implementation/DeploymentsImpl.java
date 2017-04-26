@@ -11,11 +11,14 @@ import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.SupportsGettingByResourceGroupImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
+import com.microsoft.rest.ServiceFuture;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -25,18 +28,14 @@ import java.util.List;
  * The implementation for {@link Deployments}.
  */
 final class DeploymentsImpl
-    implements Deployments {
+    extends SupportsGettingByResourceGroupImpl<Deployment>
+    implements Deployments,
+    HasManager<ResourceManager> {
 
-    private final DeploymentsInner client;
-    private final DeploymentOperationsInner deploymentOperationsClient;
     private final ResourceManager resourceManager;
     private PagedListConverter<DeploymentExtendedInner, Deployment> converter;
 
-    DeploymentsImpl(final DeploymentsInner client,
-                           final DeploymentOperationsInner deploymentOperationsClient,
-                           final ResourceManager resourceManager) {
-        this.client = client;
-        this.deploymentOperationsClient = deploymentOperationsClient;
+    DeploymentsImpl(final ResourceManager resourceManager) {
         this.resourceManager = resourceManager;
         converter = new PagedListConverter<DeploymentExtendedInner, Deployment>() {
             @Override
@@ -48,23 +47,24 @@ final class DeploymentsImpl
 
     @Override
     public PagedList<Deployment> list() {
+        final DeploymentsInner client = this.manager().inner().deployments();
         return new GroupPagedList<Deployment>(this.resourceManager.resourceGroups().list()) {
             @Override
             public List<Deployment> listNextGroup(String resourceGroupName) {
-                return converter.convert(client.list(resourceGroupName));
+                return converter.convert(client.listByResourceGroup(resourceGroupName));
             }
         };
     }
 
     @Override
-    public PagedList<Deployment> listByGroup(String groupName) {
-        return converter.convert(client.list(groupName));
+    public PagedList<Deployment> listByResourceGroup(String groupName) {
+        return converter.convert(this.manager().inner().deployments().listByResourceGroup(groupName));
     }
 
     @Override
     public Deployment getByName(String name) {
         for (ResourceGroup group : this.resourceManager.resourceGroups().list()) {
-            DeploymentExtendedInner inner = client.get(group.name(), name);
+            DeploymentExtendedInner inner = this.manager().inner().deployments().getByResourceGroup(group.name(), name);
             if (inner != null) {
                 return createFluentModel(inner);
             }
@@ -73,28 +73,28 @@ final class DeploymentsImpl
     }
 
     @Override
-    public Deployment getByGroup(String groupName, String name) {
-        return createFluentModel(client.get(groupName, name));
-    }
-
-    @Override
-    public void deleteByGroup(String groupName, String name) {
-        deleteByGroupAsync(groupName, name).toBlocking().subscribe();
-    }
-
-    @Override
-    public ServiceCall<Void> deleteByGroupAsync(String groupName, String name, ServiceCallback<Void> callback) {
-        return ServiceCall.create(deleteByGroupAsync(groupName, name).map(new Func1<Void, ServiceResponse<Void>>() {
+    public Observable<Deployment> getByResourceGroupAsync(String groupName, String name) {
+        return this.manager().inner().deployments().getByResourceGroupAsync(groupName, name).map(new Func1<DeploymentExtendedInner, Deployment>() {
             @Override
-            public ServiceResponse<Void> call(Void aVoid) {
-                return new ServiceResponse<>(aVoid, null);
+            public Deployment call(DeploymentExtendedInner deploymentExtendedInner) {
+                return createFluentModel(deploymentExtendedInner);
             }
-        }), callback);
+        });
     }
 
     @Override
-    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return client.deleteAsync(groupName, name);
+    public void deleteByResourceGroup(String groupName, String name) {
+        deleteByResourceGroupAsync(groupName, name).await();
+    }
+
+    @Override
+    public ServiceFuture<Void> deleteByResourceGroupAsync(String groupName, String name, ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(deleteByResourceGroupAsync(groupName, name).<Void>toObservable(), callback);
+    }
+
+    @Override
+    public Completable deleteByResourceGroupAsync(String groupName, String name) {
+        return this.manager().inner().deployments().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override
@@ -104,45 +104,66 @@ final class DeploymentsImpl
 
     @Override
     public boolean checkExistence(String resourceGroupName, String deploymentName) {
-        return client.checkExistence(resourceGroupName, deploymentName);
+        return this.manager().inner().deployments().checkExistence(resourceGroupName, deploymentName);
     }
 
     protected DeploymentImpl createFluentModel(String name) {
         return new DeploymentImpl(
                 new DeploymentExtendedInner().withName(name),
-                client,
-                deploymentOperationsClient,
                 this.resourceManager);
     }
 
     protected DeploymentImpl createFluentModel(DeploymentExtendedInner deploymentExtendedInner) {
-        return new DeploymentImpl(deploymentExtendedInner, client, deploymentOperationsClient, this.resourceManager);
+        return new DeploymentImpl(deploymentExtendedInner, this.resourceManager);
     }
 
     @Override
     public Deployment getById(String id) {
-        return this.getByGroup(
+        return this.getByResourceGroup(
                 ResourceUtils.groupFromResourceId(id),
                 ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
     public void deleteById(String id) {
-        deleteByIdAsync(id).toBlocking().subscribe();
+        deleteByIdAsync(id).await();
     }
 
     @Override
-    public ServiceCall<Void> deleteByIdAsync(String id, ServiceCallback<Void> callback) {
-        return ServiceCall.create(deleteByIdAsync(id).map(new Func1<Void, ServiceResponse<Void>>() {
+    public ServiceFuture<Void> deleteByIdAsync(String id, ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(deleteByIdAsync(id).<Void>toObservable(), callback);
+    }
+
+    @Override
+    public Completable deleteByIdAsync(String id) {
+        return deleteByResourceGroupAsync(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+    }
+
+    @Override
+    public ResourceManager manager() {
+        return this.resourceManager;
+    }
+
+    @Override
+    public Observable<Deployment> listAsync() {
+        return this.manager().resourceGroups().listAsync().flatMap(new Func1<ResourceGroup, Observable<Deployment>>() {
             @Override
-            public ServiceResponse<Void> call(Void aVoid) {
-                return new ServiceResponse<>(aVoid, null);
+            public Observable<Deployment> call(ResourceGroup resourceGroup) {
+                return listByResourceGroupAsync(resourceGroup.name());
             }
-        }), callback);
+        });
     }
 
+
     @Override
-    public Observable<Void> deleteByIdAsync(String id) {
-        return deleteByGroupAsync(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+    public Observable<Deployment> listByResourceGroupAsync(String resourceGroupName) {
+        final DeploymentsInner client = this.manager().inner().deployments();
+        return ReadableWrappersImpl.convertPageToInnerAsync(client.listByResourceGroupAsync(resourceGroupName))
+                .map(new Func1<DeploymentExtendedInner, Deployment>() {
+                    @Override
+                    public Deployment call(DeploymentExtendedInner deploymentExtendedInner) {
+                        return createFluentModel(deploymentExtendedInner);
+                    }
+        });
     }
 }

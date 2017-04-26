@@ -9,39 +9,40 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.azure.management.compute.SubResourceReadOnly;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.SubResource;
 
 /**
  * Describes a Virtual Machine Scale Set Extension.
  */
 @JsonFlatten
-public class VirtualMachineScaleSetExtensionInner extends SubResource {
+public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
     /**
-     * the name of the extension.
+     * The name of the extension.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
-     * the name of the extension handler publisher.
+     * The name of the extension handler publisher.
      */
     @JsonProperty(value = "properties.publisher")
     private String publisher;
 
     /**
-     * the type of the extension handler.
+     * The type of the extension handler.
      */
     @JsonProperty(value = "properties.type")
     private String type;
 
     /**
-     * the type version of the extension handler.
+     * The type version of the extension handler.
      */
     @JsonProperty(value = "properties.typeHandlerVersion")
     private String typeHandlerVersion;
 
     /**
-     * whether the extension handler should be automatically upgraded across
+     * Whether the extension handler should be automatically upgraded across
      * minor versions.
      */
     @JsonProperty(value = "properties.autoUpgradeMinorVersion")
@@ -60,7 +61,7 @@ public class VirtualMachineScaleSetExtensionInner extends SubResource {
     private Object protectedSettings;
 
     /**
-     * the provisioning state, which only appears in the response.
+     * The provisioning state, which only appears in the response.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;

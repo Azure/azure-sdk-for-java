@@ -6,55 +6,50 @@
 
 package com.microsoft.azure.management.storage.implementation;
 
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.microsoft.azure.management.storage.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.storage.SkuName;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccounts;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * The implementation of StorageAccounts and its parent interfaces.
  */
 class StorageAccountsImpl
-        extends GroupableResourcesImpl<
-            StorageAccount,
-            StorageAccountImpl,
-            StorageAccountInner,
-            StorageAccountsInner,
-            StorageManager>
-        implements StorageAccounts {
+    extends TopLevelModifiableResourcesImpl<
+        StorageAccount,
+        StorageAccountImpl,
+        StorageAccountInner,
+        StorageAccountsInner,
+        StorageManager>
+    implements StorageAccounts {
 
-    StorageAccountsImpl(
-            final StorageAccountsInner client,
-            final StorageManager storageManager) {
-        super(client, storageManager);
+    StorageAccountsImpl(final StorageManager storageManager) {
+        super(storageManager.inner().storageAccounts(), storageManager);
     }
 
     @Override
     public CheckNameAvailabilityResult checkNameAvailability(String name) {
-        return new CheckNameAvailabilityResult(this.innerCollection.checkNameAvailability(name));
+        return this.checkNameAvailabilityAsync(name).toBlocking().last();
     }
 
     @Override
-    public PagedList<StorageAccount> list() {
-        return wrapList(this.innerCollection.list());
+    public Observable<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name) {
+        return this.inner().checkNameAvailabilityAsync(name).map(new Func1<CheckNameAvailabilityResultInner, CheckNameAvailabilityResult>() {
+            @Override
+            public CheckNameAvailabilityResult call(CheckNameAvailabilityResultInner checkNameAvailabilityResultInner) {
+                return new CheckNameAvailabilityResult(checkNameAvailabilityResultInner);
+            }
+        });
     }
 
     @Override
-    public PagedList<StorageAccount> listByGroup(String groupName) {
-        return wrapList(this.innerCollection.listByResourceGroup(groupName));
-    }
-
-    @Override
-    public StorageAccount getByGroup(String groupName, String name) {
-        return wrapModel(this.innerCollection.getProperties(groupName, name));
-    }
-
-    @Override
-    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name);
+    public ServiceFuture<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name, ServiceCallback<CheckNameAvailabilityResult> callback) {
+        return ServiceFuture.fromBody(this.checkNameAvailabilityAsync(name), callback);
     }
 
     @Override
@@ -66,11 +61,7 @@ class StorageAccountsImpl
 
     @Override
     protected StorageAccountImpl wrapModel(String name) {
-        return new StorageAccountImpl(
-                name,
-                new StorageAccountInner(),
-                this.innerCollection,
-                super.myManager);
+        return new StorageAccountImpl(name, new StorageAccountInner(), this.manager());
     }
 
     @Override
@@ -78,10 +69,6 @@ class StorageAccountsImpl
         if (storageAccountInner == null) {
             return null;
         }
-        return new StorageAccountImpl(
-                storageAccountInner.name(),
-                storageAccountInner,
-                this.innerCollection,
-                super.myManager);
+        return new StorageAccountImpl(storageAccountInner.name(), storageAccountInner, this.manager());
     }
 }

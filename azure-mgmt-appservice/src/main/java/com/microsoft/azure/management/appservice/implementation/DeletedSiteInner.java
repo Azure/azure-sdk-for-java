@@ -13,6 +13,7 @@ import java.util.List;
 import com.microsoft.azure.management.appservice.UsageState;
 import com.microsoft.azure.management.appservice.SiteAvailabilityState;
 import com.microsoft.azure.management.appservice.HostNameSslState;
+import com.microsoft.azure.management.appservice.SiteConfig;
 import com.microsoft.azure.management.appservice.HostingEnvironmentProfile;
 import com.microsoft.azure.management.appservice.CloningInfo;
 import com.microsoft.azure.management.appservice.SlotSwapStatus;
@@ -58,8 +59,8 @@ public class DeletedSiteInner extends Resource {
 
     /**
      * &lt;code&gt;true&lt;/code&gt; if the app is enabled; otherwise,
-     * &lt;code&gt;false&lt;/code&gt;. Setting this value to false disables
-     * the app (takes the app offline).
+     * &lt;code&gt;false&lt;/code&gt;. Setting this value to false disables the
+     * app (takes the app offline).
      */
     @JsonProperty(value = "properties.enabled")
     private Boolean enabled;
@@ -110,7 +111,7 @@ public class DeletedSiteInner extends Resource {
      * Configuration of the app.
      */
     @JsonProperty(value = "properties.siteConfig")
-    private SiteConfigInner siteConfig;
+    private SiteConfig siteConfig;
 
     /**
      * Azure Traffic Manager hostnames associated with the app. Read-only.
@@ -158,9 +159,9 @@ public class DeletedSiteInner extends Resource {
 
     /**
      * &lt;code&gt;true&lt;/code&gt; to enable client affinity;
-     * &lt;code&gt;false&lt;/code&gt; to stop sending session affinity
-     * cookies, which route client requests in the same session to the same
-     * instance. Default is &lt;code&gt;true&lt;/code&gt;.
+     * &lt;code&gt;false&lt;/code&gt; to stop sending session affinity cookies,
+     * which route client requests in the same session to the same instance.
+     * Default is &lt;code&gt;true&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.clientAffinityEnabled")
     private Boolean clientAffinityEnabled;
@@ -404,7 +405,7 @@ public class DeletedSiteInner extends Resource {
      *
      * @return the siteConfig value
      */
-    public SiteConfigInner siteConfig() {
+    public SiteConfig siteConfig() {
         return this.siteConfig;
     }
 
@@ -414,7 +415,7 @@ public class DeletedSiteInner extends Resource {
      * @param siteConfig the siteConfig value to set
      * @return the DeletedSiteInner object itself.
      */
-    public DeletedSiteInner withSiteConfig(SiteConfigInner siteConfig) {
+    public DeletedSiteInner withSiteConfig(SiteConfig siteConfig) {
         this.siteConfig = siteConfig;
         return this;
     }

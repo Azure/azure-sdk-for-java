@@ -5,54 +5,30 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.AddressSpace;
 import com.microsoft.azure.management.network.DhcpOptions;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Networks;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import rx.Observable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 import java.util.ArrayList;
 
 /**
- *  Implementation for {@link Networks}.
+ *  Implementation for Networks.
  */
 @LangDefinition
 class NetworksImpl
-        extends GroupableResourcesImpl<
-            Network,
-            NetworkImpl,
-            VirtualNetworkInner,
-            VirtualNetworksInner,
-            NetworkManager>
-        implements Networks {
+    extends TopLevelModifiableResourcesImpl<
+        Network,
+        NetworkImpl,
+        VirtualNetworkInner,
+        VirtualNetworksInner,
+        NetworkManager>
+    implements Networks {
 
-    NetworksImpl(
-            final NetworkManagementClientImpl networkClient,
-            final NetworkManager networkManager) {
-        super(networkClient.virtualNetworks(), networkManager);
-    }
-
-    @Override
-    public PagedList<Network> list() {
-        return wrapList(this.innerCollection.listAll());
-    }
-
-    @Override
-    public PagedList<Network> listByGroup(String groupName) {
-        return wrapList(this.innerCollection.list(groupName));
-    }
-
-    @Override
-    public NetworkImpl getByGroup(String groupName, String name) {
-        return wrapModel(this.innerCollection.get(groupName, name));
-    }
-
-    @Override
-    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name);
+    NetworksImpl(final NetworkManager networkManager) {
+        super(networkManager.inner().virtualNetworks(), networkManager);
     }
 
     @Override
@@ -93,11 +69,7 @@ class NetworksImpl
             dhcp.withDnsServers(new ArrayList<String>());
         }
 
-        return new NetworkImpl(
-                name,
-                inner,
-                this.innerCollection,
-                super.myManager);
+        return new NetworkImpl(name, inner, super.manager());
     }
 
     @Override
@@ -105,10 +77,6 @@ class NetworksImpl
         if (inner == null) {
             return null;
         }
-        return new NetworkImpl(
-                inner.name(),
-                inner,
-                this.innerCollection,
-                this.myManager);
+        return new NetworkImpl(inner.name(), inner, this.manager());
     }
 }

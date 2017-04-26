@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.CloudException;
@@ -11,7 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * {@link ChildListFlattener} that can take a paged list of parents and flatten their child lists
+ * ChildListFlattener that can take a paged list of parents and flatten their child lists
  * as a single lazy paged list.
  *
  * @param <ParentT> the type of parent paged list item
@@ -116,10 +121,10 @@ final class ChildListFlattener<ParentT, ChildT> {
     private Page<ChildT> childListPage(final Page<ChildT> page) {
         return new Page<ChildT>() {
             @Override
-            public String getNextPageLink() {
-                if (page.getNextPageLink() != null) {
+            public String nextPageLink() {
+                if (page.nextPageLink() != null) {
                    // The current child paged list has more pages.
-                   return page.getNextPageLink();
+                   return page.nextPageLink();
                 }
 
                 if (parentItr.hasNext()) {
@@ -131,8 +136,8 @@ final class ChildListFlattener<ParentT, ChildT> {
             }
 
             @Override
-            public List<ChildT> getItems() {
-                return page.getItems();
+            public List<ChildT> items() {
+                return page.items();
             }
         };
     }
@@ -152,12 +157,12 @@ final class ChildListFlattener<ParentT, ChildT> {
     private Page<ChildT> emptyPage() {
         return new Page<ChildT>() {
             @Override
-            public String getNextPageLink() {
+            public String nextPageLink() {
                 return null;
             }
 
             @Override
-            public List<ChildT> getItems() {
+            public List<ChildT> items() {
                 return new ArrayList<>();
             }
         };

@@ -15,23 +15,22 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Implementation of {@link ARecordSet}.
+ * Implementation of ARecordSet.
  */
 @LangDefinition
 class ARecordSetImpl
         extends DnsRecordSetImpl
         implements ARecordSet {
-    ARecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel, final RecordSetsInner client) {
-        super(parent, innerModel, client);
+    ARecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel) {
+        super(parent, innerModel);
     }
 
-    static ARecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent, final RecordSetsInner client) {
+    static ARecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent) {
         return new ARecordSetImpl(parent,
                 new RecordSetInner()
                     .withName(name)
                     .withType(RecordType.A.toString())
-                    .withARecords(new ArrayList<ARecord>()),
-                client);
+                    .withARecords(new ArrayList<ARecord>()));
     }
 
     @Override

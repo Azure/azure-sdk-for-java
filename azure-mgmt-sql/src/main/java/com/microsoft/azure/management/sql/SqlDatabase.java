@@ -7,13 +7,15 @@
 package com.microsoft.azure.management.sql;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.sql.implementation.DatabaseInner;
+import com.microsoft.azure.management.sql.implementation.SqlServerManager;
+
 import org.joda.time.DateTime;
 
 import java.util.List;
@@ -26,10 +28,9 @@ import java.util.UUID;
  */
 @Fluent
 public interface SqlDatabase extends
-        IndependentChildResource,
+        IndependentChildResource<SqlServerManager, DatabaseInner>,
         Refreshable<SqlDatabase>,
-        Updatable<SqlDatabase.Update>,
-        Wrapper<DatabaseInner> {
+        Updatable<SqlDatabase.Update> {
     /**
      * @return name of the SQL Server to which this database belongs
      */
@@ -122,7 +123,8 @@ public interface SqlDatabase extends
     /**
      * @return SqlWarehouse instance for more operations
      */
-    SqlWarehouse castToWarehouse();
+    @Method
+    SqlWarehouse asWarehouse();
 
     /**
      * @return returns the list of all restore points on the database
@@ -166,13 +168,10 @@ public interface SqlDatabase extends
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithCreate,
-        DefinitionStages.WithCollation,
-        DefinitionStages.WithEdition,
-        DefinitionStages.WithElasticPoolName,
         DefinitionStages.WithSourceDatabaseId,
+        DefinitionStages.WithElasticPoolName,
         DefinitionStages.WithCreateMode,
-        DefinitionStages.WithCreateWithLessOptions,
-        DefinitionStages.WithExistingDatabase {
+        DefinitionStages.WithCreateWithLessOptions {
     }
 
     /**
@@ -182,20 +181,22 @@ public interface SqlDatabase extends
         /**
          * The first stage of the SQL Server definition.
          */
-        interface Blank extends WithElasticPoolName {
+        interface Blank extends WithAllDifferentOptions {
+        }
+
+        /**
+         * The SQL Database interface with all starting options for definition.
+         */
+        interface WithAllDifferentOptions extends
+                WithElasticPoolName,
+                WithSourceDatabaseId,
+                WithCreate {
         }
 
         /**
          * The SQL Database definition to set the elastic pool for database.
          */
         interface WithElasticPoolName {
-            /**
-             * Specifies database to be created without elastic pool.
-             *
-             * @return The next stage of the definition.
-             */
-            WithExistingDatabase withoutElasticPool();
-
             /**
              * Sets the existing elastic pool for the SQLDatabase.
              *
@@ -224,13 +225,7 @@ public interface SqlDatabase extends
         /**
          * The stage to decide whether using existing database or not.
          */
-        interface WithExistingDatabase extends WithSourceDatabaseId {
-            /**
-             * Sets the creation flow to ask relevant question when source database is not specified.
-             *
-             * @return The next stage of the definition.
-             */
-            WithCreate withoutSourceDatabaseId();
+        interface WithExistingDatabase extends WithSourceDatabaseId, WithCreateWithElasticPoolOptions {
         }
 
         /**
@@ -272,6 +267,26 @@ public interface SqlDatabase extends
         }
 
         /**
+         *
+         */
+        interface WithCreateWithElasticPoolOptions extends WithCollation, WithMaxSizeBytes, WithCreateWithLessOptions {
+
+        }
+
+        /**
+         * The SQL Database definition to set the collation for database.
+         */
+        interface WithCollationAllCreateOptions {
+            /**
+             * Sets the collation for the SQL Database.
+             *
+             * @param collation collation to be set for database
+             * @return The next stage of the definition
+             */
+            WithCreate withCollation(String collation);
+        }
+
+        /**
          * The SQL Database definition to set the collation for database.
          */
         interface WithCollation {
@@ -281,7 +296,7 @@ public interface SqlDatabase extends
              * @param collation collation to be set for database
              * @return The next stage of the definition
              */
-            WithCreate withCollation(String collation);
+            WithCreateWithElasticPoolOptions withCollation(String collation);
         }
 
         /**
@@ -297,6 +312,23 @@ public interface SqlDatabase extends
             WithCreate withEdition(DatabaseEditions edition);
         }
 
+
+        /**
+         * The SQL Database definition to set the Max Size in Bytes for database.
+         */
+        interface WithMaxSizeBytesAllCreateOptions {
+            /**
+             * Sets the max size in bytes for SQL Database.
+             *
+             * @param maxSizeBytes max size of the Azure SQL Database expressed in bytes. Note: Only
+             * the following sizes are supported (in addition to limitations being
+             * placed on each edition): { 100 MB | 500 MB |1 GB | 5 GB | 10 GB | 20
+             * GB | 30 GB … 150 GB | 200 GB … 500 GB }
+             * @return The next stage of the definition.
+             */
+            WithCreate withMaxSizeBytes(long maxSizeBytes);
+        }
+
         /**
          * The SQL Database definition to set the Max Size in Bytes for database.
          */
@@ -310,7 +342,7 @@ public interface SqlDatabase extends
              * GB | 30 GB … 150 GB | 200 GB … 500 GB }
              * @return The next stage of the definition.
              */
-            WithCreate withMaxSizeBytes(long maxSizeBytes);
+            WithCreateWithElasticPoolOptions withMaxSizeBytes(long maxSizeBytes);
         }
 
         /**
@@ -332,10 +364,10 @@ public interface SqlDatabase extends
          * specify.
          */
         interface WithCreate extends
-                WithMaxSizeBytes,
                 WithServiceObjective,
-                WithCollation,
                 WithEdition,
+                WithCollationAllCreateOptions,
+                WithMaxSizeBytesAllCreateOptions,
                 WithCreateWithLessOptions {
         }
 

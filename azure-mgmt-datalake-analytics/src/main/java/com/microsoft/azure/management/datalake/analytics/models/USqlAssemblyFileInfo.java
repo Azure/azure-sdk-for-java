@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.datalake.analytics.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A Data Lake Analytics catalog U-SQL assembly file information item.
@@ -16,16 +17,19 @@ public class USqlAssemblyFileInfo {
     /**
      * the assembly file type. Possible values include: 'Assembly', 'Resource'.
      */
+    @JsonProperty(value = "type")
     private FileType type;
 
     /**
      * the the original path to the assembly file.
      */
+    @JsonProperty(value = "originalPath")
     private String originalPath;
 
     /**
      * the the content path to the assembly file.
      */
+    @JsonProperty(value = "contentPath")
     private String contentPath;
 
     /**

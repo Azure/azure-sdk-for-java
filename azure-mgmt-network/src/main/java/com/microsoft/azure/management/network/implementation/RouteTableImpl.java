@@ -17,6 +17,7 @@ import com.microsoft.azure.management.network.RouteTable;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * Implementation for RouteTable.
@@ -33,15 +34,12 @@ class RouteTableImpl
         RouteTable.Definition,
         RouteTable.Update {
 
-    private final RouteTablesInner innerCollection;
     private Map<String, Route> routes;
 
     RouteTableImpl(String name,
             final RouteTableInner innerModel,
-            final RouteTablesInner innerCollection,
             final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
-        this.innerCollection = innerCollection;
     }
 
     @Override
@@ -61,11 +59,20 @@ class RouteTableImpl
     // Verbs
 
     @Override
-    public RouteTableImpl refresh() {
-        RouteTableInner inner = this.innerCollection.get(this.resourceGroupName(), this.name());
-        this.setInner(inner);
-        initializeChildrenFromInner();
-        return this;
+    public Observable<RouteTable> refreshAsync() {
+        return super.refreshAsync().map(new Func1<RouteTable, RouteTable>() {
+            @Override
+            public RouteTable call(RouteTable routeTable) {
+                RouteTableImpl impl = (RouteTableImpl) routeTable;
+                impl.initializeChildrenFromInner();
+                return impl;
+            }
+        });
+    }
+
+    @Override
+    protected Observable<RouteTableInner> getInnerAsync() {
+        return this.manager().inner().routeTables().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -116,10 +123,6 @@ class RouteTableImpl
 
     // Helpers
 
-    NetworkManager manager() {
-        return super.myManager;
-    }
-
     @Override
     protected void beforeCreating() {
         // Reset and update routes
@@ -133,7 +136,7 @@ class RouteTableImpl
 
     @Override
     protected Observable<RouteTableInner> createInner() {
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
+        return this.manager().inner().routeTables().createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
 
     @Override

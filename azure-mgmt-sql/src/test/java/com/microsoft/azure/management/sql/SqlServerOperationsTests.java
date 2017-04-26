@@ -6,14 +6,13 @@
 
 package com.microsoft.azure.management.sql;
 
+import com.microsoft.azure.management.resources.core.TestUtilities;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import rx.Observable;
 
@@ -21,9 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class SqlServerOperationsTests extends SqlServerTestBase {
-    private static final String RG_NAME = ResourceNamer.randomResourceName("javasqlserver", 20);
-    private static final String SQL_SERVER_NAME = RG_NAME;
+public class SqlServerOperationsTests extends SqlServerTest {
     private static final String SQL_DATABASE_NAME = "myTestDatabase2";
     private static final String COLLATION = "SQL_Latin1_General_CP1_CI_AS";
     private static final String SQL_ELASTIC_POOL_NAME = "testElasticPool";
@@ -31,26 +28,15 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
     private static final String START_IPADDRESS = "10.102.1.10";
     private static final String END_IPADDRESS = "10.102.1.12";
 
-
-    @BeforeClass
-    public static void setup() throws Exception {
-        createClients();
-    }
-
-    @AfterClass
-    public static void cleanup() throws Exception {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
-    }
-
+    @Ignore("Depends on the existing SQL server")
     @Test
     public void canListRecommendedElasticPools() throws Exception {
-        SqlServer sqlServer = sqlServerManager.sqlServers().getByGroup("ans", "ans-secondary");
+        SqlServer sqlServer = sqlServerManager.sqlServers().getByResourceGroup("ans", "ans-secondary");
         sqlServer.databases().list().get(0).listServiceTierAdvisors().values().iterator().next().serviceLevelObjectiveUsageMetrics();
         Map<String, RecommendedElasticPool> recommendedElasticPools = sqlServer.listRecommendedElasticPools();
         Assert.assertNotNull(recommendedElasticPools);
         Assert.assertNotNull(sqlServer.databases().list().get(0).getUpgradeHint());
     }
-
 
     @Test
     public void canCRUDSqlServer() throws Exception {
@@ -68,7 +54,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         sqlServer.update().withAdministratorPassword("P@ssword~2").apply();
 
         // List
-        List<SqlServer> sqlServers = sqlServerManager.sqlServers().listByGroup(RG_NAME);
+        List<SqlServer> sqlServers = sqlServerManager.sqlServers().listByResourceGroup(RG_NAME);
         boolean found = false;
         for (SqlServer server : sqlServers) {
             if (server.name().equals(SQL_SERVER_NAME)) {
@@ -77,10 +63,10 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         }
         Assert.assertTrue(found);
         // Get
-        sqlServer = sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
+        sqlServer = sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME);
         Assert.assertNotNull(sqlServer);
 
-        sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
+        sqlServerManager.sqlServers().deleteByResourceGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
     }
 
@@ -134,7 +120,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         Assert.assertEquals(sqlServer.elasticPools().list().size(), 0);
 
         // List
-        List<SqlServer> sqlServers = sqlServerManager.sqlServers().listByGroup(RG_NAME);
+        List<SqlServer> sqlServers = sqlServerManager.sqlServers().listByResourceGroup(RG_NAME);
         boolean found = false;
         for (SqlServer server : sqlServers) {
             if (server.name().equals(SQL_SERVER_NAME)) {
@@ -144,114 +130,12 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
 
         Assert.assertTrue(found);
         // Get
-        sqlServer = sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
+        sqlServer = sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME);
         Assert.assertNotNull(sqlServer);
 
-        sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
+        sqlServerManager.sqlServers().deleteByResourceGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
     }
-
-    private static void validateMultiCreation(
-            String database2Name,
-            String database1InEPName,
-            String database2InEPName,
-            String elasticPool1Name,
-            String elasticPool2Name,
-            String elasticPool3Name,
-            SqlServer sqlServer,
-            boolean deleteUsingUpdate) {
-        validateSqlServer(sqlServer);
-        validateSqlServer(sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME));
-        validateSqlDatabase(sqlServer.databases().get(SQL_DATABASE_NAME), SQL_DATABASE_NAME);
-        validateSqlFirewallRule(sqlServer.firewallRules().get(SQL_FIREWALLRULE_NAME), SQL_FIREWALLRULE_NAME);
-
-        List<SqlFirewallRule> firewalls = sqlServer.firewallRules().list();
-        Assert.assertEquals(3, firewalls.size());
-
-        int startIpAddress = 0;
-        int endIpAddress = 0;
-
-        for (SqlFirewallRule firewall: firewalls) {
-            if (!firewall.name().equalsIgnoreCase(SQL_FIREWALLRULE_NAME)) {
-                Assert.assertEquals(firewall.startIpAddress(), START_IPADDRESS);
-                if (firewall.endIpAddress().equalsIgnoreCase(START_IPADDRESS)) {
-                    startIpAddress++;
-                }
-                else if (firewall.endIpAddress().equalsIgnoreCase(END_IPADDRESS)) {
-                    endIpAddress++;
-                }
-            }
-        }
-
-        Assert.assertEquals(startIpAddress, 1);
-        Assert.assertEquals(endIpAddress, 1);
-
-        Assert.assertNotNull(sqlServer.databases().get(database2Name));
-        Assert.assertNotNull(sqlServer.databases().get(database1InEPName));
-        Assert.assertNotNull(sqlServer.databases().get(database2InEPName));
-
-        SqlElasticPool ep1 = sqlServer.elasticPools().get(elasticPool1Name);
-        validateSqlElasticPool(ep1, elasticPool1Name);
-        SqlElasticPool ep2 = sqlServer.elasticPools().get(elasticPool2Name);
-
-        Assert.assertNotNull(ep2);
-        Assert.assertEquals(ep2.edition(), ElasticPoolEditions.PREMIUM);
-        Assert.assertEquals(ep2.listDatabases().size(), 2);
-        Assert.assertNotNull(ep2.getDatabase(database1InEPName));
-        Assert.assertNotNull(ep2.getDatabase(database2InEPName));
-
-        SqlElasticPool ep3 = sqlServer.elasticPools().get(elasticPool3Name);
-
-        Assert.assertNotNull(ep3);
-        Assert.assertEquals(ep3.edition(), ElasticPoolEditions.STANDARD);
-
-        if (!deleteUsingUpdate) {
-            sqlServer.databases().delete(database2Name);
-            sqlServer.databases().delete(database1InEPName);
-            sqlServer.databases().delete(database2InEPName);
-            sqlServer.databases().delete(SQL_DATABASE_NAME);
-
-            Assert.assertEquals(ep1.listDatabases().size(), 0);
-            Assert.assertEquals(ep2.listDatabases().size(), 0);
-            Assert.assertEquals(ep3.listDatabases().size(), 0);
-
-            sqlServer.elasticPools().delete(elasticPool1Name);
-            sqlServer.elasticPools().delete(elasticPool2Name);
-            sqlServer.elasticPools().delete(elasticPool3Name);
-
-            firewalls = sqlServer.firewallRules().list();
-
-            for (SqlFirewallRule firewallRule :firewalls) {
-                firewallRule.delete();
-            }
-        }
-        else {
-            sqlServer.update()
-                    .withoutDatabase(database2Name)
-                    .withoutElasticPool(elasticPool1Name)
-                    .withoutElasticPool(elasticPool2Name)
-                    .withoutElasticPool(elasticPool3Name)
-                    .withoutElasticPool(elasticPool1Name)
-                    .withoutDatabase(database1InEPName)
-                    .withoutDatabase(SQL_DATABASE_NAME)
-                    .withoutDatabase(database2InEPName)
-                    .withoutFirewallRule(SQL_FIREWALLRULE_NAME)
-                    .apply();
-
-            Assert.assertEquals(sqlServer.elasticPools().list().size(), 0);
-
-            firewalls = sqlServer.firewallRules().list();
-            Assert.assertEquals(firewalls.size(), 2);
-            for (SqlFirewallRule firewallRule :firewalls) {
-                firewallRule.delete();
-            }
-        }
-
-        Assert.assertEquals(sqlServer.elasticPools().list().size(), 0);
-        // Only master database is remaining in the SQLServer.
-        Assert.assertEquals(sqlServer.databases().list().size(), 1);
-    }
-
 
     @Test
     public void canCRUDSqlDatabase() throws Exception {
@@ -259,10 +143,6 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         SqlServer sqlServer = createSqlServer();
         Observable<Indexable> resourceStream = sqlServer.databases()
                 .define(SQL_DATABASE_NAME)
-                .withoutElasticPool()
-                .withoutSourceDatabaseId()
-                .withCollation(COLLATION)
-                .withEdition(DatabaseEditions.STANDARD)
                 .createAsync();
 
         SqlDatabase sqlDatabase = Utils.<SqlDatabase>rootResource(resourceStream)
@@ -285,7 +165,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         transparentDataEncryptionActivities = transparentDataEncryption.listActivities();
         Assert.assertNotNull(transparentDataEncryptionActivities);
 
-        Thread.sleep(10000);
+        TestUtilities.sleep(10000);
         transparentDataEncryption = sqlDatabase.getTransparentDataEncryption().updateStatus(TransparentDataEncryptionStates.DISABLED);
         Assert.assertNotNull(transparentDataEncryption);
         Assert.assertEquals(transparentDataEncryption.status(), TransparentDataEncryptionStates.DISABLED);
@@ -307,7 +187,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         Assert.assertNotNull(serviceTierAdvisors.values().iterator().next().serviceLevelObjectiveUsageMetrics());
         // End of testing service tier advisors.
 
-        sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
+        sqlServer =  sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME);
         validateSqlServer(sqlServer);
 
         // Create another database with above created database as source database.
@@ -338,10 +218,8 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         // Add another database to the server
         resourceStream = sqlServer.databases()
                 .define("newDatabase")
-                .withoutElasticPool()
-                .withoutSourceDatabaseId()
-                .withCollation(COLLATION)
                 .withEdition(DatabaseEditions.STANDARD)
+                .withCollation(COLLATION)
                 .createAsync();
 
         sqlDatabase = Utils.<SqlDatabase>rootResource(resourceStream)
@@ -349,7 +227,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
                 .first();
         sqlServer.databases().delete(sqlDatabase.name());
 
-        sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
+        sqlServerManager.sqlServers().deleteByResourceGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
     }
 
@@ -362,10 +240,8 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
 
         Observable<Indexable> resourceStream = sqlServer1.databases()
                 .define(SQL_DATABASE_NAME)
-                .withoutElasticPool()
-                .withoutSourceDatabaseId()
-                .withCollation(COLLATION)
                 .withEdition(DatabaseEditions.STANDARD)
+                .withCollation(COLLATION)
                 .createAsync();
 
         SqlDatabase databaseInServer1 = Utils.<SqlDatabase>rootResource(resourceStream)
@@ -375,11 +251,10 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         validateSqlDatabase(databaseInServer1, SQL_DATABASE_NAME);
         SqlDatabase databaseInServer2 = sqlServer2.databases()
                 .define(SQL_DATABASE_NAME)
-                .withoutElasticPool()
                 .withSourceDatabase(databaseInServer1.id())
                 .withMode(CreateMode.ONLINE_SECONDARY)
                 .create();
-        Thread.sleep(2000);
+        TestUtilities.sleep(2000);
         List<ReplicationLink> replicationLinksInDb1 = new ArrayList<>(databaseInServer1.listReplicationLinks().values());
 
         Assert.assertEquals(replicationLinksInDb1.size() , 1);
@@ -397,12 +272,12 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         // Failover
         replicationLinksInDb2.get(0).failover();
         replicationLinksInDb2.get(0).refresh();
-        Thread.sleep(30000);
+        TestUtilities.sleep(30000);
         // Force failover
         replicationLinksInDb1.get(0).forceFailoverAllowDataLoss();
         replicationLinksInDb1.get(0).refresh();
 
-        Thread.sleep(30000);
+        TestUtilities.sleep(30000);
 
         replicationLinksInDb2.get(0).delete();
         Assert.assertEquals(databaseInServer2.listReplicationLinks().size(), 0);
@@ -410,9 +285,9 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         sqlServer1.databases().delete(databaseInServer1.name());
         sqlServer2.databases().delete(databaseInServer2.name());
 
-        sqlServerManager.sqlServers().deleteByGroup(sqlServer2.resourceGroupName(), sqlServer2.name());
+        sqlServerManager.sqlServers().deleteByResourceGroup(sqlServer2.resourceGroupName(), sqlServer2.name());
         validateSqlServerNotFound(sqlServer2);
-        sqlServerManager.sqlServers().deleteByGroup(sqlServer1.resourceGroupName(), sqlServer1.name());
+        sqlServerManager.sqlServers().deleteByResourceGroup(sqlServer1.resourceGroupName(), sqlServer1.name());
         validateSqlServerNotFound(sqlServer1);
     }
 
@@ -428,10 +303,8 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
 
         Observable<Indexable> resourceStream = sqlServer.databases()
                 .define(SQL_DATABASE_NAME)
-                .withoutElasticPool()
-                .withoutSourceDatabaseId()
-                .withCollation(COLLATION)
                 .withEdition(DatabaseEditions.DATA_WAREHOUSE)
+                .withCollation(COLLATION)
                 .createAsync();
 
         SqlDatabase sqlDatabase = Utils.<SqlDatabase>rootResource(resourceStream)
@@ -444,7 +317,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         Assert.assertTrue(sqlDatabase.isDataWarehouse());
 
         // Get
-        SqlWarehouse dataWarehouse = sqlServer.databases().get(SQL_DATABASE_NAME).castToWarehouse();
+        SqlWarehouse dataWarehouse = sqlServer.databases().get(SQL_DATABASE_NAME).asWarehouse();
 
         Assert.assertNotNull(dataWarehouse);
         Assert.assertEquals(dataWarehouse.name(), SQL_DATABASE_NAME);
@@ -463,7 +336,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
 
         sqlServer.databases().delete(SQL_DATABASE_NAME);
 
-        sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
+        sqlServerManager.sqlServers().deleteByResourceGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
     }
 
@@ -479,10 +352,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         Observable<Indexable> resourceStream = sqlServer.databases()
                 .define(SQL_DATABASE_NAME)
                 .withNewElasticPool(sqlElasticPoolCreatable)
-                .withoutSourceDatabaseId()
                 .withCollation(COLLATION)
-                .withEdition(DatabaseEditions.STANDARD)
-                .withServiceObjective(ServiceObjectiveName.S1)
                 .createAsync();
 
         SqlDatabase sqlDatabase = Utils.<SqlDatabase>rootResource(resourceStream)
@@ -491,7 +361,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
 
         validateSqlDatabase(sqlDatabase, SQL_DATABASE_NAME);
 
-        sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
+        sqlServer =  sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME);
         validateSqlServer(sqlServer);
 
         // Get Elastic pool
@@ -580,9 +450,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         resourceStream = sqlServer.databases()
                 .define("newDatabase")
                 .withExistingElasticPool(sqlElasticPool)
-                .withoutSourceDatabaseId()
                 .withCollation(COLLATION)
-                .withEdition(DatabaseEditions.STANDARD)
                 .createAsync();
 
         sqlDatabase = Utils.<SqlDatabase>rootResource(resourceStream)
@@ -592,7 +460,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         validateSqlDatabaseNotFound("newDatabase");
 
         sqlServer.elasticPools().delete(SQL_ELASTIC_POOL_NAME);
-        sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
+        sqlServerManager.sqlServers().deleteByResourceGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
     }
 
@@ -601,7 +469,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         // Create
         SqlServer sqlServer = createSqlServer();
 
-        sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
+        sqlServer =  sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME);
         validateSqlServer(sqlServer);
 
         Observable<Indexable> resourceStream = sqlServer.elasticPools()
@@ -649,7 +517,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         sqlServer.elasticPools().delete(sqlElasticPool.name());
         validateSqlElasticPoolNotFound(sqlServer, "newElasticPool");
 
-        sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
+        sqlServerManager.sqlServers().deleteByResourceGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
     }
 
@@ -658,12 +526,12 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         // Create
         SqlServer sqlServer = createSqlServer();
 
-        sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
+        sqlServer =  sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME);
         validateSqlServer(sqlServer);
 
         Observable<Indexable> resourceStream = sqlServer.firewallRules()
                 .define(SQL_FIREWALLRULE_NAME)
-                .withIpAddressRange(START_IPADDRESS, END_IPADDRESS)
+                .withIPAddressRange(START_IPADDRESS, END_IPADDRESS)
                 .createAsync();
 
         SqlFirewallRule sqlFirewallRule = Utils.<SqlFirewallRule>rootResource(resourceStream)
@@ -677,15 +545,15 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         String secondFirewallRuleName = "secondFireWallRule";
         SqlFirewallRule secondFirewallRule = sqlServer.firewallRules()
                 .define(secondFirewallRuleName)
-                .withIpAddress(START_IPADDRESS)
+                .withIPAddress(START_IPADDRESS)
                 .create();
         Assert.assertNotNull(secondFirewallRule);
 
         secondFirewallRule = sqlServer.firewallRules().get(secondFirewallRuleName);
         Assert.assertNotNull(secondFirewallRule);
-        Assert.assertEquals(START_IPADDRESS, secondFirewallRule.endIpAddress());
+        Assert.assertEquals(START_IPADDRESS, secondFirewallRule.endIPAddress());
 
-        secondFirewallRule = secondFirewallRule.update().withEndIpAddress(END_IPADDRESS).apply();
+        secondFirewallRule = secondFirewallRule.update().withEndIPAddress(END_IPADDRESS).apply();
 
         validateSqlFirewallRule(secondFirewallRule, secondFirewallRuleName);
         sqlServer.firewallRules().delete(secondFirewallRuleName);
@@ -697,9 +565,9 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
 
         // Update
         // Making start and end IP address same.
-        sqlFirewallRule.update().withEndIpAddress(START_IPADDRESS).apply();
+        sqlFirewallRule.update().withEndIPAddress(START_IPADDRESS).apply();
         sqlFirewallRule = sqlServer.firewallRules().get(SQL_FIREWALLRULE_NAME);
-        Assert.assertEquals(sqlFirewallRule.endIpAddress(), START_IPADDRESS);
+        Assert.assertEquals(sqlFirewallRule.endIPAddress(), START_IPADDRESS);
 
         // List
         validateListSqlFirewallRule(sqlServer.firewallRules().list());
@@ -709,12 +577,113 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         validateSqlFirewallRuleNotFound();
 
         // Delete server
-        sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
+        sqlServerManager.sqlServers().deleteByResourceGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
     }
 
+    private static void validateMultiCreation(
+            String database2Name,
+            String database1InEPName,
+            String database2InEPName,
+            String elasticPool1Name,
+            String elasticPool2Name,
+            String elasticPool3Name,
+            SqlServer sqlServer,
+            boolean deleteUsingUpdate) {
+        validateSqlServer(sqlServer);
+        validateSqlServer(sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME));
+        validateSqlDatabase(sqlServer.databases().get(SQL_DATABASE_NAME), SQL_DATABASE_NAME);
+        validateSqlFirewallRule(sqlServer.firewallRules().get(SQL_FIREWALLRULE_NAME), SQL_FIREWALLRULE_NAME);
+
+        List<SqlFirewallRule> firewalls = sqlServer.firewallRules().list();
+        Assert.assertEquals(3, firewalls.size());
+
+        int startIPAddress = 0;
+        int endIPAddress = 0;
+
+        for (SqlFirewallRule firewall: firewalls) {
+            if (!firewall.name().equalsIgnoreCase(SQL_FIREWALLRULE_NAME)) {
+                Assert.assertEquals(firewall.startIPAddress(), START_IPADDRESS);
+                if (firewall.endIPAddress().equalsIgnoreCase(START_IPADDRESS)) {
+                    startIPAddress++;
+                }
+                else if (firewall.endIPAddress().equalsIgnoreCase(END_IPADDRESS)) {
+                    endIPAddress++;
+                }
+            }
+        }
+
+        Assert.assertEquals(startIPAddress, 1);
+        Assert.assertEquals(endIPAddress, 1);
+
+        Assert.assertNotNull(sqlServer.databases().get(database2Name));
+        Assert.assertNotNull(sqlServer.databases().get(database1InEPName));
+        Assert.assertNotNull(sqlServer.databases().get(database2InEPName));
+
+        SqlElasticPool ep1 = sqlServer.elasticPools().get(elasticPool1Name);
+        validateSqlElasticPool(ep1, elasticPool1Name);
+        SqlElasticPool ep2 = sqlServer.elasticPools().get(elasticPool2Name);
+
+        Assert.assertNotNull(ep2);
+        Assert.assertEquals(ep2.edition(), ElasticPoolEditions.PREMIUM);
+        Assert.assertEquals(ep2.listDatabases().size(), 2);
+        Assert.assertNotNull(ep2.getDatabase(database1InEPName));
+        Assert.assertNotNull(ep2.getDatabase(database2InEPName));
+
+        SqlElasticPool ep3 = sqlServer.elasticPools().get(elasticPool3Name);
+
+        Assert.assertNotNull(ep3);
+        Assert.assertEquals(ep3.edition(), ElasticPoolEditions.STANDARD);
+
+        if (!deleteUsingUpdate) {
+            sqlServer.databases().delete(database2Name);
+            sqlServer.databases().delete(database1InEPName);
+            sqlServer.databases().delete(database2InEPName);
+            sqlServer.databases().delete(SQL_DATABASE_NAME);
+
+            Assert.assertEquals(ep1.listDatabases().size(), 0);
+            Assert.assertEquals(ep2.listDatabases().size(), 0);
+            Assert.assertEquals(ep3.listDatabases().size(), 0);
+
+            sqlServer.elasticPools().delete(elasticPool1Name);
+            sqlServer.elasticPools().delete(elasticPool2Name);
+            sqlServer.elasticPools().delete(elasticPool3Name);
+
+            firewalls = sqlServer.firewallRules().list();
+
+            for (SqlFirewallRule firewallRule :firewalls) {
+                firewallRule.delete();
+            }
+        }
+        else {
+            sqlServer.update()
+                    .withoutDatabase(database2Name)
+                    .withoutElasticPool(elasticPool1Name)
+                    .withoutElasticPool(elasticPool2Name)
+                    .withoutElasticPool(elasticPool3Name)
+                    .withoutElasticPool(elasticPool1Name)
+                    .withoutDatabase(database1InEPName)
+                    .withoutDatabase(SQL_DATABASE_NAME)
+                    .withoutDatabase(database2InEPName)
+                    .withoutFirewallRule(SQL_FIREWALLRULE_NAME)
+                    .apply();
+
+            Assert.assertEquals(sqlServer.elasticPools().list().size(), 0);
+
+            firewalls = sqlServer.firewallRules().list();
+            Assert.assertEquals(firewalls.size(), 2);
+            for (SqlFirewallRule firewallRule :firewalls) {
+                firewallRule.delete();
+            }
+        }
+
+        Assert.assertEquals(sqlServer.elasticPools().list().size(), 0);
+        // Only master database is remaining in the SQLServer.
+        Assert.assertEquals(sqlServer.databases().list().size(), 1);
+    }
+
     private static void validateSqlFirewallRuleNotFound() {
-        Assert.assertNull(sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME).firewallRules().get(SQL_FIREWALLRULE_NAME));
+        Assert.assertNull(sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME).firewallRules().get(SQL_FIREWALLRULE_NAME));
     }
 
     private static void validateSqlElasticPoolNotFound(SqlServer sqlServer, String elasticPoolName) {
@@ -722,7 +691,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
     }
 
     private static void validateSqlDatabaseNotFound(String newDatabase) {
-        Assert.assertNull(sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME).databases().get(newDatabase));
+        Assert.assertNull(sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME).databases().get(newDatabase));
     }
 
 
@@ -758,8 +727,8 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         Assert.assertNotNull(sqlFirewallRule);
         Assert.assertEquals(firewallName, sqlFirewallRule.name());
         Assert.assertEquals(SQL_SERVER_NAME, sqlFirewallRule.sqlServerName());
-        Assert.assertEquals(START_IPADDRESS, sqlFirewallRule.startIpAddress());
-        Assert.assertEquals(END_IPADDRESS, sqlFirewallRule.endIpAddress());
+        Assert.assertEquals(START_IPADDRESS, sqlFirewallRule.startIPAddress());
+        Assert.assertEquals(END_IPADDRESS, sqlFirewallRule.endIPAddress());
         Assert.assertEquals(RG_NAME, sqlFirewallRule.resourceGroupName());
         Assert.assertEquals(SQL_SERVER_NAME, sqlFirewallRule.sqlServerName());
         Assert.assertEquals(Region.US_CENTRAL, sqlFirewallRule.region());
@@ -821,4 +790,5 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         validateSqlDatabase(sqlDatabase, databaseName);
         Assert.assertEquals(SQL_ELASTIC_POOL_NAME, sqlDatabase.elasticPoolName());
     }
+
 }

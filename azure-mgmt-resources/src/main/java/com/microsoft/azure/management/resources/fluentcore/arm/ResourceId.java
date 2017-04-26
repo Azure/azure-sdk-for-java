@@ -7,8 +7,8 @@
 package com.microsoft.azure.management.resources.fluentcore.arm;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-
 import java.security.InvalidParameterException;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Instantiate itself from a resource id, and give easy access to resource information like subscription, resourceGroup,
@@ -17,54 +17,99 @@ import java.security.InvalidParameterException;
 @LangDefinition
 public final class ResourceId {
 
-    private String subscriptionId;
-    private String resourceGroupName;
-    private String name;
-    private ResourceId parent;
-    private String providerNamespace;
-    private String resourceType;
-    private String id;
+    private String subscriptionId = null;
+    private String resourceGroupName = null;
+    private String name = null;
+    private String providerNamespace = null;
+    private String resourceType = null;
+    private String id = null;
+    private String parentId = null;
+
+    private static String badIdErrorText(String id) {
+        return String.format("The specified ID `%s` is not a valid Azure resource ID.", id);
+    }
+
+    private ResourceId(final String id) {
+        if (id == null) {
+            // Protect against NPEs from null IDs, preserving legacy behavior for null IDs
+            return;
+        } else {
+            // Skip the first '/' if any, and then split using '/'
+            String[] splits = (id.startsWith("/")) ? id.substring(1).split("/") : id.split("/");
+            if (splits.length % 2 == 1) {
+                throw new InvalidParameterException(badIdErrorText(id));
+            }
+
+            // Save the ID itself
+            this.id = id;
+
+            // Format of id:
+            // /subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/<providerNamespace>(/<parentResourceType>/<parentName>)*/<resourceType>/<name>
+            //  0             1                2              3                   4         5                                                        N-2            N-1
+
+            // Extract resource type and name
+            if (splits.length < 2) {
+                throw new InvalidParameterException(badIdErrorText(id));
+            } else {
+                this.name = splits[splits.length - 1];
+                this.resourceType = splits[splits.length - 2];
+            }
+
+            // Extract parent ID
+            if (splits.length < 10) {
+                this.parentId = null;
+            } else {
+                String[] parentSplits = new String[splits.length - 2];
+                System.arraycopy(splits, 0, parentSplits, 0, splits.length - 2);
+                this.parentId = "/" + StringUtils.join(parentSplits, "/");
+            }
+
+            for (int i = 0; i < splits.length && i < 6; i++) {
+                switch (i) {
+                case 0:
+                    // Ensure "subscriptions"
+                    if (!splits[i].equalsIgnoreCase("subscriptions")) {
+                        throw new InvalidParameterException(badIdErrorText(id));
+                    }
+                    break;
+                case 1:
+                    // Extract subscription ID
+                    this.subscriptionId = splits[i];
+                    break;
+                case 2:
+                    // Ensure "resourceGroups"
+                    if (!splits[i].equalsIgnoreCase("resourceGroups")) {
+                        throw new InvalidParameterException(badIdErrorText(id));
+                    }
+                    break;
+                case 3:
+                    // Extract resource group name
+                    this.resourceGroupName = splits[i];
+                    break;
+                case 4:
+                    // Ensure "providers"
+                    if (!splits[i].equalsIgnoreCase("providers")) {
+                        throw new InvalidParameterException(badIdErrorText(id));
+                    }
+                    break;
+                case 5:
+                    // Extract provider namespace
+                    this.providerNamespace = splits[i];
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+    }
 
     /**
      * Returns parsed ResourceId object for a given resource id.
      * @param id of the resource
-     * @return ResourceId object.
+     * @return ResourceId object
      */
-    public static ResourceId parseResourceId(String id) {
-        // Example of id is id=/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/ans/providers/Microsoft.Network/applicationGateways/something
-        // Remove the first '/' and then split using '/'
-        String[] splits = id.substring(1).split("/");
-
-        if (splits.length % 2 == 1) {
-            throw new InvalidParameterException();
-        }
-        ResourceId resourceId = new ResourceId();
-
-        resourceId.id = id;
-        resourceId.subscriptionId = splits[1];
-        resourceId.resourceGroupName = splits[3];
-
-        // In case of a resource group Id is passed, then name is resource group name.
-        if (splits.length == 4) {
-            resourceId.name = resourceId.resourceGroupName;
-            return resourceId;
-        }
-
-        resourceId.providerNamespace = splits[5];
-
-        resourceId.name = splits[splits.length - 1];
-        resourceId.resourceType = splits[splits.length - 2];
-
-        int numberOfParents = splits.length / 2 - 4;
-        if (numberOfParents == 0) {
-            return resourceId;
-        }
-
-        String resourceType = splits[splits.length - 2];
-
-        resourceId.parent = ResourceId.parseResourceId(id.substring(0, id.length() - ("/" + resourceType + "/" + resourceId.name()).length()));
-
-        return resourceId;
+    public static ResourceId fromString(String id) {
+        return new ResourceId(id);
     }
 
     /**
@@ -92,7 +137,11 @@ public final class ResourceId {
      * @return parent resource id of the resource if any, otherwise null.
      */
     public ResourceId parent() {
-        return this.parent;
+        if (this.id == null || this.parentId == null) {
+            return null;
+        } else {
+            return fromString(this.parentId);
+        }
     }
 
     /**
@@ -113,10 +162,11 @@ public final class ResourceId {
      * @return full type of the resource.
      */
     public String fullResourceType() {
-        if (this.parent == null) {
+        if (this.parentId == null) {
             return this.providerNamespace + "/" + this.resourceType;
+        } else {
+            return this.parent().fullResourceType() + "/" + this.resourceType;
         }
-        return this.parent.fullResourceType() + "/" + this.resourceType;
     }
 
     /**

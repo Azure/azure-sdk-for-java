@@ -9,29 +9,34 @@
 package com.microsoft.azure.management.graphrbac.implementation;
 
 import org.joda.time.DateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Active Directory PasswordCredential information.
+ * Active Directory Password Credential information.
  */
 public class PasswordCredentialInner {
     /**
-     * start date.
+     * Start date.
      */
+    @JsonProperty(value = "startDate")
     private DateTime startDate;
 
     /**
-     * end date.
+     * End date.
      */
+    @JsonProperty(value = "endDate")
     private DateTime endDate;
 
     /**
-     * key Id.
+     * Key ID.
      */
+    @JsonProperty(value = "keyId")
     private String keyId;
 
     /**
-     * value.
+     * Key value.
      */
+    @JsonProperty(value = "value")
     private String value;
 
     /**

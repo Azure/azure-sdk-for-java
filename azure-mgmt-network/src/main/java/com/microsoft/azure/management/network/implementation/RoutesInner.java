@@ -10,14 +10,13 @@ package com.microsoft.azure.management.network.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -31,6 +30,7 @@ import retrofit2.http.HTTP;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -39,7 +39,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Routes.
  */
-public final class RoutesInner {
+public class RoutesInner {
     /** The Retrofit service to perform REST calls. */
     private RoutesService service;
     /** The service client containing this operation class. */
@@ -61,83 +61,89 @@ public final class RoutesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface RoutesService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.Routes delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}/routes/{routeName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("routeTableName") String routeTableName, @Path("routeName") String routeName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.Routes beginDelete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}/routes/{routeName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("routeTableName") String routeTableName, @Path("routeName") String routeName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.Routes get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}/routes/{routeName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("routeTableName") String routeTableName, @Path("routeName") String routeName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.Routes createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}/routes/{routeName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("routeTableName") String routeTableName, @Path("routeName") String routeName, @Path("subscriptionId") String subscriptionId, @Body RouteInner routeParameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.Routes beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}/routes/{routeName}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("routeTableName") String routeTableName, @Path("routeName") String routeName, @Path("subscriptionId") String subscriptionId, @Body RouteInner routeParameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.Routes list" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}/routes")
         Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("routeTableName") String routeTableName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.Routes listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * The delete route operation deletes the specified route from a route table.
+     * Deletes the specified route from a route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String routeTableName, String routeName) {
-        deleteWithServiceResponseAsync(resourceGroupName, routeTableName, routeName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, routeTableName, routeName).toBlocking().last().body();
     }
 
     /**
-     * The delete route operation deletes the specified route from a route table.
+     * Deletes the specified route from a route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String routeTableName, String routeName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, routeTableName, routeName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String routeTableName, String routeName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, routeTableName, routeName), serviceCallback);
     }
 
     /**
-     * The delete route operation deletes the specified route from a route table.
+     * Deletes the specified route from a route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String routeTableName, String routeName) {
         return deleteWithServiceResponseAsync(resourceGroupName, routeTableName, routeName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The delete route operation deletes the specified route from a route table.
+     * Deletes the specified route from a route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String routeTableName, String routeName) {
@@ -153,60 +159,64 @@ public final class RoutesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, routeTableName, routeName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-12-01";
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, routeTableName, routeName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
     /**
-     * The delete route operation deletes the specified route from a route table.
+     * Deletes the specified route from a route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String routeTableName, String routeName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, routeTableName, routeName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, routeTableName, routeName).toBlocking().single().body();
     }
 
     /**
-     * The delete route operation deletes the specified route from a route table.
+     * Deletes the specified route from a route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String routeTableName, String routeName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, routeTableName, routeName), serviceCallback);
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String routeTableName, String routeName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, routeTableName, routeName), serviceCallback);
     }
 
     /**
-     * The delete route operation deletes the specified route from a route table.
+     * Deletes the specified route from a route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String routeTableName, String routeName) {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, routeTableName, routeName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The delete route operation deletes the specified route from a route table.
+     * Deletes the specified route from a route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String routeTableName, String routeName) {
@@ -222,10 +232,8 @@ public final class RoutesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginDelete(resourceGroupName, routeTableName, routeName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-12-01";
+        return service.beginDelete(resourceGroupName, routeTableName, routeName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -240,61 +248,68 @@ public final class RoutesInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * The Get route operation retrieves information about the specified route from the route table.
+     * Gets the specified route from a route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RouteInner object if successful.
      */
     public RouteInner get(String resourceGroupName, String routeTableName, String routeName) {
-        return getWithServiceResponseAsync(resourceGroupName, routeTableName, routeName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, routeTableName, routeName).toBlocking().single().body();
     }
 
     /**
-     * The Get route operation retrieves information about the specified route from the route table.
+     * Gets the specified route from a route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RouteInner> getAsync(String resourceGroupName, String routeTableName, String routeName, final ServiceCallback<RouteInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, routeTableName, routeName), serviceCallback);
+    public ServiceFuture<RouteInner> getAsync(String resourceGroupName, String routeTableName, String routeName, final ServiceCallback<RouteInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, routeTableName, routeName), serviceCallback);
     }
 
     /**
-     * The Get route operation retrieves information about the specified route from the route table.
+     * Gets the specified route from a route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RouteInner object
      */
     public Observable<RouteInner> getAsync(String resourceGroupName, String routeTableName, String routeName) {
         return getWithServiceResponseAsync(resourceGroupName, routeTableName, routeName).map(new Func1<ServiceResponse<RouteInner>, RouteInner>() {
             @Override
             public RouteInner call(ServiceResponse<RouteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The Get route operation retrieves information about the specified route from the route table.
+     * Gets the specified route from a route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RouteInner object
      */
     public Observable<ServiceResponse<RouteInner>> getWithServiceResponseAsync(String resourceGroupName, String routeTableName, String routeName) {
@@ -310,10 +325,8 @@ public final class RoutesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(resourceGroupName, routeTableName, routeName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-12-01";
+        return service.get(resourceGroupName, routeTableName, routeName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RouteInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RouteInner>> call(Response<ResponseBody> response) {
@@ -328,64 +341,70 @@ public final class RoutesInner {
     }
 
     private ServiceResponse<RouteInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RouteInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RouteInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RouteInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * The Put route operation creates/updates a route in the specified route table.
+     * Creates or updates a route in the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
-     * @param routeParameters Parameters supplied to the create/update route operation
+     * @param routeParameters Parameters supplied to the create or update route operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RouteInner object if successful.
      */
     public RouteInner createOrUpdate(String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, routeName, routeParameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, routeName, routeParameters).toBlocking().last().body();
     }
 
     /**
-     * The Put route operation creates/updates a route in the specified route table.
+     * Creates or updates a route in the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
-     * @param routeParameters Parameters supplied to the create/update route operation
+     * @param routeParameters Parameters supplied to the create or update route operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RouteInner> createOrUpdateAsync(String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters, final ServiceCallback<RouteInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, routeName, routeParameters), serviceCallback);
+    public ServiceFuture<RouteInner> createOrUpdateAsync(String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters, final ServiceCallback<RouteInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, routeName, routeParameters), serviceCallback);
     }
 
     /**
-     * The Put route operation creates/updates a route in the specified route table.
+     * Creates or updates a route in the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
-     * @param routeParameters Parameters supplied to the create/update route operation
+     * @param routeParameters Parameters supplied to the create or update route operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<RouteInner> createOrUpdateAsync(String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, routeName, routeParameters).map(new Func1<ServiceResponse<RouteInner>, RouteInner>() {
             @Override
             public RouteInner call(ServiceResponse<RouteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The Put route operation creates/updates a route in the specified route table.
+     * Creates or updates a route in the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
-     * @param routeParameters Parameters supplied to the create/update route operation
+     * @param routeParameters Parameters supplied to the create or update route operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<RouteInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters) {
@@ -404,66 +423,70 @@ public final class RoutesInner {
         if (routeParameters == null) {
             throw new IllegalArgumentException("Parameter routeParameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(routeParameters);
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, routeTableName, routeName, this.client.subscriptionId(), routeParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-12-01";
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, routeTableName, routeName, this.client.subscriptionId(), routeParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<RouteInner>() { }.getType());
     }
 
     /**
-     * The Put route operation creates/updates a route in the specified route table.
+     * Creates or updates a route in the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
-     * @param routeParameters Parameters supplied to the create/update route operation
+     * @param routeParameters Parameters supplied to the create or update route operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RouteInner object if successful.
      */
     public RouteInner beginCreateOrUpdate(String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, routeName, routeParameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, routeName, routeParameters).toBlocking().single().body();
     }
 
     /**
-     * The Put route operation creates/updates a route in the specified route table.
+     * Creates or updates a route in the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
-     * @param routeParameters Parameters supplied to the create/update route operation
+     * @param routeParameters Parameters supplied to the create or update route operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<RouteInner> beginCreateOrUpdateAsync(String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters, final ServiceCallback<RouteInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, routeName, routeParameters), serviceCallback);
+    public ServiceFuture<RouteInner> beginCreateOrUpdateAsync(String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters, final ServiceCallback<RouteInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, routeName, routeParameters), serviceCallback);
     }
 
     /**
-     * The Put route operation creates/updates a route in the specified route table.
+     * Creates or updates a route in the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
-     * @param routeParameters Parameters supplied to the create/update route operation
+     * @param routeParameters Parameters supplied to the create or update route operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RouteInner object
      */
     public Observable<RouteInner> beginCreateOrUpdateAsync(String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, routeName, routeParameters).map(new Func1<ServiceResponse<RouteInner>, RouteInner>() {
             @Override
             public RouteInner call(ServiceResponse<RouteInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The Put route operation creates/updates a route in the specified route table.
+     * Creates or updates a route in the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
-     * @param routeParameters Parameters supplied to the create/update route operation
+     * @param routeParameters Parameters supplied to the create or update route operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RouteInner object
      */
     public Observable<ServiceResponse<RouteInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters) {
@@ -482,11 +505,9 @@ public final class RoutesInner {
         if (routeParameters == null) {
             throw new IllegalArgumentException("Parameter routeParameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(routeParameters);
-        return service.beginCreateOrUpdate(resourceGroupName, routeTableName, routeName, this.client.subscriptionId(), routeParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-12-01";
+        return service.beginCreateOrUpdate(resourceGroupName, routeTableName, routeName, this.client.subscriptionId(), routeParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RouteInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RouteInner>> call(Response<ResponseBody> response) {
@@ -501,7 +522,7 @@ public final class RoutesInner {
     }
 
     private ServiceResponse<RouteInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RouteInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<RouteInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RouteInner>() { }.getType())
                 .register(201, new TypeToken<RouteInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -509,32 +530,36 @@ public final class RoutesInner {
     }
 
     /**
-     * The List network security rule operation retrieves all the routes in a route table.
+     * Gets all routes in a route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;RouteInner&gt; object if successful.
      */
     public PagedList<RouteInner> list(final String resourceGroupName, final String routeTableName) {
         ServiceResponse<Page<RouteInner>> response = listSinglePageAsync(resourceGroupName, routeTableName).toBlocking().single();
-        return new PagedList<RouteInner>(response.getBody()) {
+        return new PagedList<RouteInner>(response.body()) {
             @Override
             public Page<RouteInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * The List network security rule operation retrieves all the routes in a route table.
+     * Gets all routes in a route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RouteInner>> listAsync(final String resourceGroupName, final String routeTableName, final ListOperationCallback<RouteInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<RouteInner>> listAsync(final String resourceGroupName, final String routeTableName, final ListOperationCallback<RouteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(resourceGroupName, routeTableName),
             new Func1<String, Observable<ServiceResponse<Page<RouteInner>>>>() {
                 @Override
@@ -546,10 +571,11 @@ public final class RoutesInner {
     }
 
     /**
-     * The List network security rule operation retrieves all the routes in a route table.
+     * Gets all routes in a route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RouteInner&gt; object
      */
     public Observable<Page<RouteInner>> listAsync(final String resourceGroupName, final String routeTableName) {
@@ -557,16 +583,17 @@ public final class RoutesInner {
             .map(new Func1<ServiceResponse<Page<RouteInner>>, Page<RouteInner>>() {
                 @Override
                 public Page<RouteInner> call(ServiceResponse<Page<RouteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * The List network security rule operation retrieves all the routes in a route table.
+     * Gets all routes in a route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RouteInner&gt; object
      */
     public Observable<ServiceResponse<Page<RouteInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String routeTableName) {
@@ -574,7 +601,7 @@ public final class RoutesInner {
             .concatMap(new Func1<ServiceResponse<Page<RouteInner>>, Observable<ServiceResponse<Page<RouteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RouteInner>>> call(ServiceResponse<Page<RouteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -584,10 +611,11 @@ public final class RoutesInner {
     }
 
     /**
-     * The List network security rule operation retrieves all the routes in a route table.
+     * Gets all routes in a route table.
      *
     ServiceResponse<PageImpl<RouteInner>> * @param resourceGroupName The name of the resource group.
     ServiceResponse<PageImpl<RouteInner>> * @param routeTableName The name of the route table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;RouteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<RouteInner>>> listSinglePageAsync(final String resourceGroupName, final String routeTableName) {
@@ -600,16 +628,14 @@ public final class RoutesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(resourceGroupName, routeTableName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-12-01";
+        return service.list(resourceGroupName, routeTableName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RouteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RouteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RouteInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RouteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RouteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -618,38 +644,42 @@ public final class RoutesInner {
     }
 
     private ServiceResponse<PageImpl<RouteInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<RouteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RouteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<RouteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * The List network security rule operation retrieves all the routes in a route table.
+     * Gets all routes in a route table.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;RouteInner&gt; object if successful.
      */
     public PagedList<RouteInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<RouteInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<RouteInner>(response.getBody()) {
+        return new PagedList<RouteInner>(response.body()) {
             @Override
             public Page<RouteInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * The List network security rule operation retrieves all the routes in a route table.
+     * Gets all routes in a route table.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<RouteInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<RouteInner>> serviceCall, final ListOperationCallback<RouteInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<RouteInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<RouteInner>> serviceFuture, final ListOperationCallback<RouteInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<RouteInner>>>>() {
                 @Override
@@ -661,9 +691,10 @@ public final class RoutesInner {
     }
 
     /**
-     * The List network security rule operation retrieves all the routes in a route table.
+     * Gets all routes in a route table.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RouteInner&gt; object
      */
     public Observable<Page<RouteInner>> listNextAsync(final String nextPageLink) {
@@ -671,15 +702,16 @@ public final class RoutesInner {
             .map(new Func1<ServiceResponse<Page<RouteInner>>, Page<RouteInner>>() {
                 @Override
                 public Page<RouteInner> call(ServiceResponse<Page<RouteInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * The List network security rule operation retrieves all the routes in a route table.
+     * Gets all routes in a route table.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RouteInner&gt; object
      */
     public Observable<ServiceResponse<Page<RouteInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -687,7 +719,7 @@ public final class RoutesInner {
             .concatMap(new Func1<ServiceResponse<Page<RouteInner>>, Observable<ServiceResponse<Page<RouteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RouteInner>>> call(ServiceResponse<Page<RouteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -697,22 +729,24 @@ public final class RoutesInner {
     }
 
     /**
-     * The List network security rule operation retrieves all the routes in a route table.
+     * Gets all routes in a route table.
      *
     ServiceResponse<PageImpl<RouteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;RouteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<RouteInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RouteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RouteInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<RouteInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<RouteInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<RouteInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -721,7 +755,7 @@ public final class RoutesInner {
     }
 
     private ServiceResponse<PageImpl<RouteInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<RouteInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RouteInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<RouteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

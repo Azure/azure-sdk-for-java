@@ -10,14 +10,17 @@ package com.microsoft.azure.management.compute;
 
 import java.util.List;
 import com.microsoft.azure.management.compute.implementation.NetworkInterfaceReferenceInner;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes a network profile.
  */
 public class NetworkProfile {
     /**
-     * the network interfaces.
+     * Specifies the list of resource IDs for the network interfaces associated
+     * with the virtual machine.
      */
+    @JsonProperty(value = "networkInterfaces")
     private List<NetworkInterfaceReferenceInner> networkInterfaces;
 
     /**

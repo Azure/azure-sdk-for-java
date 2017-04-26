@@ -53,7 +53,7 @@ class ApplicationGatewayBackendImpl
     }
 
     @Override
-    public Map<String, String> backendNicIpConfigurationNames() {
+    public Map<String, String> backendNicIPConfigurationNames() {
         // This assumes a NIC can only have one IP config associated with the backend of an app gateway,
         // which is correct at the time of this implementation and seems unlikely to ever change
         final Map<String, String> ipConfigNames = new TreeMap<>();
@@ -90,13 +90,13 @@ class ApplicationGatewayBackendImpl
     // Withers
 
     @Override
-    public ApplicationGatewayBackendImpl withIpAddress(String ipAddress) {
+    public ApplicationGatewayBackendImpl withIPAddress(String ipAddress) {
         if (ipAddress == null) {
             return this;
         }
 
         ApplicationGatewayBackendAddress address = new ApplicationGatewayBackendAddress()
-                .withIpAddress(ipAddress);
+                .withIPAddress(ipAddress);
         List<ApplicationGatewayBackendAddress> addresses = ensureAddresses();
         for (ApplicationGatewayBackendAddress a : addresses) {
             if (ipAddress.equalsIgnoreCase(a.ipAddress())) {
@@ -119,7 +119,7 @@ class ApplicationGatewayBackendImpl
     }
 
     @Override
-    public ApplicationGatewayBackendImpl withoutIpAddress(String ipAddress) {
+    public ApplicationGatewayBackendImpl withoutIPAddress(String ipAddress) {
         if (ipAddress == null) {
             return this;
         }
@@ -129,8 +129,8 @@ class ApplicationGatewayBackendImpl
 
         final List<ApplicationGatewayBackendAddress> addresses = ensureAddresses();
         for (int i = 0; i < addresses.size(); i++) {
-            String curIpAddress = addresses.get(i).ipAddress();
-            if (curIpAddress != null && curIpAddress.equalsIgnoreCase(ipAddress)) {
+            String curIPAddress = addresses.get(i).ipAddress();
+            if (curIPAddress != null && curIPAddress.equalsIgnoreCase(ipAddress)) {
                 addresses.remove(i);
                 break;
             }
@@ -161,7 +161,7 @@ class ApplicationGatewayBackendImpl
     }
 
     @Override
-    public boolean containsIpAddress(String ipAddress) {
+    public boolean containsIPAddress(String ipAddress) {
         if (ipAddress != null) {
             for (ApplicationGatewayBackendAddress address : this.inner().backendAddresses()) {
                 if (ipAddress.equalsIgnoreCase(address.ipAddress())) {

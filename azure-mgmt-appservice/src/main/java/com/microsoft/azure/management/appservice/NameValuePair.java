@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Name value pair.
@@ -16,11 +17,13 @@ public class NameValuePair {
     /**
      * Pair name.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * Pair value.
      */
+    @JsonProperty(value = "value")
     private String value;
 
     /**

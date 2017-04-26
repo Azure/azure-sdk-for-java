@@ -17,8 +17,8 @@ public class ResourceIdTests {
 
 
     @Test
-    public void ResourceIdForTopLevelResourceWorksFine() {
-        ResourceId resourceId = ResourceId.parseResourceId("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/resourceGroupName/providers/Microsoft.Network/applicationGateways/something");
+    public void resourceIdForTopLevelResourceWorksFine() {
+        ResourceId resourceId = ResourceId.fromString("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/resourceGroupName/providers/Microsoft.Network/applicationGateways/something");
 
         Assert.assertEquals(resourceId.name(), "something");
         Assert.assertEquals(resourceId.subscriptionId(), "9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef");
@@ -30,8 +30,8 @@ public class ResourceIdTests {
     }
 
     @Test
-    public void ResourceIdForChildLevelResourceWorksFine() {
-        ResourceId resourceId = ResourceId.parseResourceId("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/resourceGroupName/providers/Microsoft.Network/applicationGateways/something/someChildType/childName");
+    public void resourceIdForChildLevelResourceWorksFine() {
+        ResourceId resourceId = ResourceId.fromString("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/resourceGroupName/providers/Microsoft.Network/applicationGateways/something/someChildType/childName");
         
         Assert.assertEquals(resourceId.name(), "childName");
         Assert.assertEquals(resourceId.subscriptionId(), "9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef");
@@ -50,8 +50,8 @@ public class ResourceIdTests {
     }
 
     @Test
-    public void ResourceIdForGrandChildLevelResourceWorksFine() {
-        ResourceId resourceId = ResourceId.parseResourceId("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/resourceGroupName/providers/Microsoft.Network/applicationGateways/something/someChildType/childName/grandChildType/grandChild");
+    public void resourceIdForGrandChildLevelResourceWorksFine() {
+        ResourceId resourceId = ResourceId.fromString("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/resourceGroupName/providers/Microsoft.Network/applicationGateways/something/someChildType/childName/grandChildType/grandChild");
 
         Assert.assertEquals(resourceId.name(), "grandChild");
         Assert.assertEquals(resourceId.subscriptionId(), "9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef");

@@ -12,35 +12,35 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * An array of 0 to 16 identities that have access to the key vault. All
- * identities in the array must use the same tenant ID as the key vault's
- * tenant ID.
+ * An identity that have access to the key vault. All identities in the array
+ * must use the same tenant ID as the key vault's tenant ID.
  */
 public class AccessPolicyEntry {
     /**
      * The Azure Active Directory tenant ID that should be used for
      * authenticating requests to the key vault.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "tenantId", required = true)
     private UUID tenantId;
 
     /**
-     * The object ID of a user or service principal in the Azure Active
-     * Directory tenant for the vault. The object ID must be unique for the
-     * list of access policies.
+     * The object ID of a user, service principal or security group in the
+     * Azure Active Directory tenant for the vault. The object ID must be
+     * unique for the list of access policies.
      */
-    @JsonProperty(required = true)
-    private UUID objectId;
+    @JsonProperty(value = "objectId", required = true)
+    private String objectId;
 
     /**
      * Application ID of the client making request on behalf of a principal.
      */
+    @JsonProperty(value = "applicationId")
     private UUID applicationId;
 
     /**
-     * Permissions the identity has for keys and secrets.
+     * Permissions the identity has for keys, secrets and certificates.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "permissions", required = true)
     private Permissions permissions;
 
     /**
@@ -68,7 +68,7 @@ public class AccessPolicyEntry {
      *
      * @return the objectId value
      */
-    public UUID objectId() {
+    public String objectId() {
         return this.objectId;
     }
 
@@ -78,7 +78,7 @@ public class AccessPolicyEntry {
      * @param objectId the objectId value to set
      * @return the AccessPolicyEntry object itself.
      */
-    public AccessPolicyEntry withObjectId(UUID objectId) {
+    public AccessPolicyEntry withObjectId(String objectId) {
         this.objectId = objectId;
         return this;
     }

@@ -9,44 +9,54 @@
 package com.microsoft.azure.management.compute;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes an OS profile.
  */
 public class OSProfile {
     /**
-     * the computer name.
+     * Specifies the host OS name of the virtual machine.
      */
+    @JsonProperty(value = "computerName")
     private String computerName;
 
     /**
-     * the admin user name.
+     * Specifies the name of the administrator account.
      */
+    @JsonProperty(value = "adminUsername")
     private String adminUsername;
 
     /**
-     * the admin user password.
+     * Specifies the password of the administrator account.
      */
+    @JsonProperty(value = "adminPassword")
     private String adminPassword;
 
     /**
-     * a base-64 encoded string of custom data.
+     * Specifies a base-64 encoded string of custom data. The base-64 encoded
+     * string is decoded to a binary array that is saved as a file on the
+     * Virtual Machine. The maximum length of the binary array is 65535 bytes.
      */
+    @JsonProperty(value = "customData")
     private String customData;
 
     /**
-     * the Windows Configuration of the OS profile.
+     * The Windows configuration of the OS profile.
      */
+    @JsonProperty(value = "windowsConfiguration")
     private WindowsConfiguration windowsConfiguration;
 
     /**
-     * the Linux Configuration of the OS profile.
+     * The Linux configuration of the OS profile.
      */
+    @JsonProperty(value = "linuxConfiguration")
     private LinuxConfiguration linuxConfiguration;
 
     /**
-     * the List of certificates for addition to the VM.
+     * The list of certificates for addition to the VM.
      */
+    @JsonProperty(value = "secrets")
     private List<VaultSecretGroup> secrets;
 
     /**

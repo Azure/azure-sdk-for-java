@@ -7,20 +7,22 @@ package com.microsoft.azure.management.network;
 
 import java.util.List;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayBackendAddressPoolInner;
 import com.microsoft.azure.management.network.model.HasBackendNics;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * An immutable client-side representation of an application gateway backend.
  */
 @Fluent()
+@Beta
 public interface ApplicationGatewayBackend extends
-    Wrapper<ApplicationGatewayBackendAddressPoolInner>,
+    HasInner<ApplicationGatewayBackendAddressPoolInner>,
     ChildResource<ApplicationGateway>,
     HasBackendNics {
 
@@ -34,7 +36,7 @@ public interface ApplicationGatewayBackend extends
      * @param ipAddress an IP address
      * @return true if the specified IP address is referenced by this backend, else false
      */
-    boolean containsIpAddress(String ipAddress);
+    boolean containsIPAddress(String ipAddress);
 
     /**
      * Checks whether the specified FQDN is referenced by this backend address pool.
@@ -66,7 +68,7 @@ public interface ApplicationGatewayBackend extends
              * @param ipAddress an IP address
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withIpAddress(String ipAddress);
+            WithAttach<ParentT> withIPAddress(String ipAddress);
 
             /**
              * Adds the specified existing fully qualified domain name (FQDN) to the backend.
@@ -111,7 +113,7 @@ public interface ApplicationGatewayBackend extends
              * @param ipAddress an IP address
              * @return the next stage of the update
              */
-            Update withIpAddress(String ipAddress);
+            Update withIPAddress(String ipAddress);
 
             /**
              * Adds the specified existing fully qualified domain name (FQDN) to the backend.
@@ -125,7 +127,7 @@ public interface ApplicationGatewayBackend extends
              * @param ipAddress an IP address
              * @return the next stage of the update
              */
-            Update withoutIpAddress(String ipAddress);
+            Update withoutIPAddress(String ipAddress);
 
             /**
              * Ensure the specified address is not associated with this backend.
@@ -172,7 +174,7 @@ public interface ApplicationGatewayBackend extends
              * @param ipAddress an IP address
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withIpAddress(String ipAddress);
+            WithAttach<ParentT> withIPAddress(String ipAddress);
 
             /**
              * Adds the specified existing fully qualified domain name (FQDN) to the backend.

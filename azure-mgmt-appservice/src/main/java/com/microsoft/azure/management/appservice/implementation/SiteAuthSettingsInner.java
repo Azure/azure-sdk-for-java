@@ -8,34 +8,42 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
-import com.microsoft.azure.management.appservice.UnauthenticatedClientAction;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.azure.Resource;
 import com.microsoft.azure.management.appservice.BuiltInAuthenticationProvider;
+import com.microsoft.azure.management.appservice.UnauthenticatedClientAction;
+import com.microsoft.rest.serializer.JsonFlatten;
+
+import java.util.List;
 
 /**
  * Configuration settings for the Azure App Service Authentication /
  * Authorization feature.
  */
-public class SiteAuthSettingsInner {
+@JsonFlatten
+public class SiteAuthSettingsInner extends Resource {
     /**
      * &lt;code&gt;true&lt;/code&gt; if the Authentication / Authorization
      * feature is enabled for the current app; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
      */
+    @JsonProperty(value = "properties.enabled")
     private Boolean enabled;
 
     /**
-     * The relative path prefix used by platform HTTP APIs.
-     * Changing this value is not recommended except for compatibility
-     * reasons.
+     * The RuntimeVersion of the Authentication / Authorization feature in use
+     * for the current app.
+     * The setting in this value can control the behavior of certain features
+     * in the Authentication / Authorization module.
      */
-    private String httpApiPrefixPath;
+    @JsonProperty(value = "properties.runtimeVersion")
+    private String runtimeVersion;
 
     /**
-     * The action to take when an unauthenticated client attempts to access
-     * the app. Possible values include: 'RedirectToLoginPage',
-     * 'AllowAnonymous'.
+     * The action to take when an unauthenticated client attempts to access the
+     * app. Possible values include: 'RedirectToLoginPage', 'AllowAnonymous'.
      */
+    @JsonProperty(value = "properties.unauthenticatedClientAction")
     private UnauthenticatedClientAction unauthenticatedClientAction;
 
     /**
@@ -44,27 +52,29 @@ public class SiteAuthSettingsInner {
      * &lt;code&gt;false&lt;/code&gt;.
      * The default is &lt;code&gt;false&lt;/code&gt;.
      */
+    @JsonProperty(value = "properties.tokenStoreEnabled")
     private Boolean tokenStoreEnabled;
 
     /**
-     * External URLs that can be redirected to as part of logging in or
-     * logging out of the app. Note that the query string part of the URL is
-     * ignored.
+     * External URLs that can be redirected to as part of logging in or logging
+     * out of the app. Note that the query string part of the URL is ignored.
      * This is an advanced setting typically only needed by Windows Store
      * application backends.
      * Note that URLs within the current domain are always implicitly allowed.
      */
+    @JsonProperty(value = "properties.allowedExternalRedirectUrls")
     private List<String> allowedExternalRedirectUrls;
 
     /**
      * The default authentication provider to use when multiple providers are
      * configured.
-     * This setting is only needed if multiple providers are configured and
-     * the unauthenticated client
+     * This setting is only needed if multiple providers are configured and the
+     * unauthenticated client
      * action is set to "RedirectToLoginPage". Possible values include:
      * 'AzureActiveDirectory', 'Facebook', 'Google', 'MicrosoftAccount',
      * 'Twitter'.
      */
+    @JsonProperty(value = "properties.defaultProvider")
     private BuiltInAuthenticationProvider defaultProvider;
 
     /**
@@ -72,6 +82,7 @@ public class SiteAuthSettingsInner {
      * can be used to
      * call the token refresh API. The default is 72 hours.
      */
+    @JsonProperty(value = "properties.tokenRefreshExtensionHours")
     private Double tokenRefreshExtensionHours;
 
     /**
@@ -82,18 +93,20 @@ public class SiteAuthSettingsInner {
      * More information on OpenID Connect:
      * http://openid.net/specs/openid-connect-core-1_0.html.
      */
+    @JsonProperty(value = "properties.clientId")
     private String clientId;
 
     /**
      * The Client Secret of this relying party application (in Azure Active
      * Directory, this is also referred to as the Key).
-     * This setting is optional. If no client secret is configured, the
-     * OpenID Connect implicit auth flow is used to authenticate end users.
+     * This setting is optional. If no client secret is configured, the OpenID
+     * Connect implicit auth flow is used to authenticate end users.
      * Otherwise, the OpenID Connect Authorization Code Flow is used to
      * authenticate end users.
      * More information on OpenID Connect:
      * http://openid.net/specs/openid-connect-core-1_0.html.
      */
+    @JsonProperty(value = "properties.clientSecret")
     private String clientSecret;
 
     /**
@@ -105,14 +118,16 @@ public class SiteAuthSettingsInner {
      * More information on OpenID Connect Discovery:
      * http://openid.net/specs/openid-connect-discovery-1_0.html.
      */
+    @JsonProperty(value = "properties.issuer")
     private String issuer;
 
     /**
      * Allowed audience values to consider when validating JWTs issued by
-     * Azure Active Directory. Note that the
-     * &lt;code&gt;ClientID&lt;/code&gt; value is always considered an
+     * Azure Active Directory. Note that the &lt;code&gt;ClientID&lt;/code&gt;
+     * value is always considered an
      * allowed audience, regardless of this setting.
      */
+    @JsonProperty(value = "properties.allowedAudiences")
     private List<String> allowedAudiences;
 
     /**
@@ -120,17 +135,8 @@ public class SiteAuthSettingsInner {
      * when
      * a user logs in. Each parameter must be in the form "key=value".
      */
+    @JsonProperty(value = "properties.additionalLoginParams")
     private List<String> additionalLoginParams;
-
-    /**
-     * The aadClientId property.
-     */
-    private String aadClientId;
-
-    /**
-     * The openIdIssuer property.
-     */
-    private String openIdIssuer;
 
     /**
      * The OpenID Connect Client ID for the Google web application.
@@ -138,6 +144,7 @@ public class SiteAuthSettingsInner {
      * Google Sign-In documentation:
      * https://developers.google.com/identity/sign-in/web/.
      */
+    @JsonProperty(value = "properties.googleClientId")
     private String googleClientId;
 
     /**
@@ -146,6 +153,7 @@ public class SiteAuthSettingsInner {
      * Google Sign-In documentation:
      * https://developers.google.com/identity/sign-in/web/.
      */
+    @JsonProperty(value = "properties.googleClientSecret")
     private String googleClientSecret;
 
     /**
@@ -156,6 +164,7 @@ public class SiteAuthSettingsInner {
      * Google Sign-In documentation:
      * https://developers.google.com/identity/sign-in/web/.
      */
+    @JsonProperty(value = "properties.googleOAuthScopes")
     private List<String> googleOAuthScopes;
 
     /**
@@ -164,6 +173,7 @@ public class SiteAuthSettingsInner {
      * Facebook Login documentation:
      * https://developers.facebook.com/docs/facebook-login.
      */
+    @JsonProperty(value = "properties.facebookAppId")
     private String facebookAppId;
 
     /**
@@ -172,6 +182,7 @@ public class SiteAuthSettingsInner {
      * Facebook Login documentation:
      * https://developers.facebook.com/docs/facebook-login.
      */
+    @JsonProperty(value = "properties.facebookAppSecret")
     private String facebookAppSecret;
 
     /**
@@ -181,6 +192,7 @@ public class SiteAuthSettingsInner {
      * Facebook Login documentation:
      * https://developers.facebook.com/docs/facebook-login.
      */
+    @JsonProperty(value = "properties.facebookOAuthScopes")
     private List<String> facebookOAuthScopes;
 
     /**
@@ -188,6 +200,7 @@ public class SiteAuthSettingsInner {
      * This setting is required for enabling Twitter Sign-In.
      * Twitter Sign-In documentation: https://dev.twitter.com/web/sign-in.
      */
+    @JsonProperty(value = "properties.twitterConsumerKey")
     private String twitterConsumerKey;
 
     /**
@@ -196,6 +209,7 @@ public class SiteAuthSettingsInner {
      * This setting is required for enabling Twitter Sign-In.
      * Twitter Sign-In documentation: https://dev.twitter.com/web/sign-in.
      */
+    @JsonProperty(value = "properties.twitterConsumerSecret")
     private String twitterConsumerSecret;
 
     /**
@@ -205,6 +219,7 @@ public class SiteAuthSettingsInner {
      * Microsoft Account OAuth documentation:
      * https://dev.onedrive.com/auth/msa_oauth.htm.
      */
+    @JsonProperty(value = "properties.microsoftAccountClientId")
     private String microsoftAccountClientId;
 
     /**
@@ -214,16 +229,18 @@ public class SiteAuthSettingsInner {
      * Microsoft Account OAuth documentation:
      * https://dev.onedrive.com/auth/msa_oauth.htm.
      */
+    @JsonProperty(value = "properties.microsoftAccountClientSecret")
     private String microsoftAccountClientSecret;
 
     /**
-     * The OAuth 2.0 scopes that will be requested as part of Microsoft
-     * Account authentication.
+     * The OAuth 2.0 scopes that will be requested as part of Microsoft Account
+     * authentication.
      * This setting is optional. If not specified, "wl.basic" is used as the
      * default scope.
      * Microsoft Account Scopes and permissions documentation:
      * https://msdn.microsoft.com/en-us/library/dn631845.aspx.
      */
+    @JsonProperty(value = "properties.microsoftAccountOAuthScopes")
     private List<String> microsoftAccountOAuthScopes;
 
     /**
@@ -247,22 +264,22 @@ public class SiteAuthSettingsInner {
     }
 
     /**
-     * Get the httpApiPrefixPath value.
+     * Get the runtimeVersion value.
      *
-     * @return the httpApiPrefixPath value
+     * @return the runtimeVersion value
      */
-    public String httpApiPrefixPath() {
-        return this.httpApiPrefixPath;
+    public String runtimeVersion() {
+        return this.runtimeVersion;
     }
 
     /**
-     * Set the httpApiPrefixPath value.
+     * Set the runtimeVersion value.
      *
-     * @param httpApiPrefixPath the httpApiPrefixPath value to set
+     * @param runtimeVersion the runtimeVersion value to set
      * @return the SiteAuthSettingsInner object itself.
      */
-    public SiteAuthSettingsInner withHttpApiPrefixPath(String httpApiPrefixPath) {
-        this.httpApiPrefixPath = httpApiPrefixPath;
+    public SiteAuthSettingsInner withRuntimeVersion(String runtimeVersion) {
+        this.runtimeVersion = runtimeVersion;
         return this;
     }
 
@@ -463,46 +480,6 @@ public class SiteAuthSettingsInner {
      */
     public SiteAuthSettingsInner withAdditionalLoginParams(List<String> additionalLoginParams) {
         this.additionalLoginParams = additionalLoginParams;
-        return this;
-    }
-
-    /**
-     * Get the aadClientId value.
-     *
-     * @return the aadClientId value
-     */
-    public String aadClientId() {
-        return this.aadClientId;
-    }
-
-    /**
-     * Set the aadClientId value.
-     *
-     * @param aadClientId the aadClientId value to set
-     * @return the SiteAuthSettingsInner object itself.
-     */
-    public SiteAuthSettingsInner withAadClientId(String aadClientId) {
-        this.aadClientId = aadClientId;
-        return this;
-    }
-
-    /**
-     * Get the openIdIssuer value.
-     *
-     * @return the openIdIssuer value
-     */
-    public String openIdIssuer() {
-        return this.openIdIssuer;
-    }
-
-    /**
-     * Set the openIdIssuer value.
-     *
-     * @param openIdIssuer the openIdIssuer value to set
-     * @return the SiteAuthSettingsInner object itself.
-     */
-    public SiteAuthSettingsInner withOpenIdIssuer(String openIdIssuer) {
-        this.openIdIssuer = openIdIssuer;
         return this;
     }
 

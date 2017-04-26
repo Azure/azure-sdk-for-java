@@ -1,0 +1,29 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3251/tenants?api-version=2016-06-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:bc6bbe6f340c6a21e215ca50c26fb109d1a15109103fbef250b01e8bb30bdae6 (SubscriptionClient, 2016-06-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 13 Apr 2017 22:50:01 GMT",
+      "content-length" : "116",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "457b29fc-bcff-4378-acf0-769819de97ba",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-remaining-tenant-reads" : "14998",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T225001Z:457b29fc-bcff-4378-acf0-769819de97ba",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "457b29fc-bcff-4378-acf0-769819de97ba",
+      "Body" : "{\"value\":[{\"id\":\"/tenants/72f988bf-86f1-41af-91ab-2d7cd011db47\",\"tenantId\":\"72f988bf-86f1-41af-91ab-2d7cd011db47\"}]}"
+    }
+  } ],
+  "variables" : [ ]
+}

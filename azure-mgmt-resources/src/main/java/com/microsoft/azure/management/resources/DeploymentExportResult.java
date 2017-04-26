@@ -7,7 +7,7 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.implementation.DeploymentExportResultInner;
 
 /**
@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.implementation.DeploymentExportR
  */
 @Fluent
 public interface DeploymentExportResult extends
-        Wrapper<DeploymentExportResultInner> {
+        HasInner<DeploymentExportResultInner> {
 
     /**
      * @return the template content

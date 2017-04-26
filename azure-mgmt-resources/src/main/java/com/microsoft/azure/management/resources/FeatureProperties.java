@@ -8,14 +8,16 @@
 
 package com.microsoft.azure.management.resources;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Previewed feature information.
+ * Information about feature.
  */
 public class FeatureProperties {
     /**
-     * Gets or sets the state of the previewed feature.
+     * The registration state of the feature for the subscription.
      */
+    @JsonProperty(value = "state")
     private String state;
 
     /**

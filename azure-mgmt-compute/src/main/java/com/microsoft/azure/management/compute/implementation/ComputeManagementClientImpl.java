@@ -10,13 +10,13 @@ package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
-import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
 
 /**
  * Initializes a new instance of the ComputeManagementClientImpl class.
  */
-public final class ComputeManagementClientImpl extends AzureServiceClient {
+public class ComputeManagementClientImpl extends AzureServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -28,11 +28,11 @@ public final class ComputeManagementClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. */
+    /** Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. */
     private String subscriptionId;
 
     /**
-     * Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     * Gets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
      *
      * @return the subscriptionId value.
      */
@@ -41,7 +41,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     * Sets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself
@@ -49,18 +49,6 @@ public final class ComputeManagementClientImpl extends AzureServiceClient {
     public ComputeManagementClientImpl withSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
-    }
-
-    /** Client Api Version. */
-    private String apiVersion;
-
-    /**
-     * Gets Client Api Version.
-     *
-     * @return the apiVersion value.
-     */
-    public String apiVersion() {
-        return this.apiVersion;
     }
 
     /** Gets or sets the preferred language for the response. */
@@ -211,6 +199,19 @@ public final class ComputeManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ImagesInner object to access its operations.
+     */
+    private ImagesInner images;
+
+    /**
+     * Gets the ImagesInner object to access its operations.
+     * @return the ImagesInner object.
+     */
+    public ImagesInner images() {
+        return this.images;
+    }
+
+    /**
      * The VirtualMachinesInner object to access its operations.
      */
     private VirtualMachinesInner virtualMachines;
@@ -250,6 +251,45 @@ public final class ComputeManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ContainerServicesInner object to access its operations.
+     */
+    private ContainerServicesInner containerServices;
+
+    /**
+     * Gets the ContainerServicesInner object to access its operations.
+     * @return the ContainerServicesInner object.
+     */
+    public ContainerServicesInner containerServices() {
+        return this.containerServices;
+    }
+
+    /**
+     * The DisksInner object to access its operations.
+     */
+    private DisksInner disks;
+
+    /**
+     * Gets the DisksInner object to access its operations.
+     * @return the DisksInner object.
+     */
+    public DisksInner disks() {
+        return this.disks;
+    }
+
+    /**
+     * The SnapshotsInner object to access its operations.
+     */
+    private SnapshotsInner snapshots;
+
+    /**
+     * Gets the SnapshotsInner object to access its operations.
+     * @return the SnapshotsInner object.
+     */
+    public SnapshotsInner snapshots() {
+        return this.snapshots;
+    }
+
+    /**
      * Initializes an instance of ComputeManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -265,10 +305,8 @@ public final class ComputeManagementClientImpl extends AzureServiceClient {
      * @param credentials the management credentials for Azure
      */
     public ComputeManagementClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        this(new RestClient.Builder()
-                .withBaseUrl(baseUrl)
-                .withCredentials(credentials)
-                .build());
+        super(baseUrl, credentials);
+        initialize();
     }
 
     /**
@@ -282,7 +320,6 @@ public final class ComputeManagementClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2016-03-30";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -292,9 +329,13 @@ public final class ComputeManagementClientImpl extends AzureServiceClient {
         this.virtualMachineImages = new VirtualMachineImagesInner(restClient().retrofit(), this);
         this.usages = new UsagesInner(restClient().retrofit(), this);
         this.virtualMachineSizes = new VirtualMachineSizesInner(restClient().retrofit(), this);
+        this.images = new ImagesInner(restClient().retrofit(), this);
         this.virtualMachines = new VirtualMachinesInner(restClient().retrofit(), this);
         this.virtualMachineScaleSets = new VirtualMachineScaleSetsInner(restClient().retrofit(), this);
         this.virtualMachineScaleSetVMs = new VirtualMachineScaleSetVMsInner(restClient().retrofit(), this);
+        this.containerServices = new ContainerServicesInner(restClient().retrofit(), this);
+        this.disks = new DisksInner(restClient().retrofit(), this);
+        this.snapshots = new SnapshotsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
@@ -305,8 +346,6 @@ public final class ComputeManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("Azure-SDK-For-Java/%s (%s)",
-                getClass().getPackage().getImplementationVersion(),
-                "ComputeManagementClient, 2016-03-30");
+        return String.format("%s (%s)", super.userAgent(), "ComputeManagementClient");
     }
 }

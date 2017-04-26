@@ -14,26 +14,26 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.SubResource;
 
 /**
- * Authorization in a ExpressRouteCircuit resource.
+ * Authorization in an ExpressRouteCircuit resource.
  */
 @JsonFlatten
 public class ExpressRouteCircuitAuthorizationInner extends SubResource {
     /**
-     * Gets or sets the authorization key.
+     * The authorization key.
      */
     @JsonProperty(value = "properties.authorizationKey")
     private String authorizationKey;
 
     /**
-     * Gets or sets AuthorizationUseStatus. Possible values include:
-     * 'Available', 'InUse'.
+     * AuthorizationUseStatus. Possible values are: 'Available' and 'InUse'.
+     * Possible values include: 'Available', 'InUse'.
      */
     @JsonProperty(value = "properties.authorizationUseStatus")
     private AuthorizationUseStatus authorizationUseStatus;
 
     /**
-     * Gets provisioning state of the PublicIP resource
-     * Updating/Deleting/Failed.
+     * Gets the provisioning state of the public IP resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
@@ -42,11 +42,13 @@ public class ExpressRouteCircuitAuthorizationInner extends SubResource {
      * Gets name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * A unique read-only string that changes whenever the resource is updated.
      */
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /**
@@ -136,17 +138,6 @@ public class ExpressRouteCircuitAuthorizationInner extends SubResource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Set the etag value.
-     *
-     * @param etag the etag value to set
-     * @return the ExpressRouteCircuitAuthorizationInner object itself.
-     */
-    public ExpressRouteCircuitAuthorizationInner withEtag(String etag) {
-        this.etag = etag;
-        return this;
     }
 
 }

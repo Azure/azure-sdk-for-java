@@ -5,20 +5,36 @@
  */
 package com.microsoft.azure.management.network;
 
+import java.util.Set;
+
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.SubnetInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * An immutable client-side representation of a subnet of a virtual network.
  */
 @Fluent()
 public interface Subnet extends
-    Wrapper<SubnetInner>,
+    HasInner<SubnetInner>,
     ChildResource<Network> {
+
+    /**
+     * @return network interface IP configurations that are associated with this subnet
+     * <p>
+     * Note that this call may result in multiple calls to Azure to fetch all the referenced interfaces each time it is invoked.
+     */
+    @Method
+    Set<NicIPConfiguration> getNetworkInterfaceIPConfigurations();
+
+    /**
+     * @return number of network interface IP configurations associated with this subnet
+     */
+    int networkInterfaceIPConfigurationCount();
 
     /**
      * @return the address space prefix, in CIDR notation, assigned to this subnet
@@ -55,7 +71,7 @@ public interface Subnet extends
     interface DefinitionStages {
         /**
          * The first stage of the subnet definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithAddressPrefix<ParentT> {
         }
@@ -68,7 +84,7 @@ public interface Subnet extends
             /**
              * Specifies the IP address space of the subnet, within the address space of the network.
              * @param cidr the IP address space prefix using the CIDR notation
-             * @return the next stage of the subnet definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withAddressPrefix(String cidr);
         }
@@ -213,7 +229,7 @@ public interface Subnet extends
     interface UpdateDefinitionStages {
         /**
          * The first stage of the subnet definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithAddressPrefix<ParentT> {
         }
@@ -226,7 +242,7 @@ public interface Subnet extends
             /**
              * Specifies the IP address space of the subnet, within the address space of the network.
              * @param cidr the IP address space prefix using the CIDR notation
-             * @return the next stage of the subnet definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withAddressPrefix(String cidr);
         }

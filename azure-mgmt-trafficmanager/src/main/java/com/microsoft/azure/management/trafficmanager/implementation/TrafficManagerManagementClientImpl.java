@@ -10,13 +10,13 @@ package com.microsoft.azure.management.trafficmanager.implementation;
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
-import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
 
 /**
  * Initializes a new instance of the TrafficManagerManagementClientImpl class.
  */
-public final class TrafficManagerManagementClientImpl extends AzureServiceClient {
+public class TrafficManagerManagementClientImpl extends AzureServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -174,10 +174,8 @@ public final class TrafficManagerManagementClientImpl extends AzureServiceClient
      * @param credentials the management credentials for Azure
      */
     public TrafficManagerManagementClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        this(new RestClient.Builder()
-                .withBaseUrl(baseUrl)
-                .withCredentials(credentials)
-                .build());
+        super(baseUrl, credentials);
+        initialize();
     }
 
     /**
@@ -207,8 +205,6 @@ public final class TrafficManagerManagementClientImpl extends AzureServiceClient
      */
     @Override
     public String userAgent() {
-        return String.format("Azure-SDK-For-Java/%s (%s)",
-                getClass().getPackage().getImplementationVersion(),
-                "TrafficManagerManagementClient, 2015-11-01");
+        return String.format("%s (%s, %s)", super.userAgent(), "TrafficManagerManagementClient", "2015-11-01");
     }
 }

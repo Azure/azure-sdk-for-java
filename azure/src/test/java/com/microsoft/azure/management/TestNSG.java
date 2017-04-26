@@ -6,7 +6,7 @@
 package com.microsoft.azure.management;
 
 import com.google.common.util.concurrent.SettableFuture;
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
+import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
@@ -15,12 +15,10 @@ import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.util.List;
 
 import org.junit.Assert;
-import org.junit.Test;
 import rx.Observable;
 import rx.Subscriber;
 
@@ -32,12 +30,14 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
     @Override
     public NetworkSecurityGroup createResource(NetworkSecurityGroups nsgs) throws Exception {
         final String newName = "nsg" + this.testId;
-        Region region = Region.US_WEST;
+        final String resourceGroupName = "rg" + this.testId;
+        final String nicName = "nic" + this.testId;
+        final Region region = Region.US_WEST;
         final SettableFuture<NetworkSecurityGroup> nsgFuture = SettableFuture.create();
         // Create
         Observable<Indexable> resourceStream = nsgs.define(newName)
                 .withRegion(region)
-                .withNewResourceGroup()
+                .withNewResourceGroup(resourceGroupName)
                 .defineRule("rule1")
                     .allowOutbound()
                     .fromAnyAddress()
@@ -75,11 +75,26 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                             nsgFuture.set(networkSecurityGroup);
                        }
                    });
+
         NetworkSecurityGroup nsg = nsgFuture.get();
+
+        NetworkInterface nic = nsgs.manager().networkInterfaces().define(nicName)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroupName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withExistingNetworkSecurityGroup(nsg)
+                .create();
+
+        nsg.refresh();
 
         // Verify
         Assert.assertTrue(nsg.region().equals(region));
         Assert.assertTrue(nsg.securityRules().size() == 2);
+
+        // Confirm NIC association
+        Assert.assertEquals(1,  nsg.networkInterfaceIds().size());
+        Assert.assertTrue(nsg.networkInterfaceIds().contains(nic.id()));
 
         return nsg;
     }
@@ -166,20 +181,5 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
     @Override
     public void print(NetworkSecurityGroup resource) {
         printNSG(resource);
-    }
-
-    @Test
-    public void run() throws Exception {
-        ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
-                System.getenv("client-id"),
-                System.getenv("domain"),
-                System.getenv("secret"),
-                null);
-
-        Azure azure = Azure.configure()
-                .withLogLevel(HttpLoggingInterceptor.Level.BODY)
-                .authenticate(credentials)
-                .withDefaultSubscription();
-        runTest(azure.networkSecurityGroups(), azure.resourceGroups());
     }
 }

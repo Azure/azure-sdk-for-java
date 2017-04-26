@@ -16,27 +16,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ResourceManagementErrorWithDetails {
     /**
-     * The error code returned from the server.
+     * The error code returned when exporting the template.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /**
-     * The error message returned from the server.
+     * The error message describing the export error.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /**
      * The target of the error.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "target", access = JsonProperty.Access.WRITE_ONLY)
     private String target;
 
     /**
      * Validation error.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceManagementErrorWithDetails> details;
 
     /**

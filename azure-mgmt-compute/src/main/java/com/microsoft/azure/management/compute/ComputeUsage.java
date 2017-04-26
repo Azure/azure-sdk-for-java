@@ -7,15 +7,15 @@ package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.UsageInner;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * An immutable client-side representation of an Azure compute resource usage info object.
  */
 @Fluent
-public interface ComputeUsage extends Wrapper<UsageInner> {
+public interface ComputeUsage extends HasInner<UsageInner> {
     /**
-     * @return the unit of measurement.
+     * @return the unit of measurement
      */
     ComputeUsageUnit unit();
 

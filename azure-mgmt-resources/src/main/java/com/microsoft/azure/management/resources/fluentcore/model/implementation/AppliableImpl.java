@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -33,7 +39,7 @@ public abstract class AppliableImpl<
 
     @Override
     public final Observable<Indexable> createAsync() {
-        throw new IllegalStateException("Internal Error: createAsyncStreaming cannot be called from UpdatableImpl");
+        throw new IllegalStateException("Internal Error: createAsync cannot be called from UpdatableImpl");
     }
 
     @Override

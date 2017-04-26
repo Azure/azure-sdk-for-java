@@ -19,13 +19,14 @@ public class DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters {
     /**
      * the password for the secret to pass in.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "password", required = true)
     private String password;
 
     /**
      * the URI identifier for the secret in the format
      * &lt;hostname&gt;:&lt;port&gt;.
      */
+    @JsonProperty(value = "uri")
     private String uri;
 
     /**

@@ -10,14 +10,14 @@ import com.microsoft.azure.management.network.implementation.RouteInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * An immutable client-side representation of a route of a route table.
  */
 @Fluent()
 public interface Route extends
-    Wrapper<RouteInner>,
+    HasInner<RouteInner>,
     ChildResource<RouteTable> {
 
     /**
@@ -33,7 +33,7 @@ public interface Route extends
     /**
      * @return the IP address of the next hop
      */
-    String nextHopIpAddress();
+    String nextHopIPAddress();
 
     // Grouping of route definition stages
 
@@ -43,7 +43,7 @@ public interface Route extends
     interface DefinitionStages {
         /**
          * The first stage of a route definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithDestinationAddressPrefix<ParentT> {
         }
@@ -157,7 +157,7 @@ public interface Route extends
     interface UpdateDefinitionStages {
         /**
          * The first stage of a route definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithDestinationAddressPrefix<ParentT> {
         }

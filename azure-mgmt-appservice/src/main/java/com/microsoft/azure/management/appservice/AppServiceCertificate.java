@@ -6,11 +6,12 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 import com.microsoft.azure.management.appservice.implementation.CertificateInner;
 import org.joda.time.DateTime;
 
@@ -21,10 +22,10 @@ import java.util.List;
  * An immutable client-side representation of an Azure app service certificate.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
+@Beta
 public interface AppServiceCertificate extends
-        GroupableResource,
-        Refreshable<AppServiceCertificate>,
-        Wrapper<CertificateInner> {
+        GroupableResource<AppServiceManager, CertificateInner>,
+        Refreshable<AppServiceCertificate> {
     /**
      * @return the friendly name of the certificate
      */
@@ -139,28 +140,28 @@ public interface AppServiceCertificate extends
             /**
              * Specifies the PFX certificate file to upload.
              * @param file the PFX certificate file
-             * @return the next stage of the app service certificate definition
+             * @return the next stage of the definition
              */
             WithPfxFilePassword withPfxFile(File file);
 
             /**
              * Specifies the PFX byte array to upload.
              * @param pfxByteArray the PFX byte array
-             * @return the next stage of the app service certificate definition
+             * @return the next stage of the definition
              */
             WithPfxFilePassword withPfxByteArray(byte[] pfxByteArray);
 
             /**
              * Specifies the PFX file from a URL.
              * @param url the URL pointing to the PFX file.
-             * @return the next stage of the app service certificate definition
+             * @return the next stage of the definition
              */
             WithPfxFilePassword withPfxFileFromUrl(String url);
 
             /**
              * Specifies the app service certificate.
              * @param certificateOrder the app service certificate order
-             * @return the next stage of the app service certificate definition
+             * @return the next stage of the definition
              */
             WithCreate withExistingCertificateOrder(AppServiceCertificateOrder certificateOrder);
         }
@@ -171,7 +172,7 @@ public interface AppServiceCertificate extends
             /**
              * Specifies the password to the PFX certificate.
              * @param password the PFX certificate password
-             * @return the next stage of the app service certificate definition
+             * @return the next stage of the definition
              */
             WithCreate withPfxPassword(String password);
         }

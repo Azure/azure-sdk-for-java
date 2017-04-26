@@ -15,23 +15,22 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Implementation of {@link SrvRecordSet}.
+ * Implementation of SrvRecordSet.
  */
 @LangDefinition
 class SrvRecordSetImpl
         extends DnsRecordSetImpl
         implements SrvRecordSet {
-    SrvRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel, final RecordSetsInner client) {
-        super(parent, innerModel, client);
+    SrvRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel) {
+        super(parent, innerModel);
     }
 
-    static SrvRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent, final RecordSetsInner client) {
+    static SrvRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent) {
         return new SrvRecordSetImpl(parent,
                 new RecordSetInner()
                         .withName(name)
                         .withType(RecordType.SRV.toString())
-                        .withSrvRecords(new ArrayList<SrvRecord>()),
-                client);
+                        .withSrvRecords(new ArrayList<SrvRecord>()));
     }
 
     @Override

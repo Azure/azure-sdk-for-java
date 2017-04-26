@@ -1,8 +1,7 @@
 /**
- *
  * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for license information.
- *
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
  */
 
 package com.microsoft.azure.management.resources.fluentcore.dag;
@@ -76,7 +75,7 @@ public class DAGraphTests {
         int i = 0;
         while (nextNode != null) {
             Assert.assertEquals(nextNode.key(), expectedOrder.get(i));
-            dag.reportedCompleted(nextNode);
+            dag.reportCompletion(nextNode);
             nextNode = dag.getNext();
             i++;
         }
@@ -138,7 +137,7 @@ public class DAGraphTests {
         while (nextNode != null) {
             Assert.assertEquals(expectedOrder.get(i), nextNode.key());
             // Process the node
-            dag.reportedCompleted(nextNode);
+            dag.reportCompletion(nextNode);
             nextNode = dag.getNext();
             i++;
         }

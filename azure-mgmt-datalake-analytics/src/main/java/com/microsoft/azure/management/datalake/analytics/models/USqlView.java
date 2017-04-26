@@ -17,11 +17,13 @@ public class USqlView extends CatalogItem {
     /**
      * the name of the database.
      */
+    @JsonProperty(value = "databaseName")
     private String databaseName;
 
     /**
      * the name of the schema associated with this view and database.
      */
+    @JsonProperty(value = "schemaName")
     private String schemaName;
 
     /**
@@ -33,6 +35,7 @@ public class USqlView extends CatalogItem {
     /**
      * the defined query of the view.
      */
+    @JsonProperty(value = "definition")
     private String definition;
 
     /**

@@ -12,18 +12,19 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters for redis import operation.
+ * Parameters for Redis import operation.
  */
 public class ImportRDBParametersInner {
     /**
      * File format.
      */
+    @JsonProperty(value = "format")
     private String format;
 
     /**
      * files to import.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "files", required = true)
     private List<String> files;
 
     /**

@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.keyvault;
 
-import java.io.IOException;
 import java.util.List;
 
 import com.google.common.base.Joiner;
@@ -24,7 +23,6 @@ import com.microsoft.azure.keyvault.models.IssuerBundle;
 import com.microsoft.azure.keyvault.models.KeyBundle;
 import com.microsoft.azure.keyvault.models.KeyItem;
 import com.microsoft.azure.keyvault.models.KeyOperationResult;
-import com.microsoft.azure.keyvault.models.KeyVaultErrorException;
 import com.microsoft.azure.keyvault.models.KeyVerifyResult;
 import com.microsoft.azure.keyvault.models.SecretBundle;
 import com.microsoft.azure.keyvault.models.SecretItem;
@@ -43,14 +41,17 @@ import com.microsoft.azure.keyvault.requests.UpdateKeyRequest;
 import com.microsoft.azure.keyvault.requests.UpdateSecretRequest;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyEncryptionAlgorithm;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeySignatureAlgorithm;
-import com.microsoft.azure.RestClient;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.RestClient;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.protocol.SerializerAdapter;
 
+import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -128,7 +129,7 @@ public final class KeyVaultClient {
      *
      * @return the generateClientRequestId value.
      */
-    public boolean getGenerateClientRequestId() {
+    public boolean generateClientRequestId() {
         return innerKeyVaultClient.generateClientRequestId();
     }
 
@@ -139,6 +140,34 @@ public final class KeyVaultClient {
      */
     public void withGenerateClientRequestId(boolean generateClientRequestId) {
         innerKeyVaultClient.withGenerateClientRequestId(generateClientRequestId);
+    }
+    
+    /**
+     * @return the {@link RestClient} instance.
+     */
+    public RestClient restClient() {
+        return innerKeyVaultClient.restClient();
+    }
+
+    /**
+     * @return the Retrofit instance.
+     */
+    public Retrofit retrofit() {
+        return innerKeyVaultClient.retrofit();
+    }
+
+    /**
+     * @return the HTTP client.
+     */
+    public OkHttpClient httpClient() {
+        return innerKeyVaultClient.httpClient();
+    }
+
+    /**
+     * @return the adapter to a Jackson {@link com.fasterxml.jackson.databind.ObjectMapper}.
+     */
+    public SerializerAdapter<?> serializerAdapter() {
+        return innerKeyVaultClient.serializerAdapter();
     }
     
     /**
@@ -179,23 +208,18 @@ public final class KeyVaultClient {
      * used by Retrofit to perform actually REST calls.
      */
     interface KeyVaultClientService {
-        @Headers({"Content-Type: application/json; charset=utf-8", "Accept: application/pkcs10"})
+        @Headers({ "Content-Type: application/json; charset=utf-8", "Accept: application/pkcs10", "x-ms-logging-context: com.microsoft.azure.keyvault.KeyVaultClient getPendingCertificateSigningRequest" })
         @GET("certificates/{certificate-name}/pending")
         Observable<Response<ResponseBody>> getPendingCertificateSigningRequest(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
     }
         
     /**
-     * Creates a new, named, key in the specified vault.
+     * Creates a new key, stores it, then returns key parameters and attributes to the client. The create key operation can be used to create any key type in Azure Key Vault. If the named key already exists, Azure Key Vault creates a new version of the key. Authorization: Requires the keys/create permission.
      *
      * @param createKeyRequest the grouped properties for creating a key request
-     * 
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the KeyBundle if successful.
      */
-    public KeyBundle createKey(CreateKeyRequest createKeyRequest) 
-            throws KeyVaultErrorException, IllegalArgumentException, IOException {
+    public KeyBundle createKey(CreateKeyRequest createKeyRequest) {
         return innerKeyVaultClient.createKey(
                                     createKeyRequest.vaultBaseUrl(), 
                                     createKeyRequest.keyName(), 
@@ -207,14 +231,14 @@ public final class KeyVaultClient {
     }
     
     /**
-     * Creates a new, named, key in the specified vault.
+     * Creates a new key, stores it, then returns key parameters and attributes to the client. The create key operation can be used to create any key type in Azure Key Vault. If the named key already exists, Azure Key Vault creates a new version of the key. Authorization: Requires the keys/create permission.
      *
      * @param createKeyRequest the grouped properties for creating a key request
      * 
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyBundle> createKeyAsync(CreateKeyRequest createKeyRequest, ServiceCallback<KeyBundle> serviceCallback) {
+    public ServiceFuture<KeyBundle> createKeyAsync(CreateKeyRequest createKeyRequest, ServiceCallback<KeyBundle> serviceCallback) {
         return innerKeyVaultClient.createKeyAsync(
                 createKeyRequest.vaultBaseUrl(), 
                 createKeyRequest.keyName(), 
@@ -227,17 +251,13 @@ public final class KeyVaultClient {
     }
     
     /**
-     * Imports a key into the specified vault.
+     * Imports an externally created key, stores it, and returns key parameters and attributes to the client. The import key operation may be used to import any key type into an Azure Key Vault. If the named key already exists, Azure Key Vault creates a new version of the key. Authorization: requires the keys/import permission.
      *
      * @param importKeyRequest the grouped properties for importing a key request
      * 
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the KeyBundle if successful.
      */
-    public KeyBundle importKey(ImportKeyRequest importKeyRequest) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public KeyBundle importKey(ImportKeyRequest importKeyRequest) {
         return innerKeyVaultClient.importKey(
                 importKeyRequest.vaultBaseUrl(), 
                 importKeyRequest.keyName(), 
@@ -248,14 +268,14 @@ public final class KeyVaultClient {
     }
 
     /**
-     * Imports a key into the specified vault.
+     * Imports an externally created key, stores it, and returns key parameters and attributes to the client. The import key operation may be used to import any key type into an Azure Key Vault. If the named key already exists, Azure Key Vault creates a new version of the key. Authorization: requires the keys/import permission.
      *
      * @param importKeyRequest the grouped properties for importing a key request
      * 
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyBundle> importKeyAsync(ImportKeyRequest importKeyRequest, final ServiceCallback<KeyBundle> serviceCallback) {
+    public ServiceFuture<KeyBundle> importKeyAsync(ImportKeyRequest importKeyRequest, final ServiceCallback<KeyBundle> serviceCallback) {
         return innerKeyVaultClient.importKeyAsync(
                 importKeyRequest.vaultBaseUrl(), 
                 importKeyRequest.keyName(), 
@@ -267,44 +287,36 @@ public final class KeyVaultClient {
     }
 
     /**
-     * Deletes the specified key.
+     * Deletes a key of any type from storage in Azure Key Vault. The delete key operation cannot be used to remove individual versions of a key. This operation removes the cryptographic material associated with the key, which means the key is not usable for Sign/Verify, Wrap/Unwrap or Encrypt/Decrypt operations. Authorization: Requires the keys/delete permission.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the KeyBundle if successful.
      */
-    public KeyBundle deleteKey(String vaultBaseUrl, String keyName) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public KeyBundle deleteKey(String vaultBaseUrl, String keyName) {
         return innerKeyVaultClient.deleteKey(vaultBaseUrl, keyName);
     }
 
     /**
-     * Deletes the specified key.
+     * Deletes a key of any type from storage in Azure Key Vault. The delete key operation cannot be used to remove individual versions of a key. This operation removes the cryptographic material associated with the key, which means the key is not usable for Sign/Verify, Wrap/Unwrap or Encrypt/Decrypt operations. Authorization: Requires the keys/delete permission.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyBundle> deleteKeyAsync(String vaultBaseUrl, String keyName, final ServiceCallback<KeyBundle> serviceCallback) {
+    public ServiceFuture<KeyBundle> deleteKeyAsync(String vaultBaseUrl, String keyName, final ServiceCallback<KeyBundle> serviceCallback) {
         return innerKeyVaultClient.deleteKeyAsync(vaultBaseUrl, keyName, serviceCallback);
     }
 
     /**
-     * Updates the Key Attributes associated with the specified key.
+     * The update key operation changes specified attributes of a stored key and can be applied to any key type and key version stored in Azure Key Vault. The cryptographic material of a key itself cannot be changed. In order to perform this operation, the key must already exist in the Key Vault. Authorization: requires the keys/update permission.
      *
      * @param updateKeyRequest the grouped properties for updating a key request
      * 
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the KeyBundle if successful.
      */
-    public KeyBundle updateKey(UpdateKeyRequest updateKeyRequest) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public KeyBundle updateKey(UpdateKeyRequest updateKeyRequest) {
         return innerKeyVaultClient.updateKey(
                 updateKeyRequest.vaultBaseUrl(), 
                 updateKeyRequest.keyName(), 
@@ -315,14 +327,14 @@ public final class KeyVaultClient {
     }
 
     /**
-     * Updates the Key Attributes associated with the specified key.
+     * The update key operation changes specified attributes of a stored key and can be applied to any key type and key version stored in Azure Key Vault. The cryptographic material of a key itself cannot be changed. In order to perform this operation, the key must already exist in the Key Vault. Authorization: requires the keys/update permission.
      *
      * @param updateKeyRequest the grouped properties for updating a key request
      * 
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyBundle> updateKeyAsync(UpdateKeyRequest updateKeyRequest, final ServiceCallback<KeyBundle> serviceCallback) {
+    public ServiceFuture<KeyBundle> updateKeyAsync(UpdateKeyRequest updateKeyRequest, final ServiceCallback<KeyBundle> serviceCallback) {
         return innerKeyVaultClient.updateKeyAsync(
                 updateKeyRequest.vaultBaseUrl(), 
                 updateKeyRequest.keyName(), 
@@ -334,140 +346,124 @@ public final class KeyVaultClient {
     }
     
     /**
-     * Retrieves the public portion of a key plus its attributes.
+     * Gets the public part of a stored key. The get key operation is applicable to all key types. If the requested key is symmetric, then no key material is released in the response. Authorization: Requires the keys/get permission.
      *
      * @param keyIdentifier The full key identifier
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the KeyBundle if successful.
      */
-    public KeyBundle getKey(String keyIdentifier)
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public KeyBundle getKey(String keyIdentifier) {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.getKey(id.vault, id.name, id.version == null ? "" : id.version);
     }
 
     /**
-     * Retrieves the public portion of a key plus its attributes.
+     * Gets the public part of a stored key. The get key operation is applicable to all key types. If the requested key is symmetric, then no key material is released in the response. Authorization: Requires the keys/get permission.
      *
      * @param keyIdentifier The full key identifier
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyBundle> getKeyAsync(String keyIdentifier, final ServiceCallback<KeyBundle> serviceCallback) {
+    public ServiceFuture<KeyBundle> getKeyAsync(String keyIdentifier, final ServiceCallback<KeyBundle> serviceCallback) {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.getKeyAsync(id.vault, id.name, id.version == null ? "" : id.version, serviceCallback);
     }
     
     /**
-     * Retrieves the public portion of a key plus its attributes.
+     * Gets the public part of a stored key. The get key operation is applicable to all key types. If the requested key is symmetric, then no key material is released in the response. Authorization: Requires the keys/get permission.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the KeyBundle if successful.
      */
-    public KeyBundle getKey(String vaultBaseUrl, String keyName) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public KeyBundle getKey(String vaultBaseUrl, String keyName) {
         return innerKeyVaultClient.getKey(vaultBaseUrl, keyName, "");
     }
 
     /**
-     * Retrieves the public portion of a key plus its attributes.
+     * Gets the public part of a stored key. The get key operation is applicable to all key types. If the requested key is symmetric, then no key material is released in the response. Authorization: Requires the keys/get permission.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyBundle> getKeyAsync(String vaultBaseUrl, String keyName, final ServiceCallback<KeyBundle> serviceCallback) {
+    public ServiceFuture<KeyBundle> getKeyAsync(String vaultBaseUrl, String keyName, final ServiceCallback<KeyBundle> serviceCallback) {
         return innerKeyVaultClient.getKeyAsync(vaultBaseUrl, keyName, "", serviceCallback);
     }
     
     /**
-     * Retrieves the public portion of a key plus its attributes.
+     *Gets the public part of a stored key. The get key operation is applicable to all key types. If the requested key is symmetric, then no key material is released in the response. Authorization: Requires the keys/get permission.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
      * @param keyVersion The version of the key
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the KeyBundle if successful.
      */
-    public KeyBundle getKey(String vaultBaseUrl, String keyName, String keyVersion) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public KeyBundle getKey(String vaultBaseUrl, String keyName, String keyVersion) {
         return innerKeyVaultClient.getKey(vaultBaseUrl, keyName, keyVersion);
     }
 
     /**
-     * Retrieves the public portion of a key plus its attributes.
+     * Gets the public part of a stored key. The get key operation is applicable to all key types. If the requested key is symmetric, then no key material is released in the response. Authorization: Requires the keys/get permission.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
      * @param keyVersion The version of the key
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyBundle> getKeyAsync(String vaultBaseUrl, String keyName, String keyVersion, final ServiceCallback<KeyBundle> serviceCallback) {
+    public ServiceFuture<KeyBundle> getKeyAsync(String vaultBaseUrl, String keyName, String keyVersion, final ServiceCallback<KeyBundle> serviceCallback) {
         return innerKeyVaultClient.getKeyAsync(vaultBaseUrl, keyName, keyVersion, serviceCallback);
     }
 
     /**
-     * List the versions of the specified key.
+     * Retrieves a list of individual key versions with the same key name. The full key identifier, attributes, and tags are provided in the response. Authorization: Requires the keys/list permission.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the PagedList&lt;KeyItem&gt; if successful.
      */
-    public PagedList<KeyItem> listKeyVersions(final String vaultBaseUrl, final String keyName) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public PagedList<KeyItem> listKeyVersions(final String vaultBaseUrl, final String keyName) {
         return innerKeyVaultClient.getKeyVersions(vaultBaseUrl, keyName);
     }
 
     /**
-     * List the versions of the specified key.
+     * Retrieves a list of individual key versions with the same key name. The full key identifier, attributes, and tags are provided in the response. Authorization: Requires the keys/list permission.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<KeyItem>> listKeyVersionsAsync(final String vaultBaseUrl, final String keyName, final ListOperationCallback<KeyItem> serviceCallback) {
+    public ServiceFuture<List<KeyItem>> listKeyVersionsAsync(final String vaultBaseUrl, final String keyName, final ListOperationCallback<KeyItem> serviceCallback) {
         return innerKeyVaultClient.getKeyVersionsAsync(vaultBaseUrl, keyName, serviceCallback);
     }
     /**
-     * List the versions of the specified key.
+     * Retrieves a list of individual key versions with the same key name. The full key identifier, attributes, and tags are provided in the response. Authorization: Requires the keys/list permission.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the PagedList&lt;KeyItem&gt; if successful.
      */
-    public PagedList<KeyItem> listKeyVersions(final String vaultBaseUrl, final String keyName, final Integer maxresults) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public PagedList<KeyItem> listKeyVersions(final String vaultBaseUrl, final String keyName, final Integer maxresults) {
         return innerKeyVaultClient.getKeyVersions(vaultBaseUrl, keyName, maxresults);
     }
 
     /**
-     * List the versions of the specified key.
+     * Retrieves a list of individual key versions with the same key name. The full key identifier, attributes, and tags are provided in the response. Authorization: Requires the keys/list permission.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<KeyItem>> listKeyVersionsAsync(final String vaultBaseUrl, final String keyName, final Integer maxresults, final ListOperationCallback<KeyItem> serviceCallback) {
+    public ServiceFuture<List<KeyItem>> listKeyVersionsAsync(final String vaultBaseUrl, final String keyName, final Integer maxresults, final ListOperationCallback<KeyItem> serviceCallback) {
         return innerKeyVaultClient.getKeyVersionsAsync(vaultBaseUrl, keyName, maxresults, serviceCallback);
     }
 
@@ -475,13 +471,10 @@ public final class KeyVaultClient {
      * List keys in the specified vault.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the PagedList&lt;KeyItem&gt; if successful.
      */
-    public PagedList<KeyItem> listKeys(final String vaultBaseUrl) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public PagedList<KeyItem> listKeys(final String vaultBaseUrl) {
         return innerKeyVaultClient.getKeys(vaultBaseUrl);
     }
 
@@ -490,9 +483,9 @@ public final class KeyVaultClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<KeyItem>> listKeysAsync(final String vaultBaseUrl, final ListOperationCallback<KeyItem> serviceCallback) {
+    public ServiceFuture<List<KeyItem>> listKeysAsync(final String vaultBaseUrl, final ListOperationCallback<KeyItem> serviceCallback) {
         return innerKeyVaultClient.getKeysAsync(vaultBaseUrl, serviceCallback);
     }
     /**
@@ -500,13 +493,10 @@ public final class KeyVaultClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the PagedList&lt;KeyItem&gt; if successful.
      */
-    public PagedList<KeyItem> listKeys(final String vaultBaseUrl, final Integer maxresults) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public PagedList<KeyItem> listKeys(final String vaultBaseUrl, final Integer maxresults) {
         return innerKeyVaultClient.getKeys(vaultBaseUrl, maxresults);
     }
 
@@ -516,9 +506,9 @@ public final class KeyVaultClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<KeyItem>> listKeysAsync(final String vaultBaseUrl, final Integer maxresults, final ListOperationCallback<KeyItem> serviceCallback) {
+    public ServiceFuture<List<KeyItem>> listKeysAsync(final String vaultBaseUrl, final Integer maxresults, final ListOperationCallback<KeyItem> serviceCallback) {
         return innerKeyVaultClient.getKeysAsync(vaultBaseUrl, maxresults, serviceCallback);
     }
 
@@ -527,13 +517,10 @@ public final class KeyVaultClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the BackupKeyResult if successful.
      */
-    public BackupKeyResult backupKey(String vaultBaseUrl, String keyName) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public BackupKeyResult backupKey(String vaultBaseUrl, String keyName) {
         return innerKeyVaultClient.backupKey(vaultBaseUrl, keyName);
     }
 
@@ -543,9 +530,9 @@ public final class KeyVaultClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<BackupKeyResult> backupKeyAsync(String vaultBaseUrl, String keyName, final ServiceCallback<BackupKeyResult> serviceCallback) {
+    public ServiceFuture<BackupKeyResult> backupKeyAsync(String vaultBaseUrl, String keyName, final ServiceCallback<BackupKeyResult> serviceCallback) {
         return innerKeyVaultClient.backupKeyAsync(vaultBaseUrl, keyName, serviceCallback);
     }
 
@@ -554,13 +541,10 @@ public final class KeyVaultClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyBundleBackup the backup blob associated with a key bundle
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the KeyBundle if successful.
      */
-    public KeyBundle restoreKey(String vaultBaseUrl, byte[] keyBundleBackup) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public KeyBundle restoreKey(String vaultBaseUrl, byte[] keyBundleBackup) {
         return innerKeyVaultClient.restoreKey(vaultBaseUrl, keyBundleBackup);
     }
 
@@ -570,39 +554,36 @@ public final class KeyVaultClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyBundleBackup the backup blob associated with a key bundle
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyBundle> restoreKeyAsync(String vaultBaseUrl, byte[] keyBundleBackup, final ServiceCallback<KeyBundle> serviceCallback) {
+    public ServiceFuture<KeyBundle> restoreKeyAsync(String vaultBaseUrl, byte[] keyBundleBackup, final ServiceCallback<KeyBundle> serviceCallback) {
         return innerKeyVaultClient.restoreKeyAsync(vaultBaseUrl, keyBundleBackup, serviceCallback);
     }
 
     /**
-     * Encrypts a single block of data. The amount of data that may be encrypted is determined.
+     * Encrypts an arbitrary sequence of bytes using an encryption key that is stored in a key vault.
      *
      * @param keyIdentifier The full key identifier
      * @param algorithm algorithm identifier
      * @param value the content to be encrypted
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the KeyOperationResult if successful.
      */
-    public KeyOperationResult encrypt(String keyIdentifier, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public KeyOperationResult encrypt(String keyIdentifier, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value) {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.encrypt(id.vault, id.name, id.version == null ? "" : id.version, algorithm, value);
     }
 
     /**
-     * Encrypts a single block of data. The amount of data that may be encrypted is determined.
+     * Encrypts an arbitrary sequence of bytes using an encryption key that is stored in a key vault.
      *
      * @param keyIdentifier The full key identifier
      * @param algorithm algorithm identifier
      * @param value the content to be encrypted
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyOperationResult> encryptAsync(String keyIdentifier, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
+    public ServiceFuture<KeyOperationResult> encryptAsync(String keyIdentifier, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.encryptAsync(id.vault, id.name, id.version == null ? "" : id.version, algorithm, value, serviceCallback);
     }
@@ -613,13 +594,10 @@ public final class KeyVaultClient {
      * @param keyIdentifier The full key identifier
      * @param algorithm algorithm identifier
      * @param value the content to be decrypted
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the KeyOperationResult if successful.
      */
-    public KeyOperationResult decrypt(String keyIdentifier, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public KeyOperationResult decrypt(String keyIdentifier, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value) {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.decrypt(id.vault, id.name, id.version == null ? "" : id.version, algorithm, value);
     }
@@ -631,40 +609,37 @@ public final class KeyVaultClient {
      * @param algorithm algorithm identifier
      * @param value the content to be decrypted
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses. 
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyOperationResult> decryptAsync(String keyIdentifier, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
+    public ServiceFuture<KeyOperationResult> decryptAsync(String keyIdentifier, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.decryptAsync(id.vault, id.name, id.version == null ? "" : id.version, algorithm, value, serviceCallback);
     }
 
     /**
-     * Creates a signature from a digest using the specified key in the vault.
+     * Creates a signature from a digest using the specified key.
      *
      * @param keyIdentifier The full key identifier
      * @param algorithm algorithm identifier
      * @param value the content to be signed
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the KeyOperationResult if successful.
      */
-    public KeyOperationResult sign(String keyIdentifier, JsonWebKeySignatureAlgorithm algorithm, byte[] value) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public KeyOperationResult sign(String keyIdentifier, JsonWebKeySignatureAlgorithm algorithm, byte[] value) {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.sign(id.vault, id.name, id.version == null ? "" : id.version, algorithm, value);
     }
 
     /**
-     * Creates a signature from a digest using the specified key in the vault.
+     * Creates a signature from a digest using the specified key.
      *
      * @param keyIdentifier The full key identifier
      * @param algorithm algorithm identifier
      * @param value the content to be signed
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyOperationResult> signAsync(String keyIdentifier, JsonWebKeySignatureAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
+    public ServiceFuture<KeyOperationResult> signAsync(String keyIdentifier, JsonWebKeySignatureAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.signAsync(id.vault, id.name, id.version == null ? "" : id.version, algorithm, value, serviceCallback);        
     }
@@ -676,13 +651,10 @@ public final class KeyVaultClient {
      * @param algorithm The signing/verification algorithm. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm.
      * @param digest The digest used for signing
      * @param signature The signature to be verified
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the KeyVerifyResult if successful.
      */
-    public KeyVerifyResult verify(String keyIdentifier, JsonWebKeySignatureAlgorithm algorithm, byte[] digest, byte[] signature) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public KeyVerifyResult verify(String keyIdentifier, JsonWebKeySignatureAlgorithm algorithm, byte[] digest, byte[] signature) {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.verify(id.vault, id.name, id.version == null ? "" : id.version, algorithm, digest, signature);
     }
@@ -695,9 +667,9 @@ public final class KeyVaultClient {
      * @param digest The digest used for signing
      * @param signature The signature to be verified
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyVerifyResult> verifyAsync(String keyIdentifier, JsonWebKeySignatureAlgorithm algorithm, byte[] digest, byte[] signature, final ServiceCallback<KeyVerifyResult> serviceCallback) {
+    public ServiceFuture<KeyVerifyResult> verifyAsync(String keyIdentifier, JsonWebKeySignatureAlgorithm algorithm, byte[] digest, byte[] signature, final ServiceCallback<KeyVerifyResult> serviceCallback) {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.verifyAsync(id.vault, id.name, id.version == null ? "" : id.version, algorithm, digest, signature, serviceCallback);
     }
@@ -708,13 +680,10 @@ public final class KeyVaultClient {
      * @param keyIdentifier The full key identifier
      * @param algorithm algorithm identifier
      * @param value the key to be wrapped
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the KeyOperationResult if successful.
      */
-    public KeyOperationResult wrapKey(String keyIdentifier, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public KeyOperationResult wrapKey(String keyIdentifier, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value) {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.wrapKey(id.vault, id.name, id.version == null ? "" : id.version, algorithm, value);
     }
@@ -726,9 +695,9 @@ public final class KeyVaultClient {
      * @param algorithm algorithm identifier
      * @param value the key to be wrapped
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyOperationResult> wrapKeyAsync(String keyIdentifier, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
+    public ServiceFuture<KeyOperationResult> wrapKeyAsync(String keyIdentifier, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.wrapKeyAsync(id.vault, id.name, id.version == null ? "" : id.version, algorithm, value, serviceCallback);
     }
@@ -739,13 +708,10 @@ public final class KeyVaultClient {
      * @param keyIdentifier The full key identifier
      * @param algorithm algorithm identifier
      * @param value the key to be unwrapped
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the KeyOperationResult if successful.
      */
-    public KeyOperationResult unwrapKey(String keyIdentifier, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public KeyOperationResult unwrapKey(String keyIdentifier, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value) {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.unwrapKey(id.vault, id.name, id.version == null ? "" : id.version, algorithm, value);
     }
@@ -757,9 +723,9 @@ public final class KeyVaultClient {
      * @param algorithm algorithm identifier
      * @param value the key to be unwrapped
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<KeyOperationResult> unwrapKeyAsync(String keyIdentifier, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
+    public ServiceFuture<KeyOperationResult> unwrapKeyAsync(String keyIdentifier, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.unwrapKeyAsync(id.vault, id.name, id.version == null ? "" : id.version, algorithm, value, serviceCallback);
     }
@@ -769,13 +735,9 @@ public final class KeyVaultClient {
      *
      * @param setSecretRequest the grouped properties for setting a secret request
      * 
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SecretBundle if successful.
      */
-    public SecretBundle setSecret(SetSecretRequest setSecretRequest) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public SecretBundle setSecret(SetSecretRequest setSecretRequest) {
         return innerKeyVaultClient.setSecret(
                 setSecretRequest.vaultBaseUrl(), 
                 setSecretRequest.secretName(), 
@@ -791,9 +753,9 @@ public final class KeyVaultClient {
      * @param setSecretRequest the grouped properties for setting a secret request
      * 
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SecretBundle> setSecretAsync(SetSecretRequest setSecretRequest, final ServiceCallback<SecretBundle> serviceCallback) {
+    public ServiceFuture<SecretBundle> setSecretAsync(SetSecretRequest setSecretRequest, final ServiceCallback<SecretBundle> serviceCallback) {
         return innerKeyVaultClient.setSecretAsync(
                 setSecretRequest.vaultBaseUrl(), 
                 setSecretRequest.secretName(), 
@@ -809,13 +771,10 @@ public final class KeyVaultClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param secretName The name of the secret in the given vault
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the SecretBundle if successful.
      */
-    public SecretBundle deleteSecret(String vaultBaseUrl, String secretName) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public SecretBundle deleteSecret(String vaultBaseUrl, String secretName) {
         return innerKeyVaultClient.deleteSecret(vaultBaseUrl, secretName);
     }
 
@@ -825,24 +784,20 @@ public final class KeyVaultClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param secretName The name of the secret in the given vault
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SecretBundle> deleteSecretAsync(String vaultBaseUrl, String secretName, final ServiceCallback<SecretBundle> serviceCallback) {
+    public ServiceFuture<SecretBundle> deleteSecretAsync(String vaultBaseUrl, String secretName, final ServiceCallback<SecretBundle> serviceCallback) {
         return innerKeyVaultClient.deleteSecretAsync(vaultBaseUrl, secretName, serviceCallback);
     }
 
     /**
-     * Updates the attributes associated with the specified secret.
+     * Updates the attributes associated with a specified secret in a given key vault.
      *
      * @param updateSecretRequest the grouped properties for updating a secret request
      * 
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SecretBundle if successful.
      */
-    public SecretBundle updateSecret(UpdateSecretRequest updateSecretRequest) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public SecretBundle updateSecret(UpdateSecretRequest updateSecretRequest) {
         return innerKeyVaultClient.updateSecret(
                 updateSecretRequest.vaultBaseUrl(), 
                 updateSecretRequest.secretName(),  
@@ -853,14 +808,14 @@ public final class KeyVaultClient {
     }
 
     /**
-     * Updates the attributes associated with the specified secret.
+     * Updates the attributes associated with a specified secret in a given key vault.
      *
      * @param updateSecretRequest the grouped properties for updating a secret request
      * 
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SecretBundle> updateSecretAsync(UpdateSecretRequest updateSecretRequest, final ServiceCallback<SecretBundle> serviceCallback) {
+    public ServiceFuture<SecretBundle> updateSecretAsync(UpdateSecretRequest updateSecretRequest, final ServiceCallback<SecretBundle> serviceCallback) {
         return innerKeyVaultClient.updateSecretAsync(
                 updateSecretRequest.vaultBaseUrl(), 
                 updateSecretRequest.secretName(),  
@@ -872,85 +827,76 @@ public final class KeyVaultClient {
     }
 
     /**
-     * Gets a secret.
+     * Get a specified secret from a given key vault.
      *
      * @param secretIdentifier The URL for the secret.
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the SecretBundle if successful.
      */
-    public SecretBundle getSecret(String secretIdentifier) 
-             throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public SecretBundle getSecret(String secretIdentifier) {
         SecretIdentifier id = new SecretIdentifier(secretIdentifier);
         return innerKeyVaultClient.getSecret(id.vault, id.name, id.version == null ? "" : id.version);
     }
 
     /**
-     * Gets a secret.
+     * Get a specified secret from a given key vault.
      *
      * @param secretIdentifier The URL for the secret.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SecretBundle> getSecretAsync(String secretIdentifier, final ServiceCallback<SecretBundle> serviceCallback) {
+    public ServiceFuture<SecretBundle> getSecretAsync(String secretIdentifier, final ServiceCallback<SecretBundle> serviceCallback) {
         SecretIdentifier id = new SecretIdentifier(secretIdentifier);
         return innerKeyVaultClient.getSecretAsync(id.vault, id.name, id.version == null ? "" : id.version, serviceCallback);
     }
 
     /**
-     * Gets a secret.
+     * Get a specified secret from a given key vault.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param secretName The name of the secret in the given vault
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the SecretBundle if successful.
      */
-    public SecretBundle getSecret(String vaultBaseUrl, String secretName) 
-             throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public SecretBundle getSecret(String vaultBaseUrl, String secretName) {
         return innerKeyVaultClient.getSecret(vaultBaseUrl, secretName, "");
     }
 
     /**
-     * Gets a secret.
+     * Get a specified secret from a given key vault.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param secretName The name of the secret in the given vault
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SecretBundle> getSecretAsync(String vaultBaseUrl, String secretName, final ServiceCallback<SecretBundle> serviceCallback) {
+    public ServiceFuture<SecretBundle> getSecretAsync(String vaultBaseUrl, String secretName, final ServiceCallback<SecretBundle> serviceCallback) {
         return innerKeyVaultClient.getSecretAsync(vaultBaseUrl, secretName, "", serviceCallback);
     }
     
     /**
-     * Gets a secret.
+     * Get a specified secret from a given key vault.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param secretName The name of the secret in the given vault
      * @param secretVersion The version of the secret
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the SecretBundle if successful.
      */
-    public SecretBundle getSecret(String vaultBaseUrl, String secretName, String secretVersion) 
-             throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public SecretBundle getSecret(String vaultBaseUrl, String secretName, String secretVersion) {
         return innerKeyVaultClient.getSecret(vaultBaseUrl, secretName, secretVersion == null ? "" : secretVersion);
     }
 
     /**
-     * Gets a secret.
+     * Get a specified secret from a given key vault.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param secretName The name of the secret in the given vault
      * @param secretVersion The version of the secret
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<SecretBundle> getSecretAsync(String vaultBaseUrl, String secretName, String secretVersion, final ServiceCallback<SecretBundle> serviceCallback) {
+    public ServiceFuture<SecretBundle> getSecretAsync(String vaultBaseUrl, String secretName, String secretVersion, final ServiceCallback<SecretBundle> serviceCallback) {
         return innerKeyVaultClient.getSecretAsync(vaultBaseUrl, secretName, secretVersion == null ? "" : secretVersion, serviceCallback);
     }
 
@@ -958,13 +904,10 @@ public final class KeyVaultClient {
      * List secrets in the specified vault.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the PagedList&lt;SecretItem&gt; if successful.
      */
-    public PagedList<SecretItem> listSecrets(final String vaultBaseUrl) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public PagedList<SecretItem> listSecrets(final String vaultBaseUrl) {
         return innerKeyVaultClient.getSecrets(vaultBaseUrl);
     }
 
@@ -973,9 +916,9 @@ public final class KeyVaultClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SecretItem>> listSecretsAsync(final String vaultBaseUrl, final ListOperationCallback<SecretItem> serviceCallback) {
+    public ServiceFuture<List<SecretItem>> listSecretsAsync(final String vaultBaseUrl, final ListOperationCallback<SecretItem> serviceCallback) {
         return innerKeyVaultClient.getSecretsAsync(vaultBaseUrl, serviceCallback);
     }
     /**
@@ -983,13 +926,10 @@ public final class KeyVaultClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the PagedList&lt;SecretItem&gt; if successful.
      */
-    public PagedList<SecretItem> listSecrets(final String vaultBaseUrl, final Integer maxresults)
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public PagedList<SecretItem> listSecrets(final String vaultBaseUrl, final Integer maxresults) {
         return innerKeyVaultClient.getSecrets(vaultBaseUrl, maxresults);
     }
 
@@ -999,9 +939,9 @@ public final class KeyVaultClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SecretItem>> listSecretsAsync(final String vaultBaseUrl, final Integer maxresults, final ListOperationCallback<SecretItem> serviceCallback) {
+    public ServiceFuture<List<SecretItem>> listSecretsAsync(final String vaultBaseUrl, final Integer maxresults, final ListOperationCallback<SecretItem> serviceCallback) {
         return innerKeyVaultClient.getSecretsAsync(vaultBaseUrl, maxresults, serviceCallback);
     }
 
@@ -1010,13 +950,10 @@ public final class KeyVaultClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param secretName The name of the secret in the given vault
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the PagedList&lt;SecretItem&gt; if successful.
      */
-    public PagedList<SecretItem> listSecretVersions(final String vaultBaseUrl, final String secretName) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public PagedList<SecretItem> listSecretVersions(final String vaultBaseUrl, final String secretName) {
         return innerKeyVaultClient.getSecretVersions(vaultBaseUrl, secretName);
     }
 
@@ -1026,9 +963,9 @@ public final class KeyVaultClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param secretName The name of the secret in the given vault
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SecretItem>> listSecretVersionsAsync(final String vaultBaseUrl, final String secretName, final ListOperationCallback<SecretItem> serviceCallback) {
+    public ServiceFuture<List<SecretItem>> listSecretVersionsAsync(final String vaultBaseUrl, final String secretName, final ListOperationCallback<SecretItem> serviceCallback) {
         return innerKeyVaultClient.getSecretVersionsAsync(vaultBaseUrl, secretName, serviceCallback);
     }
     /**
@@ -1037,13 +974,10 @@ public final class KeyVaultClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param secretName The name of the secret in the given vault
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the PagedList&lt;SecretItem&gt; if successful.
      */
-    public PagedList<SecretItem> listSecretVersions(final String vaultBaseUrl, final String secretName, final Integer maxresults) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public PagedList<SecretItem> listSecretVersions(final String vaultBaseUrl, final String secretName, final Integer maxresults) {
         return innerKeyVaultClient.getSecretVersions(vaultBaseUrl, secretName, maxresults);
     }
 
@@ -1054,9 +988,9 @@ public final class KeyVaultClient {
      * @param secretName The name of the secret in the given vault
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<SecretItem>> listSecretVersionsAsync(final String vaultBaseUrl, final String secretName, final Integer maxresults, final ListOperationCallback<SecretItem> serviceCallback) {
+    public ServiceFuture<List<SecretItem>> listSecretVersionsAsync(final String vaultBaseUrl, final String secretName, final Integer maxresults, final ListOperationCallback<SecretItem> serviceCallback) {
         return innerKeyVaultClient.getSecretVersionsAsync(vaultBaseUrl, secretName, maxresults, serviceCallback);
     }
 
@@ -1064,13 +998,10 @@ public final class KeyVaultClient {
      * List certificates in the specified vault.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the PagedList&lt;CertificateItem&gt; if successful.
      */
-    public PagedList<CertificateItem> listCertificates(final String vaultBaseUrl)
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public PagedList<CertificateItem> listCertificates(final String vaultBaseUrl) {
         return innerKeyVaultClient.getCertificates(vaultBaseUrl);
     }
 
@@ -1079,9 +1010,9 @@ public final class KeyVaultClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CertificateItem>> listCertificatesAsync(final String vaultBaseUrl, final ListOperationCallback<CertificateItem> serviceCallback) {
+    public ServiceFuture<List<CertificateItem>> listCertificatesAsync(final String vaultBaseUrl, final ListOperationCallback<CertificateItem> serviceCallback) {
         return innerKeyVaultClient.getCertificatesAsync(vaultBaseUrl, serviceCallback);
     }
     /**
@@ -1089,13 +1020,10 @@ public final class KeyVaultClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the PagedList&lt;CertificateItem&gt; if successful.
      */
-    public PagedList<CertificateItem> listCertificates(final String vaultBaseUrl, final Integer maxresults)
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public PagedList<CertificateItem> listCertificates(final String vaultBaseUrl, final Integer maxresults) {
         return innerKeyVaultClient.getCertificates(vaultBaseUrl, maxresults);
     }
 
@@ -1105,9 +1033,9 @@ public final class KeyVaultClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CertificateItem>> listCertificatesAsync(final String vaultBaseUrl, final Integer maxresults, final ListOperationCallback<CertificateItem> serviceCallback) {
+    public ServiceFuture<List<CertificateItem>> listCertificatesAsync(final String vaultBaseUrl, final Integer maxresults, final ListOperationCallback<CertificateItem> serviceCallback) {
         return innerKeyVaultClient.getCertificatesAsync(vaultBaseUrl, maxresults, serviceCallback);
     }
 
@@ -1116,13 +1044,10 @@ public final class KeyVaultClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate in the given vault
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the CertificateBundle if successful.
      */
-    public CertificateBundle deleteCertificate(String vaultBaseUrl, String certificateName) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public CertificateBundle deleteCertificate(String vaultBaseUrl, String certificateName) {
         return innerKeyVaultClient.deleteCertificate(vaultBaseUrl, certificateName);
     }
 
@@ -1132,9 +1057,9 @@ public final class KeyVaultClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate in the given vault
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificateBundle> deleteCertificateAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificateBundle> serviceCallback) {
+    public ServiceFuture<CertificateBundle> deleteCertificateAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificateBundle> serviceCallback) {
         return innerKeyVaultClient.deleteCertificateAsync(vaultBaseUrl, certificateName, serviceCallback);
     }
 
@@ -1143,13 +1068,10 @@ public final class KeyVaultClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param contacts The contacts for the vault certificates.
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the Contacts if successful.
      */
-    public Contacts setCertificateContacts(String vaultBaseUrl, Contacts contacts) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public Contacts setCertificateContacts(String vaultBaseUrl, Contacts contacts) {
         return innerKeyVaultClient.setCertificateContacts(vaultBaseUrl, contacts);
     }
 
@@ -1159,9 +1081,9 @@ public final class KeyVaultClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param contacts The contacts for the vault certificates.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Contacts> setCertificateContactsAsync(String vaultBaseUrl, Contacts contacts, final ServiceCallback<Contacts> serviceCallback) {
+    public ServiceFuture<Contacts> setCertificateContactsAsync(String vaultBaseUrl, Contacts contacts, final ServiceCallback<Contacts> serviceCallback) {
         return innerKeyVaultClient.setCertificateContactsAsync(vaultBaseUrl, contacts, serviceCallback);
     }
 
@@ -1169,13 +1091,10 @@ public final class KeyVaultClient {
      * Gets the certificate contacts for the specified vault.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the Contacts if successful.
      */
-    public Contacts getCertificateContacts(String vaultBaseUrl) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public Contacts getCertificateContacts(String vaultBaseUrl) {
         return innerKeyVaultClient.getCertificateContacts(vaultBaseUrl);
     }
 
@@ -1184,9 +1103,9 @@ public final class KeyVaultClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Contacts> getCertificateContactsAsync(String vaultBaseUrl, final ServiceCallback<Contacts> serviceCallback) {
+    public ServiceFuture<Contacts> getCertificateContactsAsync(String vaultBaseUrl, final ServiceCallback<Contacts> serviceCallback) {
         return innerKeyVaultClient.getCertificateContactsAsync(vaultBaseUrl, serviceCallback);
     }
 
@@ -1194,13 +1113,10 @@ public final class KeyVaultClient {
      * Deletes the certificate contacts for the specified vault.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the Contacts if successful.
      */
-    public Contacts deleteCertificateContacts(String vaultBaseUrl) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public Contacts deleteCertificateContacts(String vaultBaseUrl) {
         return innerKeyVaultClient.deleteCertificateContacts(vaultBaseUrl);
     }
 
@@ -1209,9 +1125,9 @@ public final class KeyVaultClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Contacts> deleteCertificateContactsAsync(String vaultBaseUrl, final ServiceCallback<Contacts> serviceCallback) {
+    public ServiceFuture<Contacts> deleteCertificateContactsAsync(String vaultBaseUrl, final ServiceCallback<Contacts> serviceCallback) {
         return innerKeyVaultClient.deleteCertificateContactsAsync(vaultBaseUrl, serviceCallback);
     }
 
@@ -1219,13 +1135,10 @@ public final class KeyVaultClient {
      * List certificate issuers for the specified vault.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the PagedList&lt;CertificateIssuerItem&gt; if successful.
      */
-    public PagedList<CertificateIssuerItem> listCertificateIssuers(final String vaultBaseUrl) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public PagedList<CertificateIssuerItem> listCertificateIssuers(final String vaultBaseUrl) {
         return innerKeyVaultClient.getCertificateIssuers(vaultBaseUrl);
     }
 
@@ -1234,9 +1147,9 @@ public final class KeyVaultClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CertificateIssuerItem>> listCertificateIssuersAsync(final String vaultBaseUrl, final ListOperationCallback<CertificateIssuerItem> serviceCallback) {
+    public ServiceFuture<List<CertificateIssuerItem>> listCertificateIssuersAsync(final String vaultBaseUrl, final ListOperationCallback<CertificateIssuerItem> serviceCallback) {
         return innerKeyVaultClient.getCertificateIssuersAsync(vaultBaseUrl, serviceCallback);
     }
     /**
@@ -1244,13 +1157,10 @@ public final class KeyVaultClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the PagedList&lt;CertificateIssuerItem&gt; if successful.
      */
-    public PagedList<CertificateIssuerItem> listCertificateIssuers(final String vaultBaseUrl, final Integer maxresults) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public PagedList<CertificateIssuerItem> listCertificateIssuers(final String vaultBaseUrl, final Integer maxresults) {
         return innerKeyVaultClient.getCertificateIssuers(vaultBaseUrl, maxresults);
     }
 
@@ -1260,9 +1170,9 @@ public final class KeyVaultClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CertificateIssuerItem>> listCertificateIssuersAsync(final String vaultBaseUrl, final Integer maxresults, final ListOperationCallback<CertificateIssuerItem> serviceCallback) {
+    public ServiceFuture<List<CertificateIssuerItem>> listCertificateIssuersAsync(final String vaultBaseUrl, final Integer maxresults, final ListOperationCallback<CertificateIssuerItem> serviceCallback) {
         return innerKeyVaultClient.getCertificateIssuersAsync(vaultBaseUrl, maxresults, serviceCallback);
     }
 
@@ -1271,13 +1181,9 @@ public final class KeyVaultClient {
      *
      * @param setCertificateIssuerRequest the grouped properties for setting a certificate issuer request
      * 
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the IssuerBundle if successful.
      */
-    public IssuerBundle setCertificateIssuer(SetCertificateIssuerRequest setCertificateIssuerRequest) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public IssuerBundle setCertificateIssuer(SetCertificateIssuerRequest setCertificateIssuerRequest) {
         return innerKeyVaultClient.setCertificateIssuer(
                 setCertificateIssuerRequest.vaultBaseUrl(), 
                 setCertificateIssuerRequest.issuerName(),
@@ -1293,9 +1199,9 @@ public final class KeyVaultClient {
      * @param setCertificateIssuerRequest the grouped properties for setting a certificate issuer request
      * 
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<IssuerBundle> setCertificateIssuerAsync(SetCertificateIssuerRequest setCertificateIssuerRequest, final ServiceCallback<IssuerBundle> serviceCallback) {
+    public ServiceFuture<IssuerBundle> setCertificateIssuerAsync(SetCertificateIssuerRequest setCertificateIssuerRequest, final ServiceCallback<IssuerBundle> serviceCallback) {
         return innerKeyVaultClient.setCertificateIssuerAsync(
                 setCertificateIssuerRequest.vaultBaseUrl(), 
                 setCertificateIssuerRequest.issuerName(), 
@@ -1311,13 +1217,9 @@ public final class KeyVaultClient {
      *
      * @param updateCertificateIssuerRequest the grouped properties for updating a certificate issuer request
      * 
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the IssuerBundle if successful.
      */
-    public IssuerBundle updateCertificateIssuer(UpdateCertificateIssuerRequest updateCertificateIssuerRequest)
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public IssuerBundle updateCertificateIssuer(UpdateCertificateIssuerRequest updateCertificateIssuerRequest) {
         return innerKeyVaultClient.updateCertificateIssuer(
                 updateCertificateIssuerRequest.vaultBaseUrl(), 
                 updateCertificateIssuerRequest.issuerName(),
@@ -1334,9 +1236,9 @@ public final class KeyVaultClient {
      * 
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<IssuerBundle> updateCertificateIssuerAsync(UpdateCertificateIssuerRequest updateCertificateIssuerRequest, final ServiceCallback<IssuerBundle> serviceCallback) {
+    public ServiceFuture<IssuerBundle> updateCertificateIssuerAsync(UpdateCertificateIssuerRequest updateCertificateIssuerRequest, final ServiceCallback<IssuerBundle> serviceCallback) {
         return innerKeyVaultClient.updateCertificateIssuerAsync(
                 updateCertificateIssuerRequest.vaultBaseUrl(), 
                 updateCertificateIssuerRequest.issuerName(),
@@ -1352,13 +1254,10 @@ public final class KeyVaultClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param issuerName The name of the issuer.
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the IssuerBundle if successful.
      */
-    public IssuerBundle getCertificateIssuer(String vaultBaseUrl, String issuerName) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public IssuerBundle getCertificateIssuer(String vaultBaseUrl, String issuerName) {
         return innerKeyVaultClient.getCertificateIssuer(vaultBaseUrl, issuerName);
     }
 
@@ -1368,9 +1267,9 @@ public final class KeyVaultClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param issuerName The name of the issuer.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<IssuerBundle> getCertificateIssuerAsync(String vaultBaseUrl, String issuerName, final ServiceCallback<IssuerBundle> serviceCallback) {
+    public ServiceFuture<IssuerBundle> getCertificateIssuerAsync(String vaultBaseUrl, String issuerName, final ServiceCallback<IssuerBundle> serviceCallback) {
         return innerKeyVaultClient.getCertificateIssuerAsync(vaultBaseUrl, issuerName, serviceCallback);    
     }
 
@@ -1379,13 +1278,10 @@ public final class KeyVaultClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param issuerName The name of the issuer.
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the IssuerBundle if successful.
      */
-    public IssuerBundle deleteCertificateIssuer(String vaultBaseUrl, String issuerName) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public IssuerBundle deleteCertificateIssuer(String vaultBaseUrl, String issuerName) {
         return innerKeyVaultClient.deleteCertificateIssuer(vaultBaseUrl, issuerName);
     }
 
@@ -1395,9 +1291,9 @@ public final class KeyVaultClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param issuerName The name of the issuer.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<IssuerBundle> deleteCertificateIssuerAsync(String vaultBaseUrl, String issuerName, final ServiceCallback<IssuerBundle> serviceCallback) {
+    public ServiceFuture<IssuerBundle> deleteCertificateIssuerAsync(String vaultBaseUrl, String issuerName, final ServiceCallback<IssuerBundle> serviceCallback) {
         return innerKeyVaultClient.deleteCertificateIssuerAsync(vaultBaseUrl, issuerName, serviceCallback);
     }
 
@@ -1406,13 +1302,9 @@ public final class KeyVaultClient {
      *
      * @param createCertificateRequest the grouped properties for creating a certificate request
      * 
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the CertificateOperation if successful.
      */
-    public CertificateOperation createCertificate(CreateCertificateRequest createCertificateRequest) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public CertificateOperation createCertificate(CreateCertificateRequest createCertificateRequest) {
         return innerKeyVaultClient.createCertificate(
                 createCertificateRequest.vaultBaseUrl(), 
                 createCertificateRequest.certificateName(), 
@@ -1427,9 +1319,9 @@ public final class KeyVaultClient {
      * @param createCertificateRequest the grouped properties for creating a certificate request
      * 
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificateOperation> createCertificateAsync(CreateCertificateRequest createCertificateRequest, final ServiceCallback<CertificateOperation> serviceCallback) {
+    public ServiceFuture<CertificateOperation> createCertificateAsync(CreateCertificateRequest createCertificateRequest, final ServiceCallback<CertificateOperation> serviceCallback) {
         return innerKeyVaultClient.createCertificateAsync(
                 createCertificateRequest.vaultBaseUrl(), 
                 createCertificateRequest.certificateName(), 
@@ -1444,13 +1336,9 @@ public final class KeyVaultClient {
      *
      * @param importCertificateRequest the grouped properties for importing a certificate request
      * 
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the CertificateBundle if successful.
      */
-    public CertificateBundle importCertificate(ImportCertificateRequest importCertificateRequest) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public CertificateBundle importCertificate(ImportCertificateRequest importCertificateRequest) {
         return innerKeyVaultClient.importCertificate(
                 importCertificateRequest.vaultBaseUrl(), 
                 importCertificateRequest.certificateName(), 
@@ -1467,9 +1355,9 @@ public final class KeyVaultClient {
      * @param importCertificateRequest the grouped properties for importing a certificate request
      * 
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificateBundle> importCertificateAsync(ImportCertificateRequest importCertificateRequest, final ServiceCallback<CertificateBundle> serviceCallback) {
+    public ServiceFuture<CertificateBundle> importCertificateAsync(ImportCertificateRequest importCertificateRequest, final ServiceCallback<CertificateBundle> serviceCallback) {
         return innerKeyVaultClient.importCertificateAsync(
                 importCertificateRequest.vaultBaseUrl(), 
                 importCertificateRequest.certificateName(), 
@@ -1486,13 +1374,10 @@ public final class KeyVaultClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the PagedList&lt;CertificateItem&gt; if successful.
      */
-    public PagedList<CertificateItem> listCertificateVersions(final String vaultBaseUrl, final String certificateName) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public PagedList<CertificateItem> listCertificateVersions(final String vaultBaseUrl, final String certificateName) {
         return innerKeyVaultClient.getCertificateVersions(vaultBaseUrl, certificateName);
     }
 
@@ -1502,9 +1387,9 @@ public final class KeyVaultClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CertificateItem>> listCertificateVersionsAsync(final String vaultBaseUrl, final String certificateName, final ListOperationCallback<CertificateItem> serviceCallback) {
+    public ServiceFuture<List<CertificateItem>> listCertificateVersionsAsync(final String vaultBaseUrl, final String certificateName, final ListOperationCallback<CertificateItem> serviceCallback) {
         return innerKeyVaultClient.getCertificateVersionsAsync(vaultBaseUrl, certificateName, serviceCallback);        
     }
     /**
@@ -1513,13 +1398,10 @@ public final class KeyVaultClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the PagedList&lt;CertificateItem&gt; if successful.
      */
-    public PagedList<CertificateItem> listCertificateVersions(final String vaultBaseUrl, final String certificateName, final Integer maxresults)
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public PagedList<CertificateItem> listCertificateVersions(final String vaultBaseUrl, final String certificateName, final Integer maxresults) {
         return innerKeyVaultClient.getCertificateVersions(vaultBaseUrl, certificateName, maxresults);
     }
 
@@ -1530,9 +1412,9 @@ public final class KeyVaultClient {
      * @param certificateName The name of the certificate
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<CertificateItem>> listCertificateVersionsAsync(final String vaultBaseUrl, final String certificateName, final Integer maxresults, final ListOperationCallback<CertificateItem> serviceCallback) {
+    public ServiceFuture<List<CertificateItem>> listCertificateVersionsAsync(final String vaultBaseUrl, final String certificateName, final Integer maxresults, final ListOperationCallback<CertificateItem> serviceCallback) {
         return innerKeyVaultClient.getCertificateVersionsAsync(vaultBaseUrl, certificateName, maxresults, serviceCallback);
     }
 
@@ -1541,13 +1423,10 @@ public final class KeyVaultClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate in the given vault.
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the CertificatePolicy if successful.
      */
-    public CertificatePolicy getCertificatePolicy(String vaultBaseUrl, String certificateName) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public CertificatePolicy getCertificatePolicy(String vaultBaseUrl, String certificateName) {
         return innerKeyVaultClient.getCertificatePolicy(vaultBaseUrl, certificateName);
     }
 
@@ -1557,9 +1436,9 @@ public final class KeyVaultClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate in the given vault.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificatePolicy> getCertificatePolicyAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificatePolicy> serviceCallback) {
+    public ServiceFuture<CertificatePolicy> getCertificatePolicyAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificatePolicy> serviceCallback) {
         return innerKeyVaultClient.getCertificatePolicyAsync(vaultBaseUrl, certificateName, serviceCallback);
     }
 
@@ -1568,13 +1447,9 @@ public final class KeyVaultClient {
      *
      * @param updateCertificatePolicyRequest the grouped properties for updating a certificate policy request
      * 
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the CertificatePolicy if successful.
      */
-    public CertificatePolicy updateCertificatePolicy(UpdateCertificatePolicyRequest updateCertificatePolicyRequest) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public CertificatePolicy updateCertificatePolicy(UpdateCertificatePolicyRequest updateCertificatePolicyRequest) {
         return innerKeyVaultClient.updateCertificatePolicy(
                 updateCertificatePolicyRequest.vaultBaseUrl(), 
                 updateCertificatePolicyRequest.certificateName(), 
@@ -1587,9 +1462,9 @@ public final class KeyVaultClient {
      * @param updateCertificatePolicyRequest the grouped properties for updating a certificate policy request
      * 
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificatePolicy> updateCertificatePolicyAsync(UpdateCertificatePolicyRequest updateCertificatePolicyRequest, final ServiceCallback<CertificatePolicy> serviceCallback) {
+    public ServiceFuture<CertificatePolicy> updateCertificatePolicyAsync(UpdateCertificatePolicyRequest updateCertificatePolicyRequest, final ServiceCallback<CertificatePolicy> serviceCallback) {
         return innerKeyVaultClient.updateCertificatePolicyAsync(
                 updateCertificatePolicyRequest.vaultBaseUrl(), 
                 updateCertificatePolicyRequest.certificateName(), 
@@ -1602,13 +1477,9 @@ public final class KeyVaultClient {
      *
      * @param updateCertificateRequest the grouped properties for updating a certificate request
      * 
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the CertificateBundle if successful.
      */
-    public CertificateBundle updateCertificate(UpdateCertificateRequest updateCertificateRequest) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public CertificateBundle updateCertificate(UpdateCertificateRequest updateCertificateRequest) {
         return innerKeyVaultClient.updateCertificate(
                 updateCertificateRequest.vaultBaseUrl(), 
                 updateCertificateRequest.certificateName(),
@@ -1624,9 +1495,9 @@ public final class KeyVaultClient {
      * @param updateCertificateRequest the grouped properties for updating a certificate request
      * 
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificateBundle> updateCertificateAsync(UpdateCertificateRequest updateCertificateRequest, final ServiceCallback<CertificateBundle> serviceCallback) {
+    public ServiceFuture<CertificateBundle> updateCertificateAsync(UpdateCertificateRequest updateCertificateRequest, final ServiceCallback<CertificateBundle> serviceCallback) {
         return innerKeyVaultClient.updateCertificateAsync(
                 updateCertificateRequest.vaultBaseUrl(), 
                 updateCertificateRequest.certificateName(), 
@@ -1638,85 +1509,76 @@ public final class KeyVaultClient {
     }
     
     /**
-     * Gets a Certificate.
+     * Gets information about a specified certificate.
      *
      * @param certificateIdentifier The certificate identifier
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the CertificateBundle if successful.
      */
-    public CertificateBundle getCertificate(String certificateIdentifier) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public CertificateBundle getCertificate(String certificateIdentifier) {
         CertificateIdentifier id = new CertificateIdentifier(certificateIdentifier); 
         return innerKeyVaultClient.getCertificate(id.vault, id.name, id.version == null ? "" : id.version);
     }
 
     /**
-     * Gets a Certificate.
+     * Gets information about a specified certificate.
      *
      * @param certificateIdentifier The certificate identifier
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificateBundle> getCertificateAsync(String certificateIdentifier, final ServiceCallback<CertificateBundle> serviceCallback) {
+    public ServiceFuture<CertificateBundle> getCertificateAsync(String certificateIdentifier, final ServiceCallback<CertificateBundle> serviceCallback) {
         CertificateIdentifier id = new CertificateIdentifier(certificateIdentifier);
         return innerKeyVaultClient.getCertificateAsync(id.vault, id.name, id.version == null ? "" : id.version, serviceCallback);
     }
     
     /**
-     * Gets a Certificate.
+     * Gets information about a specified certificate.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate in the given vault
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the CertificateBundle if successful.
      */
-    public CertificateBundle getCertificate(String vaultBaseUrl, String certificateName) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public CertificateBundle getCertificate(String vaultBaseUrl, String certificateName) {
         return innerKeyVaultClient.getCertificate(vaultBaseUrl, certificateName, "");
     }
 
     /**
-     * Gets a Certificate.
+     * Gets information about a specified certificate.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate in the given vault
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificateBundle> getCertificateAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificateBundle> serviceCallback) {
+    public ServiceFuture<CertificateBundle> getCertificateAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificateBundle> serviceCallback) {
         return innerKeyVaultClient.getCertificateAsync(vaultBaseUrl, certificateName, "", serviceCallback);
     }
     
     /**
-     * Gets a Certificate.
+     * Gets information about a specified certificate.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate in the given vault
      * @param certificateVersion The version of the certificate
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the CertificateBundle if successful.
      */
-    public CertificateBundle getCertificate(String vaultBaseUrl, String certificateName, String certificateVersion) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public CertificateBundle getCertificate(String vaultBaseUrl, String certificateName, String certificateVersion) {
         return innerKeyVaultClient.getCertificate(vaultBaseUrl, certificateName, certificateVersion);
     }
 
     /**
-     * Gets a Certificate.
+     * Gets information about a specified certificate.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate in the given vault
      * @param certificateVersion The version of the certificate
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificateBundle> getCertificateAsync(String vaultBaseUrl, String certificateName, String certificateVersion, final ServiceCallback<CertificateBundle> serviceCallback) {
+    public ServiceFuture<CertificateBundle> getCertificateAsync(String vaultBaseUrl, String certificateName, String certificateVersion, final ServiceCallback<CertificateBundle> serviceCallback) {
         return innerKeyVaultClient.getCertificateAsync(vaultBaseUrl, certificateName, certificateVersion, serviceCallback);
     }
 
@@ -1725,13 +1587,9 @@ public final class KeyVaultClient {
      * 
      * @param updateCertificateOperationRequest the grouped properties for updating a certificate operation request
      * 
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the CertificateOperation if successful.
      */
-    public CertificateOperation updateCertificateOperation(UpdateCertificateOperationRequest updateCertificateOperationRequest) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public CertificateOperation updateCertificateOperation(UpdateCertificateOperationRequest updateCertificateOperationRequest) {
         return innerKeyVaultClient.updateCertificateOperation(
                 updateCertificateOperationRequest.vaultBaseUrl(), 
                 updateCertificateOperationRequest.certificateName(), 
@@ -1744,9 +1602,9 @@ public final class KeyVaultClient {
      * @param updateCertificateOperationRequest the grouped properties for updating a certificate operation request
      * 
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificateOperation> updateCertificateOperationAsync(UpdateCertificateOperationRequest updateCertificateOperationRequest, final ServiceCallback<CertificateOperation> serviceCallback) {
+    public ServiceFuture<CertificateOperation> updateCertificateOperationAsync(UpdateCertificateOperationRequest updateCertificateOperationRequest, final ServiceCallback<CertificateOperation> serviceCallback) {
         return innerKeyVaultClient.updateCertificateOperationAsync(
                 updateCertificateOperationRequest.vaultBaseUrl(), 
                 updateCertificateOperationRequest.certificateName(), 
@@ -1755,56 +1613,50 @@ public final class KeyVaultClient {
     }
 
     /**
-     * Gets the certificate operation response.
+     * Gets the operation associated with a specified certificate.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the CertificateOperation if successful.
      */
-    public CertificateOperation getCertificateOperation(String vaultBaseUrl, String certificateName) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public CertificateOperation getCertificateOperation(String vaultBaseUrl, String certificateName) {
         return innerKeyVaultClient.getCertificateOperation(vaultBaseUrl, certificateName);
     }
 
     /**
-     * Gets the certificate operation response.
+     * Gets the operation associated with a specified certificate.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificateOperation> getCertificateOperationAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificateOperation> serviceCallback) {
+    public ServiceFuture<CertificateOperation> getCertificateOperationAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificateOperation> serviceCallback) {
         return innerKeyVaultClient.getCertificateOperationAsync(vaultBaseUrl, certificateName, serviceCallback);
     }
 
     /**
-     * Deletes the certificate operation.
+     * Deletes the operation for a specified certificate.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the CertificateOperation if successful.
      */
-    public CertificateOperation deleteCertificateOperation(String vaultBaseUrl, String certificateName) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public CertificateOperation deleteCertificateOperation(String vaultBaseUrl, String certificateName) {
         return innerKeyVaultClient.deleteCertificateOperation(vaultBaseUrl, certificateName);
     }
 
     /**
-     * Deletes the certificate operation.
+     * Deletes the operation for a specified certificate.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificateOperation> deleteCertificateOperationAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificateOperation> serviceCallback) {
+    public ServiceFuture<CertificateOperation> deleteCertificateOperationAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificateOperation> serviceCallback) {
         return innerKeyVaultClient.deleteCertificateOperationAsync(vaultBaseUrl, certificateName, serviceCallback);
     }
 
@@ -1813,13 +1665,9 @@ public final class KeyVaultClient {
      *
      * @param mergeCertificateRequest the grouped properties for merging a certificate request
      * 
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the CertificateBundle if successful.
      */
-    public CertificateBundle mergeCertificate(MergeCertificateRequest mergeCertificateRequest) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public CertificateBundle mergeCertificate(MergeCertificateRequest mergeCertificateRequest) {
         return innerKeyVaultClient.mergeCertificate(
                 mergeCertificateRequest.vaultBaseUrl(), 
                 mergeCertificateRequest.certificateName(), 
@@ -1834,9 +1682,9 @@ public final class KeyVaultClient {
      * @param mergeCertificateRequest the grouped properties for merging a certificate request
      * 
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<CertificateBundle> mergeCertificateAsync(MergeCertificateRequest mergeCertificateRequest, final ServiceCallback<CertificateBundle> serviceCallback) {
+    public ServiceFuture<CertificateBundle> mergeCertificateAsync(MergeCertificateRequest mergeCertificateRequest, final ServiceCallback<CertificateBundle> serviceCallback) {
         return innerKeyVaultClient.mergeCertificateAsync(
                 mergeCertificateRequest.vaultBaseUrl(), 
                 mergeCertificateRequest.certificateName(), 
@@ -1852,14 +1700,11 @@ public final class KeyVaultClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate
-     * @throws KeyVaultErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * 
      * @return the String if successful.
      */
-    public String getPendingCertificateSigningRequest(String vaultBaseUrl, String certificateName) 
-            throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        return getPendingCertificateSigningRequestWithServiceResponseAsync(vaultBaseUrl, certificateName).toBlocking().single().getBody();
+    public String getPendingCertificateSigningRequest(String vaultBaseUrl, String certificateName) {
+        return getPendingCertificateSigningRequestWithServiceResponseAsync(vaultBaseUrl, certificateName).toBlocking().single().body();
     }
 
     /**
@@ -1868,10 +1713,10 @@ public final class KeyVaultClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<String> getPendingCertificateSigningRequestAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<String> serviceCallback) {
-        return ServiceCall.create(getPendingCertificateSigningRequestWithServiceResponseAsync(vaultBaseUrl, certificateName), serviceCallback);
+    public ServiceFuture<String> getPendingCertificateSigningRequestAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<String> serviceCallback) {
+        return ServiceFuture.fromResponse(getPendingCertificateSigningRequestWithServiceResponseAsync(vaultBaseUrl, certificateName), serviceCallback);
     }
     
     /**
@@ -1897,7 +1742,7 @@ public final class KeyVaultClient {
                 @Override
                 public Observable<ServiceResponse<String>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<String> clientResponse = new ServiceResponse<String>(response.body().string(), response);
+                        ServiceResponse<String> clientResponse =  new ServiceResponse<String>(response.body().string(), response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);

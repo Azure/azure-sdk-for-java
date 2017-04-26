@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
@@ -7,6 +12,8 @@ import com.microsoft.azure.management.compute.VirtualMachineExtensionImage;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionInstanceView;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.RXMapper;
+
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -17,7 +24,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * Implementation of {@link VirtualMachineExtension}.
+ * Implementation of VirtualMachineExtension.
  */
 @LangDefinition
 class VirtualMachineExtensionImpl
@@ -90,8 +97,19 @@ class VirtualMachineExtensionImpl
     }
 
     @Override
-    public VirtualMachineExtensionInstanceView instanceView() {
-        return this.inner().instanceView();
+    public VirtualMachineExtensionInstanceView getInstanceView() {
+        return getInstanceViewAsync().toBlocking().last();
+    }
+
+    @Override
+    public Observable<VirtualMachineExtensionInstanceView> getInstanceViewAsync() {
+        return this.client.getAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), "instanceView")
+                .map(new Func1<VirtualMachineExtensionInner, VirtualMachineExtensionInstanceView>() {
+                    @Override
+                    public VirtualMachineExtensionInstanceView call(VirtualMachineExtensionInner virtualMachineExtensionInner) {
+                        return virtualMachineExtensionInner.instanceView();
+                    }
+                });
     }
 
     @Override
@@ -197,17 +215,14 @@ class VirtualMachineExtensionImpl
     }
 
     @Override
-    public VirtualMachineExtensionImpl refresh() {
+    protected Observable<VirtualMachineExtensionInner> getInnerAsync() {
         String name;
         if (this.isReference()) {
             name = ResourceUtils.nameFromResourceId(this.inner().id());
         } else {
             name = this.inner().name();
         }
-        VirtualMachineExtensionInner inner =
-                this.client.get(this.parent().resourceGroupName(), this.parent().name(), name);
-        this.setInner(inner);
-        return this;
+        return this.client.getAsync(this.parent().resourceGroupName(), this.parent().name(), name);
     }
 
     // Implementation of ExternalChildResourceImpl createAsyncStreaming,  updateAsync and deleteAsync
@@ -272,14 +287,10 @@ class VirtualMachineExtensionImpl
 
     @Override
     public Observable<Void> deleteAsync() {
-        return this.client.deleteAsync(this.parent().resourceGroupName(),
+        return RXMapper.mapToVoid(this.client.deleteAsync(
+                this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.name()).map(new Func1<Void, Void>() {
-            @Override
-            public Void call(Void result) {
-                return result;
-            }
-        });
+                this.name()));
     }
 
     /**

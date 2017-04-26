@@ -10,12 +10,12 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import java.util.List;
 
 /**
- * An immutable client-side representation of a A (Ipv4) record set in Azure Dns Zone.
+ * An immutable client-side representation of a A (IPv4) record set in Azure DNS Zone.
  */
 @Fluent
 public interface ARecordSet extends DnsRecordSet {
     /**
-     * @return the Ipv4 addresses of A records in this record set
+     * @return the IP v4 addresses of A records in this record set
      */
     List<String> ipv4Addresses();
 }

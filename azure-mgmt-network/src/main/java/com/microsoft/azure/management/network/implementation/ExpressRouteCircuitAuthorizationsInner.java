@@ -10,14 +10,13 @@ package com.microsoft.azure.management.network.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
-import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -31,6 +30,7 @@ import retrofit2.http.HTTP;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -39,7 +39,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in ExpressRouteCircuitAuthorizations.
  */
-public final class ExpressRouteCircuitAuthorizationsInner {
+public class ExpressRouteCircuitAuthorizationsInner {
     /** The Retrofit service to perform REST calls. */
     private ExpressRouteCircuitAuthorizationsService service;
     /** The service client containing this operation class. */
@@ -61,83 +61,89 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface ExpressRouteCircuitAuthorizationsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ExpressRouteCircuitAuthorizations delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/authorizations/{authorizationName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("authorizationName") String authorizationName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ExpressRouteCircuitAuthorizations beginDelete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/authorizations/{authorizationName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("authorizationName") String authorizationName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ExpressRouteCircuitAuthorizations get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/authorizations/{authorizationName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("authorizationName") String authorizationName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ExpressRouteCircuitAuthorizations createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/authorizations/{authorizationName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("authorizationName") String authorizationName, @Path("subscriptionId") String subscriptionId, @Body ExpressRouteCircuitAuthorizationInner authorizationParameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ExpressRouteCircuitAuthorizations beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/authorizations/{authorizationName}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("authorizationName") String authorizationName, @Path("subscriptionId") String subscriptionId, @Body ExpressRouteCircuitAuthorizationInner authorizationParameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ExpressRouteCircuitAuthorizations list" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/authorizations")
         Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ExpressRouteCircuitAuthorizations listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * The delete authorization operation deletes the specified authorization from the specified ExpressRouteCircuit.
+     * Deletes the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String circuitName, String authorizationName) {
-        deleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).toBlocking().last().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).toBlocking().last().body();
     }
 
     /**
-     * The delete authorization operation deletes the specified authorization from the specified ExpressRouteCircuit.
+     * Deletes the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String circuitName, String authorizationName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String circuitName, String authorizationName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName), serviceCallback);
     }
 
     /**
-     * The delete authorization operation deletes the specified authorization from the specified ExpressRouteCircuit.
+     * Deletes the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String circuitName, String authorizationName) {
         return deleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The delete authorization operation deletes the specified authorization from the specified ExpressRouteCircuit.
+     * Deletes the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String circuitName, String authorizationName) {
@@ -153,60 +159,64 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-12-01";
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
     /**
-     * The delete authorization operation deletes the specified authorization from the specified ExpressRouteCircuit.
+     * Deletes the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String circuitName, String authorizationName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).toBlocking().single().getBody();
+        beginDeleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).toBlocking().single().body();
     }
 
     /**
-     * The delete authorization operation deletes the specified authorization from the specified ExpressRouteCircuit.
+     * Deletes the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String circuitName, String authorizationName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName), serviceCallback);
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String circuitName, String authorizationName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName), serviceCallback);
     }
 
     /**
-     * The delete authorization operation deletes the specified authorization from the specified ExpressRouteCircuit.
+     * Deletes the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String circuitName, String authorizationName) {
         return beginDeleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The delete authorization operation deletes the specified authorization from the specified ExpressRouteCircuit.
+     * Deletes the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String circuitName, String authorizationName) {
@@ -222,10 +232,8 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginDelete(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-12-01";
+        return service.beginDelete(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -240,61 +248,68 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * The GET authorization operation retrieves the specified authorization from the specified ExpressRouteCircuit.
+     * Gets the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ExpressRouteCircuitAuthorizationInner object if successful.
      */
     public ExpressRouteCircuitAuthorizationInner get(String resourceGroupName, String circuitName, String authorizationName) {
-        return getWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).toBlocking().single().body();
     }
 
     /**
-     * The GET authorization operation retrieves the specified authorization from the specified ExpressRouteCircuit.
+     * Gets the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ExpressRouteCircuitAuthorizationInner> getAsync(String resourceGroupName, String circuitName, String authorizationName, final ServiceCallback<ExpressRouteCircuitAuthorizationInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName), serviceCallback);
+    public ServiceFuture<ExpressRouteCircuitAuthorizationInner> getAsync(String resourceGroupName, String circuitName, String authorizationName, final ServiceCallback<ExpressRouteCircuitAuthorizationInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName), serviceCallback);
     }
 
     /**
-     * The GET authorization operation retrieves the specified authorization from the specified ExpressRouteCircuit.
+     * Gets the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ExpressRouteCircuitAuthorizationInner object
      */
     public Observable<ExpressRouteCircuitAuthorizationInner> getAsync(String resourceGroupName, String circuitName, String authorizationName) {
         return getWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).map(new Func1<ServiceResponse<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>() {
             @Override
             public ExpressRouteCircuitAuthorizationInner call(ServiceResponse<ExpressRouteCircuitAuthorizationInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The GET authorization operation retrieves the specified authorization from the specified ExpressRouteCircuit.
+     * Gets the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ExpressRouteCircuitAuthorizationInner object
      */
     public Observable<ServiceResponse<ExpressRouteCircuitAuthorizationInner>> getWithServiceResponseAsync(String resourceGroupName, String circuitName, String authorizationName) {
@@ -310,10 +325,8 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-12-01";
+        return service.get(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ExpressRouteCircuitAuthorizationInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ExpressRouteCircuitAuthorizationInner>> call(Response<ResponseBody> response) {
@@ -328,64 +341,70 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     private ServiceResponse<ExpressRouteCircuitAuthorizationInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ExpressRouteCircuitAuthorizationInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ExpressRouteCircuitAuthorizationInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ExpressRouteCircuitAuthorizationInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * The Put Authorization operation creates/updates an authorization in the specified ExpressRouteCircuits.
+     * Creates or updates an authorization in the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create/update ExpressRouteCircuitAuthorization operation
+     * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ExpressRouteCircuitAuthorizationInner object if successful.
      */
     public ExpressRouteCircuitAuthorizationInner createOrUpdate(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters).toBlocking().last().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters).toBlocking().last().body();
     }
 
     /**
-     * The Put Authorization operation creates/updates an authorization in the specified ExpressRouteCircuits.
+     * Creates or updates an authorization in the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create/update ExpressRouteCircuitAuthorization operation
+     * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ExpressRouteCircuitAuthorizationInner> createOrUpdateAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters, final ServiceCallback<ExpressRouteCircuitAuthorizationInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters), serviceCallback);
+    public ServiceFuture<ExpressRouteCircuitAuthorizationInner> createOrUpdateAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters, final ServiceCallback<ExpressRouteCircuitAuthorizationInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters), serviceCallback);
     }
 
     /**
-     * The Put Authorization operation creates/updates an authorization in the specified ExpressRouteCircuits.
+     * Creates or updates an authorization in the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create/update ExpressRouteCircuitAuthorization operation
+     * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ExpressRouteCircuitAuthorizationInner> createOrUpdateAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters).map(new Func1<ServiceResponse<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>() {
             @Override
             public ExpressRouteCircuitAuthorizationInner call(ServiceResponse<ExpressRouteCircuitAuthorizationInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The Put Authorization operation creates/updates an authorization in the specified ExpressRouteCircuits.
+     * Creates or updates an authorization in the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create/update ExpressRouteCircuitAuthorization operation
+     * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<ExpressRouteCircuitAuthorizationInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
@@ -404,66 +423,70 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         if (authorizationParameters == null) {
             throw new IllegalArgumentException("Parameter authorizationParameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(authorizationParameters);
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), authorizationParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-12-01";
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), authorizationParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ExpressRouteCircuitAuthorizationInner>() { }.getType());
     }
 
     /**
-     * The Put Authorization operation creates/updates an authorization in the specified ExpressRouteCircuits.
+     * Creates or updates an authorization in the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create/update ExpressRouteCircuitAuthorization operation
+     * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ExpressRouteCircuitAuthorizationInner object if successful.
      */
     public ExpressRouteCircuitAuthorizationInner beginCreateOrUpdate(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters).toBlocking().single().getBody();
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters).toBlocking().single().body();
     }
 
     /**
-     * The Put Authorization operation creates/updates an authorization in the specified ExpressRouteCircuits.
+     * Creates or updates an authorization in the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create/update ExpressRouteCircuitAuthorization operation
+     * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ExpressRouteCircuitAuthorizationInner> beginCreateOrUpdateAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters, final ServiceCallback<ExpressRouteCircuitAuthorizationInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters), serviceCallback);
+    public ServiceFuture<ExpressRouteCircuitAuthorizationInner> beginCreateOrUpdateAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters, final ServiceCallback<ExpressRouteCircuitAuthorizationInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters), serviceCallback);
     }
 
     /**
-     * The Put Authorization operation creates/updates an authorization in the specified ExpressRouteCircuits.
+     * Creates or updates an authorization in the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create/update ExpressRouteCircuitAuthorization operation
+     * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ExpressRouteCircuitAuthorizationInner object
      */
     public Observable<ExpressRouteCircuitAuthorizationInner> beginCreateOrUpdateAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters).map(new Func1<ServiceResponse<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>() {
             @Override
             public ExpressRouteCircuitAuthorizationInner call(ServiceResponse<ExpressRouteCircuitAuthorizationInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
 
     /**
-     * The Put Authorization operation creates/updates an authorization in the specified ExpressRouteCircuits.
+     * Creates or updates an authorization in the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create/update ExpressRouteCircuitAuthorization operation
+     * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ExpressRouteCircuitAuthorizationInner object
      */
     public Observable<ServiceResponse<ExpressRouteCircuitAuthorizationInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
@@ -482,11 +505,9 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         if (authorizationParameters == null) {
             throw new IllegalArgumentException("Parameter authorizationParameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(authorizationParameters);
-        return service.beginCreateOrUpdate(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), authorizationParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-12-01";
+        return service.beginCreateOrUpdate(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), authorizationParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ExpressRouteCircuitAuthorizationInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ExpressRouteCircuitAuthorizationInner>> call(Response<ResponseBody> response) {
@@ -501,7 +522,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     private ServiceResponse<ExpressRouteCircuitAuthorizationInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ExpressRouteCircuitAuthorizationInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ExpressRouteCircuitAuthorizationInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<ExpressRouteCircuitAuthorizationInner>() { }.getType())
                 .register(200, new TypeToken<ExpressRouteCircuitAuthorizationInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -509,32 +530,36 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
+     * Gets all authorizations in an express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object if successful.
      */
     public PagedList<ExpressRouteCircuitAuthorizationInner> list(final String resourceGroupName, final String circuitName) {
         ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>> response = listSinglePageAsync(resourceGroupName, circuitName).toBlocking().single();
-        return new PagedList<ExpressRouteCircuitAuthorizationInner>(response.getBody()) {
+        return new PagedList<ExpressRouteCircuitAuthorizationInner>(response.body()) {
             @Override
             public Page<ExpressRouteCircuitAuthorizationInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
+     * Gets all authorizations in an express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ExpressRouteCircuitAuthorizationInner>> listAsync(final String resourceGroupName, final String circuitName, final ListOperationCallback<ExpressRouteCircuitAuthorizationInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ExpressRouteCircuitAuthorizationInner>> listAsync(final String resourceGroupName, final String circuitName, final ListOperationCallback<ExpressRouteCircuitAuthorizationInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(resourceGroupName, circuitName),
             new Func1<String, Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>>>() {
                 @Override
@@ -546,10 +571,11 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
+     * Gets all authorizations in an express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object
      */
     public Observable<Page<ExpressRouteCircuitAuthorizationInner>> listAsync(final String resourceGroupName, final String circuitName) {
@@ -557,16 +583,17 @@ public final class ExpressRouteCircuitAuthorizationsInner {
             .map(new Func1<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>, Page<ExpressRouteCircuitAuthorizationInner>>() {
                 @Override
                 public Page<ExpressRouteCircuitAuthorizationInner> call(ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
+     * Gets all authorizations in an express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object
      */
     public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String circuitName) {
@@ -574,7 +601,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
             .concatMap(new Func1<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>, Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> call(ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -584,10 +611,11 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
+     * Gets all authorizations in an express route circuit.
      *
     ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> * @param resourceGroupName The name of the resource group.
     ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> * @param circuitName The name of the circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> listSinglePageAsync(final String resourceGroupName, final String circuitName) {
@@ -600,16 +628,14 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(resourceGroupName, circuitName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-12-01";
+        return service.list(resourceGroupName, circuitName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -618,38 +644,42 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitAuthorizationInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ExpressRouteCircuitAuthorizationInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitAuthorizationInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
+     * Gets all authorizations in an express route circuit.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object if successful.
      */
     public PagedList<ExpressRouteCircuitAuthorizationInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ExpressRouteCircuitAuthorizationInner>(response.getBody()) {
+        return new PagedList<ExpressRouteCircuitAuthorizationInner>(response.body()) {
             @Override
             public Page<ExpressRouteCircuitAuthorizationInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
+     * Gets all authorizations in an express route circuit.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<List<ExpressRouteCircuitAuthorizationInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<ExpressRouteCircuitAuthorizationInner>> serviceCall, final ListOperationCallback<ExpressRouteCircuitAuthorizationInner> serviceCallback) {
-        return AzureServiceCall.create(
+    public ServiceFuture<List<ExpressRouteCircuitAuthorizationInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ExpressRouteCircuitAuthorizationInner>> serviceFuture, final ListOperationCallback<ExpressRouteCircuitAuthorizationInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>>>() {
                 @Override
@@ -661,9 +691,10 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
+     * Gets all authorizations in an express route circuit.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object
      */
     public Observable<Page<ExpressRouteCircuitAuthorizationInner>> listNextAsync(final String nextPageLink) {
@@ -671,15 +702,16 @@ public final class ExpressRouteCircuitAuthorizationsInner {
             .map(new Func1<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>, Page<ExpressRouteCircuitAuthorizationInner>>() {
                 @Override
                 public Page<ExpressRouteCircuitAuthorizationInner> call(ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>> response) {
-                    return response.getBody();
+                    return response.body();
                 }
             });
     }
 
     /**
-     * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
+     * Gets all authorizations in an express route circuit.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object
      */
     public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -687,7 +719,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
             .concatMap(new Func1<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>, Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> call(ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
+                    String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
@@ -697,22 +729,24 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
+     * Gets all authorizations in an express route circuit.
      *
     ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>(result.getBody(), result.getResponse()));
+                        return Observable.just(new ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -721,7 +755,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitAuthorizationInner>, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ExpressRouteCircuitAuthorizationInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitAuthorizationInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

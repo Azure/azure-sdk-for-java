@@ -10,9 +10,8 @@ package com.microsoft.azure.management.search.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
@@ -52,7 +51,7 @@ public final class AdminKeysInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface AdminKeysService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.search.AdminKeys list" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{serviceName}/listAdminKeys")
         Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -66,7 +65,7 @@ public final class AdminKeysInner {
      * @return the AdminKeyResultInner object if successful.
      */
     public AdminKeyResultInner list(String resourceGroupName, String serviceName) {
-        return listWithServiceResponseAsync(resourceGroupName, serviceName).toBlocking().single().getBody();
+        return listWithServiceResponseAsync(resourceGroupName, serviceName).toBlocking().single().body();
     }
 
     /**
@@ -75,10 +74,10 @@ public final class AdminKeysInner {
      * @param resourceGroupName The name of the resource group within the current subscription.
      * @param serviceName The name of the Search service for which to list admin keys.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<AdminKeyResultInner> listAsync(String resourceGroupName, String serviceName, final ServiceCallback<AdminKeyResultInner> serviceCallback) {
-        return ServiceCall.create(listWithServiceResponseAsync(resourceGroupName, serviceName), serviceCallback);
+    public ServiceFuture<AdminKeyResultInner> listAsync(String resourceGroupName, String serviceName, final ServiceCallback<AdminKeyResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(resourceGroupName, serviceName), serviceCallback);
     }
 
     /**
@@ -92,7 +91,7 @@ public final class AdminKeysInner {
         return listWithServiceResponseAsync(resourceGroupName, serviceName).map(new Func1<ServiceResponse<AdminKeyResultInner>, AdminKeyResultInner>() {
             @Override
             public AdminKeyResultInner call(ServiceResponse<AdminKeyResultInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -132,7 +131,7 @@ public final class AdminKeysInner {
     }
 
     private ServiceResponse<AdminKeyResultInner> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AdminKeyResultInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<AdminKeyResultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AdminKeyResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

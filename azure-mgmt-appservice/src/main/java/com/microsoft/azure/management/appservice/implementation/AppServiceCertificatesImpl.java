@@ -11,40 +11,50 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.appservice.AppServiceCertificate;
 import com.microsoft.azure.management.appservice.AppServiceCertificates;
-import com.microsoft.azure.management.appservice.AppServicePlans;
+import rx.Completable;
 import rx.Observable;
-import rx.functions.Func1;
 
 /**
- * The implementation for {@link AppServicePlans}.
+ * The implementation for AppServiceCertificates.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class AppServiceCertificatesImpl
         extends GroupableResourcesImpl<
-        AppServiceCertificate,
-        AppServiceCertificateImpl,
-        CertificateInner,
-        CertificatesInner,
-        AppServiceManager>
+            AppServiceCertificate,
+            AppServiceCertificateImpl,
+            CertificateInner,
+            CertificatesInner,
+            AppServiceManager>
         implements AppServiceCertificates {
 
-    AppServiceCertificatesImpl(CertificatesInner innerCollection, AppServiceManager manager) {
-        super(innerCollection, manager);
+    AppServiceCertificatesImpl(AppServiceManager manager) {
+        super(manager.inner().certificates(), manager);
     }
 
     @Override
-    public AppServiceCertificate getByGroup(String groupName, String name) {
-        return wrapModel(innerCollection.get(groupName, name));
+    protected Observable<CertificateInner> getInnerAsync(String resourceGroupName, String name) {
+        return this.inner().getAsync(resourceGroupName, name);
     }
 
     @Override
-    public PagedList<AppServiceCertificate> listByGroup(String resourceGroupName) {
-        return wrapList(innerCollection.listByResourceGroup(resourceGroupName));
+    protected Completable deleteInnerAsync(String resourceGroupName, String name) {
+        return this.inner().deleteAsync(resourceGroupName, name).toCompletable();
+
+    }
+
+    @Override
+    public PagedList<AppServiceCertificate> listByResourceGroup(String resourceGroupName) {
+        return wrapList(this.inner().listByResourceGroup(resourceGroupName));
+    }
+
+    @Override
+    public Observable<AppServiceCertificate> listByResourceGroupAsync(String resourceGroupName) {
+        return null;
     }
 
     @Override
     protected AppServiceCertificateImpl wrapModel(String name) {
-        return new AppServiceCertificateImpl(name, new CertificateInner(), innerCollection, myManager);
+        return new AppServiceCertificateImpl(name, new CertificateInner(), this.manager());
     }
 
     @Override
@@ -52,7 +62,7 @@ class AppServiceCertificatesImpl
         if (inner == null) {
             return null;
         }
-        return new AppServiceCertificateImpl(inner.name(), inner, innerCollection, myManager);
+        return new AppServiceCertificateImpl(inner.name(), inner, this.manager());
     }
 
     @Override
@@ -61,13 +71,12 @@ class AppServiceCertificatesImpl
     }
 
     @Override
-    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return innerCollection.deleteAsync(groupName, name)
-                .map(new Func1<Object, Void>() {
-                    @Override
-                    public Void call(Object o) {
-                        return null;
-                    }
-                });
+    public PagedList<AppServiceCertificate> list() {
+        return wrapList(inner().list());
+    }
+
+    @Override
+    public Observable<AppServiceCertificate> listAsync() {
+        return wrapPageAsync(inner().listAsync());
     }
 }

@@ -6,16 +6,22 @@
 
 package com.microsoft.azure.management.resources.fluentcore.arm.collection;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
+import rx.Observable;
 
 /**
  * Provides access to getting a specific Azure resource based on its resource group and parent.
- *
+ * <p>
+ * (Note this interface is not intended to be implemented by user code.)
  * @param <T> the type of the resource collection
+ * @param <ParentT> the parent resource type
+ * @param <ManagerT> the client manager type representing the service
  */
 @LangDefinition(ContainerName = "CollectionActions", CreateAsyncMethods = true, MethodConversionType = LangDefinition.MethodConversion.OnlyMethod)
-public interface SupportsGettingByParent<T> {
+public interface SupportsGettingByParent<T, ParentT extends Resource & HasResourceGroup, ManagerT> {
     /**
      * Gets the information about a resource from Azure based on the resource id.
      *
@@ -33,5 +39,26 @@ public interface SupportsGettingByParent<T> {
      * @param name the name of resource.
      * @return an immutable representation of the resource
      */
-    T getByParent(GroupableResource parentResource, String name);
+    T getByParent(ParentT parentResource, String name);
+
+    /**
+     * Gets the information about a resource from Azure based on the resource id.
+     *
+     * @param resourceGroup the name of resource group.
+     * @param parentName the name of parent resource.
+     * @param name the name of resource.
+     * @return Observable to an immutable representation of the resource
+     */
+    @Beta
+    Observable<T> getByParentAsync(String resourceGroup, String parentName, String name);
+
+    /**
+     * Gets the information about a resource from Azure based on the resource id.
+     *
+     * @param parentResource the instance of parent resource.
+     * @param name the name of resource.
+     * @return Observable to an immutable representation of the resource
+     */
+    @Beta
+    Observable<T> getByParentAsync(ParentT parentResource, String name);
 }

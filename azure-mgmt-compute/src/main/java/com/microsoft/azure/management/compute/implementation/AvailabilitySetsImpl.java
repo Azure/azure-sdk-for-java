@@ -8,15 +8,19 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AvailabilitySet;
+import com.microsoft.azure.management.compute.AvailabilitySetSkuTypes;
 import com.microsoft.azure.management.compute.AvailabilitySets;
+import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
+import rx.Completable;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.List;
 
 /**
- * The implementation for {@link AvailabilitySets}.
+ * The implementation for AvailabilitySets.
  */
 @LangDefinition
 class AvailabilitySetsImpl
@@ -28,41 +32,55 @@ class AvailabilitySetsImpl
         ComputeManager>
     implements AvailabilitySets {
 
-    AvailabilitySetsImpl(
-            final AvailabilitySetsInner client,
-            final ComputeManager computeManager) {
-        super(client, computeManager);
+    AvailabilitySetsImpl(final ComputeManager computeManager) {
+        super(computeManager.inner().availabilitySets(), computeManager);
     }
 
     @Override
     public PagedList<AvailabilitySet> list() {
-        return new GroupPagedList<AvailabilitySet>(this.myManager.resourceManager().resourceGroups().list()) {
+        final AvailabilitySetsImpl self = this;
+        return new GroupPagedList<AvailabilitySet>(this.manager().resourceManager().resourceGroups().list()) {
             @Override
             public List<AvailabilitySet> listNextGroup(String resourceGroupName) {
-                return wrapList(innerCollection.list(resourceGroupName));
+                return wrapList(self.inner().listByResourceGroup(resourceGroupName));
             }
         };
     }
 
     @Override
-    public PagedList<AvailabilitySet> listByGroup(String groupName) {
-        return wrapList(this.innerCollection.list(groupName));
+    public Observable<AvailabilitySet> listAsync() {
+        return this.manager().resourceManager().resourceGroups().listAsync()
+                .flatMap(new Func1<ResourceGroup, Observable<AvailabilitySet>>() {
+                    @Override
+                    public Observable<AvailabilitySet> call(ResourceGroup resourceGroup) {
+                        return wrapPageAsync(inner().listByResourceGroupAsync(resourceGroup.name()));
+                    }
+                });
     }
 
     @Override
-    public AvailabilitySetImpl getByGroup(String groupName, String name) {
-        AvailabilitySetInner response = this.innerCollection.get(groupName, name);
-        return wrapModel(response);
+    public PagedList<AvailabilitySet> listByResourceGroup(String groupName) {
+        return wrapList(this.inner().listByResourceGroup(groupName));
+    }
+
+    @Override
+    public Observable<AvailabilitySet> listByResourceGroupAsync(String resourceGroupName) {
+        return wrapPageAsync(this.inner().listByResourceGroupAsync(resourceGroupName));
+    }
+
+    @Override
+    protected Observable<AvailabilitySetInner> getInnerAsync(String resourceGroupName, String name) {
+        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
     }
 
     @Override
     public AvailabilitySetImpl define(String name) {
-        return wrapModel(name);
+        return wrapModel(name).withSku(AvailabilitySetSkuTypes.MANAGED);
     }
 
     @Override
-    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return this.innerCollection.deleteAsync(groupName, name);
+    protected Completable deleteInnerAsync(String groupName, String name) {
+        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     /**************************************************************
@@ -73,8 +91,7 @@ class AvailabilitySetsImpl
     protected AvailabilitySetImpl wrapModel(String name) {
         return new AvailabilitySetImpl(name,
                 new AvailabilitySetInner(),
-                this.innerCollection,
-                super.myManager);
+                this.manager());
     }
 
     @Override
@@ -84,7 +101,6 @@ class AvailabilitySetsImpl
         }
         return new AvailabilitySetImpl(availabilitySetInner.name(),
                 availabilitySetInner,
-                this.innerCollection,
-                this.myManager);
+                this.manager());
     }
 }

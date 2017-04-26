@@ -10,11 +10,10 @@ package com.microsoft.azure.management.batch.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.batch.ActivateApplicationPackageParameters;
-import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import okhttp3.ResponseBody;
@@ -35,7 +34,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in ApplicationPackages.
  */
-public final class ApplicationPackagesInner {
+public class ApplicationPackagesInner {
     /** The Retrofit service to perform REST calls. */
     private ApplicationPackagesService service;
     /** The service client containing this operation class. */
@@ -57,19 +56,19 @@ public final class ApplicationPackagesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface ApplicationPackagesService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batch.ApplicationPackages activate" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationId}/versions/{version}/activate")
         Observable<Response<ResponseBody>> activate(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("applicationId") String applicationId, @Path("version") String version, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ActivateApplicationPackageParameters parameters, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batch.ApplicationPackages create" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationId}/versions/{version}")
         Observable<Response<ResponseBody>> create(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("applicationId") String applicationId, @Path("version") String version, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batch.ApplicationPackages delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationId}/versions/{version}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("applicationId") String applicationId, @Path("version") String version, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batch.ApplicationPackages get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationId}/versions/{version}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("applicationId") String applicationId, @Path("version") String version, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -80,12 +79,15 @@ public final class ApplicationPackagesInner {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
-     * @param applicationId The id of the application.
+     * @param applicationId The ID of the application.
      * @param version The version of the application to activate.
      * @param format The format of the application package binary file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void activate(String resourceGroupName, String accountName, String applicationId, String version, String format) {
-        activateWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version, format).toBlocking().single().getBody();
+        activateWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version, format).toBlocking().single().body();
     }
 
     /**
@@ -93,14 +95,15 @@ public final class ApplicationPackagesInner {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
-     * @param applicationId The id of the application.
+     * @param applicationId The ID of the application.
      * @param version The version of the application to activate.
      * @param format The format of the application package binary file.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> activateAsync(String resourceGroupName, String accountName, String applicationId, String version, String format, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(activateWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version, format), serviceCallback);
+    public ServiceFuture<Void> activateAsync(String resourceGroupName, String accountName, String applicationId, String version, String format, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(activateWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version, format), serviceCallback);
     }
 
     /**
@@ -108,16 +111,17 @@ public final class ApplicationPackagesInner {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
-     * @param applicationId The id of the application.
+     * @param applicationId The ID of the application.
      * @param version The version of the application to activate.
      * @param format The format of the application package binary file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> activateAsync(String resourceGroupName, String accountName, String applicationId, String version, String format) {
         return activateWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version, format).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -127,9 +131,10 @@ public final class ApplicationPackagesInner {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
-     * @param applicationId The id of the application.
+     * @param applicationId The ID of the application.
      * @param version The version of the application to activate.
      * @param format The format of the application package binary file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> activateWithServiceResponseAsync(String resourceGroupName, String accountName, String applicationId, String version, String format) {
@@ -171,8 +176,9 @@ public final class ApplicationPackagesInner {
     }
 
     private ServiceResponse<Void> activateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -181,12 +187,15 @@ public final class ApplicationPackagesInner {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
-     * @param applicationId The id of the application.
+     * @param applicationId The ID of the application.
      * @param version The version of the application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ApplicationPackageInner object if successful.
      */
     public ApplicationPackageInner create(String resourceGroupName, String accountName, String applicationId, String version) {
-        return createWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version).toBlocking().single().getBody();
+        return createWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version).toBlocking().single().body();
     }
 
     /**
@@ -194,13 +203,14 @@ public final class ApplicationPackagesInner {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
-     * @param applicationId The id of the application.
+     * @param applicationId The ID of the application.
      * @param version The version of the application.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ApplicationPackageInner> createAsync(String resourceGroupName, String accountName, String applicationId, String version, final ServiceCallback<ApplicationPackageInner> serviceCallback) {
-        return ServiceCall.create(createWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version), serviceCallback);
+    public ServiceFuture<ApplicationPackageInner> createAsync(String resourceGroupName, String accountName, String applicationId, String version, final ServiceCallback<ApplicationPackageInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version), serviceCallback);
     }
 
     /**
@@ -208,15 +218,16 @@ public final class ApplicationPackagesInner {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
-     * @param applicationId The id of the application.
+     * @param applicationId The ID of the application.
      * @param version The version of the application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationPackageInner object
      */
     public Observable<ApplicationPackageInner> createAsync(String resourceGroupName, String accountName, String applicationId, String version) {
         return createWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version).map(new Func1<ServiceResponse<ApplicationPackageInner>, ApplicationPackageInner>() {
             @Override
             public ApplicationPackageInner call(ServiceResponse<ApplicationPackageInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -226,8 +237,9 @@ public final class ApplicationPackagesInner {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
-     * @param applicationId The id of the application.
+     * @param applicationId The ID of the application.
      * @param version The version of the application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationPackageInner object
      */
     public Observable<ServiceResponse<ApplicationPackageInner>> createWithServiceResponseAsync(String resourceGroupName, String accountName, String applicationId, String version) {
@@ -264,7 +276,7 @@ public final class ApplicationPackagesInner {
     }
 
     private ServiceResponse<ApplicationPackageInner> createDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ApplicationPackageInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ApplicationPackageInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<ApplicationPackageInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -275,11 +287,14 @@ public final class ApplicationPackagesInner {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
-     * @param applicationId The id of the application.
+     * @param applicationId The ID of the application.
      * @param version The version of the application to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String accountName, String applicationId, String version) {
-        deleteWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version).toBlocking().single().body();
     }
 
     /**
@@ -287,13 +302,14 @@ public final class ApplicationPackagesInner {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
-     * @param applicationId The id of the application.
+     * @param applicationId The ID of the application.
      * @param version The version of the application to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String accountName, String applicationId, String version, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String accountName, String applicationId, String version, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version), serviceCallback);
     }
 
     /**
@@ -301,15 +317,16 @@ public final class ApplicationPackagesInner {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
-     * @param applicationId The id of the application.
+     * @param applicationId The ID of the application.
      * @param version The version of the application to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String accountName, String applicationId, String version) {
         return deleteWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -319,8 +336,9 @@ public final class ApplicationPackagesInner {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
-     * @param applicationId The id of the application.
+     * @param applicationId The ID of the application.
      * @param version The version of the application to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String accountName, String applicationId, String version) {
@@ -357,8 +375,9 @@ public final class ApplicationPackagesInner {
     }
 
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -367,12 +386,15 @@ public final class ApplicationPackagesInner {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
-     * @param applicationId The id of the application.
+     * @param applicationId The ID of the application.
      * @param version The version of the application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ApplicationPackageInner object if successful.
      */
     public ApplicationPackageInner get(String resourceGroupName, String accountName, String applicationId, String version) {
-        return getWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version).toBlocking().single().getBody();
+        return getWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version).toBlocking().single().body();
     }
 
     /**
@@ -380,13 +402,14 @@ public final class ApplicationPackagesInner {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
-     * @param applicationId The id of the application.
+     * @param applicationId The ID of the application.
      * @param version The version of the application.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall<ApplicationPackageInner> getAsync(String resourceGroupName, String accountName, String applicationId, String version, final ServiceCallback<ApplicationPackageInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version), serviceCallback);
+    public ServiceFuture<ApplicationPackageInner> getAsync(String resourceGroupName, String accountName, String applicationId, String version, final ServiceCallback<ApplicationPackageInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version), serviceCallback);
     }
 
     /**
@@ -394,15 +417,16 @@ public final class ApplicationPackagesInner {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
-     * @param applicationId The id of the application.
+     * @param applicationId The ID of the application.
      * @param version The version of the application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationPackageInner object
      */
     public Observable<ApplicationPackageInner> getAsync(String resourceGroupName, String accountName, String applicationId, String version) {
         return getWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version).map(new Func1<ServiceResponse<ApplicationPackageInner>, ApplicationPackageInner>() {
             @Override
             public ApplicationPackageInner call(ServiceResponse<ApplicationPackageInner> response) {
-                return response.getBody();
+                return response.body();
             }
         });
     }
@@ -412,8 +436,9 @@ public final class ApplicationPackagesInner {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
-     * @param applicationId The id of the application.
+     * @param applicationId The ID of the application.
      * @param version The version of the application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationPackageInner object
      */
     public Observable<ServiceResponse<ApplicationPackageInner>> getWithServiceResponseAsync(String resourceGroupName, String accountName, String applicationId, String version) {
@@ -450,7 +475,7 @@ public final class ApplicationPackagesInner {
     }
 
     private ServiceResponse<ApplicationPackageInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ApplicationPackageInner, CloudException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<ApplicationPackageInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ApplicationPackageInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

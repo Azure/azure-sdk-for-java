@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.Location;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 
 /**
@@ -43,5 +44,10 @@ final class LocationImpl extends
     @Override
     public String longitude() {
         return this.inner().longitude();
+    }
+
+    @Override
+    public Region region() {
+        return Region.findByLabelOrName(this.name());
     }
 }

@@ -18,49 +18,49 @@ public class DeploymentOperationProperties {
     /**
      * The state of the provisioning.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /**
      * The date and time of the operation.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "timestamp", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime timestamp;
 
     /**
      * Deployment operation service request id.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "serviceRequestId", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceRequestId;
 
     /**
      * Operation status code.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "statusCode", access = JsonProperty.Access.WRITE_ONLY)
     private String statusCode;
 
     /**
      * Operation status message.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "statusMessage", access = JsonProperty.Access.WRITE_ONLY)
     private Object statusMessage;
 
     /**
      * The target resource.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "targetResource", access = JsonProperty.Access.WRITE_ONLY)
     private TargetResource targetResource;
 
     /**
      * The HTTP request message.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "request", access = JsonProperty.Access.WRITE_ONLY)
     private HttpMessage request;
 
     /**
      * The HTTP response message.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "response", access = JsonProperty.Access.WRITE_ONLY)
     private HttpMessage response;
 
     /**

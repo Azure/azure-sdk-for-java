@@ -14,7 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.implementation.PolicyDefinitionInner;
 
 /**
@@ -27,7 +27,7 @@ public interface PolicyDefinition extends
         Indexable,
         Refreshable<PolicyDefinition>,
         Updatable<PolicyDefinition.Update>,
-        Wrapper<PolicyDefinitionInner> {
+        HasInner<PolicyDefinitionInner> {
 
     /**
      * @return the type of the policy definition

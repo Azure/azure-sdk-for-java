@@ -1,6 +1,11 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
@@ -14,13 +19,17 @@ import com.microsoft.azure.management.compute.LinuxConfiguration;
 import com.microsoft.azure.management.compute.OperatingSystemTypes;
 import com.microsoft.azure.management.compute.SshConfiguration;
 import com.microsoft.azure.management.compute.SshPublicKey;
+import com.microsoft.azure.management.compute.StorageAccountTypes;
 import com.microsoft.azure.management.compute.UpgradeMode;
 import com.microsoft.azure.management.compute.UpgradePolicy;
 import com.microsoft.azure.management.compute.VirtualHardDisk;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSet;
+import com.microsoft.azure.management.compute.VirtualMachineScaleSetDataDisk;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetExtension;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetExtensionProfile;
+import com.microsoft.azure.management.compute.VirtualMachineScaleSetManagedDiskParameters;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetNetworkProfile;
+import com.microsoft.azure.management.compute.VirtualMachineScaleSetOSDisk;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetOSProfile;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetSku;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetSkuTypes;
@@ -34,16 +43,22 @@ import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.LoadBalancerInboundNatPool;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
+import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import rx.Completable;
 import rx.Observable;
+import rx.functions.Func0;
 import rx.functions.Func1;
 
 import java.io.IOException;
@@ -55,7 +70,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Implementation of {@link VirtualMachineScaleSet}.
+ * Implementation of VirtualMachineScaleSet.
  */
 @LangDefinition
 public class VirtualMachineScaleSetImpl
@@ -66,11 +81,11 @@ public class VirtualMachineScaleSetImpl
                 ComputeManager>
         implements
         VirtualMachineScaleSet,
-        VirtualMachineScaleSet.Definition,
+        VirtualMachineScaleSet.DefinitionManagedOrUnmanaged,
+        VirtualMachineScaleSet.DefinitionManaged,
+        VirtualMachineScaleSet.DefinitionUnmanaged,
         VirtualMachineScaleSet.Update {
     // Clients
-    private final VirtualMachineScaleSetsInner client;
-    private final VirtualMachineScaleSetVMsInner vmInstancesClient;
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
     // used to generate unique name for any dependency resources
@@ -88,7 +103,7 @@ public class VirtualMachineScaleSetImpl
     private String vhdContainerName;
     // the child resource extensions
     private Map<String, VirtualMachineScaleSetExtension> extensions;
-    // reference to the primary and internal internet facing load balancer
+    // reference to the primary and internal Internet facing load balancer
     private LoadBalancer primaryInternetFacingLoadBalancer;
     private LoadBalancer primaryInternalLoadBalancer;
     // Load balancer specific variables used during update
@@ -106,26 +121,28 @@ public class VirtualMachineScaleSetImpl
     private List<String> primaryInternalLBInboundNatPoolsToAddOnUpdate = new ArrayList<>();
     // The paged converter for virtual machine scale set sku
     private PagedListConverter<VirtualMachineScaleSetSkuInner, VirtualMachineScaleSetSku> skuConverter;
+    // Flag indicates native disk is selected for OS and Data disks
+    private boolean isUnmanagedDiskSelected;
+    // To track the managed data disks
+    private final ManagedDataDiskCollection managedDataDisks;
 
-    VirtualMachineScaleSetImpl(String name,
+    VirtualMachineScaleSetImpl(
+                        String name,
                         VirtualMachineScaleSetInner innerModel,
-                        VirtualMachineScaleSetsInner client,
-                        VirtualMachineScaleSetVMsInner vmInstancesClient,
                         final ComputeManager computeManager,
                         final StorageManager storageManager,
                         final NetworkManager networkManager) {
         super(name, innerModel, computeManager);
-        this.client = client;
-        this.vmInstancesClient = vmInstancesClient;
         this.storageManager = storageManager;
         this.networkManager = networkManager;
-        this.namer = new ResourceNamer(this.name());
+        this.namer = SdkContext.getResourceNamerFactory().createResourceNamer(this.name());
         this.skuConverter = new PagedListConverter<VirtualMachineScaleSetSkuInner, VirtualMachineScaleSetSku>() {
             @Override
             public VirtualMachineScaleSetSku typeConvert(VirtualMachineScaleSetSkuInner inner) {
                 return new VirtualMachineScaleSetSkuImpl(inner);
             }
         };
+        this.managedDataDisks = new ManagedDataDiskCollection(this);
     }
 
     @Override
@@ -142,37 +159,89 @@ public class VirtualMachineScaleSetImpl
 
    @Override
    public VirtualMachineScaleSetVMs virtualMachines() {
-        return new VirtualMachineScaleSetVMsImpl(this, this.vmInstancesClient, this.myManager);
+        return new VirtualMachineScaleSetVMsImpl(this, this.manager().inner().virtualMachineScaleSetVMs(), this.myManager);
    }
 
    @Override
-   public PagedList<VirtualMachineScaleSetSku> listAvailableSkus() throws CloudException, IOException {
-        return this.skuConverter.convert(this.client.listSkus(this.resourceGroupName(), this.name()));
+   public PagedList<VirtualMachineScaleSetSku> listAvailableSkus() {
+        return this.skuConverter.convert(this.manager().inner().virtualMachineScaleSets().listSkus(this.resourceGroupName(), this.name()));
    }
 
     @Override
-    public void deallocate() throws CloudException, IOException, InterruptedException {
-        this.client.deallocate(this.resourceGroupName(), this.name());
+    public void deallocate() {
+        this.deallocateAsync().await();
     }
 
     @Override
-    public void powerOff() throws CloudException, IOException, InterruptedException {
-        this.client.powerOff(this.resourceGroupName(), this.name());
+    public Completable deallocateAsync() {
+        Observable<OperationStatusResponseInner> d = this.manager().inner().virtualMachineScaleSets().deallocateAsync(this.resourceGroupName(), this.name());
+        Observable<VirtualMachineScaleSet> r = this.refreshAsync();
+        return Observable.concat(d, r).toCompletable();
     }
 
     @Override
-    public void restart() throws CloudException, IOException, InterruptedException {
-        this.client.restart(this.resourceGroupName(), this.name());
+    public ServiceFuture<Void> deallocateAsync(ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.deallocateAsync().<Void>toObservable(), callback);
     }
 
     @Override
-    public void start() throws CloudException, IOException, InterruptedException {
-        this.client.start(this.resourceGroupName(), this.name());
+    public void powerOff() {
+        this.powerOffAsync().await();
     }
 
     @Override
-    public void reimage() throws CloudException, IOException, InterruptedException {
-        this.client.reimage(this.resourceGroupName(), this.name());
+    public Completable powerOffAsync() {
+        return this.manager().inner().virtualMachineScaleSets().powerOffAsync(this.resourceGroupName(), this.name()).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> powerOffAsync(ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.powerOffAsync().<Void>toObservable(), callback);
+    }
+
+    @Override
+    public void restart() {
+        this.restartAsync().await();
+    }
+
+    @Override
+    public Completable restartAsync() {
+        return this.manager().inner().virtualMachineScaleSets().restartAsync(this.resourceGroupName(), this.name()).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> restartAsync(ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.restartAsync().<Void>toObservable(), callback);
+    }
+
+    @Override
+    public void start() {
+        this.startAsync().await();
+    }
+
+    @Override
+    public Completable startAsync() {
+        return this.manager().inner().virtualMachineScaleSets().startAsync(this.resourceGroupName(), this.name()).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> startAsync(ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.startAsync().<Void>toObservable(), callback);
+    }
+
+    @Override
+    public void reimage() {
+        this.reimageAsync().await();
+    }
+
+    @Override
+    public Completable reimageAsync() {
+        return this.manager().inner().virtualMachineScaleSets().reimageAsync(this.resourceGroupName(), this.name()).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> reimageAsync(ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.reimageAsync().<Void>toObservable(), callback);
     }
 
     @Override
@@ -203,7 +272,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public boolean overProvisionEnabled() {
-        return this.inner().overProvision();
+        return this.inner().overprovision();
     }
 
     @Override
@@ -278,10 +347,10 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public List<String> primaryPublicIpAddressIds() throws IOException {
+    public List<String> primaryPublicIPAddressIds() throws IOException {
         LoadBalancer loadBalancer = this.getPrimaryInternetFacingLoadBalancer();
         if (loadBalancer != null) {
-            return loadBalancer.publicIpAddressIds();
+            return loadBalancer.publicIPAddressIds();
         }
         return new ArrayList<>();
     }
@@ -311,6 +380,28 @@ public class VirtualMachineScaleSetImpl
         return Collections.unmodifiableMap(this.extensions);
     }
 
+    @Override
+    public VirtualMachineScaleSetNetworkInterface getNetworkInterfaceByInstanceId(String instanceId, String name) {
+        return this.networkManager.networkInterfaces().getByVirtualMachineScaleSetInstanceId(this.resourceGroupName(),
+                this.name(),
+                instanceId,
+                name);
+    }
+
+    @Override
+    public PagedList<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces() {
+        return this.networkManager.networkInterfaces()
+                .listByVirtualMachineScaleSet(this.resourceGroupName(), this.name());
+    }
+
+    @Override
+    public PagedList<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesByInstanceId(String virtualMachineInstanceId) {
+        return this.networkManager.networkInterfaces()
+                .listByVirtualMachineScaleSetInstanceId(this.resourceGroupName(),
+                        this.name(),
+                        virtualMachineInstanceId);
+    }
+
     // Fluent setters
 
     @Override
@@ -333,8 +424,8 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withExistingPrimaryInternetFacingLoadBalancer(LoadBalancer loadBalancer) {
-        if (loadBalancer.publicIpAddressIds().isEmpty()) {
-            throw new IllegalArgumentException("Parameter loadBalancer must be an internet facing load balancer");
+        if (loadBalancer.publicIPAddressIds().isEmpty()) {
+            throw new IllegalArgumentException("Parameter loadBalancer must be an Internet facing load balancer");
         }
 
         if (isInCreateMode()) {
@@ -378,7 +469,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withExistingPrimaryInternalLoadBalancer(LoadBalancer loadBalancer) {
-        if (!loadBalancer.publicIpAddressIds().isEmpty()) {
+        if (!loadBalancer.publicIPAddressIds().isEmpty()) {
             throw new IllegalArgumentException("Parameter loadBalancer must be an internal load balancer");
         }
         String lbNetworkId = null;
@@ -480,13 +571,13 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withoutPrimaryInternetFacingLoadBalancerNatPools(String ...natPoolNames) {
-        addToList(this.primaryInternalLBInboundNatPoolsToRemoveOnUpdate, natPoolNames);
+        addToList(this.primaryInternetFacingLBInboundNatPoolsToRemoveOnUpdate, natPoolNames);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withoutPrimaryInternalLoadBalancerNatPools(String ...natPoolNames) {
-        addToList(this.primaryInternetFacingLBInboundNatPoolsToRemoveOnUpdate, natPoolNames);
+        addToList(this.primaryInternalLBInboundNatPoolsToRemoveOnUpdate, natPoolNames);
         return this;
     }
 
@@ -512,7 +603,31 @@ public class VirtualMachineScaleSetImpl
                 .storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
         this.inner()
                 .virtualMachineProfile()
-                .storageProfile().withImageReference(imageReference);
+                .storageProfile().withImageReference(imageReference.inner());
+        this.inner()
+                .virtualMachineProfile()
+                .osProfile().withWindowsConfiguration(new WindowsConfiguration());
+        // sets defaults for "Stored(Custom)Image" or "VM(Platform)Image"
+        this.inner()
+                .virtualMachineProfile()
+                .osProfile().windowsConfiguration().withProvisionVMAgent(true);
+        this.inner()
+                .virtualMachineProfile()
+                .osProfile().windowsConfiguration().withEnableAutomaticUpdates(true);
+        return this;
+    }
+
+
+    @Override
+    public VirtualMachineScaleSetImpl withWindowsCustomImage(String customImageId) {
+        ImageReferenceInner imageReferenceInner = new ImageReferenceInner();
+        imageReferenceInner.withId(customImageId);
+        this.inner()
+                .virtualMachineProfile()
+                .storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+        this.inner()
+                .virtualMachineProfile()
+                .storageProfile().withImageReference(imageReferenceInner);
         this.inner()
                 .virtualMachineProfile()
                 .osProfile().withWindowsConfiguration(new WindowsConfiguration());
@@ -575,7 +690,24 @@ public class VirtualMachineScaleSetImpl
                 .storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
         this.inner()
                 .virtualMachineProfile()
-                .storageProfile().withImageReference(imageReference);
+                .storageProfile().withImageReference(imageReference.inner());
+        this.inner()
+                .virtualMachineProfile()
+                .osProfile().withLinuxConfiguration(new LinuxConfiguration());
+        this.isMarketplaceLinuxImage = true;
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withLinuxCustomImage(String customImageId) {
+        ImageReferenceInner imageReferenceInner = new ImageReferenceInner();
+        imageReferenceInner.withId(customImageId);
+        this.inner()
+                .virtualMachineProfile()
+                .storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+        this.inner()
+                .virtualMachineProfile()
+                .storageProfile().withImageReference(imageReferenceInner);
         this.inner()
                 .virtualMachineProfile()
                 .osProfile().withLinuxConfiguration(new LinuxConfiguration());
@@ -657,7 +789,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withVmAgent() {
+    public VirtualMachineScaleSetImpl withVMAgent() {
         this.inner()
                 .virtualMachineProfile()
                 .osProfile().windowsConfiguration().withProvisionVMAgent(true);
@@ -665,7 +797,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withoutVmAgent() {
+    public VirtualMachineScaleSetImpl withoutVMAgent() {
         this.inner()
                 .virtualMachineProfile()
                 .osProfile().windowsConfiguration().withProvisionVMAgent(false);
@@ -697,7 +829,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withWinRm(WinRMListener listener) {
+    public VirtualMachineScaleSetImpl withWinRM(WinRMListener listener) {
         if (this.inner().virtualMachineProfile().osProfile().windowsConfiguration().winRM() == null) {
             WinRMConfiguration winRMConfiguration = new WinRMConfiguration();
             this.inner()
@@ -715,7 +847,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withOsDiskCaching(CachingTypes cachingType) {
+    public VirtualMachineScaleSetImpl withOSDiskCaching(CachingTypes cachingType) {
         this.inner()
                 .virtualMachineProfile()
                 .storageProfile().osDisk().withCaching(cachingType);
@@ -723,7 +855,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withOsDiskName(String name) {
+    public VirtualMachineScaleSetImpl withOSDiskName(String name) {
         this.inner()
                 .virtualMachineProfile()
                 .storageProfile().osDisk().withName(name);
@@ -750,7 +882,7 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withOverProvision(boolean enabled) {
         this.inner()
-                .withOverProvision(enabled);
+                .withOverprovision(enabled);
         return this;
     }
 
@@ -831,6 +963,193 @@ public class VirtualMachineScaleSetImpl
         return this;
     }
 
+    @Override
+    public boolean isManagedDiskEnabled() {
+        VirtualMachineScaleSetStorageProfile storageProfile = this.inner().virtualMachineProfile().storageProfile();
+        if (isOsDiskFromCustomImage(storageProfile)) {
+            return true;
+        }
+        if (isOSDiskFromStoredImage(storageProfile)) {
+            return false;
+        }
+        if (isOSDiskFromPlatformImage(storageProfile)) {
+            if (this.isUnmanagedDiskSelected) {
+                return false;
+            }
+        }
+        if (isInCreateMode()) {
+            return true;
+        } else {
+            List<String> vhdContainers = storageProfile
+                    .osDisk()
+                    .vhdContainers();
+            return vhdContainers == null || vhdContainers.size() == 0;
+        }
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withUnmanagedDisks() {
+        this.isUnmanagedDiskSelected = true;
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withNewDataDisk(int sizeInGB) {
+        throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VMSS_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
+        this.managedDataDisks.implicitDisksToAssociate.add(new VirtualMachineScaleSetDataDisk()
+                .withLun(-1)
+                .withDiskSizeGB(sizeInGB));
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withNewDataDisk(int sizeInGB,
+                                                      int lun,
+                                                      CachingTypes cachingType) {
+        throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VMSS_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
+        this.managedDataDisks.implicitDisksToAssociate.add(new VirtualMachineScaleSetDataDisk()
+                .withLun(lun)
+                .withDiskSizeGB(sizeInGB)
+                .withCaching(cachingType));
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withNewDataDisk(int sizeInGB,
+                                                      int lun,
+                                                      CachingTypes cachingType,
+                                                      StorageAccountTypes storageAccountType) {
+        throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VMSS_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
+        VirtualMachineScaleSetManagedDiskParameters managedDiskParameters = new VirtualMachineScaleSetManagedDiskParameters();
+        managedDiskParameters.withStorageAccountType(storageAccountType);
+        this.managedDataDisks.implicitDisksToAssociate.add(new VirtualMachineScaleSetDataDisk()
+                .withLun(lun)
+                .withDiskSizeGB(sizeInGB)
+                .withCaching(cachingType)
+                .withManagedDisk(managedDiskParameters));
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withoutDataDisk(int lun) {
+        if (!isManagedDiskEnabled()) {
+            return this;
+        }
+        this.managedDataDisks.diskLunsToRemove.add(lun);
+        return this;
+    }
+
+    /* TODO: Broken by change in Azure API behavior
+    @Override
+    public VirtualMachineScaleSetImpl withDataDiskUpdated(int lun, int newSizeInGB) {
+        throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VMSS_NO_MANAGED_DISK_TO_UPDATE);
+        VirtualMachineScaleSetDataDisk dataDisk = getDataDiskInner(lun);
+        if (dataDisk == null) {
+            throw new RuntimeException(String.format("A data disk with lun '%d' not found", lun));
+        }
+        dataDisk
+            .withDiskSizeGB(newSizeInGB);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withDataDiskUpdated(int lun, int newSizeInGB, CachingTypes cachingType) {
+        throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VMSS_NO_MANAGED_DISK_TO_UPDATE);
+        VirtualMachineScaleSetDataDisk dataDisk = getDataDiskInner(lun);
+        if (dataDisk == null) {
+            throw new RuntimeException(String.format("A data disk with lun '%d' not found", lun));
+        }
+        dataDisk
+            .withDiskSizeGB(newSizeInGB)
+            .withCaching(cachingType);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withDataDiskUpdated(int lun, int newSizeInGB, CachingTypes cachingType, StorageAccountTypes storageAccountType) {
+        throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VMSS_NO_MANAGED_DISK_TO_UPDATE);
+        VirtualMachineScaleSetDataDisk dataDisk = getDataDiskInner(lun);
+        if (dataDisk == null) {
+            throw new RuntimeException(String.format("A data disk with lun '%d' not found", lun));
+        }
+        dataDisk
+            .withDiskSizeGB(newSizeInGB)
+            .withCaching(cachingType)
+            .managedDisk()
+            .withStorageAccountType(storageAccountType);
+        return this;
+    }
+
+    private VirtualMachineScaleSetDataDisk getDataDiskInner(int lun) {
+        VirtualMachineScaleSetStorageProfile storageProfile = this
+                .inner()
+                .virtualMachineProfile()
+                .storageProfile();
+        List<VirtualMachineScaleSetDataDisk> dataDisks = storageProfile
+                .dataDisks();
+        if (dataDisks == null) {
+            return null;
+        }
+        for (VirtualMachineScaleSetDataDisk dataDisk : dataDisks) {
+            if (dataDisk.lun() == lun) {
+                return dataDisk;
+            }
+        }
+        return null;
+    }
+    */
+
+    @Override
+    public VirtualMachineScaleSetImpl withNewDataDiskFromImage(int imageLun) {
+        this.managedDataDisks.newDisksFromImage.add(new VirtualMachineScaleSetDataDisk()
+                .withLun(imageLun));
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withNewDataDiskFromImage(int imageLun,
+                                                               int newSizeInGB,
+                                                               CachingTypes cachingType) {
+        this.managedDataDisks.newDisksFromImage.add(new VirtualMachineScaleSetDataDisk()
+                .withLun(imageLun)
+                .withDiskSizeGB(newSizeInGB)
+                .withCaching(cachingType));
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withNewDataDiskFromImage(int imageLun,
+                                                               int newSizeInGB,
+                                                               CachingTypes cachingType,
+                                                               StorageAccountTypes storageAccountType) {
+        VirtualMachineScaleSetManagedDiskParameters managedDiskParameters = new VirtualMachineScaleSetManagedDiskParameters();
+        managedDiskParameters.withStorageAccountType(storageAccountType);
+        this.managedDataDisks.newDisksFromImage.add(new VirtualMachineScaleSetDataDisk()
+                .withLun(imageLun)
+                .withDiskSizeGB(newSizeInGB)
+                .withManagedDisk(managedDiskParameters)
+                .withCaching(cachingType));
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withOSDiskStorageAccountType(StorageAccountTypes accountType) {
+        this.managedDataDisks.setDefaultStorageAccountType(accountType);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withDataDiskDefaultCachingType(CachingTypes cachingType) {
+        this.managedDataDisks.setDefaultCachingType(cachingType);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withDataDiskDefaultStorageAccountType(StorageAccountTypes storageAccountType) {
+        this.managedDataDisks.setDefaultStorageAccountType(storageAccountType);
+        return this;
+    }
+
     // Create Update specific methods
     //
     @Override
@@ -846,9 +1165,22 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     protected Observable<VirtualMachineScaleSetInner> createInner() {
-        this.setOSDiskAndOSProfileDefaults();
+        if (isInCreateMode()) {
+            this.setOSProfileDefaults();
+            this.setOSDiskDefault();
+        }
         this.setPrimaryIpConfigurationSubnet();
         this.setPrimaryIpConfigurationBackendsAndInboundNatPools();
+        if (isManagedDiskEnabled()) {
+            this.managedDataDisks.setDataDisksDefaults();
+        } else {
+            List<VirtualMachineScaleSetDataDisk> dataDisks = this.inner()
+                    .virtualMachineProfile()
+                    .storageProfile()
+                    .dataDisks();
+            VirtualMachineScaleSetUnmanagedDataDiskImpl.setDataDisksDefaults(dataDisks, this.name());
+        }
+        final VirtualMachineScaleSetsInner client = this.manager().inner().virtualMachineScaleSets();
         return this.handleOSDiskContainersAsync()
                 .flatMap(new Func1<Void, Observable<VirtualMachineScaleSetInner>>() {
                     @Override
@@ -865,12 +1197,21 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl refresh() {
-        VirtualMachineScaleSetInner inner = this.client.get(this.resourceGroupName(), this.name());
-        this.setInner(inner);
-        this.clearCachedProperties();
-        this.initializeChildrenFromInner();
-        return this;
+    public Observable<VirtualMachineScaleSet> refreshAsync() {
+        return super.refreshAsync().map(new Func1<VirtualMachineScaleSet, VirtualMachineScaleSet>() {
+            @Override
+            public VirtualMachineScaleSet call(VirtualMachineScaleSet virtualMachineScaleSet) {
+                VirtualMachineScaleSetImpl impl = (VirtualMachineScaleSetImpl) virtualMachineScaleSet;
+                impl.clearCachedProperties();
+                impl.initializeChildrenFromInner();
+                return impl;
+            }
+        });
+    }
+
+    @Override
+    protected Observable<VirtualMachineScaleSetInner> getInnerAsync() {
+        return this.manager().inner().virtualMachineScaleSets().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     // Helpers
@@ -880,78 +1221,121 @@ public class VirtualMachineScaleSetImpl
         return !this.isInCreateMode();
     }
 
-    private void setOSDiskAndOSProfileDefaults() {
+    private void setOSProfileDefaults() {
         if (isInUpdateMode()) {
             return;
         }
-
         if (this.inner().sku().capacity() == null) {
             this.withCapacity(2);
         }
-
         if (this.inner().upgradePolicy() == null
                 || this.inner().upgradePolicy().mode() == null) {
             this.inner()
                     .withUpgradePolicy(new UpgradePolicy()
                             .withMode(UpgradeMode.AUTOMATIC));
         }
-
         VirtualMachineScaleSetOSProfile osProfile = this.inner()
                 .virtualMachineProfile()
                 .osProfile();
-        // linux image: Custom or marketplace linux image
-        if (this.osType() == OperatingSystemTypes.LINUX || this.isMarketplaceLinuxImage) {
-            if (osProfile.linuxConfiguration() == null) {
-                osProfile.withLinuxConfiguration(new LinuxConfiguration());
+        VirtualMachineScaleSetOSDisk osDisk = this.inner().virtualMachineProfile().storageProfile().osDisk();
+        if (isOSDiskFromImage(osDisk)) {
+            // ODDisk CreateOption: FROM_IMAGE
+            //
+            if (this.osType() == OperatingSystemTypes.LINUX || this.isMarketplaceLinuxImage) {
+                if (osProfile.linuxConfiguration() == null) {
+                    osProfile.withLinuxConfiguration(new LinuxConfiguration());
+                }
+                osProfile
+                        .linuxConfiguration()
+                        .withDisablePasswordAuthentication(osProfile.adminPassword() == null);
             }
-            osProfile
-                .linuxConfiguration()
-                .withDisablePasswordAuthentication(osProfile.adminPassword() == null);
-        }
-
-        if (this.osDiskCachingType() == null) {
-            withOsDiskCaching(CachingTypes.READ_WRITE);
-        }
-
-        if (this.osDiskName() == null) {
-            withOsDiskName(this.name() + "-os-disk");
-        }
-
-        if (this.computerNamePrefix() == null) {
-            // VM name cannot contain only numeric values and cannot exceed 15 chars
-            if (this.name().matches("[0-9]+")) {
-                withComputerNamePrefix(ResourceNamer.randomResourceName("vmss-vm", 12));
-            } else if (this.name().length() <= 12) {
-                withComputerNamePrefix(this.name() + "-vm");
-            } else {
-                withComputerNamePrefix(ResourceNamer.randomResourceName("vmss-vm", 12));
+            if (this.computerNamePrefix() == null) {
+                // VM name cannot contain only numeric values and cannot exceed 15 chars
+                if (this.name().matches("[0-9]+")) {
+                    withComputerNamePrefix(this.namer.randomName("vmss-vm", 12));
+                } else if (this.name().length() <= 12) {
+                    withComputerNamePrefix(this.name() + "-vm");
+                } else {
+                    withComputerNamePrefix(this.namer.randomName("vmss-vm", 12));
+                }
             }
+        } else {
+            // NOP [ODDisk CreateOption: ATTACH, ATTACH is not supported for VMSS]
+            this.inner()
+                    .virtualMachineProfile()
+                    .withOsProfile(null);
         }
     }
 
-    private boolean isCustomImage(VirtualMachineScaleSetStorageProfile storageProfile) {
-        return storageProfile.osDisk().image() != null
-                && storageProfile.osDisk().image().uri() != null;
+    private void setOSDiskDefault() {
+        if (isInUpdateMode()) {
+            return;
+        }
+        VirtualMachineScaleSetStorageProfile storageProfile =  this.inner().virtualMachineProfile().storageProfile();
+        VirtualMachineScaleSetOSDisk osDisk = storageProfile.osDisk();
+        if (isOSDiskFromImage(osDisk)) {
+            // ODDisk CreateOption: FROM_IMAGE
+            //
+            if (isManagedDiskEnabled()) {
+                // Note:
+                // Managed disk
+                //     Supported: PlatformImage and CustomImage
+                //     UnSupported: StoredImage
+                //
+                if (osDisk.managedDisk() == null) {
+                    osDisk.withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters());
+                }
+                if (osDisk.managedDisk().storageAccountType() == null) {
+                    osDisk.managedDisk()
+                            .withStorageAccountType(StorageAccountTypes.STANDARD_LRS);
+                }
+                osDisk.withVhdContainers(null);
+                // We won't set osDisk.name() explicitly for managed disk, if it is null CRP generates unique
+                // name for the disk resource within the resource group.
+            } else {
+                // Note:
+                // Native (un-managed) disk
+                //     Supported: PlatformImage and StoredImage
+                //     UnSupported: CustomImage
+                //
+                osDisk.withManagedDisk(null);
+                if (osDisk.name() == null) {
+                    withOSDiskName(this.name() + "-os-disk");
+                }
+            }
+        } else {
+            // NOP [ODDisk CreateOption: ATTACH, ATTACH is not supported for VMSS]
+        }
+        if (this.osDiskCachingType() == null) {
+            withOSDiskCaching(CachingTypes.READ_WRITE);
+        }
     }
 
     private Observable<Void> handleOSDiskContainersAsync() {
         final VirtualMachineScaleSetStorageProfile storageProfile = inner()
                 .virtualMachineProfile()
                 .storageProfile();
-        if (isCustomImage(storageProfile)) {
-            // There is a restriction currently that virtual machine's disk cannot be stored in multiple storage accounts
-            // if scale set is based on custom image. Remove this check once azure start supporting it.
+        if (isManagedDiskEnabled()) {
+            storageProfile.osDisk()
+                    .withVhdContainers(null);
+            return Observable.just(null);
+        }
+        if (isOSDiskFromStoredImage(storageProfile)) {
+            // There is a restriction currently that virtual machine's disk cannot be stored in multiple storage
+            // accounts if scale set is based on stored image. Remove this check once azure start supporting it.
+            //
             storageProfile.osDisk()
                     .vhdContainers()
                     .clear();
             return Observable.just(null);
         }
-
         if (this.isInCreateMode()
                 && this.creatableStorageAccountKeys.isEmpty()
                 && this.existingStorageAccountsToAssociate.isEmpty()) {
+            // If storage account(s) are not explicitly asked to create then create one implicitly
+            //
             return Utils.<StorageAccount>rootResource(this.storageManager.storageAccounts()
-                    .define(this.namer.randomName("stg", 24))
+                    .define(this.namer.randomName("stg", 24).replace("-", ""))
                     .withRegion(this.regionName())
                     .withExistingResourceGroup(this.resourceGroupName())
                     .createAsync())
@@ -996,7 +1380,6 @@ public class VirtualMachineScaleSetImpl
                         .vhdContainers()
                         .add(mergePath(storageAccount.endPoints().primary().blob(), containerName));
             }
-
             this.vhdContainerName = null;
             this.creatableStorageAccountKeys.clear();
             this.existingStorageAccountsToAssociate.clear();
@@ -1156,7 +1539,7 @@ public class VirtualMachineScaleSetImpl
         LoadBalancer loadBalancer1 = this.networkManager
                 .loadBalancers()
                 .getById(firstLoadBalancerId);
-        if (loadBalancer1.publicIpAddressIds() != null && loadBalancer1.publicIpAddressIds().size() > 0) {
+        if (loadBalancer1.publicIPAddressIds() != null && loadBalancer1.publicIPAddressIds().size() > 0) {
             this.primaryInternetFacingLoadBalancer = loadBalancer1;
         } else {
             this.primaryInternalLoadBalancer = loadBalancer1;
@@ -1188,7 +1571,7 @@ public class VirtualMachineScaleSetImpl
         LoadBalancer loadBalancer2 = this.networkManager
             .loadBalancers()
             .getById(secondLoadBalancerId);
-        if (loadBalancer2.publicIpAddressIds() != null && loadBalancer2.publicIpAddressIds().size() > 0) {
+        if (loadBalancer2.publicIPAddressIds() != null && loadBalancer2.publicIPAddressIds().size() > 0) {
             this.primaryInternetFacingLoadBalancer = loadBalancer2;
          } else {
             this.primaryInternalLoadBalancer = loadBalancer2;
@@ -1419,5 +1802,256 @@ public class VirtualMachineScaleSetImpl
             merged = merged.substring(0, merged.length() - 1);
         }
         return merged;
+    }
+
+    protected VirtualMachineScaleSetImpl withUnmanagedDataDisk(VirtualMachineScaleSetUnmanagedDataDiskImpl unmanagedDisk) {
+        if (this.inner()
+                .virtualMachineProfile()
+                .storageProfile()
+                .dataDisks() == null) {
+            this.inner()
+                    .virtualMachineProfile()
+                    .storageProfile()
+                    .withDataDisks(new ArrayList<VirtualMachineScaleSetDataDisk>());
+        }
+        List<VirtualMachineScaleSetDataDisk> dataDisks = this.inner()
+                .virtualMachineProfile()
+                .storageProfile()
+                .dataDisks();
+        dataDisks.add(unmanagedDisk.inner());
+        return this;
+    }
+
+    /**
+     * Checks whether the OS disk is based on an image (image from PIR or custom image [captured, bringYourOwnFeature]).
+     *
+     * @param osDisk the osDisk value in the storage profile
+     * @return true if the OS disk is configured to use image from PIR or custom image
+     */
+    private boolean isOSDiskFromImage(VirtualMachineScaleSetOSDisk osDisk) {
+        return osDisk.createOption() == DiskCreateOptionTypes.FROM_IMAGE;
+    }
+
+    /**
+     * Checks whether the OS disk is based on a CustomImage.
+     * <p>
+     * A custom image is represented by {@link com.microsoft.azure.management.compute.VirtualMachineCustomImage}.
+     *
+     * @param storageProfile the storage profile
+     * @return true if the OS disk is configured to be based on custom image.
+     */
+    private boolean isOsDiskFromCustomImage(VirtualMachineScaleSetStorageProfile storageProfile) {
+        ImageReferenceInner imageReference  = storageProfile.imageReference();
+        return isOSDiskFromImage(storageProfile.osDisk())
+                && imageReference != null
+                && imageReference.id() != null;
+    }
+
+    /**
+     * Checks whether the OS disk is based on an platform image (image in PIR).
+     *
+     * @param storageProfile the storage profile
+     * @return true if the OS disk is configured to be based on platform image.
+     */
+    private boolean isOSDiskFromPlatformImage(VirtualMachineScaleSetStorageProfile storageProfile) {
+        ImageReferenceInner imageReference  = storageProfile.imageReference();
+        return isOSDiskFromImage(storageProfile.osDisk())
+                && imageReference != null
+                && imageReference.publisher() != null
+                && imageReference.offer() != null
+                && imageReference.sku() != null
+                && imageReference.version() != null;
+    }
+
+    /**
+     * Checks whether the OS disk is based on a stored image ('captured' or 'bring your own feature').
+     *
+     * @param storageProfile the storage profile
+     * @return true if the OS disk is configured to use custom image ('captured' or 'bring your own feature')
+     */
+    private boolean isOSDiskFromStoredImage(VirtualMachineScaleSetStorageProfile storageProfile) {
+        VirtualMachineScaleSetOSDisk osDisk = storageProfile.osDisk();
+        return isOSDiskFromImage(osDisk)
+                && osDisk.image() != null
+                && osDisk.image().uri() != null;
+    }
+
+    /* TODO Unused
+      private void throwIfManagedDiskEnabled(String message) {
+        if (this.isManagedDiskEnabled()) {
+            throw new UnsupportedOperationException(message);
+        }
+    }*/
+
+    private void throwIfManagedDiskDisabled(String message) {
+        if (!this.isManagedDiskEnabled()) {
+            throw new UnsupportedOperationException(message);
+        }
+    }
+
+    /**
+     * Class to manage Data Disk collection.
+     */
+    private class ManagedDataDiskCollection {
+        private final List<VirtualMachineScaleSetDataDisk> implicitDisksToAssociate = new ArrayList<>();
+        private final List<Integer> diskLunsToRemove = new ArrayList<>();
+        private final List<VirtualMachineScaleSetDataDisk> newDisksFromImage = new ArrayList<>();
+        private final VirtualMachineScaleSetImpl vmss;
+        private CachingTypes defaultCachingType;
+        private StorageAccountTypes defaultStorageAccountType;
+
+        ManagedDataDiskCollection(VirtualMachineScaleSetImpl vmss) {
+            this.vmss = vmss;
+        }
+
+        void setDefaultCachingType(CachingTypes cachingType) {
+            this.defaultCachingType = cachingType;
+        }
+
+        void setDefaultStorageAccountType(StorageAccountTypes defaultStorageAccountType) {
+            this.defaultStorageAccountType = defaultStorageAccountType;
+        }
+
+        void setDataDisksDefaults() {
+            VirtualMachineScaleSetStorageProfile storageProfile = this.vmss
+                    .inner()
+                    .virtualMachineProfile()
+                    .storageProfile();
+            if (isPending()) {
+                if (storageProfile.dataDisks() == null) {
+                    storageProfile.withDataDisks(new ArrayList<VirtualMachineScaleSetDataDisk>());
+                }
+                List<VirtualMachineScaleSetDataDisk> dataDisks = storageProfile.dataDisks();
+                final List<Integer> usedLuns = new ArrayList<>();
+                // Get all used luns
+                //
+                for (VirtualMachineScaleSetDataDisk dataDisk : dataDisks) {
+                    if (dataDisk.lun() != -1) {
+                        usedLuns.add(dataDisk.lun());
+                    }
+                }
+                for (VirtualMachineScaleSetDataDisk dataDisk : this.implicitDisksToAssociate) {
+                    if (dataDisk.lun() != -1) {
+                        usedLuns.add(dataDisk.lun());
+                    }
+                }
+                for (VirtualMachineScaleSetDataDisk dataDisk : this.newDisksFromImage) {
+                    if (dataDisk.lun() != -1) {
+                        usedLuns.add(dataDisk.lun());
+                    }
+                }
+                // Func to get the next available lun
+                //
+                Func0<Integer> nextLun = new Func0<Integer>() {
+                    @Override
+                    public Integer call() {
+                        Integer lun = 0;
+                        while (usedLuns.contains(lun)) {
+                            lun++;
+                        }
+                        usedLuns.add(lun);
+                        return lun;
+                    }
+                };
+                setImplicitDataDisks(nextLun);
+                setImageBasedDataDisks();
+                removeDataDisks();
+            }
+            if (storageProfile.dataDisks() != null
+                    && storageProfile.dataDisks().size() == 0) {
+                if (vmss.isInCreateMode()) {
+                    // If there is no data disks at all, then setting it to null rather than [] is necessary.
+                    // This is for take advantage of CRP's implicit creation of the data disks if the image has
+                    // more than one data disk image(s).
+                    //
+                    storageProfile.withDataDisks(null);
+                }
+            }
+            this.clear();
+        }
+
+        private void clear() {
+            implicitDisksToAssociate.clear();
+            diskLunsToRemove.clear();
+            newDisksFromImage.clear();
+        }
+
+        private boolean isPending() {
+            return implicitDisksToAssociate.size() > 0
+                    || diskLunsToRemove.size() > 0
+                    || newDisksFromImage.size() > 0;
+        }
+
+        private void setImplicitDataDisks(Func0<Integer> nextLun) {
+            VirtualMachineScaleSetStorageProfile storageProfile = this.vmss
+                    .inner()
+                    .virtualMachineProfile()
+                    .storageProfile();
+            List<VirtualMachineScaleSetDataDisk> dataDisks = storageProfile.dataDisks();
+            for (VirtualMachineScaleSetDataDisk dataDisk : this.implicitDisksToAssociate) {
+                dataDisk.withCreateOption(DiskCreateOptionTypes.EMPTY);
+                if (dataDisk.lun() == -1) {
+                    dataDisk.withLun(nextLun.call());
+                }
+                if (dataDisk.managedDisk() == null) {
+                    dataDisk.withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters());
+                }
+                if (dataDisk.caching() == null) {
+                    dataDisk.withCaching(getDefaultCachingType());
+                }
+                if (dataDisk.managedDisk().storageAccountType() == null) {
+                    dataDisk.managedDisk().withStorageAccountType(getDefaultStorageAccountType());
+                }
+                dataDisk.withName(null);
+                dataDisks.add(dataDisk);
+            }
+        }
+
+        private void setImageBasedDataDisks() {
+            VirtualMachineScaleSetStorageProfile storageProfile = this.vmss
+                    .inner()
+                    .virtualMachineProfile()
+                    .storageProfile();
+            List<VirtualMachineScaleSetDataDisk> dataDisks = storageProfile.dataDisks();
+            for (VirtualMachineScaleSetDataDisk dataDisk : this.newDisksFromImage) {
+                dataDisk.withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+                // Don't set default storage account type for the disk, either user has to specify it explicitly or let
+                // CRP pick it from the image
+                dataDisk.withName(null);
+                dataDisks.add(dataDisk);
+            }
+        }
+
+        private void removeDataDisks() {
+            VirtualMachineScaleSetStorageProfile storageProfile = this.vmss
+                    .inner()
+                    .virtualMachineProfile()
+                    .storageProfile();
+            List<VirtualMachineScaleSetDataDisk> dataDisks = storageProfile.dataDisks();
+            for (Integer lun : this.diskLunsToRemove) {
+                int indexToRemove = 0;
+                for (VirtualMachineScaleSetDataDisk dataDisk : dataDisks) {
+                    if (dataDisk.lun() == lun) {
+                        dataDisks.remove(indexToRemove);
+                        break;
+                    }
+                    indexToRemove++;
+                }
+            }
+        }
+
+        private CachingTypes getDefaultCachingType() {
+            if (defaultCachingType == null) {
+                return CachingTypes.READ_WRITE;
+            }
+            return defaultCachingType;
+        }
+
+        private StorageAccountTypes getDefaultStorageAccountType() {
+            if (defaultStorageAccountType == null) {
+                return StorageAccountTypes.STANDARD_LRS;
+            }
+            return defaultStorageAccountType;
+        }
     }
 }
