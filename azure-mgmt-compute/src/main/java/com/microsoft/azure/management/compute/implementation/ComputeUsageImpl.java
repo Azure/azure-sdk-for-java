@@ -12,7 +12,7 @@ import com.microsoft.azure.management.compute.UsageName;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
 /**
- * The implementation of {@link ComputeUsage}.
+ * The implementation of ComputeUsage.
  */
 @LangDefinition
 class ComputeUsageImpl extends WrapperImpl<UsageInner> implements ComputeUsage {
@@ -22,7 +22,7 @@ class ComputeUsageImpl extends WrapperImpl<UsageInner> implements ComputeUsage {
 
     @Override
     public ComputeUsageUnit unit() {
-        return new ComputeUsageUnit(inner().unit());
+        return ComputeUsageUnit.fromString(inner().unit());
     }
 
     @Override

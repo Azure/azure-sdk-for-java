@@ -44,7 +44,7 @@ class DiskImpl
 
     @Override
     public DiskSkuTypes sku() {
-        return new DiskSkuTypes(this.inner().accountType());
+        return DiskSkuTypes.fromStorageAccountType(this.inner().accountType());
     }
 
     @Override
