@@ -6,7 +6,7 @@ import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
-class ClientFactory {
+public class ClientFactory {
 	
 	private static final ReceiveMode DEFAULTRECEIVEMODE = ReceiveMode.PeekLock;
 	

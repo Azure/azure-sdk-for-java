@@ -40,19 +40,7 @@ public abstract class SendReceiveTests {
 	
 	public abstract ConnectionStringBuilder getSenderConnectionStringBuilder();
 	
-	public abstract ConnectionStringBuilder getReceiverConnectionStringBuilder();
-	
-	@Test
-	public void testBasicSend() throws InterruptedException, ServiceBusException
-	{		
-		TestCommons.testBasicSend(this.sender);
-	}
-	
-	@Test
-	public void testBasicSendBatch() throws InterruptedException, ServiceBusException
-	{
-		TestCommons.testBasicSendBatch(this.sender);
-	}
+	public abstract ConnectionStringBuilder getReceiverConnectionStringBuilder();	
 	
 	@Test
 	public void testBasicReceiveAndDelete() throws InterruptedException, ServiceBusException, ExecutionException

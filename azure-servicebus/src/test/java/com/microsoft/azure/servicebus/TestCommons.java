@@ -14,18 +14,16 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import org.junit.Assert;
-import org.junit.Test;
 
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.MessageNotFoundException;
-import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import com.microsoft.azure.servicebus.primitives.StringUtil;
-import com.microsoft.azure.servicebus.primitives.TimeoutException;
 
 public class TestCommons {
 	
-	private static Duration shortWaitTime = Duration.ofSeconds(5);
+	private static final Duration SHORT_WAIT_TIME = Duration.ofSeconds(5);	
+	private static final Duration DRAIN_MESSAGES_WAIT_TIME = Duration.ofSeconds(5);
 	
 	public static void testBasicSend(IMessageSender sender) throws InterruptedException, ServiceBusException
 	{		
@@ -56,7 +54,7 @@ public class TestCommons {
 		IMessage receivedMessage = receiver.receive();
 		Assert.assertNotNull("Message not received", receivedMessage);
 		Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
-		receivedMessage = receiver.receive(shortWaitTime);
+		receivedMessage = receiver.receive(SHORT_WAIT_TIME);
 		Assert.assertNull("Message received again", receivedMessage);
 	}
 	
@@ -84,7 +82,7 @@ public class TestCommons {
 		}
 		
 		Assert.assertEquals("All messages not received", numMessages, totalReceivedMessages);
-		receivedMessages = receiver.receiveBatch(numMessages, shortWaitTime);
+		receivedMessages = receiver.receiveBatch(numMessages, SHORT_WAIT_TIME);
 		Assert.assertNull("Messages received again", receivedMessages);
 	}
 		
@@ -103,7 +101,7 @@ public class TestCommons {
 		Assert.assertNotNull("Message not received", receivedMessage);
 		Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
 		receiver.complete(receivedMessage.getLockToken());
-		receivedMessage = receiver.receive(shortWaitTime);
+		receivedMessage = receiver.receive(SHORT_WAIT_TIME);
 		Assert.assertNull("Message was not properly completed", receivedMessage);
 	}
 	
@@ -145,7 +143,7 @@ public class TestCommons {
 		Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
 		String deadLetterReason = "java client deadletter test";
 		receiver.deadLetter(receivedMessage.getLockToken(), deadLetterReason, null);
-		receivedMessage = receiver.receive(shortWaitTime);
+		receivedMessage = receiver.receive(SHORT_WAIT_TIME);
 		Assert.assertNull("Message was not properly deadlettered", receivedMessage);
 	}	
 		
@@ -195,7 +193,7 @@ public class TestCommons {
 			receivedMessages = receiver.receiveBatch(numMessages);
 			totalReceivedMessages.addAll(receivedMessages);	
 		}
-		Assert.assertEquals("All messages not received", numMessages, totalReceivedMessages.size());	
+		Assert.assertEquals("All messages not received", numMessages, totalReceivedMessages.size());
 		
 		ArrayList<Instant> oldLockTimes = new ArrayList<Instant>();
 		for(IMessage message : totalReceivedMessages)
@@ -247,7 +245,7 @@ public class TestCommons {
 		}
 		Assert.assertEquals("All messages not received", numMessages, totalMessagesReceived);		
 		
-		receivedMessages = receiver.receiveBatch(numMessages, shortWaitTime);
+		receivedMessages = receiver.receiveBatch(numMessages, SHORT_WAIT_TIME);
 		Assert.assertNull("Messages received again", receivedMessages);
 	}
 		
@@ -565,10 +563,9 @@ public class TestCommons {
 	}
 	
 	public static void drainAllMessagesFromReceiver(IMessageReceiver receiver, boolean cleanDeferredMessages) throws InterruptedException, ServiceBusException
-	{
-		Duration waitTime = Duration.ofSeconds(5);
+	{		
 		final int batchSize = 10;		
-		Collection<IMessage> messages = receiver.receiveBatch(batchSize, waitTime);
+		Collection<IMessage> messages = receiver.receiveBatch(batchSize, DRAIN_MESSAGES_WAIT_TIME);
 		while(messages !=null && messages.size() > 0)
 		{
 			if(receiver.getReceiveMode() == ReceiveMode.PeekLock)
@@ -578,7 +575,7 @@ public class TestCommons {
 					receiver.complete(message.getLockToken());
 				}
 			}
-			messages = receiver.receiveBatch(batchSize, waitTime);
+			messages = receiver.receiveBatch(batchSize, DRAIN_MESSAGES_WAIT_TIME);
 		}		
 		
 		if(cleanDeferredMessages)
@@ -610,9 +607,19 @@ public class TestCommons {
 		receiver.close();
 	}
 	
-	public static void drainAllSessions(IMessageSessionEntity sessionsClient, ConnectionStringBuilder connectionStringBuilder) throws InterruptedException, ServiceBusException
+	public static void drainAllSessions(ConnectionStringBuilder connectionStringBuilder, boolean isQueue) throws InterruptedException, ServiceBusException
 	{
 		int numParallelSessionDrains = 5;
+		IMessageSessionEntity sessionsClient;
+		if(isQueue)
+		{
+			sessionsClient = new QueueClient(connectionStringBuilder.toString(), ReceiveMode.ReceiveAndDelete);
+		}
+		else
+		{
+			sessionsClient = new SubscriptionClient(connectionStringBuilder.toString(), ReceiveMode.ReceiveAndDelete);
+		}
+		
 		Collection<IMessageSession> browsableSessions = sessionsClient.getMessageSessions();
 		if(browsableSessions != null && browsableSessions.size() > 0)
 		{

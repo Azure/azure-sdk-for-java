@@ -51,4 +51,8 @@ interface IMessageAndSessionPump
     CompletableFuture<Void> deadLetterAsync(UUID lockToken, String deadLetterReason, String deadLetterErrorDescription);
     
     CompletableFuture<Void> deadLetterAsync(UUID lockToken, String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify);
+    
+    int getPrefetchCount();
+    
+    void setPrefetchCount(int prefetchCount) throws ServiceBusException;
 }

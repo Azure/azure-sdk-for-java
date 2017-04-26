@@ -825,9 +825,22 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		{
 			if (this.sendLink != null && this.sendLink.getLocalState() != EndpointState.CLOSED)
 			{
-				this.underlyingFactory.deregisterForConnectionError(sendLink);
-				this.sendLink.close();
-				this.scheduleLinkCloseTimeout(TimeoutTracker.create(this.operationTimeout));
+				try {
+					this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler() {
+						
+						@Override
+						public void onEvent() {
+							if (CoreMessageSender.this.sendLink != null && CoreMessageSender.this.sendLink.getLocalState() != EndpointState.CLOSED)
+							{
+								CoreMessageSender.this.underlyingFactory.deregisterForConnectionError(CoreMessageSender.this.sendLink);
+								CoreMessageSender.this.sendLink.close();
+								CoreMessageSender.this.scheduleLinkCloseTimeout(TimeoutTracker.create(CoreMessageSender.this.operationTimeout));
+							}						
+						}
+					});
+				} catch (IOException e) {
+					AsyncUtil.completeFutureExceptionally(this.linkClose, e);
+				}				
 			}
 			else if (this.sendLink == null || this.sendLink.getRemoteState() == EndpointState.CLOSED)
 			{

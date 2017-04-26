@@ -41,13 +41,13 @@ public class SubscriptionClientTests {
 		if(this.subscriptionClient != null)
 		{
 			this.subscriptionClient.close();
-			TestCommons.drainAllMessages(TestUtils.getSubscriptionConnectionStringBuilder());
+			TestCommons.drainAllMessages(TestUtils.getNonPartitionedSubscriptionConnectionStringBuilder());
 		}
 			
 		if(this.sessionfulSubscriptionClient != null)
 		{
-			TestCommons.drainAllSessions(this.sessionfulSubscriptionClient, TestUtils.getSessionfulSubscriptionConnectionStringBuilder());
-			this.sessionfulSubscriptionClient.close();			
+			this.sessionfulSubscriptionClient.close();
+			TestCommons.drainAllSessions(TestUtils.getNonPartitionedSessionfulSubscriptionConnectionStringBuilder(), false);					
 		}			
 	}	
 	
@@ -63,14 +63,14 @@ public class SubscriptionClientTests {
 	
 	private void createSubscriptionClient(ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
 	{
-		this.topicClient = new TopicClient(TestUtils.getTopicConnectionStringBuilder().toString());
-		this.subscriptionClient = new SubscriptionClient(TestUtils.getSubscriptionConnectionStringBuilder().toString(), receiveMode);
+		this.topicClient = new TopicClient(TestUtils.getNonPartitionedTopicConnectionStringBuilder().toString());
+		this.subscriptionClient = new SubscriptionClient(TestUtils.getNonPartitionedSubscriptionConnectionStringBuilder().toString(), receiveMode);
 	}
 	
 	private void createSessionfulSubscriptionClient(ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
 	{
-		this.sessionfulTopicClient = new TopicClient(TestUtils.getSessionfulTopicConnectionStringBuilder().toString());
-		this.sessionfulSubscriptionClient = new SubscriptionClient(TestUtils.getSessionfulSubscriptionConnectionStringBuilder().toString(), receiveMode);
+		this.sessionfulTopicClient = new TopicClient(TestUtils.getNonPartitionedSessionfulTopicConnectionStringBuilder().toString());
+		this.sessionfulSubscriptionClient = new SubscriptionClient(TestUtils.getNonPartitionedSessionfulSubscriptionConnectionStringBuilder().toString(), receiveMode);
 	}
 	
 	@Test
@@ -189,10 +189,10 @@ public class SubscriptionClientTests {
 	}
 	
 	@Test
-	public void testSessionPumpAutoCompleteWithMultipleConcurrentCallPerSession() throws InterruptedException, ServiceBusException
+	public void testSessionPumpAutoCompleteWithMultipleConcurrentCallsPerSession() throws InterruptedException, ServiceBusException
 	{
 		this.createSessionfulSubscriptionClient();
-		MessageAndSessionPumpTests.testSessionPumpAutoCompleteWithMultipleConcurrentCallPerSession(this.sessionfulTopicClient, this.sessionfulSubscriptionClient);
+		MessageAndSessionPumpTests.testSessionPumpAutoCompleteWithMultipleConcurrentCallsPerSession(this.sessionfulTopicClient, this.sessionfulSubscriptionClient);
 	}
 	
 	@Test

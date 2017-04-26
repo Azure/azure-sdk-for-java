@@ -12,12 +12,12 @@ public class QueueSendReceiveTests extends SendReceiveTests
 //	private int counter = 0; 
 	@Override
 	public ConnectionStringBuilder getSenderConnectionStringBuilder() {
-		return TestUtils.getQueueConnectionStringBuilder();
+		return TestUtils.getNonPartitionedQueueConnectionStringBuilder();
 	}
 
 	@Override
 	public ConnectionStringBuilder getReceiverConnectionStringBuilder() {
-		return TestUtils.getQueueConnectionStringBuilder();
+		return TestUtils.getNonPartitionedQueueConnectionStringBuilder();
 	}
 	
 //	@org.junit.Test

@@ -45,13 +45,13 @@ final class BrowsableMessageSession extends MessageSession
 	}
 	
 	@Override
-	public int getMessagePrefetchCount()
+	public int getPrefetchCount()
 	{
 		throw new UnsupportedOperationException(INVALID_OPERATION_ERROR_MESSAGE);
 	}
 	
 	@Override
-	public void setMessagePrefetchCount(int prefetchCount) throws ServiceBusException
+	public void setPrefetchCount(int prefetchCount) throws ServiceBusException
 	{
 		throw new UnsupportedOperationException(INVALID_OPERATION_ERROR_MESSAGE);
 	}

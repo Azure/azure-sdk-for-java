@@ -15,6 +15,10 @@ public final class ClientConstants
 {
 	private ClientConstants() { }
 	
+	public final static String PRODUCT_NAME = "MSJavaClient";
+    public final static String CURRENT_JAVACLIENT_VERSION = "0.13.1";
+    public static final String PLATFORM_INFO = getPlatformInfo();
+    
 	public static final int LOCKTOKENSIZE = 16;
 	public static final String ENQUEUEDTIMEUTCNAME = "x-opt-enqueued-time";
 	public static final String SCHEDULEDENQUEUETIMENAME = "x-opt-scheduled-enqueue-time";
@@ -140,5 +144,24 @@ public final class ClientConstants
     public static final int REQUEST_RESPONSE_NOTFOUND_STATUS_CODE = 0x194;
     public static final int REQUEST_RESPONSE_UNDEFINED_STATUS_CODE = -1;
     public static final int REQUEST_RESPONSE_SERVER_BUSY_STATUS_CODE = 0x1f7;
+    
+    private static String getPlatformInfo() {
+        final Package javaRuntimeClassPkg = Runtime.class.getPackage();
+        final StringBuilder patformInfo = new StringBuilder();
+        patformInfo.append("jre:");
+        patformInfo.append(javaRuntimeClassPkg.getImplementationVersion());
+        patformInfo.append(";vendor:");
+        patformInfo.append(javaRuntimeClassPkg.getImplementationVendor());
+        patformInfo.append(";jvm:");
+        patformInfo.append(System.getProperty("java.vm.version"));
+        patformInfo.append(";arch:");
+        patformInfo.append(System.getProperty("os.arch"));
+        patformInfo.append(";os:");
+        patformInfo.append(System.getProperty("os.name"));
+        patformInfo.append(";os version:");
+        patformInfo.append(System.getProperty("os.version"));
+
+        return patformInfo.toString();
+    }
 	
 }

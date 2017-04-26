@@ -22,13 +22,13 @@ public class QueueClientTests {
 		if(this.queueClient != null)
 		{
 			this.queueClient.close();
-			TestCommons.drainAllMessages(TestUtils.getQueueConnectionStringBuilder());
+			TestCommons.drainAllMessages(TestUtils.getNonPartitionedQueueConnectionStringBuilder());
 		}
 			
 		if(this.sessionfulQueueClient != null)
 		{
-			TestCommons.drainAllSessions(this.sessionfulQueueClient, TestUtils.getSessionfulQueueConnectionStringBuilder());
-			this.sessionfulQueueClient.close();			
+			this.sessionfulQueueClient.close();
+			TestCommons.drainAllSessions(TestUtils.getNonPartitionedSessionfulQueueConnectionStringBuilder(), true);	
 		}			
 	}
 	
@@ -44,12 +44,12 @@ public class QueueClientTests {
 	
 	private void createQueueClient(ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
 	{
-		this.queueClient = new QueueClient(TestUtils.getQueueConnectionStringBuilder().toString(), receiveMode);
+		this.queueClient = new QueueClient(TestUtils.getNonPartitionedQueueConnectionStringBuilder().toString(), receiveMode);
 	}
 	
 	private void createSessionfulQueueClient(ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
 	{
-		this.sessionfulQueueClient = new QueueClient(TestUtils.getSessionfulQueueConnectionStringBuilder().toString(), receiveMode);
+		this.sessionfulQueueClient = new QueueClient(TestUtils.getNonPartitionedSessionfulQueueConnectionStringBuilder().toString(), receiveMode);
 	}
 	
 	@Test
@@ -123,10 +123,10 @@ public class QueueClientTests {
 	}
 	
 	@Test
-	public void testSessionPumpAutoCompleteWithMultipleConcurrentCallPerSession() throws InterruptedException, ServiceBusException
+	public void testSessionPumpAutoCompleteWithMultipleConcurrentCallsPerSession() throws InterruptedException, ServiceBusException
 	{
 		this.createSessionfulQueueClient();
-		MessageAndSessionPumpTests.testSessionPumpAutoCompleteWithMultipleConcurrentCallPerSession(this.sessionfulQueueClient, this.sessionfulQueueClient);
+		MessageAndSessionPumpTests.testSessionPumpAutoCompleteWithMultipleConcurrentCallsPerSession(this.sessionfulQueueClient, this.sessionfulQueueClient);
 	}
 	
 	@Test

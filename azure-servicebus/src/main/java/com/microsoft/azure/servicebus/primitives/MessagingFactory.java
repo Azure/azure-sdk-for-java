@@ -286,10 +286,21 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		if (!this.getIsClosed())
 		{
 			if (this.connection != null && this.connection.getRemoteState() != EndpointState.CLOSED)
-			{
-				if (this.connection.getLocalState() != EndpointState.CLOSED)
-				{
-					this.connection.close();
+			{				
+				try {
+					this.scheduleOnReactorThread(new DispatchHandler()
+					{
+						@Override
+						public void onEvent()
+						{
+							if (MessagingFactory.this.connection != null && MessagingFactory.this.connection.getLocalState() != EndpointState.CLOSED)
+							{
+								MessagingFactory.this.connection.close();
+							}
+						}
+					});
+				} catch (IOException e) {
+					AsyncUtil.completeFutureExceptionally(this.closeTask, e);
 				}
 
 				Timer.schedule(new Runnable()

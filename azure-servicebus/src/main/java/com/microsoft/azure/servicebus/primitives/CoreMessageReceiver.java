@@ -827,9 +827,22 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		{
 			if (this.receiveLink != null && this.receiveLink.getLocalState() != EndpointState.CLOSED)
 			{
-				this.receiveLink.close();
-				this.underlyingFactory.deregisterForConnectionError(this.receiveLink);
-				this.scheduleLinkCloseTimeout(TimeoutTracker.create(this.operationTimeout));
+				try {
+					this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler() {
+						
+						@Override
+						public void onEvent() {
+							if (CoreMessageReceiver.this.receiveLink != null && CoreMessageReceiver.this.receiveLink.getLocalState() != EndpointState.CLOSED)
+							{
+								CoreMessageReceiver.this.receiveLink.close();
+								CoreMessageReceiver.this.underlyingFactory.deregisterForConnectionError(CoreMessageReceiver.this.receiveLink);
+								CoreMessageReceiver.this.scheduleLinkCloseTimeout(TimeoutTracker.create(CoreMessageReceiver.this.operationTimeout));
+							}							
+						}
+					});
+				} catch (IOException e) {
+					AsyncUtil.completeFutureExceptionally(this.linkClose, e);
+				}				
 			}
 			else
 			{				

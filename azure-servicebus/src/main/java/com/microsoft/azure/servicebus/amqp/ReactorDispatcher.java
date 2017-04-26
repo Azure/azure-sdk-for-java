@@ -9,7 +9,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.Pipe;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.HashSet;
 
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Event;
@@ -114,20 +113,12 @@ public final class ReactorDispatcher
 			catch(IOException ioException)
 			{
 				throw new RuntimeException(ioException);
-			}
+			}			
 			
-			final HashSet<BaseHandler> completedWork = new HashSet<BaseHandler>();
-			
-			BaseHandler topWork = workQueue.poll(); 
-			while (topWork != null)
+			BaseHandler topWork; 
+			while ((topWork = workQueue.poll()) != null)
 			{
-				if (!completedWork.contains(topWork))
-				{
-					topWork.onTimerTask(null);
-					completedWork.add(topWork);
-				}
-				
-				topWork = workQueue.poll();
+				topWork.onTimerTask(null);
 			}
 		}
 	}

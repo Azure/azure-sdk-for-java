@@ -1,6 +1,7 @@
 package com.microsoft.azure.servicebus;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -156,7 +157,7 @@ public class MessageAndSessionPumpTests {
 		MessageAndSessionPumpTests.testSessionPumpAutoComplete(sender, sessionPump, 1);
 	}
 	
-	public static void testSessionPumpAutoCompleteWithMultipleConcurrentCallPerSession(IMessageSender sender, IMessageAndSessionPump sessionPump) throws InterruptedException, ServiceBusException
+	public static void testSessionPumpAutoCompleteWithMultipleConcurrentCallsPerSession(IMessageSender sender, IMessageAndSessionPump sessionPump) throws InterruptedException, ServiceBusException
 	{
 		MessageAndSessionPumpTests.testSessionPumpAutoComplete(sender, sessionPump, DEFAULT_MAX_CONCURRENT_CALLS_PER_SESSION);
 	}
@@ -260,8 +261,8 @@ public class MessageAndSessionPumpTests {
 	
 	public static void testSessionPumpRenewLock(IMessageSender sender, IMessageAndSessionPump sessionPump) throws InterruptedException, ServiceBusException
 	{
-		int numSessions = 10;
-		int numMessagePerSession = 10;
+		int numSessions = 5;
+		int numMessagePerSession = 2;
 		ArrayList<String> sessionIds = new ArrayList<>();
 		for(int i=0; i<numSessions; i++)
 		{
@@ -276,9 +277,9 @@ public class MessageAndSessionPumpTests {
 		}		
 		
 		boolean autoComplete = true;
-		int sleepMinutes = 1; // This should be less than message lock duration of the queue or subscription
+		int sleepMinutes = 2; // This should be less than message lock duration of the queue or subscription
 		CountingSessionHandler sessionHandler = new CountingSessionHandler(sessionPump, !autoComplete, numSessions * numMessagePerSession, false, Duration.ofMinutes(sleepMinutes));
-		sessionPump.registerSessionHandler(sessionHandler, new SessionHandlerOptions(DEFAULT_MAX_CONCURRENT_SESSIONS, DEFAULT_MAX_CONCURRENT_CALLS_PER_SESSION, autoComplete, Duration.ofMinutes(10)));
+		sessionPump.registerSessionHandler(sessionHandler, new SessionHandlerOptions(DEFAULT_MAX_CONCURRENT_SESSIONS, 1, autoComplete, Duration.ofMinutes(10)));
 		int waitMinutes = 5 * sleepMinutes;
 		if(!sessionHandler.getMessageCountDownLatch().await(waitMinutes, TimeUnit.MINUTES))
 		{			
@@ -329,7 +330,7 @@ public class MessageAndSessionPumpTests {
 		public CompletableFuture<Void> onMessageAsync(IMessage message) {
 			CompletableFuture<Void> countingFuture = CompletableFuture.runAsync(() -> {
 				this.maxConcurrencyCounter.incrementCount();
-				System.out.println("Message Received - " + message.getMessageId() + " - delivery count:" + message.getDeliveryCount() + " - Thread:" + Thread.currentThread());				
+				//System.out.println("Message Received - " + message.getMessageId() + " - delivery count:" + message.getDeliveryCount() + " - Thread:" + Thread.currentThread());				
 				if(this.firstThrowException && message.getDeliveryCount() == 0)
 				{
 					this.messageCountDownLatch.countDown();
@@ -412,7 +413,7 @@ public class MessageAndSessionPumpTests {
 			CompletableFuture<Void> countingFuture = CompletableFuture.runAsync(() -> {
 				this.maxConcurrencyCounter.incrementCount();
 				this.receivedSeesions.add(session.getSessionId());
-				System.out.println("SessionID:" + session.getSessionId() + " - Message Received - " + message.getMessageId() + " - delivery count:" + message.getDeliveryCount() + " - Thread:" + Thread.currentThread());				
+				//System.out.println("SessionID:" + session.getSessionId() + " - Message Received - " + message.getMessageId() + " - delivery count:" + message.getDeliveryCount() + " - Thread:" + Thread.currentThread() + ":" + Instant.now());				
 				if(this.firstThrowException && message.getDeliveryCount() == 0)
 				{
 					this.messageCountDownLatch.countDown();
@@ -448,7 +449,7 @@ public class MessageAndSessionPumpTests {
 
 		@Override
 		public CompletableFuture<Void> OnCloseSessionAsync(IMessageSession session) {
-			System.out.println("Session closed.-" + session.getSessionId());
+			System.out.println("Session closed.-" + session.getSessionId() + ":" + Instant.now());
 			return CompletableFuture.completedFuture(null);
 		}
 		
