@@ -33,8 +33,6 @@ import com.microsoft.azure.storage.file.FileTestHelper;
 import com.microsoft.azure.storage.file.SharedAccessFilePermissions;
 import com.microsoft.azure.storage.file.SharedAccessFilePolicy;
 
-import junit.framework.Assert;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -1747,6 +1745,23 @@ public class CloudBlockBlobTests {
         blob.downloadAttributes();
         newETag = blob.getProperties().getEtag();
         assertFalse("ETage should be modified on write metadata", newETag.equals(currentETag));
+    }
+    
+    @Test
+    public void testBlobExceedMaxRange() throws URISyntaxException, StorageException, IOException
+    {
+        CloudBlockBlob blob = container.getBlockBlobReference("blockblob4");
+        blob.deleteIfExists();
+
+        byte[] msg = "my message".getBytes("UTF-8");
+        blob.uploadFromByteArray(msg, 0, msg.length);
+
+        byte[] buffer = new byte[msg.length + 5];
+
+        blob.downloadRangeToByteArray(0, (long) buffer.length, buffer, 0, null, null, null);
+        String expected = new String (msg, "UTF-8");
+        String actual = new String(buffer, "UTF-8").substring(0, 10);
+        assertEquals(expected, actual);
     }
 
     @Test
