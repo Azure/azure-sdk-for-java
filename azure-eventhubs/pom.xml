@@ -12,7 +12,7 @@
   <name>azure-eventhubs</name>
   
   <scm> 
-     <url>scm:git:https://github.com/Azure/azure-event-hubs</url> 
+     <url>scm:git:https://github.com/Azure/azure-event-hubs-java</url> 
   </scm>
 
   <description>libraries and extensions built on Microsoft Azure Event Hubs</description>

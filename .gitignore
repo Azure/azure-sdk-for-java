@@ -76,6 +76,7 @@ ipch/
 .classpath
 .project
 *.prefs
+/.metadata/
 
 # intellij java
 .idea/
