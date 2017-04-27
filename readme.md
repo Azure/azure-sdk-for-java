@@ -170,6 +170,9 @@ the required version of Apache Qpid Proton-J, and the crytography library BCPKIX
   * PARTITION_COUNT
   * EPHTESTSTORAGE
 
+## Samples
+Additional samples are provided here: [azure/azure-event-hubs](https://github.com/Azure/azure-event-hubs/tree/master/samples)
+
 ## How to provide feedback
 
 First, if you experience any issues with the runtime behavior of the Azure Event Hubs service, please consider filing a support request
