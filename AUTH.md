@@ -48,14 +48,13 @@ If you save such service principal-based credentials as a file, or store them in
 
 You can easily create a service principal and grant it access privileges for a given subscription through Azure CLI 2.0.
 
-1. Install Azure CLI (>=0.1.0b11) by following the [README](https://github.com/Azure/azure-cli/blob/master/README.md).
-1. Install `jq` (>=1.5) by following the instructions here: https://stedolan.github.io/jq/download/.
-1. Login as a user by running command `az login`. If you are not in Azure public cloud, use `az context create` command to switch to your cloud before login.
+1. Install Azure CLI (>=2.0) by following the [README](https://github.com/Azure/azure-cli/blob/master/README.md).
+1. Login as a user by running command `az login`. If you are not in Azure public cloud, use `az cloud set` command to switch to your cloud before login.
 1. Select the subscription you want your service principal to have access to by running `az account set --subscription <subscription name>`. You can view your subscriptions by `az account list --out jsonc`.
 1. Run the following command to create a service principal authentication file.
 
 ```
-az ad sp create-for-rbac --expanded-view -o json --query "{subscription: subscriptionId, client: client, key: password, tenant: tenantId, managementURI: endpoints.management, baseURL: endpoints.resourceManager, authURL: endpoints.activeDirectory, graphURL: endpoints.activeDirectoryGraphResourceId}" | jq -r "to_entries|map(\"\(.key)=\(.value|sub(\"https:(?<x>.+[^/])/?$\";\"https\\\\:\(.x)/\"))\")|.[]"
+curl -L https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/tools/authgen.py | python
 ```
 
 Now all the pieces are in place to enable authenticating your code without requiring an interactive login nor the need to manage access tokens.
