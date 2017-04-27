@@ -60,33 +60,11 @@ import java.util.Map;
 import java.util.Random;
 import java.util.TimeZone;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
-import com.microsoft.azure.storage.AccessCondition;
-import com.microsoft.azure.storage.Constants;
-import com.microsoft.azure.storage.NameValidator;
-import com.microsoft.azure.storage.OperationContext;
-import com.microsoft.azure.storage.RetryNoRetry;
-import com.microsoft.azure.storage.SendingRequestEvent;
-import com.microsoft.azure.storage.StorageCredentialsAnonymous;
-import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
-import com.microsoft.azure.storage.StorageEvent;
-import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.TestRunners.DevFabricTests;
 import com.microsoft.azure.storage.TestRunners.DevStoreTests;
 import com.microsoft.azure.storage.TestRunners.SlowTests;
-import com.microsoft.azure.storage.core.Utility;
-import com.microsoft.azure.storage.file.CloudFile;
-import com.microsoft.azure.storage.file.CloudFileShare;
-import com.microsoft.azure.storage.file.FileProperties;
-import com.microsoft.azure.storage.file.FileTestHelper;
-import com.microsoft.azure.storage.file.SharedAccessFilePermissions;
-import com.microsoft.azure.storage.file.SharedAccessFilePolicy;
 
 import static org.junit.Assert.*;
 
@@ -1195,6 +1173,29 @@ public class CloudBlockBlobTests {
         byte[] target = new byte[4];
         blockBlobRef2.downloadRangeToByteArray(0L, 4L, target, 0);
         assertEquals("MDAwMDAwMDA=", blockBlobRef2.properties.getContentMD5());
+    }
+
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testVerifyTransactionalMD5ValidationMissingOverallMD5() throws URISyntaxException, StorageException, IOException {
+        final String blockBlobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testBlockBlob");
+        final CloudBlockBlob blockBlobRef = this.container.getBlockBlobReference(blockBlobName);
+
+        final int length = 2 * 1024 * 1024;
+        ByteArrayInputStream srcStream = BlobTestHelper.getRandomDataStream(length);
+        BlobRequestOptions options = new BlobRequestOptions();
+        options.setSingleBlobPutThresholdInBytes(1024*1024);
+        options.setDisableContentMD5Validation(true);
+        options.setStoreBlobContentMD5(false);
+
+        blockBlobRef.upload(srcStream, -1, null, options, null);
+
+        options.setDisableContentMD5Validation(false);
+        options.setStoreBlobContentMD5(true);
+        options.setUseTransactionalContentMD5(true);
+        final CloudBlockBlob blockBlobRef2 = this.container.getBlockBlobReference(blockBlobName);
+        blockBlobRef2.downloadRange(1024, (long)1024, new ByteArrayOutputStream(), null, options, null);
+        assertNull(blockBlobRef2.getProperties().getContentMD5());
     }
 
     @Test
