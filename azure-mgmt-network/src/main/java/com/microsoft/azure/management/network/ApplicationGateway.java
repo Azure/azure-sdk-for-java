@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
+import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.management.apigeneration.Beta;
@@ -66,6 +67,12 @@ public interface ApplicationGateway extends
     Completable stopAsync();
 
     // Getters
+
+    /**
+     * @return disabled SSL protocols
+     */
+    @Beta //v1.0.0
+    List<ApplicationGatewaySslProtocol> disabledSslProtocols();
 
     /**
      * @return true if the application gateway has at least one internally load balanced frontend accessible within the virtual network
@@ -431,6 +438,27 @@ public interface ApplicationGateway extends
         }
 
         /**
+         * The stage of an application gateway definition allowing to specify the SSL protocols to disable.
+         */
+        interface WithDisabledSslProtocol {
+            /**
+             * Disables the specified SSL protocol.
+             * @param protocol an SSL protocol
+             * @return the next stage of the definition
+             */
+            @Beta //v1.0.0
+            WithCreate withDisabledSslProtocol(ApplicationGatewaySslProtocol protocol);
+
+            /**
+             * Disables the specified SSL protocols.
+             * @param protocols SSL protocols
+             * @return the next stage of the definition
+             */
+            @Beta //v1.0.0
+            WithCreate withDisabledSslProtocols(ApplicationGatewaySslProtocol...protocols);
+        }
+
+        /**
          * The stage of an application gateway definition containing all the required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allowing
          * for any other optional settings to be specified.
@@ -450,7 +478,8 @@ public interface ApplicationGateway extends
             WithPrivateFrontend,
             WithPublicFrontend,
             WithPublicIPAddress,
-            WithProbe {
+            WithProbe,
+            WithDisabledSslProtocol {
         }
     }
 
@@ -856,6 +885,51 @@ public interface ApplicationGateway extends
              */
             ApplicationGatewayRequestRoutingRule.Update updateRequestRoutingRule(String name);
         }
+
+        /**
+         * The stage of an application gateway definition allowing to specify the SSL protocols to disable.
+         */
+        interface WithDisabledSslProtocol {
+            /**
+             * Disables the specified SSL protocol.
+             * @param protocol an SSL protocol
+             * @return the next stage of the update
+             */
+            @Beta //v1.0.0
+            Update withDisabledSslProtocol(ApplicationGatewaySslProtocol protocol);
+
+            /**
+             * Disables the specified SSL protocols.
+             * @param protocols SSL protocols
+             * @return the next stage of the update
+             */
+            @Beta //v1.0.0
+            Update withDisabledSslProtocols(ApplicationGatewaySslProtocol...protocols);
+
+            /**
+             * Enables the specified SSL protocol, if previously disabled.
+             * @param protocol an SSL protocol
+             * @return the next stage of the update
+             */
+            @Beta //v1.0.0
+            Update withoutDisabledSslProtocol(ApplicationGatewaySslProtocol protocol);
+
+            /**
+             * Enables the specified SSL protocols, if previously disabled.
+             * @param protocols SSL protocols
+             * @return the next stage of the update
+             */
+            @Beta //v1.0.0
+            Update withoutDisabledSslProtocols(ApplicationGatewaySslProtocol...protocols);
+
+            /**
+             * Enables all SSL protocols, if previously disabled.
+             * @return the next stage of the update
+             */
+            @Beta //v1.0.0
+            @Method
+            Update withoutAnyDisabledProtocols();
+        }
     }
 
     /**
@@ -879,6 +953,7 @@ public interface ApplicationGateway extends
         UpdateStages.WithListener,
         UpdateStages.WithRequestRoutingRule,
         UpdateStages.WithExistingSubnet,
-        UpdateStages.WithProbe {
+        UpdateStages.WithProbe,
+        UpdateStages.WithDisabledSslProtocol {
     }
 }
