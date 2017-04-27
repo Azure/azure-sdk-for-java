@@ -21,6 +21,7 @@ import rx.Completable;
 import rx.Observable;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * An immutable client-side representation of an Azure CDN endpoint.
@@ -41,10 +42,9 @@ public interface CdnEndpoint extends
     String originPath();
 
     /**
-     * @return list of content types to be compressed
+     * @return content types to be compressed
      */
-    @Beta // TODO: This should be Set<String>
-    List<String> contentTypesToCompress();
+    Set<String> contentTypesToCompress();
 
     /**
      * @return true if content compression is enabled, otherwise false
@@ -107,10 +107,9 @@ public interface CdnEndpoint extends
     int httpsPort();
 
     /**
-     * @return list of custom domains associated with this endpoint
+     * @return custom domains associated with this endpoint
      */
-    @Beta // TODO: This should be Set<String>
-    List<String> customDomains();
+    Set<String> customDomains();
 
     /**
      * Starts the CDN endpoint, if it is stopped.
@@ -162,8 +161,7 @@ public interface CdnEndpoint extends
      *
      * @param contentPaths the paths to the content to be purged, which can be file paths or directory wild cards.
      */
-    @Beta // TODO: should take a Set<String>
-    void purgeContent(List<String> contentPaths);
+    void purgeContent(Set<String> contentPaths);
 
     /**
      * Forcibly purges the content of the CDN endpoint asynchronously.
@@ -171,8 +169,7 @@ public interface CdnEndpoint extends
      * @param contentPaths the paths to the content to be purged, which can be file paths or directory wild cards.
      * @return a representation of the deferred computation of this call
      */
-    @Beta // TODO: should take a Set<String>
-    Completable purgeContentAsync(List<String> contentPaths);
+    Completable purgeContentAsync(Set<String> contentPaths);
 
     /**
      * Forcibly purges the content of the CDN endpoint asynchronously.
@@ -181,8 +178,7 @@ public interface CdnEndpoint extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta // TODO: should take a Set<String>
-    ServiceFuture<Void> purgeContentAsync(List<String> contentPaths, ServiceCallback<Void> callback);
+    ServiceFuture<Void> purgeContentAsync(Set<String> contentPaths, ServiceCallback<Void> callback);
 
     /**
      * Forcibly preloads the content of the CDN endpoint.
@@ -191,8 +187,7 @@ public interface CdnEndpoint extends
      *
      * @param contentPaths the file paths to the content to be loaded
      */
-    @Beta // TODO: should take a Set<String>
-    void loadContent(List<String> contentPaths);
+    void loadContent(Set<String> contentPaths);
 
     /**
      * Forcibly preloads the content of the CDN endpoint asynchronously.
@@ -202,8 +197,7 @@ public interface CdnEndpoint extends
      * @param contentPaths the file paths to the content to be loaded
      * @return a representation of the deferred computation of this call
      */
-    @Beta // TODO: should take a Set<String>
-    Completable loadContentAsync(List<String> contentPaths);
+    Completable loadContentAsync(Set<String> contentPaths);
 
     /**
      * Forcibly preloads the content of the CDN endpoint asynchronously.
@@ -214,8 +208,7 @@ public interface CdnEndpoint extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta // TODO: should take a Set<String> instead List<String>
-    ServiceFuture<Void> loadContentAsync(List<String> contentPaths, ServiceCallback<Void> callback);
+    ServiceFuture<Void> loadContentAsync(Set<String> contentPaths, ServiceCallback<Void> callback);
 
     /**
      * Validates a custom domain mapping to ensure it maps to the correct CNAME in DNS for current endpoint.
@@ -369,11 +362,10 @@ public interface CdnEndpoint extends
             /**
              * Specifies the content types to compress.
              *
-             * @param contentTypesToCompress the list of content types to compress to set
+             * @param contentTypesToCompress content types to compress to set
              * @return the next stage of the definition
              */
-            @Beta // This should take Set<String>
-            WithStandardAttach<ParentT> withContentTypesToCompress(List<String> contentTypesToCompress);
+            WithStandardAttach<ParentT> withContentTypesToCompress(Set<String> contentTypesToCompress);
 
             /**
              * Specifies a single content type to compress.
@@ -652,11 +644,10 @@ public interface CdnEndpoint extends
             /**
              * Specifies the content types to compress.
              *
-             * @param contentTypesToCompress the list of content types to compress to set
+             * @param contentTypesToCompress content types to compress to set
              * @return the next stage of the definition
              */
-            @Beta // TODO: this should take Set<String>
-            WithStandardAttach<ParentT> withContentTypesToCompress(List<String> contentTypesToCompress);
+            WithStandardAttach<ParentT> withContentTypesToCompress(Set<String> contentTypesToCompress);
 
             /**
              * Specifies a single content type to compress.
@@ -872,11 +863,10 @@ public interface CdnEndpoint extends
         /**
          * Specifies the content types to compress.
          *
-         * @param contentTypesToCompress the list of content types to compress to set
+         * @param contentTypesToCompress content types to compress to set
          * @return the next stage of the definition
          */
-        @Beta // TODO: should take Set<String>
-        UpdateStandardEndpoint withContentTypesToCompress(List<String> contentTypesToCompress);
+        UpdateStandardEndpoint withContentTypesToCompress(Set<String> contentTypesToCompress);
 
         /**
          * Clears entire list of content types to compress.

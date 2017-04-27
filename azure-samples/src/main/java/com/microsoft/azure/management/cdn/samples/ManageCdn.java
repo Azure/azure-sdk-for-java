@@ -24,7 +24,8 @@ import okhttp3.Request;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -112,7 +113,7 @@ public final class ManageCdn {
 
             // =======================================================================================
             // Load some content (referenced by Web Apps) to the CDN endpoints.
-            ArrayList<String> contentToLoad = new ArrayList<>();
+            Set<String> contentToLoad = new HashSet<>();
             contentToLoad.add("/server.js");
             contentToLoad.add("/pictures/microsoft_logo.png");
 
@@ -161,7 +162,6 @@ public final class ManageCdn {
     }
 
     private static WebApp createWebApp(String appName, Region region, Azure azure, String resourceGroupName) {
-        final String planName = SdkContext.randomResourceName("jplan_", 15);
         final String appUrl = appName + SUFFIX;
 
         System.out.println("Creating web app " + appName + " with master branch...");
