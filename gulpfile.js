@@ -169,6 +169,12 @@ var mappings = {
         'source': 'arm-containerregistry/2017-03-01/swagger/containerregistry.json',
         'package': 'com.microsoft.azure.management.containerregistry',
         'args': '-FT 1',
+    },
+    'documentdb': {
+        'dir': 'azure-mgmt-documentdb',
+        'source': 'arm-documentdb/2015-04-08/swagger/documentdb.json',
+        'package': 'com.microsoft.azure.management.documentdb',
+        'args': '-FT 1',
     }
 };
 

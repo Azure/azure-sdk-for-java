@@ -146,6 +146,11 @@
       <artifactId>azure-mgmt-containerregistry</artifactId>
       <version>1.0.0-beta6-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-documentdb</artifactId>
+      <version>1.0.0-beta6-SNAPSHOT</version>
+    </dependency>
     <!--
     <dependency>
       <groupId>com.microsoft.azure</groupId>

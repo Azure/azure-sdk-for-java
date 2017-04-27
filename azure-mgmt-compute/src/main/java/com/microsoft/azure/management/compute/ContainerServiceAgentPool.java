@@ -43,7 +43,6 @@ public interface ContainerServiceAgentPool extends
 
     /**
      * The entirety of a container service agent pool definition as a part of a parent definition.
-     *
      * @param <ParentT>  the stage of the container service definition to return to after attaching this definition
      */
     interface Definition<ParentT> extends
@@ -59,10 +58,9 @@ public interface ContainerServiceAgentPool extends
     interface DefinitionStages {
 
         /** The final stage of a container service agent pool definition.
-         * <p>
          * At this stage, any remaining optional settings can be specified, or the container service agent pool
          * can be attached to the parent container service definition.
-         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends
             Attachable.InDefinition<ParentT> {

@@ -583,4 +583,10 @@ public class AzureTests extends TestBase {
         new TestContainerRegistry()
                 .runTest(azure.containerRegistries(), azure.resourceGroups());
     }
+
+    @Test
+    public void testDocumentDB() throws Exception {
+        new TestDocumentDB()
+                .runTest(azure.documentDBs(), azure.resourceGroups());
+    }
 }
