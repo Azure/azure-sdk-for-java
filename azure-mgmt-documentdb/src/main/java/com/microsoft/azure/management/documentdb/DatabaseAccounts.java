@@ -21,6 +21,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCr
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import rx.Observable;
 
 
 /**
@@ -70,8 +71,42 @@ public interface DatabaseAccounts extends
      * Regenerates an access key for the specified Azure DocumentDB database account.
      * @param groupName the group name
      * @param accountName the account name
-     * @param databaseAccountRegenerateKeyParameters the database account regeneration key parameters
+     * @param keyKind the key kind
      */
-    void regenerateKey(String groupName, String accountName, DatabaseAccountRegenerateKeyParameters databaseAccountRegenerateKeyParameters);
+    void regenerateKey(String groupName, String accountName, KeyKind keyKind);
+
+    /**
+     * Changes the failover priority for the Azure DocumentDB database account. A failover priority of 0 indicates
+     * a write region. The maximum value for a failover priority = (total number of regions - 1).
+     * Failover priority values must be unique for each of the regions in which the database account exists.
+     * @param groupName the group name
+     * @param accountName the account name
+     * @param failoverPolicies the list of failover policies
+     */
+    Observable<Void> failoverPriorityChangeAsync(String groupName, String accountName, FailoverPolicies failoverPolicies);
+
+    /**
+     * Lists the access keys for the specified Azure DocumentDB database account.
+     * @param groupName the group name
+     * @param accountName the account name
+     * @return a list of keys
+     */
+    Observable<DatabaseAccountListKeysResultInner> listKeysAsync(String groupName, String accountName);
+
+    /**
+     * Lists the connection strings for the specified Azure DocumentDB database account.
+     * @param groupName the group name
+     * @param accountName the account name
+     * @return a list of connection strings
+     */
+    Observable<DatabaseAccountListConnectionStringsResultInner> listConnectionStringsAsync(String groupName, String accountName);
+
+    /**
+     * Regenerates an access key for the specified Azure DocumentDB database account.
+     * @param groupName the group name
+     * @param accountName the account name
+     * @param keyKind the key kind
+     */
+    Observable<Void> regenerateKeyAsync(String groupName, String accountName, KeyKind keyKind);
 
 }

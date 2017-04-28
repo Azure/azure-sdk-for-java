@@ -7,10 +7,7 @@
 package com.microsoft.azure.management.documentdb.implementation;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.documentdb.DatabaseAccount;
-import com.microsoft.azure.management.documentdb.DatabaseAccountRegenerateKeyParameters;
-import com.microsoft.azure.management.documentdb.DatabaseAccounts;
-import com.microsoft.azure.management.documentdb.FailoverPolicies;
+import com.microsoft.azure.management.documentdb.*;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
@@ -110,21 +107,41 @@ public class DatabaseAccountsImpl
 
     @Override
     public void failoverPriorityChange(String groupName, String accountName, FailoverPolicies failoverPolicies) {
+        this.failoverPriorityChangeAsync(groupName, accountName, failoverPolicies).toBlocking().last();
+    }
 
+    @Override
+    public Observable<Void> failoverPriorityChangeAsync(String groupName, String accountName, FailoverPolicies failoverPolicies) {
+        return this.manager().inner().databaseAccounts().failoverPriorityChangeAsync(groupName, accountName);
     }
 
     @Override
     public DatabaseAccountListKeysResultInner listKeys(String groupName, String accountName) {
-        return null;
+        return this.listKeysAsync(groupName, accountName).toBlocking().last();
+    }
+
+    @Override
+    public Observable<DatabaseAccountListKeysResultInner> listKeysAsync(String groupName, String accountName) {
+        return this.manager().inner().databaseAccounts().listKeysAsync(groupName, accountName);
     }
 
     @Override
     public DatabaseAccountListConnectionStringsResultInner listConnectionStrings(String groupName, String accountName) {
-        return null;
+        return this.listConnectionStringsAsync(groupName, accountName).toBlocking().last();
     }
 
     @Override
-    public void regenerateKey(String groupName, String accountName, DatabaseAccountRegenerateKeyParameters databaseAccountRegenerateKeyParameters) {
+    public Observable<DatabaseAccountListConnectionStringsResultInner> listConnectionStringsAsync(String groupName, String accountName) {
+        return this.manager().inner().databaseAccounts().listConnectionStringsAsync(groupName, accountName);
+    }
 
+    @Override
+    public void regenerateKey(String groupName, String accountName, KeyKind keyKind) {
+        this.regenerateKeyAsync(groupName, accountName, keyKind).toBlocking().last();
+    }
+
+    @Override
+    public Observable<Void> regenerateKeyAsync(String groupName, String accountName, KeyKind keyKind) {
+        return this.manager().inner().databaseAccounts().regenerateKeyAsync(groupName, accountName, keyKind);
     }
 }

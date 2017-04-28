@@ -6,15 +6,7 @@
 package com.microsoft.azure.management.documentdb.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.documentdb.DatabaseAccount;
-import com.microsoft.azure.management.documentdb.DatabaseAccountKind;
-import com.microsoft.azure.management.documentdb.Location;
-import com.microsoft.azure.management.documentdb.DatabaseAccountOfferType;
-import com.microsoft.azure.management.documentdb.ConsistencyPolicy;
-import com.microsoft.azure.management.documentdb.FailoverPolicies;
-import com.microsoft.azure.management.documentdb.DefaultConsistencyLevel;
-import com.microsoft.azure.management.documentdb.DatabaseAccountRegenerateKeyParameters;
-import com.microsoft.azure.management.documentdb.DBLocation;
+import com.microsoft.azure.management.documentdb.*;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import rx.Observable;
@@ -106,20 +98,47 @@ public class DatabaseAccountImpl
 
     @Override
     public void failoverPriorityChange(FailoverPolicies failoverPolicies) {
+        this.failoverPriorityChangeAsync(failoverPolicies).toBlocking().last();
     }
 
     @Override
+    public Observable<Void> failoverPriorityChangeAsync(FailoverPolicies failoverPolicies) {
+        return this.manager().inner().databaseAccounts().failoverPriorityChangeAsync(this.resourceGroupName(),
+                this.name(), failoverPolicies.failoverPolicies());
+    }
+
+
+    @Override
     public DatabaseAccountListKeysResultInner listKeys() {
-        return null;
+        return this.listKeysAsync().toBlocking().last();
+    }
+
+    @Override
+    public Observable<DatabaseAccountListKeysResultInner> listKeysAsync() {
+        return this.manager().inner().databaseAccounts().listKeysAsync(this.resourceGroupName(),
+                this.name());
     }
 
     @Override
     public DatabaseAccountListConnectionStringsResultInner listConnectionStrings() {
-        return null;
+        return this.listConnectionStringsAsync().toBlocking().last();
     }
 
     @Override
-    public void regenerateKey(DatabaseAccountRegenerateKeyParameters params) {
+    public Observable<DatabaseAccountListConnectionStringsResultInner> listConnectionStringsAsync() {
+        return this.manager().inner().databaseAccounts().listConnectionStringsAsync(this.resourceGroupName(),
+                this.name());
+    }
+
+    @Override
+    public void regenerateKey(KeyKind keyKind) {
+        this.regenerateKeyAsync(keyKind).toBlocking().last();
+    }
+
+    @Override
+    public Observable<Void> regenerateKeyAsync(KeyKind keyKind) {
+        return this.manager().inner().databaseAccounts().regenerateKeyAsync(this.resourceGroupName(),
+                this.name(), keyKind);
     }
 
     @Override

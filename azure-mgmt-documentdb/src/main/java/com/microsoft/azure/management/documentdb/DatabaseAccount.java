@@ -19,6 +19,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
+import rx.Observable;
 
 import java.util.Map;
 
@@ -73,9 +74,19 @@ public interface DatabaseAccount extends
     void failoverPriorityChange(FailoverPolicies failoverPolicies);
 
     /**
+     * @param failoverPolicies the failover policies
+     */
+    Observable<Void> failoverPriorityChangeAsync(FailoverPolicies failoverPolicies);
+
+    /**
      * @return the access keys for the specified Azure DocumentDB database account
      */
     DatabaseAccountListKeysResultInner listKeys();
+
+    /**
+     * @return the access keys for the specified Azure DocumentDB database account
+     */
+    Observable<DatabaseAccountListKeysResultInner> listKeysAsync();
 
     /**
      * @return the connection strings for the specified Azure DocumentDB database account
@@ -83,9 +94,19 @@ public interface DatabaseAccount extends
     DatabaseAccountListConnectionStringsResultInner listConnectionStrings();
 
     /**
-     * @param databaseAccountRegenerateKeyParameters the parameters
+     * @return the connection strings for the specified Azure DocumentDB database account
      */
-    void regenerateKey(DatabaseAccountRegenerateKeyParameters databaseAccountRegenerateKeyParameters);
+    Observable<DatabaseAccountListConnectionStringsResultInner> listConnectionStringsAsync();
+
+    /**
+     * @param keyKind the key kind
+     */
+    void regenerateKey(KeyKind keyKind);
+
+    /**
+     * @param keyKind the key kind
+     */
+    Observable<Void> regenerateKeyAsync(KeyKind keyKind);
 
     /**
      * Grouping of document db definition stages.
