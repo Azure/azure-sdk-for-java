@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Possible power states of a virtual machine.
  */
-public class PowerState {
+public final class PowerState {
     // This needs to be at the beginning for the initialization to happen correctly
     private static final Map<String, PowerState> VALUES_BY_NAME = new HashMap<>();
 
@@ -67,7 +67,7 @@ public class PowerState {
      * Creates a custom value for PowerState.
      * @param value the custom value
      */
-    public PowerState(String value) {
+    private PowerState(String value) {
         // TODO: This constructor should be private, but keeping as is for now to keep 1.0.0 back compat
         this.value = value;
         VALUES_BY_NAME.put(value.toLowerCase(), this);
@@ -84,7 +84,7 @@ public class PowerState {
             return null;
         }
 
-        PowerState powerState = VALUES_BY_NAME.get(value.toLowerCase().replace(" ", ""));
+        PowerState powerState = VALUES_BY_NAME.get(value.toLowerCase());
         if (powerState != null) {
             return powerState;
         } else {
@@ -127,13 +127,10 @@ public class PowerState {
             return false;
         } else if (obj == this) {
             return true;
+        } else if (value == null) {
+            return ((PowerState) obj).value == null;
         } else {
-            PowerState rhs = (PowerState) obj;
-            if (value == null) {
-                return rhs.value == null;
-            } else {
-                return value.equals(rhs.value);
-            }
+            return value.equals(((PowerState) obj).value);
         }
     }
 }

@@ -6,10 +6,17 @@
 
 package com.microsoft.azure.management.compute;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Defines values for EncryptionStatuses.
  */
-public class EncryptionStatus {
+public final class EncryptionStatus {
+    // This needs to be at the beginning for the initialization to happen correctly
+    private static final Map<String, EncryptionStatus> VALUES_BY_NAME = new HashMap<>();
+
     /** Static value Encrypted for EncryptionInProgress. */
     public static final EncryptionStatus ENCRYPTION_INPROGRESS = new EncryptionStatus("EncryptionInProgress");
 
@@ -31,11 +38,40 @@ public class EncryptionStatus {
     private String value;
 
     /**
+     * @return predefined encryption statuses
+     */
+    public static EncryptionStatus[] values() {
+        Collection<EncryptionStatus> valuesCollection = VALUES_BY_NAME.values();
+        return valuesCollection.toArray(new EncryptionStatus[valuesCollection.size()]);
+    }
+
+    /**
      * Creates a custom value for EncryptionStatuses.
      * @param value the custom value
      */
     public EncryptionStatus(String value) {
+        // TODO: This constructor should be private, but keeping as is for now to keep 1.0.0 back compat
         this.value = value;
+        VALUES_BY_NAME.put(value.toLowerCase(), this);
+    }
+
+    /**
+     * Parses a value into an encryption status and creates a new EncryptionStatus instance if not found among the existing ones.
+     *
+     * @param value a compute usage unit name
+     * @return the parsed or created compute usage unit
+     */
+    public static EncryptionStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+
+        EncryptionStatus result = VALUES_BY_NAME.get(value.toLowerCase());
+        if (result != null) {
+            return result;
+        } else {
+            return new EncryptionStatus(value);
+        }
     }
 
     @Override
@@ -52,15 +88,12 @@ public class EncryptionStatus {
     public boolean equals(Object obj) {
         if (!(obj instanceof EncryptionStatus)) {
             return false;
-        }
-        if (obj == this) {
+        } else if (obj == this) {
             return true;
-        }
-        EncryptionStatus rhs = (EncryptionStatus) obj;
-        if (value == null) {
-            return rhs.value == null;
+        } else if (value == null) {
+            return ((EncryptionStatus) obj).value == null;
         } else {
-            return value.equalsIgnoreCase(rhs.value);
+            return value.equalsIgnoreCase(((EncryptionStatus) obj).value);
         }
     }
 }

@@ -12,7 +12,7 @@ import com.microsoft.azure.management.compute.VirtualMachineScaleSetSkuTypes;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
 /**
- * implementation of {@link VirtualMachineScaleSetSku}.
+ * Implementation of VirtualMachineScaleSetSku.
  */
 @LangDefinition
 class VirtualMachineScaleSetSkuImpl
@@ -29,7 +29,7 @@ class VirtualMachineScaleSetSkuImpl
 
     @Override
     public VirtualMachineScaleSetSkuTypes skuType() {
-        return new VirtualMachineScaleSetSkuTypes(this.inner().sku());
+        return VirtualMachineScaleSetSkuTypes.fromSku(this.inner().sku());
     }
 
     @Override
