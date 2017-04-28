@@ -1354,12 +1354,6 @@ public abstract class CloudBlob implements ListBlobItem {
                     final BlobAttributes retrievedAttributes = BlobResponse.getBlobAttributes(this.getConnection(),
                             blob.getStorageUri(), blob.snapshotID);
 
-                    if (!options.getDisableContentMD5Validation() && options.getUseTransactionalContentMD5()
-                            && Utility.isNullOrEmpty(retrievedAttributes.getProperties().getContentMD5())) {
-                        throw new StorageException(StorageErrorCodeStrings.MISSING_MD5_HEADER, SR.MISSING_MD5,
-                                Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
-                    }
-
                     blob.properties = retrievedAttributes.getProperties();
                     blob.metadata = retrievedAttributes.getMetadata();
                     
