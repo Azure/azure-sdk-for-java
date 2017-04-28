@@ -20,6 +20,7 @@ import com.microsoft.rest.ServiceFuture;
 import rx.Completable;
 import rx.Observable;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -74,6 +75,7 @@ public interface CdnEndpoint extends
     /**
      * @return list of Geo filters
      */
+    //TODO: This should be Collection<GeoFilter> in the next major update
     List<GeoFilter> geoFilters();
 
     /**
@@ -384,7 +386,7 @@ public interface CdnEndpoint extends
             WithStandardAttach<ParentT> withCompressionEnabled(boolean compressionEnabled);
 
             /**
-             * Sets the query string caching behavior.
+             * Selects the query string caching behavior.
              *
              * @param cachingBehavior the query string caching behavior value to set
              * @return the next stage of the definition
@@ -392,13 +394,12 @@ public interface CdnEndpoint extends
             WithStandardAttach<ParentT> withQueryStringCachingBehavior(QueryStringCachingBehavior cachingBehavior);
 
             /**
-             * Sets the geo filters list.
+             * Specifies the geo filters to use.
              *
-             * @param geoFilters the Geo filters list to set
+             * @param geoFilters geo filters
              * @return the next stage of the definition
              */
-            @Beta // TODO: this should take Set<String>
-            WithStandardAttach<ParentT> withGeoFilters(List<GeoFilter> geoFilters);
+            WithStandardAttach<ParentT> withGeoFilters(Collection<GeoFilter> geoFilters);
 
             /**
              * Adds a single entry to the geo filters list.
@@ -418,8 +419,7 @@ public interface CdnEndpoint extends
              * @param countryCodes a list of the ISO 2 letter country codes.
              * @return the next stage of the definition
              */
-            @Beta //TODO: contryCodes should be Set<CountryIsoCode>
-            WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, List<CountryIsoCode> countryCodes);
+            WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, Collection<CountryIsoCode> countryCodes);
 
             /**
              * Adds a new CDN custom domain within an endpoint.
@@ -674,13 +674,12 @@ public interface CdnEndpoint extends
             WithStandardAttach<ParentT> withQueryStringCachingBehavior(QueryStringCachingBehavior cachingBehavior);
 
             /**
-             * Sets the geo filters list.
+             * Specifies the geo filters to use.
              *
-             * @param geoFilters the Geo filters list to set
+             * @param geoFilters geo filters
              * @return the next stage of the definition
              */
-            @Beta // TODO: This should be Set<String>
-            WithStandardAttach<ParentT> withGeoFilters(List<GeoFilter> geoFilters);
+            WithStandardAttach<ParentT> withGeoFilters(Collection<GeoFilter> geoFilters);
 
             /**
              * Adds a single entry to the geo filters list.
@@ -700,8 +699,7 @@ public interface CdnEndpoint extends
              * @param countryCodes a list of ISO 2 letter country codes
              * @return the next stage of the definition
              */
-            @Beta // TODO: countryCodes should be Set<>
-            WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, List<CountryIsoCode> countryCodes);
+            WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, Collection<CountryIsoCode> countryCodes);
 
             /**
              * Adds a new CDN custom domain within an endpoint.
@@ -909,14 +907,12 @@ public interface CdnEndpoint extends
         UpdateStandardEndpoint withQueryStringCachingBehavior(QueryStringCachingBehavior cachingBehavior);
 
         /**
-         * Sets the geo filters list.
+         * Specifies the geo filters to use.
          *
-         * @param geoFilters a geo filters list
+         * @param geoFilters geo filters
          * @return the next stage of the definition
          */
-        // TODO: Set<GeoFilter>?
-        @Beta
-        UpdateStandardEndpoint withGeoFilters(List<GeoFilter> geoFilters);
+        UpdateStandardEndpoint withGeoFilters(Collection<GeoFilter> geoFilters);
 
         /**
          * Clears entire geo filters list.
@@ -943,8 +939,7 @@ public interface CdnEndpoint extends
          * @param countryCodes a list of ISO 2 letter country codes
          * @return the next stage of the definition
          */
-        @Beta // TODO: Set<CountryIsoCode>
-        UpdateStandardEndpoint withGeoFilter(String relativePath, GeoFilterActions action, List<CountryIsoCode> countryCodes);
+        UpdateStandardEndpoint withGeoFilter(String relativePath, GeoFilterActions action, Collection<CountryIsoCode> countryCodes);
 
         /**
          * Removes an entry from the geo filters list.

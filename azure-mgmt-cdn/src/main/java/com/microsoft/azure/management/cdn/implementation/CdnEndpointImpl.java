@@ -34,6 +34,7 @@ import rx.functions.Func3;
 import rx.functions.FuncN;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -531,8 +532,13 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
     }
 
     @Override
-    public CdnEndpointImpl withGeoFilters(List<GeoFilter> geoFilters) {
-        this.inner().withGeoFilters(geoFilters);
+    public CdnEndpointImpl withGeoFilters(Collection<GeoFilter> geoFilters) {
+        List<GeoFilter> list = null;
+        if (geoFilters != null) {
+            list = new ArrayList<>(geoFilters);
+        }
+
+        this.inner().withGeoFilters(list);
         return this;
     }
 
@@ -558,7 +564,7 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
     }
 
     @Override
-    public CdnEndpointImpl withGeoFilter(String relativePath, GeoFilterActions action, List<CountryIsoCode> countryCodes) {
+    public CdnEndpointImpl withGeoFilter(String relativePath, GeoFilterActions action, Collection<CountryIsoCode> countryCodes) {
         GeoFilter geoFilter = this.createGeoFiltersObject(relativePath, action);
 
         if (geoFilter.countryCodes() == null) {
