@@ -42,7 +42,7 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
 		synchronized (this.requestResonseLinkCreationLock) {
 			if(this.requestResponseLink == null)
 			{
-				String requestResponseLinkPath = RequestResponseLink.getRequestResponseLinkPath(this.entityPath);
+				String requestResponseLinkPath = RequestResponseLink.getManagementNodeLinkPath(this.entityPath);
 				CompletableFuture<Void> crateAndAssignRequestResponseLink =
 								RequestResponseLink.createAsync(this.underlyingFactory, this.getClientId() + "-RequestResponse", requestResponseLinkPath).thenAccept((rrlink) -> {this.requestResponseLink = rrlink;});
 				return crateAndAssignRequestResponseLink;
@@ -66,7 +66,7 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
 				requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_LAST_SESSION_ID, lastSessionId);
 			}
 			
-			Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_GET_MESSAGE_SESSIONS_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.underlyingFactory.getOperationTimeout()));
+			Message requestMessage = RequestResponseUtils.createRequestMessageFromPropertyBag(ClientConstants.REQUEST_RESPONSE_GET_MESSAGE_SESSIONS_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.underlyingFactory.getOperationTimeout()));
 			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.underlyingFactory.getOperationTimeout());
 			return responseFuture.thenComposeAsync((responseMessage) -> {
 				CompletableFuture<Pair<String[], Integer>> returningFuture = new CompletableFuture<Pair<String[], Integer>>();
@@ -99,7 +99,7 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
 			HashMap requestBodyMap = new HashMap();
 			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_RULENAME, ruleName);
 			
-			Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_REMOVE_RULE_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.underlyingFactory.getOperationTimeout()));
+			Message requestMessage = RequestResponseUtils.createRequestMessageFromPropertyBag(ClientConstants.REQUEST_RESPONSE_REMOVE_RULE_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.underlyingFactory.getOperationTimeout()));
 			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.underlyingFactory.getOperationTimeout());
 			return responseFuture.thenComposeAsync((responseMessage) -> {
 				CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();
@@ -125,7 +125,7 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
 			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_RULENAME, ruleDescription.getName());
 			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_RULEDESCRIPTION, RequestResponseUtils.encodeRuleDescriptionToMap(ruleDescription));
 			
-			Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_ADD_RULE_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.underlyingFactory.getOperationTimeout()));
+			Message requestMessage = RequestResponseUtils.createRequestMessageFromPropertyBag(ClientConstants.REQUEST_RESPONSE_ADD_RULE_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.underlyingFactory.getOperationTimeout()));
 			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.underlyingFactory.getOperationTimeout());
 			return responseFuture.thenComposeAsync((responseMessage) -> {
 				CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();

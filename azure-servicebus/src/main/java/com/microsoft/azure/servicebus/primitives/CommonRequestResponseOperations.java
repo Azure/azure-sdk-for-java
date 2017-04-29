@@ -12,8 +12,8 @@ import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.message.Message;
 
-final class MessageBrowserUtil {
-	public static CompletableFuture<Collection<Message>> peekMessagesAsync(RequestResponseLink requestResponseLink, Duration operationTimeout, long fromSequenceNumber, int messageCount, String sessionId)
+final class CommonRequestResponseOperations {
+	static CompletableFuture<Collection<Message>> peekMessagesAsync(RequestResponseLink requestResponseLink, Duration operationTimeout, long fromSequenceNumber, int messageCount, String sessionId)
 	{
 		HashMap requestBodyMap = new HashMap();
 		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_FROM_SEQUENCE_NUMER, fromSequenceNumber);
@@ -22,7 +22,7 @@ final class MessageBrowserUtil {
 		{
 			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, sessionId);
 		}
-		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_PEEK_OPERATION, requestBodyMap, Util.adjustServerTimeout(operationTimeout));
+		Message requestMessage = RequestResponseUtils.createRequestMessageFromPropertyBag(ClientConstants.REQUEST_RESPONSE_PEEK_OPERATION, requestBodyMap, Util.adjustServerTimeout(operationTimeout));
 		CompletableFuture<Message> responseFuture = requestResponseLink.requestAysnc(requestMessage, operationTimeout);
 		return responseFuture.thenComposeAsync((responseMessage) -> {
 			CompletableFuture<Collection<Message>> returningFuture = new CompletableFuture<Collection<Message>>();
@@ -62,5 +62,27 @@ final class MessageBrowserUtil {
 			}
 			return returningFuture;
 		});
+	}
+	
+	static CompletableFuture<Void> sendCBSTokenAsync(RequestResponseLink requestResponseLink, Duration operationTimeout, String token, String tokenType, String tokenAudience)
+	{
+        Message requestMessage = RequestResponseUtils.createRequestMessageFromValueBody(ClientConstants.REQUEST_RESPONSE_PUT_TOKEN_OPERATION, token, Util.adjustServerTimeout(operationTimeout));
+        requestMessage.getApplicationProperties().getValue().put(ClientConstants.REQUEST_RESPONSE_PUT_TOKEN_TYPE, tokenType);
+        requestMessage.getApplicationProperties().getValue().put(ClientConstants.REQUEST_RESPONSE_PUT_TOKEN_AUDIENCE, tokenAudience);
+        CompletableFuture<Message> responseFuture = requestResponseLink.requestAysnc(requestMessage, operationTimeout);
+        return responseFuture.thenComposeAsync((responseMessage) -> {
+            CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();
+            int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+            if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE || statusCode == ClientConstants.REQUEST_RESPONSE_ACCEPTED_STATUS_CODE)
+            {
+                returningFuture.complete(null);
+            }
+            else
+            {
+                // error response
+                returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
+            }
+            return returningFuture;
+        });
 	}
 }

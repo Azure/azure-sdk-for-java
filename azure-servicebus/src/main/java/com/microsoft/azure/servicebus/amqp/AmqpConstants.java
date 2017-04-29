@@ -20,7 +20,8 @@ public final class AmqpConstants
 
 	public static final int MAX_FRAME_SIZE = 65536;
 	
-	public static final String MANAGEMENT_ADDRESS_SEGMENT = "/$management";
+	public static final String MANAGEMENT_NODE_ADDRESS_SEGMENT = "$management";
+	public static final String CBS_NODE_ADDRESS_SEGMENT = "$cbs";
 	
 	public static final Symbol PRODUCT = Symbol.valueOf("product");
     public static final Symbol VERSION = Symbol.valueOf("version");

@@ -105,10 +105,15 @@ class RequestResponseLink extends ClientEntity{
 		return requestReponseLink.createFuture;
 	}
 	
-	public static String getRequestResponseLinkPath(String entityPath)
+	public static String getManagementNodeLinkPath(String entityPath)
 	{
-		return entityPath + AmqpConstants.MANAGEMENT_ADDRESS_SEGMENT;
+		return String.format("%s/%s", entityPath,  AmqpConstants.MANAGEMENT_NODE_ADDRESS_SEGMENT);
 	}
+	
+	public static String getCBSNodeLinkPath()
+    {
+        return AmqpConstants.CBS_NODE_ADDRESS_SEGMENT;
+    }
 	
 	private RequestResponseLink(MessagingFactory messagingFactory, String linkName, String linkPath)
 	{

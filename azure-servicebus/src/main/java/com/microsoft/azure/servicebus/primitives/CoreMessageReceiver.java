@@ -23,11 +23,20 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.Binary;
+import org.apache.qpid.proton.amqp.UnsignedInteger;
+import org.apache.qpid.proton.amqp.messaging.Accepted;
+import org.apache.qpid.proton.amqp.messaging.AmqpValue;
+import org.apache.qpid.proton.amqp.messaging.Modified;
+import org.apache.qpid.proton.amqp.messaging.Outcome;
+import org.apache.qpid.proton.amqp.messaging.Rejected;
+import org.apache.qpid.proton.amqp.messaging.Released;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
@@ -41,21 +50,11 @@ import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.message.Message;
-import org.apache.qpid.proton.amqp.Binary;
-import org.apache.qpid.proton.amqp.UnsignedInteger;
-import org.apache.qpid.proton.amqp.messaging.Accepted;
-import org.apache.qpid.proton.amqp.messaging.AmqpValue;
-import org.apache.qpid.proton.amqp.messaging.Modified;
-import org.apache.qpid.proton.amqp.messaging.Outcome;
-import org.apache.qpid.proton.amqp.messaging.Rejected;
-import org.apache.qpid.proton.amqp.messaging.Released;
 
-import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 import com.microsoft.azure.servicebus.amqp.DispatchHandler;
 import com.microsoft.azure.servicebus.amqp.IAmqpReceiver;
 import com.microsoft.azure.servicebus.amqp.ReceiveLinkHandler;
 import com.microsoft.azure.servicebus.amqp.SessionHandler;
-import com.microsoft.azure.servicebus.rules.RuleDescription;
 
 /**
  * Common Receiver that abstracts all amqp related details
@@ -73,6 +72,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	private final ConcurrentHashMap<String, Delivery> tagsToDeliveriesMap;
 	private final MessagingFactory underlyingFactory;
 	private final String receivePath;
+	private final String sasTokenAudienceURI;
 	private final Duration operationTimeout;
 	private final CompletableFuture<Void> linkClose;
 	private final Object prefetchCountSync;
@@ -93,6 +93,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	private Exception lastKnownLinkError;
 	private Instant lastKnownErrorReportedAt;
 	private int nextCreditToFlow;
+	private ScheduledFuture<?> sasTokenRenewTimerFuture;
 		
 	private final Runnable timedOutUpdateStateRequestsDaemon;
 	
@@ -111,6 +112,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		this.underlyingFactory = factory;
 		this.operationTimeout = factory.getOperationTimeout();
 		this.receivePath = recvPath;
+		this.sasTokenAudienceURI = String.format(ClientConstants.SAS_TOKEN_AUDIENCE_FORMAT, factory.getHostName(), recvPath);
 		this.sessionId = sessionId;
 		this.isSessionReceiver = false;
 		this.isBrowsableSession = false;
@@ -194,22 +196,34 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	private CompletableFuture<CoreMessageReceiver> createLink()
 	{
 		this.linkOpen = new WorkItem<CoreMessageReceiver>(new CompletableFuture<CoreMessageReceiver>(), this.operationTimeout);
-		this.scheduleLinkOpenTimeout(this.linkOpen.getTimeoutTracker());		
-		try
-		{
-			this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler()
-			{
-				@Override
-				public void onEvent()
-				{
-					CoreMessageReceiver.this.createReceiveLink();
-				}
-			});
-		}
-		catch (IOException ioException)
-		{
-			this.linkOpen.getWork().completeExceptionally(new ServiceBusException(false, "Failed to create Receiver, see cause for more details.", ioException));
-		}
+		this.scheduleLinkOpenTimeout(this.linkOpen.getTimeoutTracker());
+		this.sendSASTokenAndSetRenewTimer().handleAsync((v, sasTokenEx) -> {
+            if(sasTokenEx != null)
+            {
+                this.linkOpen.getWork().completeExceptionally(ExceptionUtil.extractAsyncCompletionCause(sasTokenEx));
+            }
+            else
+            {
+                try
+                {
+                    this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler()
+                    {
+                        @Override
+                        public void onEvent()
+                        {
+                            CoreMessageReceiver.this.createReceiveLink();
+                        }
+                    });
+                }
+                catch (IOException ioException)
+                {
+                    this.cancelSASTokenRenewTimer();
+                    this.linkOpen.getWork().completeExceptionally(new ServiceBusException(false, "Failed to create Receiver, see cause for more details.", ioException));
+                }
+            }
+            
+            return null;
+        });
 		
 		return this.linkOpen.getWork();		
 	}
@@ -220,7 +234,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		{
 			if(this.requestResponseLink == null)
 			{
-				String requestResponseLinkPath = RequestResponseLink.getRequestResponseLinkPath(this.receivePath);
+				String requestResponseLinkPath = RequestResponseLink.getManagementNodeLinkPath(this.receivePath);
 				CompletableFuture<Void> crateAndAssignRequestResponseLink =
 								RequestResponseLink.createAsync(this.underlyingFactory, this.getClientId() + "-RequestResponse", requestResponseLinkPath).thenAccept((rrlink) -> {this.requestResponseLink = rrlink;});
 				return crateAndAssignRequestResponseLink;
@@ -283,6 +297,27 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 
 		this.receiveLink = receiver;
 	}
+	
+	CompletableFuture<Void> sendSASTokenAndSetRenewTimer()
+    {
+        if(this.getIsClosingOrClosed())
+        {
+            return CompletableFuture.completedFuture(null);
+        }
+        else
+        {
+            CompletableFuture<ScheduledFuture<?>> sendTokenFuture = this.underlyingFactory.sendSASTokenAndSetRenewTimer(this.sasTokenAudienceURI, () -> this.sendSASTokenAndSetRenewTimer());
+            return sendTokenFuture.thenAccept((f) -> {this.sasTokenRenewTimerFuture = f;});
+        }
+    }
+    
+    private void cancelSASTokenRenewTimer()
+    {
+        if(this.sasTokenRenewTimerFuture != null && !this.sasTokenRenewTimerFuture.isDone())
+        {
+            this.sasTokenRenewTimerFuture.cancel(true);
+        }
+    }
 
 	private List<MessageWithDeliveryTag> receiveCore(final int messageCount)
 	{
@@ -501,6 +536,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		{
 			if (this.linkOpen != null && !this.linkOpen.getWork().isDone())
 			{
+			    this.cancelSASTokenRenewTimer();
 				this.setClosed();
 				ExceptionUtil.completeExceptionally(this.linkOpen.getWork(), exception, this, true);
 			}
@@ -744,6 +780,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 					{
 						if (!linkOpen.getWork().isDone())
 						{
+						    CoreMessageReceiver.this.cancelSASTokenRenewTimer();
 							Exception operationTimedout = new TimeoutException(
 									String.format(Locale.US, "%s operation on ReceiveLink(%s) to path(%s) timed out at %s.", "Open", CoreMessageReceiver.this.receiveLink.getName(), CoreMessageReceiver.this.receivePath, ZonedDateTime.now()),
 									CoreMessageReceiver.this.lastKnownLinkError);
@@ -850,6 +887,8 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 			}
 		}
 
+		this.cancelSASTokenRenewTimer();
+		
 		return this.linkClose.thenCompose((v) -> {
 			return this.requestResponseLink == null ? CompletableFuture.completedFuture(null) : this.requestResponseLink.closeAsync();});
 	}
@@ -1038,7 +1077,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 				requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());
 			}
 			
-			Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_RENEWLOCK_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
+			Message requestMessage = RequestResponseUtils.createRequestMessageFromPropertyBag(ClientConstants.REQUEST_RESPONSE_RENEWLOCK_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
 			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
 			return responseFuture.thenComposeAsync((responseMessage) -> {
 				CompletableFuture<Collection<Instant>> returningFuture = new CompletableFuture<Collection<Instant>>();
@@ -1069,7 +1108,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 				requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());
 			}
 			
-			Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_RECEIVE_BY_SEQUENCE_NUMBER, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
+			Message requestMessage = RequestResponseUtils.createRequestMessageFromPropertyBag(ClientConstants.REQUEST_RESPONSE_RECEIVE_BY_SEQUENCE_NUMBER, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
 			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
 			return responseFuture.thenComposeAsync((responseMessage) -> {
 				CompletableFuture<Collection<MessageWithLockToken>> returningFuture = new CompletableFuture<Collection<MessageWithLockToken>>();
@@ -1140,7 +1179,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 				requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());
 			}
 			
-			Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_UPDATE_DISPOSTION_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
+			Message requestMessage = RequestResponseUtils.createRequestMessageFromPropertyBag(ClientConstants.REQUEST_RESPONSE_UPDATE_DISPOSTION_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
 			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
 			return responseFuture.thenComposeAsync((responseMessage) -> {
 				CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();
@@ -1165,7 +1204,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 			HashMap requestBodyMap = new HashMap();
 			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());
 			
-			Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_RENEW_SESSIONLOCK_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
+			Message requestMessage = RequestResponseUtils.createRequestMessageFromPropertyBag(ClientConstants.REQUEST_RESPONSE_RENEW_SESSIONLOCK_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
 			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
 			return responseFuture.thenComposeAsync((responseMessage) -> {
 				CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();
@@ -1192,7 +1231,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 			HashMap requestBodyMap = new HashMap();
 			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());		
 			
-			Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_GET_SESSION_STATE_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
+			Message requestMessage = RequestResponseUtils.createRequestMessageFromPropertyBag(ClientConstants.REQUEST_RESPONSE_GET_SESSION_STATE_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
 			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
 			return responseFuture.thenComposeAsync((responseMessage) -> {
 				CompletableFuture<byte[]> returningFuture = new CompletableFuture<byte[]>();
@@ -1230,7 +1269,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());
 			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSION_STATE, sessionState == null ? null : new Binary(sessionState));
 			
-			Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_SET_SESSION_STATE_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
+			Message requestMessage = RequestResponseUtils.createRequestMessageFromPropertyBag(ClientConstants.REQUEST_RESPONSE_SET_SESSION_STATE_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
 			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
 			return responseFuture.thenComposeAsync((responseMessage) -> {
 				CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();
@@ -1253,7 +1292,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	public CompletableFuture<Collection<Message>> peekMessagesAsync(long fromSequenceNumber, int messageCount, String sessionId)
 	{
 		return this.createRequestResponseLink().thenComposeAsync((v) -> {
-			return MessageBrowserUtil.peekMessagesAsync(this.requestResponseLink, this.operationTimeout, fromSequenceNumber, messageCount, sessionId);
+			return CommonRequestResponseOperations.peekMessagesAsync(this.requestResponseLink, this.operationTimeout, fromSequenceNumber, messageCount, sessionId);
 		});		
 	}	
 }

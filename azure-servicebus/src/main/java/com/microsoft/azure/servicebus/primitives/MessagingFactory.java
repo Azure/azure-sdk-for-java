@@ -6,11 +6,13 @@ package com.microsoft.azure.servicebus.primitives;
 
 import java.io.IOException;
 import java.nio.channels.UnresolvedAddressException;
+import java.security.InvalidKeyException;
 import java.time.Duration;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -41,6 +43,8 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	public static final Duration DefaultOperationTimeout = Duration.ofSeconds(30);
 
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
+	private final Object requestResponseLinkCreationLock = new Object();
+	private final ConnectionStringBuilder builder;
 	private final String hostName;
 	private final CompletableFuture<Void> closeTask;
 	private final ConnectionHandler connectionHandler;
@@ -56,7 +60,8 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	private RetryPolicy retryPolicy;
 	private CompletableFuture<MessagingFactory> open;
 	private CompletableFuture<Connection> openConnection;
-	
+	private RequestResponseLink cbsLink;
+
 	/**
 	 * @param reactor parameter reactor is purely for testing purposes and the SDK code should always set it to null
 	 */
@@ -65,6 +70,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		super("MessagingFactory".concat(StringUtil.getShortRandomString()), null);
 
 		Timer.register(this.getClientId());
+		this.builder = builder;
 		this.hostName = builder.getEndpoint().getHost();
 		
 		this.operationTimeout = builder.getOperationTimeout();
@@ -72,7 +78,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		this.registeredLinks = new LinkedList<Link>();
 		this.closeTask = new CompletableFuture<Void>();
 		this.reactorLock = new Object();
-		this.connectionHandler = new ConnectionHandler(this, builder.getSasKeyName(), builder.getSasKey());
+		this.connectionHandler = new ConnectionHandler(this);
 		this.open = new CompletableFuture<MessagingFactory>();
 		this.openConnection = new CompletableFuture<Connection>();
 		
@@ -408,5 +414,60 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	public void scheduleOnReactorThread(final int delay, final DispatchHandler handler) throws IOException
 	{
 		this.getReactorScheduler().invoke(delay, handler);
-	}	
+	}
+	
+	CompletableFuture<ScheduledFuture<?>> sendSASTokenAndSetRenewTimer(String sasTokenAudienceURI, Runnable validityRenewer)
+    {
+	    boolean isSasTokenGenerated = false;
+	    String sasToken = this.builder.getSharedAccessSignatureToken();
+        try
+        {
+            if(sasToken == null)
+            {
+                sasToken = SASUtil.generateSharedAccessSignatureToken(builder.getSasKeyName(), builder.getSasKey(), sasTokenAudienceURI, ClientConstants.DEFAULT_SAS_TOKEN_VALIDITY_IN_SECONDS);;
+                isSasTokenGenerated = true;
+            }
+        } catch (InvalidKeyException e) {
+            CompletableFuture<ScheduledFuture<?>> exceptionFuture = new CompletableFuture<>();
+            exceptionFuture.completeExceptionally(e);
+            return exceptionFuture;
+        }
+
+        final String finalSasToken = sasToken;
+        final boolean finalIsSasTokenGenerated = isSasTokenGenerated;
+
+        CompletableFuture<Void> sendTokenFuture = this.createCBSLink().thenComposeAsync((v) -> {
+            return CommonRequestResponseOperations.sendCBSTokenAsync(this.cbsLink, Util.adjustServerTimeout(this.operationTimeout), finalSasToken, ClientConstants.SAS_TOKEN_TYPE, sasTokenAudienceURI);
+        });
+        return sendTokenFuture.thenApplyAsync((v) -> {
+            if(finalIsSasTokenGenerated)
+            {
+                // It will eventually expire. Renew it
+                int renewInterval = SASUtil.getCBSTokenRenewIntervalInSeconds(ClientConstants.DEFAULT_SAS_TOKEN_VALIDITY_IN_SECONDS);
+                return Timer.schedule(validityRenewer, Duration.ofSeconds(renewInterval), TimerType.OneTimeRun);
+            }
+            else
+            {
+                // User provided signature. We can't renew it.
+                return null;
+            }
+        });
+    }
+	
+	private CompletableFuture<Void> createCBSLink()
+    {
+        synchronized (this.requestResponseLinkCreationLock) {
+            if(this.cbsLink == null)
+            {
+                String requestResponseLinkPath = RequestResponseLink.getCBSNodeLinkPath();
+                CompletableFuture<Void> crateAndAssignRequestResponseLink =
+                                RequestResponseLink.createAsync(this, this.getClientId() + "-cbs", requestResponseLinkPath).thenAccept((rrlink) -> {this.cbsLink = rrlink;});
+                return crateAndAssignRequestResponseLink;
+            }
+            else
+            {
+                return CompletableFuture.completedFuture(null);
+            }
+        }
+    }
 }

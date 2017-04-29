@@ -17,6 +17,5 @@
 	
 	<modules>
 		<module>azure-servicebus</module>
-		<module>azure-servicebus-samples</module>
 	</modules>	
 </project>
