@@ -21,6 +21,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCr
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 
 
@@ -82,6 +83,7 @@ public interface DatabaseAccounts extends
      * @param groupName the group name
      * @param accountName the account name
      * @param failoverPolicies the list of failover policies
+     * @return the ServiceResponse object if successful.
      */
     Observable<Void> failoverPriorityChangeAsync(String groupName, String accountName, FailoverPolicies failoverPolicies);
 
@@ -106,6 +108,7 @@ public interface DatabaseAccounts extends
      * @param groupName the group name
      * @param accountName the account name
      * @param keyKind the key kind
+     * @return the ServiceResponse object if successful.
      */
     Observable<Void> regenerateKeyAsync(String groupName, String accountName, KeyKind keyKind);
 

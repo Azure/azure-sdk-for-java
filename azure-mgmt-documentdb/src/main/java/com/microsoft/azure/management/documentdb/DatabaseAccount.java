@@ -75,6 +75,7 @@ public interface DatabaseAccount extends
 
     /**
      * @param failoverPolicies the failover policies
+     * @return the ServiceResponse object if successful.
      */
     Observable<Void> failoverPriorityChangeAsync(FailoverPolicies failoverPolicies);
 
@@ -105,6 +106,7 @@ public interface DatabaseAccount extends
 
     /**
      * @param keyKind the key kind
+     * @return the ServiceResponse object if successful.
      */
     Observable<Void> regenerateKeyAsync(KeyKind keyKind);
 

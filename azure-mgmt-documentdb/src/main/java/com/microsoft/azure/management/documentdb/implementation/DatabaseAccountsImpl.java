@@ -7,7 +7,10 @@
 package com.microsoft.azure.management.documentdb.implementation;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.documentdb.*;
+import com.microsoft.azure.management.documentdb.DatabaseAccount;
+import com.microsoft.azure.management.documentdb.DatabaseAccounts;
+import com.microsoft.azure.management.documentdb.FailoverPolicies;
+import com.microsoft.azure.management.documentdb.KeyKind;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
