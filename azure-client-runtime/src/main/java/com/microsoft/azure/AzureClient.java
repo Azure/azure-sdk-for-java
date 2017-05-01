@@ -22,8 +22,6 @@ import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -37,11 +35,6 @@ public final class AzureClient extends AzureServiceClient {
      * The interval time between two long running operation polls. Default is 30 seconds.
      */
     private int longRunningOperationRetryTimeout = -1;
-
-    /**
-     * The executor for asynchronous requests.
-     */
-    private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
     /**
      * The user agent from the service client that owns this Azure Client.
