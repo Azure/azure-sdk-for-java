@@ -599,7 +599,7 @@ public final class Azure {
     }
 
     /**
-     * @return entry point to managing Container Regsitries.
+     * @return entry point to managing Container Registries.
      */
     @Beta
     public Registries containerRegistries() {
