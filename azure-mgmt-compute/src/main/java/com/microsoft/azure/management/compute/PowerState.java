@@ -74,7 +74,7 @@ public final class PowerState extends ExpandableStringEnum<PowerState> {
     }
 
     /**
-     * Finds or creates a PowerState value
+     * Finds or creates a PowerState value.
      * @param name the value of the power state
      * @return a PowerState instance
      */
