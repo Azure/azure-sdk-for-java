@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentMap;
  * @param <T> a specific expandable enum type
  */
 public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
-    private static ConcurrentMap<String, ? extends ExpandableStringEnum<?>> VALUES_BY_NAME = null;
+    private static ConcurrentMap<String, ? extends ExpandableStringEnum<?>> valuesByName = null;
 
     private String name;
     private Class<T> clazz;
@@ -32,12 +32,12 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
 
     @SuppressWarnings("unchecked")
     protected T withNameValue(String name, T value, Class<T> clazz) {
-        if (VALUES_BY_NAME == null) {
-            VALUES_BY_NAME = new ConcurrentHashMap<String, T>();
+        if (valuesByName == null) {
+            valuesByName = new ConcurrentHashMap<String, T>();
         }
         this.name = name;
         this.clazz = clazz;
-        ((ConcurrentMap<String, T>)VALUES_BY_NAME).put(uniqueKey(clazz, name), value);
+        ((ConcurrentMap<String, T>) valuesByName).put(uniqueKey(clazz, name), value);
         return (T) this;
     }
 
@@ -45,8 +45,8 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
     protected static <T extends ExpandableStringEnum<T>> T fromString(String name, Class<T> clazz) {
         if (name == null) {
             return null;
-        } else if (VALUES_BY_NAME != null) {
-            T value = (T) VALUES_BY_NAME.get(uniqueKey(clazz, name));
+        } else if (valuesByName != null) {
+            T value = (T) valuesByName.get(uniqueKey(clazz, name));
             if (value != null) {
                 return value;
             }
@@ -65,7 +65,7 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
     @SuppressWarnings("unchecked")
     protected static <T extends ExpandableStringEnum<T>> Collection<T> values(Class<T> clazz) {
         // Make a copy of all values
-        Collection<? extends ExpandableStringEnum<?>> values = new ArrayList<>(VALUES_BY_NAME.values());
+        Collection<? extends ExpandableStringEnum<?>> values = new ArrayList<>(valuesByName.values());
 
         Collection<T> list = new HashSet<T>();
         for (ExpandableStringEnum<?> value : values) {

@@ -252,7 +252,7 @@ public final class CountryPhoneCode extends ExpandableStringEnum<CountryPhoneCod
     public static final CountryPhoneCode ZIMBABWE = fromString("+263");
 
     /**
-     * Creates or finds a country phone code from its string representation
+     * Creates or finds a country phone code from its string representation.
      * @param code a country phone code
      * @return the corresponding CountryPhoneCode
      */
