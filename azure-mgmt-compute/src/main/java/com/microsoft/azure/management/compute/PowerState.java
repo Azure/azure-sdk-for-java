@@ -16,37 +16,37 @@ public final class PowerState extends ExpandableStringEnum<PowerState> {
     /**
      * Static value PowerState/running for PowerState.
      */
-    public static final PowerState RUNNING = fromString("PowerState/running", PowerState.class);
+    public static final PowerState RUNNING = fromString("PowerState/running");
 
     /**
      * Static value PowerState/deallocating for PowerState.
      */
-    public static final PowerState DEALLOCATING = fromString("PowerState/deallocating", PowerState.class);
+    public static final PowerState DEALLOCATING = fromString("PowerState/deallocating");
 
     /**
      * Static value PowerState/deallocated for PowerState.
      */
-    public static final PowerState DEALLOCATED = fromString("PowerState/deallocated", PowerState.class);
+    public static final PowerState DEALLOCATED = fromString("PowerState/deallocated");
 
     /**
      * Static value PowerState/starting for PowerState.
      */
-    public static final PowerState STARTING = fromString("PowerState/starting", PowerState.class);
+    public static final PowerState STARTING = fromString("PowerState/starting");
 
     /**
      * Static value PowerState/stopped for PowerState.
      */
-    public static final PowerState STOPPED = fromString("PowerState/stopped", PowerState.class);
+    public static final PowerState STOPPED = fromString("PowerState/stopped");
 
     /**
      * Static value PowerState/stopping for PowerState.
      */
-    public static final PowerState STOPPING = fromString("PowerState/stopping", PowerState.class);
+    public static final PowerState STOPPING = fromString("PowerState/stopping");
 
     /**
      * Static value PowerState/unknown for PowerState.
      */
-    public static final PowerState UNKNOWN = fromString("PowerState/unknown", PowerState.class);
+    public static final PowerState UNKNOWN = fromString("PowerState/unknown");
 
     /**
      * Creates an instance of PowerState from the virtual machine instance view status entry corresponding

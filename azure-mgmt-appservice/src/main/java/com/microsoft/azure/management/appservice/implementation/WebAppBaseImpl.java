@@ -74,7 +74,7 @@ abstract class WebAppBaseImpl<
             WebAppBase.Update<FluentT>,
             WebAppBase.UpdateStages.WithWebContainer<FluentT> {
 
-    protected SiteConfigResourceInner siteConfig;
+    SiteConfigResourceInner siteConfig;
     private Map<String, AppSetting> cachedAppSettings;
     private Map<String, ConnectionString> cachedConnectionStrings;
 
