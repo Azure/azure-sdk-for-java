@@ -54,8 +54,8 @@ You can easily create a service principal and grant it access privileges for a g
 1. Run the following command to create a service principal authentication file.
 
 ```
-curl -L https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/tools/authgen.py | python
+curl -L https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/tools/authgen.py | python > my.azureauth
 ```
 
-Now all the pieces are in place to enable authenticating your code without requiring an interactive login nor the need to manage access tokens.
+This will save the output of the command into an Azure service principal-based authentication file which can now be used in the Azure Management Libraries for Java and/or the Azure Toolkits for IntelliJ and Eclipse without requiring an interactive login nor the need to manage access tokens.
 
