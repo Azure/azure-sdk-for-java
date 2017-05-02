@@ -29,6 +29,11 @@ import java.util.regex.Pattern;
 public class ProviderRegistrationInterceptor implements Interceptor {
     private AzureTokenCredentials credentials;
 
+    /**
+     * Initialize a provider registration interceptor with a credential that's authorized
+     * to register the provider.
+     * @param credentials the credential for provider registration
+     */
     public ProviderRegistrationInterceptor(AzureTokenCredentials credentials) {
         this.credentials = credentials;
     }
