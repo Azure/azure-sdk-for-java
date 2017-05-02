@@ -150,6 +150,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 .first();
 
         validateSqlDatabase(sqlDatabase, SQL_DATABASE_NAME);
+        Assert.assertTrue(sqlServer.databases().list().size() > 0);
 
         // Test transparent data encryption settings.
         TransparentDataEncryption transparentDataEncryption = sqlDatabase.getTransparentDataEncryption();

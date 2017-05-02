@@ -279,7 +279,7 @@ abstract class WebAppBaseImpl<
         if (siteConfig == null) {
             return null;
         }
-        return new NetFrameworkVersion(siteConfig.netFrameworkVersion());
+        return NetFrameworkVersion.fromString(siteConfig.netFrameworkVersion());
     }
 
     @Override
@@ -287,7 +287,7 @@ abstract class WebAppBaseImpl<
         if (siteConfig == null || siteConfig.phpVersion() == null) {
             return PhpVersion.OFF;
         }
-        return new PhpVersion(siteConfig.phpVersion());
+        return PhpVersion.fromString(siteConfig.phpVersion());
     }
 
     @Override
@@ -295,7 +295,7 @@ abstract class WebAppBaseImpl<
         if (siteConfig == null || siteConfig.pythonVersion() == null) {
             return PythonVersion.OFF;
         }
-        return new PythonVersion(siteConfig.pythonVersion());
+        return PythonVersion.fromString(siteConfig.pythonVersion());
     }
 
     @Override
@@ -319,7 +319,7 @@ abstract class WebAppBaseImpl<
         if (siteConfig == null) {
             return null;
         }
-        return new RemoteVisualStudioVersion(siteConfig.remoteDebuggingVersion());
+        return RemoteVisualStudioVersion.fromString(siteConfig.remoteDebuggingVersion());
     }
 
     @Override
@@ -343,7 +343,7 @@ abstract class WebAppBaseImpl<
         if (siteConfig == null || siteConfig.javaVersion() == null) {
             return JavaVersion.OFF;
         }
-        return new JavaVersion(siteConfig.javaVersion());
+        return JavaVersion.fromString(siteConfig.javaVersion());
     }
 
     @Override
@@ -912,7 +912,7 @@ abstract class WebAppBaseImpl<
     }
 
     public FluentImplT withoutPhp() {
-        return withPhpVersion(new PhpVersion(""));
+        return withPhpVersion(PhpVersion.fromString(""));
     }
 
     @SuppressWarnings("unchecked")
@@ -925,7 +925,7 @@ abstract class WebAppBaseImpl<
     }
 
     public FluentImplT withoutJava() {
-        return withJavaVersion(new JavaVersion("")).withWebContainer(null);
+        return withJavaVersion(JavaVersion.fromString("")).withWebContainer(null);
     }
 
     @SuppressWarnings("unchecked")
@@ -954,7 +954,7 @@ abstract class WebAppBaseImpl<
     }
 
     public FluentImplT withoutPython() {
-        return withPythonVersion(new PythonVersion(""));
+        return withPythonVersion(PythonVersion.fromString(""));
     }
 
     @SuppressWarnings("unchecked")
