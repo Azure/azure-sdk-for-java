@@ -5,12 +5,13 @@
 package com.microsoft.azure.servicebus.primitives;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public final class StringUtil
 {
 	public final static String EMPTY = "";
-	private final static Charset UTF8CharSet = Charset.forName("UTF-8");
+	private final static Charset UTF8CharSet = StandardCharsets.UTF_8;
 
 	public static boolean isNullOrEmpty(String string)
 	{

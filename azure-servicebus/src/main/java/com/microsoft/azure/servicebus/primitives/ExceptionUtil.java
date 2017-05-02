@@ -8,13 +8,16 @@ import java.time.ZonedDateTime;
 import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ExecutionException;
+
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 
 import com.microsoft.azure.servicebus.amqp.AmqpErrorCode;
 import com.microsoft.azure.servicebus.amqp.AmqpException;
 
-final class ExceptionUtil
+public final class ExceptionUtil
 {
 	static Exception toException(ErrorCondition errorCondition)
 	{
@@ -173,4 +176,16 @@ final class ExceptionUtil
 		
 		return builder.toString();
 	}
+
+    public static Throwable extractAsyncCompletionCause(Throwable completionEx)
+    {
+    	if(completionEx instanceof CompletionException || completionEx instanceof ExecutionException)
+    	{
+    		return completionEx.getCause();
+    	}
+    	else
+    	{
+    		return completionEx;
+    	}
+    }
 }

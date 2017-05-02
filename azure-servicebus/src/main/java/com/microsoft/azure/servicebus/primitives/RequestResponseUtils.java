@@ -10,28 +10,36 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.message.Message;
 
-import com.microsoft.azure.servicebus.amqp.AmqpErrorCode;
 import com.microsoft.azure.servicebus.rules.CorrelationFilter;
 import com.microsoft.azure.servicebus.rules.RuleDescription;
 import com.microsoft.azure.servicebus.rules.SqlFilter;
 import com.microsoft.azure.servicebus.rules.SqlRuleAction;
 
 public class RequestResponseUtils {
-	public static Message createRequestMessage(String operation, Map propertyBag, Duration timeout)
+	public static Message createRequestMessageFromPropertyBag(String operation, Map propertyBag, Duration timeout)
 	{
-		Message requestMessage = Message.Factory.create();
-		requestMessage.setBody(new AmqpValue(propertyBag));
-		HashMap applicationPropertiesMap = new HashMap();
-		applicationPropertiesMap.put(ClientConstants.REQUEST_RESPONSE_OPERATION_NAME, operation);
-		applicationPropertiesMap.put(ClientConstants.REQUEST_RESPONSE_TIMEOUT, timeout.toMillis());
-		requestMessage.setApplicationProperties(new ApplicationProperties(applicationPropertiesMap));
-		return requestMessage;
+		return createRequestMessageFromValueBody(operation, propertyBag, timeout);
 	}
+	
+	public static Message createRequestMessageFromValueBody(String operation, Object valueBody, Duration timeout)
+    {
+        Message requestMessage = Message.Factory.create();
+        requestMessage.setBody(new AmqpValue(valueBody));
+        HashMap applicationPropertiesMap = new HashMap();
+        applicationPropertiesMap.put(ClientConstants.REQUEST_RESPONSE_OPERATION_NAME, operation);
+        applicationPropertiesMap.put(ClientConstants.REQUEST_RESPONSE_TIMEOUT, timeout.toMillis());
+        requestMessage.setApplicationProperties(new ApplicationProperties(applicationPropertiesMap));
+        return requestMessage;
+    }
 	
 	public static int getResponseStatusCode(Message responseMessage)
 	{
 		int statusCode = ClientConstants.REQUEST_RESPONSE_UNDEFINED_STATUS_CODE;
 		Object codeObject = responseMessage.getApplicationProperties().getValue().get(ClientConstants.REQUEST_RESPONSE_STATUS_CODE);
+		if(codeObject == null)
+		{
+		    codeObject = responseMessage.getApplicationProperties().getValue().get(ClientConstants.REQUEST_RESPONSE_LEGACY_STATUS_CODE);
+		}
 		if(codeObject != null)
 		{
 			statusCode = (int)codeObject;
@@ -42,8 +50,23 @@ public class RequestResponseUtils {
 	
 	public static Symbol getResponseErrorCondition(Message responseMessage)
 	{
-		return (Symbol)responseMessage.getApplicationProperties().getValue().get(ClientConstants.REQUEST_RESPONSE_ERROR_CONDITION);
+		Symbol errorCondition = (Symbol)responseMessage.getApplicationProperties().getValue().get(ClientConstants.REQUEST_RESPONSE_ERROR_CONDITION);
+		if(errorCondition == null)
+		{
+		    errorCondition = (Symbol)responseMessage.getApplicationProperties().getValue().get(ClientConstants.REQUEST_RESPONSE_LEGACY_ERROR_CONDITION);
+		}
+		return errorCondition;
 	}
+	
+	public static String getResponseStatusDescription(Message responseMessage)
+    {
+        String statusDescription = (String)responseMessage.getApplicationProperties().getValue().get(ClientConstants.REQUEST_RESPONSE_STATUS_DESCRIPTION);
+        if(statusDescription == null)
+        {
+            statusDescription = (String)responseMessage.getApplicationProperties().getValue().get(ClientConstants.REQUEST_RESPONSE_LEGACY_STATUS_DESCRIPTION);
+        }
+        return statusDescription;
+    }
 	
 	public static Map getResponseBody(Message responseMessage)
 	{
@@ -52,8 +75,8 @@ public class RequestResponseUtils {
 	
 	public static Exception genereateExceptionFromResponse(Message responseMessage)
 	{
-		Symbol errorCondition = (Symbol)responseMessage.getApplicationProperties().getValue().get(ClientConstants.REQUEST_RESPONSE_ERROR_CONDITION);
-		Object statusDescription = responseMessage.getApplicationProperties().getValue().get(ClientConstants.REQUEST_RESPONSE_STATUS_DESCRIPTION);
+		Symbol errorCondition = getResponseErrorCondition(responseMessage);
+		Object statusDescription = getResponseStatusDescription(responseMessage);
 		return generateExceptionFromError(errorCondition, statusDescription == null ? errorCondition.toString() : (String) statusDescription);
 	}
 	

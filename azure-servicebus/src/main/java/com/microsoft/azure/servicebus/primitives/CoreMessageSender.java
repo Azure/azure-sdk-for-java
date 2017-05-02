@@ -5,37 +5,29 @@
 package com.microsoft.azure.servicebus.primitives;
 
 import java.io.IOException;
-import java.nio.BufferOverflowException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Map;
-import java.util.UUID;
 import java.util.PriorityQueue;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
-
-import javax.xml.ws.handler.MessageContext;
 
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
-import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
-import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.messaging.Released;
 import org.apache.qpid.proton.amqp.messaging.Source;
@@ -52,7 +44,6 @@ import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.apache.qpid.proton.message.Message;
 
-import com.microsoft.azure.servicebus.IMessage;
 import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 import com.microsoft.azure.servicebus.amqp.DispatchHandler;
 import com.microsoft.azure.servicebus.amqp.IAmqpSender;
@@ -71,6 +62,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 	private final Object requestResonseLinkCreationLock = new Object();
 	private final MessagingFactory underlyingFactory;
 	private final String sendPath;
+	private final String sasTokenAudienceURI;
 	private final Duration operationTimeout;
 	private final RetryPolicy retryPolicy;
 	private final CompletableFuture<Void> linkClose;
@@ -83,9 +75,9 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 	private RequestResponseLink requestResponseLink;
 	private CompletableFuture<CoreMessageSender> linkFirstOpen; 
 	private int linkCredit;
-	private TimeoutTracker openLinkTracker;
 	private Exception lastKnownLinkError;
 	private Instant lastKnownErrorReportedAt;
+	private ScheduledFuture<?> sasTokenRenewTimerFuture;
 
 	public static CompletableFuture<CoreMessageSender> create(
 			final MessagingFactory factory,
@@ -93,24 +85,37 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 			final String senderPath)
 	{
 		final CoreMessageSender msgSender = new CoreMessageSender(factory, sendLinkName, senderPath);
-		msgSender.openLinkTracker = TimeoutTracker.create(factory.getOperationTimeout());
-		msgSender.initializeLinkOpen(msgSender.openLinkTracker);
+		TimeoutTracker openLinkTracker = TimeoutTracker.create(factory.getOperationTimeout());
+		msgSender.initializeLinkOpen(openLinkTracker);
 		
-		try
-		{
-			msgSender.underlyingFactory.scheduleOnReactorThread(new DispatchHandler()
-			{
-				@Override
-				public void onEvent()
-				{
-					msgSender.createSendLink();
-				}
-			});
-		}
-		catch (IOException ioException)
-		{
-			msgSender.linkFirstOpen.completeExceptionally(new ServiceBusException(false, "Failed to create Sender, see cause for more details.", ioException));
-		}
+		msgSender.sendSASTokenAndSetRenewTimer().handleAsync((v, sasTokenEx) -> {
+		    if(sasTokenEx != null)
+		    {
+		        msgSender.linkFirstOpen.completeExceptionally(ExceptionUtil.extractAsyncCompletionCause(sasTokenEx));
+		    }
+		    else
+		    {
+		        try
+	            {
+	                msgSender.underlyingFactory.scheduleOnReactorThread(new DispatchHandler()
+	                {
+	                    @Override
+	                    public void onEvent()
+	                    {
+	                        msgSender.createSendLink();
+	                    }
+	                });
+	            }
+	            catch (IOException ioException)
+	            {
+	                msgSender.cancelSASTokenRenewTimer();
+	                msgSender.linkFirstOpen.completeExceptionally(new ServiceBusException(false, "Failed to create Sender, see cause for more details.", ioException));
+	            }
+		    }
+		    
+		    return null;
+        });
+		
 		
 		return msgSender.linkFirstOpen;		
 	}
@@ -120,7 +125,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		synchronized (this.requestResonseLinkCreationLock) {
 			if(this.requestResponseLink == null)
 			{
-				String requestResponseLinkPath = RequestResponseLink.getRequestResponseLinkPath(this.sendPath);
+				String requestResponseLinkPath = RequestResponseLink.getManagementNodeLinkPath(this.sendPath);
 				CompletableFuture<Void> crateAndAssignRequestResponseLink =
 								RequestResponseLink.createAsync(this.underlyingFactory, this.getClientId() + "-RequestResponse", requestResponseLinkPath).thenAccept((rrlink) -> {this.requestResponseLink = rrlink;});
 				return crateAndAssignRequestResponseLink;
@@ -137,6 +142,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		super(sendLinkName, factory);
 
 		this.sendPath = senderPath;
+		this.sasTokenAudienceURI = String.format(ClientConstants.SAS_TOKEN_AUDIENCE_FORMAT, factory.getHostName(), senderPath);
 		this.underlyingFactory = factory;
 		this.operationTimeout = factory.getOperationTimeout();
 		
@@ -310,8 +316,6 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 	{
 		if (completionException == null)
 		{
-			this.openLinkTracker = null;
-
 			this.lastKnownLinkError = null;
 			this.retryPolicy.resetRetryCount(this.getClientId());
 
@@ -351,6 +355,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 			if (!this.linkFirstOpen.isDone())
 			{
 				this.setClosed();
+				this.cancelSASTokenRenewTimer();
 				ExceptionUtil.completeExceptionally(this.linkFirstOpen, completionException, this, true);
 			}
 		}
@@ -430,7 +435,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 									{
 										if (sendLink.getLocalState() == EndpointState.CLOSED || sendLink.getRemoteState() == EndpointState.CLOSED)
 										{
-											createSendLink();
+										    CoreMessageSender.this.recreateSendLink();
 										}
 									}
 								});
@@ -550,7 +555,6 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 	private void createSendLink()
 	{
 		final Connection connection = this.underlyingFactory.getConnection();
-
 		final Session session = connection.session();
 		session.setOutgoingWindow(Integer.MAX_VALUE);
 		session.open();
@@ -589,7 +593,28 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		
 		this.sendLink = sender;
 	}
-
+	
+	CompletableFuture<Void> sendSASTokenAndSetRenewTimer()
+	{
+	    if(this.getIsClosingOrClosed())
+        {
+            return CompletableFuture.completedFuture(null);
+        }
+        else
+        {
+            CompletableFuture<ScheduledFuture<?>> sendTokenFuture = this.underlyingFactory.sendSASTokenAndSetRenewTimer(this.sasTokenAudienceURI, () -> this.sendSASTokenAndSetRenewTimer());
+            return sendTokenFuture.thenAccept((f) -> {this.sasTokenRenewTimerFuture = f;});
+        }
+	}
+	
+	private void cancelSASTokenRenewTimer()
+    {
+        if(this.sasTokenRenewTimerFuture != null && !this.sasTokenRenewTimerFuture.isDone())
+        {
+            this.sasTokenRenewTimerFuture.cancel(true);
+        }
+    }
+	
 	// TODO: consolidate common-code written for timeouts in Sender/Receiver
 	private void initializeLinkOpen(TimeoutTracker timeout)
 	{
@@ -603,6 +628,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 					{
 						if (!CoreMessageSender.this.linkFirstOpen.isDone())
 						{
+						    CoreMessageSender.this.cancelSASTokenRenewTimer();
 							Exception operationTimedout = new TimeoutException(
 									String.format(Locale.US, "Open operation on SendLink(%s) on Entity(%s) timed out at %s.",	CoreMessageSender.this.sendLink.getName(), CoreMessageSender.this.getSendPath(), ZonedDateTime.now().toString()),
 									CoreMessageSender.this.lastKnownErrorReportedAt.isAfter(Instant.now().minusSeconds(ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS)) ? CoreMessageSender.this.lastKnownLinkError : null);
@@ -848,6 +874,8 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 			}
 		}
 		
+		this.cancelSASTokenRenewTimer();
+		
 		return this.linkClose.thenCompose((v) -> {
 			return this.requestResponseLink == null ? CompletableFuture.completedFuture(null) : this.requestResponseLink.closeAsync();});
 	}
@@ -922,7 +950,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 				messageList.add(messageEntry);
 			}
 			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_MESSAGES, messageList);
-			Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_SCHEDULE_MESSAGE_OPERATION, requestBodyMap, Util.adjustServerTimeout(timeout));
+			Message requestMessage = RequestResponseUtils.createRequestMessageFromPropertyBag(ClientConstants.REQUEST_RESPONSE_SCHEDULE_MESSAGE_OPERATION, requestBodyMap, Util.adjustServerTimeout(timeout));
 			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, timeout);
 			return responseFuture.thenComposeAsync((responseMessage) -> {
 				CompletableFuture<long[]> returningFuture = new CompletableFuture<long[]>();
@@ -948,7 +976,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 			HashMap requestBodyMap = new HashMap();
 			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SEQUENCE_NUMBERS, sequenceNumbers);
 			
-			Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_CANCEL_CHEDULE_MESSAGE_OPERATION, requestBodyMap, Util.adjustServerTimeout(timeout));
+			Message requestMessage = RequestResponseUtils.createRequestMessageFromPropertyBag(ClientConstants.REQUEST_RESPONSE_CANCEL_CHEDULE_MESSAGE_OPERATION, requestBodyMap, Util.adjustServerTimeout(timeout));
 			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, timeout);
 			return responseFuture.thenComposeAsync((responseMessage) -> {
 				CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();
@@ -972,7 +1000,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 	{
 		return this.createRequestResponseLink().thenComposeAsync((v) ->
 		{
-			return MessageBrowserUtil.peekMessagesAsync(this.requestResponseLink, this.operationTimeout, fromSequenceNumber, messageCount, null);
+			return CommonRequestResponseOperations.peekMessagesAsync(this.requestResponseLink, this.operationTimeout, fromSequenceNumber, messageCount, null);
 		});		
 	}
 }

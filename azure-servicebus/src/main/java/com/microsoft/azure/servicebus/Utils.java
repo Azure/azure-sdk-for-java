@@ -1,7 +1,6 @@
 package com.microsoft.azure.servicebus;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
 
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
@@ -37,17 +36,5 @@ final class Utils {
 	{
 		if(argument == null)
 			throw new IllegalArgumentException("Argument '" + argumentName +"' is null.");
-	}
-	
-	static Throwable extractAsyncCompletionCause(Throwable completionEx)
-	{
-		if(completionEx instanceof CompletionException || completionEx instanceof ExecutionException)
-		{
-			return completionEx.getCause();
-		}
-		else
-		{
-			return completionEx;
-		}
 	}
 }

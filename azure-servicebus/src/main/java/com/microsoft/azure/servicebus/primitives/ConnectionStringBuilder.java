@@ -35,21 +35,22 @@ import java.util.regex.*;
  */
 public class ConnectionStringBuilder
 {	
-	final static String END_POINT_FORMAT = "amqps://%s.servicebus.windows.net";
-	final static String END_POINT_RAW_FORMAT = "amqps://%s";
+	private final static String END_POINT_FORMAT = "amqps://%s.servicebus.windows.net";
+	private final static String END_POINT_RAW_FORMAT = "amqps://%s";
 
-	final static String HOSTNAME_CONFIG_NAME = "Hostname";	
-	final static String ENDPOINT_CONFIG_NAME = "Endpoint";
-	final static String SHARED_ACCESS_KEY_NAME_CONFIG_NAME = "SharedAccessKeyName";
-	final static String SHARED_ACCESS_KEY_CONFIG_NAME = "SharedAccessKey";
-	final static String ENTITY_PATH_CONFIG_NAME = "EntityPath";
-	final static String OPERATION_TIMEOUT_CONFIG_NAME = "OperationTimeout";
-	final static String RETRY_POLICY_CONFIG_NAME = "RetryPolicy";
-	final static String KEY_VALUE_SEPARATOR = "=";
-	final static String KEY_VALUE_PAIR_DELIMITER = ";";
+	private final static String HOSTNAME_CONFIG_NAME = "Hostname";
+	private final static String ENDPOINT_CONFIG_NAME = "Endpoint";
+	private final static String SHARED_ACCESS_KEY_NAME_CONFIG_NAME = "SharedAccessKeyName";
+	private final static String SHARED_ACCESS_KEY_CONFIG_NAME = "SharedAccessKey";
+	private final static String SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME = "SharedAccessSignatureToken";
+	private final static String ENTITY_PATH_CONFIG_NAME = "EntityPath";
+	private final static String OPERATION_TIMEOUT_CONFIG_NAME = "OperationTimeout";
+	private final static String RETRY_POLICY_CONFIG_NAME = "RetryPolicy";
+	private final static String KEY_VALUE_SEPARATOR = "=";
+	private final static String KEY_VALUE_PAIR_DELIMITER = ";";
 
 	private static final String ALL_KEY_ENUMERATE_REGEX = "(" + HOSTNAME_CONFIG_NAME + "|" +  ENDPOINT_CONFIG_NAME + "|" + SHARED_ACCESS_KEY_NAME_CONFIG_NAME
-			+ "|" + SHARED_ACCESS_KEY_CONFIG_NAME + "|" + ENTITY_PATH_CONFIG_NAME + "|" + OPERATION_TIMEOUT_CONFIG_NAME
+			+ "|" + SHARED_ACCESS_KEY_CONFIG_NAME + "|"  + SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME + "|" + ENTITY_PATH_CONFIG_NAME + "|" + OPERATION_TIMEOUT_CONFIG_NAME
 			+ "|" + RETRY_POLICY_CONFIG_NAME + ")";
 
 	private static final String KEYS_WITH_DELIMITERS_REGEX = KEY_VALUE_PAIR_DELIMITER + ALL_KEY_ENUMERATE_REGEX	+ KEY_VALUE_SEPARATOR;
@@ -58,99 +59,145 @@ public class ConnectionStringBuilder
 	private URI endpoint;
 	private String sharedAccessKeyName;
 	private String sharedAccessKey;
+	private String sharedAccessSingatureToken;
 	private String entityPath;
 	private Duration operationTimeout;
 	private RetryPolicy retryPolicy;
 
 	private ConnectionStringBuilder(
-			final URI endpointAddress, 
-			final String entityPath, 
+            final URI endpointAddress,
+            final String entityPath,
+            final Duration operationTimeout,
+            final RetryPolicy retryPolicy)
+    {
+        this.endpoint = endpointAddress;
+        this.operationTimeout = operationTimeout;
+        this.retryPolicy = retryPolicy;
+        this.entityPath = entityPath;
+    }
+	
+	private ConnectionStringBuilder(
+			final URI endpointAddress,
+			final String entityPath,
 			final String sharedAccessKeyName,
 			final String sharedAccessKey, 
-			final Duration operationTimeout, 
+			final Duration operationTimeout,
 			final RetryPolicy retryPolicy)
 	{
-		this.endpoint = endpointAddress;
+		this(endpointAddress, entityPath, operationTimeout, retryPolicy);
 		this.sharedAccessKey = sharedAccessKey;
 		this.sharedAccessKeyName = sharedAccessKeyName;
-		this.operationTimeout = operationTimeout;
-		this.retryPolicy = retryPolicy;
-		this.entityPath = entityPath;
 	}
 	
 	private ConnectionStringBuilder(
-			final String namespaceName, 
-			final String entityPath, 
+            final URI endpointAddress, 
+            final String entityPath, 
+            final String sharedAccessSingatureToken,
+            final Duration operationTimeout, 
+            final RetryPolicy retryPolicy)
+    {
+        this(endpointAddress, entityPath, operationTimeout, retryPolicy);
+        this.sharedAccessSingatureToken = sharedAccessSingatureToken;
+    }
+	
+	private ConnectionStringBuilder(
+			final String namespaceName,
+			final String entityPath,
 			final String sharedAccessKeyName,
-			final String sharedAccessKey, 
-			final Duration operationTimeout, 
+			final String sharedAccessKey,
+			final Duration operationTimeout,
 			final RetryPolicy retryPolicy)
 	{
-		try
-		{
-			this.endpoint = new URI(String.format(Locale.US, END_POINT_FORMAT, namespaceName));
-		} 
-		catch(URISyntaxException exception)
-		{
-			throw new IllegalConnectionStringFormatException(
-					String.format(Locale.US, "Invalid namespace name: %s", namespaceName),
-					exception);
-		}
-
-		this.sharedAccessKey = sharedAccessKey;
-		this.sharedAccessKeyName = sharedAccessKeyName;
-		this.operationTimeout = operationTimeout;
-		this.retryPolicy = retryPolicy;
-		this.entityPath = entityPath;
+		this(convertNamespaceToEndPointURI(namespaceName), entityPath, sharedAccessKeyName, sharedAccessKey, operationTimeout, retryPolicy);		
 	}
+	
+	private ConnectionStringBuilder(
+            final String namespaceName,
+            final String entityPath,
+            final String sharedAccessSingatureToken,
+            final Duration operationTimeout,
+            final RetryPolicy retryPolicy)
+    {
+        this(convertNamespaceToEndPointURI(namespaceName), entityPath, sharedAccessSingatureToken, operationTimeout, retryPolicy);        
+    }
 
 	/**
 	 * Build a connection string
 	 * @param namespaceName Namespace name (dns suffix - ex: .servicebus.windows.net is not required)
-	 * @param entityPath Entity path. For eventHubs case specify - eventHub name.
+	 * @param entityPath Entity path. For queue or topic, use name. For subscription use <topicName>/subscriptions/<subscriptionName>.
 	 * @param sharedAccessKeyName Shared Access Key name
 	 * @param sharedAccessKey Shared Access Key
 	 */
 	public ConnectionStringBuilder(
-			final String namespaceName, 
-			final String entityPath, 
+			final String namespaceName,
+			final String entityPath,
 			final String sharedAccessKeyName,
 			final String sharedAccessKey)
 	{
 		this(namespaceName, entityPath, sharedAccessKeyName, sharedAccessKey, MessagingFactory.DefaultOperationTimeout, RetryPolicy.getDefault());
 	}
 	
+	/**
+     * Build a connection string
+     * @param namespaceName Namespace name (dns suffix - ex: .servicebus.windows.net is not required)
+     * @param entityPath Entity path. For queue or topic, use name. For subscription use <topicName>/subscriptions/<subscriptionName>.
+     * @param sharedAccessSingature Shared Access Signature already generated
+     */
+	public ConnectionStringBuilder(
+            final String namespaceName,
+            final String entityPath,
+            final String sharedAccessSingatureToken)
+    {
+        this(namespaceName, entityPath, sharedAccessSingatureToken, MessagingFactory.DefaultOperationTimeout, RetryPolicy.getDefault());
+    }
+	
 
 	/**
 	 * Build a connection string
 	 * @param endpointAddress namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
-	 * @param entityPath Entity path. For eventHubs case specify - eventHub name.
+	 * @param entityPath Entity path. For queue or topic, use name. For subscription use <topicName>/subscriptions/<subscriptionName>.
 	 * @param sharedAccessKeyName Shared Access Key name
 	 * @param sharedAccessKey Shared Access Key
 	 */
 	public ConnectionStringBuilder(
-			final URI endpointAddress, 
-			final String entityPath, 
+			final URI endpointAddress,
+			final String entityPath,
 			final String sharedAccessKeyName,
 			final String sharedAccessKey)
 	{
 		this(endpointAddress, entityPath, sharedAccessKeyName, sharedAccessKey, MessagingFactory.DefaultOperationTimeout, RetryPolicy.getDefault());
 	}
+	
+	/**
+	 * Build a connection string
+	 * @param endpointAddress namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
+	 * @param entityPath Entity path. For queue or topic, use name. For subscription use <topicName>/subscriptions/<subscriptionName>.
+	 * @param sharedAccessSingature Shared Access Signature already generated
+	 */
+	public ConnectionStringBuilder(
+            final URI endpointAddress,
+            final String entityPath,
+            final String sharedAccessSingature)
+    {
+        this(endpointAddress, entityPath, sharedAccessSingature, MessagingFactory.DefaultOperationTimeout, RetryPolicy.getDefault());
+    }
 
 	/**
 	 * ConnectionString format:
 	 * 		Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;SharedAccessKeyName=SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY
+	 * or Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;SharedAccessSignatureToken=SHARED_ACCESS_SIGNATURE_TOKEN
 	 * @param connectionString ServiceBus ConnectionString
 	 * @throws IllegalConnectionStringFormatException when the format of the ConnectionString is not valid
 	 */
 	public ConnectionStringBuilder(String connectionString)
 	{
-		this.parseConnectionString(connectionString);	
+		this.parseConnectionString(connectionString);
 	}
 	
 	/**
 	 * ConnectionString format:
 	 * 		Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;SharedAccessKeyName=SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY
+	 * or Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;SharedAccessSignatureToken=SHARED_ACCESS_SIGNATURE_TOKEN
 	 * @param namespaceConnectionString connections string of the ServiceBus namespace. This doesn't include the entity path.
 	 * @param entityPath path to the entity within the namespace
 	 */
@@ -170,7 +217,7 @@ public class ConnectionStringBuilder
 	}
 
 	/**
-	 * Get the shared access policy key value from the connection string
+	 * Get the shared access policy key value from the connection string or null.
 	 * @return Shared Access Signature key
 	 */
 	public String getSasKey()
@@ -179,12 +226,21 @@ public class ConnectionStringBuilder
 	}
 
 	/**
-	 * Get the shared access policy owner name from the connection string
+	 * Get the shared access policy owner name from the connection string or null.
 	 * @return Shared Access Signature key name.
 	 */
 	public String getSasKeyName()
 	{
 		return this.sharedAccessKeyName;
+	}
+	
+	/**
+	 * Returns the shared access signature token from the connection string or null. 
+	 * @return Shared Access Signature Token
+	 */
+	public String getSharedAccessSignatureToken()
+	{
+	    return this.sharedAccessSingatureToken;
 	}
 
 	/**
@@ -267,6 +323,12 @@ public class ConnectionStringBuilder
 				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s", SHARED_ACCESS_KEY_CONFIG_NAME,
 						KEY_VALUE_SEPARATOR, this.sharedAccessKey));
 			}
+			
+			if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessSingatureToken))
+            {
+                connectionStringBuilder.append(String.format(Locale.US, "%s%s%s", SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME,
+                        KEY_VALUE_SEPARATOR, this.sharedAccessSingatureToken));
+            }
 
 			if (this.operationTimeout != null)
 			{
@@ -284,6 +346,20 @@ public class ConnectionStringBuilder
 		}
 
 		return this.connectionString;
+	}
+	
+	private static URI convertNamespaceToEndPointURI(String namespaceName)
+	{
+	    try
+        {
+            return new URI(String.format(Locale.US, END_POINT_FORMAT, namespaceName));
+        }
+        catch(URISyntaxException exception)
+        {
+            throw new IllegalConnectionStringFormatException(
+                    String.format(Locale.US, "Invalid namespace name: %s", namespaceName),
+                    exception);
+        }
 	}
 
 	private void parseConnectionString(String connectionString)
@@ -373,6 +449,10 @@ public class ConnectionStringBuilder
 			{
 				this.sharedAccessKey = values[valueIndex];
 			}
+			else if(key.equalsIgnoreCase(SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME))
+            {
+                this.sharedAccessSingatureToken = values[valueIndex];
+            }
 			else if (key.equalsIgnoreCase(ENTITY_PATH_CONFIG_NAME))
 			{
 				this.entityPath = values[valueIndex];

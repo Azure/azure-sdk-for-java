@@ -1,4 +1,4 @@
-package com.microsoft.azure.servicebus;
+package com.microsoft.azure.servicebus.primitives;
 
 import java.time.Instant;
 import java.util.UUID;
