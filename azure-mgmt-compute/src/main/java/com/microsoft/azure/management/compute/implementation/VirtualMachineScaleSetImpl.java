@@ -873,6 +873,9 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withUpgradeMode(UpgradeMode upgradeMode) {
+        if (this.inner().upgradePolicy() == null) {
+            this.inner().withUpgradePolicy(new UpgradePolicy());
+        }
         this.inner()
                 .upgradePolicy()
                 .withMode(upgradeMode);
