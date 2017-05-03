@@ -57,13 +57,13 @@ The Azure Management Libraries for Java is a higher-level, object-oriented API f
 > *Preview* features are marked with the @Beta annotation at the class or interface or method level in libraries. These features are subject to change. They can be modified in any way, or even removed, in the future.
 
 
-**Azure Authentication**
+#### Azure Authentication
 
 The `Azure` class is the simplest entry point for creating and interacting with Azure resources.
 
 `Azure azure = Azure.authenticate(credFile).withDefaultSubscription();` 
 
-**Create a Virtual Machine**
+#### Create a Virtual Machine
 
 You can create a virtual machine instance by using a `define() … create()` method chain.
 
@@ -85,7 +85,7 @@ VirtualMachine linuxVM = azure.virtualMachines().define("myLinuxVM")
 System.out.println("Created a Linux VM: " + linuxVM.id());
 ```
 
-**Update a Virtual Machine**
+#### Update a Virtual Machine
 
 You can update a virtual machine instance by using an `update() … apply()` method chain.
 
@@ -94,7 +94,7 @@ linuxVM.update()
 	.withNewDataDisk(20,  lun,  CachingTypes.READ_WRITE)
 	.apply();
 ```
-**Create a Virtual Machine Scale Set**
+#### Create a Virtual Machine Scale Set
 
 You can create a virtual machine scale set instance by using another `define() … create()` method chain.
 
@@ -119,7 +119,7 @@ You can create a virtual machine scale set instance by using another `define() �
      .create();
 ```
 
-**Create a Network Security Group**
+#### Create a Network Security Group
 
 You can create a network security group instance by using another `define() … create()` method chain.
 
@@ -150,7 +150,7 @@ NetworkSecurityGroup frontEndNSG = azure.networkSecurityGroups().define(frontEnd
     .create();
 ```
 
-**Create an Application Gateway**
+#### Create an Application Gateway
 
 You can create a application gateway instance by using another `define() … create()` method chain.
 
@@ -172,7 +172,7 @@ ApplicationGateway applicationGateway = azure.applicationGateways().define("myFi
     .create();
 ```
 
-**Create a Web App**
+#### Create a Web App
 
 You can create a Web App instance by using another `define() … create()` method chain.
 
@@ -185,7 +185,7 @@ WebApp webApp = azure.webApps()
     .create();
 ```
 
-**Create a SQL Database**
+#### Create a SQL Database
 
 You can create a SQL server instance by using another `define() … create()` method chain.
 
