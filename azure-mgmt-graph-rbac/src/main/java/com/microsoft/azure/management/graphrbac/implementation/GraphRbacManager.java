@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.graphrbac.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.management.graphrbac.Groups;
 import com.microsoft.rest.interceptors.RequestIdHeaderInterceptor;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
@@ -26,10 +27,11 @@ public final class GraphRbacManager {
     private final GraphRbacManagementClientImpl graphRbacManagementClient;
     // The collections
     private Users users;
+    private Groups groups;
     private ServicePrincipals servicePrincipals;
 
     /**
-     * Creates an instance of GraphRbacManager that exposes resource management API entry points.
+     * Creates an instance of GraphRbacManager that exposes graph rbac management API entry points.
      *
      * @param credentials the credentials to use
      * @return the GraphRbacManager instance
@@ -43,11 +45,11 @@ public final class GraphRbacManager {
     }
 
     /**
-     * Creates an instance of GraphRbacManager that exposes resource management API entry points.
+     * Creates an instance of GraphRbacManager that exposes graph rbac management API entry points.
      *
      * @param restClient the RestClient to be used for API calls
      * @param tenantId the tenantId in Active Directory
-     * @return the interface exposing resource management API entry points that work across subscriptions
+     * @return the interface exposing graph rbac management API entry points that work across subscriptions
      */
     public static GraphRbacManager authenticate(RestClient restClient, String tenantId) {
         return new GraphRbacManager(restClient, tenantId);
@@ -99,11 +101,21 @@ public final class GraphRbacManager {
     }
 
     /**
-     * @return the storage account management API entry point
+     * @return the active directory user management API entry point
      */
     public Users users() {
         if (users == null) {
             users = new UsersImpl(graphRbacManagementClient.users(), this);
+        }
+        return users;
+    }
+
+    /**
+     * @return the active directory user management API entry point
+     */
+    public Groups groups() {
+        if (groups == null) {
+            groups = new GroupsImpl(graphRbacManagementClient.groups(), this);
         }
         return users;
     }

@@ -9,8 +9,11 @@ package com.microsoft.azure.management.graphrbac;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.graphrbac.implementation.ADGroupInner;
+import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 
 /**
  * An immutable client-side representation of an Azure AD group.
@@ -18,7 +21,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 @Beta
 public interface ActiveDirectoryGroup extends
-        HasInner<ADGroupInner> {
+        Indexable,
+        HasInner<ADGroupInner>,
+        HasManager<GraphRbacManager> {
     /**
      * @return object Id.
      */
