@@ -23,8 +23,10 @@ import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Implementation for CdnProfile.
@@ -121,32 +123,40 @@ class CdnProfileImpl
     }
 
     @Override
-    public void purgeEndpointContent(String endpointName, List<String> contentPaths) {
+    public void purgeEndpointContent(String endpointName, Set<String> contentPaths) {
         this.purgeEndpointContentAsync(endpointName, contentPaths).await();
     }
 
     @Override
-    public Completable purgeEndpointContentAsync(String endpointName, List<String> contentPaths) {
-        return this.manager().inner().endpoints().purgeContentAsync(this.resourceGroupName(), this.name(), endpointName, contentPaths).toCompletable();
+    public Completable purgeEndpointContentAsync(String endpointName, Set<String> contentPaths) {
+        if (contentPaths != null) {
+            return this.manager().inner().endpoints().purgeContentAsync(this.resourceGroupName(), this.name(), endpointName, new ArrayList<>(contentPaths)).toCompletable();
+        } else {
+            return Observable.empty().toCompletable();
+        }
     }
 
     @Override
-    public ServiceFuture<Void> purgeEndpointContentAsync(String endpointName, List<String> contentPaths, ServiceCallback<Void> callback) {
+    public ServiceFuture<Void> purgeEndpointContentAsync(String endpointName, Set<String> contentPaths, ServiceCallback<Void> callback) {
         return ServiceFuture.fromBody(this.purgeEndpointContentAsync(endpointName, contentPaths).<Void>toObservable(), callback);
     }
 
     @Override
-    public void loadEndpointContent(String endpointName, List<String> contentPaths) {
+    public void loadEndpointContent(String endpointName, Set<String> contentPaths) {
         this.loadEndpointContentAsync(endpointName, contentPaths).await();
     }
 
     @Override
-    public Completable loadEndpointContentAsync(String endpointName, List<String> contentPaths) {
-        return this.manager().inner().endpoints().loadContentAsync(this.resourceGroupName(), this.name(), endpointName, contentPaths).toCompletable();
+    public Completable loadEndpointContentAsync(String endpointName, Set<String> contentPaths) {
+        if (contentPaths != null) {
+            return this.manager().inner().endpoints().loadContentAsync(this.resourceGroupName(), this.name(), endpointName, new ArrayList<>(contentPaths)).toCompletable();
+        } else {
+            return Observable.empty().toCompletable();
+        }
     }
 
     @Override
-    public ServiceFuture<Void> loadEndpointContentAsync(String endpointName, List<String> contentPaths, ServiceCallback<Void> callback) {
+    public ServiceFuture<Void> loadEndpointContentAsync(String endpointName, Set<String> contentPaths, ServiceCallback<Void> callback) {
         return ServiceFuture.fromBody(this.loadEndpointContentAsync(endpointName, contentPaths).<Void>toObservable(), callback);
     }
 

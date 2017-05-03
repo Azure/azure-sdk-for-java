@@ -47,7 +47,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 
 /**
- * Test of virtual network management.
+ * Test of load balancer management.
  */
 public class TestLoadBalancer {
     static String TEST_ID = "";

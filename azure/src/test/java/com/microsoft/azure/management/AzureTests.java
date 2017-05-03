@@ -9,6 +9,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
+import com.microsoft.azure.management.compute.PowerState;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineOffer;
@@ -24,8 +25,8 @@ import com.microsoft.azure.management.resources.GenericResource;
 import com.microsoft.azure.management.resources.Location;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.Subscription;
-import com.microsoft.azure.management.resources.core.MockIntegrationTestBase;
 import com.microsoft.azure.management.resources.core.TestBase;
+import com.microsoft.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
@@ -39,7 +40,11 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class AzureTests extends TestBase {
     private Azure azure;
@@ -53,6 +58,104 @@ public class AzureTests extends TestBase {
     @Override
     protected void cleanUpResources() {
 
+    }
+
+    /**
+     * Stress-tests the resilience of ExpandableEnum to multi-threaded access
+     * @throws Exception
+     */
+    @Test
+    public void testExpandableEnum() throws Exception {
+
+        // Define some threads that read from enum
+        Runnable reader1 = new Runnable() {
+            @Override
+            public void run() {
+                Assert.assertEquals(CountryIsoCode.AFGHANISTAN, CountryIsoCode.fromString("AF"));
+                Assert.assertEquals(CountryIsoCode.ANTARCTICA, CountryIsoCode.fromString("AQ"));
+                Assert.assertEquals(CountryIsoCode.ANDORRA, CountryIsoCode.fromString("AD"));
+                Assert.assertEquals(CountryIsoCode.ARGENTINA, CountryIsoCode.fromString("AR"));
+                Assert.assertEquals(CountryIsoCode.ALBANIA, CountryIsoCode.fromString("AL"));
+                Assert.assertEquals(CountryIsoCode.ALGERIA, CountryIsoCode.fromString("DZ"));
+                Assert.assertEquals(CountryIsoCode.AMERICAN_SAMOA, CountryIsoCode.fromString("AS"));
+                Assert.assertEquals(CountryIsoCode.ANGOLA, CountryIsoCode.fromString("AO"));
+                Assert.assertEquals(CountryIsoCode.ANGUILLA, CountryIsoCode.fromString("AI"));
+                Assert.assertEquals(CountryIsoCode.ANTIGUA_AND_BARBUDA, CountryIsoCode.fromString("AG"));
+                Assert.assertEquals(CountryIsoCode.ARMENIA, CountryIsoCode.fromString("AM"));
+                Assert.assertEquals(CountryIsoCode.ARUBA, CountryIsoCode.fromString("AW"));
+                Assert.assertEquals(CountryIsoCode.AUSTRALIA, CountryIsoCode.fromString("AU"));
+                Assert.assertEquals(CountryIsoCode.AUSTRIA, CountryIsoCode.fromString("AT"));
+                Assert.assertEquals(CountryIsoCode.AZERBAIJAN, CountryIsoCode.fromString("AZ"));
+                Assert.assertEquals(PowerState.DEALLOCATED, PowerState.fromString("PowerState/deallocated"));
+                Assert.assertEquals(PowerState.DEALLOCATING, PowerState.fromString("PowerState/deallocating"));
+                Assert.assertEquals(PowerState.RUNNING, PowerState.fromString("PowerState/running"));
+            }
+        };
+
+        Runnable reader2 = new Runnable() {
+            @Override
+            public void run() {
+                Assert.assertEquals(CountryIsoCode.BAHAMAS, CountryIsoCode.fromString("BS"));
+                Assert.assertEquals(CountryIsoCode.BAHRAIN, CountryIsoCode.fromString("BH"));
+                Assert.assertEquals(CountryIsoCode.BANGLADESH, CountryIsoCode.fromString("BD"));
+                Assert.assertEquals(CountryIsoCode.BARBADOS, CountryIsoCode.fromString("BB"));
+                Assert.assertEquals(CountryIsoCode.BELARUS, CountryIsoCode.fromString("BY"));
+                Assert.assertEquals(CountryIsoCode.BELGIUM, CountryIsoCode.fromString("BE"));
+                Assert.assertEquals(PowerState.STARTING, PowerState.fromString("PowerState/starting"));
+                Assert.assertEquals(PowerState.STOPPED, PowerState.fromString("PowerState/stopped"));
+                Assert.assertEquals(PowerState.STOPPING, PowerState.fromString("PowerState/stopping"));
+                Assert.assertEquals(PowerState.UNKNOWN, PowerState.fromString("PowerState/unknown"));
+            }
+        };
+
+        // Define some threads that write to enum
+        Runnable writer1 = new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 1; i <= 10; i++) {
+                    CountryIsoCode.fromString("CountryIsoCode" + i);
+                    PowerState.fromString("PowerState" + i);
+                }
+            }
+        };
+
+        Runnable writer2 = new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 1; i <= 20; i++) {
+                    CountryIsoCode.fromString("CountryIsoCode" + i);
+                    PowerState.fromString("PowerState" + i);
+                }
+            }
+        };
+
+        // Start the threads and repeat a few times
+        ExecutorService threadPool = Executors.newFixedThreadPool(4);
+        for (int repeat = 0; repeat < 10; repeat++) {
+            threadPool.submit(reader1);
+            threadPool.submit(reader2);
+            threadPool.submit(writer1);
+            threadPool.submit(writer2);
+        }
+
+        // Give the test a fixed amount of time to finish
+        threadPool.awaitTermination(10, TimeUnit.SECONDS);
+
+        // Verify country ISO codes
+        Collection<CountryIsoCode> countryIsoCodes = CountryIsoCode.values();
+        System.out.println("\n## Country ISO codes: " + countryIsoCodes.size());
+        for (CountryIsoCode value : countryIsoCodes) {
+            System.out.println(value.toString());
+        }
+        Assert.assertEquals(257, countryIsoCodes.size());
+
+        // Verify power states
+        Collection<PowerState> powerStates = PowerState.values();
+        System.out.println("\n## Power states: " + powerStates.size());
+        for (PowerState value : powerStates) {
+            System.out.println(value.toString());
+        }
+        Assert.assertEquals(27, powerStates.size());
     }
 
     /**

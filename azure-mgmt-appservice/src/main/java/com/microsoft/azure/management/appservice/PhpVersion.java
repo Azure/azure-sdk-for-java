@@ -6,61 +6,42 @@
 
 package com.microsoft.azure.management.appservice;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
+
+import com.microsoft.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
 
 /**
  * Defines values for PHP version.
  */
-public final class PhpVersion {
+public final class PhpVersion extends ExpandableStringEnum<PhpVersion> {
     /** Static value 'Off' for PhpVersion. */
-    public static final PhpVersion OFF = new PhpVersion("null");
+    public static final PhpVersion OFF = PhpVersion.fromString("null");
 
     /** Static value 5.5 for PhpVersion. */
-    public static final PhpVersion PHP5_5 = new PhpVersion("5.5");
+    public static final PhpVersion PHP5_5 = PhpVersion.fromString("5.5");
 
     /** Static value 5.6 for PhpVersion. */
-    public static final PhpVersion PHP5_6 = new PhpVersion("5.6");
+    public static final PhpVersion PHP5_6 = PhpVersion.fromString("5.6");
 
     /** Static value 7.0 for PhpVersion. */
-    public static final PhpVersion PHP7 = new PhpVersion("7.0");
+    public static final PhpVersion PHP7 = PhpVersion.fromString("7.0");
 
     /** Static value 7.1 for PhpVersion. */
-    public static final PhpVersion PHP7_1 = new PhpVersion("7.1");
-
-    private String value;
+    public static final PhpVersion PHP7_1 = PhpVersion.fromString("7.1");
 
     /**
-     * Creates a custom value for PhpVersion.
-     * @param value the custom value
+     * Finds or creates a PHP version based on the specified name.
+     * @param name a name
+     * @return a PhpVersion instance
      */
-    public PhpVersion(String value) {
-        this.value = value;
+    public static PhpVersion fromString(String name) {
+        return fromString(name, PhpVersion.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return value;
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof PhpVersion)) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        PhpVersion rhs = (PhpVersion) obj;
-        if (value == null) {
-            return rhs.value == null;
-        } else {
-            return value.equals(rhs.value);
-        }
+    /**
+     * @return known PHP versions
+     */
+    public static Collection<PhpVersion> values() {
+        return values(PhpVersion.class);
     }
 }

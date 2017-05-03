@@ -5,65 +5,45 @@
  */
 package com.microsoft.azure.management.compute;
 
+import java.util.Collection;
+
+import com.microsoft.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
+
 /**
  * Compute usage units.
  */
-public class ComputeUsageUnit {
+public final class ComputeUsageUnit extends ExpandableStringEnum<ComputeUsageUnit> {
     /** Static value Count for ComputeUsageUnit. */
-    public static final ComputeUsageUnit COUNT = new ComputeUsageUnit("Count");
+    public static final ComputeUsageUnit COUNT = fromString("Count");
 
     /** Static value Bytes for ComputeUsageUnit. */
-    public static final ComputeUsageUnit BYTES = new ComputeUsageUnit("Bytes");
+    public static final ComputeUsageUnit BYTES = fromString("Bytes");
 
     /** Static value Seconds for ComputeUsageUnit. */
-    public static final ComputeUsageUnit SECONDS = new ComputeUsageUnit("Seconds");
+    public static final ComputeUsageUnit SECONDS = fromString("Seconds");
 
     /** Static value Percent for ComputeUsageUnit. */
-    public static final ComputeUsageUnit PERCENT = new ComputeUsageUnit("Percent");
+    public static final ComputeUsageUnit PERCENT = fromString("Percent");
 
     /** Static value CountsPerSecond for ComputeUsageUnit. */
-    public static final ComputeUsageUnit COUNTS_PER_SECOND = new ComputeUsageUnit("CountsPerSecond");
+    public static final ComputeUsageUnit COUNTS_PER_SECOND = fromString("CountsPerSecond");
 
     /** Static value BytesPerSecond for ComputeUsageUnit. */
-    public static final ComputeUsageUnit BYTES_PER_SECOND = new ComputeUsageUnit("BytesPerSecond");
+    public static final ComputeUsageUnit BYTES_PER_SECOND = fromString("BytesPerSecond");
 
     /**
-     * The string value of the compute usage unit.
+     * Creates or finds a compute usage unit based on its name.
+     * @param name a name
+     * @return a corresponding ComputeUsageUnit
      */
-    private final String value;
+    public static ComputeUsageUnit fromString(String name) {
+        return fromString(name, ComputeUsageUnit.class);
+    }
 
     /**
-     * Creates a custom value for ComputeUsageUnit.
-     * @param value the custom value
+     * @return known compute usage units
      */
-    public ComputeUsageUnit(String value) {
-        this.value = value;
-    }
-
-    @Override
-    public String toString() {
-        return this.value;
-    }
-
-    @Override
-    public int hashCode() {
-        return this.value.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        String value = this.toString();
-        if (!(obj instanceof ComputeUsageUnit)) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        ComputeUsageUnit rhs = (ComputeUsageUnit) obj;
-        if (value == null) {
-            return rhs.value == null;
-        } else {
-            return value.equals(rhs.value);
-        }
+    public Collection<ComputeUsageUnit> values() {
+        return values(ComputeUsageUnit.class);
     }
 }

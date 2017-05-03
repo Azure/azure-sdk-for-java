@@ -13,7 +13,7 @@ import com.microsoft.azure.management.apigeneration.Fluent;
  * Defines App service pricing tiers.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
-public class PricingTier {
+public final class PricingTier {
     /** Basic pricing tier with a small size. */
     public static final PricingTier BASIC_B1 = new PricingTier("Basic", "B1");
 

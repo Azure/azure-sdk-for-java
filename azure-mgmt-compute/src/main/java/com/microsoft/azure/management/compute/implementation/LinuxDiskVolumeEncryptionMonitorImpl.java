@@ -73,7 +73,7 @@ class LinuxDiskVolumeEncryptionMonitorImpl implements DiskVolumeEncryptionMonito
         if (diskNode instanceof MissingNode) {
             return EncryptionStatus.UNKNOWN;
         }
-        return new EncryptionStatus(diskNode.asText());
+        return EncryptionStatus.fromString(diskNode.asText());
     }
 
     @Override
@@ -89,7 +89,7 @@ class LinuxDiskVolumeEncryptionMonitorImpl implements DiskVolumeEncryptionMonito
         if (diskNode instanceof MissingNode) {
             return EncryptionStatus.UNKNOWN;
         }
-        return new EncryptionStatus(diskNode.asText());
+        return EncryptionStatus.fromString(diskNode.asText());
     }
 
     @Override

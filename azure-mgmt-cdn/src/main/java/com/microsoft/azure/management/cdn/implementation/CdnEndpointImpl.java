@@ -34,9 +34,12 @@ import rx.functions.Func3;
 import rx.functions.FuncN;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Implementation for {@link CdnEndpoint}.
@@ -244,8 +247,13 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
     }
 
     @Override
-    public List<String> contentTypesToCompress() {
-        return this.inner().contentTypesToCompress();
+    public Set<String> contentTypesToCompress() {
+        List<String> contentTypes = this.inner().contentTypesToCompress();
+        Set<String> set = new HashSet<>();
+        if (contentTypes != null) {
+            set.addAll(contentTypes);
+        }
+        return Collections.unmodifiableSet(set);
     }
 
     @Override
@@ -320,14 +328,19 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
     }
 
     @Override
-    public List<String> customDomains() {
-        return Collections.unmodifiableList(
-                Lists.transform(this.customDomainList,
-                        new Function<CustomDomainInner, String>() {
-                    public String apply(CustomDomainInner customDomain) {
-                        return customDomain.hostName();
-                    }
-                }));
+    public Set<String> customDomains() {
+        List<String> customDomains = Lists.transform(this.customDomainList,
+                new Function<CustomDomainInner, String>() {
+            public String apply(CustomDomainInner customDomain) {
+                return customDomain.hostName();
+            }
+        });
+
+        Set<String> set = new HashSet<>();
+        if (customDomains != null) {
+            set.addAll(customDomains);
+        }
+        return Collections.unmodifiableSet(set);
     }
 
     @Override
@@ -361,32 +374,34 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
     }
 
     @Override
-    public void purgeContent(List<String> contentPaths) {
-        this.purgeContentAsync(contentPaths).await();
+    public void purgeContent(Set<String> contentPaths) {
+        if (contentPaths != null) {
+            this.purgeContentAsync(contentPaths).await();
+        }
     }
 
     @Override
-    public Completable purgeContentAsync(List<String> contentPaths) {
+    public Completable purgeContentAsync(Set<String> contentPaths) {
         return this.parent().purgeEndpointContentAsync(this.name(), contentPaths);
     }
 
     @Override
-    public ServiceFuture<Void> purgeContentAsync(List<String> contentPaths, ServiceCallback<Void> callback) {
+    public ServiceFuture<Void> purgeContentAsync(Set<String> contentPaths, ServiceCallback<Void> callback) {
         return ServiceFuture.fromBody(this.purgeContentAsync(contentPaths).<Void>toObservable(), callback);
     }
 
     @Override
-    public void loadContent(List<String> contentPaths) {
+    public void loadContent(Set<String> contentPaths) {
         this.loadContentAsync(contentPaths).await();
     }
 
     @Override
-    public Completable loadContentAsync(List<String> contentPaths) {
+    public Completable loadContentAsync(Set<String> contentPaths) {
         return this.parent().loadEndpointContentAsync(this.name(), contentPaths);
     }
 
     @Override
-    public ServiceFuture<Void> loadContentAsync(List<String> contentPaths, ServiceCallback<Void> callback) {
+    public ServiceFuture<Void> loadContentAsync(Set<String> contentPaths, ServiceCallback<Void> callback) {
         return ServiceFuture.fromBody(this.loadContentAsync(contentPaths).<Void>toObservable(), callback);
     }
 
@@ -470,8 +485,12 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
     }
 
     @Override
-    public CdnEndpointImpl withContentTypesToCompress(List<String> contentTypesToCompress) {
-        this.inner().withContentTypesToCompress(contentTypesToCompress);
+    public CdnEndpointImpl withContentTypesToCompress(Set<String> contentTypesToCompress) {
+        List<String> list = null;
+        if (contentTypesToCompress != null) {
+            list = new ArrayList<>(contentTypesToCompress);
+        }
+        this.inner().withContentTypesToCompress(list);
         return this;
     }
 
@@ -513,8 +532,13 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
     }
 
     @Override
-    public CdnEndpointImpl withGeoFilters(List<GeoFilter> geoFilters) {
-        this.inner().withGeoFilters(geoFilters);
+    public CdnEndpointImpl withGeoFilters(Collection<GeoFilter> geoFilters) {
+        List<GeoFilter> list = null;
+        if (geoFilters != null) {
+            list = new ArrayList<>(geoFilters);
+        }
+
+        this.inner().withGeoFilters(list);
         return this;
     }
 
@@ -540,7 +564,7 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
     }
 
     @Override
-    public CdnEndpointImpl withGeoFilter(String relativePath, GeoFilterActions action, List<CountryIsoCode> countryCodes) {
+    public CdnEndpointImpl withGeoFilter(String relativePath, GeoFilterActions action, Collection<CountryIsoCode> countryCodes) {
         GeoFilter geoFilter = this.createGeoFiltersObject(relativePath, action);
 
         if (geoFilter.countryCodes() == null) {

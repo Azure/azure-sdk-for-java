@@ -23,8 +23,8 @@ import com.microsoft.rest.ServiceFuture;
 import rx.Completable;
 import rx.Observable;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * An immutable client-side representation of an Azure CDN profile.
@@ -135,8 +135,7 @@ public interface CdnProfile extends
      * @param endpointName a name of the endpoint under the profile
      * @param contentPaths the paths to the content to be purged, which can be file paths or directory wild cards
      */
-    @Beta // TODO: contentPaths should be Set<String>
-    void purgeEndpointContent(String endpointName, List<String> contentPaths);
+    void purgeEndpointContent(String endpointName, Set<String> contentPaths);
 
     /**
      * Forcibly purges CDN endpoint content in the CDN profile asynchronously.
@@ -145,8 +144,7 @@ public interface CdnProfile extends
      * @param contentPaths the paths to the content to be purged, which can be file paths or directory wild cards
      * @return a representation of the deferred computation of this call
      */
-    @Beta // TODO: contentPaths should be Set<String>
-    Completable purgeEndpointContentAsync(String endpointName, List<String> contentPaths);
+    Completable purgeEndpointContentAsync(String endpointName, Set<String> contentPaths);
 
     /**
      * Forcibly purges CDN endpoint content in the CDN profile asynchronously.
@@ -156,8 +154,7 @@ public interface CdnProfile extends
      * @param callback the callback to call on success or failure
      * @return a representation of the deferred computation of this call
      */
-    @Beta // TODO: contentPaths should be Set<String>
-    ServiceFuture<Void> purgeEndpointContentAsync(String endpointName, List<String> contentPaths, ServiceCallback<Void> callback);
+    ServiceFuture<Void> purgeEndpointContentAsync(String endpointName, Set<String> contentPaths, ServiceCallback<Void> callback);
 
     /**
      * Forcibly pre-loads CDN endpoint content in the CDN profile.
@@ -167,8 +164,7 @@ public interface CdnProfile extends
      * @param endpointName a name of the endpoint under the profile
      * @param contentPaths the paths to the content to be purged, which can be file paths or directory wild cards
      */
-    @Beta // TODO: contentPaths should be Set<String>
-    void loadEndpointContent(String endpointName, List<String> contentPaths);
+    void loadEndpointContent(String endpointName, Set<String> contentPaths);
 
     /**
      * Forcibly pre-loads CDN endpoint content in the CDN profile asynchronously.
@@ -179,8 +175,7 @@ public interface CdnProfile extends
      * @param contentPaths the paths to the content to be purged, which can be file paths or directory wild cards
      * @return a representation of the deferred computation of this call
      */
-    @Beta // TODO: contentPaths should be Set<String>
-    Completable loadEndpointContentAsync(String endpointName, List<String> contentPaths);
+    Completable loadEndpointContentAsync(String endpointName, Set<String> contentPaths);
 
     /**
      * Forcibly pre-loads CDN endpoint content in the CDN profile asynchronously.
@@ -192,8 +187,7 @@ public interface CdnProfile extends
      * @param callback the callback to call on success or failure
      * @return a representation of the deferred computation of this call
      */
-    @Beta // TODO: contentPaths should be Set<String>
-    ServiceFuture<Void> loadEndpointContentAsync(String endpointName, List<String> contentPaths, ServiceCallback<Void> callback);
+    ServiceFuture<Void> loadEndpointContentAsync(String endpointName, Set<String> contentPaths, ServiceCallback<Void> callback);
 
     /**
      * Validates a custom domain mapping to ensure it maps to the correct CNAME in DNS in current profile.

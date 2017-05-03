@@ -6,13 +6,21 @@
 
 package com.microsoft.azure.management.compute;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 
 /**
  * Scale set virtual machine SKU types.
  */
 @LangDefinition
+// TODO: This should be called VirtualMachineScaleSetSkuType in the future (compat break from 1.0)
 public class VirtualMachineScaleSetSkuTypes {
+    // This needs to be at the beginning for the initialization to happen correctly
+    private static final Map<String, VirtualMachineScaleSetSkuTypes> VALUES_BY_NAME = new HashMap<>();
+
     /** Static value Standard_A0 for VirtualMachineScaleSetSkuTypes. */
     public static final VirtualMachineScaleSetSkuTypes STANDARD_A0 = new VirtualMachineScaleSetSkuTypes("Standard_A0", "Standard");
 
@@ -190,18 +198,28 @@ public class VirtualMachineScaleSetSkuTypes {
     /**
      * the SKU corresponding to this size.
      */
-    private Sku sku;
+    private final Sku sku;
 
     /**
      * The string value of the SKU.
      */
-    private String value;
+    private final String value;
+
+    /**
+     * @return predefined virtual machine scale set SKU types
+     */
+    public static VirtualMachineScaleSetSkuTypes[] values() {
+        Collection<VirtualMachineScaleSetSkuTypes> valuesCollection = VALUES_BY_NAME.values();
+        return valuesCollection.toArray(new VirtualMachineScaleSetSkuTypes[valuesCollection.size()]);
+    }
+
     /**
      * Creates a custom value for VirtualMachineSizeTypes.
-     * @param skuName the SKU name
-     * @param skuTier thr SKU tier
+     * @param skuName a SKU name
+     * @param skuTier a SKU tier
      */
     public VirtualMachineScaleSetSkuTypes(String skuName, String skuTier) {
+        // TODO: This constructor should really be private
         this(new Sku().withName(skuName).withTier(skuTier));
     }
 
@@ -210,15 +228,52 @@ public class VirtualMachineScaleSetSkuTypes {
      * @param sku the SKU
      */
     public VirtualMachineScaleSetSkuTypes(Sku sku) {
+        // TODO: This constructor should really be private
         this.sku = sku;
-        this.value = this.sku.name();
-        if (this.sku.tier() != null) {
-            this.value = this.value + "_" + this.sku.tier();
+        if (this.sku.tier() == null) {
+            this.value = this.sku.name();
+        } else {
+            this.value = this.sku.name() + '_' + this.sku.tier();
+        }
+        VALUES_BY_NAME.put(this.value.toLowerCase(), this);
+    }
+
+    /**
+     * Parses a SKU into a VMSS SKU type and creates a new VirtualMachineScaleSetSkuType instance if not found among the existing ones.
+     *
+     * @param sku a VMSS SKU
+     * @return the parsed or created VMSS SKU type
+     */
+    public static VirtualMachineScaleSetSkuTypes fromSku(Sku sku) {
+        if (sku == null) {
+            return null;
+        }
+
+        String nameToLookFor = sku.name();
+        if (sku.tier() != null) {
+            nameToLookFor += '_' + sku.tier();
+        }
+
+        VirtualMachineScaleSetSkuTypes result = VALUES_BY_NAME.get(nameToLookFor.toLowerCase());
+        if (result != null) {
+            return result;
+        } else {
+            return new VirtualMachineScaleSetSkuTypes(sku);
         }
     }
 
     /**
-     * @return the sku
+     * Parses into a VMSS SKU type and creates a new VMSS SKU type instance if not found among the existing ones.
+     * @param skuName a SKU name
+     * @param skuTier a SKU tier
+     * @return a VMSS SKU type
+     */
+    public static VirtualMachineScaleSetSkuTypes fromSkuNameAndTier(String skuName, String skuTier) {
+        return fromSku(new Sku().withName(skuName).withTier(skuTier));
+    }
+
+    /**
+     * @return the SKU
      */
     public Sku sku() {
         return this.sku;
@@ -239,15 +294,12 @@ public class VirtualMachineScaleSetSkuTypes {
         String value = this.toString();
         if (!(obj instanceof VirtualMachineScaleSetSkuTypes)) {
             return false;
-        }
-        if (obj == this) {
+        } else if (obj == this) {
             return true;
-        }
-        VirtualMachineScaleSetSkuTypes rhs = (VirtualMachineScaleSetSkuTypes) obj;
-        if (value == null) {
-            return rhs.value == null;
+        } else if (value == null) {
+            return ((VirtualMachineScaleSetSkuTypes) obj).value == null;
         } else {
-            return value.equalsIgnoreCase(rhs.value.toLowerCase());
+            return value.equalsIgnoreCase(((VirtualMachineScaleSetSkuTypes) obj).value.toLowerCase());
         }
     }
 }

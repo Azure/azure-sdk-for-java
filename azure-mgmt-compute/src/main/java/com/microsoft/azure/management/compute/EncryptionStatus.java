@@ -6,61 +6,45 @@
 
 package com.microsoft.azure.management.compute;
 
+import java.util.Collection;
+
+import com.microsoft.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
+
 /**
  * Defines values for EncryptionStatuses.
  */
-public class EncryptionStatus {
+public final class EncryptionStatus extends ExpandableStringEnum<EncryptionStatus> {
     /** Static value Encrypted for EncryptionInProgress. */
-    public static final EncryptionStatus ENCRYPTION_INPROGRESS = new EncryptionStatus("EncryptionInProgress");
+    public static final EncryptionStatus ENCRYPTION_INPROGRESS = fromString("EncryptionInProgress");
 
     /** Static value Encrypted for EncryptionStatuses. */
-    public static final EncryptionStatus ENCRYPTED = new EncryptionStatus("Encrypted");
+    public static final EncryptionStatus ENCRYPTED = fromString("Encrypted");
 
     /** Static value NotEncrypted for EncryptionStatuses. */
-    public static final EncryptionStatus NOT_ENCRYPTED = new EncryptionStatus("NotEncrypted");
+    public static final EncryptionStatus NOT_ENCRYPTED = fromString("NotEncrypted");
 
     /** Static value VMRestartPending for EncryptionStatuses. */
-    public static final EncryptionStatus VM_RESTART_PENDING = new EncryptionStatus("VMRestartPending");
+    public static final EncryptionStatus VM_RESTART_PENDING = fromString("VMRestartPending");
 
     /** Static value NotMounted for EncryptionStatuses. */
-    public static final EncryptionStatus NOT_MOUNTED = new EncryptionStatus("NotMounted");
+    public static final EncryptionStatus NOT_MOUNTED = fromString("NotMounted");
 
     /** Static value Unknown for EncryptionStatuses. */
-    public static final EncryptionStatus UNKNOWN = new EncryptionStatus("Unknown");
-
-    private String value;
+    public static final EncryptionStatus UNKNOWN = fromString("Unknown");
 
     /**
-     * Creates a custom value for EncryptionStatuses.
-     * @param value the custom value
+     * Creates of finds an encryption status based on its name.
+     * @param name a name to look for
+     * @return an EncryptionStatus
      */
-    public EncryptionStatus(String value) {
-        this.value = value;
+    public static EncryptionStatus fromString(String name) {
+        return fromString(name, EncryptionStatus.class);
     }
 
-    @Override
-    public String toString() {
-        return value;
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof EncryptionStatus)) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        EncryptionStatus rhs = (EncryptionStatus) obj;
-        if (value == null) {
-            return rhs.value == null;
-        } else {
-            return value.equalsIgnoreCase(rhs.value);
-        }
+    /**
+     * @return known encryption statuses
+     */
+    public static Collection<EncryptionStatus> values() {
+        return values(EncryptionStatus.class);
     }
 }
