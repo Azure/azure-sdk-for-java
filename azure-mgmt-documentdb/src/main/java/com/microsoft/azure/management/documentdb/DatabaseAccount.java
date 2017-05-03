@@ -119,6 +119,7 @@ public interface DatabaseAccount extends
             DefinitionStages.WithKind,
             DefinitionStages.DefineLocations,
             DefinitionStages.WithCreate {
+
     }
 
     /**
@@ -258,5 +259,4 @@ public interface DatabaseAccount extends
             Update withIpRangeFilter(String ipRangeFilter);
         }
     }
-
 }

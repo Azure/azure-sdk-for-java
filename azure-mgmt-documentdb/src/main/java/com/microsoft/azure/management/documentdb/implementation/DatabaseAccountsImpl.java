@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * Implementation for Registries.
  */
-public class DatabaseAccountsImpl
+class DatabaseAccountsImpl
         extends
         GroupableResourcesImpl<
                 DatabaseAccount,
@@ -33,7 +33,7 @@ public class DatabaseAccountsImpl
                 DocumentDBManager>
         implements DatabaseAccounts {
 
-    protected DatabaseAccountsImpl(final DocumentDBManager manager) {
+    DatabaseAccountsImpl(final DocumentDBManager manager) {
         super(manager.inner().databaseAccounts(), manager);
     }
 

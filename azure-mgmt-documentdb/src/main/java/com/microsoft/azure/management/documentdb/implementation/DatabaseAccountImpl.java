@@ -29,7 +29,7 @@ import java.util.Map;
  * The implementation for DatabaseAccount.
  */
 @LangDefinition
-public class DatabaseAccountImpl
+class DatabaseAccountImpl
         extends
         GroupableResourceImpl<
                 DatabaseAccount,
@@ -42,7 +42,7 @@ public class DatabaseAccountImpl
     private List<Location> allLocations;
     private Map<String, FailoverPolicyInner> failoverPolicies;
 
-    protected DatabaseAccountImpl(String name, DatabaseAccountInner innerObject, DocumentDBManager manager) {
+    DatabaseAccountImpl(String name, DatabaseAccountInner innerObject, DocumentDBManager manager) {
         super(fixDBName(name), innerObject, manager);
         this.allLocations = new ArrayList<Location>();
         if (this.inner().writeLocations() != null) {
