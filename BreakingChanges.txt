@@ -6,7 +6,7 @@ FILE
  * In CloudFileShareProperties, setShareQuota() no longer asserts in bounds. This check has been moved to create() and uploadProperties() in CloudFileShare.
 
 BLOB/FILE
- * Fixed a bug which allowed setting content MD5 to true when calling openWriteExisting() on a page blob or file.
+ * Fixed a bug which prevented setting content MD5 to true when calling openWriteExisting() on a page blob or file.
 
 Changes in 5.0.0
 

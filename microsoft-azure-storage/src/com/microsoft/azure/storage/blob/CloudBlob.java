@@ -1360,6 +1360,13 @@ public abstract class CloudBlob implements ListBlobItem {
                     // Need to store the Content MD5 in case we fail part way through.
                     // We would still need to verify the entire range.
                     String contentMD5 = this.getConnection().getHeaderField(Constants.HeaderConstants.CONTENT_MD5);
+                    
+                    if (!options.getDisableContentMD5Validation() && options.getUseTransactionalContentMD5()
+                            && Utility.isNullOrEmpty(contentMD5)) {
+                        throw new StorageException(StorageErrorCodeStrings.MISSING_MD5_HEADER, SR.MISSING_MD5,
+                                Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
+                    }
+
                     this.setContentMD5(contentMD5);
                     this.setLockedETag(blob.properties.getEtag());
                     this.setArePropertiesPopulated(true);
