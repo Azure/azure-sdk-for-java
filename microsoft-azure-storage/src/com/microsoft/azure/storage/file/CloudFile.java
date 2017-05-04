@@ -1379,18 +1379,18 @@ public final class CloudFile implements ListFileItem {
                     final FileAttributes retrievedAttributes = FileResponse.getFileAttributes(this.getConnection(),
                             file.getStorageUri());
 
-                    if (!options.getDisableContentMD5Validation() && options.getUseTransactionalContentMD5()
-                            && Utility.isNullOrEmpty(retrievedAttributes.getProperties().getContentMD5())) {
-                        throw new StorageException(StorageErrorCodeStrings.MISSING_MD5_HEADER, SR.MISSING_MD5,
-                                Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
-                    }
-
                     file.properties = retrievedAttributes.getProperties();
                     file.metadata = retrievedAttributes.getMetadata();
 
                     // Need to store the Content MD5 in case we fail part way through.
                     // We would still need to verify the entire range.
                     this.setContentMD5(this.getConnection().getHeaderField(Constants.HeaderConstants.CONTENT_MD5));
+
+                    if (!options.getDisableContentMD5Validation() && options.getUseTransactionalContentMD5()
+                            && Utility.isNullOrEmpty(this.getContentMD5())) {
+                        throw new StorageException(StorageErrorCodeStrings.MISSING_MD5_HEADER, SR.MISSING_MD5,
+                                Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
+                    }
 
                     this.setLockedETag(file.properties.getEtag());
                     this.setArePropertiesPopulated(true);

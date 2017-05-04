@@ -86,7 +86,7 @@ public class CloudFileTests {
 
     @After
     public void fileTestMethodTearDown() throws StorageException {
-        //this.share.deleteIfExists();
+        this.share.deleteIfExists();
     }
 
     /**
@@ -1123,6 +1123,28 @@ public class CloudFileTests {
         }
 
         inputStream = new ByteArrayInputStream(buffer);
+    }
+    
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testVerifyTransactionalMD5ValidationMissingOverallMD5() throws URISyntaxException, StorageException, IOException {
+        final String fileName = FileTestHelper.generateRandomFileName();
+        final CloudFile fileRef = this.share.getRootDirectoryReference().getFileReference(fileName);
+
+        final int length = 3*1024;
+        ByteArrayInputStream srcStream = BlobTestHelper.getRandomDataStream(length);
+        FileRequestOptions options = new FileRequestOptions();
+        options.setDisableContentMD5Validation(true);
+        options.setStoreFileContentMD5(false);
+
+        fileRef.upload(srcStream, length, null, options, null);
+
+        options.setDisableContentMD5Validation(false);
+        options.setStoreFileContentMD5(true);
+        options.setUseTransactionalContentMD5(true);
+        final CloudFile fileRef2 = this.share.getRootDirectoryReference().getFileReference(fileName);
+        fileRef2.downloadRange(1024, (long)1024, new ByteArrayOutputStream(), null, options, null);
+        assertNull(fileRef2.getProperties().getContentMD5());
     }
 
     /**
