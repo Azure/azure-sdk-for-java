@@ -1,8 +1,6 @@
 ﻿Changes in 5.1.0
 
 FILE
- * Exists() calls on Shares and Directories now populates metadata. This was already being done for Files.
- * Changed listShares() ShareListingDetails parameter to be an enum set like what is done for listing blobs.
  * In CloudFileShareProperties, setShareQuota() no longer asserts in bounds. This check has been moved to create() and uploadProperties() in CloudFileShare.
 
 BLOB/FILE

@@ -640,8 +640,7 @@ final class FileRequest {
      * @param listingContext
      *            A set of parameters for the listing operation.
      * @param detailsIncluded
-     *            A <code>java.util.EnumSet</code> object that contains {@link ShareListingDetails} values that indicate
-     *            whether share snapshots and/or metadata will be returned.
+     *             Additional details to return with the listing.
      * @return a HttpURLConnection configured for the operation.
      * @throws IOException
      * @throws URISyntaxException
@@ -650,28 +649,32 @@ final class FileRequest {
      */
     public static HttpURLConnection listShares(final URI uri, final FileRequestOptions fileOptions,
             final OperationContext opContext, final ListingContext listingContext,
-            final EnumSet<ShareListingDetails> detailsIncluded) throws URISyntaxException, IOException, StorageException {
+            final ShareListingDetails detailsIncluded) throws URISyntaxException, IOException, StorageException {
         final UriQueryBuilder builder = BaseRequest.getListUriQueryBuilder(listingContext);
 
-        if (detailsIncluded != null && detailsIncluded.size() > 0) {
-            final StringBuilder sb = new StringBuilder();
-            boolean started = false;
+//        if (detailsIncluded != null && detailsIncluded.size() > 0) {
+//            final StringBuilder sb = new StringBuilder();
+//            boolean started = false;
 
 //            if (detailsIncluded.contains(ShareListingDetails.SNAPSHOTS)) {
 //                started = true;
 //                sb.append(SNAPSHOTS_QUERY_ELEMENT_NAME);
 //            }
     
-            if (detailsIncluded.contains(ShareListingDetails.METADATA)) {
-                if (started)
-                {
-                    sb.append(",");
-                }
+//            if (detailsIncluded.contains(ShareListingDetails.METADATA)) {
+//                if (started)
+//                {
+//                    sb.append(",");
+//                }
+//
+//                sb.append(Constants.QueryConstants.METADATA);
+//            }
 
-                sb.append(Constants.QueryConstants.METADATA);
-            }
+//            builder.add(Constants.QueryConstants.INCLUDE, sb.toString());
+//        }
 
-            builder.add(Constants.QueryConstants.INCLUDE, sb.toString());
+        if (detailsIncluded == ShareListingDetails.ALL || detailsIncluded == ShareListingDetails.METADATA) {
+            builder.add(Constants.QueryConstants.INCLUDE, Constants.QueryConstants.METADATA);
         }
 
         final HttpURLConnection request = BaseRequest.createURLConnection(uri, fileOptions, builder, opContext);

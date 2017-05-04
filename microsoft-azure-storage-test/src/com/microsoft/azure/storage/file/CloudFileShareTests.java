@@ -318,7 +318,7 @@ public class CloudFileShareTests {
         Assert.assertEquals("value2", this.share.getMetadata().get("key2"));
 
         Iterable<CloudFileShare> shares = this.share.getServiceClient().listShares(this.share.getName(),
-                EnumSet.of(ShareListingDetails.METADATA), null, null);
+                ShareListingDetails.METADATA, null, null);
 
         for (CloudFileShare share3 : shares) {
             Assert.assertEquals(2, share3.getMetadata().size());
