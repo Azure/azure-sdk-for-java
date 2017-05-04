@@ -20,7 +20,7 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class DataLakeStoreAccount extends Resource {
     /**
-     * The Key vault encryption identity, if any.
+     * The Key Vault encryption identity, if any.
      */
     @JsonProperty(value = "identity")
     private EncryptionIdentity identity;
@@ -61,7 +61,7 @@ public class DataLakeStoreAccount extends Resource {
     private EncryptionProvisioningState encryptionProvisioningState;
 
     /**
-     * The Key vault encryption configuration.
+     * The Key Vault encryption configuration.
      */
     @JsonProperty(value = "properties.encryptionConfig")
     private EncryptionConfig encryptionConfig;
@@ -128,6 +128,14 @@ public class DataLakeStoreAccount extends Resource {
      */
     @JsonProperty(value = "properties.currentTier", access = JsonProperty.Access.WRITE_ONLY)
     private TierType currentTier;
+
+    /**
+     * The current state of allowing or disallowing IPs originating within
+     * Azure through the firewall. If the firewall is disabled, this is not
+     * enforced. Possible values include: 'Enabled', 'Disabled'.
+     */
+    @JsonProperty(value = "properties.firewallAllowAzureIps")
+    private FirewallAllowAzureIpsState firewallAllowAzureIps;
 
     /**
      * Get the identity value.
@@ -370,6 +378,26 @@ public class DataLakeStoreAccount extends Resource {
      */
     public TierType currentTier() {
         return this.currentTier;
+    }
+
+    /**
+     * Get the firewallAllowAzureIps value.
+     *
+     * @return the firewallAllowAzureIps value
+     */
+    public FirewallAllowAzureIpsState firewallAllowAzureIps() {
+        return this.firewallAllowAzureIps;
+    }
+
+    /**
+     * Set the firewallAllowAzureIps value.
+     *
+     * @param firewallAllowAzureIps the firewallAllowAzureIps value to set
+     * @return the DataLakeStoreAccount object itself.
+     */
+    public DataLakeStoreAccount withFirewallAllowAzureIps(FirewallAllowAzureIpsState firewallAllowAzureIps) {
+        this.firewallAllowAzureIps = firewallAllowAzureIps;
+        return this;
     }
 
 }

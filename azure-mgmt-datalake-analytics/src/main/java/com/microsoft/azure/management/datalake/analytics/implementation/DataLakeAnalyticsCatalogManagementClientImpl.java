@@ -194,8 +194,6 @@ public class DataLakeAnalyticsCatalogManagementClientImpl extends AzureServiceCl
      */
     @Override
     public String userAgent() {
-        return String.format("Azure-SDK-For-Java/%s (%s)",
-                getClass().getPackage().getImplementationVersion(),
-                "DataLakeAnalyticsCatalogManagementClient, 2016-11-01");
+        return String.format("%s (%s, %s)", super.userAgent(), "DataLakeAnalyticsCatalogManagementClient", "2016-11-01");
     }
 }

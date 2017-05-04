@@ -223,8 +223,6 @@ public class DataLakeStoreAccountManagementClientImpl extends AzureServiceClient
      */
     @Override
     public String userAgent() {
-        return String.format("Azure-SDK-For-Java/%s (%s)",
-                getClass().getPackage().getImplementationVersion(),
-                "DataLakeStoreAccountManagementClient, 2016-11-01");
+        return String.format("%s (%s, %s)", super.userAgent(), "DataLakeStoreAccountManagementClient", "2016-11-01");
     }
 }
