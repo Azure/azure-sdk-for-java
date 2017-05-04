@@ -67,7 +67,7 @@ public class CloudFileClientTests {
             do {
 
                 ResultSegment<CloudFileShare> segment = fileClient.listSharesSegmented(prefix,
-                        EnumSet.allOf(ShareListingDetails.class), 15, token, null, null);
+                        ShareListingDetails.ALL, 15, token, null, null);
 
                 for (final CloudFileShare share : segment.getResults()) {
                     share.downloadAttributes();
@@ -104,7 +104,7 @@ public class CloudFileClientTests {
         for (int i = 0; i >= -2; i--) {
             try{ 
                 fileClient.listSharesSegmented(
-                        prefix, EnumSet.allOf(ShareListingDetails.class), i, null, null, null);
+                        prefix, ShareListingDetails.ALL, i, null, null, null);
                 fail();
             }
             catch (IllegalArgumentException e) {
@@ -133,7 +133,7 @@ public class CloudFileClientTests {
         share.uploadMetadata();
 
         CloudFileClient client = FileTestHelper.createCloudFileClient();
-        Iterable<CloudFileShare> listResult = client.listShares(share.name, EnumSet.allOf(ShareListingDetails.class), null, null);
+        Iterable<CloudFileShare> listResult = client.listShares(share.name, ShareListingDetails.ALL, null, null);
 
         int count = 0;
         boolean originalFound = false;

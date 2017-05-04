@@ -1019,10 +1019,11 @@ public final class CloudFileShare {
             public Boolean preProcessResponse(CloudFileShare share, CloudFileClient client, OperationContext context)
                     throws Exception {
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_OK) {
-                    final FileShareAttributes attributes = FileResponse.getFileShareAttributes(this.getConnection(),
-                            client.isUsePathStyleUris());
-                    share.metadata = attributes.getMetadata();
-                    share.properties = attributes.getProperties();
+                    share.updatePropertiesFromResponse(this.getConnection());
+//                    final FileShareAttributes attributes = FileResponse.getFileShareAttributes(this.getConnection(),
+//                            client.isUsePathStyleUris());
+//                    share.metadata = attributes.getMetadata();
+//                    share.properties = attributes.getProperties();
 
                     return Boolean.valueOf(true);
                 }

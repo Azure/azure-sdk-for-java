@@ -529,11 +529,12 @@ public final class CloudFileDirectory implements ListFileItem {
             public Boolean preProcessResponse(CloudFileDirectory directory, CloudFileClient client,
                     OperationContext context) throws Exception {
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_OK) {
-                    // Set properties
-                    final FileDirectoryAttributes attributes =
-                            FileResponse.getFileDirectoryAttributes(this.getConnection(), client.isUsePathStyleUris());
-                    directory.setMetadata(attributes.getMetadata());
-                    directory.setProperties(attributes.getProperties());
+                    directory.updatePropertiesFromResponse(this.getConnection());
+//                    // Set properties
+//                    final FileDirectoryAttributes attributes =
+//                            FileResponse.getFileDirectoryAttributes(this.getConnection(), client.isUsePathStyleUris());
+//                    directory.setMetadata(attributes.getMetadata());
+//                    directory.setProperties(attributes.getProperties());
 
                     return Boolean.valueOf(true);
                 }
