@@ -46,6 +46,7 @@ final class ShareListHandler extends DefaultHandler {
     private final ListResponse<CloudFileShare> response = new ListResponse<CloudFileShare>();
     private FileShareAttributes attributes;
     private String shareName;
+    private String snapshotID;
 
     private ShareListHandler(CloudFileClient serviceClient) {
         this.serviceClient = serviceClient;
@@ -77,6 +78,7 @@ final class ShareListHandler extends DefaultHandler {
 
         if (FileConstants.SHARE_ELEMENT.equals(localName)) {
             this.shareName = Constants.EMPTY_STRING;
+            this.snapshotID = null;
             this.attributes = new FileShareAttributes();
         }
     }
@@ -105,6 +107,7 @@ final class ShareListHandler extends DefaultHandler {
                 CloudFileShare retShare = this.serviceClient.getShareReference(this.shareName);
                 retShare.setMetadata(this.attributes.getMetadata());
                 retShare.setProperties(this.attributes.getProperties());
+                retShare.snapshotID = this.snapshotID;
 
                 this.response.getResults().add(retShare);
             }
@@ -133,6 +136,9 @@ final class ShareListHandler extends DefaultHandler {
         else if (FileConstants.SHARE_ELEMENT.equals(parentNode)) {
             if (Constants.NAME_ELEMENT.equals(currentNode)) {
                 this.shareName = value;
+            }
+            else if (Constants.QueryConstants.SNAPSHOT.equals(currentNode.toLowerCase())) {
+                this.snapshotID = value;
             }
         }
         else if (Constants.PROPERTIES.equals(parentNode)) {
