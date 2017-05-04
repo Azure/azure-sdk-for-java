@@ -20,6 +20,16 @@ package com.microsoft.azure.storage.file;
 public enum ShareListingDetails {
 
     /**
+     * Specifies including no additional details.
+     */
+    NONE(0),
+
+    /**
+     * Specifies including all available details.
+     */
+    ALL(1),
+
+    /**
      * Specifies including share metadata.
      */
     METADATA(1);
