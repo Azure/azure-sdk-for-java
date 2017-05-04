@@ -3,6 +3,8 @@
  * Changed blob constants to support up to 256 MB on put blob for block blobs. The default value for put blob threshold has also been updated to half of the maximum, or 128 MB currently.
  * Fixed a bug that prevented setting content MD5 to true when creating a new file.
  * Fixed a bug where access conditions, options, and operation context were not being passed when calling openWriteExisting() on a page blob or a file.
+ * Fixed a bug where an exception was being thrown on a range get of a blob or file when the options disableContentMD5Validation is set to false and useTransactionalContentMD5 is set to true and there is no overall MD5.
+ * Fixed a bug where retries were happening immediately if a sock exception was thrown.
 
 2017.01.18 Version 5.0.0
  * Prefix support for listing files and directories.
