@@ -116,7 +116,7 @@ public class InMemoryLeaseManager implements ILeaseManager
     public Iterable<Future<Lease>> getAllLeases() throws Exception
     {
         ArrayList<Future<Lease>> leases = new ArrayList<Future<Lease>>();
-        Iterable<String> partitionIds = this.host.getPartitionManager().getPartitionIds();
+        String[] partitionIds = this.host.getPartitionManager().getPartitionIds();
         for (String id : partitionIds)
         {
             leases.add(getLease(id));

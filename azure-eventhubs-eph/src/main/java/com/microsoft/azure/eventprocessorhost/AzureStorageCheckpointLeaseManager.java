@@ -319,7 +319,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     public Iterable<Future<Lease>> getAllLeases() throws IllegalEntityException
     {
         ArrayList<Future<Lease>> leaseFutures = new ArrayList<Future<Lease>>();
-        Iterable<String> partitionIds = this.host.getPartitionManager().getPartitionIds(); 
+        String[] partitionIds = this.host.getPartitionManager().getPartitionIds();
         for (String id : partitionIds)
         {
             leaseFutures.add(getLease(id));

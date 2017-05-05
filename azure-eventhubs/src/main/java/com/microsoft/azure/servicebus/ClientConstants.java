@@ -77,6 +77,7 @@ public final class ClientConstants {
     public static final String MANAGEMENT_SECURITY_TOKEN_KEY = "security_token";
     public static final String MANAGEMENT_RESULT_PARTITION_IDS = "partition_ids";
     public static final String MANAGEMENT_RESULT_PARTITION_COUNT = "partition_count";
+    public static final String MANAGEMENT_RESULT_CREATED_AT = "created_at";
     public static final String MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER = "begin_sequence_number";
     public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER = "last_enqueued_sequence_number";
     public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET = "last_enqueued_offset";

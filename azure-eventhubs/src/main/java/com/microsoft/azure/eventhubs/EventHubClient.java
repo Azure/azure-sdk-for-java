@@ -6,10 +6,18 @@ package com.microsoft.azure.eventhubs;
 
 import java.io.IOException;
 import java.nio.channels.UnresolvedAddressException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.time.Instant;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -18,6 +26,7 @@ import com.microsoft.azure.servicebus.ClientEntity;
 import com.microsoft.azure.servicebus.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.IllegalEntityException;
 import com.microsoft.azure.servicebus.IteratorUtil;
+import com.microsoft.azure.servicebus.ManagementChannel;
 import com.microsoft.azure.servicebus.MessageSender;
 import com.microsoft.azure.servicebus.MessagingFactory;
 import com.microsoft.azure.servicebus.RetryPolicy;
@@ -25,6 +34,9 @@ import com.microsoft.azure.servicebus.PayloadSizeExceededException;
 import com.microsoft.azure.servicebus.ReceiverDisconnectedException;
 import com.microsoft.azure.servicebus.ServiceBusException;
 import com.microsoft.azure.servicebus.StringUtil;
+import com.microsoft.azure.servicebus.TimeoutException;
+import com.microsoft.azure.servicebus.Timer;
+import com.microsoft.azure.servicebus.TimerType;
 
 /**
  * Anchor class - all EventHub client operations STARTS here.
@@ -1254,5 +1266,174 @@ public class EventHubClient extends ClientEntity {
         }
 
         return this.createSender;
+    }
+    
+    /**
+     * Retrieves general information about an event hub (see {@link EventHubRuntimeInformation} for details).
+     * Retries until it reaches the operation timeout, then either rethrows the last error if available or
+     * returns null to indicate timeout.
+     * 
+     * @return CompletableFuture which returns an EventHubRuntimeInformation on success, or null on timeout.  
+     * @throws Exception On failures other than timeout.
+     */
+    public CompletableFuture<EventHubRuntimeInformation> getRuntimeInformation() {
+    	CompletableFuture<EventHubRuntimeInformation> future1 = null;
+    	
+    	Map<String, String> request = new HashMap<String, String>();
+        request.put(ClientConstants.MANAGEMENT_ENTITY_TYPE_KEY, ClientConstants.MANAGEMENT_EVENTHUB_ENTITY_TYPE);
+        request.put(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY, this.eventHubName);
+        request.put(ClientConstants.MANAGEMENT_OPERATION_KEY, ClientConstants.READ_OPERATION_VALUE);
+        future1 = this.<EventHubRuntimeInformation>addManagementToken(request);
+
+        if (future1 == null) {
+	        future1 = managementWithRetry(request).thenCompose(new Function<Map<String, Object>, CompletableFuture<EventHubRuntimeInformation>>() {
+				@Override
+				public CompletableFuture<EventHubRuntimeInformation> apply(Map<String, Object> rawdata) {
+			        CompletableFuture<EventHubRuntimeInformation> future2 = new CompletableFuture<EventHubRuntimeInformation>();
+					future2.complete(new EventHubRuntimeInformation(
+							(String)rawdata.get(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY),
+							((Date)rawdata.get(ClientConstants.MANAGEMENT_RESULT_CREATED_AT)).toInstant(),
+							(int)rawdata.get(ClientConstants.MANAGEMENT_RESULT_PARTITION_COUNT),
+							(String[])rawdata.get(ClientConstants.MANAGEMENT_RESULT_PARTITION_IDS)));
+			        return future2;
+				}
+	        });
+        }
+        
+        return future1;
+    }
+
+    /**
+     * Retrieves dynamic information about a partition of an event hub (see {@link EventHubPartitionRuntimeInformation} for
+     * details. Retries until it reaches the operation timeout, then either rethrows the last error if available or
+     * returns null to indicate timeout.
+     * 
+     * @param partitionId  Partition to get information about. Must be one of the partition ids returned by getRuntimeInformation.
+     * @return CompletableFuture which returns an EventHubPartitionRuntimeInformation on success, or null on timeout.  
+     * @throws Exception On failures other than timeout.
+     */
+    public CompletableFuture<EventHubPartitionRuntimeInformation> getPartitionRuntimeInformation(String partitionId) {
+    	CompletableFuture<EventHubPartitionRuntimeInformation> future1 = null;
+    	
+    	Map<String, String> request = new HashMap<String, String>();
+        request.put(ClientConstants.MANAGEMENT_ENTITY_TYPE_KEY, ClientConstants.MANAGEMENT_PARTITION_ENTITY_TYPE);
+        request.put(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY, this.eventHubName);
+        request.put(ClientConstants.MANAGEMENT_PARTITION_NAME_KEY, partitionId);
+        request.put(ClientConstants.MANAGEMENT_OPERATION_KEY, ClientConstants.READ_OPERATION_VALUE);
+        future1 = this.<EventHubPartitionRuntimeInformation>addManagementToken(request);
+
+        if (future1 == null) {
+	        future1 = managementWithRetry(request).thenCompose(new Function<Map<String, Object>, CompletableFuture<EventHubPartitionRuntimeInformation>>() {
+				@Override
+				public CompletableFuture<EventHubPartitionRuntimeInformation> apply(Map<String, Object> rawdata) {
+					CompletableFuture<EventHubPartitionRuntimeInformation> future2 = new CompletableFuture<EventHubPartitionRuntimeInformation>();
+					future2.complete(new EventHubPartitionRuntimeInformation(
+							(String)rawdata.get(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY),
+							(String)rawdata.get(ClientConstants.MANAGEMENT_PARTITION_NAME_KEY),
+							(long)rawdata.get(ClientConstants.MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER),
+							(long)rawdata.get(ClientConstants.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER),
+							(String)rawdata.get(ClientConstants.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET),
+							((Date)rawdata.get(ClientConstants.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC)).toInstant()));
+					return future2;
+				}
+	        });
+        }
+        
+        return future1;
+    }
+    
+    private <T> CompletableFuture<T> addManagementToken(Map<String, String> request)
+    {
+    	CompletableFuture<T> retval = null;
+        try {
+        	String audience = String.format("amqp://%s/%s", this.underlyingFactory.getHostName(), this.eventHubName);
+        	String token = this.underlyingFactory.getTokenProvider().getToken(audience, ClientConstants.TOKEN_REFRESH_INTERVAL); 
+			request.put(ClientConstants.MANAGEMENT_SECURITY_TOKEN_KEY, token);
+		} 
+        catch (InvalidKeyException | NoSuchAlgorithmException | IOException e) {
+        	retval = new CompletableFuture<T>();
+        	retval.completeExceptionally(e);
+		}
+    	return retval;
+    }
+    
+    private CompletableFuture<Map<String, Object>> managementWithRetry(Map<String, String> request) {
+        Instant endTime = Instant.now().plus(this.underlyingFactory.getOperationTimeout());
+        CompletableFuture<Map<String, Object>> rawdataFuture = new CompletableFuture<Map<String, Object>>();
+        
+        ManagementRetry retrier = new ManagementRetry(rawdataFuture, endTime, this.underlyingFactory, request);
+        Timer.schedule(retrier, Duration.ZERO, TimerType.OneTimeRun);
+        
+        return rawdataFuture;
+    }
+    
+    private class ManagementRetry implements Runnable {
+    	private final CompletableFuture<Map<String, Object>> finalFuture;
+    	private final Instant endTime;
+    	private final MessagingFactory mf;
+    	private final Map<String, String> request;
+    	
+    	public ManagementRetry(CompletableFuture<Map<String, Object>> future, Instant endTime, MessagingFactory mf,
+    			Map<String, String> request) {
+    		this.finalFuture = future;
+    		this.endTime = endTime;
+    		this.mf = mf;
+    		this.request = request;
+    	}
+    	
+		@Override
+		public void run() {
+			CompletableFuture<Map<String, Object>> intermediateFuture = this.mf.getManagementChannel().request(this.mf.getReactorScheduler(), request);
+			intermediateFuture.whenComplete(new BiConsumer<Map<String, Object>, Throwable>() {
+				@Override
+				public void accept(Map<String, Object> result, Throwable error) {
+					if ((result != null) && (error == null)) {
+						// Success!
+						ManagementRetry.this.finalFuture.complete(result);
+					}
+					else {
+						Duration remainingTime = Duration.between(Instant.now(), ManagementRetry.this.endTime);
+						Exception lastException = null;
+						Throwable completeWith = error;
+						if (error == null) {
+							// Timeout, so fake up an exception to keep getNextRetryInternal happy.
+							// It has to be a ServiceBusException that is set to retryable or getNextRetryInterval will halt the retries.
+							lastException = new ServiceBusException(true, "timed out");
+							completeWith = null;
+						}
+						else if (error instanceof Exception) {
+							if ((error instanceof ExecutionException) && (error.getCause() != null) && (error.getCause() instanceof Exception)) {
+								lastException = (Exception)error.getCause();
+								completeWith = error.getCause();
+							}
+							else {
+								lastException = (Exception)error;
+							}
+						}
+						else {
+							lastException = new Exception("got a throwable: " + error.toString());
+						}
+						Duration waitTime = ManagementRetry.this.mf.getRetryPolicy().getNextRetryInterval(ManagementRetry.this.mf.getClientId(), lastException, remainingTime);
+						if (waitTime == null) {
+							// Do not retry again, give up and report error.
+							if (completeWith == null) {
+								ManagementRetry.this.finalFuture.complete(null);
+							}
+							else {
+								ManagementRetry.this.finalFuture.completeExceptionally(completeWith);
+							}
+						}
+						else {
+							// The only thing needed here is to schedule a new attempt. Even if the RequestResponseChannel has croaked,
+							// ManagementChannel uses FaultTolerantObject, so the underlying RequestResponseChannel will be recreated
+							// the next time it is needed.
+							ManagementRetry retrier = new ManagementRetry(ManagementRetry.this.finalFuture, ManagementRetry.this.endTime, 
+									ManagementRetry.this.mf, ManagementRetry.this.request);
+							Timer.schedule(retrier, waitTime, TimerType.OneTimeRun);
+						}
+					}
+				}
+			});
+		}
     }
 }
