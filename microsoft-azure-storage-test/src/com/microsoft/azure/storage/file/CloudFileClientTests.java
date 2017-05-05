@@ -28,6 +28,8 @@ import org.junit.experimental.categories.Category;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
@@ -64,8 +66,8 @@ public class CloudFileClientTests {
             ResultContinuation token = null;
             do {
 
-                ResultSegment<CloudFileShare> segment = fileClient.listSharesSegmented(prefix, ShareListingDetails.ALL,
-                        15, token, null, null);
+                ResultSegment<CloudFileShare> segment = fileClient.listSharesSegmented(prefix,
+                        ShareListingDetails.ALL, 15, token, null, null);
 
                 for (final CloudFileShare share : segment.getResults()) {
                     share.downloadAttributes();
@@ -111,5 +113,48 @@ public class CloudFileClientTests {
             }
         }
         assertNotNull(fileClient.listSharesSegmented("thereshouldntbeanyshareswiththisprefix"));
+    }
+
+    //@Test
+    public void testListSharesWithSnapshot() throws StorageException, URISyntaxException {
+        CloudFileClient fileClient = FileTestHelper.createCloudFileClient();
+        CloudFileShare share = fileClient.getShareReference(UUID.randomUUID().toString());
+        share.create();
+
+        HashMap<String, String> shareMeta = new HashMap<String, String>();
+        shareMeta.put("key1", "value1");
+        share.setMetadata(shareMeta);
+        share.uploadMetadata();
+
+        CloudFileShare snapshot = share.createSnapshot();
+        HashMap<String, String> meta2 = new HashMap<String, String>();
+        meta2.put("key2", "value2");
+        share.setMetadata(meta2);
+        share.uploadMetadata();
+
+        CloudFileClient client = FileTestHelper.createCloudFileClient();
+        Iterable<CloudFileShare> listResult = client.listShares(share.name, ShareListingDetails.ALL, null, null);
+
+        int count = 0;
+        boolean originalFound = false;
+        boolean snapshotFound = false;
+        for (CloudFileShare listShareItem : listResult) {
+            if (listShareItem.getName().equals(share.getName()) && !listShareItem.isSnapshot() && !originalFound)
+            {
+                count++;
+                originalFound = true;
+                assertEquals(share.getMetadata(), listShareItem.getMetadata());
+                assertEquals(share.getStorageUri(), listShareItem.getStorageUri());
+            }
+            else if (listShareItem.getName().equals(share.getName()) &&
+                    listShareItem.isSnapshot() && !snapshotFound) {
+                count++;
+                snapshotFound = true;
+                assertEquals(snapshot.getMetadata(), listShareItem.getMetadata());
+                assertEquals(snapshot.getStorageUri(), listShareItem.getStorageUri());
+            }
+        }
+
+        assertEquals(2, count);
     }
 }

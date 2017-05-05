@@ -152,11 +152,6 @@ final class BlobConstants {
     public static final int DEFAULT_POLLING_INTERVAL_IN_SECONDS = 30;
 
     /**
-     * Specifies snapshots are to be included.
-     */
-    public static final String INCLUDE_SNAPSHOTS_VALUE = "include";
-
-    /**
      * XML element for the latest.
      */
     public static final String LATEST_ELEMENT = "Latest";

@@ -1,16 +1,11 @@
-Changes in X.X.X
-
-BLOB/FILE
- * Fixed a bug which allowed setting content MD5 to true when calling openWriteExisting() on a page blob or file.
-
-Changes in 5.0.0
+﻿Changes in 5.0.0
 
 BLOB
  * getQualifiedUri() has been deprecated. Please use getSnapshotQualifiedUri() instead. This new function will return the blob including the snapshot (if present) and no SAS token.
  * getQualifiedStorageUri() has been deprecated. Please use getSnapshotQualifiedStorageUri() instead. This new function will return the blob including the snapshot (if present) and no SAS token.
  * Fixed a bug where copying from a blob that included a SAS token and a snapshot did not use the SAS token.
-
- FILE
+ 
+FILE
  * Fixed a bug where copying from a blob that included a SAS token and a snapshot did not use the SAS token.
 
 QUEUE

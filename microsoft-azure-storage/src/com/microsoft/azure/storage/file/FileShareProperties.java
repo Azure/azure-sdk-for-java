@@ -17,7 +17,6 @@ package com.microsoft.azure.storage.file;
 import java.util.Date;
 
 import com.microsoft.azure.storage.AccessCondition;
-import com.microsoft.azure.storage.core.Utility;
 
 /**
  * Represents the system properties for a share.
@@ -38,6 +37,27 @@ public final class FileShareProperties {
      * Represents the limit on the size of files (in GB) stored on the share.
      */
     private Integer shareQuota;
+
+    /**
+     * Creates an instance of the <code>FileShareProperties</code> class.
+     */
+    public FileShareProperties() {
+    }
+
+    /**
+     * Creates an instance of the <code>FileShareProperties</code> class by copying values from another
+     * <code>FileShareProperties</code> instance.
+     * 
+     * @param other
+     *            A {@link FileShareProperties} object which represents the file share properties to copy.
+     */
+    public FileShareProperties(final FileShareProperties other) {
+        if (other != null) {
+            this.setEtag(other.getEtag());
+            this.setLastModified(other.getLastModified());
+            this.setShareQuota(other.getShareQuota());
+        }
+    }
 
     /**
      * Gets the ETag value of the share.
@@ -102,9 +122,6 @@ public final class FileShareProperties {
      *            the size of files stored on the share.
      */
     public void setShareQuota(Integer shareQuota) {
-        if (shareQuota != null) {
-            Utility.assertInBounds("Share Quota", shareQuota, 1, FileConstants.MAX_SHARE_QUOTA);
-        }
         this.shareQuota = shareQuota;
     }
 }

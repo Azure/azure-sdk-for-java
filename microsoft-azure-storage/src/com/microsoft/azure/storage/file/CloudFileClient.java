@@ -17,6 +17,7 @@ package com.microsoft.azure.storage.file;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.EnumSet;
 
 import com.microsoft.azure.storage.DoesServiceRequest;
 import com.microsoft.azure.storage.OperationContext;
@@ -100,7 +101,29 @@ public final class CloudFileClient extends ServiceClient {
      */
     public CloudFileShare getShareReference(final String shareName) throws URISyntaxException, StorageException {
         Utility.assertNotNullOrEmpty("shareName", shareName);
-        return new CloudFileShare(shareName, this);
+        return this.getShareReference(shareName, null);
+    }
+
+    /**
+     * Gets a {@link CloudFileShare} object with the specified name.
+     * 
+     * @param shareName
+     *            The name of the share, which must adhere to share naming rules. The share name should not
+     *            include any path separator characters (/).
+     *            Share names must be lowercase, between 3-63 characters long and must start with a letter or
+     *            number. Share names may contain only letters, numbers, and the dash (-) character.
+     * @param snapshotID
+     *            A <code>String</code> that represents the snapshot ID of the share.
+     * @return A reference to a {@link CloudFileShare} object.
+     * @throws StorageException
+     * @throws URISyntaxException
+     * 
+     * @see <a href="http://msdn.microsoft.com/en-us/library/azure/dn167011.aspx">Naming and Referencing Shares,
+     *      Directories, Files, and Metadata</a>
+     */
+    protected CloudFileShare getShareReference(final String shareName, String snapshotID) throws URISyntaxException, StorageException {
+        Utility.assertNotNullOrEmpty("shareName", shareName);
+        return new CloudFileShare(shareName, snapshotID, this);
     }
 
     /**
@@ -197,7 +220,7 @@ public final class CloudFileClient extends ServiceClient {
      * @param prefix
      *            A <code>String</code> that represents the prefix of the share name.
      * @param detailsIncluded
-     *            A {@link ShareListingDetails} value that indicates whether share metadata will be returned.
+     *           A {@link ShareListingDetails} value that indicates whether share metadata will be returned.
      * @param maxResults
      *            The maximum number of results to retrieve.  If <code>null</code> or greater
      *            than 5000, the server will return up to 5,000 items.  Must be at least 1.
@@ -271,7 +294,7 @@ public final class CloudFileClient extends ServiceClient {
      * @param prefix
      *            A <code>String</code> that represents the prefix of the share name.
      * @param detailsIncluded
-     *            A {@link FileListingDetails} value that indicates whether share metadata will be returned.
+     *            A {@link ShareListingDetails} value that indicates whether share metadata will be returned.
      * @param maxResults
      *            The maximum number of results to retrieve.  If <code>null</code> or greater
      *            than 5000, the server will return up to 5,000 items.  Must be at least 1.
