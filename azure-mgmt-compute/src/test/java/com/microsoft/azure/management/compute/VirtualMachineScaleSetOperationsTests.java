@@ -41,7 +41,9 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     }
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
+        if (RG_NAME != null) {
+            resourceManager.resourceGroups().deleteByName(RG_NAME);
+        }
     }
 
     @Test
@@ -514,5 +516,28 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             VirtualMachineScaleSetNetworkInterface nicB = vm.getNetworkInterface(nic.name());
             Assert.assertNotNull(nicB);
         }
+    }
+
+    @Test
+    public void testVirtualMachineScaleSetSkuTypes() {
+        RG_NAME = null;
+        VirtualMachineScaleSetSkuTypes skuType = VirtualMachineScaleSetSkuTypes.STANDARD_A0;
+        Assert.assertNull(skuType.sku().capacity());
+        // first copy of sku
+        Sku sku1 = skuType.sku();
+        Assert.assertNull(sku1.capacity());
+        sku1.withCapacity(new Long(1));
+        Assert.assertEquals(sku1.capacity().longValue(), 1);
+        // Ensure the original is not affected
+        Assert.assertNull(skuType.sku().capacity());
+        // second copy of sku
+        Sku sku2 = skuType.sku();
+        Assert.assertNull(sku2.capacity());
+        sku2.withCapacity(new Long(2));
+        Assert.assertEquals(sku2.capacity().longValue(), 2);
+        // Ensure the original is not affected
+        Assert.assertNull(skuType.sku().capacity());
+        // Ensure previous copy is not affected due to change in first copy
+        Assert.assertEquals(sku1.capacity().longValue(), 1);
     }
 }
