@@ -4,12 +4,19 @@
  */
 package com.microsoft.azure.eventhubs.sendrecv;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubPartitionRuntimeInformation;
+import com.microsoft.azure.eventhubs.EventHubRuntimeInformation;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
+import com.microsoft.azure.servicebus.AuthorizationFailedException;
 import com.microsoft.azure.servicebus.ClientConstants;
 import com.microsoft.azure.servicebus.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.FaultTolerantObject;
@@ -21,6 +28,8 @@ import com.microsoft.azure.servicebus.amqp.IOperation;
 import com.microsoft.azure.servicebus.amqp.IOperationResult;
 import com.microsoft.azure.servicebus.amqp.ReactorDispatcher;
 import com.microsoft.azure.servicebus.amqp.RequestResponseChannel;
+
+import junit.framework.Assert;
 import junit.framework.AssertionFailedError;
 
 import org.apache.qpid.proton.Proton;
@@ -189,6 +198,151 @@ public class RequestResponseTest  extends ApiTestBase {
         });
         
         closeFuture.get();
+    }
+    
+    @Test
+    public void testGetRuntimes() throws Exception {
+    	EventHubClient ehc = EventHubClient.createFromConnectionStringSync(connectionString.toString());
+    	EventHubRuntimeInformation ehInfo = ehc.getRuntimeInformation().get();
+
+    	Assert.assertNotNull(ehInfo);
+    	Assert.assertTrue(connectionString.getEntityPath().equalsIgnoreCase(ehInfo.getPath()));
+    	Assert.assertNotNull(ehInfo.getCreatedAt()); // creation time could be almost anything, can't really check value
+    	Assert.assertTrue(ehInfo.getPartitionCount() > 2); // max legal partition count is variable but 2 is hard minimum
+    	Assert.assertEquals(ehInfo.getPartitionIds().length, ehInfo.getPartitionCount());
+    	/*
+    	System.out.println("Event hub name: " + ehInfo.getPath());
+    	System.out.println("Created at: " + ehInfo.getCreatedAt().toString());
+    	System.out.println("Partition count: " + ehInfo.getPartitionCount());
+    	*/
+    	for (int i = 0; i < ehInfo.getPartitionCount(); i++) {
+    		String id = ehInfo.getPartitionIds()[i];
+    		Assert.assertNotNull(id);
+    		Assert.assertFalse(id.isEmpty());
+    		//System.out.println("Partition id[" + i + "]: " + ehInfo.getPartitionIds()[i]);
+    	}
+    	
+    	for (String id : ehInfo.getPartitionIds()) {
+	    	EventHubPartitionRuntimeInformation partInfo = ehc.getPartitionRuntimeInformation(id).get();
+	    	
+	    	Assert.assertNotNull(partInfo);
+	    	Assert.assertTrue(connectionString.getEntityPath().equalsIgnoreCase(partInfo.getEventHubPath()));
+	    	Assert.assertTrue(id.equalsIgnoreCase(partInfo.getPartitionId()));
+	    	Assert.assertTrue(partInfo.getBeginSequenceNumber() >= -1);
+	    	Assert.assertTrue(partInfo.getLastEnqueuedSequenceNumber() >= -1);
+	    	Assert.assertTrue(partInfo.getLastEnqueuedSequenceNumber() >= partInfo.getBeginSequenceNumber());
+	    	Assert.assertNotNull(partInfo.getLastEnqueuedOffset());
+	    	Assert.assertFalse(partInfo.getLastEnqueuedOffset().isEmpty());
+	    	Assert.assertNotNull(partInfo.getLastEnqueuedTimeUtc());  // last enqueued time could be almost anything, can't really check value
+	    	/*
+	    	System.out.println("Event hub name: " + partInfo.getEventHubPath());
+	    	System.out.println("Partition id: " + partInfo.getPartitionId());
+	    	System.out.println("Begin seq: " + partInfo.getBeginSequenceNumber());
+	    	System.out.println("Last seq: " + partInfo.getLastEnqueuedSequenceNumber());
+	    	System.out.println("Last offset: " + partInfo.getLastEnqueuedOffset());
+	    	System.out.println("Last time: " + partInfo.getLastEnqueuedTimeUtc().toString());
+	    	*/
+    	}
+    	
+    	ehc.closeSync();
+    }
+    
+    @Test
+    public void testGetRuntimesBadHub() throws ServiceBusException, IOException {
+    	ConnectionStringBuilder bogusConnectionString = new ConnectionStringBuilder(connectionString.getEndpoint(), "NOHUBZZZZZ",
+    			connectionString.getSasKeyName(), connectionString.getSasKey());
+    	EventHubClient ehc = EventHubClient.createFromConnectionStringSync(bogusConnectionString.toString());
+    	
+    	try {
+    		ehc.getRuntimeInformation().get();
+    		Assert.fail("Expected exception, got success");
+    	}
+    	catch (ExecutionException e) {
+    		if (e.getCause() == null) {
+    			Assert.fail("Got ExecutionException but no inner exception");
+    		}
+    		else if (e.getCause() instanceof AmqpException) {
+    			// TODO we should really be returning a MessagingEntityNotFound exception
+    			// but that can be an enhancement for later, right now it's an AmqpException
+    			Assert.assertTrue(e.getCause().getMessage().contains("could not be found"));
+    		}
+    		else {
+    			Assert.fail("Got unexpected inner exception " + e.getCause().toString());
+    		}
+    	}
+    	catch (Exception e) {
+    		Assert.fail("Unexpected exception " + e.toString());
+    	}
+    	
+    	try {
+    		ehc.getPartitionRuntimeInformation("0").get();
+    		Assert.fail("Expected exception, got success");
+    	}
+    	catch (ExecutionException e) {
+    		if (e.getCause() == null) {
+    			Assert.fail("Got ExecutionException but no inner exception");
+    		}
+    		else if (e.getCause() instanceof AmqpException) {
+    			// TODO we should really be returning a MessagingEntityNotFound exception
+    			// but that can be an enhancement for later, right now it's an AmqpException
+    			Assert.assertTrue(e.getCause().getMessage().contains("could not be found"));
+    		}
+    		else {
+    			Assert.fail("Got unexpected inner exception " + e.getCause().toString());
+    		}
+    	}
+    	catch (Exception e) {
+    		Assert.fail("Unexpected exception " + e.toString());
+    	}
+    	
+    	ehc.closeSync();
+    }
+    
+    @Test
+    public void testGetRuntimesBadKeyname() throws ServiceBusException, IOException {
+    	ConnectionStringBuilder bogusConnectionString = new ConnectionStringBuilder(connectionString.getEndpoint(), connectionString.getEntityPath(),
+    			"xxxnokeyxxx", connectionString.getSasKey());
+    	EventHubClient ehc = EventHubClient.createFromConnectionStringSync(bogusConnectionString.toString());
+    	
+    	try {
+    		ehc.getRuntimeInformation().get();
+    		Assert.fail("Expected exception, got success");
+    	}
+    	catch (ExecutionException e) {
+    		if (e.getCause() == null) {
+    			Assert.fail("Got ExecutionException but no inner exception");
+    		}
+    		else if (e.getCause() instanceof AuthorizationFailedException) {
+    			// Success
+    		}
+    		else {
+    			Assert.fail("Got unexpected inner exception " + e.getCause().toString());
+    		}
+    	}
+    	catch (Exception e) {
+    		Assert.fail("Unexpected exception " + e.toString());
+    	}
+    	
+    	try {
+    		ehc.getPartitionRuntimeInformation("0").get();
+    		Assert.fail("Expected exception, got success");
+    	}
+    	catch (ExecutionException e) {
+    		if (e.getCause() == null) {
+    			Assert.fail("Got ExecutionException but no inner exception");
+    		}
+    		else if (e.getCause() instanceof AuthorizationFailedException) {
+    			// Success
+    		}
+    		else {
+    			Assert.fail("Got unexpected inner exception " + e.getCause().toString());
+    		}
+    	}
+    	catch (Exception e) {
+    		Assert.fail("Unexpected exception " + e.toString());
+    	}
+    	
+    	ehc.closeSync();
     }
     
     @AfterClass()

@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 /**
  * An abstraction for a Scheduler functionality - which can later be replaced by a light-weight Thread
  */
-final class Timer {
+public final class Timer {
     private static ScheduledThreadPoolExecutor executor = null;
 
     private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);

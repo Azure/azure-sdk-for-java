@@ -450,14 +450,14 @@ public class PartitionManagerTest
 		}
 
 		@Override
-	    Iterable<String> getPartitionIds()
+	    String[] getPartitionIds()
 	    {
 			ArrayList<String> ids = new ArrayList<String>();
 			for (int i = 0; i < this.partitionCount; i++)
 			{
 				ids.add(String.valueOf(i));
 			}
-			return ids;
+			return (String[])ids.toArray();
 	    }
 	    
 		@Override
