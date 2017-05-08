@@ -229,7 +229,10 @@ public class VirtualMachineScaleSetSkuTypes {
      */
     public VirtualMachineScaleSetSkuTypes(Sku sku) {
         // TODO: This constructor should really be private
-        this.sku = sku;
+        // Store Sku copy since original user provided sku can be modified
+        // by the user.
+        //
+        this.sku = createCopy(sku);
         if (this.sku.tier() == null) {
             this.value = this.sku.name();
         } else {
@@ -276,7 +279,10 @@ public class VirtualMachineScaleSetSkuTypes {
      * @return the SKU
      */
     public Sku sku() {
-        return this.sku;
+        // Return copy of sku to guard VirtualMachineScaleSetSkuTypes from ending up with invalid
+        // sku in case consumer changes the returned Sku instance.
+        //
+        return createCopy(this.sku);
     }
 
     @Override
@@ -301,5 +307,18 @@ public class VirtualMachineScaleSetSkuTypes {
         } else {
             return value.equalsIgnoreCase(((VirtualMachineScaleSetSkuTypes) obj).value.toLowerCase());
         }
+    }
+
+    /**
+     * Creates a copy of the given sku.
+     *
+     * @param sku the sku to create copy of
+     * @return the copy
+     */
+    private static Sku createCopy(Sku sku) {
+        return new Sku()
+                .withName(sku.name())
+                .withTier(sku.tier())
+                .withCapacity(sku.capacity());
     }
 }
