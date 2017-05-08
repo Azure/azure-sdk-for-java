@@ -33,6 +33,12 @@ public class OperationDisplay {
     private String operation;
 
     /**
+     * Operation description.
+     */
+    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
+    private String description;
+
+    /**
      * Get the provider value.
      *
      * @return the provider value
@@ -59,4 +65,12 @@ public class OperationDisplay {
         return this.operation;
     }
 
+    /**
+     * Get the description value.
+     *
+     * @return the description value
+     */
+    public String description() {
+        return this.description;
+    }
 }
