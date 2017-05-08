@@ -42,6 +42,7 @@ import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.NetworkUsages;
 import com.microsoft.azure.management.network.Networks;
+import com.microsoft.azure.management.network.NetworkWatchers;
 import com.microsoft.azure.management.network.PublicIPAddresses;
 import com.microsoft.azure.management.network.RouteTables;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
@@ -456,6 +457,13 @@ public final class Azure {
      */
     public NetworkUsages networkUsages() {
         return networkManager.usages();
+    }
+
+    /**
+     * @return entry point to managing network watchers
+     */
+    public NetworkWatchers networkWatchers() {
+        return networkManager.networkWatchers();
     }
 
     /**
