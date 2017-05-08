@@ -21,7 +21,7 @@ class NetworkUsageImpl extends WrapperImpl<UsageInner> implements NetworkUsage {
 
     @Override
     public NetworkUsageUnit unit() {
-        return new NetworkUsageUnit(inner().unit());
+        return NetworkUsageUnit.fromString(inner().unit());
     }
 
     @Override

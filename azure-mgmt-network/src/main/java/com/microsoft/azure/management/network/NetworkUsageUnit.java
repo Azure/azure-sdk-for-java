@@ -5,65 +5,45 @@
  */
 package com.microsoft.azure.management.network;
 
+import java.util.Collection;
+
+import com.microsoft.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
+
 /**
- * Netowrk usage units.
+ * Netowork usage units.
  */
-public class NetworkUsageUnit {
+public class NetworkUsageUnit extends ExpandableStringEnum<NetworkUsageUnit> {
     /** Static value Count for NetworkUsageUnit. */
-    public static final NetworkUsageUnit COUNT = new NetworkUsageUnit("Count");
+    public static final NetworkUsageUnit COUNT = fromString("Count");
 
     /** Static value Bytes for NetworkUsageUnit. */
-    public static final NetworkUsageUnit BYTES = new NetworkUsageUnit("Bytes");
+    public static final NetworkUsageUnit BYTES = fromString("Bytes");
 
     /** Static value Seconds for NetworkUsageUnit. */
-    public static final NetworkUsageUnit SECONDS = new NetworkUsageUnit("Seconds");
+    public static final NetworkUsageUnit SECONDS = fromString("Seconds");
 
     /** Static value Percent for NetworkUsageUnit. */
-    public static final NetworkUsageUnit PERCENT = new NetworkUsageUnit("Percent");
+    public static final NetworkUsageUnit PERCENT = fromString("Percent");
 
     /** Static value CountsPerSecond for NetworkUsageUnit. */
-    public static final NetworkUsageUnit COUNTS_PER_SECOND = new NetworkUsageUnit("CountsPerSecond");
+    public static final NetworkUsageUnit COUNTS_PER_SECOND = fromString("CountsPerSecond");
 
     /** Static value BytesPerSecond for ComputeUsageUnit. */
-    public static final NetworkUsageUnit BYTES_PER_SECOND = new NetworkUsageUnit("BytesPerSecond");
+    public static final NetworkUsageUnit BYTES_PER_SECOND = fromString("BytesPerSecond");
 
     /**
-     * The string value of the network usage unit.
+     * Finds or creates a network usage unit based on the specified name.
+     * @param name a name
+     * @return an instance of NetworkUsageUnit
      */
-    private final String value;
+    public static NetworkUsageUnit fromString(String name) {
+        return fromString(name, NetworkUsageUnit.class);
+    }
 
     /**
-     * Creates a custom value for NetworkUsageUnit.
-     * @param value the custom value
+     * @return known network usage units
      */
-    public NetworkUsageUnit(String value) {
-        this.value = value;
-    }
-
-    @Override
-    public String toString() {
-        return this.value;
-    }
-
-    @Override
-    public int hashCode() {
-        return this.value.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        String value = this.toString();
-        if (!(obj instanceof NetworkUsageUnit)) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        NetworkUsageUnit rhs = (NetworkUsageUnit) obj;
-        if (value == null) {
-            return rhs.value == null;
-        } else {
-            return value.equals(rhs.value);
-        }
+    public static Collection<NetworkUsageUnit> values() {
+        return values(NetworkUsageUnit.class);
     }
 }

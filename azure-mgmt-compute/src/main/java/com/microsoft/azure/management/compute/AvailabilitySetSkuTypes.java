@@ -6,51 +6,34 @@
 
 package com.microsoft.azure.management.compute;
 
+import java.util.Collection;
+
+import com.microsoft.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
+
 /**
  * Defines values for AvailabilitySetSkuTypes.
  */
-public final class AvailabilitySetSkuTypes {
+// TODO: This should be called AvailabilitySetSkuType
+public final class AvailabilitySetSkuTypes extends ExpandableStringEnum<AvailabilitySetSkuTypes> {
     /** Static value Aligned for AvailabilitySetSkuTypes. */
-    public static final AvailabilitySetSkuTypes MANAGED = new AvailabilitySetSkuTypes("Aligned");
+    public static final AvailabilitySetSkuTypes MANAGED = fromString("Aligned");
 
     /** Static value Classic for AvailabilitySetSkuTypes. */
-    public static final AvailabilitySetSkuTypes UNMANAGED = new AvailabilitySetSkuTypes("Classic");
-
-
-    /** The actual serialized value for a AvailabilitySetSkuTypes instance. */
-    private String value;
+    public static final AvailabilitySetSkuTypes UNMANAGED = fromString("Classic");
 
     /**
-     * Creates a custom value for AvailabilitySetSkuTypes.
-     * @param value the custom value
+     * Creates or finds an availability set SKU type baes on its name.
+     * @param name a name
+     * @return an availability set SKU type
      */
-    public AvailabilitySetSkuTypes(String value) {
-        this.value = value;
+    public static AvailabilitySetSkuTypes fromString(String name) {
+        return fromString(name, AvailabilitySetSkuTypes.class);
     }
 
-    @Override
-    public String toString() {
-        return value;
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof AvailabilitySetSkuTypes)) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        AvailabilitySetSkuTypes rhs = (AvailabilitySetSkuTypes) obj;
-        if (value == null) {
-            return rhs.value == null;
-        } else {
-            return value.equalsIgnoreCase(rhs.value);
-        }
+    /**
+     * @return known availability set sku types
+     */
+    public static Collection<AvailabilitySetSkuTypes> values() {
+        return values(AvailabilitySetSkuTypes.class);
     }
 }
