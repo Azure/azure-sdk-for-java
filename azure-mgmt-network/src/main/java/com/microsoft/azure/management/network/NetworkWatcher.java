@@ -40,13 +40,13 @@ public interface NetworkWatcher extends
      */
     interface DefinitionStages {
         /**
-         * The first stage of a virtual network definition.
+         * The first stage of a network watcher definition.
          */
         interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {
         }
 
         /**
-         * The stage of the virtual network definition allowing to specify the resource group.
+         * The stage of the network watcher definition allowing to specify the resource group.
          */
         interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<DefinitionStages.WithCreate> {
         }
