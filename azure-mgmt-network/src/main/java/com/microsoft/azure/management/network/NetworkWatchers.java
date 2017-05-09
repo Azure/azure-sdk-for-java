@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.network.implementation.NetworkWatchersInner;
@@ -20,6 +21,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
  * Entry point for Network Watcher API in Azure.
  */
 @Fluent
+@Beta
 public interface NetworkWatchers extends
         SupportsListing<NetworkWatcher>,
         SupportsCreating<NetworkWatcher.DefinitionStages.Blank>,

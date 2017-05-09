@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.network.implementation.NetworkWatcherInner;
@@ -19,6 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
  * Entry point for Network Watcher API in Azure.
  */
 @Fluent
+@Beta
 public interface NetworkWatcher extends
         GroupableResource<NetworkManager, NetworkWatcherInner>,
         Refreshable<NetworkWatcher>,
