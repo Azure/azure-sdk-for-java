@@ -17,6 +17,7 @@ import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.NetworkUsages;
 import com.microsoft.azure.management.network.Networks;
+import com.microsoft.azure.management.network.NewTopLevelModels;
 import com.microsoft.azure.management.network.PublicIPAddresses;
 import com.microsoft.azure.management.network.RouteTables;
 import com.microsoft.azure.management.network.Subnet;
@@ -47,6 +48,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
     private RouteTables routeTables;
     private ApplicationGateways applicationGateways;
     private NetworkUsages networkUsages;
+    private NewTopLevelModels newTopLevelModels;
 
     /**
      * Get a Configurable instance that can be used to create {@link NetworkManager}
@@ -198,6 +200,17 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
             this.networkUsages = new NetworkUsagesImpl(super.innerManagementClient);
         }
         return this.networkUsages;
+    }
+
+    /**
+     * @return entry point to foo management API entry point
+     */
+    public NewTopLevelModels newTopLevelModels() {
+        if (this.newTopLevelModels == null) {
+            this.newTopLevelModels = new NewTopLevelModelsImpl(this);
+        }
+        return this.newTopLevelModels;
+
     }
 
     // Internal utility function
