@@ -6,7 +6,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.network.*;
+import com.microsoft.azure.management.network.NetworkWatcher;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import rx.Observable;
 
@@ -16,7 +16,7 @@ import rx.Observable;
 @LangDefinition
 class NetworkWatcherImpl
         extends GroupableResourceImpl<
-                NetworkWatcher,
+        NetworkWatcher,
                 NetworkWatcherInner,
                 NetworkWatcherImpl,
                 NetworkManager>
