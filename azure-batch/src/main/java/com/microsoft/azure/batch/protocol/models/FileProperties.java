@@ -17,30 +17,34 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class FileProperties {
     /**
      * The file creation time.
+     * The creation time is not returned for files on Linux compute nodes.
      */
+    @JsonProperty(value = "creationTime")
     private DateTime creationTime;
 
     /**
      * The time at which the file was last modified.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "lastModified", required = true)
     private DateTime lastModified;
 
     /**
      * The length of the file.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "contentLength", required = true)
     private long contentLength;
 
     /**
      * The content type of the file.
      */
+    @JsonProperty(value = "contentType")
     private String contentType;
 
     /**
      * The file mode attribute in octal format.
-     * This property will be returned only from a Linux compute node.
+     * The file mode is returned only for files on Linux compute nodes.
      */
+    @JsonProperty(value = "fileMode")
     private String fileMode;
 
     /**

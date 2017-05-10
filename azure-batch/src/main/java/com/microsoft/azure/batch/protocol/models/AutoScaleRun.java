@@ -18,7 +18,7 @@ public class AutoScaleRun {
     /**
      * The time at which the autoscale formula was last evaluated.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "timestamp", required = true)
     private DateTime timestamp;
 
     /**
@@ -27,12 +27,14 @@ public class AutoScaleRun {
      * Each variable value is returned in the form $variable=value, and
      * variables are separated by semicolons.
      */
+    @JsonProperty(value = "results")
     private String results;
 
     /**
-     * Details of the error encountered evaluating the autoscale formula on
-     * the pool, if the evaluation was unsuccessful.
+     * Details of the error encountered evaluating the autoscale formula on the
+     * pool, if the evaluation was unsuccessful.
      */
+    @JsonProperty(value = "error")
     private AutoScaleRunError error;
 
     /**

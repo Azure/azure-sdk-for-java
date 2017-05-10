@@ -18,30 +18,48 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class PoolAddParameter {
     /**
      * A string that uniquely identifies the pool within the account.
-     * The id can contain any combination of alphanumeric characters including
-     * hyphens and underscores, and cannot contain more than 64 characters.
-     * It is common to use a GUID for the id.
+     * The ID can contain any combination of alphanumeric characters including
+     * hyphens and underscores, and cannot contain more than 64 characters. The
+     * ID is case-preserving and case-insensitive (that is, you may not have
+     * two pool IDs within an account that differ only by case).
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /**
      * The display name for the pool.
+     * The display name need not be unique and can contain any Unicode
+     * characters up to a maximum length of 1024.
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /**
-     * The size of virtual machines in the pool. All virtual machines in a
-     * pool are the same size.
+     * The size of virtual machines in the pool. All virtual machines in a pool
+     * are the same size.
+     * For information about available sizes of virtual machines for Cloud
+     * Services pools (pools created with cloudServiceConfiguration), see Sizes
+     * for Cloud Services
+     * (http://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/).
+     * Batch supports all Cloud Services VM sizes except ExtraSmall. For
+     * information about available VM sizes for pools using images from the
+     * Virtual Machines Marketplace (pools created with
+     * virtualMachineConfiguration) see Sizes for Virtual Machines (Linux)
+     * (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/)
+     * or Sizes for Virtual Machines (Windows)
+     * (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/).
+     * Batch supports all Azure VM sizes except STANDARD_A0 and those with
+     * premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "vmSize", required = true)
     private String vmSize;
 
     /**
      * The cloud service configuration for the pool.
-     * This property and virtualMachineConfiguration are mutually exclusive
-     * and one of the properties must be specified.
+     * This property and virtualMachineConfiguration are mutually exclusive and
+     * one of the properties must be specified.
      */
+    @JsonProperty(value = "cloudServiceConfiguration")
     private CloudServiceConfiguration cloudServiceConfiguration;
 
     /**
@@ -49,80 +67,130 @@ public class PoolAddParameter {
      * This property and cloudServiceConfiguration are mutually exclusive and
      * one of the properties must be specified.
      */
+    @JsonProperty(value = "virtualMachineConfiguration")
     private VirtualMachineConfiguration virtualMachineConfiguration;
 
     /**
      * The timeout for allocation of compute nodes to the pool.
-     * The default value is 10 minutes.
+     * This timeout applies only to manual scaling; it has no effect when
+     * enableAutoScale is set to true. The default value is 15 minutes. The
+     * minimum value is 5 minutes. If you specify a value less than 5 minutes,
+     * the Batch service returns an error; if you are calling the REST API
+     * directly, the HTTP status code is 400 (Bad Request).
      */
+    @JsonProperty(value = "resizeTimeout")
     private Period resizeTimeout;
 
     /**
      * The desired number of compute nodes in the pool.
-     * This property must have the default value if enableAutoScale is true.
-     * It is required if enableAutoScale is false.
+     * This property must have the default value if enableAutoScale is true. It
+     * is required if enableAutoScale is false.
      */
+    @JsonProperty(value = "targetDedicated")
     private Integer targetDedicated;
 
     /**
      * Whether the pool size should automatically adjust over time.
      * If true, the autoScaleFormula property must be set. If false, the
-     * targetDedicated property must be set.
+     * targetDedicated property must be set. The default value is false.
      */
+    @JsonProperty(value = "enableAutoScale")
     private Boolean enableAutoScale;
 
     /**
      * A formula for the desired number of compute nodes in the pool.
+     * This property must not be specified if enableAutoScale is set to false.
+     * It is required if enableAutoScale is set to true. The formula is checked
+     * for validity before the pool is created. If the formula is not valid,
+     * the Batch service rejects the request with detailed error information.
+     * For more information about specifying this formula, see 'Automatically
+     * scale compute nodes in an Azure Batch pool'
+     * (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling/).
      */
+    @JsonProperty(value = "autoScaleFormula")
     private String autoScaleFormula;
 
     /**
-     * A time interval for the desired autoscale evaluation period in the pool.
+     * The time interval at which to automatically adjust the pool size
+     * according to the autoscale formula.
+     * The default value is 15 minutes. The minimum and maximum value are 5
+     * minutes and 168 hours respectively. If you specify a value less than 5
+     * minutes or greater than 168 hours, the Batch service returns an error;
+     * if you are calling the REST API directly, the HTTP status code is 400
+     * (Bad Request).
      */
+    @JsonProperty(value = "autoScaleEvaluationInterval")
     private Period autoScaleEvaluationInterval;
 
     /**
      * Whether the pool permits direct communication between nodes.
+     * Enabling inter-node communication limits the maximum size of the pool
+     * due to deployment restrictions on the nodes of the pool. This may result
+     * in the pool not reaching its desired size. The default value is false.
      */
+    @JsonProperty(value = "enableInterNodeCommunication")
     private Boolean enableInterNodeCommunication;
 
     /**
      * The network configuration for the pool.
      */
+    @JsonProperty(value = "networkConfiguration")
     private NetworkConfiguration networkConfiguration;
 
     /**
      * A task specified to run on each compute node as it joins the pool.
+     * The task runs when the node is added to the pool or when the node is
+     * restarted.
      */
+    @JsonProperty(value = "startTask")
     private StartTask startTask;
 
     /**
      * The list of certificates to be installed on each compute node in the
      * pool.
+     * For Windows compute nodes, the Batch service installs the certificates
+     * to the specified certificate store and location. For Linux compute
+     * nodes, the certificates are stored in a directory inside the task
+     * working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR
+     * is supplied to the task to query for this location. For certificates
+     * with visibility of remoteuser, a certs directory is created in the
+     * user's home directory (e.g., /home/&lt;user-name&gt;/certs) where
+     * certificates are placed.
      */
+    @JsonProperty(value = "certificateReferences")
     private List<CertificateReference> certificateReferences;
 
     /**
-     * The list of application packages to be installed on each compute node
-     * in the pool.
+     * The list of application packages to be installed on each compute node in
+     * the pool.
+     * This property is currently not supported on pools created using the
+     * virtualMachineConfiguration (IaaS) property.
      */
+    @JsonProperty(value = "applicationPackageReferences")
     private List<ApplicationPackageReference> applicationPackageReferences;
 
     /**
      * The maximum number of tasks that can run concurrently on a single
      * compute node in the pool.
+     * The default value is 1. The maximum value of this setting depends on the
+     * size of the compute nodes in the pool (the vmSize setting).
      */
+    @JsonProperty(value = "maxTasksPerNode")
     private Integer maxTasksPerNode;
 
     /**
      * How the Batch service distributes tasks between compute nodes in the
      * pool.
      */
+    @JsonProperty(value = "taskSchedulingPolicy")
     private TaskSchedulingPolicy taskSchedulingPolicy;
 
     /**
      * A list of name-value pairs associated with the pool as metadata.
+     * The Batch service does not assign any meaning to metadata; it is solely
+     * for the use of user code.
      */
+    @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
     /**

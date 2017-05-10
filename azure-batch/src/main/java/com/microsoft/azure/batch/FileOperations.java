@@ -6,21 +6,16 @@
 
 package com.microsoft.azure.batch;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.FileDeleteFromComputeNodeOptions;
 import com.microsoft.azure.batch.protocol.models.FileDeleteFromTaskOptions;
-import com.microsoft.azure.batch.protocol.models.FileGetFromComputeNodeHeaders;
 import com.microsoft.azure.batch.protocol.models.FileGetFromComputeNodeOptions;
-import com.microsoft.azure.batch.protocol.models.FileGetFromTaskHeaders;
 import com.microsoft.azure.batch.protocol.models.FileGetFromTaskOptions;
 import com.microsoft.azure.batch.protocol.models.FileGetNodeFilePropertiesFromComputeNodeHeaders;
 import com.microsoft.azure.batch.protocol.models.FileGetNodeFilePropertiesFromComputeNodeOptions;
 import com.microsoft.azure.batch.protocol.models.FileGetNodeFilePropertiesFromTaskHeaders;
 import com.microsoft.azure.batch.protocol.models.FileGetNodeFilePropertiesFromTaskOptions;
-import com.microsoft.azure.batch.protocol.models.FileListFromComputeNodeHeaders;
 import com.microsoft.azure.batch.protocol.models.FileListFromComputeNodeOptions;
-import com.microsoft.azure.batch.protocol.models.FileListFromTaskHeaders;
 import com.microsoft.azure.batch.protocol.models.FileListFromTaskOptions;
 import com.microsoft.azure.batch.protocol.models.FileProperties;
 import com.microsoft.azure.batch.protocol.models.NodeFile;
@@ -115,9 +110,7 @@ public class FileOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<NodeFile>, FileListFromTaskHeaders> response = this._parentBatchClient.protocolLayer().files().listFromTask(jobId, taskId, recursive, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().files().listFromTask(jobId, taskId, recursive, options);
     }
 
     /**
@@ -166,9 +159,7 @@ public class FileOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<NodeFile>, FileListFromComputeNodeHeaders> response = this._parentBatchClient.protocolLayer().files().listFromComputeNode(poolId, nodeId, recursive, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().files().listFromComputeNode(poolId, nodeId, recursive, options);
     }
 
     /**
@@ -293,9 +284,7 @@ public class FileOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<InputStream, FileGetFromTaskHeaders> response = this._parentBatchClient.protocolLayer().files().getFromTask(jobId, taskId, fileName, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().files().getFromTask(jobId, taskId, fileName, options);
     }
 
     /**
@@ -328,9 +317,7 @@ public class FileOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders> response = this._parentBatchClient.protocolLayer().files().getFromComputeNode(poolId, nodeId, fileName, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().files().getFromComputeNode(poolId, nodeId, fileName, options);
     }
 
     /**
@@ -363,14 +350,14 @@ public class FileOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromTaskHeaders> response = this._parentBatchClient.protocolLayer().files().getNodeFilePropertiesFromTask(jobId, taskId, fileName, options);
+        ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromTaskHeaders> response = this._parentBatchClient.protocolLayer().files().getNodeFilePropertiesFromTaskWithServiceResponseAsync(jobId, taskId, fileName, options).toBlocking().last();
 
         return new FileProperties()
-                .withContentLength(response.getHeaders().contentLength())
-                .withContentType(response.getHeaders().contentType())
-                .withCreationTime(response.getHeaders().ocpCreationTime())
-                .withLastModified(response.getHeaders().lastModified())
-                .withFileMode(response.getHeaders().ocpBatchFileMode());
+                .withContentLength(response.headers().contentLength())
+                .withContentType(response.headers().contentType())
+                .withCreationTime(response.headers().ocpCreationTime())
+                .withLastModified(response.headers().lastModified())
+                .withFileMode(response.headers().ocpBatchFileMode());
     }
 
     /**
@@ -403,14 +390,14 @@ public class FileOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromComputeNodeHeaders> response = this._parentBatchClient.protocolLayer().files().getNodeFilePropertiesFromComputeNode(poolId, nodeId, fileName, options);
+        ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromComputeNodeHeaders> response = this._parentBatchClient.protocolLayer().files().getNodeFilePropertiesFromComputeNodeWithServiceResponseAsync(poolId, nodeId, fileName, options).toBlocking().last();
 
         return new FileProperties()
-                .withContentLength(response.getHeaders().contentLength())
-                .withContentType(response.getHeaders().contentType())
-                .withCreationTime(response.getHeaders().ocpCreationTime())
-                .withLastModified(response.getHeaders().lastModified())
-                .withFileMode(response.getHeaders().ocpBatchFileMode());
+                .withContentLength(response.headers().contentLength())
+                .withContentType(response.headers().contentType())
+                .withCreationTime(response.headers().ocpCreationTime())
+                .withLastModified(response.headers().lastModified())
+                .withFileMode(response.headers().ocpBatchFileMode());
     }
 
 }

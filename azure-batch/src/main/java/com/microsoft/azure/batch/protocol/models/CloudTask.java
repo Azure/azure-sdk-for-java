@@ -10,6 +10,7 @@ package com.microsoft.azure.batch.protocol.models;
 
 import org.joda.time.DateTime;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * An Azure Batch task.
@@ -17,51 +18,65 @@ import java.util.List;
 public class CloudTask {
     /**
      * A string that uniquely identifies the task within the job.
-     * The id can contain any combination of alphanumeric characters including
+     * The ID can contain any combination of alphanumeric characters including
      * hyphens and underscores, and cannot contain more than 64 characters.
-     * It is common to use a GUID for the id.
      */
+    @JsonProperty(value = "id")
     private String id;
 
     /**
      * A display name for the task.
+     * The display name need not be unique and can contain any Unicode
+     * characters up to a maximum length of 1024.
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /**
      * The URL of the task.
      */
+    @JsonProperty(value = "url")
     private String url;
 
     /**
      * The ETag of the task.
+     * This is an opaque string. You can use it to detect whether the task has
+     * changed between requests. In particular, you can be pass the ETag when
+     * updating a task to specify that your changes should take effect only if
+     * nobody else has modified the task in the meantime.
      */
+    @JsonProperty(value = "eTag")
     private String eTag;
 
     /**
      * The last modified time of the task.
      */
+    @JsonProperty(value = "lastModified")
     private DateTime lastModified;
 
     /**
      * The creation time of the task.
      */
+    @JsonProperty(value = "creationTime")
     private DateTime creationTime;
 
     /**
      * How the Batch service should respond when the task completes.
      */
+    @JsonProperty(value = "exitConditions")
     private ExitConditions exitConditions;
 
     /**
      * The current state of the task.
      * Possible values include: 'active', 'preparing', 'running', 'completed'.
      */
+    @JsonProperty(value = "state")
     private TaskState state;
 
     /**
      * The time at which the task entered its current state.
      */
+    @JsonProperty(value = "stateTransitionTime")
     private DateTime stateTransitionTime;
 
     /**
@@ -69,84 +84,102 @@ public class CloudTask {
      * This property is not set if the task is in its initial Active state.
      * Possible values include: 'active', 'preparing', 'running', 'completed'.
      */
+    @JsonProperty(value = "previousState")
     private TaskState previousState;
 
     /**
      * The time at which the task entered its previous state.
      * This property is not set if the task is in its initial Active state.
      */
+    @JsonProperty(value = "previousStateTransitionTime")
     private DateTime previousStateTransitionTime;
 
     /**
      * The command line of the task.
-     * For multi-instance tasks, the command line is executed on the primary
-     * subtask after all the subtasks have finished executing the
-     * coordianation command line. The command line does not run under a
+     * For multi-instance tasks, the command line is executed as the primary
+     * task, after the primary task and all subtasks have finished executing
+     * the coordination command line. The command line does not run under a
      * shell, and therefore cannot take advantage of shell features such as
      * environment variable expansion. If you want to take advantage of such
      * features, you should invoke the shell in the command line, for example
      * using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux.
      */
+    @JsonProperty(value = "commandLine")
     private String commandLine;
 
     /**
-     * A list of files that the Batch service will download to the compute
-     * node before running the command line.
+     * A list of files that the Batch service will download to the compute node
+     * before running the command line.
      * For multi-instance tasks, the resource files will only be downloaded to
-     * the compute node on which the primary subtask is executed.
+     * the compute node on which the primary task is executed.
      */
+    @JsonProperty(value = "resourceFiles")
     private List<ResourceFile> resourceFiles;
 
     /**
      * A list of environment variable settings for the task.
      */
+    @JsonProperty(value = "environmentSettings")
     private List<EnvironmentSetting> environmentSettings;
 
     /**
      * A locality hint that can be used by the Batch service to select a
      * compute node on which to start the new task.
      */
+    @JsonProperty(value = "affinityInfo")
     private AffinityInformation affinityInfo;
 
     /**
      * The execution constraints that apply to this task.
      */
+    @JsonProperty(value = "constraints")
     private TaskConstraints constraints;
 
     /**
      * Whether to run the task in elevated mode.
      */
+    @JsonProperty(value = "runElevated")
     private Boolean runElevated;
 
     /**
      * Information about the execution of the task.
      */
+    @JsonProperty(value = "executionInfo")
     private TaskExecutionInformation executionInfo;
 
     /**
      * Information about the compute node on which the task ran.
      */
+    @JsonProperty(value = "nodeInfo")
     private ComputeNodeInformation nodeInfo;
 
     /**
-     * Information about how to run the multi-instance task.
+     * An object that indicates that the task is a multi-instance task, and
+     * contains information about how to run the multi-instance task.
      */
+    @JsonProperty(value = "multiInstanceSettings")
     private MultiInstanceSettings multiInstanceSettings;
 
     /**
      * Resource usage statistics for the task.
      */
+    @JsonProperty(value = "stats")
     private TaskStatistics stats;
 
     /**
-     * Any dependencies this task has.
+     * The tasks that this task depends on.
+     * The task will not be scheduled until all depended-on tasks have
+     * completed successfully. (If any depended-on tasks fail and exhaust their
+     * retry counts, the task will never be scheduled.).
      */
+    @JsonProperty(value = "dependsOn")
     private TaskDependencies dependsOn;
 
     /**
-     * A list of application packages that the Batch service will deploy to
-     * the compute node before running the command line.
+     * A list of application packages that the Batch service will deploy to the
+     * compute node before running the command line.
      */
+    @JsonProperty(value = "applicationPackageReferences")
     private List<ApplicationPackageReference> applicationPackageReferences;
 
     /**

@@ -11,14 +11,14 @@ package com.microsoft.azure.batch.protocol.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters for a CloudPoolOperations.UpgradeOS request.
+ * Options for upgrading the operating system of compute nodes in a pool.
  */
 public class PoolUpgradeOSParameter {
     /**
      * The Azure Guest OS version to be installed on the virtual machines in
      * the pool.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "targetOSVersion", required = true)
     private String targetOSVersion;
 
     /**

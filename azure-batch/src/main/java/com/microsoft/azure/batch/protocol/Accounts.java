@@ -11,14 +11,14 @@ package com.microsoft.azure.batch.protocol;
 import com.microsoft.azure.batch.protocol.models.AccountListNodeAgentSkusHeaders;
 import com.microsoft.azure.batch.protocol.models.AccountListNodeAgentSkusNextOptions;
 import com.microsoft.azure.batch.protocol.models.AccountListNodeAgentSkusOptions;
-import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.NodeAgentSku;
-import com.microsoft.azure.batch.protocol.models.PageImpl;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponseWithHeaders;
-import java.io.IOException;
+import java.util.List;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -28,85 +28,133 @@ public interface Accounts {
     /**
      * Lists all node agent SKUs supported by the Azure Batch service.
      *
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;NodeAgentSku&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;NodeAgentSku&gt; object if successful.
      */
-    ServiceResponseWithHeaders<PagedList<NodeAgentSku>, AccountListNodeAgentSkusHeaders> listNodeAgentSkus() throws BatchErrorException, IOException, IllegalArgumentException;
+    PagedList<NodeAgentSku> listNodeAgentSkus();
 
     /**
      * Lists all node agent SKUs supported by the Azure Batch service.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall listNodeAgentSkusAsync(final ListOperationCallback<NodeAgentSku> serviceCallback) throws IllegalArgumentException;
+    ServiceFuture<List<NodeAgentSku>> listNodeAgentSkusAsync(final ListOperationCallback<NodeAgentSku> serviceCallback);
+
+    /**
+     * Lists all node agent SKUs supported by the Azure Batch service.
+     *
+     * @return the observable to the PagedList&lt;NodeAgentSku&gt; object
+     */
+    Observable<Page<NodeAgentSku>> listNodeAgentSkusAsync();
+
+    /**
+     * Lists all node agent SKUs supported by the Azure Batch service.
+     *
+     * @return the observable to the PagedList&lt;NodeAgentSku&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> listNodeAgentSkusWithServiceResponseAsync();
     /**
      * Lists all node agent SKUs supported by the Azure Batch service.
      *
      * @param accountListNodeAgentSkusOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;NodeAgentSku&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;NodeAgentSku&gt; object if successful.
      */
-    ServiceResponseWithHeaders<PagedList<NodeAgentSku>, AccountListNodeAgentSkusHeaders> listNodeAgentSkus(final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    PagedList<NodeAgentSku> listNodeAgentSkus(final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions);
 
     /**
      * Lists all node agent SKUs supported by the Azure Batch service.
      *
      * @param accountListNodeAgentSkusOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall listNodeAgentSkusAsync(final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions, final ListOperationCallback<NodeAgentSku> serviceCallback) throws IllegalArgumentException;
+    ServiceFuture<List<NodeAgentSku>> listNodeAgentSkusAsync(final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions, final ListOperationCallback<NodeAgentSku> serviceCallback);
+
+    /**
+     * Lists all node agent SKUs supported by the Azure Batch service.
+     *
+     * @param accountListNodeAgentSkusOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;NodeAgentSku&gt; object
+     */
+    Observable<Page<NodeAgentSku>> listNodeAgentSkusAsync(final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions);
+
+    /**
+     * Lists all node agent SKUs supported by the Azure Batch service.
+     *
+     * @param accountListNodeAgentSkusOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;NodeAgentSku&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> listNodeAgentSkusWithServiceResponseAsync(final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions);
 
     /**
      * Lists all node agent SKUs supported by the Azure Batch service.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;NodeAgentSku&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;NodeAgentSku&gt; object if successful.
      */
-    ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> listNodeAgentSkusNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException;
+    PagedList<NodeAgentSku> listNodeAgentSkusNext(final String nextPageLink);
 
     /**
      * Lists all node agent SKUs supported by the Azure Batch service.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall listNodeAgentSkusNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<NodeAgentSku> serviceCallback) throws IllegalArgumentException;
+    ServiceFuture<List<NodeAgentSku>> listNodeAgentSkusNextAsync(final String nextPageLink, final ServiceFuture<List<NodeAgentSku>> serviceFuture, final ListOperationCallback<NodeAgentSku> serviceCallback);
+
+    /**
+     * Lists all node agent SKUs supported by the Azure Batch service.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;NodeAgentSku&gt; object
+     */
+    Observable<Page<NodeAgentSku>> listNodeAgentSkusNextAsync(final String nextPageLink);
+
+    /**
+     * Lists all node agent SKUs supported by the Azure Batch service.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;NodeAgentSku&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> listNodeAgentSkusNextWithServiceResponseAsync(final String nextPageLink);
     /**
      * Lists all node agent SKUs supported by the Azure Batch service.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param accountListNodeAgentSkusNextOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;NodeAgentSku&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;NodeAgentSku&gt; object if successful.
      */
-    ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> listNodeAgentSkusNext(final String nextPageLink, final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    PagedList<NodeAgentSku> listNodeAgentSkusNext(final String nextPageLink, final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions);
 
     /**
      * Lists all node agent SKUs supported by the Azure Batch service.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param accountListNodeAgentSkusNextOptions Additional parameters for the operation
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
+     * @return the {@link ServiceFuture} object
      */
-    ServiceCall listNodeAgentSkusNextAsync(final String nextPageLink, final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions, final ServiceCall serviceCall, final ListOperationCallback<NodeAgentSku> serviceCallback) throws IllegalArgumentException;
+    ServiceFuture<List<NodeAgentSku>> listNodeAgentSkusNextAsync(final String nextPageLink, final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions, final ServiceFuture<List<NodeAgentSku>> serviceFuture, final ListOperationCallback<NodeAgentSku> serviceCallback);
+
+    /**
+     * Lists all node agent SKUs supported by the Azure Batch service.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param accountListNodeAgentSkusNextOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;NodeAgentSku&gt; object
+     */
+    Observable<Page<NodeAgentSku>> listNodeAgentSkusNextAsync(final String nextPageLink, final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions);
+
+    /**
+     * Lists all node agent SKUs supported by the Azure Batch service.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param accountListNodeAgentSkusNextOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;NodeAgentSku&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> listNodeAgentSkusNextWithServiceResponseAsync(final String nextPageLink, final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions);
 
 }

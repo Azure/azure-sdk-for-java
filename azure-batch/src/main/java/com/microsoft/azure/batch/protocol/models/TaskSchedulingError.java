@@ -19,24 +19,27 @@ public class TaskSchedulingError {
      * The category of the task scheduling error.
      * Possible values include: 'usererror', 'servererror', 'unmapped'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "category", required = true)
     private SchedulingErrorCategory category;
 
     /**
-     * An identifier for the task scheduling error. Codes are invariant and
-     * are intended to be consumed programmatically.
+     * An identifier for the task scheduling error. Codes are invariant and are
+     * intended to be consumed programmatically.
      */
+    @JsonProperty(value = "code")
     private String code;
 
     /**
      * A message describing the task scheduling error, intended to be suitable
      * for display in a user interface.
      */
+    @JsonProperty(value = "message")
     private String message;
 
     /**
      * The list of additional error details related to the scheduling error.
      */
+    @JsonProperty(value = "details")
     private List<NameValuePair> details;
 
     /**

@@ -11,7 +11,7 @@ package com.microsoft.azure.batch.protocol.implementation;
 import retrofit2.Retrofit;
 import com.microsoft.azure.batch.protocol.JobSchedules;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.CloudJobSchedule;
 import com.microsoft.azure.batch.protocol.models.JobScheduleAddHeaders;
@@ -43,17 +43,14 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.DateTimeRfc1123;
-import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponseCallback;
-import com.microsoft.rest.ServiceResponseEmptyCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
 import org.joda.time.DateTime;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.HEAD;
@@ -67,12 +64,14 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
  * in JobSchedules.
  */
-public final class JobSchedulesImpl implements JobSchedules {
+public class JobSchedulesImpl implements JobSchedules {
     /** The Retrofit service to perform REST calls. */
     private JobSchedulesService service;
     /** The service client containing this operation class. */
@@ -94,62 +93,95 @@ public final class JobSchedulesImpl implements JobSchedules {
      * used by Retrofit to perform actually REST calls.
      */
     interface JobSchedulesService {
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.JobSchedules exists" })
         @HEAD("jobschedules/{jobScheduleId}")
-        Call<Void> exists(@Path("jobScheduleId") String jobScheduleId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<Void>> exists(@Path("jobScheduleId") String jobScheduleId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.JobSchedules delete" })
         @HTTP(path = "jobschedules/{jobScheduleId}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> delete(@Path("jobScheduleId") String jobScheduleId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> delete(@Path("jobScheduleId") String jobScheduleId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.JobSchedules get" })
         @GET("jobschedules/{jobScheduleId}")
-        Call<ResponseBody> get(@Path("jobScheduleId") String jobScheduleId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$select") String select, @Query("$expand") String expand, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("jobScheduleId") String jobScheduleId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$select") String select, @Query("$expand") String expand, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.JobSchedules patch" })
         @PATCH("jobschedules/{jobScheduleId}")
-        Call<ResponseBody> patch(@Path("jobScheduleId") String jobScheduleId, @Body JobSchedulePatchParameter jobSchedulePatchParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> patch(@Path("jobScheduleId") String jobScheduleId, @Body JobSchedulePatchParameter jobSchedulePatchParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.JobSchedules update" })
         @PUT("jobschedules/{jobScheduleId}")
-        Call<ResponseBody> update(@Path("jobScheduleId") String jobScheduleId, @Body JobScheduleUpdateParameter jobScheduleUpdateParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("jobScheduleId") String jobScheduleId, @Body JobScheduleUpdateParameter jobScheduleUpdateParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.JobSchedules disable" })
         @POST("jobschedules/{jobScheduleId}/disable")
-        Call<ResponseBody> disable(@Path("jobScheduleId") String jobScheduleId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> disable(@Path("jobScheduleId") String jobScheduleId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.JobSchedules enable" })
         @POST("jobschedules/{jobScheduleId}/enable")
-        Call<ResponseBody> enable(@Path("jobScheduleId") String jobScheduleId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> enable(@Path("jobScheduleId") String jobScheduleId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.JobSchedules terminate" })
         @POST("jobschedules/{jobScheduleId}/terminate")
-        Call<ResponseBody> terminate(@Path("jobScheduleId") String jobScheduleId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> terminate(@Path("jobScheduleId") String jobScheduleId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.JobSchedules add" })
         @POST("jobschedules")
-        Call<ResponseBody> add(@Body JobScheduleAddParameter cloudJobSchedule, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> add(@Body JobScheduleAddParameter cloudJobSchedule, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.JobSchedules list" })
         @GET("jobschedules")
-        Call<ResponseBody> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("$expand") String expand, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("$expand") String expand, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.JobSchedules listNext" })
         @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
     }
 
     /**
      * Checks the specified job schedule exists.
      *
-     * @param jobScheduleId The id of the job schedule which you want to check.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the boolean object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @param jobScheduleId The ID of the job schedule which you want to check.
+     * @return the boolean object if successful.
      */
-    public ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders> exists(String jobScheduleId) throws BatchErrorException, IOException, IllegalArgumentException {
+    public boolean exists(String jobScheduleId) {
+        return existsWithServiceResponseAsync(jobScheduleId).toBlocking().single().body();
+    }
+
+    /**
+     * Checks the specified job schedule exists.
+     *
+     * @param jobScheduleId The ID of the job schedule which you want to check.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Boolean> existsAsync(String jobScheduleId, final ServiceCallback<Boolean> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(existsWithServiceResponseAsync(jobScheduleId), serviceCallback);
+    }
+
+    /**
+     * Checks the specified job schedule exists.
+     *
+     * @param jobScheduleId The ID of the job schedule which you want to check.
+     * @return the observable to the Boolean object
+     */
+    public Observable<Boolean> existsAsync(String jobScheduleId) {
+        return existsWithServiceResponseAsync(jobScheduleId).map(new Func1<ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders>, Boolean>() {
+            @Override
+            public Boolean call(ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Checks the specified job schedule exists.
+     *
+     * @param jobScheduleId The ID of the job schedule which you want to check.
+     * @return the observable to the Boolean object
+     */
+    public Observable<ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders>> existsWithServiceResponseAsync(String jobScheduleId) {
         if (jobScheduleId == null) {
             throw new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null.");
         }
@@ -177,77 +209,67 @@ public final class JobSchedulesImpl implements JobSchedules {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<Void> call = service.exists(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return existsDelegate(call.execute());
+        return service.exists(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<Void>, Observable<ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders>> call(Response<Void> response) {
+                    try {
+                        ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders> clientResponse = existsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
     }
 
     /**
      * Checks the specified job schedule exists.
      *
-     * @param jobScheduleId The id of the job schedule which you want to check.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @param jobScheduleId The ID of the job schedule which you want to check.
+     * @param jobScheduleExistsOptions Additional parameters for the operation
+     * @return the boolean object if successful.
      */
-    public ServiceCall existsAsync(String jobScheduleId, final ServiceCallback<Boolean> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobScheduleId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final JobScheduleExistsOptions jobScheduleExistsOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        String ifMatch = null;
-        String ifNoneMatch = null;
-        DateTime ifModifiedSince = null;
-        DateTime ifUnmodifiedSince = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<Void> call = service.exists(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseEmptyCallback<Boolean>(serviceCallback) {
+    public boolean exists(String jobScheduleId, JobScheduleExistsOptions jobScheduleExistsOptions) {
+        return existsWithServiceResponseAsync(jobScheduleId, jobScheduleExistsOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Checks the specified job schedule exists.
+     *
+     * @param jobScheduleId The ID of the job schedule which you want to check.
+     * @param jobScheduleExistsOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Boolean> existsAsync(String jobScheduleId, JobScheduleExistsOptions jobScheduleExistsOptions, final ServiceCallback<Boolean> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(existsWithServiceResponseAsync(jobScheduleId, jobScheduleExistsOptions), serviceCallback);
+    }
+
+    /**
+     * Checks the specified job schedule exists.
+     *
+     * @param jobScheduleId The ID of the job schedule which you want to check.
+     * @param jobScheduleExistsOptions Additional parameters for the operation
+     * @return the observable to the Boolean object
+     */
+    public Observable<Boolean> existsAsync(String jobScheduleId, JobScheduleExistsOptions jobScheduleExistsOptions) {
+        return existsWithServiceResponseAsync(jobScheduleId, jobScheduleExistsOptions).map(new Func1<ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders>, Boolean>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                try {
-                    serviceCallback.success(existsDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
+            public Boolean call(ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders> response) {
+                return response.body();
             }
         });
-        return serviceCall;
     }
 
     /**
      * Checks the specified job schedule exists.
      *
-     * @param jobScheduleId The id of the job schedule which you want to check.
+     * @param jobScheduleId The ID of the job schedule which you want to check.
      * @param jobScheduleExistsOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the boolean object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the observable to the Boolean object
      */
-    public ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders> exists(String jobScheduleId, JobScheduleExistsOptions jobScheduleExistsOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders>> existsWithServiceResponseAsync(String jobScheduleId, JobScheduleExistsOptions jobScheduleExistsOptions) {
         if (jobScheduleId == null) {
             throw new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null.");
         }
@@ -299,93 +321,22 @@ public final class JobSchedulesImpl implements JobSchedules {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<Void> call = service.exists(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return existsDelegate(call.execute());
-    }
-
-    /**
-     * Checks the specified job schedule exists.
-     *
-     * @param jobScheduleId The id of the job schedule which you want to check.
-     * @param jobScheduleExistsOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall existsAsync(String jobScheduleId, JobScheduleExistsOptions jobScheduleExistsOptions, final ServiceCallback<Boolean> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobScheduleId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobScheduleExistsOptions, serviceCallback);
-        Integer timeout = null;
-        if (jobScheduleExistsOptions != null) {
-            timeout = jobScheduleExistsOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (jobScheduleExistsOptions != null) {
-            clientRequestId = jobScheduleExistsOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (jobScheduleExistsOptions != null) {
-            returnClientRequestId = jobScheduleExistsOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleExistsOptions != null) {
-            ocpDate = jobScheduleExistsOptions.ocpDate();
-        }
-        String ifMatch = null;
-        if (jobScheduleExistsOptions != null) {
-            ifMatch = jobScheduleExistsOptions.ifMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobScheduleExistsOptions != null) {
-            ifNoneMatch = jobScheduleExistsOptions.ifNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobScheduleExistsOptions != null) {
-            ifModifiedSince = jobScheduleExistsOptions.ifModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobScheduleExistsOptions != null) {
-            ifUnmodifiedSince = jobScheduleExistsOptions.ifUnmodifiedSince();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<Void> call = service.exists(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseEmptyCallback<Boolean>(serviceCallback) {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                try {
-                    serviceCallback.success(existsDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.exists(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<Void>, Observable<ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders>> call(Response<Void> response) {
+                    try {
+                        ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders> clientResponse = existsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders> existsDelegate(Response<Void> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Boolean, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Boolean, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
@@ -394,14 +345,50 @@ public final class JobSchedulesImpl implements JobSchedules {
 
     /**
      * Deletes a job schedule from the specified account.
+     * When you delete a job schedule, this also deletes all jobs and tasks under that schedule. When tasks are deleted, all the files in their working directories on the compute nodes are also deleted (the retention period is ignored). The job schedule statistics are no longer accessible once the job schedule is deleted, though they are still counted towards account lifetime statistics.
      *
-     * @param jobScheduleId The id of the job schedule to delete.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @param jobScheduleId The ID of the job schedule to delete.
+     */
+    public void delete(String jobScheduleId) {
+        deleteWithServiceResponseAsync(jobScheduleId).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes a job schedule from the specified account.
+     * When you delete a job schedule, this also deletes all jobs and tasks under that schedule. When tasks are deleted, all the files in their working directories on the compute nodes are also deleted (the retention period is ignored). The job schedule statistics are no longer accessible once the job schedule is deleted, though they are still counted towards account lifetime statistics.
+     *
+     * @param jobScheduleId The ID of the job schedule to delete.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteAsync(String jobScheduleId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(deleteWithServiceResponseAsync(jobScheduleId), serviceCallback);
+    }
+
+    /**
+     * Deletes a job schedule from the specified account.
+     * When you delete a job schedule, this also deletes all jobs and tasks under that schedule. When tasks are deleted, all the files in their working directories on the compute nodes are also deleted (the retention period is ignored). The job schedule statistics are no longer accessible once the job schedule is deleted, though they are still counted towards account lifetime statistics.
+     *
+     * @param jobScheduleId The ID of the job schedule to delete.
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobScheduleDeleteHeaders> delete(String jobScheduleId) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> deleteAsync(String jobScheduleId) {
+        return deleteWithServiceResponseAsync(jobScheduleId).map(new Func1<ServiceResponseWithHeaders<Void, JobScheduleDeleteHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobScheduleDeleteHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a job schedule from the specified account.
+     * When you delete a job schedule, this also deletes all jobs and tasks under that schedule. When tasks are deleted, all the files in their working directories on the compute nodes are also deleted (the retention period is ignored). The job schedule statistics are no longer accessible once the job schedule is deleted, though they are still counted towards account lifetime statistics.
+     *
+     * @param jobScheduleId The ID of the job schedule to delete.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobScheduleDeleteHeaders>> deleteWithServiceResponseAsync(String jobScheduleId) {
         if (jobScheduleId == null) {
             throw new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null.");
         }
@@ -429,77 +416,70 @@ public final class JobSchedulesImpl implements JobSchedules {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.delete(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return deleteDelegate(call.execute());
-    }
-
-    /**
-     * Deletes a job schedule from the specified account.
-     *
-     * @param jobScheduleId The id of the job schedule to delete.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall deleteAsync(String jobScheduleId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobScheduleId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final JobScheduleDeleteOptions jobScheduleDeleteOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        String ifMatch = null;
-        String ifNoneMatch = null;
-        DateTime ifModifiedSince = null;
-        DateTime ifUnmodifiedSince = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.delete(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(deleteDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.delete(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobScheduleDeleteHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobScheduleDeleteHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobScheduleDeleteHeaders> clientResponse = deleteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
      * Deletes a job schedule from the specified account.
+     * When you delete a job schedule, this also deletes all jobs and tasks under that schedule. When tasks are deleted, all the files in their working directories on the compute nodes are also deleted (the retention period is ignored). The job schedule statistics are no longer accessible once the job schedule is deleted, though they are still counted towards account lifetime statistics.
      *
-     * @param jobScheduleId The id of the job schedule to delete.
+     * @param jobScheduleId The ID of the job schedule to delete.
      * @param jobScheduleDeleteOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void delete(String jobScheduleId, JobScheduleDeleteOptions jobScheduleDeleteOptions) {
+        deleteWithServiceResponseAsync(jobScheduleId, jobScheduleDeleteOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes a job schedule from the specified account.
+     * When you delete a job schedule, this also deletes all jobs and tasks under that schedule. When tasks are deleted, all the files in their working directories on the compute nodes are also deleted (the retention period is ignored). The job schedule statistics are no longer accessible once the job schedule is deleted, though they are still counted towards account lifetime statistics.
+     *
+     * @param jobScheduleId The ID of the job schedule to delete.
+     * @param jobScheduleDeleteOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteAsync(String jobScheduleId, JobScheduleDeleteOptions jobScheduleDeleteOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(deleteWithServiceResponseAsync(jobScheduleId, jobScheduleDeleteOptions), serviceCallback);
+    }
+
+    /**
+     * Deletes a job schedule from the specified account.
+     * When you delete a job schedule, this also deletes all jobs and tasks under that schedule. When tasks are deleted, all the files in their working directories on the compute nodes are also deleted (the retention period is ignored). The job schedule statistics are no longer accessible once the job schedule is deleted, though they are still counted towards account lifetime statistics.
+     *
+     * @param jobScheduleId The ID of the job schedule to delete.
+     * @param jobScheduleDeleteOptions Additional parameters for the operation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobScheduleDeleteHeaders> delete(String jobScheduleId, JobScheduleDeleteOptions jobScheduleDeleteOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> deleteAsync(String jobScheduleId, JobScheduleDeleteOptions jobScheduleDeleteOptions) {
+        return deleteWithServiceResponseAsync(jobScheduleId, jobScheduleDeleteOptions).map(new Func1<ServiceResponseWithHeaders<Void, JobScheduleDeleteHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobScheduleDeleteHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a job schedule from the specified account.
+     * When you delete a job schedule, this also deletes all jobs and tasks under that schedule. When tasks are deleted, all the files in their working directories on the compute nodes are also deleted (the retention period is ignored). The job schedule statistics are no longer accessible once the job schedule is deleted, though they are still counted towards account lifetime statistics.
+     *
+     * @param jobScheduleId The ID of the job schedule to delete.
+     * @param jobScheduleDeleteOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobScheduleDeleteHeaders>> deleteWithServiceResponseAsync(String jobScheduleId, JobScheduleDeleteOptions jobScheduleDeleteOptions) {
         if (jobScheduleId == null) {
             throw new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null.");
         }
@@ -551,93 +531,22 @@ public final class JobSchedulesImpl implements JobSchedules {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.delete(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return deleteDelegate(call.execute());
-    }
-
-    /**
-     * Deletes a job schedule from the specified account.
-     *
-     * @param jobScheduleId The id of the job schedule to delete.
-     * @param jobScheduleDeleteOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall deleteAsync(String jobScheduleId, JobScheduleDeleteOptions jobScheduleDeleteOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobScheduleId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobScheduleDeleteOptions, serviceCallback);
-        Integer timeout = null;
-        if (jobScheduleDeleteOptions != null) {
-            timeout = jobScheduleDeleteOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (jobScheduleDeleteOptions != null) {
-            clientRequestId = jobScheduleDeleteOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (jobScheduleDeleteOptions != null) {
-            returnClientRequestId = jobScheduleDeleteOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleDeleteOptions != null) {
-            ocpDate = jobScheduleDeleteOptions.ocpDate();
-        }
-        String ifMatch = null;
-        if (jobScheduleDeleteOptions != null) {
-            ifMatch = jobScheduleDeleteOptions.ifMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobScheduleDeleteOptions != null) {
-            ifNoneMatch = jobScheduleDeleteOptions.ifNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobScheduleDeleteOptions != null) {
-            ifModifiedSince = jobScheduleDeleteOptions.ifModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobScheduleDeleteOptions != null) {
-            ifUnmodifiedSince = jobScheduleDeleteOptions.ifUnmodifiedSince();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.delete(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(deleteDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.delete(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobScheduleDeleteHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobScheduleDeleteHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobScheduleDeleteHeaders> clientResponse = deleteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, JobScheduleDeleteHeaders> deleteDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobScheduleDeleteHeaders.class);
@@ -646,13 +555,46 @@ public final class JobSchedulesImpl implements JobSchedules {
     /**
      * Gets information about the specified job schedule.
      *
-     * @param jobScheduleId The id of the job schedule to get.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CloudJobSchedule object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @param jobScheduleId The ID of the job schedule to get.
+     * @return the CloudJobSchedule object if successful.
      */
-    public ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders> get(String jobScheduleId) throws BatchErrorException, IOException, IllegalArgumentException {
+    public CloudJobSchedule get(String jobScheduleId) {
+        return getWithServiceResponseAsync(jobScheduleId).toBlocking().single().body();
+    }
+
+    /**
+     * Gets information about the specified job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to get.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CloudJobSchedule> getAsync(String jobScheduleId, final ServiceCallback<CloudJobSchedule> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(getWithServiceResponseAsync(jobScheduleId), serviceCallback);
+    }
+
+    /**
+     * Gets information about the specified job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to get.
+     * @return the observable to the CloudJobSchedule object
+     */
+    public Observable<CloudJobSchedule> getAsync(String jobScheduleId) {
+        return getWithServiceResponseAsync(jobScheduleId).map(new Func1<ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders>, CloudJobSchedule>() {
+            @Override
+            public CloudJobSchedule call(ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets information about the specified job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to get.
+     * @return the observable to the CloudJobSchedule object
+     */
+    public Observable<ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders>> getWithServiceResponseAsync(String jobScheduleId) {
         if (jobScheduleId == null) {
             throw new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null.");
         }
@@ -682,79 +624,67 @@ public final class JobSchedulesImpl implements JobSchedules {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.get(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return getDelegate(call.execute());
+        return service.get(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
     }
 
     /**
      * Gets information about the specified job schedule.
      *
-     * @param jobScheduleId The id of the job schedule to get.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @param jobScheduleId The ID of the job schedule to get.
+     * @param jobScheduleGetOptions Additional parameters for the operation
+     * @return the CloudJobSchedule object if successful.
      */
-    public ServiceCall getAsync(String jobScheduleId, final ServiceCallback<CloudJobSchedule> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobScheduleId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final JobScheduleGetOptions jobScheduleGetOptions = null;
-        String select = null;
-        String expand = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        String ifMatch = null;
-        String ifNoneMatch = null;
-        DateTime ifModifiedSince = null;
-        DateTime ifUnmodifiedSince = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.get(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<CloudJobSchedule>(serviceCallback) {
+    public CloudJobSchedule get(String jobScheduleId, JobScheduleGetOptions jobScheduleGetOptions) {
+        return getWithServiceResponseAsync(jobScheduleId, jobScheduleGetOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Gets information about the specified job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to get.
+     * @param jobScheduleGetOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CloudJobSchedule> getAsync(String jobScheduleId, JobScheduleGetOptions jobScheduleGetOptions, final ServiceCallback<CloudJobSchedule> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(getWithServiceResponseAsync(jobScheduleId, jobScheduleGetOptions), serviceCallback);
+    }
+
+    /**
+     * Gets information about the specified job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to get.
+     * @param jobScheduleGetOptions Additional parameters for the operation
+     * @return the observable to the CloudJobSchedule object
+     */
+    public Observable<CloudJobSchedule> getAsync(String jobScheduleId, JobScheduleGetOptions jobScheduleGetOptions) {
+        return getWithServiceResponseAsync(jobScheduleId, jobScheduleGetOptions).map(new Func1<ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders>, CloudJobSchedule>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
+            public CloudJobSchedule call(ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders> response) {
+                return response.body();
             }
         });
-        return serviceCall;
     }
 
     /**
      * Gets information about the specified job schedule.
      *
-     * @param jobScheduleId The id of the job schedule to get.
+     * @param jobScheduleId The ID of the job schedule to get.
      * @param jobScheduleGetOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CloudJobSchedule object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the observable to the CloudJobSchedule object
      */
-    public ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders> get(String jobScheduleId, JobScheduleGetOptions jobScheduleGetOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders>> getWithServiceResponseAsync(String jobScheduleId, JobScheduleGetOptions jobScheduleGetOptions) {
         if (jobScheduleId == null) {
             throw new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null.");
         }
@@ -814,101 +744,22 @@ public final class JobSchedulesImpl implements JobSchedules {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.get(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return getDelegate(call.execute());
-    }
-
-    /**
-     * Gets information about the specified job schedule.
-     *
-     * @param jobScheduleId The id of the job schedule to get.
-     * @param jobScheduleGetOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getAsync(String jobScheduleId, JobScheduleGetOptions jobScheduleGetOptions, final ServiceCallback<CloudJobSchedule> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobScheduleId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobScheduleGetOptions, serviceCallback);
-        String select = null;
-        if (jobScheduleGetOptions != null) {
-            select = jobScheduleGetOptions.select();
-        }
-        String expand = null;
-        if (jobScheduleGetOptions != null) {
-            expand = jobScheduleGetOptions.expand();
-        }
-        Integer timeout = null;
-        if (jobScheduleGetOptions != null) {
-            timeout = jobScheduleGetOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (jobScheduleGetOptions != null) {
-            clientRequestId = jobScheduleGetOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (jobScheduleGetOptions != null) {
-            returnClientRequestId = jobScheduleGetOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleGetOptions != null) {
-            ocpDate = jobScheduleGetOptions.ocpDate();
-        }
-        String ifMatch = null;
-        if (jobScheduleGetOptions != null) {
-            ifMatch = jobScheduleGetOptions.ifMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobScheduleGetOptions != null) {
-            ifNoneMatch = jobScheduleGetOptions.ifNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobScheduleGetOptions != null) {
-            ifModifiedSince = jobScheduleGetOptions.ifModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobScheduleGetOptions != null) {
-            ifUnmodifiedSince = jobScheduleGetOptions.ifUnmodifiedSince();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.get(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<CloudJobSchedule>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.get(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders> getDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CloudJobSchedule, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<CloudJobSchedule, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CloudJobSchedule>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobScheduleGetHeaders.class);
@@ -916,15 +767,54 @@ public final class JobSchedulesImpl implements JobSchedules {
 
     /**
      * Updates the properties of the specified job schedule.
+     * This replaces only the job schedule properties specified in the request. For example, if the schedule property is not specified with this request, then the Batch service will keep the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
      *
-     * @param jobScheduleId The id of the job schedule to update.
+     * @param jobScheduleId The ID of the job schedule to update.
      * @param jobSchedulePatchParameter The parameters for the request.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void patch(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter) {
+        patchWithServiceResponseAsync(jobScheduleId, jobSchedulePatchParameter).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the properties of the specified job schedule.
+     * This replaces only the job schedule properties specified in the request. For example, if the schedule property is not specified with this request, then the Batch service will keep the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
+     *
+     * @param jobScheduleId The ID of the job schedule to update.
+     * @param jobSchedulePatchParameter The parameters for the request.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> patchAsync(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(patchWithServiceResponseAsync(jobScheduleId, jobSchedulePatchParameter), serviceCallback);
+    }
+
+    /**
+     * Updates the properties of the specified job schedule.
+     * This replaces only the job schedule properties specified in the request. For example, if the schedule property is not specified with this request, then the Batch service will keep the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
+     *
+     * @param jobScheduleId The ID of the job schedule to update.
+     * @param jobSchedulePatchParameter The parameters for the request.
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobSchedulePatchHeaders> patch(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> patchAsync(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter) {
+        return patchWithServiceResponseAsync(jobScheduleId, jobSchedulePatchParameter).map(new Func1<ServiceResponseWithHeaders<Void, JobSchedulePatchHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobSchedulePatchHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the properties of the specified job schedule.
+     * This replaces only the job schedule properties specified in the request. For example, if the schedule property is not specified with this request, then the Batch service will keep the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
+     *
+     * @param jobScheduleId The ID of the job schedule to update.
+     * @param jobSchedulePatchParameter The parameters for the request.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobSchedulePatchHeaders>> patchWithServiceResponseAsync(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter) {
         if (jobScheduleId == null) {
             throw new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null.");
         }
@@ -956,84 +846,74 @@ public final class JobSchedulesImpl implements JobSchedules {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.patch(jobScheduleId, jobSchedulePatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return patchDelegate(call.execute());
-    }
-
-    /**
-     * Updates the properties of the specified job schedule.
-     *
-     * @param jobScheduleId The id of the job schedule to update.
-     * @param jobSchedulePatchParameter The parameters for the request.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall patchAsync(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobScheduleId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null."));
-            return null;
-        }
-        if (jobSchedulePatchParameter == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobSchedulePatchParameter is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobSchedulePatchParameter, serviceCallback);
-        final JobSchedulePatchOptions jobSchedulePatchOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        String ifMatch = null;
-        String ifNoneMatch = null;
-        DateTime ifModifiedSince = null;
-        DateTime ifUnmodifiedSince = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.patch(jobScheduleId, jobSchedulePatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(patchDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.patch(jobScheduleId, jobSchedulePatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobSchedulePatchHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobSchedulePatchHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobSchedulePatchHeaders> clientResponse = patchDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
      * Updates the properties of the specified job schedule.
+     * This replaces only the job schedule properties specified in the request. For example, if the schedule property is not specified with this request, then the Batch service will keep the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
      *
-     * @param jobScheduleId The id of the job schedule to update.
+     * @param jobScheduleId The ID of the job schedule to update.
      * @param jobSchedulePatchParameter The parameters for the request.
      * @param jobSchedulePatchOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void patch(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter, JobSchedulePatchOptions jobSchedulePatchOptions) {
+        patchWithServiceResponseAsync(jobScheduleId, jobSchedulePatchParameter, jobSchedulePatchOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the properties of the specified job schedule.
+     * This replaces only the job schedule properties specified in the request. For example, if the schedule property is not specified with this request, then the Batch service will keep the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
+     *
+     * @param jobScheduleId The ID of the job schedule to update.
+     * @param jobSchedulePatchParameter The parameters for the request.
+     * @param jobSchedulePatchOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> patchAsync(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter, JobSchedulePatchOptions jobSchedulePatchOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(patchWithServiceResponseAsync(jobScheduleId, jobSchedulePatchParameter, jobSchedulePatchOptions), serviceCallback);
+    }
+
+    /**
+     * Updates the properties of the specified job schedule.
+     * This replaces only the job schedule properties specified in the request. For example, if the schedule property is not specified with this request, then the Batch service will keep the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
+     *
+     * @param jobScheduleId The ID of the job schedule to update.
+     * @param jobSchedulePatchParameter The parameters for the request.
+     * @param jobSchedulePatchOptions Additional parameters for the operation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobSchedulePatchHeaders> patch(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter, JobSchedulePatchOptions jobSchedulePatchOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> patchAsync(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter, JobSchedulePatchOptions jobSchedulePatchOptions) {
+        return patchWithServiceResponseAsync(jobScheduleId, jobSchedulePatchParameter, jobSchedulePatchOptions).map(new Func1<ServiceResponseWithHeaders<Void, JobSchedulePatchHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobSchedulePatchHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the properties of the specified job schedule.
+     * This replaces only the job schedule properties specified in the request. For example, if the schedule property is not specified with this request, then the Batch service will keep the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
+     *
+     * @param jobScheduleId The ID of the job schedule to update.
+     * @param jobSchedulePatchParameter The parameters for the request.
+     * @param jobSchedulePatchOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobSchedulePatchHeaders>> patchWithServiceResponseAsync(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter, JobSchedulePatchOptions jobSchedulePatchOptions) {
         if (jobScheduleId == null) {
             throw new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null.");
         }
@@ -1089,99 +969,22 @@ public final class JobSchedulesImpl implements JobSchedules {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.patch(jobScheduleId, jobSchedulePatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return patchDelegate(call.execute());
-    }
-
-    /**
-     * Updates the properties of the specified job schedule.
-     *
-     * @param jobScheduleId The id of the job schedule to update.
-     * @param jobSchedulePatchParameter The parameters for the request.
-     * @param jobSchedulePatchOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall patchAsync(String jobScheduleId, JobSchedulePatchParameter jobSchedulePatchParameter, JobSchedulePatchOptions jobSchedulePatchOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobScheduleId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null."));
-            return null;
-        }
-        if (jobSchedulePatchParameter == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobSchedulePatchParameter is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobSchedulePatchParameter, serviceCallback);
-        Validator.validate(jobSchedulePatchOptions, serviceCallback);
-        Integer timeout = null;
-        if (jobSchedulePatchOptions != null) {
-            timeout = jobSchedulePatchOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (jobSchedulePatchOptions != null) {
-            clientRequestId = jobSchedulePatchOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (jobSchedulePatchOptions != null) {
-            returnClientRequestId = jobSchedulePatchOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobSchedulePatchOptions != null) {
-            ocpDate = jobSchedulePatchOptions.ocpDate();
-        }
-        String ifMatch = null;
-        if (jobSchedulePatchOptions != null) {
-            ifMatch = jobSchedulePatchOptions.ifMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobSchedulePatchOptions != null) {
-            ifNoneMatch = jobSchedulePatchOptions.ifNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobSchedulePatchOptions != null) {
-            ifModifiedSince = jobSchedulePatchOptions.ifModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobSchedulePatchOptions != null) {
-            ifUnmodifiedSince = jobSchedulePatchOptions.ifUnmodifiedSince();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.patch(jobScheduleId, jobSchedulePatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(patchDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.patch(jobScheduleId, jobSchedulePatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobSchedulePatchHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobSchedulePatchHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobSchedulePatchHeaders> clientResponse = patchDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, JobSchedulePatchHeaders> patchDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobSchedulePatchHeaders.class);
@@ -1189,15 +992,54 @@ public final class JobSchedulesImpl implements JobSchedules {
 
     /**
      * Updates the properties of the specified job schedule.
+     * This fully replaces all the updateable properties of the job schedule. For example, if the schedule property is not specified with this request, then the Batch service will remove the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
      *
-     * @param jobScheduleId The id of the job schedule to update.
+     * @param jobScheduleId The ID of the job schedule to update.
      * @param jobScheduleUpdateParameter The parameters for the request.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void update(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter) {
+        updateWithServiceResponseAsync(jobScheduleId, jobScheduleUpdateParameter).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the properties of the specified job schedule.
+     * This fully replaces all the updateable properties of the job schedule. For example, if the schedule property is not specified with this request, then the Batch service will remove the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
+     *
+     * @param jobScheduleId The ID of the job schedule to update.
+     * @param jobScheduleUpdateParameter The parameters for the request.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> updateAsync(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(updateWithServiceResponseAsync(jobScheduleId, jobScheduleUpdateParameter), serviceCallback);
+    }
+
+    /**
+     * Updates the properties of the specified job schedule.
+     * This fully replaces all the updateable properties of the job schedule. For example, if the schedule property is not specified with this request, then the Batch service will remove the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
+     *
+     * @param jobScheduleId The ID of the job schedule to update.
+     * @param jobScheduleUpdateParameter The parameters for the request.
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobScheduleUpdateHeaders> update(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> updateAsync(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter) {
+        return updateWithServiceResponseAsync(jobScheduleId, jobScheduleUpdateParameter).map(new Func1<ServiceResponseWithHeaders<Void, JobScheduleUpdateHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobScheduleUpdateHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the properties of the specified job schedule.
+     * This fully replaces all the updateable properties of the job schedule. For example, if the schedule property is not specified with this request, then the Batch service will remove the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
+     *
+     * @param jobScheduleId The ID of the job schedule to update.
+     * @param jobScheduleUpdateParameter The parameters for the request.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobScheduleUpdateHeaders>> updateWithServiceResponseAsync(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter) {
         if (jobScheduleId == null) {
             throw new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null.");
         }
@@ -1229,84 +1071,74 @@ public final class JobSchedulesImpl implements JobSchedules {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.update(jobScheduleId, jobScheduleUpdateParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return updateDelegate(call.execute());
-    }
-
-    /**
-     * Updates the properties of the specified job schedule.
-     *
-     * @param jobScheduleId The id of the job schedule to update.
-     * @param jobScheduleUpdateParameter The parameters for the request.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall updateAsync(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobScheduleId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null."));
-            return null;
-        }
-        if (jobScheduleUpdateParameter == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobScheduleUpdateParameter is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobScheduleUpdateParameter, serviceCallback);
-        final JobScheduleUpdateOptions jobScheduleUpdateOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        String ifMatch = null;
-        String ifNoneMatch = null;
-        DateTime ifModifiedSince = null;
-        DateTime ifUnmodifiedSince = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.update(jobScheduleId, jobScheduleUpdateParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(updateDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.update(jobScheduleId, jobScheduleUpdateParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobScheduleUpdateHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobScheduleUpdateHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobScheduleUpdateHeaders> clientResponse = updateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
      * Updates the properties of the specified job schedule.
+     * This fully replaces all the updateable properties of the job schedule. For example, if the schedule property is not specified with this request, then the Batch service will remove the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
      *
-     * @param jobScheduleId The id of the job schedule to update.
+     * @param jobScheduleId The ID of the job schedule to update.
      * @param jobScheduleUpdateParameter The parameters for the request.
      * @param jobScheduleUpdateOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void update(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter, JobScheduleUpdateOptions jobScheduleUpdateOptions) {
+        updateWithServiceResponseAsync(jobScheduleId, jobScheduleUpdateParameter, jobScheduleUpdateOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the properties of the specified job schedule.
+     * This fully replaces all the updateable properties of the job schedule. For example, if the schedule property is not specified with this request, then the Batch service will remove the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
+     *
+     * @param jobScheduleId The ID of the job schedule to update.
+     * @param jobScheduleUpdateParameter The parameters for the request.
+     * @param jobScheduleUpdateOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> updateAsync(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter, JobScheduleUpdateOptions jobScheduleUpdateOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(updateWithServiceResponseAsync(jobScheduleId, jobScheduleUpdateParameter, jobScheduleUpdateOptions), serviceCallback);
+    }
+
+    /**
+     * Updates the properties of the specified job schedule.
+     * This fully replaces all the updateable properties of the job schedule. For example, if the schedule property is not specified with this request, then the Batch service will remove the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
+     *
+     * @param jobScheduleId The ID of the job schedule to update.
+     * @param jobScheduleUpdateParameter The parameters for the request.
+     * @param jobScheduleUpdateOptions Additional parameters for the operation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobScheduleUpdateHeaders> update(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter, JobScheduleUpdateOptions jobScheduleUpdateOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> updateAsync(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter, JobScheduleUpdateOptions jobScheduleUpdateOptions) {
+        return updateWithServiceResponseAsync(jobScheduleId, jobScheduleUpdateParameter, jobScheduleUpdateOptions).map(new Func1<ServiceResponseWithHeaders<Void, JobScheduleUpdateHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobScheduleUpdateHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the properties of the specified job schedule.
+     * This fully replaces all the updateable properties of the job schedule. For example, if the schedule property is not specified with this request, then the Batch service will remove the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
+     *
+     * @param jobScheduleId The ID of the job schedule to update.
+     * @param jobScheduleUpdateParameter The parameters for the request.
+     * @param jobScheduleUpdateOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobScheduleUpdateHeaders>> updateWithServiceResponseAsync(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter, JobScheduleUpdateOptions jobScheduleUpdateOptions) {
         if (jobScheduleId == null) {
             throw new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null.");
         }
@@ -1362,99 +1194,22 @@ public final class JobSchedulesImpl implements JobSchedules {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.update(jobScheduleId, jobScheduleUpdateParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return updateDelegate(call.execute());
-    }
-
-    /**
-     * Updates the properties of the specified job schedule.
-     *
-     * @param jobScheduleId The id of the job schedule to update.
-     * @param jobScheduleUpdateParameter The parameters for the request.
-     * @param jobScheduleUpdateOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall updateAsync(String jobScheduleId, JobScheduleUpdateParameter jobScheduleUpdateParameter, JobScheduleUpdateOptions jobScheduleUpdateOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobScheduleId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null."));
-            return null;
-        }
-        if (jobScheduleUpdateParameter == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobScheduleUpdateParameter is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobScheduleUpdateParameter, serviceCallback);
-        Validator.validate(jobScheduleUpdateOptions, serviceCallback);
-        Integer timeout = null;
-        if (jobScheduleUpdateOptions != null) {
-            timeout = jobScheduleUpdateOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (jobScheduleUpdateOptions != null) {
-            clientRequestId = jobScheduleUpdateOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (jobScheduleUpdateOptions != null) {
-            returnClientRequestId = jobScheduleUpdateOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleUpdateOptions != null) {
-            ocpDate = jobScheduleUpdateOptions.ocpDate();
-        }
-        String ifMatch = null;
-        if (jobScheduleUpdateOptions != null) {
-            ifMatch = jobScheduleUpdateOptions.ifMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobScheduleUpdateOptions != null) {
-            ifNoneMatch = jobScheduleUpdateOptions.ifNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobScheduleUpdateOptions != null) {
-            ifModifiedSince = jobScheduleUpdateOptions.ifModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobScheduleUpdateOptions != null) {
-            ifUnmodifiedSince = jobScheduleUpdateOptions.ifUnmodifiedSince();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.update(jobScheduleId, jobScheduleUpdateParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(updateDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.update(jobScheduleId, jobScheduleUpdateParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobScheduleUpdateHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobScheduleUpdateHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobScheduleUpdateHeaders> clientResponse = updateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, JobScheduleUpdateHeaders> updateDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobScheduleUpdateHeaders.class);
@@ -1462,14 +1217,50 @@ public final class JobSchedulesImpl implements JobSchedules {
 
     /**
      * Disables a job schedule.
+     * No new jobs will be created until the job schedule is enabled again.
      *
-     * @param jobScheduleId The id of the job schedule to disable.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @param jobScheduleId The ID of the job schedule to disable.
+     */
+    public void disable(String jobScheduleId) {
+        disableWithServiceResponseAsync(jobScheduleId).toBlocking().single().body();
+    }
+
+    /**
+     * Disables a job schedule.
+     * No new jobs will be created until the job schedule is enabled again.
+     *
+     * @param jobScheduleId The ID of the job schedule to disable.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> disableAsync(String jobScheduleId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(disableWithServiceResponseAsync(jobScheduleId), serviceCallback);
+    }
+
+    /**
+     * Disables a job schedule.
+     * No new jobs will be created until the job schedule is enabled again.
+     *
+     * @param jobScheduleId The ID of the job schedule to disable.
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobScheduleDisableHeaders> disable(String jobScheduleId) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> disableAsync(String jobScheduleId) {
+        return disableWithServiceResponseAsync(jobScheduleId).map(new Func1<ServiceResponseWithHeaders<Void, JobScheduleDisableHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobScheduleDisableHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Disables a job schedule.
+     * No new jobs will be created until the job schedule is enabled again.
+     *
+     * @param jobScheduleId The ID of the job schedule to disable.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobScheduleDisableHeaders>> disableWithServiceResponseAsync(String jobScheduleId) {
         if (jobScheduleId == null) {
             throw new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null.");
         }
@@ -1497,77 +1288,70 @@ public final class JobSchedulesImpl implements JobSchedules {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.disable(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return disableDelegate(call.execute());
-    }
-
-    /**
-     * Disables a job schedule.
-     *
-     * @param jobScheduleId The id of the job schedule to disable.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall disableAsync(String jobScheduleId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobScheduleId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final JobScheduleDisableOptions jobScheduleDisableOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        String ifMatch = null;
-        String ifNoneMatch = null;
-        DateTime ifModifiedSince = null;
-        DateTime ifUnmodifiedSince = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.disable(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(disableDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.disable(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobScheduleDisableHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobScheduleDisableHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobScheduleDisableHeaders> clientResponse = disableDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
      * Disables a job schedule.
+     * No new jobs will be created until the job schedule is enabled again.
      *
-     * @param jobScheduleId The id of the job schedule to disable.
+     * @param jobScheduleId The ID of the job schedule to disable.
      * @param jobScheduleDisableOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void disable(String jobScheduleId, JobScheduleDisableOptions jobScheduleDisableOptions) {
+        disableWithServiceResponseAsync(jobScheduleId, jobScheduleDisableOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Disables a job schedule.
+     * No new jobs will be created until the job schedule is enabled again.
+     *
+     * @param jobScheduleId The ID of the job schedule to disable.
+     * @param jobScheduleDisableOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> disableAsync(String jobScheduleId, JobScheduleDisableOptions jobScheduleDisableOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(disableWithServiceResponseAsync(jobScheduleId, jobScheduleDisableOptions), serviceCallback);
+    }
+
+    /**
+     * Disables a job schedule.
+     * No new jobs will be created until the job schedule is enabled again.
+     *
+     * @param jobScheduleId The ID of the job schedule to disable.
+     * @param jobScheduleDisableOptions Additional parameters for the operation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobScheduleDisableHeaders> disable(String jobScheduleId, JobScheduleDisableOptions jobScheduleDisableOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> disableAsync(String jobScheduleId, JobScheduleDisableOptions jobScheduleDisableOptions) {
+        return disableWithServiceResponseAsync(jobScheduleId, jobScheduleDisableOptions).map(new Func1<ServiceResponseWithHeaders<Void, JobScheduleDisableHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobScheduleDisableHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Disables a job schedule.
+     * No new jobs will be created until the job schedule is enabled again.
+     *
+     * @param jobScheduleId The ID of the job schedule to disable.
+     * @param jobScheduleDisableOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobScheduleDisableHeaders>> disableWithServiceResponseAsync(String jobScheduleId, JobScheduleDisableOptions jobScheduleDisableOptions) {
         if (jobScheduleId == null) {
             throw new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null.");
         }
@@ -1619,93 +1403,22 @@ public final class JobSchedulesImpl implements JobSchedules {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.disable(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return disableDelegate(call.execute());
-    }
-
-    /**
-     * Disables a job schedule.
-     *
-     * @param jobScheduleId The id of the job schedule to disable.
-     * @param jobScheduleDisableOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall disableAsync(String jobScheduleId, JobScheduleDisableOptions jobScheduleDisableOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobScheduleId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobScheduleDisableOptions, serviceCallback);
-        Integer timeout = null;
-        if (jobScheduleDisableOptions != null) {
-            timeout = jobScheduleDisableOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (jobScheduleDisableOptions != null) {
-            clientRequestId = jobScheduleDisableOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (jobScheduleDisableOptions != null) {
-            returnClientRequestId = jobScheduleDisableOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleDisableOptions != null) {
-            ocpDate = jobScheduleDisableOptions.ocpDate();
-        }
-        String ifMatch = null;
-        if (jobScheduleDisableOptions != null) {
-            ifMatch = jobScheduleDisableOptions.ifMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobScheduleDisableOptions != null) {
-            ifNoneMatch = jobScheduleDisableOptions.ifNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobScheduleDisableOptions != null) {
-            ifModifiedSince = jobScheduleDisableOptions.ifModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobScheduleDisableOptions != null) {
-            ifUnmodifiedSince = jobScheduleDisableOptions.ifUnmodifiedSince();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.disable(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(disableDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.disable(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobScheduleDisableHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobScheduleDisableHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobScheduleDisableHeaders> clientResponse = disableDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, JobScheduleDisableHeaders> disableDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobScheduleDisableHeaders.class);
@@ -1714,13 +1427,45 @@ public final class JobSchedulesImpl implements JobSchedules {
     /**
      * Enables a job schedule.
      *
-     * @param jobScheduleId The id of the job schedule to enable.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @param jobScheduleId The ID of the job schedule to enable.
+     */
+    public void enable(String jobScheduleId) {
+        enableWithServiceResponseAsync(jobScheduleId).toBlocking().single().body();
+    }
+
+    /**
+     * Enables a job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to enable.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> enableAsync(String jobScheduleId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(enableWithServiceResponseAsync(jobScheduleId), serviceCallback);
+    }
+
+    /**
+     * Enables a job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to enable.
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobScheduleEnableHeaders> enable(String jobScheduleId) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> enableAsync(String jobScheduleId) {
+        return enableWithServiceResponseAsync(jobScheduleId).map(new Func1<ServiceResponseWithHeaders<Void, JobScheduleEnableHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobScheduleEnableHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Enables a job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to enable.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobScheduleEnableHeaders>> enableWithServiceResponseAsync(String jobScheduleId) {
         if (jobScheduleId == null) {
             throw new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null.");
         }
@@ -1748,77 +1493,66 @@ public final class JobSchedulesImpl implements JobSchedules {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.enable(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return enableDelegate(call.execute());
-    }
-
-    /**
-     * Enables a job schedule.
-     *
-     * @param jobScheduleId The id of the job schedule to enable.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall enableAsync(String jobScheduleId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobScheduleId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final JobScheduleEnableOptions jobScheduleEnableOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        String ifMatch = null;
-        String ifNoneMatch = null;
-        DateTime ifModifiedSince = null;
-        DateTime ifUnmodifiedSince = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.enable(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(enableDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.enable(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobScheduleEnableHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobScheduleEnableHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobScheduleEnableHeaders> clientResponse = enableDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
      * Enables a job schedule.
      *
-     * @param jobScheduleId The id of the job schedule to enable.
+     * @param jobScheduleId The ID of the job schedule to enable.
      * @param jobScheduleEnableOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void enable(String jobScheduleId, JobScheduleEnableOptions jobScheduleEnableOptions) {
+        enableWithServiceResponseAsync(jobScheduleId, jobScheduleEnableOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Enables a job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to enable.
+     * @param jobScheduleEnableOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> enableAsync(String jobScheduleId, JobScheduleEnableOptions jobScheduleEnableOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(enableWithServiceResponseAsync(jobScheduleId, jobScheduleEnableOptions), serviceCallback);
+    }
+
+    /**
+     * Enables a job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to enable.
+     * @param jobScheduleEnableOptions Additional parameters for the operation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobScheduleEnableHeaders> enable(String jobScheduleId, JobScheduleEnableOptions jobScheduleEnableOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> enableAsync(String jobScheduleId, JobScheduleEnableOptions jobScheduleEnableOptions) {
+        return enableWithServiceResponseAsync(jobScheduleId, jobScheduleEnableOptions).map(new Func1<ServiceResponseWithHeaders<Void, JobScheduleEnableHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobScheduleEnableHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Enables a job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to enable.
+     * @param jobScheduleEnableOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobScheduleEnableHeaders>> enableWithServiceResponseAsync(String jobScheduleId, JobScheduleEnableOptions jobScheduleEnableOptions) {
         if (jobScheduleId == null) {
             throw new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null.");
         }
@@ -1870,93 +1604,22 @@ public final class JobSchedulesImpl implements JobSchedules {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.enable(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return enableDelegate(call.execute());
-    }
-
-    /**
-     * Enables a job schedule.
-     *
-     * @param jobScheduleId The id of the job schedule to enable.
-     * @param jobScheduleEnableOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall enableAsync(String jobScheduleId, JobScheduleEnableOptions jobScheduleEnableOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobScheduleId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobScheduleEnableOptions, serviceCallback);
-        Integer timeout = null;
-        if (jobScheduleEnableOptions != null) {
-            timeout = jobScheduleEnableOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (jobScheduleEnableOptions != null) {
-            clientRequestId = jobScheduleEnableOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (jobScheduleEnableOptions != null) {
-            returnClientRequestId = jobScheduleEnableOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleEnableOptions != null) {
-            ocpDate = jobScheduleEnableOptions.ocpDate();
-        }
-        String ifMatch = null;
-        if (jobScheduleEnableOptions != null) {
-            ifMatch = jobScheduleEnableOptions.ifMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobScheduleEnableOptions != null) {
-            ifNoneMatch = jobScheduleEnableOptions.ifNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobScheduleEnableOptions != null) {
-            ifModifiedSince = jobScheduleEnableOptions.ifModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobScheduleEnableOptions != null) {
-            ifUnmodifiedSince = jobScheduleEnableOptions.ifUnmodifiedSince();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.enable(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(enableDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.enable(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobScheduleEnableHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobScheduleEnableHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobScheduleEnableHeaders> clientResponse = enableDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, JobScheduleEnableHeaders> enableDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobScheduleEnableHeaders.class);
@@ -1965,13 +1628,45 @@ public final class JobSchedulesImpl implements JobSchedules {
     /**
      * Terminates a job schedule.
      *
-     * @param jobScheduleId The id of the job schedule to terminates.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @param jobScheduleId The ID of the job schedule to terminates.
+     */
+    public void terminate(String jobScheduleId) {
+        terminateWithServiceResponseAsync(jobScheduleId).toBlocking().single().body();
+    }
+
+    /**
+     * Terminates a job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to terminates.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> terminateAsync(String jobScheduleId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(terminateWithServiceResponseAsync(jobScheduleId), serviceCallback);
+    }
+
+    /**
+     * Terminates a job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to terminates.
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobScheduleTerminateHeaders> terminate(String jobScheduleId) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> terminateAsync(String jobScheduleId) {
+        return terminateWithServiceResponseAsync(jobScheduleId).map(new Func1<ServiceResponseWithHeaders<Void, JobScheduleTerminateHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobScheduleTerminateHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Terminates a job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to terminates.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobScheduleTerminateHeaders>> terminateWithServiceResponseAsync(String jobScheduleId) {
         if (jobScheduleId == null) {
             throw new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null.");
         }
@@ -1999,77 +1694,66 @@ public final class JobSchedulesImpl implements JobSchedules {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.terminate(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return terminateDelegate(call.execute());
-    }
-
-    /**
-     * Terminates a job schedule.
-     *
-     * @param jobScheduleId The id of the job schedule to terminates.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall terminateAsync(String jobScheduleId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobScheduleId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final JobScheduleTerminateOptions jobScheduleTerminateOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        String ifMatch = null;
-        String ifNoneMatch = null;
-        DateTime ifModifiedSince = null;
-        DateTime ifUnmodifiedSince = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.terminate(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(terminateDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.terminate(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobScheduleTerminateHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobScheduleTerminateHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobScheduleTerminateHeaders> clientResponse = terminateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
      * Terminates a job schedule.
      *
-     * @param jobScheduleId The id of the job schedule to terminates.
+     * @param jobScheduleId The ID of the job schedule to terminates.
      * @param jobScheduleTerminateOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void terminate(String jobScheduleId, JobScheduleTerminateOptions jobScheduleTerminateOptions) {
+        terminateWithServiceResponseAsync(jobScheduleId, jobScheduleTerminateOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Terminates a job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to terminates.
+     * @param jobScheduleTerminateOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> terminateAsync(String jobScheduleId, JobScheduleTerminateOptions jobScheduleTerminateOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(terminateWithServiceResponseAsync(jobScheduleId, jobScheduleTerminateOptions), serviceCallback);
+    }
+
+    /**
+     * Terminates a job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to terminates.
+     * @param jobScheduleTerminateOptions Additional parameters for the operation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobScheduleTerminateHeaders> terminate(String jobScheduleId, JobScheduleTerminateOptions jobScheduleTerminateOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> terminateAsync(String jobScheduleId, JobScheduleTerminateOptions jobScheduleTerminateOptions) {
+        return terminateWithServiceResponseAsync(jobScheduleId, jobScheduleTerminateOptions).map(new Func1<ServiceResponseWithHeaders<Void, JobScheduleTerminateHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobScheduleTerminateHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Terminates a job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule to terminates.
+     * @param jobScheduleTerminateOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobScheduleTerminateHeaders>> terminateWithServiceResponseAsync(String jobScheduleId, JobScheduleTerminateOptions jobScheduleTerminateOptions) {
         if (jobScheduleId == null) {
             throw new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null.");
         }
@@ -2121,93 +1805,22 @@ public final class JobSchedulesImpl implements JobSchedules {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.terminate(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return terminateDelegate(call.execute());
-    }
-
-    /**
-     * Terminates a job schedule.
-     *
-     * @param jobScheduleId The id of the job schedule to terminates.
-     * @param jobScheduleTerminateOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall terminateAsync(String jobScheduleId, JobScheduleTerminateOptions jobScheduleTerminateOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobScheduleId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobScheduleTerminateOptions, serviceCallback);
-        Integer timeout = null;
-        if (jobScheduleTerminateOptions != null) {
-            timeout = jobScheduleTerminateOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (jobScheduleTerminateOptions != null) {
-            clientRequestId = jobScheduleTerminateOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (jobScheduleTerminateOptions != null) {
-            returnClientRequestId = jobScheduleTerminateOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleTerminateOptions != null) {
-            ocpDate = jobScheduleTerminateOptions.ocpDate();
-        }
-        String ifMatch = null;
-        if (jobScheduleTerminateOptions != null) {
-            ifMatch = jobScheduleTerminateOptions.ifMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobScheduleTerminateOptions != null) {
-            ifNoneMatch = jobScheduleTerminateOptions.ifNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobScheduleTerminateOptions != null) {
-            ifModifiedSince = jobScheduleTerminateOptions.ifModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobScheduleTerminateOptions != null) {
-            ifUnmodifiedSince = jobScheduleTerminateOptions.ifUnmodifiedSince();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.terminate(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(terminateDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.terminate(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobScheduleTerminateHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobScheduleTerminateHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobScheduleTerminateHeaders> clientResponse = terminateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, JobScheduleTerminateHeaders> terminateDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobScheduleTerminateHeaders.class);
@@ -2217,12 +1830,44 @@ public final class JobSchedulesImpl implements JobSchedules {
      * Adds a job schedule to the specified account.
      *
      * @param cloudJobSchedule The job schedule to be added.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void add(JobScheduleAddParameter cloudJobSchedule) {
+        addWithServiceResponseAsync(cloudJobSchedule).toBlocking().single().body();
+    }
+
+    /**
+     * Adds a job schedule to the specified account.
+     *
+     * @param cloudJobSchedule The job schedule to be added.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> addAsync(JobScheduleAddParameter cloudJobSchedule, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(addWithServiceResponseAsync(cloudJobSchedule), serviceCallback);
+    }
+
+    /**
+     * Adds a job schedule to the specified account.
+     *
+     * @param cloudJobSchedule The job schedule to be added.
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobScheduleAddHeaders> add(JobScheduleAddParameter cloudJobSchedule) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> addAsync(JobScheduleAddParameter cloudJobSchedule) {
+        return addWithServiceResponseAsync(cloudJobSchedule).map(new Func1<ServiceResponseWithHeaders<Void, JobScheduleAddHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobScheduleAddHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Adds a job schedule to the specified account.
+     *
+     * @param cloudJobSchedule The job schedule to be added.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobScheduleAddHeaders>> addWithServiceResponseAsync(JobScheduleAddParameter cloudJobSchedule) {
         if (cloudJobSchedule == null) {
             throw new IllegalArgumentException("Parameter cloudJobSchedule is required and cannot be null.");
         }
@@ -2239,53 +1884,18 @@ public final class JobSchedulesImpl implements JobSchedules {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.add(cloudJobSchedule, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return addDelegate(call.execute());
-    }
-
-    /**
-     * Adds a job schedule to the specified account.
-     *
-     * @param cloudJobSchedule The job schedule to be added.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall addAsync(JobScheduleAddParameter cloudJobSchedule, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (cloudJobSchedule == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter cloudJobSchedule is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(cloudJobSchedule, serviceCallback);
-        final JobScheduleAddOptions jobScheduleAddOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.add(cloudJobSchedule, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(addDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.add(cloudJobSchedule, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobScheduleAddHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobScheduleAddHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobScheduleAddHeaders> clientResponse = addDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -2293,12 +1903,47 @@ public final class JobSchedulesImpl implements JobSchedules {
      *
      * @param cloudJobSchedule The job schedule to be added.
      * @param jobScheduleAddOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void add(JobScheduleAddParameter cloudJobSchedule, JobScheduleAddOptions jobScheduleAddOptions) {
+        addWithServiceResponseAsync(cloudJobSchedule, jobScheduleAddOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Adds a job schedule to the specified account.
+     *
+     * @param cloudJobSchedule The job schedule to be added.
+     * @param jobScheduleAddOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> addAsync(JobScheduleAddParameter cloudJobSchedule, JobScheduleAddOptions jobScheduleAddOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(addWithServiceResponseAsync(cloudJobSchedule, jobScheduleAddOptions), serviceCallback);
+    }
+
+    /**
+     * Adds a job schedule to the specified account.
+     *
+     * @param cloudJobSchedule The job schedule to be added.
+     * @param jobScheduleAddOptions Additional parameters for the operation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobScheduleAddHeaders> add(JobScheduleAddParameter cloudJobSchedule, JobScheduleAddOptions jobScheduleAddOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> addAsync(JobScheduleAddParameter cloudJobSchedule, JobScheduleAddOptions jobScheduleAddOptions) {
+        return addWithServiceResponseAsync(cloudJobSchedule, jobScheduleAddOptions).map(new Func1<ServiceResponseWithHeaders<Void, JobScheduleAddHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobScheduleAddHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Adds a job schedule to the specified account.
+     *
+     * @param cloudJobSchedule The job schedule to be added.
+     * @param jobScheduleAddOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobScheduleAddHeaders>> addWithServiceResponseAsync(JobScheduleAddParameter cloudJobSchedule, JobScheduleAddOptions jobScheduleAddOptions) {
         if (cloudJobSchedule == null) {
             throw new IllegalArgumentException("Parameter cloudJobSchedule is required and cannot be null.");
         }
@@ -2327,70 +1972,22 @@ public final class JobSchedulesImpl implements JobSchedules {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.add(cloudJobSchedule, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return addDelegate(call.execute());
-    }
-
-    /**
-     * Adds a job schedule to the specified account.
-     *
-     * @param cloudJobSchedule The job schedule to be added.
-     * @param jobScheduleAddOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall addAsync(JobScheduleAddParameter cloudJobSchedule, JobScheduleAddOptions jobScheduleAddOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (cloudJobSchedule == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter cloudJobSchedule is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(cloudJobSchedule, serviceCallback);
-        Validator.validate(jobScheduleAddOptions, serviceCallback);
-        Integer timeout = null;
-        if (jobScheduleAddOptions != null) {
-            timeout = jobScheduleAddOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (jobScheduleAddOptions != null) {
-            clientRequestId = jobScheduleAddOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (jobScheduleAddOptions != null) {
-            returnClientRequestId = jobScheduleAddOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleAddOptions != null) {
-            ocpDate = jobScheduleAddOptions.ocpDate();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.add(cloudJobSchedule, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(addDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.add(cloudJobSchedule, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobScheduleAddHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobScheduleAddHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobScheduleAddHeaders> clientResponse = addDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, JobScheduleAddHeaders> addDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobScheduleAddHeaders.class);
@@ -2399,12 +1996,76 @@ public final class JobSchedulesImpl implements JobSchedules {
     /**
      * Lists all of the job schedules in the specified account.
      *
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudJobSchedule&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;CloudJobSchedule&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PagedList<CloudJobSchedule>, JobScheduleListHeaders> list() throws BatchErrorException, IOException, IllegalArgumentException {
+    public PagedList<CloudJobSchedule> list() {
+        ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders> response = listSinglePageAsync().toBlocking().single();
+        return new PagedList<CloudJobSchedule>(response.body()) {
+            @Override
+            public Page<CloudJobSchedule> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all of the job schedules in the specified account.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<CloudJobSchedule>> listAsync(final ListOperationCallback<CloudJobSchedule> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
+            listSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink, null);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all of the job schedules in the specified account.
+     *
+     * @return the observable to the PagedList&lt;CloudJobSchedule&gt; object
+     */
+    public Observable<Page<CloudJobSchedule>> listAsync() {
+        return listWithServiceResponseAsync()
+            .map(new Func1<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>, Page<CloudJobSchedule>>() {
+                @Override
+                public Page<CloudJobSchedule> call(ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all of the job schedules in the specified account.
+     *
+     * @return the observable to the PagedList&lt;CloudJobSchedule&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listWithServiceResponseAsync() {
+        return listSinglePageAsync()
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> call(ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink, null));
+                }
+            });
+    }
+
+    /**
+     * Lists all of the job schedules in the specified account.
+     *
+     * @return the PagedList&lt;CloudJobSchedule&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listSinglePageAsync() {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -2421,77 +2082,119 @@ public final class JobSchedulesImpl implements JobSchedules {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> response = listDelegate(call.execute());
-        PagedList<CloudJobSchedule> result = new PagedList<CloudJobSchedule>(response.getBody()) {
-            @Override
-            public Page<CloudJobSchedule> nextPage(String nextPageLink) throws BatchErrorException, IOException {
-                return listNext(nextPageLink, null).getBody();
-            }
-        };
-        return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
-    }
-
-    /**
-     * Lists all of the job schedules in the specified account.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listAsync(final ListOperationCallback<CloudJobSchedule> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final JobScheduleListOptions jobScheduleListOptions = null;
-        String filter = null;
-        String select = null;
-        String expand = null;
-        Integer maxResults = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudJobSchedule>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> result = listDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> result = listDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>(result.body(), result.headers(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
      * Lists all of the job schedules in the specified account.
      *
      * @param jobScheduleListOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudJobSchedule&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;CloudJobSchedule&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PagedList<CloudJobSchedule>, JobScheduleListHeaders> list(final JobScheduleListOptions jobScheduleListOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public PagedList<CloudJobSchedule> list(final JobScheduleListOptions jobScheduleListOptions) {
+        ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders> response = listSinglePageAsync(jobScheduleListOptions).toBlocking().single();
+        return new PagedList<CloudJobSchedule>(response.body()) {
+            @Override
+            public Page<CloudJobSchedule> nextPage(String nextPageLink) {
+                JobScheduleListNextOptions jobScheduleListNextOptions = null;
+                if (jobScheduleListOptions != null) {
+                    jobScheduleListNextOptions = new JobScheduleListNextOptions();
+                    jobScheduleListNextOptions.withClientRequestId(jobScheduleListOptions.clientRequestId());
+                    jobScheduleListNextOptions.withReturnClientRequestId(jobScheduleListOptions.returnClientRequestId());
+                    jobScheduleListNextOptions.withOcpDate(jobScheduleListOptions.ocpDate());
+                }
+                return listNextSinglePageAsync(nextPageLink, jobScheduleListNextOptions).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all of the job schedules in the specified account.
+     *
+     * @param jobScheduleListOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<CloudJobSchedule>> listAsync(final JobScheduleListOptions jobScheduleListOptions, final ListOperationCallback<CloudJobSchedule> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
+            listSinglePageAsync(jobScheduleListOptions),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> call(String nextPageLink) {
+                    JobScheduleListNextOptions jobScheduleListNextOptions = null;
+                    if (jobScheduleListOptions != null) {
+                        jobScheduleListNextOptions = new JobScheduleListNextOptions();
+                        jobScheduleListNextOptions.withClientRequestId(jobScheduleListOptions.clientRequestId());
+                        jobScheduleListNextOptions.withReturnClientRequestId(jobScheduleListOptions.returnClientRequestId());
+                        jobScheduleListNextOptions.withOcpDate(jobScheduleListOptions.ocpDate());
+                    }
+                    return listNextSinglePageAsync(nextPageLink, jobScheduleListNextOptions);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all of the job schedules in the specified account.
+     *
+     * @param jobScheduleListOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;CloudJobSchedule&gt; object
+     */
+    public Observable<Page<CloudJobSchedule>> listAsync(final JobScheduleListOptions jobScheduleListOptions) {
+        return listWithServiceResponseAsync(jobScheduleListOptions)
+            .map(new Func1<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>, Page<CloudJobSchedule>>() {
+                @Override
+                public Page<CloudJobSchedule> call(ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all of the job schedules in the specified account.
+     *
+     * @param jobScheduleListOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;CloudJobSchedule&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listWithServiceResponseAsync(final JobScheduleListOptions jobScheduleListOptions) {
+        return listSinglePageAsync(jobScheduleListOptions)
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> call(ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    JobScheduleListNextOptions jobScheduleListNextOptions = null;
+                    if (jobScheduleListOptions != null) {
+                        jobScheduleListNextOptions = new JobScheduleListNextOptions();
+                        jobScheduleListNextOptions.withClientRequestId(jobScheduleListOptions.clientRequestId());
+                        jobScheduleListNextOptions.withReturnClientRequestId(jobScheduleListOptions.returnClientRequestId());
+                        jobScheduleListNextOptions.withOcpDate(jobScheduleListOptions.ocpDate());
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink, jobScheduleListNextOptions));
+                }
+            });
+    }
+
+    /**
+     * Lists all of the job schedules in the specified account.
+     *
+    ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> * @param jobScheduleListOptions Additional parameters for the operation
+     * @return the PagedList&lt;CloudJobSchedule&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listSinglePageAsync(final JobScheduleListOptions jobScheduleListOptions) {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -2532,108 +2235,22 @@ public final class JobSchedulesImpl implements JobSchedules {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> response = listDelegate(call.execute());
-        PagedList<CloudJobSchedule> result = new PagedList<CloudJobSchedule>(response.getBody()) {
-            @Override
-            public Page<CloudJobSchedule> nextPage(String nextPageLink) throws BatchErrorException, IOException {
-                JobScheduleListNextOptions jobScheduleListNextOptions = null;
-                if (jobScheduleListOptions != null) {
-                    jobScheduleListNextOptions = new JobScheduleListNextOptions();
-                    jobScheduleListNextOptions.withClientRequestId(jobScheduleListOptions.clientRequestId());
-                    jobScheduleListNextOptions.withReturnClientRequestId(jobScheduleListOptions.returnClientRequestId());
-                    jobScheduleListNextOptions.withOcpDate(jobScheduleListOptions.ocpDate());
-                }
-                return listNext(nextPageLink, jobScheduleListNextOptions).getBody();
-            }
-        };
-        return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
-    }
-
-    /**
-     * Lists all of the job schedules in the specified account.
-     *
-     * @param jobScheduleListOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listAsync(final JobScheduleListOptions jobScheduleListOptions, final ListOperationCallback<CloudJobSchedule> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobScheduleListOptions, serviceCallback);
-        String filter = null;
-        if (jobScheduleListOptions != null) {
-            filter = jobScheduleListOptions.filter();
-        }
-        String select = null;
-        if (jobScheduleListOptions != null) {
-            select = jobScheduleListOptions.select();
-        }
-        String expand = null;
-        if (jobScheduleListOptions != null) {
-            expand = jobScheduleListOptions.expand();
-        }
-        Integer maxResults = null;
-        if (jobScheduleListOptions != null) {
-            maxResults = jobScheduleListOptions.maxResults();
-        }
-        Integer timeout = null;
-        if (jobScheduleListOptions != null) {
-            timeout = jobScheduleListOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (jobScheduleListOptions != null) {
-            clientRequestId = jobScheduleListOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (jobScheduleListOptions != null) {
-            returnClientRequestId = jobScheduleListOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleListOptions != null) {
-            ocpDate = jobScheduleListOptions.ocpDate();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudJobSchedule>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> result = listDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        JobScheduleListNextOptions jobScheduleListNextOptions = null;
-                        if (jobScheduleListOptions != null) {
-                            jobScheduleListNextOptions = new JobScheduleListNextOptions();
-                            jobScheduleListNextOptions.withClientRequestId(jobScheduleListOptions.clientRequestId());
-                            jobScheduleListNextOptions.withReturnClientRequestId(jobScheduleListOptions.returnClientRequestId());
-                            jobScheduleListNextOptions.withOcpDate(jobScheduleListOptions.ocpDate());
-                        }
-                        listNextAsync(result.getBody().getNextPageLink(), jobScheduleListNextOptions, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> result = listDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>(result.body(), result.headers(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> listDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CloudJobSchedule>, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CloudJobSchedule>, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<CloudJobSchedule>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobScheduleListHeaders.class);
@@ -2643,12 +2260,81 @@ public final class JobSchedulesImpl implements JobSchedules {
      * Lists all of the job schedules in the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudJobSchedule&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;CloudJobSchedule&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
+    public PagedList<CloudJobSchedule> listNext(final String nextPageLink) {
+        ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<CloudJobSchedule>(response.body()) {
+            @Override
+            public Page<CloudJobSchedule> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all of the job schedules in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<CloudJobSchedule>> listNextAsync(final String nextPageLink, final ServiceFuture<List<CloudJobSchedule>> serviceFuture, final ListOperationCallback<CloudJobSchedule> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
+            listNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink, null);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all of the job schedules in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;CloudJobSchedule&gt; object
+     */
+    public Observable<Page<CloudJobSchedule>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>, Page<CloudJobSchedule>>() {
+                @Override
+                public Page<CloudJobSchedule> call(ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all of the job schedules in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;CloudJobSchedule&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink) {
+        return listNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> call(ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink, null));
+                }
+            });
+    }
+
+    /**
+     * Lists all of the job schedules in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;CloudJobSchedule&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2660,55 +2346,19 @@ public final class JobSchedulesImpl implements JobSchedules {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return listNextDelegate(call.execute());
-    }
-
-    /**
-     * Lists all of the job schedules in the specified account.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
-        }
-        final JobScheduleListNextOptions jobScheduleListNextOptions = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudJobSchedule>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> result = listNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>(result.body(), result.headers(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -2716,12 +2366,85 @@ public final class JobSchedulesImpl implements JobSchedules {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param jobScheduleListNextOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudJobSchedule&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;CloudJobSchedule&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> listNext(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public PagedList<CloudJobSchedule> listNext(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions) {
+        ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders> response = listNextSinglePageAsync(nextPageLink, jobScheduleListNextOptions).toBlocking().single();
+        return new PagedList<CloudJobSchedule>(response.body()) {
+            @Override
+            public Page<CloudJobSchedule> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink, jobScheduleListNextOptions).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all of the job schedules in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param jobScheduleListNextOptions Additional parameters for the operation
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<CloudJobSchedule>> listNextAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions, final ServiceFuture<List<CloudJobSchedule>> serviceFuture, final ListOperationCallback<CloudJobSchedule> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
+            listNextSinglePageAsync(nextPageLink, jobScheduleListNextOptions),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink, jobScheduleListNextOptions);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all of the job schedules in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param jobScheduleListNextOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;CloudJobSchedule&gt; object
+     */
+    public Observable<Page<CloudJobSchedule>> listNextAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions) {
+        return listNextWithServiceResponseAsync(nextPageLink, jobScheduleListNextOptions)
+            .map(new Func1<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>, Page<CloudJobSchedule>>() {
+                @Override
+                public Page<CloudJobSchedule> call(ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all of the job schedules in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param jobScheduleListNextOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;CloudJobSchedule&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions) {
+        return listNextSinglePageAsync(nextPageLink, jobScheduleListNextOptions)
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> call(ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink, jobScheduleListNextOptions));
+                }
+            });
+    }
+
+    /**
+     * Lists all of the job schedules in the specified account.
+     *
+    ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> * @param jobScheduleListNextOptions Additional parameters for the operation
+     * @return the PagedList&lt;CloudJobSchedule&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listNextSinglePageAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2742,69 +2465,23 @@ public final class JobSchedulesImpl implements JobSchedules {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return listNextDelegate(call.execute());
-    }
-
-    /**
-     * Lists all of the job schedules in the specified account.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param jobScheduleListNextOptions Additional parameters for the operation
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listNextAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions, final ServiceCall serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobScheduleListNextOptions, serviceCallback);
-        String clientRequestId = null;
-        if (jobScheduleListNextOptions != null) {
-            clientRequestId = jobScheduleListNextOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (jobScheduleListNextOptions != null) {
-            returnClientRequestId = jobScheduleListNextOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleListNextOptions != null) {
-            ocpDate = jobScheduleListNextOptions.ocpDate();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudJobSchedule>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> result = listNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), jobScheduleListNextOptions, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>(result.body(), result.headers(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> listNextDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CloudJobSchedule>, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CloudJobSchedule>, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<CloudJobSchedule>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobScheduleListHeaders.class);

@@ -9,6 +9,7 @@
 package com.microsoft.azure.batch.protocol.models;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * An error encountered by the Batch service when deleting a certificate.
@@ -18,18 +19,25 @@ public class DeleteCertificateError {
      * An identifier for the certificate deletion error. Codes are invariant
      * and are intended to be consumed programmatically.
      */
+    @JsonProperty(value = "code")
     private String code;
 
     /**
      * A message describing the certificate deletion error, intended to be
      * suitable for display in a user interface.
      */
+    @JsonProperty(value = "message")
     private String message;
 
     /**
      * A list of additional error details related to the certificate deletion
      * error.
+     * This list includes details such as the active pools and nodes
+     * referencing this certificate. However, if a large number of resources
+     * reference the certificate, the list contains only about the first
+     * hundred.
      */
+    @JsonProperty(value = "values")
     private List<NameValuePair> values;
 
     /**

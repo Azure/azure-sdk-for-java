@@ -11,6 +11,7 @@ package com.microsoft.azure.batch.protocol.models;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A pool in the Azure Batch service.
@@ -18,70 +19,119 @@ import java.util.List;
 public class CloudPool {
     /**
      * A string that uniquely identifies the pool within the account.
-     * The id can contain any combination of alphanumeric characters including
-     * hyphens and underscores, and cannot contain more than 64 characters.
-     * It is common to use a GUID for the id.
+     * The ID can contain any combination of alphanumeric characters including
+     * hyphens and underscores, and cannot contain more than 64 characters. It
+     * is common to use a GUID for the id.
      */
+    @JsonProperty(value = "id")
     private String id;
 
     /**
      * The display name for the pool.
+     * The display name need not be unique and can contain any Unicode
+     * characters up to a maximum length of 1024.
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /**
      * The URL of the pool.
      */
+    @JsonProperty(value = "url")
     private String url;
 
     /**
      * The ETag of the pool.
+     * This is an opaque string. You can use it to detect whether the pool has
+     * changed between requests. In particular, you can be pass the ETag when
+     * updating a pool to specify that your changes should take effect only if
+     * nobody else has modified the pool in the meantime.
      */
+    @JsonProperty(value = "eTag")
     private String eTag;
 
     /**
      * The last modified time of the pool.
+     * This is the last time at which the pool level data, such as the
+     * targetDedicated or enableAutoscale settings, changed. It does not factor
+     * in node-level changes such as a compute node changing state.
      */
+    @JsonProperty(value = "lastModified")
     private DateTime lastModified;
 
     /**
      * The creation time of the pool.
      */
+    @JsonProperty(value = "creationTime")
     private DateTime creationTime;
 
     /**
      * The current state of the pool.
-     * Possible values include: 'active', 'deleting', 'upgrading'.
+     * Possible values are: active – The pool is available to run tasks subject
+     * to the availability of compute nodes. deleting – The user has requested
+     * that the pool be deleted, but the delete operation has not yet
+     * completed. upgrading – The user has requested that the operating system
+     * of the pool's nodes be upgraded, but the upgrade operation has not yet
+     * completed (that is, some nodes in the pool have not yet been upgraded).
+     * While upgrading, the pool may be able to run tasks (with reduced
+     * capacity) but this is not guaranteed. Possible values include: 'active',
+     * 'deleting', 'upgrading'.
      */
+    @JsonProperty(value = "state")
     private PoolState state;
 
     /**
      * The time at which the pool entered its current state.
      */
+    @JsonProperty(value = "stateTransitionTime")
     private DateTime stateTransitionTime;
 
     /**
      * Whether the pool is resizing.
-     * Possible values include: 'steady', 'resizing', 'stopping'.
+     * Possible values are: steady – The pool is not resizing. There are no
+     * changes to the number of nodes in the pool in progress. A pool enters
+     * this state when it is created and when no operations are being performed
+     * on the pool to change the number of dedicated nodes. resizing - The pool
+     * is resizing; that is, compute nodes are being added to or removed from
+     * the pool. stopping - The pool was resizing, but the user has requested
+     * that the resize be stopped, but the stop request has not yet been
+     * completed. Possible values include: 'steady', 'resizing', 'stopping'.
      */
+    @JsonProperty(value = "allocationState")
     private AllocationState allocationState;
 
     /**
      * The time at which the pool entered its current allocation state.
      */
+    @JsonProperty(value = "allocationStateTransitionTime")
     private DateTime allocationStateTransitionTime;
 
     /**
-     * The size of virtual machines in the pool. All virtual machines in a
-     * pool are the same size.
+     * The size of virtual machines in the pool. All virtual machines in a pool
+     * are the same size.
+     * For information about available sizes of virtual machines for Cloud
+     * Services pools (pools created with cloudServiceConfiguration), see Sizes
+     * for Cloud Services
+     * (http://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/).
+     * Batch supports all Cloud Services VM sizes except ExtraSmall. For
+     * information about available VM sizes for pools using images from the
+     * Virtual Machines Marketplace (pools created with
+     * virtualMachineConfiguration) see Sizes for Virtual Machines (Linux)
+     * (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/)
+     * or Sizes for Virtual Machines (Windows)
+     * (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/).
+     * Batch supports all Azure VM sizes except STANDARD_A0 and those with
+     * premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
      */
+    @JsonProperty(value = "vmSize")
     private String vmSize;
 
     /**
      * The cloud service configuration for the pool.
-     * This property and virtualMachineConfiguration are mutually exclusive
-     * and one of the properties must be specified.
+     * This property and virtualMachineConfiguration are mutually exclusive and
+     * one of the properties must be specified.
      */
+    @JsonProperty(value = "cloudServiceConfiguration")
     private CloudServiceConfiguration cloudServiceConfiguration;
 
     /**
@@ -89,33 +139,39 @@ public class CloudPool {
      * This property and cloudServiceConfiguration are mutually exclusive and
      * one of the properties must be specified.
      */
+    @JsonProperty(value = "virtualMachineConfiguration")
     private VirtualMachineConfiguration virtualMachineConfiguration;
 
     /**
      * The timeout for allocation of compute nodes to the pool.
-     * This is the timeout for the most recent resize operation. The default
-     * value is 10 minutes.
+     * This is the timeout for the most recent resize operation. (The initial
+     * sizing when the pool is created counts as a resize.) The default value
+     * is 15 minutes.
      */
+    @JsonProperty(value = "resizeTimeout")
     private Period resizeTimeout;
 
     /**
-     * Details of any error encountered while performing the last resize on
-     * the pool.
+     * Details of any error encountered while performing the last resize on the
+     * pool.
      * This property is set only if an error occurred during the last pool
      * resize, and only when the pool allocationState is Steady.
      */
+    @JsonProperty(value = "resizeError")
     private ResizeError resizeError;
 
     /**
      * The number of compute nodes currently in the pool.
      */
+    @JsonProperty(value = "currentDedicated")
     private Integer currentDedicated;
 
     /**
      * The desired number of compute nodes in the pool.
-     * This property must have the default value if enableAutoScale is true.
-     * It is required if enableAutoScale is false.
+     * This property is not set if enableAutoScale is true. It is required if
+     * enableAutoScale is false.
      */
+    @JsonProperty(value = "targetDedicated")
     private Integer targetDedicated;
 
     /**
@@ -123,71 +179,102 @@ public class CloudPool {
      * If true, the autoScaleFormula property must be set. If false, the
      * targetDedicated property must be set.
      */
+    @JsonProperty(value = "enableAutoScale")
     private Boolean enableAutoScale;
 
     /**
      * A formula for the desired number of compute nodes in the pool.
+     * This property is set only if the pool automatically scales, i.e.
+     * enableAutoScale is true.
      */
+    @JsonProperty(value = "autoScaleFormula")
     private String autoScaleFormula;
 
     /**
-     * A time interval for the desired AutoScale evaluation period in the pool.
+     * The time interval at which to automatically adjust the pool size
+     * according to the autoscale formula.
+     * This property is set only if the pool automatically scales, i.e.
+     * enableAutoScale is true.
      */
+    @JsonProperty(value = "autoScaleEvaluationInterval")
     private Period autoScaleEvaluationInterval;
 
     /**
      * The results and errors from the last execution of the autoscale formula.
+     * This property is set only if the pool automatically scales, i.e.
+     * enableAutoScale is true.
      */
+    @JsonProperty(value = "autoScaleRun")
     private AutoScaleRun autoScaleRun;
 
     /**
      * Whether the pool permits direct communication between nodes.
+     * This imposes restrictions on which nodes can be assigned to the pool.
+     * Specifying this value can reduce the chance of the requested number of
+     * nodes to be allocated in the pool.
      */
+    @JsonProperty(value = "enableInterNodeCommunication")
     private Boolean enableInterNodeCommunication;
 
     /**
      * The network configuration for the pool.
      */
+    @JsonProperty(value = "networkConfiguration")
     private NetworkConfiguration networkConfiguration;
 
     /**
      * A task specified to run on each compute node as it joins the pool.
      */
+    @JsonProperty(value = "startTask")
     private StartTask startTask;
 
     /**
      * The list of certificates to be installed on each compute node in the
      * pool.
+     * For Windows compute nodes, the Batch service installs the certificates
+     * to the specified certificate store and location. For Linux compute
+     * nodes, the certificates are stored in a directory inside the task
+     * working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR
+     * is supplied to the task to query for this location. For certificates
+     * with visibility of remoteuser, a certs directory is created in the
+     * user's home directory (e.g., /home/&lt;user-name&gt;/certs) where
+     * certificates are placed.
      */
+    @JsonProperty(value = "certificateReferences")
     private List<CertificateReference> certificateReferences;
 
     /**
-     * The list of application packages to be installed on each compute node
-     * in the pool.
+     * The list of application packages to be installed on each compute node in
+     * the pool.
      */
+    @JsonProperty(value = "applicationPackageReferences")
     private List<ApplicationPackageReference> applicationPackageReferences;
 
     /**
      * The maximum number of tasks that can run concurrently on a single
      * compute node in the pool.
      */
+    @JsonProperty(value = "maxTasksPerNode")
     private Integer maxTasksPerNode;
 
     /**
      * How the Batch service distributes tasks between compute nodes in the
      * pool.
      */
+    @JsonProperty(value = "taskSchedulingPolicy")
     private TaskSchedulingPolicy taskSchedulingPolicy;
 
     /**
      * A list of name-value pairs associated with the pool as metadata.
      */
+    @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
     /**
-     * Utilization and resource usage statistics for the entire lifetime of
-     * the pool.
+     * Utilization and resource usage statistics for the entire lifetime of the
+     * pool.
      */
+    @JsonProperty(value = "stats")
     private PoolStatistics stats;
 
     /**

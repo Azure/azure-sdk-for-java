@@ -11,19 +11,19 @@ package com.microsoft.azure.batch.protocol.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Response to a ComputeNodeOperation.GetRemoteLoginSettings request.
+ * The remote login settings for a compute node.
  */
 public class ComputeNodeGetRemoteLoginSettingsResult {
     /**
      * The IP address used for remote login to the compute node.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "remoteLoginIPAddress", required = true)
     private String remoteLoginIPAddress;
 
     /**
      * The port used for remote login to the compute node.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "remoteLoginPort", required = true)
     private int remoteLoginPort;
 
     /**

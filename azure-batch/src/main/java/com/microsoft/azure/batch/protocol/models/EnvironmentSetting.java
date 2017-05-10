@@ -17,12 +17,13 @@ public class EnvironmentSetting {
     /**
      * The name of the environment variable.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
      * The value of the environment variable.
      */
+    @JsonProperty(value = "value")
     private String value;
 
     /**

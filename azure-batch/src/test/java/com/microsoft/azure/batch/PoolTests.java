@@ -6,13 +6,21 @@
 
 package com.microsoft.azure.batch;
 
+import com.microsoft.azure.batch.protocol.models.AllocationState;
+import com.microsoft.azure.batch.protocol.models.ApplicationPackageReference;
+import com.microsoft.azure.batch.protocol.models.BatchErrorException;
+import com.microsoft.azure.batch.protocol.models.CertificateReference;
+import com.microsoft.azure.batch.protocol.models.CloudPool;
+import com.microsoft.azure.batch.protocol.models.CloudServiceConfiguration;
+import com.microsoft.azure.batch.protocol.models.MetadataItem;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.*;
-import com.microsoft.azure.batch.protocol.models.*;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 public class PoolTests extends BatchTestBase {
     static CloudPool livePool;
@@ -134,7 +142,7 @@ public class PoolTests extends BatchTestBase {
                 try {
                     pool = batchClient.poolOperations().getPool(poolId);
                 } catch (BatchErrorException err) {
-                    if (err.getBody().code().equals(BatchErrorCodeStrings.PoolNotFound)) {
+                    if (err.body().code().equals(BatchErrorCodeStrings.PoolNotFound)) {
                         deleted = true;
                         break;
                     } else {

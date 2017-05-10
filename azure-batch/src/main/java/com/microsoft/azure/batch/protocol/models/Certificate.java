@@ -9,6 +9,7 @@
 package com.microsoft.azure.batch.protocol.models;
 
 import org.joda.time.DateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A certificate that can be installed on compute nodes and can be used to
@@ -17,29 +18,34 @@ import org.joda.time.DateTime;
 public class Certificate {
     /**
      * The X.509 thumbprint of the certificate. This is a sequence of up to 40
-     * hex digits (it may include spaces but these are removed).
+     * hex digits.
      */
+    @JsonProperty(value = "thumbprint")
     private String thumbprint;
 
     /**
-     * The algorithm used to derive the thumbprint. This must be sha1.
+     * The algorithm used to derive the thumbprint.
      */
+    @JsonProperty(value = "thumbprintAlgorithm")
     private String thumbprintAlgorithm;
 
     /**
      * The URL of the certificate.
      */
+    @JsonProperty(value = "url")
     private String url;
 
     /**
      * The current state of the certificate.
      * Possible values include: 'active', 'deleting', 'deletefailed'.
      */
+    @JsonProperty(value = "state")
     private CertificateState state;
 
     /**
      * The time at which the certificate entered its current state.
      */
+    @JsonProperty(value = "stateTransitionTime")
     private DateTime stateTransitionTime;
 
     /**
@@ -47,6 +53,7 @@ public class Certificate {
      * This property is not set if the certificate is in its initial Active
      * state. Possible values include: 'active', 'deleting', 'deletefailed'.
      */
+    @JsonProperty(value = "previousState")
     private CertificateState previousState;
 
     /**
@@ -54,11 +61,13 @@ public class Certificate {
      * This property is not set if the certificate is in its initial Active
      * state.
      */
+    @JsonProperty(value = "previousStateTransitionTime")
     private DateTime previousStateTransitionTime;
 
     /**
      * The public part of the certificate as a base-64 encoded .cer file.
      */
+    @JsonProperty(value = "publicData")
     private String publicData;
 
     /**
@@ -66,6 +75,7 @@ public class Certificate {
      * This property is set only if the certificate is in the DeleteFailed
      * state.
      */
+    @JsonProperty(value = "deleteCertificateError")
     private DeleteCertificateError deleteCertificateError;
 
     /**

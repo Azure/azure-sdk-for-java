@@ -20,13 +20,13 @@ import com.microsoft.azure.batch.protocol.Jobs;
 import com.microsoft.azure.batch.protocol.JobSchedules;
 import com.microsoft.azure.batch.protocol.Pools;
 import com.microsoft.azure.batch.protocol.Tasks;
-import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
 
 /**
  * Initializes a new instance of the BatchServiceClientImpl class.
  */
-public final class BatchServiceClientImpl extends AzureServiceClient implements BatchServiceClient {
+public class BatchServiceClientImpl extends AzureServiceClient implements BatchServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -252,10 +252,8 @@ public final class BatchServiceClientImpl extends AzureServiceClient implements 
      * @param credentials the management credentials for Azure
      */
     public BatchServiceClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        this(new RestClient.Builder()
-                .withBaseUrl(baseUrl)
-                .withCredentials(credentials)
-                .build());
+        super(baseUrl, credentials);
+        initialize();
     }
 
     /**

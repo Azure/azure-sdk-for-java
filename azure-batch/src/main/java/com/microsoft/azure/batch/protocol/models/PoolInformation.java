@@ -8,23 +8,37 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Specifies how a job should be assigned to a pool.
  */
 public class PoolInformation {
     /**
-     * The id of an existing pool. All the tasks of the job will run on the
+     * The ID of an existing pool. All the tasks of the job will run on the
      * specified pool.
-     * You must specify either poolId or autoPoolSpecification, but not both.
+     * You must ensure that the pool referenced by this property exists. If the
+     * pool does not exist at the time the Batch service tries to schedule a
+     * job, no tasks for the job will run until you create a pool with that id.
+     * Note that the Batch service will not reject the job request; it will
+     * simply not run tasks until the pool exists. You must specify either the
+     * pool ID or the auto pool specification, but not both.
      */
+    @JsonProperty(value = "poolId")
     private String poolId;
 
     /**
      * Characteristics for a temporary 'auto pool'. The Batch service will
      * create this auto pool when the job is submitted.
-     * You must specify either poolId or autoPoolSpecification, but not both.
+     * If auto pool creation fails, the Batch service moves the job to a
+     * completed state, and the pool creation error is set in the job's
+     * scheduling error property. The Batch service manages the lifetime (both
+     * creation and, unless keepAlive is specified, deletion) of the auto pool.
+     * Any user actions that affect the lifetime of the auto pool while the job
+     * is active will result in unexpected behavior. You must specify either
+     * the pool ID or the auto pool specification, but not both.
      */
+    @JsonProperty(value = "autoPoolSpecification")
     private AutoPoolSpecification autoPoolSpecification;
 
     /**

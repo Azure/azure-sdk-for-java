@@ -13,27 +13,33 @@ import org.joda.time.Period;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters for a ComputeNodeOperations.Remove request.
+ * Options for removing compute nodes from a pool.
  */
 public class NodeRemoveParameter {
     /**
      * A list containing the ids of the compute nodes to be removed from the
      * specified pool.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "nodeList", required = true)
     private List<String> nodeList;
 
     /**
      * The timeout for removal of compute nodes to the pool.
-     * The default value is 10 minutes.
+     * The default value is 15 minutes. The minimum value is 5 minutes. If you
+     * specify a value less than 5 minutes, the Batch service returns an error;
+     * if you are calling the REST API directly, the HTTP status code is 400
+     * (Bad Request).
      */
+    @JsonProperty(value = "resizeTimeout")
     private Period resizeTimeout;
 
     /**
-     * When compute nodes may be removed from the pool.
-     * Possible values include: 'requeue', 'terminate', 'taskcompletion',
-     * 'retaineddata'.
+     * When to remove compute nodes and what to do with currently running
+     * tasks.
+     * The default value is requeue. Possible values include: 'requeue',
+     * 'terminate', 'taskcompletion', 'retaineddata'.
      */
+    @JsonProperty(value = "nodeDeallocationOption")
     private ComputeNodeDeallocationOption nodeDeallocationOption;
 
     /**

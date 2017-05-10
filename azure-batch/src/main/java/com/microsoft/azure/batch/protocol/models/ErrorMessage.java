@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * An error message received in an Azure Batch error response.
@@ -16,11 +17,13 @@ public class ErrorMessage {
     /**
      * The language code of the error message.
      */
+    @JsonProperty(value = "lang")
     private String lang;
 
     /**
      * The text of the message.
      */
+    @JsonProperty(value = "value")
     private String value;
 
     /**

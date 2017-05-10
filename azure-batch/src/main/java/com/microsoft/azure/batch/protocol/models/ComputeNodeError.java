@@ -9,6 +9,7 @@
 package com.microsoft.azure.batch.protocol.models;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * An error encountered by a compute node.
@@ -18,17 +19,20 @@ public class ComputeNodeError {
      * An identifier for the compute node error. Codes are invariant and are
      * intended to be consumed programmatically.
      */
+    @JsonProperty(value = "code")
     private String code;
 
     /**
-     * A message describing the compute node error, intended to be suitable
-     * for display in a user interface.
+     * A message describing the compute node error, intended to be suitable for
+     * display in a user interface.
      */
+    @JsonProperty(value = "message")
     private String message;
 
     /**
      * The list of additional error details related to the compute node error.
      */
+    @JsonProperty(value = "errorDetails")
     private List<NameValuePair> errorDetails;
 
     /**

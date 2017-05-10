@@ -9,14 +9,16 @@
 package com.microsoft.azure.batch.protocol.models;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Response to a TaskOperations.AddCollection request.
+ * The result of adding a collection of tasks to a job.
  */
 public class TaskAddCollectionResult {
     /**
      * The results of the add task collection operation.
      */
+    @JsonProperty(value = "value")
     private List<TaskAddResult> value;
 
     /**

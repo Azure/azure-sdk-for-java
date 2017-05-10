@@ -18,14 +18,14 @@ public class ExitCodeMapping {
     /**
      * A process exit code.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "code", required = true)
     private int code;
 
     /**
      * How the Batch service should respond if the task exits with this exit
      * code.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "exitOptions", required = true)
     private ExitOptions exitOptions;
 
     /**

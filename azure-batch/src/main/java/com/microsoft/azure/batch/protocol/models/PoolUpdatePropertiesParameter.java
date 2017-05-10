@@ -12,38 +12,53 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters for a CloudPoolOperations.UpdateProperties request.
+ * The set of changes to be made to a pool.
  */
 public class PoolUpdatePropertiesParameter {
     /**
-     * A task to run on each compute node as it joins the pool.
-     * If omitted, any existing start task is removed from the pool.
+     * A task to run on each compute node as it joins the pool. The task runs
+     * when the node is added to the pool or when the node is restarted.
+     * If this element is present, it overwrites any existing start task. If
+     * omitted, any existing start task is removed from the pool.
      */
+    @JsonProperty(value = "startTask")
     private StartTask startTask;
 
     /**
      * A list of certificates to be installed on each compute node in the pool.
      * If you specify an empty collection, any existing certificate references
-     * are removed from the pool.
+     * are removed from the pool. For Windows compute nodes, the Batch service
+     * installs the certificates to the specified certificate store and
+     * location. For Linux compute nodes, the certificates are stored in a
+     * directory inside the task working directory and an environment variable
+     * AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this
+     * location. For certificates with visibility of remoteuser, a certs
+     * directory is created in the user's home directory (e.g.,
+     * /home/&lt;user-name&gt;/certs) where certificates are placed.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "certificateReferences", required = true)
     private List<CertificateReference> certificateReferences;
 
     /**
      * A list of application packages to be installed on each compute node in
      * the pool.
-     * If you specify an empty collection, any existing application packages
-     * references are removed from the pool.
+     * Changes to application package references affect all new compute nodes
+     * joining the pool, but do not affect compute nodes that are already in
+     * the pool until they are rebooted or reimaged. The list replaces any
+     * existing application package references. If omitted, or if you specify
+     * an empty collection, any existing application packages references are
+     * removed from the pool.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "applicationPackageReferences", required = true)
     private List<ApplicationPackageReference> applicationPackageReferences;
 
     /**
      * A list of name-value pairs associated with the pool as metadata.
-     * If you specify an empty collection, any existing metadata is removed
-     * from the pool.
+     * This list replaces any existing metadata configured on the pool. If
+     * omitted, or if you specify an empty collection, any existing metadata is
+     * removed from the pool.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "metadata", required = true)
     private List<MetadataItem> metadata;
 
     /**

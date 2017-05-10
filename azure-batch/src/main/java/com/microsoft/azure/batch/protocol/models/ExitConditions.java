@@ -19,26 +19,32 @@ public class ExitConditions {
      * A list of individual task exit codes and how the Batch service should
      * respond to them.
      */
+    @JsonProperty(value = "exitCodes")
     private List<ExitCodeMapping> exitCodes;
 
     /**
-     * A list of task exit codes ranges and how the Batch service should
-     * respond to them.
+     * A list of task exit code ranges and how the Batch service should respond
+     * to them.
      */
+    @JsonProperty(value = "exitCodeRanges")
     private List<ExitCodeRangeMapping> exitCodeRanges;
 
     /**
-     * How the Batch service should respond if the task fails with a
-     * scheduling error.
+     * How the Batch service should respond if the task fails with a scheduling
+     * error.
      */
+    @JsonProperty(value = "schedulingError")
     private ExitOptions schedulingError;
 
     /**
      * How the Batch service should respond if the task fails with an exit
      * condition not covered by any of the other properties – that is, any
      * nonzero exit code not listed in the exitCodes or exitCodeRanges
-     * collection, or a scheduling error if the schedulingError property is
-     * not present.
+     * collection, or a scheduling error if the schedulingError property is not
+     * present.
+     * Note that the default condition does not include exit code 0. If you
+     * want non-default behaviour on exit code 0, you must list it explicitly
+     * using the exitCodes or exitCodeRanges collection.
      */
     @JsonProperty(value = "default")
     private ExitOptions defaultProperty;

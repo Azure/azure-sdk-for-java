@@ -17,25 +17,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class MultiInstanceSettings {
     /**
-     * The number of compute nodes required by the multi-instance task.
+     * The number of compute nodes required by the task.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "numberOfInstances", required = true)
     private int numberOfInstances;
 
     /**
-     * The command to run on the compute node instances for coordinating among
-     * the subtasks.
+     * The command line to run on all the compute nodes to enable them to
+     * coordinate when the primary runs the main task command.
+     * A typical coordination command line launches a background service and
+     * verifies that the service is ready to process inter-node messages.
      */
+    @JsonProperty(value = "coordinationCommandLine")
     private String coordinationCommandLine;
 
     /**
      * A list of files that the Batch service will download before running the
      * coordination command line.
      * The difference between common resource files and task resource files is
-     * that common resource files are downloaded for all subtasks including
-     * the primary, whereas task resource files are downloaded only for the
+     * that common resource files are downloaded for all subtasks including the
+     * primary, whereas task resource files are downloaded only for the
      * primary.
      */
+    @JsonProperty(value = "commonResourceFiles")
     private List<ResourceFile> commonResourceFiles;
 
     /**

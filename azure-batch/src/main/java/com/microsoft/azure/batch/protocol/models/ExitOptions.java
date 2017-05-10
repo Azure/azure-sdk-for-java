@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * How the Batch service should respond to a particular exit condition.
@@ -16,9 +17,15 @@ public class ExitOptions {
     /**
      * An action to take on the job containing the task, if the task completes
      * with the given exit condition and the job’s onTaskFailed property is
-     * 'performexitoptionsjobaction'. Possible values include: 'none',
-     * 'disable', 'terminate'.
+     * 'performexitoptionsjobaction'.
+     * The default is none for exit code 0 and terminate for all other exit
+     * conditions. It is an error to specify this if the job's onTaskFailed is
+     * noaction. The add task request fails with an invalid property value
+     * error; if you are calling the REST API directly, the HTTP status code is
+     * 400 (Bad Request). Possible values include: 'none', 'disable',
+     * 'terminate'.
      */
+    @JsonProperty(value = "jobAction")
     private JobAction jobAction;
 
     /**
