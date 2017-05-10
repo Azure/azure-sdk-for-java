@@ -8,7 +8,7 @@ package com.microsoft.azure.management.keyvault;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
-import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroup;
+import com.microsoft.azure.management.graphrbac.Group;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.graphrbac.User;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
@@ -107,7 +107,7 @@ public interface AccessPolicy extends
              * @param group the AD group object
              * @return the next stage of access policy definition
              */
-            WithAttach<ParentT> forGroup(ActiveDirectoryGroup group);
+            WithAttach<ParentT> forGroup(Group group);
 
             /**
              * Specifies the Active Directory service principal this access policy is for.
@@ -249,7 +249,7 @@ public interface AccessPolicy extends
              * @param group the AD group object
              * @return the next stage of access policy definition
              */
-            WithAttach<ParentT> forGroup(ActiveDirectoryGroup group);
+            WithAttach<ParentT> forGroup(Group group);
 
             /**
              * Specifies the Active Directory service principal this access policy is for.

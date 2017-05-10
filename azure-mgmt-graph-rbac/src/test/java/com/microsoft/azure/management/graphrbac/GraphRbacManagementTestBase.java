@@ -6,11 +6,9 @@
 
 package com.microsoft.azure.management.graphrbac;
 
-import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.credentials.UserTokenCredentials;
+import com.microsoft.azure.credentials.AzureCliCredentials;
 import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.rest.LogLevel;
-import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * The base for storage manager tests.
@@ -18,14 +16,8 @@ import okhttp3.logging.HttpLoggingInterceptor;
 public abstract class GraphRbacManagementTestBase {
     protected static GraphRbacManager graphRbacManager;
 
-    protected static void createClients() {
-        UserTokenCredentials credentials = new UserTokenCredentials(
-                System.getenv("client-id"),
-                System.getenv("domain"),
-                System.getenv("username"),
-                System.getenv("password"),
-                AzureEnvironment.AZURE
-        );
+    protected static void createClients() throws Exception {
+        AzureCliCredentials credentials = AzureCliCredentials.create();
 
         graphRbacManager = GraphRbacManager
                 .configure()

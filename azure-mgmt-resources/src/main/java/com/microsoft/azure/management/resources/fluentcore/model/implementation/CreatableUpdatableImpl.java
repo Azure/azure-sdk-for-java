@@ -36,6 +36,10 @@ public abstract class CreatableUpdatableImpl<
             TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>>,
             CreateUpdateTask.ResourceCreatorUpdator<FluentModelT> {
     /**
+     * The name of the creatable updatable model.
+     */
+    private final String name;
+    /**
      * The group of tasks to create or update this model and it's dependencies.
      */
     private final TaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>> taskGroup;
@@ -52,6 +56,11 @@ public abstract class CreatableUpdatableImpl<
         taskGroup = new TaskGroup<>(this.key(),
                 new CreateUpdateTask<>(this),
                 TaskGroupTerminateOnErrorStrategy.TERMINATE_ON_INPROGRESS_TASKS_COMPLETION);
+    }
+
+    @Override
+    public String name() {
+        return this.name;
     }
 
     @Override

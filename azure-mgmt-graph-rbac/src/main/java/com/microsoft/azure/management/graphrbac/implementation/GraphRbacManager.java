@@ -7,21 +7,23 @@
 package com.microsoft.azure.management.graphrbac.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.management.graphrbac.Groups;
-import com.microsoft.rest.interceptors.RequestIdHeaderInterceptor;
-import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.graphrbac.Applications;
+import com.microsoft.azure.management.graphrbac.Groups;
 import com.microsoft.azure.management.graphrbac.ServicePrincipals;
 import com.microsoft.azure.management.graphrbac.Users;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.rest.RestClient;
+import com.microsoft.rest.interceptors.RequestIdHeaderInterceptor;
 
 /**
  * Entry point to Azure Graph RBAC management.
  */
 @Beta
-public final class GraphRbacManager {
+public final class GraphRbacManager implements HasInner<GraphRbacManagementClientImpl> {
     private String tenantId;
     // The sdk clients
     private final GraphRbacManagementClientImpl graphRbacManagementClient;
@@ -29,6 +31,12 @@ public final class GraphRbacManager {
     private Users users;
     private Groups groups;
     private ServicePrincipals servicePrincipals;
+    private Applications applications;
+
+    @Override
+    public GraphRbacManagementClientImpl inner() {
+        return graphRbacManagementClient;
+    }
 
     /**
      * Creates an instance of GraphRbacManager that exposes graph rbac management API entry points.
@@ -105,28 +113,38 @@ public final class GraphRbacManager {
      */
     public Users users() {
         if (users == null) {
-            users = new UsersImpl(graphRbacManagementClient.users(), this);
+            users = new UsersImpl(graphRbacManagementClient.users());
         }
         return users;
     }
 
     /**
-     * @return the active directory user management API entry point
+     * @return the active directory group management API entry point
      */
     public Groups groups() {
         if (groups == null) {
-            groups = new GroupsImpl(graphRbacManagementClient.groups(), this);
+            groups = new GroupsImpl(graphRbacManagementClient.groups());
         }
-        return users;
+        return groups;
     }
 
     /**
-     * @return the storage account management API entry point
+     * @return the service principal management API entry point
      */
     public ServicePrincipals servicePrincipals() {
         if (servicePrincipals == null) {
             servicePrincipals = new ServicePrincipalsImpl(graphRbacManagementClient.servicePrincipals(), this);
         }
         return servicePrincipals;
+    }
+
+    /**
+     * @return the application management API entry point
+     */
+    public Applications applications() {
+        if (applications == null) {
+            applications = new ApplicationsImpl(graphRbacManagementClient.applications(), this);
+        }
+        return applications;
     }
 }

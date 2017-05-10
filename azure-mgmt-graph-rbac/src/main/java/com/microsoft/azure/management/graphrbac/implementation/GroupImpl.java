@@ -7,24 +7,23 @@
 package com.microsoft.azure.management.graphrbac.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.graphrbac.User;
+import com.microsoft.azure.management.graphrbac.Group;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
 /**
- * Implementation for User and its parent interfaces.
+ * Implementation for Group and its parent interfaces.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
-class UserImpl
-        extends WrapperImpl<UserInner>
-        implements
-            User {
+class GroupImpl
+        extends WrapperImpl<ADGroupInner>
+        implements Group {
 
-    UserImpl(UserInner innerObject) {
-        super(innerObject);
+    GroupImpl(ADGroupInner innerModel) {
+        super(innerModel);
     }
 
     @Override
-    public String id() {
+    public String objectId() {
         return inner().objectId();
     }
 
@@ -34,27 +33,17 @@ class UserImpl
     }
 
     @Override
-    public String userPrincipalName() {
-        return inner().userPrincipalName();
-    }
-
-    @Override
-    public String name() {
+    public String displayName() {
         return inner().displayName();
     }
 
     @Override
-    public String signInName() {
-        return inner().signInName();
+    public Boolean securityEnabled() {
+        return inner().securityEnabled();
     }
 
     @Override
     public String mail() {
         return inner().mail();
-    }
-
-    @Override
-    public String mailNickname() {
-        return inner().mailNickname();
     }
 }

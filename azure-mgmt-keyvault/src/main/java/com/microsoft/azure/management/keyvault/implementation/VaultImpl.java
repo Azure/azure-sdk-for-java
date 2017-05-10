@@ -202,7 +202,7 @@ class VaultImpl
         for (final AccessPolicyImpl accessPolicy : accessPolicies) {
             if (accessPolicy.objectId() == null) {
                 if (accessPolicy.userPrincipalName() != null) {
-                    observables.add(graphRbacManager.users().getByUserPrincipalNameAsync(accessPolicy.userPrincipalName())
+                    observables.add(graphRbacManager.users().getByNameAsync(accessPolicy.userPrincipalName())
                             .subscribeOn(SdkContext.getRxScheduler())
                             .doOnNext(new Action1<User>() {
                                 @Override
@@ -211,11 +211,11 @@ class VaultImpl
                                         throw new CloudException(String.format("User principal name %s is not found in tenant %s",
                                                 accessPolicy.userPrincipalName(), graphRbacManager.tenantId()), null);
                                     }
-                                    accessPolicy.forObjectId(user.objectId());
+                                    accessPolicy.forObjectId(user.id());
                                 }
                             }));
                 } else if (accessPolicy.servicePrincipalName() != null) {
-                    observables.add(graphRbacManager.servicePrincipals().getByServicePrincipalNameAsync(accessPolicy.servicePrincipalName())
+                    observables.add(graphRbacManager.servicePrincipals().getByNameAsync(accessPolicy.servicePrincipalName())
                             .subscribeOn(SdkContext.getRxScheduler())
                             .doOnNext(new Action1<ServicePrincipal>() {
                                 @Override

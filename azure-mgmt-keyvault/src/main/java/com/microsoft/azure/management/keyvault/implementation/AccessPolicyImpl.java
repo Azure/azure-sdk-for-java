@@ -7,7 +7,7 @@
 package com.microsoft.azure.management.keyvault.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroup;
+import com.microsoft.azure.management.graphrbac.Group;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.graphrbac.User;
 import com.microsoft.azure.management.keyvault.AccessPolicy;
@@ -147,7 +147,7 @@ class AccessPolicyImpl
 
     @Override
     public AccessPolicyImpl forUser(User user) {
-        inner().withObjectId(user.objectId());
+        inner().withObjectId(user.id());
         return this;
     }
 
@@ -158,7 +158,7 @@ class AccessPolicyImpl
     }
 
     @Override
-    public AccessPolicyImpl forGroup(ActiveDirectoryGroup group) {
+    public AccessPolicyImpl forGroup(Group group) {
         inner().withObjectId(group.objectId());
         return this;
     }
