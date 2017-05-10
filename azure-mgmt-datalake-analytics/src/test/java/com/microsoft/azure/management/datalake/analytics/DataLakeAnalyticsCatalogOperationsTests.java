@@ -6,9 +6,7 @@
 
 package com.microsoft.azure.management.datalake.analytics;
 
-import com.microsoft.azure.management.datalake.analytics.models.DataLakeAnalyticsAccount;
 import com.microsoft.azure.management.datalake.analytics.models.DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters;
-import com.microsoft.azure.management.datalake.analytics.models.DataLakeStoreAccountInfo;
 import com.microsoft.azure.management.datalake.analytics.models.USqlCredential;
 import com.microsoft.azure.management.datalake.analytics.models.USqlDatabase;
 import com.microsoft.azure.management.datalake.analytics.models.USqlProcedure;
@@ -17,16 +15,11 @@ import com.microsoft.azure.management.datalake.analytics.models.USqlTable;
 import com.microsoft.azure.management.datalake.analytics.models.USqlTableValuedFunction;
 import com.microsoft.azure.management.datalake.analytics.models.USqlType;
 import com.microsoft.azure.management.datalake.analytics.models.USqlView;
-import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
-import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
 import com.microsoft.rest.RestClient;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
