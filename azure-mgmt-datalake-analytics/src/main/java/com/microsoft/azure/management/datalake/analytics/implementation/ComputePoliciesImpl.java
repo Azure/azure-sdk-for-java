@@ -9,7 +9,7 @@
 package com.microsoft.azure.management.datalake.analytics.implementation;
 
 import retrofit2.Retrofit;
-import com.microsoft.azure.management.datalake.analytics.ComputePolicys;
+import com.microsoft.azure.management.datalake.analytics.ComputePolicies;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
@@ -42,51 +42,51 @@ import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in ComputePolicys.
+ * in ComputePolicies.
  */
-public class ComputePolicysImpl implements ComputePolicys {
+public class ComputePoliciesImpl implements ComputePolicies {
     /** The Retrofit service to perform REST calls. */
-    private ComputePolicysService service;
+    private ComputePoliciesService service;
     /** The service client containing this operation class. */
     private DataLakeAnalyticsAccountManagementClientImpl client;
 
     /**
-     * Initializes an instance of ComputePolicysImpl.
+     * Initializes an instance of ComputePoliciesImpl.
      *
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public ComputePolicysImpl(Retrofit retrofit, DataLakeAnalyticsAccountManagementClientImpl client) {
-        this.service = retrofit.create(ComputePolicysService.class);
+    public ComputePoliciesImpl(Retrofit retrofit, DataLakeAnalyticsAccountManagementClientImpl client) {
+        this.service = retrofit.create(ComputePoliciesService.class);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ComputePolicys to be
+     * The interface defining all the services for ComputePolicies to be
      * used by Retrofit to perform actually REST calls.
      */
-    interface ComputePolicysService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.ComputePolicys createOrUpdate" })
+    interface ComputePoliciesService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.ComputePolicies createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/computePolicies/{computePolicyName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("computePolicyName") String computePolicyName, @Path("subscriptionId") String subscriptionId, @Body ComputePolicyCreateOrUpdateParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.ComputePolicys update" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.ComputePolicies update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/computePolicies/{computePolicyName}")
         Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("computePolicyName") String computePolicyName, @Path("subscriptionId") String subscriptionId, @Body ComputePolicy parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.ComputePolicys delete" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.ComputePolicies delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/computePolicies/{computePolicyName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("computePolicyName") String computePolicyName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.ComputePolicys get" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.ComputePolicies get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/computePolicies/{computePolicyName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("computePolicyName") String computePolicyName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.ComputePolicys listByAccount" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.ComputePolicies listByAccount" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/computePolicies")
         Observable<Response<ResponseBody>> listByAccount(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.ComputePolicys listByAccountNext" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.ComputePolicies listByAccountNext" })
         @GET
         Observable<Response<ResponseBody>> listByAccountNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 

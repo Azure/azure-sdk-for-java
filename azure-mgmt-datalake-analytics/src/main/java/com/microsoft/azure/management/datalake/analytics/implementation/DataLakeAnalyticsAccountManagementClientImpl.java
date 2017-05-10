@@ -11,7 +11,7 @@ package com.microsoft.azure.management.datalake.analytics.implementation;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.management.datalake.analytics.Accounts;
-import com.microsoft.azure.management.datalake.analytics.ComputePolicys;
+import com.microsoft.azure.management.datalake.analytics.ComputePolicies;
 import com.microsoft.azure.management.datalake.analytics.DataLakeAnalyticsAccountManagementClient;
 import com.microsoft.azure.management.datalake.analytics.DataLakeStoreAccounts;
 import com.microsoft.azure.management.datalake.analytics.FirewallRules;
@@ -139,16 +139,16 @@ public class DataLakeAnalyticsAccountManagementClientImpl extends AzureServiceCl
     }
 
     /**
-     * The ComputePolicys object to access its operations.
+     * The ComputePolicies object to access its operations.
      */
-    private ComputePolicys computePolicys;
+    private ComputePolicies computePolicies;
 
     /**
-     * Gets the ComputePolicys object to access its operations.
-     * @return the ComputePolicys object.
+     * Gets the ComputePolicies object to access its operations.
+     * @return the ComputePolicies object.
      */
-    public ComputePolicys computePolicys() {
-        return this.computePolicys;
+    public ComputePolicies computePolicies() {
+        return this.computePolicies;
     }
 
     /**
@@ -238,7 +238,7 @@ public class DataLakeAnalyticsAccountManagementClientImpl extends AzureServiceCl
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
-        this.computePolicys = new ComputePolicysImpl(restClient().retrofit(), this);
+        this.computePolicies = new ComputePoliciesImpl(restClient().retrofit(), this);
         this.firewallRules = new FirewallRulesImpl(restClient().retrofit(), this);
         this.storageAccounts = new StorageAccountsImpl(restClient().retrofit(), this);
         this.dataLakeStoreAccounts = new DataLakeStoreAccountsImpl(restClient().retrofit(), this);

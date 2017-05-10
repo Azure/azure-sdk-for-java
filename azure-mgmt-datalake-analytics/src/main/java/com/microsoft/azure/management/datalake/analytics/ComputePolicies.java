@@ -17,15 +17,14 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
-import java.io.IOException;
 import java.util.List;
 import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in ComputePolicys.
+ * in ComputePolicies.
  */
-public interface ComputePolicys {
+public interface ComputePolicies {
     /**
      * Creates or updates the specified compute policy. During update, the compute policy with the specified name will be replaced with this new compute policy. An account supports, at most, 50 policies.
      *
