@@ -36,7 +36,7 @@ public class NetworkManagementTest extends TestBase {
     }
 
     @Test
-    public void testNetworkDeelteServiceCallBack() {
+    public void testNetworkDeleteServiceCallBack() {
         String vnetName = generateRandomResourceName("vnet", 15);
         networkManager.networks().define(vnetName)
                 .withRegion(Region.US_EAST)
