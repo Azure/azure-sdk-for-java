@@ -12,9 +12,15 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Represents Azure SQL server metrics.
+ * Represents server metrics.
  */
 public class ServerMetricInner {
+    /**
+     * Name of the server usage metric.
+     */
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
+    private String name;
+
     /**
      * The name of the resource.
      */
@@ -50,6 +56,15 @@ public class ServerMetricInner {
      */
     @JsonProperty(value = "nextResetTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime nextResetTime;
+
+    /**
+     * Get the name value.
+     *
+     * @return the name value
+     */
+    public String name() {
+        return this.name;
+    }
 
     /**
      * Get the resourceName value.

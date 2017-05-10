@@ -11,25 +11,25 @@ package com.microsoft.azure.management.sql;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for ElasticPoolEditions.
+ * Defines values for ElasticPoolEdition.
  */
-public final class ElasticPoolEditions {
-    /** Static value Basic for ElasticPoolEditions. */
-    public static final ElasticPoolEditions BASIC = new ElasticPoolEditions("Basic");
+public final class ElasticPoolEdition {
+    /** Static value Basic for ElasticPoolEdition. */
+    public static final ElasticPoolEdition BASIC = new ElasticPoolEdition("Basic");
 
-    /** Static value Standard for ElasticPoolEditions. */
-    public static final ElasticPoolEditions STANDARD = new ElasticPoolEditions("Standard");
+    /** Static value Standard for ElasticPoolEdition. */
+    public static final ElasticPoolEdition STANDARD = new ElasticPoolEdition("Standard");
 
-    /** Static value Premium for ElasticPoolEditions. */
-    public static final ElasticPoolEditions PREMIUM = new ElasticPoolEditions("Premium");
+    /** Static value Premium for ElasticPoolEdition. */
+    public static final ElasticPoolEdition PREMIUM = new ElasticPoolEdition("Premium");
 
     private String value;
 
     /**
-     * Creates a custom value for ElasticPoolEditions.
+     * Creates a custom value for ElasticPoolEdition.
      * @param value the custom value
      */
-    public ElasticPoolEditions(String value) {
+    public ElasticPoolEdition(String value) {
         this.value = value;
     }
 
@@ -46,13 +46,13 @@ public final class ElasticPoolEditions {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof ElasticPoolEditions)) {
+        if (!(obj instanceof ElasticPoolEdition)) {
             return false;
         }
         if (obj == this) {
             return true;
         }
-        ElasticPoolEditions rhs = (ElasticPoolEditions) obj;
+        ElasticPoolEdition rhs = (ElasticPoolEdition) obj;
         if (value == null) {
             return rhs.value == null;
         } else {

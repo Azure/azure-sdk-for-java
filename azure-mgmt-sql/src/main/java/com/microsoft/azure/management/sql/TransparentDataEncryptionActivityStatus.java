@@ -11,22 +11,22 @@ package com.microsoft.azure.management.sql;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for TransparentDataEncryptionActivityStates.
+ * Defines values for TransparentDataEncryptionActivityStatus.
  */
-public final class TransparentDataEncryptionActivityStates {
-    /** Static value Encrypting for TransparentDataEncryptionActivityStates. */
-    public static final TransparentDataEncryptionActivityStates ENCRYPTING = new TransparentDataEncryptionActivityStates("Encrypting");
+public final class TransparentDataEncryptionActivityStatus {
+    /** Static value Encrypting for TransparentDataEncryptionActivityStatus. */
+    public static final TransparentDataEncryptionActivityStatus ENCRYPTING = new TransparentDataEncryptionActivityStatus("Encrypting");
 
-    /** Static value Decrypting for TransparentDataEncryptionActivityStates. */
-    public static final TransparentDataEncryptionActivityStates DECRYPTING = new TransparentDataEncryptionActivityStates("Decrypting");
+    /** Static value Decrypting for TransparentDataEncryptionActivityStatus. */
+    public static final TransparentDataEncryptionActivityStatus DECRYPTING = new TransparentDataEncryptionActivityStatus("Decrypting");
 
     private String value;
 
     /**
-     * Creates a custom value for TransparentDataEncryptionActivityStates.
+     * Creates a custom value for TransparentDataEncryptionActivityStatus.
      * @param value the custom value
      */
-    public TransparentDataEncryptionActivityStates(String value) {
+    public TransparentDataEncryptionActivityStatus(String value) {
         this.value = value;
     }
 
@@ -43,13 +43,13 @@ public final class TransparentDataEncryptionActivityStates {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof TransparentDataEncryptionActivityStates)) {
+        if (!(obj instanceof TransparentDataEncryptionActivityStatus)) {
             return false;
         }
         if (obj == this) {
             return true;
         }
-        TransparentDataEncryptionActivityStates rhs = (TransparentDataEncryptionActivityStates) obj;
+        TransparentDataEncryptionActivityStatus rhs = (TransparentDataEncryptionActivityStatus) obj;
         if (value == null) {
             return rhs.value == null;
         } else {

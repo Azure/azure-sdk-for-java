@@ -12,9 +12,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for RecommendedIndexStates.
+ * Defines values for RecommendedIndexState.
  */
-public enum RecommendedIndexStates {
+public enum RecommendedIndexState {
     /** Enum value Active. */
     ACTIVE("Active"),
 
@@ -48,23 +48,23 @@ public enum RecommendedIndexStates {
     /** Enum value Success. */
     SUCCESS("Success");
 
-    /** The actual serialized value for a RecommendedIndexStates instance. */
+    /** The actual serialized value for a RecommendedIndexState instance. */
     private String value;
 
-    RecommendedIndexStates(String value) {
+    RecommendedIndexState(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a RecommendedIndexStates instance.
+     * Parses a serialized value to a RecommendedIndexState instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed RecommendedIndexStates object, or null if unable to parse.
+     * @return the parsed RecommendedIndexState object, or null if unable to parse.
      */
     @JsonCreator
-    public static RecommendedIndexStates fromString(String value) {
-        RecommendedIndexStates[] items = RecommendedIndexStates.values();
-        for (RecommendedIndexStates item : items) {
+    public static RecommendedIndexState fromString(String value) {
+        RecommendedIndexState[] items = RecommendedIndexState.values();
+        for (RecommendedIndexState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

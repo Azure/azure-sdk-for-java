@@ -9,15 +9,21 @@
 package com.microsoft.azure.management.sql.implementation;
 
 import org.joda.time.DateTime;
+import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.Resource;
 
 /**
- * Represents the activity on an Azure SQL Elastic Pool.
+ * Represents the activity on an elastic pool.
  */
 @JsonFlatten
-public class ElasticPoolDatabaseActivityInner extends Resource {
+public class ElasticPoolDatabaseActivityInner extends ProxyResourceInner {
+    /**
+     * The geo-location where the resource lives.
+     */
+    @JsonProperty(value = "location")
+    private String location;
+
     /**
      * The database name.
      */
@@ -58,7 +64,7 @@ public class ElasticPoolDatabaseActivityInner extends Resource {
      * The unique operation ID.
      */
     @JsonProperty(value = "properties.operationId", access = JsonProperty.Access.WRITE_ONLY)
-    private String operationId;
+    private UUID operationId;
 
     /**
      * The percentage complete if available.
@@ -67,13 +73,13 @@ public class ElasticPoolDatabaseActivityInner extends Resource {
     private Integer percentComplete;
 
     /**
-     * The name for the Elastic Pool the database is moving into if available.
+     * The name for the elastic pool the database is moving into if available.
      */
     @JsonProperty(value = "properties.requestedElasticPoolName", access = JsonProperty.Access.WRITE_ONLY)
     private String requestedElasticPoolName;
 
     /**
-     * The name of the current Elastic Pool the database is in if available.
+     * The name of the current elastic pool the database is in if available.
      */
     @JsonProperty(value = "properties.currentElasticPoolName", access = JsonProperty.Access.WRITE_ONLY)
     private String currentElasticPoolName;
@@ -91,7 +97,7 @@ public class ElasticPoolDatabaseActivityInner extends Resource {
     private String requestedServiceObjective;
 
     /**
-     * The name of the Azure SQL server the Elastic Pool is in.
+     * The name of the server the elastic pool is in.
      */
     @JsonProperty(value = "properties.serverName", access = JsonProperty.Access.WRITE_ONLY)
     private String serverName;
@@ -107,6 +113,26 @@ public class ElasticPoolDatabaseActivityInner extends Resource {
      */
     @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
     private String state;
+
+    /**
+     * Get the location value.
+     *
+     * @return the location value
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location value.
+     *
+     * @param location the location value to set
+     * @return the ElasticPoolDatabaseActivityInner object itself.
+     */
+    public ElasticPoolDatabaseActivityInner withLocation(String location) {
+        this.location = location;
+        return this;
+    }
 
     /**
      * Get the databaseName value.
@@ -167,7 +193,7 @@ public class ElasticPoolDatabaseActivityInner extends Resource {
      *
      * @return the operationId value
      */
-    public String operationId() {
+    public UUID operationId() {
         return this.operationId;
     }
 

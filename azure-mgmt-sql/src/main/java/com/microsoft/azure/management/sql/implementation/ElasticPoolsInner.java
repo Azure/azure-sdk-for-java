@@ -95,12 +95,12 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Creates a new Azure SQL elastic pool or updates an existing Azure SQL elastic pool.
+     * Creates a new elastic pool or updates an existing elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool to be operated on (Updated or created).
-     * @param parameters The required parameters for creating or updating an Elastic Pool.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool to be operated on (updated or created).
+     * @param parameters The required parameters for creating or updating an elastic pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -111,12 +111,12 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Creates a new Azure SQL elastic pool or updates an existing Azure SQL elastic pool.
+     * Creates a new elastic pool or updates an existing elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool to be operated on (Updated or created).
-     * @param parameters The required parameters for creating or updating an Elastic Pool.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool to be operated on (updated or created).
+     * @param parameters The required parameters for creating or updating an elastic pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -126,12 +126,12 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Creates a new Azure SQL elastic pool or updates an existing Azure SQL elastic pool.
+     * Creates a new elastic pool or updates an existing elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool to be operated on (Updated or created).
-     * @param parameters The required parameters for creating or updating an Elastic Pool.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool to be operated on (updated or created).
+     * @param parameters The required parameters for creating or updating an elastic pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -145,12 +145,12 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Creates a new Azure SQL elastic pool or updates an existing Azure SQL elastic pool.
+     * Creates a new elastic pool or updates an existing elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool to be operated on (Updated or created).
-     * @param parameters The required parameters for creating or updating an Elastic Pool.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool to be operated on (updated or created).
+     * @param parameters The required parameters for creating or updating an elastic pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -177,12 +177,12 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Creates a new Azure SQL elastic pool or updates an existing Azure SQL elastic pool.
+     * Creates a new elastic pool or updates an existing elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool to be operated on (Updated or created).
-     * @param parameters The required parameters for creating or updating an Elastic Pool.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool to be operated on (updated or created).
+     * @param parameters The required parameters for creating or updating an elastic pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -193,12 +193,12 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Creates a new Azure SQL elastic pool or updates an existing Azure SQL elastic pool.
+     * Creates a new elastic pool or updates an existing elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool to be operated on (Updated or created).
-     * @param parameters The required parameters for creating or updating an Elastic Pool.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool to be operated on (updated or created).
+     * @param parameters The required parameters for creating or updating an elastic pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -208,12 +208,12 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Creates a new Azure SQL elastic pool or updates an existing Azure SQL elastic pool.
+     * Creates a new elastic pool or updates an existing elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool to be operated on (Updated or created).
-     * @param parameters The required parameters for creating or updating an Elastic Pool.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool to be operated on (updated or created).
+     * @param parameters The required parameters for creating or updating an elastic pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ElasticPoolInner object
      */
@@ -227,12 +227,12 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Creates a new Azure SQL elastic pool or updates an existing Azure SQL elastic pool.
+     * Creates a new elastic pool or updates an existing elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool to be operated on (Updated or created).
-     * @param parameters The required parameters for creating or updating an Elastic Pool.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool to be operated on (updated or created).
+     * @param parameters The required parameters for creating or updating an elastic pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ElasticPoolInner object
      */
@@ -272,17 +272,17 @@ public class ElasticPoolsInner {
         return this.client.restClient().responseBuilderFactory().<ElasticPoolInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ElasticPoolInner>() { }.getType())
                 .register(201, new TypeToken<ElasticPoolInner>() { }.getType())
-                .register(202, new TypeToken<ElasticPoolInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Deletes the Azure SQL elastic pool.
+     * Deletes the elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool to be deleted.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -292,11 +292,11 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Deletes the Azure SQL elastic pool.
+     * Deletes the elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool to be deleted.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool to be deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -306,11 +306,11 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Deletes the Azure SQL elastic pool.
+     * Deletes the elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool to be deleted.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -324,11 +324,11 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Deletes the Azure SQL elastic pool.
+     * Deletes the elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool to be deleted.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -369,11 +369,11 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Gets information about an Azure SQL elastic pool.
+     * Gets an elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -384,11 +384,11 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Gets information about an Azure SQL elastic pool.
+     * Gets an elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool to be retrieved.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -398,11 +398,11 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Gets information about an Azure SQL elastic pool.
+     * Gets an elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ElasticPoolInner object
      */
@@ -416,11 +416,11 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Gets information about an Azure SQL elastic pool.
+     * Gets an elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ElasticPoolInner object
      */
@@ -460,10 +460,10 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Returns information about Azure SQL elastic pools.
+     * Returns a list of elastic pools in a server.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -474,10 +474,10 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Returns information about Azure SQL elastic pools.
+     * Returns a list of elastic pools in a server.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -487,10 +487,10 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Returns information about Azure SQL elastic pools.
+     * Returns a list of elastic pools in a server.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ElasticPoolInner&gt; object
      */
@@ -504,10 +504,10 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Returns information about Azure SQL elastic pools.
+     * Returns a list of elastic pools in a server.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ElasticPoolInner&gt; object
      */
@@ -545,11 +545,11 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Returns information about Azure SQL elastic pool activities.
+     * Returns elastic pool activities.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool for which to get the current activity.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool for which to get the current activity.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -560,11 +560,11 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Returns information about Azure SQL elastic pool activities.
+     * Returns elastic pool activities.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool for which to get the current activity.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool for which to get the current activity.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -574,11 +574,11 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Returns information about Azure SQL elastic pool activities.
+     * Returns elastic pool activities.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool for which to get the current activity.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool for which to get the current activity.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ElasticPoolActivityInner&gt; object
      */
@@ -592,11 +592,11 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Returns information about Azure SQL elastic pool activities.
+     * Returns elastic pool activities.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool for which to get the current activity.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool for which to get the current activity.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ElasticPoolActivityInner&gt; object
      */
@@ -637,11 +637,11 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Returns information about activity on Azure SQL databases inside of an Azure SQL elastic pool.
+     * Returns activity on databases inside of an elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -652,11 +652,11 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Returns information about activity on Azure SQL databases inside of an Azure SQL elastic pool.
+     * Returns activity on databases inside of an elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -666,11 +666,11 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Returns information about activity on Azure SQL databases inside of an Azure SQL elastic pool.
+     * Returns activity on databases inside of an elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ElasticPoolDatabaseActivityInner&gt; object
      */
@@ -684,11 +684,11 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Returns information about activity on Azure SQL databases inside of an Azure SQL elastic pool.
+     * Returns activity on databases inside of an elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ElasticPoolDatabaseActivityInner&gt; object
      */
@@ -729,12 +729,12 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Gets information about an Azure SQL database inside of an Azure SQL elastic pool.
+     * Gets a database inside of an elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
-     * @param databaseName The name of the Azure SQL database to be retrieved.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool to be retrieved.
+     * @param databaseName The name of the database to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -745,12 +745,12 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Gets information about an Azure SQL database inside of an Azure SQL elastic pool.
+     * Gets a database inside of an elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
-     * @param databaseName The name of the Azure SQL database to be retrieved.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool to be retrieved.
+     * @param databaseName The name of the database to be retrieved.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -760,12 +760,12 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Gets information about an Azure SQL database inside of an Azure SQL elastic pool.
+     * Gets a database inside of an elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
-     * @param databaseName The name of the Azure SQL database to be retrieved.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool to be retrieved.
+     * @param databaseName The name of the database to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DatabaseInner object
      */
@@ -779,12 +779,12 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Gets information about an Azure SQL database inside of an Azure SQL elastic pool.
+     * Gets a database inside of an elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
-     * @param databaseName The name of the Azure SQL database to be retrieved.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool to be retrieved.
+     * @param databaseName The name of the database to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DatabaseInner object
      */
@@ -827,11 +827,11 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL database inside of an Azure SQL elastic pool.
+     * Returns a list of databases in an elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -842,11 +842,11 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL database inside of an Azure SQL elastic pool.
+     * Returns a list of databases in an elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool to be retrieved.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -856,11 +856,11 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL database inside of an Azure SQL elastic pool.
+     * Returns a list of databases in an elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;DatabaseInner&gt; object
      */
@@ -874,11 +874,11 @@ public class ElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL database inside of an Azure SQL elastic pool.
+     * Returns a list of databases in an elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;DatabaseInner&gt; object
      */

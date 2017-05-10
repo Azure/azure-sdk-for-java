@@ -10,13 +10,14 @@ package com.microsoft.azure.management.sql.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.management.sql.SqlSubResource;
+import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.sql.SubResource;
 
 /**
- * Represents an Azure SQL Database Service Objective.
+ * Represents a database service objective.
  */
 @JsonFlatten
-public class ServiceObjectiveInner extends SqlSubResource {
+public class ServiceObjectiveInner extends SubResource {
     /**
      * The name for the service objective.
      */

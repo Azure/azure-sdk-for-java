@@ -8,29 +8,30 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
-import com.microsoft.azure.management.sql.TransparentDataEncryptionStates;
+import com.microsoft.azure.management.sql.TransparentDataEncryptionStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.management.sql.SqlSubResource;
+import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.sql.SubResource;
 
 /**
- * Represents an Azure SQL Database Transparent Data Encryption .
+ * Represents a database transparent data encryption .
  */
 @JsonFlatten
-public class TransparentDataEncryptionInner extends SqlSubResource {
+public class TransparentDataEncryptionInner extends SubResource {
     /**
-     * The status of the Azure SQL Database Transparent Data Encryption.
-     * Possible values include: 'Enabled', 'Disabled'.
+     * The status of the database transparent data encryption. Possible values
+     * include: 'Enabled', 'Disabled'.
      */
     @JsonProperty(value = "properties.status")
-    private TransparentDataEncryptionStates status;
+    private TransparentDataEncryptionStatus status;
 
     /**
      * Get the status value.
      *
      * @return the status value
      */
-    public TransparentDataEncryptionStates status() {
+    public TransparentDataEncryptionStatus status() {
         return this.status;
     }
 
@@ -40,7 +41,7 @@ public class TransparentDataEncryptionInner extends SqlSubResource {
      * @param status the status value to set
      * @return the TransparentDataEncryptionInner object itself.
      */
-    public TransparentDataEncryptionInner withStatus(TransparentDataEncryptionStates status) {
+    public TransparentDataEncryptionInner withStatus(TransparentDataEncryptionStatus status) {
         this.status = status;
         return this;
     }

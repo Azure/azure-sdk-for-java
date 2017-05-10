@@ -38,6 +38,27 @@ public final class ServiceObjectiveName {
     /** Static value P3 for ServiceObjectiveName. */
     public static final ServiceObjectiveName P3 = new ServiceObjectiveName("P3");
 
+    /** Static value P4 for ServiceObjectiveName. */
+    public static final ServiceObjectiveName P4 = new ServiceObjectiveName("P4");
+
+    /** Static value P6 for ServiceObjectiveName. */
+    public static final ServiceObjectiveName P6 = new ServiceObjectiveName("P6");
+
+    /** Static value P11 for ServiceObjectiveName. */
+    public static final ServiceObjectiveName P11 = new ServiceObjectiveName("P11");
+
+    /** Static value P15 for ServiceObjectiveName. */
+    public static final ServiceObjectiveName P15 = new ServiceObjectiveName("P15");
+
+    /** Static value System for ServiceObjectiveName. */
+    public static final ServiceObjectiveName SYSTEM = new ServiceObjectiveName("System");
+
+    /** Static value System2 for ServiceObjectiveName. */
+    public static final ServiceObjectiveName SYSTEM2 = new ServiceObjectiveName("System2");
+
+    /** Static value ElasticPool for ServiceObjectiveName. */
+    public static final ServiceObjectiveName ELASTIC_POOL = new ServiceObjectiveName("ElasticPool");
+
     private String value;
 
     /**

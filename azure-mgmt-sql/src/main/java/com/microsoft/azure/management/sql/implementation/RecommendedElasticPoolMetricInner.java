@@ -12,7 +12,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Represents Azure SQL recommended elastic pool metric.
+ * Represents recommended elastic pool metric.
  */
 public class RecommendedElasticPoolMetricInner {
     /**

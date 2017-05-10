@@ -12,32 +12,32 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for TableType.
+ * Defines values for AuthenticationType.
  */
-public enum TableType {
-    /** Enum value BaseTable. */
-    BASE_TABLE("BaseTable"),
+public enum AuthenticationType {
+    /** Enum value SQL. */
+    SQL("SQL"),
 
-    /** Enum value View. */
-    VIEW("View");
+    /** Enum value ADPassword. */
+    ADPASSWORD("ADPassword");
 
-    /** The actual serialized value for a TableType instance. */
+    /** The actual serialized value for a AuthenticationType instance. */
     private String value;
 
-    TableType(String value) {
+    AuthenticationType(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a TableType instance.
+     * Parses a serialized value to a AuthenticationType instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed TableType object, or null if unable to parse.
+     * @return the parsed AuthenticationType object, or null if unable to parse.
      */
     @JsonCreator
-    public static TableType fromString(String value) {
-        TableType[] items = TableType.values();
-        for (TableType item : items) {
+    public static AuthenticationType fromString(String value) {
+        AuthenticationType[] items = AuthenticationType.values();
+        for (AuthenticationType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

@@ -8,15 +8,31 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
+import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
+import com.microsoft.azure.CloudException;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import com.microsoft.rest.ServiceResponse;
+import java.io.IOException;
+import okhttp3.ResponseBody;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.Query;
+import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * Initializes a new instance of the SqlManagementClientImpl class.
  */
 public class SqlManagementClientImpl extends AzureServiceClient {
+    /** The Retrofit service to perform REST calls. */
+    private SqlManagementClientService service;
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -121,16 +137,29 @@ public class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The ServersInner object to access its operations.
+     * The CapabilitiesInner object to access its operations.
      */
-    private ServersInner servers;
+    private CapabilitiesInner capabilities;
 
     /**
-     * Gets the ServersInner object to access its operations.
-     * @return the ServersInner object.
+     * Gets the CapabilitiesInner object to access its operations.
+     * @return the CapabilitiesInner object.
      */
-    public ServersInner servers() {
-        return this.servers;
+    public CapabilitiesInner capabilities() {
+        return this.capabilities;
+    }
+
+    /**
+     * The FirewallRulesInner object to access its operations.
+     */
+    private FirewallRulesInner firewallRules;
+
+    /**
+     * Gets the FirewallRulesInner object to access its operations.
+     * @return the FirewallRulesInner object.
+     */
+    public FirewallRulesInner firewallRules() {
+        return this.firewallRules;
     }
 
     /**
@@ -144,6 +173,19 @@ public class SqlManagementClientImpl extends AzureServiceClient {
      */
     public DatabasesInner databases() {
         return this.databases;
+    }
+
+    /**
+     * The ServersInner object to access its operations.
+     */
+    private ServersInner servers;
+
+    /**
+     * Gets the ServersInner object to access its operations.
+     * @return the ServersInner object.
+     */
+    public ServersInner servers() {
+        return this.servers;
     }
 
     /**
@@ -206,11 +248,14 @@ public class SqlManagementClientImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
-        this.servers = new ServersInner(restClient().retrofit(), this);
+        this.capabilities = new CapabilitiesInner(restClient().retrofit(), this);
+        this.firewallRules = new FirewallRulesInner(restClient().retrofit(), this);
         this.databases = new DatabasesInner(restClient().retrofit(), this);
+        this.servers = new ServersInner(restClient().retrofit(), this);
         this.elasticPools = new ElasticPoolsInner(restClient().retrofit(), this);
         this.recommendedElasticPools = new RecommendedElasticPoolsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
+        initializeService();
     }
 
     /**
@@ -222,4 +267,87 @@ public class SqlManagementClientImpl extends AzureServiceClient {
     public String userAgent() {
         return String.format("%s (%s)", super.userAgent(), "SqlManagementClient");
     }
+
+    private void initializeService() {
+        service = restClient().retrofit().create(SqlManagementClientService.class);
+    }
+
+    /**
+     * The interface defining all the services for SqlManagementClient to be
+     * used by Retrofit to perform actually REST calls.
+     */
+    interface SqlManagementClientService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.SqlManagementClient listOperations" })
+        @GET("providers/Microsoft.Sql/operations")
+        Observable<Response<ResponseBody>> listOperations(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+    }
+
+    /**
+     * Lists all of the available SQL Rest API operations.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the OperationListResultInner object if successful.
+     */
+    public OperationListResultInner listOperations() {
+        return listOperationsWithServiceResponseAsync().toBlocking().single().body();
+    }
+
+    /**
+     * Lists all of the available SQL Rest API operations.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<OperationListResultInner> listOperationsAsync(final ServiceCallback<OperationListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listOperationsWithServiceResponseAsync(), serviceCallback);
+    }
+
+    /**
+     * Lists all of the available SQL Rest API operations.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationListResultInner object
+     */
+    public Observable<OperationListResultInner> listOperationsAsync() {
+        return listOperationsWithServiceResponseAsync().map(new Func1<ServiceResponse<OperationListResultInner>, OperationListResultInner>() {
+            @Override
+            public OperationListResultInner call(ServiceResponse<OperationListResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists all of the available SQL Rest API operations.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationListResultInner object
+     */
+    public Observable<ServiceResponse<OperationListResultInner>> listOperationsWithServiceResponseAsync() {
+        final String apiVersion = "2014-04-01";
+        return service.listOperations(apiVersion, this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationListResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<OperationListResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<OperationListResultInner> clientResponse = listOperationsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<OperationListResultInner> listOperationsDelegate(Response<ResponseBody> response) throws CloudException, IOException {
+        return this.restClient().responseBuilderFactory().<OperationListResultInner, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<OperationListResultInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
 }

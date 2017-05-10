@@ -12,9 +12,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for RecommendedIndexTypes.
+ * Defines values for RecommendedIndexType.
  */
-public enum RecommendedIndexTypes {
+public enum RecommendedIndexType {
     /** Enum value CLUSTERED. */
     CLUSTERED("CLUSTERED"),
 
@@ -27,23 +27,23 @@ public enum RecommendedIndexTypes {
     /** Enum value CLUSTERED COLUMNSTORE. */
     CLUSTERED_COLUMNSTORE("CLUSTERED COLUMNSTORE");
 
-    /** The actual serialized value for a RecommendedIndexTypes instance. */
+    /** The actual serialized value for a RecommendedIndexType instance. */
     private String value;
 
-    RecommendedIndexTypes(String value) {
+    RecommendedIndexType(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a RecommendedIndexTypes instance.
+     * Parses a serialized value to a RecommendedIndexType instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed RecommendedIndexTypes object, or null if unable to parse.
+     * @return the parsed RecommendedIndexType object, or null if unable to parse.
      */
     @JsonCreator
-    public static RecommendedIndexTypes fromString(String value) {
-        RecommendedIndexTypes[] items = RecommendedIndexTypes.values();
-        for (RecommendedIndexTypes item : items) {
+    public static RecommendedIndexType fromString(String value) {
+        RecommendedIndexType[] items = RecommendedIndexType.values();
+        for (RecommendedIndexType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
