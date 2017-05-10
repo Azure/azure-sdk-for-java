@@ -1,0 +1,3 @@
+[submodule "runtimes"]
+	path = runtimes
+	url = https://github.com/Azure/autorest-clientruntime-for-java.git
