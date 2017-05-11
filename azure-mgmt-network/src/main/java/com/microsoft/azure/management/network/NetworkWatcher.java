@@ -30,6 +30,7 @@ public interface NetworkWatcher extends
      * Getters
      ***********************************************************/
     /**
+     * @param targetResourceGroup the name of the target resource group to perform topology on
      * @return current network topology by resource group
      */
     Topology topology(String targetResourceGroup);
