@@ -10,12 +10,15 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.rest.ServiceCallback;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
 
@@ -94,4 +97,42 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
         }
         Assert.assertTrue(found.size() == 4);
     }
+
+    @Test
+    public void canDeleteNetworkWithServiceCallBack() {
+        String vnetName = generateRandomResourceName("vnet", 15);
+        networkManager.networks().define(vnetName)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(RG_NAME)
+                .withAddressSpace("172.16.0.0/16")
+                .defineSubnet("Front-end")
+                .withAddressPrefix("172.16.1.0/24")
+                .attach()
+                .defineSubnet("Back-end")
+                .withAddressPrefix("172.16.3.0/24")
+                .attach()
+                .create();
+
+        final CountDownLatch latch = new CountDownLatch(1);
+        final AtomicInteger counter = new AtomicInteger(0);
+        networkManager.networks().deleteByResourceGroupAsync(RG_NAME, vnetName, new ServiceCallback<Void>() {
+            @Override
+            public void failure(Throwable throwable) {
+                latch.countDown();
+            }
+
+            @Override
+            public void success(Void aVoid) {
+                counter.incrementAndGet();
+                latch.countDown();
+            }
+        });
+        try {
+            latch.await();
+        } catch (InterruptedException exception) {
+            throw new RuntimeException(exception);
+        }
+        Assert.assertEquals(counter.intValue(), 1);
+    }
+
 }
