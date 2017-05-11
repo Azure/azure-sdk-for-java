@@ -22,7 +22,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTestBase {
     }
 
     @Test
-    public void canCRUDSerivcePrincipal() throws Exception {
+    public void canCRUDServicePrincipal() throws Exception {
         ServicePrincipal servicePrincipal = graphRbacManager.servicePrincipals().define("anothersp13")
                 .withNewApplication("http://easycreate.azure.com/anotherapp/13")
                 .defineKey("sppass")
