@@ -448,6 +448,11 @@ public class AzureTests extends TestBase {
         new TestAvailabilitySet().runTest(azure.availabilitySets(), azure.resourceGroups());
     }
 
+    @Test
+    public void testNewModels() throws Exception {
+        new TestNewModel().runTest(azure.newTopLevelModels(), azure.resourceGroups());
+    }
+
     /**
      * Tests the virtual network implementation.
      * @throws Exception

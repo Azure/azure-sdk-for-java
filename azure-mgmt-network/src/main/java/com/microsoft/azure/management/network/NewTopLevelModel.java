@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.network;
 
+import java.util.Set;
+
 import com.google.common.annotations.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
@@ -26,9 +28,15 @@ public interface NewTopLevelModel extends
         Refreshable<NewTopLevelModel>,
         Updatable<NewTopLevelModel.Update> {
 
-    /***********************************************************
-     * Getters
-     ***********************************************************/
+    /**
+     * @return address spaces
+     */
+    Set<String> addressSpaces();
+
+    /**
+     * @return DHCP options
+     */
+    DhcpOptions dhcpOptions();
 
     /**
      * The entirety of the virtual network definition.
@@ -36,6 +44,7 @@ public interface NewTopLevelModel extends
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
+        DefinitionStages.WithAddressSpace,
         DefinitionStages.WithCreate {
     }
 
@@ -54,7 +63,38 @@ public interface NewTopLevelModel extends
          * The stage of the foo definition allowing to specify the resource group.
          */
         interface WithGroup
-            extends GroupableResource.DefinitionStages.WithGroup<DefinitionStages.WithCreate> {
+            extends GroupableResource.DefinitionStages.WithGroup<DefinitionStages.WithAddressSpace> {
+        }
+
+        /**
+         * The stage of the New Model blah definition allowing to specify the address space.
+         */
+        interface WithAddressSpace {
+            /**
+             * Specifies the address space.
+             * @param cidr address space expressed using the CIDR notation
+             * @return the next stage of the definition
+             */
+            WithCreate withAddressSpace(String cidr);
+
+            /**
+             * Specifies address spaces.
+             * @param cidrs address spaces expressed using the CIDR notation
+             * @return the next stage of the definition
+             */
+            WithCreate withAddressSpaces(String...cidrs);
+        }
+
+        /**
+         * The stage of the New Model blah definition allowing to specify the DHCP options.
+         */
+        interface WithDhcpOptions {
+            /**
+             * Specifies DHCP options.
+             * @param options DHCP options
+             * @return the next stage of the definition
+             */
+            WithCreate withDhcpOptions(DhcpOptions options);
         }
 
         /**
@@ -66,6 +106,8 @@ public interface NewTopLevelModel extends
          * (see {@link WithCreate#withAddressSpace(String)}).
          */
         interface WithCreate extends
+            DefinitionStages.WithAddressSpace,
+            DefinitionStages.WithDhcpOptions,
             Creatable<NewTopLevelModel>,
             Resource.DefinitionWithTags<WithCreate> {
         }
@@ -75,6 +117,43 @@ public interface NewTopLevelModel extends
      * Grouping of virtual network update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the New Model blah update allowing to modify the address space.
+         */
+        interface WithAddressSpace {
+            /**
+             * Specifies the address space.
+             * @param cidr address space expressed using the CIDR notation
+             * @return the next stage of the update
+             */
+            Update withAddressSpace(String cidr);
+
+            /**
+             * Removes the specified address space.
+             * @param cidr the address space to remove, expressed in the CIDR notation
+             * @return the next stage of the update
+             */
+            Update withoutAddressSpace(String cidr);
+
+            /**
+             * Specifies address spaces.
+             * @param cidrs address spaces expressed using the CIDR notation
+             * @return the next stage of the update
+             */
+            Update withAddressSpaces(String...cidrs);
+        }
+
+        /**
+         * The stage of the New Model blah update allowing to modify the DHCP options.
+         */
+        interface WithDhcpOptions {
+            /**
+             * Specifies DHCP options.
+             * @param options DHCP options
+             * @return the next stage of the definition
+             */
+            Update withDhcpOptions(DhcpOptions options);
+        }
 
     }
 
@@ -86,6 +165,8 @@ public interface NewTopLevelModel extends
      */
     interface Update extends
         Appliable<NewTopLevelModel>,
+        UpdateStages.WithAddressSpace,
+        UpdateStages.WithDhcpOptions,
         Resource.UpdateWithTags<Update> {
     }
 }
