@@ -32,6 +32,8 @@ import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.containerregistry.implementation.ContainerRegistryManager;
 import com.microsoft.azure.management.dns.DnsZones;
 import com.microsoft.azure.management.dns.implementation.DnsZoneManager;
+import com.microsoft.azure.management.documentdb.DatabaseAccounts;
+import com.microsoft.azure.management.documentdb.implementation.DocumentDBManager;
 import com.microsoft.azure.management.keyvault.Vaults;
 import com.microsoft.azure.management.keyvault.implementation.KeyVaultManager;
 import com.microsoft.azure.management.network.ApplicationGateways;
@@ -57,6 +59,7 @@ import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.Tenants;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
 import com.microsoft.azure.management.resources.implementation.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.servicebus.ServiceBusNamespaces;
@@ -93,7 +96,7 @@ public final class Azure {
     private final SqlServerManager sqlServerManager;
     private final ServiceBusManager serviceBusManager;
     private final ContainerRegistryManager containerRegistryManager;
-
+    private final DocumentDBManager documentDBManager;
     private final String subscriptionId;
     private final Authenticated authenticated;
 
@@ -109,6 +112,7 @@ public final class Azure {
                 .withCredentials(credentials)
                 .withSerializerAdapter(new AzureJacksonAdapter())
                 .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
+                .withInterceptor(new ProviderRegistrationInterceptor(credentials))
                 .build(), credentials.domain());
     }
 
@@ -135,6 +139,7 @@ public final class Azure {
                 .withCredentials(credentials)
                 .withSerializerAdapter(new AzureJacksonAdapter())
                 .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
+                .withInterceptor(new ProviderRegistrationInterceptor(credentials))
                 .build(), credentials.domain()).withDefaultSubscription(credentials.defaultSubscriptionId());
     }
 
@@ -317,6 +322,7 @@ public final class Azure {
         this.sqlServerManager = SqlServerManager.authenticate(restClient, subscriptionId);
         this.serviceBusManager = ServiceBusManager.authenticate(restClient, subscriptionId);
         this.containerRegistryManager = ContainerRegistryManager.authenticate(restClient, subscriptionId);
+        this.documentDBManager = DocumentDBManager.authenticate(restClient, subscriptionId);
         this.subscriptionId = subscriptionId;
         this.authenticated = authenticated;
     }
@@ -599,10 +605,18 @@ public final class Azure {
     }
 
     /**
-     * @return entry point to managing Container Regsitries.
+     * @return entry point to managing Container Registries.
      */
     @Beta
     public Registries containerRegistries() {
         return containerRegistryManager.containerRegistries();
+    }
+
+    /**
+     * @return entry point to managing Container Regsitries.
+     */
+    @Beta
+    public DatabaseAccounts documentDBs() {
+        return documentDBManager.databaseAccounts();
     }
 }

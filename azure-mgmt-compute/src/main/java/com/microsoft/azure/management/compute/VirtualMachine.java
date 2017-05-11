@@ -868,6 +868,12 @@ public interface VirtualMachine extends
              * @return the next stage of the definition
              */
             WithFromImageCreateOptionsUnmanaged withUnmanagedDisks();
+        }
+
+        /**
+         * The stage of a virtual machine definition containing various settings when virtual machine is created from image.
+         */
+        interface WithFromImageCreateOptionsManaged extends WithManagedCreate {
 
             /**
              * Specifies the custom data for the virtual machine.
@@ -876,12 +882,7 @@ public interface VirtualMachine extends
              * @return the next stage of the definition
              */
             WithFromImageCreateOptionsManaged withCustomData(String base64EncodedCustomData);
-        }
 
-        /**
-         * The stage of a virtual machine definition containing various settings when virtual machine is created from image.
-         */
-        interface WithFromImageCreateOptionsManaged extends WithManagedCreate {
             /**
              * Specifies the computer name for the virtual machine.
              *

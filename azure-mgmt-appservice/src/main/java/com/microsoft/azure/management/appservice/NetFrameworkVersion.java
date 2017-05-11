@@ -6,52 +6,33 @@
 
 package com.microsoft.azure.management.appservice;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
+
+import com.microsoft.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
 
 /**
  * Defines values for .NET framework version.
  */
-public final class NetFrameworkVersion {
+public final class NetFrameworkVersion extends ExpandableStringEnum<NetFrameworkVersion> {
     /** Static value v3.5 for NetFrameworkVersion. */
-    public static final NetFrameworkVersion V3_0 = new NetFrameworkVersion("v3.0");
+    public static final NetFrameworkVersion V3_0 = NetFrameworkVersion.fromString("v3.0");
 
     /** Static value v4.6 for NetFrameworkVersion. */
-    public static final NetFrameworkVersion V4_6 = new NetFrameworkVersion("v4.6");
-
-    private String value;
+    public static final NetFrameworkVersion V4_6 = NetFrameworkVersion.fromString("v4.6");
 
     /**
-     * Creates a custom value for NetFrameworkVersion.
-     * @param value the custom value
+     * Finds or creates a .NET Framework version based on the name.
+     * @param name a name
+     * @return an instance of NetFrameworkVersion
      */
-    public NetFrameworkVersion(String value) {
-        this.value = value;
+    public static NetFrameworkVersion fromString(String name) {
+        return fromString(name, NetFrameworkVersion.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return value;
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof NetFrameworkVersion)) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        NetFrameworkVersion rhs = (NetFrameworkVersion) obj;
-        if (value == null) {
-            return rhs.value == null;
-        } else {
-            return value.equals(rhs.value);
-        }
+    /**
+     * @return known .NET framework versions
+     */
+    public static Collection<NetFrameworkVersion> values() {
+        return values(NetFrameworkVersion.class);
     }
 }

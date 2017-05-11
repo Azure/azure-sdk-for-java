@@ -23,7 +23,7 @@ public class EncryptionConfig {
     private EncryptionConfigType type;
 
     /**
-     * The Key vault information for connecting to user managed encryption
+     * The Key Vault information for connecting to user managed encryption
      * keys.
      */
     @JsonProperty(value = "keyVaultMetaInfo")

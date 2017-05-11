@@ -8,13 +8,14 @@
 
 package com.microsoft.azure.management.datalake.store;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
 import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccountUpdateParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.util.List;
 import rx.Observable;
@@ -30,6 +31,9 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to create.
      * @param parameters Parameters supplied to create the Data Lake Store account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DataLakeStoreAccount object if successful.
      */
     DataLakeStoreAccount create(String resourceGroupName, String name, DataLakeStoreAccount parameters);
@@ -41,6 +45,7 @@ public interface Accounts {
      * @param name The name of the Data Lake Store account to create.
      * @param parameters Parameters supplied to create the Data Lake Store account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     ServiceFuture<DataLakeStoreAccount> createAsync(String resourceGroupName, String name, DataLakeStoreAccount parameters, final ServiceCallback<DataLakeStoreAccount> serviceCallback);
@@ -51,6 +56,7 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to create.
      * @param parameters Parameters supplied to create the Data Lake Store account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DataLakeStoreAccount object
      */
     Observable<DataLakeStoreAccount> createAsync(String resourceGroupName, String name, DataLakeStoreAccount parameters);
@@ -61,6 +67,7 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to create.
      * @param parameters Parameters supplied to create the Data Lake Store account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DataLakeStoreAccount object
      */
     Observable<ServiceResponse<DataLakeStoreAccount>> createWithServiceResponseAsync(String resourceGroupName, String name, DataLakeStoreAccount parameters);
@@ -71,6 +78,9 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to create.
      * @param parameters Parameters supplied to create the Data Lake Store account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DataLakeStoreAccount object if successful.
      */
     DataLakeStoreAccount beginCreate(String resourceGroupName, String name, DataLakeStoreAccount parameters);
@@ -82,6 +92,7 @@ public interface Accounts {
      * @param name The name of the Data Lake Store account to create.
      * @param parameters Parameters supplied to create the Data Lake Store account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     ServiceFuture<DataLakeStoreAccount> beginCreateAsync(String resourceGroupName, String name, DataLakeStoreAccount parameters, final ServiceCallback<DataLakeStoreAccount> serviceCallback);
@@ -92,6 +103,7 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to create.
      * @param parameters Parameters supplied to create the Data Lake Store account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DataLakeStoreAccount object
      */
     Observable<DataLakeStoreAccount> beginCreateAsync(String resourceGroupName, String name, DataLakeStoreAccount parameters);
@@ -102,6 +114,7 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to create.
      * @param parameters Parameters supplied to create the Data Lake Store account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DataLakeStoreAccount object
      */
     Observable<ServiceResponse<DataLakeStoreAccount>> beginCreateWithServiceResponseAsync(String resourceGroupName, String name, DataLakeStoreAccount parameters);
@@ -112,6 +125,9 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to update.
      * @param parameters Parameters supplied to update the Data Lake Store account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DataLakeStoreAccount object if successful.
      */
     DataLakeStoreAccount update(String resourceGroupName, String name, DataLakeStoreAccountUpdateParameters parameters);
@@ -123,6 +139,7 @@ public interface Accounts {
      * @param name The name of the Data Lake Store account to update.
      * @param parameters Parameters supplied to update the Data Lake Store account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     ServiceFuture<DataLakeStoreAccount> updateAsync(String resourceGroupName, String name, DataLakeStoreAccountUpdateParameters parameters, final ServiceCallback<DataLakeStoreAccount> serviceCallback);
@@ -133,6 +150,7 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to update.
      * @param parameters Parameters supplied to update the Data Lake Store account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DataLakeStoreAccount object
      */
     Observable<DataLakeStoreAccount> updateAsync(String resourceGroupName, String name, DataLakeStoreAccountUpdateParameters parameters);
@@ -143,6 +161,7 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to update.
      * @param parameters Parameters supplied to update the Data Lake Store account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DataLakeStoreAccount object
      */
     Observable<ServiceResponse<DataLakeStoreAccount>> updateWithServiceResponseAsync(String resourceGroupName, String name, DataLakeStoreAccountUpdateParameters parameters);
@@ -153,6 +172,9 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to update.
      * @param parameters Parameters supplied to update the Data Lake Store account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DataLakeStoreAccount object if successful.
      */
     DataLakeStoreAccount beginUpdate(String resourceGroupName, String name, DataLakeStoreAccountUpdateParameters parameters);
@@ -164,6 +186,7 @@ public interface Accounts {
      * @param name The name of the Data Lake Store account to update.
      * @param parameters Parameters supplied to update the Data Lake Store account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     ServiceFuture<DataLakeStoreAccount> beginUpdateAsync(String resourceGroupName, String name, DataLakeStoreAccountUpdateParameters parameters, final ServiceCallback<DataLakeStoreAccount> serviceCallback);
@@ -174,6 +197,7 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to update.
      * @param parameters Parameters supplied to update the Data Lake Store account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DataLakeStoreAccount object
      */
     Observable<DataLakeStoreAccount> beginUpdateAsync(String resourceGroupName, String name, DataLakeStoreAccountUpdateParameters parameters);
@@ -184,6 +208,7 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to update.
      * @param parameters Parameters supplied to update the Data Lake Store account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DataLakeStoreAccount object
      */
     Observable<ServiceResponse<DataLakeStoreAccount>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String name, DataLakeStoreAccountUpdateParameters parameters);
@@ -193,6 +218,9 @@ public interface Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void delete(String resourceGroupName, String name);
 
@@ -202,6 +230,7 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     ServiceFuture<Void> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback);
@@ -211,6 +240,7 @@ public interface Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     Observable<Void> deleteAsync(String resourceGroupName, String name);
@@ -220,6 +250,7 @@ public interface Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String name);
@@ -229,6 +260,9 @@ public interface Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void beginDelete(String resourceGroupName, String name);
 
@@ -238,6 +272,7 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback);
@@ -247,6 +282,7 @@ public interface Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     Observable<Void> beginDeleteAsync(String resourceGroupName, String name);
@@ -256,6 +292,7 @@ public interface Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String name);
@@ -265,6 +302,9 @@ public interface Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DataLakeStoreAccount object if successful.
      */
     DataLakeStoreAccount get(String resourceGroupName, String name);
@@ -275,6 +315,7 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to retrieve.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     ServiceFuture<DataLakeStoreAccount> getAsync(String resourceGroupName, String name, final ServiceCallback<DataLakeStoreAccount> serviceCallback);
@@ -284,6 +325,7 @@ public interface Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DataLakeStoreAccount object
      */
     Observable<DataLakeStoreAccount> getAsync(String resourceGroupName, String name);
@@ -293,42 +335,49 @@ public interface Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param name The name of the Data Lake Store account to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DataLakeStoreAccount object
      */
     Observable<ServiceResponse<DataLakeStoreAccount>> getWithServiceResponseAsync(String resourceGroupName, String name);
 
     /**
-     * Attempts to enable a user managed key vault for encryption of the specified Data Lake Store account.
+     * Attempts to enable a user managed Key Vault for encryption of the specified Data Lake Store account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param accountName The name of the Data Lake Store account to attempt to enable the Key Vault for.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void enableKeyVault(String resourceGroupName, String accountName);
 
     /**
-     * Attempts to enable a user managed key vault for encryption of the specified Data Lake Store account.
+     * Attempts to enable a user managed Key Vault for encryption of the specified Data Lake Store account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param accountName The name of the Data Lake Store account to attempt to enable the Key Vault for.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     ServiceFuture<Void> enableKeyVaultAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback);
 
     /**
-     * Attempts to enable a user managed key vault for encryption of the specified Data Lake Store account.
+     * Attempts to enable a user managed Key Vault for encryption of the specified Data Lake Store account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param accountName The name of the Data Lake Store account to attempt to enable the Key Vault for.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     Observable<Void> enableKeyVaultAsync(String resourceGroupName, String accountName);
 
     /**
-     * Attempts to enable a user managed key vault for encryption of the specified Data Lake Store account.
+     * Attempts to enable a user managed Key Vault for encryption of the specified Data Lake Store account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param accountName The name of the Data Lake Store account to attempt to enable the Key Vault for.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     Observable<ServiceResponse<Void>> enableKeyVaultWithServiceResponseAsync(String resourceGroupName, String accountName);
@@ -337,6 +386,9 @@ public interface Accounts {
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next page of results, if any.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account(s).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DataLakeStoreAccount&gt; object if successful.
      */
     PagedList<DataLakeStoreAccount> listByResourceGroup(final String resourceGroupName);
@@ -346,6 +398,7 @@ public interface Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account(s).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     ServiceFuture<List<DataLakeStoreAccount>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
@@ -354,6 +407,7 @@ public interface Accounts {
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next page of results, if any.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account(s).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
      */
     Observable<Page<DataLakeStoreAccount>> listByResourceGroupAsync(final String resourceGroupName);
@@ -362,6 +416,7 @@ public interface Accounts {
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next page of results, if any.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account(s).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
      */
     Observable<ServiceResponse<Page<DataLakeStoreAccount>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName);
@@ -375,6 +430,9 @@ public interface Accounts {
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count A Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DataLakeStoreAccount&gt; object if successful.
      */
     PagedList<DataLakeStoreAccount> listByResourceGroup(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count);
@@ -390,6 +448,7 @@ public interface Accounts {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count A Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     ServiceFuture<List<DataLakeStoreAccount>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
@@ -404,6 +463,7 @@ public interface Accounts {
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count A Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
      */
     Observable<Page<DataLakeStoreAccount>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count);
@@ -418,6 +478,7 @@ public interface Accounts {
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count A Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
      */
     Observable<ServiceResponse<Page<DataLakeStoreAccount>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count);
@@ -425,6 +486,9 @@ public interface Accounts {
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of results, if any.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DataLakeStoreAccount&gt; object if successful.
      */
     PagedList<DataLakeStoreAccount> list();
@@ -433,6 +497,7 @@ public interface Accounts {
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of results, if any.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     ServiceFuture<List<DataLakeStoreAccount>> listAsync(final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
@@ -440,6 +505,7 @@ public interface Accounts {
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of results, if any.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
      */
     Observable<Page<DataLakeStoreAccount>> listAsync();
@@ -447,6 +513,7 @@ public interface Accounts {
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of results, if any.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
      */
     Observable<ServiceResponse<Page<DataLakeStoreAccount>>> listWithServiceResponseAsync();
@@ -459,6 +526,9 @@ public interface Accounts {
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DataLakeStoreAccount&gt; object if successful.
      */
     PagedList<DataLakeStoreAccount> list(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count);
@@ -473,6 +543,7 @@ public interface Accounts {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     ServiceFuture<List<DataLakeStoreAccount>> listAsync(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
@@ -486,6 +557,7 @@ public interface Accounts {
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
      */
     Observable<Page<DataLakeStoreAccount>> listAsync(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count);
@@ -499,6 +571,7 @@ public interface Accounts {
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
      */
     Observable<ServiceResponse<Page<DataLakeStoreAccount>>> listWithServiceResponseAsync(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count);
@@ -507,6 +580,9 @@ public interface Accounts {
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next page of results, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DataLakeStoreAccount&gt; object if successful.
      */
     PagedList<DataLakeStoreAccount> listByResourceGroupNext(final String nextPageLink);
@@ -515,8 +591,9 @@ public interface Accounts {
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next page of results, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     ServiceFuture<List<DataLakeStoreAccount>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<DataLakeStoreAccount>> serviceFuture, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
@@ -525,6 +602,7 @@ public interface Accounts {
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next page of results, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
      */
     Observable<Page<DataLakeStoreAccount>> listByResourceGroupNextAsync(final String nextPageLink);
@@ -533,6 +611,7 @@ public interface Accounts {
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next page of results, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
      */
     Observable<ServiceResponse<Page<DataLakeStoreAccount>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink);
@@ -541,6 +620,9 @@ public interface Accounts {
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of results, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DataLakeStoreAccount&gt; object if successful.
      */
     PagedList<DataLakeStoreAccount> listNext(final String nextPageLink);
@@ -549,8 +631,9 @@ public interface Accounts {
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of results, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     ServiceFuture<List<DataLakeStoreAccount>> listNextAsync(final String nextPageLink, final ServiceFuture<List<DataLakeStoreAccount>> serviceFuture, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
@@ -559,6 +642,7 @@ public interface Accounts {
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of results, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
      */
     Observable<Page<DataLakeStoreAccount>> listNextAsync(final String nextPageLink);
@@ -567,6 +651,7 @@ public interface Accounts {
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of results, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
      */
     Observable<ServiceResponse<Page<DataLakeStoreAccount>>> listNextWithServiceResponseAsync(final String nextPageLink);

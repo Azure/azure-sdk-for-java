@@ -6,55 +6,36 @@
 
 package com.microsoft.azure.management.appservice;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
+
+import com.microsoft.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
 
 /**
  * Defines values for remote visual studio version for remote debugging.
  */
-public final class RemoteVisualStudioVersion {
+public final class RemoteVisualStudioVersion extends ExpandableStringEnum<RemoteVisualStudioVersion> {
     /** Static value VS2012 for RemoteVisualStudioVersion. */
-    public static final RemoteVisualStudioVersion VS2012 = new RemoteVisualStudioVersion("VS2012");
+    public static final RemoteVisualStudioVersion VS2012 = RemoteVisualStudioVersion.fromString("VS2012");
 
     /** Static value VS2013 for RemoteVisualStudioVersion. */
-    public static final RemoteVisualStudioVersion VS2013 = new RemoteVisualStudioVersion("VS2013");
+    public static final RemoteVisualStudioVersion VS2013 = RemoteVisualStudioVersion.fromString("VS2013");
 
     /** Static value VS2015 for RemoteVisualStudioVersion. */
-    public static final RemoteVisualStudioVersion VS2015 = new RemoteVisualStudioVersion("VS2015");
-
-    private String value;
+    public static final RemoteVisualStudioVersion VS2015 = RemoteVisualStudioVersion.fromString("VS2015");
 
     /**
-     * Creates a custom value for RemoteVisualStudioVersion.
-     * @param value the custom value
+     * Finds or creates a Visual Studio version based on the specified name.
+     * @param name a name
+     * @return a RemoteVisualStudioVersion instance
      */
-    public RemoteVisualStudioVersion(String value) {
-        this.value = value;
+    public static RemoteVisualStudioVersion fromString(String name) {
+        return fromString(name, RemoteVisualStudioVersion.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return value;
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof RemoteVisualStudioVersion)) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        RemoteVisualStudioVersion rhs = (RemoteVisualStudioVersion) obj;
-        if (value == null) {
-            return rhs.value == null;
-        } else {
-            return value.equals(rhs.value);
-        }
+    /**
+     * @return known Visual Studio versions
+     */
+    public static Collection<RemoteVisualStudioVersion> values() {
+        return values(RemoteVisualStudioVersion.class);
     }
 }

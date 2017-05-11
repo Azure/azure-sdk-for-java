@@ -339,6 +339,7 @@
     <module>./azure-keyvault-cryptography</module>
     <module>./azure-keyvault-extensions</module>
     <module>./azure-keyvault-webkey</module>
+    <module>./azure-mgmt-documentdb</module>
     <module>./azure-mgmt-compute</module>
     <module>./azure-mgmt-containerregistry</module>
     <module>./azure-mgmt-graph-rbac</module>

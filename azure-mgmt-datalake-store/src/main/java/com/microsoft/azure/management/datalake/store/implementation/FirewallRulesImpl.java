@@ -16,10 +16,11 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.datalake.store.models.FirewallRule;
 import com.microsoft.azure.management.datalake.store.models.PageImpl;
+import com.microsoft.azure.management.datalake.store.models.UpdateFirewallRuleParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -30,6 +31,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.HTTP;
+import retrofit2.http.PATCH;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
@@ -68,6 +70,10 @@ public class FirewallRulesImpl implements FirewallRules {
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/firewallRules/{firewallRuleName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("firewallRuleName") String firewallRuleName, @Path("subscriptionId") String subscriptionId, @Body FirewallRule parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.store.FirewallRules update" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/firewallRules/{firewallRuleName}")
+        Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("firewallRuleName") String firewallRuleName, @Path("subscriptionId") String subscriptionId, @Body UpdateFirewallRuleParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.store.FirewallRules delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/firewallRules/{firewallRuleName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("firewallRuleName") String firewallRuleName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -90,9 +96,12 @@ public class FirewallRulesImpl implements FirewallRules {
      * Creates or updates the specified firewall rule. During update, the firewall rule with the specified name will be replaced with this new firewall rule.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account to which to add the firewall rule.
+     * @param accountName The name of the Data Lake Store account to add or replace the firewall rule.
      * @param firewallRuleName The name of the firewall rule to create or update.
      * @param parameters Parameters supplied to create or update the firewall rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FirewallRule object if successful.
      */
     public FirewallRule createOrUpdate(String resourceGroupName, String accountName, String firewallRuleName, FirewallRule parameters) {
@@ -103,10 +112,11 @@ public class FirewallRulesImpl implements FirewallRules {
      * Creates or updates the specified firewall rule. During update, the firewall rule with the specified name will be replaced with this new firewall rule.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account to which to add the firewall rule.
+     * @param accountName The name of the Data Lake Store account to add or replace the firewall rule.
      * @param firewallRuleName The name of the firewall rule to create or update.
      * @param parameters Parameters supplied to create or update the firewall rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<FirewallRule> createOrUpdateAsync(String resourceGroupName, String accountName, String firewallRuleName, FirewallRule parameters, final ServiceCallback<FirewallRule> serviceCallback) {
@@ -117,9 +127,10 @@ public class FirewallRulesImpl implements FirewallRules {
      * Creates or updates the specified firewall rule. During update, the firewall rule with the specified name will be replaced with this new firewall rule.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account to which to add the firewall rule.
+     * @param accountName The name of the Data Lake Store account to add or replace the firewall rule.
      * @param firewallRuleName The name of the firewall rule to create or update.
      * @param parameters Parameters supplied to create or update the firewall rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FirewallRule object
      */
     public Observable<FirewallRule> createOrUpdateAsync(String resourceGroupName, String accountName, String firewallRuleName, FirewallRule parameters) {
@@ -135,9 +146,10 @@ public class FirewallRulesImpl implements FirewallRules {
      * Creates or updates the specified firewall rule. During update, the firewall rule with the specified name will be replaced with this new firewall rule.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account to which to add the firewall rule.
+     * @param accountName The name of the Data Lake Store account to add or replace the firewall rule.
      * @param firewallRuleName The name of the firewall rule to create or update.
      * @param parameters Parameters supplied to create or update the firewall rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FirewallRule object
      */
     public Observable<ServiceResponse<FirewallRule>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String accountName, String firewallRuleName, FirewallRule parameters) {
@@ -182,11 +194,199 @@ public class FirewallRulesImpl implements FirewallRules {
     }
 
     /**
+     * Updates the specified firewall rule.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
+     * @param accountName The name of the Data Lake Store account to which to update the firewall rule.
+     * @param firewallRuleName The name of the firewall rule to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the FirewallRule object if successful.
+     */
+    public FirewallRule update(String resourceGroupName, String accountName, String firewallRuleName) {
+        return updateWithServiceResponseAsync(resourceGroupName, accountName, firewallRuleName).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the specified firewall rule.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
+     * @param accountName The name of the Data Lake Store account to which to update the firewall rule.
+     * @param firewallRuleName The name of the firewall rule to update.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<FirewallRule> updateAsync(String resourceGroupName, String accountName, String firewallRuleName, final ServiceCallback<FirewallRule> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName, firewallRuleName), serviceCallback);
+    }
+
+    /**
+     * Updates the specified firewall rule.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
+     * @param accountName The name of the Data Lake Store account to which to update the firewall rule.
+     * @param firewallRuleName The name of the firewall rule to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the FirewallRule object
+     */
+    public Observable<FirewallRule> updateAsync(String resourceGroupName, String accountName, String firewallRuleName) {
+        return updateWithServiceResponseAsync(resourceGroupName, accountName, firewallRuleName).map(new Func1<ServiceResponse<FirewallRule>, FirewallRule>() {
+            @Override
+            public FirewallRule call(ServiceResponse<FirewallRule> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the specified firewall rule.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
+     * @param accountName The name of the Data Lake Store account to which to update the firewall rule.
+     * @param firewallRuleName The name of the firewall rule to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the FirewallRule object
+     */
+    public Observable<ServiceResponse<FirewallRule>> updateWithServiceResponseAsync(String resourceGroupName, String accountName, String firewallRuleName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (firewallRuleName == null) {
+            throw new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final UpdateFirewallRuleParameters parameters = null;
+        return service.update(resourceGroupName, accountName, firewallRuleName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FirewallRule>>>() {
+                @Override
+                public Observable<ServiceResponse<FirewallRule>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<FirewallRule> clientResponse = updateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Updates the specified firewall rule.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
+     * @param accountName The name of the Data Lake Store account to which to update the firewall rule.
+     * @param firewallRuleName The name of the firewall rule to update.
+     * @param parameters Parameters supplied to update the firewall rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the FirewallRule object if successful.
+     */
+    public FirewallRule update(String resourceGroupName, String accountName, String firewallRuleName, UpdateFirewallRuleParameters parameters) {
+        return updateWithServiceResponseAsync(resourceGroupName, accountName, firewallRuleName, parameters).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the specified firewall rule.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
+     * @param accountName The name of the Data Lake Store account to which to update the firewall rule.
+     * @param firewallRuleName The name of the firewall rule to update.
+     * @param parameters Parameters supplied to update the firewall rule.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<FirewallRule> updateAsync(String resourceGroupName, String accountName, String firewallRuleName, UpdateFirewallRuleParameters parameters, final ServiceCallback<FirewallRule> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName, firewallRuleName, parameters), serviceCallback);
+    }
+
+    /**
+     * Updates the specified firewall rule.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
+     * @param accountName The name of the Data Lake Store account to which to update the firewall rule.
+     * @param firewallRuleName The name of the firewall rule to update.
+     * @param parameters Parameters supplied to update the firewall rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the FirewallRule object
+     */
+    public Observable<FirewallRule> updateAsync(String resourceGroupName, String accountName, String firewallRuleName, UpdateFirewallRuleParameters parameters) {
+        return updateWithServiceResponseAsync(resourceGroupName, accountName, firewallRuleName, parameters).map(new Func1<ServiceResponse<FirewallRule>, FirewallRule>() {
+            @Override
+            public FirewallRule call(ServiceResponse<FirewallRule> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the specified firewall rule.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
+     * @param accountName The name of the Data Lake Store account to which to update the firewall rule.
+     * @param firewallRuleName The name of the firewall rule to update.
+     * @param parameters Parameters supplied to update the firewall rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the FirewallRule object
+     */
+    public Observable<ServiceResponse<FirewallRule>> updateWithServiceResponseAsync(String resourceGroupName, String accountName, String firewallRuleName, UpdateFirewallRuleParameters parameters) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (firewallRuleName == null) {
+            throw new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        return service.update(resourceGroupName, accountName, firewallRuleName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FirewallRule>>>() {
+                @Override
+                public Observable<ServiceResponse<FirewallRule>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<FirewallRule> clientResponse = updateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<FirewallRule> updateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<FirewallRule, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<FirewallRule>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * Deletes the specified firewall rule from the specified Data Lake Store account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param accountName The name of the Data Lake Store account from which to delete the firewall rule.
      * @param firewallRuleName The name of the firewall rule to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String accountName, String firewallRuleName) {
         deleteWithServiceResponseAsync(resourceGroupName, accountName, firewallRuleName).toBlocking().single().body();
@@ -199,6 +399,7 @@ public class FirewallRulesImpl implements FirewallRules {
      * @param accountName The name of the Data Lake Store account from which to delete the firewall rule.
      * @param firewallRuleName The name of the firewall rule to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String accountName, String firewallRuleName, final ServiceCallback<Void> serviceCallback) {
@@ -211,6 +412,7 @@ public class FirewallRulesImpl implements FirewallRules {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param accountName The name of the Data Lake Store account from which to delete the firewall rule.
      * @param firewallRuleName The name of the firewall rule to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String accountName, String firewallRuleName) {
@@ -228,6 +430,7 @@ public class FirewallRulesImpl implements FirewallRules {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param accountName The name of the Data Lake Store account from which to delete the firewall rule.
      * @param firewallRuleName The name of the firewall rule to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String accountName, String firewallRuleName) {
@@ -264,6 +467,7 @@ public class FirewallRulesImpl implements FirewallRules {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -273,6 +477,9 @@ public class FirewallRulesImpl implements FirewallRules {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param accountName The name of the Data Lake Store account from which to get the firewall rule.
      * @param firewallRuleName The name of the firewall rule to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FirewallRule object if successful.
      */
     public FirewallRule get(String resourceGroupName, String accountName, String firewallRuleName) {
@@ -286,6 +493,7 @@ public class FirewallRulesImpl implements FirewallRules {
      * @param accountName The name of the Data Lake Store account from which to get the firewall rule.
      * @param firewallRuleName The name of the firewall rule to retrieve.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<FirewallRule> getAsync(String resourceGroupName, String accountName, String firewallRuleName, final ServiceCallback<FirewallRule> serviceCallback) {
@@ -298,6 +506,7 @@ public class FirewallRulesImpl implements FirewallRules {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param accountName The name of the Data Lake Store account from which to get the firewall rule.
      * @param firewallRuleName The name of the firewall rule to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FirewallRule object
      */
     public Observable<FirewallRule> getAsync(String resourceGroupName, String accountName, String firewallRuleName) {
@@ -315,6 +524,7 @@ public class FirewallRulesImpl implements FirewallRules {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param accountName The name of the Data Lake Store account from which to get the firewall rule.
      * @param firewallRuleName The name of the firewall rule to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FirewallRule object
      */
     public Observable<ServiceResponse<FirewallRule>> getWithServiceResponseAsync(String resourceGroupName, String accountName, String firewallRuleName) {
@@ -359,6 +569,9 @@ public class FirewallRulesImpl implements FirewallRules {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param accountName The name of the Data Lake Store account from which to get the firewall rules.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;FirewallRule&gt; object if successful.
      */
     public PagedList<FirewallRule> listByAccount(final String resourceGroupName, final String accountName) {
@@ -377,6 +590,7 @@ public class FirewallRulesImpl implements FirewallRules {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param accountName The name of the Data Lake Store account from which to get the firewall rules.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<FirewallRule>> listByAccountAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<FirewallRule> serviceCallback) {
@@ -396,6 +610,7 @@ public class FirewallRulesImpl implements FirewallRules {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param accountName The name of the Data Lake Store account from which to get the firewall rules.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;FirewallRule&gt; object
      */
     public Observable<Page<FirewallRule>> listByAccountAsync(final String resourceGroupName, final String accountName) {
@@ -413,6 +628,7 @@ public class FirewallRulesImpl implements FirewallRules {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
      * @param accountName The name of the Data Lake Store account from which to get the firewall rules.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;FirewallRule&gt; object
      */
     public Observable<ServiceResponse<Page<FirewallRule>>> listByAccountWithServiceResponseAsync(final String resourceGroupName, final String accountName) {
@@ -434,6 +650,7 @@ public class FirewallRulesImpl implements FirewallRules {
      *
     ServiceResponse<PageImpl<FirewallRule>> * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
     ServiceResponse<PageImpl<FirewallRule>> * @param accountName The name of the Data Lake Store account from which to get the firewall rules.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;FirewallRule&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<FirewallRule>>> listByAccountSinglePageAsync(final String resourceGroupName, final String accountName) {
@@ -474,6 +691,9 @@ public class FirewallRulesImpl implements FirewallRules {
      * Lists the Data Lake Store firewall rules within the specified Data Lake Store account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;FirewallRule&gt; object if successful.
      */
     public PagedList<FirewallRule> listByAccountNext(final String nextPageLink) {
@@ -490,8 +710,9 @@ public class FirewallRulesImpl implements FirewallRules {
      * Lists the Data Lake Store firewall rules within the specified Data Lake Store account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<FirewallRule>> listByAccountNextAsync(final String nextPageLink, final ServiceFuture<List<FirewallRule>> serviceFuture, final ListOperationCallback<FirewallRule> serviceCallback) {
@@ -510,6 +731,7 @@ public class FirewallRulesImpl implements FirewallRules {
      * Lists the Data Lake Store firewall rules within the specified Data Lake Store account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;FirewallRule&gt; object
      */
     public Observable<Page<FirewallRule>> listByAccountNextAsync(final String nextPageLink) {
@@ -526,6 +748,7 @@ public class FirewallRulesImpl implements FirewallRules {
      * Lists the Data Lake Store firewall rules within the specified Data Lake Store account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;FirewallRule&gt; object
      */
     public Observable<ServiceResponse<Page<FirewallRule>>> listByAccountNextWithServiceResponseAsync(final String nextPageLink) {
@@ -546,6 +769,7 @@ public class FirewallRulesImpl implements FirewallRules {
      * Lists the Data Lake Store firewall rules within the specified Data Lake Store account.
      *
     ServiceResponse<PageImpl<FirewallRule>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;FirewallRule&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<FirewallRule>>> listByAccountNextSinglePageAsync(final String nextPageLink) {
