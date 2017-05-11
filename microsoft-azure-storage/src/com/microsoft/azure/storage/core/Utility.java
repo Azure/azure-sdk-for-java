@@ -73,10 +73,10 @@ import com.microsoft.azure.storage.StorageExtendedErrorInformation;
  */
 public final class Utility {
 
-    private static ThreadLocal<org.joda.time.format.DateTimeFormatter>
-        RFC1123_GMT_DATE_TIME_FORMATTER = new ThreadLocal<org.joda.time.format.DateTimeFormatter>() {
+    private static ThreadLocal<DateTimeFormatter>
+        RFC1123_GMT_DATE_TIME_FORMATTER = new ThreadLocal<DateTimeFormatter>() {
         @Override protected DateTimeFormatter initialValue() {
-            return org.joda.time.format.DateTimeFormat.forPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
+            return DateTimeFormat.forPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
                 .withZoneUTC().withLocale(Locale.US);
         }
     };
@@ -574,7 +574,7 @@ public final class Utility {
      * @return A <code>String</code> that represents the current GMT date/time using the RFC1123 pattern.
      */
     public static String getGMTTime() {
-        return getGMTTime(new org.joda.time.DateTime());
+        return getGMTTime(new DateTime());
     }
 
     /**
@@ -602,7 +602,7 @@ public final class Utility {
      * @return A <code>String</code> that represents the GMT date/time for the specified value using the RFC1123
      *         pattern.
      */
-    public static String getGMTTime(final org.joda.time.DateTime date) {
+    public static String getGMTTime(final DateTime date) {
         StringBuilder sb = new StringBuilder(50);
         RFC1123_GMT_DATE_TIME_FORMATTER.get().printTo(sb, date);
         return sb.toString();
