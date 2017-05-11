@@ -103,6 +103,18 @@ public interface DataLakeAnalyticsAccountManagementClient {
     DataLakeAnalyticsAccountManagementClient withGenerateClientRequestId(boolean generateClientRequestId);
 
     /**
+     * Gets the ComputePolicies object to access its operations.
+     * @return the ComputePolicies object.
+     */
+    ComputePolicies computePolicies();
+
+    /**
+     * Gets the FirewallRules object to access its operations.
+     * @return the FirewallRules object.
+     */
+    FirewallRules firewallRules();
+
+    /**
      * Gets the StorageAccounts object to access its operations.
      * @return the StorageAccounts object.
      */

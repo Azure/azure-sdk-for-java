@@ -8,10 +8,7 @@ package com.microsoft.azure.management.datalake.store;
 
 import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
 import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccountUpdateParameters;
-import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.HashMap;

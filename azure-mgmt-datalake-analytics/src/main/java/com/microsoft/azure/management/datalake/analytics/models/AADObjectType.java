@@ -11,25 +11,25 @@ package com.microsoft.azure.management.datalake.analytics.models;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for FileType.
+ * Defines values for AADObjectType.
  */
-public final class FileType {
-    /** Static value Assembly for FileType. */
-    public static final FileType ASSEMBLY = new FileType("Assembly");
+public final class AADObjectType {
+    /** Static value User for AADObjectType. */
+    public static final AADObjectType USER = new AADObjectType("User");
 
-    /** Static value Resource for FileType. */
-    public static final FileType RESOURCE = new FileType("Resource");
+    /** Static value Group for AADObjectType. */
+    public static final AADObjectType GROUP = new AADObjectType("Group");
 
-    /** Static value Nodeploy for FileType. */
-    public static final FileType NODEPLOY = new FileType("Nodeploy");
+    /** Static value ServicePrincipal for AADObjectType. */
+    public static final AADObjectType SERVICE_PRINCIPAL = new AADObjectType("ServicePrincipal");
 
     private String value;
 
     /**
-     * Creates a custom value for FileType.
+     * Creates a custom value for AADObjectType.
      * @param value the custom value
      */
-    public FileType(String value) {
+    public AADObjectType(String value) {
         this.value = value;
     }
 
@@ -46,13 +46,13 @@ public final class FileType {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof FileType)) {
+        if (!(obj instanceof AADObjectType)) {
             return false;
         }
         if (obj == this) {
             return true;
         }
-        FileType rhs = (FileType) obj;
+        AADObjectType rhs = (AADObjectType) obj;
         if (value == null) {
             return rhs.value == null;
         } else {
