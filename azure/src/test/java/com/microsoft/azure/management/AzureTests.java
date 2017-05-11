@@ -509,7 +509,7 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testNetworkWatchers() throws Exception {
-        new TestNetworkWatcher().runTest(azure.networkWatchers(), azure.resourceGroups());
+        new TestNetworkWatcher(azure.virtualMachines()).runTest(azure.networkWatchers(), azure.resourceGroups());
     }
 
     /**

@@ -34,23 +34,21 @@ class NetworkWatcherImpl
     // Verbs
 
     @Override
-    protected Observable<NetworkWatcherInner> getInnerAsync() {
-        return this.manager().inner().networkWatchers().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+    public TopologyImpl topology(String targetResourceGroup) {
+        TopologyInner topologyInner = this.manager().inner().networkWatchers()
+                .getTopology(this.resourceGroupName(), this.name(), targetResourceGroup);
+        return new TopologyImpl(topologyInner);
     }
 
-    // Helpers
-
-
-
-    // Setters (fluent)
-
-
-
-    // Getters
     @Override
     public Observable<NetworkWatcher> createResourceAsync() {
         return this.manager().inner().networkWatchers().createOrUpdateAsync(
                 this.resourceGroupName(), this.name(), this.inner())
                 .map(innerToFluentMap(this));
+    }
+
+    @Override
+    protected Observable<NetworkWatcherInner> getInnerAsync() {
+        return this.manager().inner().networkWatchers().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 }

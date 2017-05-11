@@ -26,6 +26,14 @@ public interface NetworkWatcher extends
         Refreshable<NetworkWatcher>,
         Updatable<NetworkWatcher.Update> {
 
+    /***********************************************************
+     * Getters
+     ***********************************************************/
+    /**
+     * @return current network topology by resource group
+     */
+    Topology topology(String targetResourceGroup);
+
     /**
      * Container interface for all the definitions.
      */
