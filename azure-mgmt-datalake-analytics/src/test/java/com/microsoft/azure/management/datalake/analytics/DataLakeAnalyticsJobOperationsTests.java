@@ -6,22 +6,15 @@
 
 package com.microsoft.azure.management.datalake.analytics;
 
-import com.microsoft.azure.management.datalake.analytics.models.DataLakeAnalyticsAccount;
-import com.microsoft.azure.management.datalake.analytics.models.DataLakeStoreAccountInfo;
 import com.microsoft.azure.management.datalake.analytics.models.JobInformation;
 import com.microsoft.azure.management.datalake.analytics.models.JobResult;
 import com.microsoft.azure.management.datalake.analytics.models.JobState;
 import com.microsoft.azure.management.datalake.analytics.models.JobType;
 import com.microsoft.azure.management.datalake.analytics.models.USqlJobProperties;
-import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 

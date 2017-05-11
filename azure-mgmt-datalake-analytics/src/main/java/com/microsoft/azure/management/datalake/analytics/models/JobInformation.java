@@ -50,7 +50,7 @@ public class JobInformation {
 
     /**
      * the degree of parallelism used for this job. This must be greater than
-     * 0.
+     * 0, if set to less than 0 it will default to 1.
      */
     @JsonProperty(value = "degreeOfParallelism")
     private Integer degreeOfParallelism;

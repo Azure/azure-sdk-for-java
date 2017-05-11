@@ -8,14 +8,8 @@ package com.microsoft.azure.management.datalake.analytics;
 
 import com.microsoft.azure.management.datalake.analytics.models.*;
 import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
-import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
-import com.microsoft.azure.management.storage.Kind;
-import com.microsoft.azure.management.storage.Sku;
 import com.microsoft.azure.management.storage.SkuName;
-import com.microsoft.azure.management.storage.implementation.StorageAccountCreateParametersInner;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
