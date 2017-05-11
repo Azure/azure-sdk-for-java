@@ -16,6 +16,7 @@ import com.microsoft.azure.servicebus.primitives.StringUtil;
 public final class QueueClient extends InitializableEntity implements IQueueClient
 {
 	private final ReceiveMode receiveMode;
+	private MessagingFactory factory;
 	private IMessageSender sender;	
 	private MessageAndSessionPump messageAndSessionPump;
 	private SessionBrowser sessionBrowser;
@@ -43,6 +44,7 @@ public final class QueueClient extends InitializableEntity implements IQueueClie
 	
 	private CompletableFuture<Void> createInternals(MessagingFactory factory, String queuePath, ReceiveMode receiveMode)
 	{
+	    this.factory = factory;
 		CompletableFuture<IMessageSender> senderFuture = ClientFactory.createMessageSenderFromEntityPathAsync(factory, queuePath);
 		CompletableFuture<Void> postSenderFuture = senderFuture.thenAcceptAsync((s) -> {
 			this.sender = s;			
@@ -137,7 +139,7 @@ public final class QueueClient extends InitializableEntity implements IQueueClie
 
 	@Override
 	protected CompletableFuture<Void> onClose() {
-		return this.messageAndSessionPump.closeAsync().thenCompose((v) -> this.sender.closeAsync().thenCompose((u) -> this.miscRequestResponseHandler.closeAsync()));
+		return this.messageAndSessionPump.closeAsync().thenCompose((v) -> this.sender.closeAsync().thenCompose((u) -> this.miscRequestResponseHandler.closeAsync().thenCompose((w) -> this.factory.closeAsync())));
 	}
 
 	@Override

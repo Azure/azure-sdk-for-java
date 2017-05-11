@@ -125,7 +125,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 			this.reactorScheduler = new ReactorDispatcher(newReactor);
 		}
 		
-		final Thread reactorThread = new Thread(new RunReactor(newReactor));
+		final Thread reactorThread = new Thread(new RunReactor());
 		reactorThread.start();
 	}
 
@@ -233,7 +233,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 
 		if (this.getIsClosingOrClosed() && !this.closeTask.isDone())
 		{
-			this.closeTask.complete(null);
+		    this.closeTask.complete(null);
 			Timer.unregister(this.getClientId());
 		}
 	}
@@ -246,6 +246,11 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		}
 		else
 		{
+		    if(this.getIsClosingOrClosed())
+            {
+                return;
+            }
+		    
 			final Connection currentConnection = this.connection;
 			
 			try
@@ -324,10 +329,10 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 			}
 			else if(this.connection == null || this.connection.getRemoteState() == EndpointState.CLOSED)
 			{				
-				AsyncUtil.completeFuture(this.closeTask, null);
+				this.closeTask.complete(null);
 			}
-		}		
-
+		}
+		
 		return this.closeTask;
 	}
 
@@ -335,9 +340,9 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	{
 		final private Reactor rctr;
 
-		public RunReactor(final Reactor reactor)
+		public RunReactor()
 		{
-			this.rctr = reactor;
+			this.rctr = MessagingFactory.this.getReactor();
 		}
 
 		public void run()
@@ -351,7 +356,16 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 			{
 				this.rctr.setTimeout(3141);
 				this.rctr.start();
-				while(!Thread.interrupted() && this.rctr.process()) {}
+				boolean continuteProcessing = true;
+				while(!Thread.interrupted() && continuteProcessing)
+				{
+				    // If factory is closed, stop reactor too
+				    if(MessagingFactory.this.getIsClosed())
+				    {
+				        break;
+				    }
+				    continuteProcessing = this.rctr.process();
+				}
 				this.rctr.stop();
 			}
 			catch (HandlerException handlerException)

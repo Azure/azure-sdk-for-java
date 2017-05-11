@@ -19,6 +19,7 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
 {
 	private final ReceiveMode receiveMode;
 	private String subscriptionPath;
+	private MessagingFactory factory;
 	private MessageAndSessionPump messageAndSessionPump;
 	private SessionBrowser sessionBrowser;
 	private MiscRequestResponseOperationHandler miscRequestResponseHandler;
@@ -46,7 +47,8 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
 	}
 	
 	private CompletableFuture<Void> createPumpAndBrowserAsync(MessagingFactory factory)
-	{		
+	{
+	    this.factory = factory;
 		CompletableFuture<Void> postSessionBrowserFuture = MiscRequestResponseOperationHandler.create(factory, this.subscriptionPath).thenAcceptAsync((msoh) -> {
 			this.miscRequestResponseHandler = msoh;
 			this.sessionBrowser = new SessionBrowser(factory, this.subscriptionPath, msoh);
@@ -126,7 +128,7 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
 
 	@Override
 	protected CompletableFuture<Void> onClose() {
-		return this.messageAndSessionPump.closeAsync().thenCompose((v) -> this.miscRequestResponseHandler.closeAsync());
+		return this.messageAndSessionPump.closeAsync().thenCompose((v) -> this.miscRequestResponseHandler.closeAsync().thenCompose((w) -> this.factory.closeAsync()));
 	}
 	
 	@Override
