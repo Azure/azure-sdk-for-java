@@ -10,6 +10,7 @@ import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
+import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.RestClient;
@@ -100,8 +101,11 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     }
 
     protected RestClient buildRestClient(AzureTokenCredentials credentials, AzureEnvironment.Endpoint endpoint) {
-        restClientBuilder = restClientBuilder.withBaseUrl(credentials.environment(), endpoint);
-        return restClientBuilder.withCredentials(credentials).build();
+        return restClientBuilder
+                .withBaseUrl(credentials.environment(), endpoint)
+                .withCredentials(credentials)
+                .withInterceptor(new ProviderRegistrationInterceptor(credentials))
+                .build();
     }
 
     protected RestClient buildRestClient(AzureTokenCredentials credentials) {

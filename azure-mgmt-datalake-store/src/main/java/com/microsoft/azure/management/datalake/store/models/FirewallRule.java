@@ -10,7 +10,6 @@ package com.microsoft.azure.management.datalake.store.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.SubResource;
 
 /**
  * Data Lake Store firewall rule information.
@@ -18,13 +17,15 @@ import com.microsoft.azure.SubResource;
 @JsonFlatten
 public class FirewallRule extends SubResource {
     /**
-     * the start IP address for the firewall rule.
+     * the start IP address for the firewall rule. This can be either ipv4 or
+     * ipv6. Start and End should be in the same protocol.
      */
     @JsonProperty(value = "properties.startIpAddress", required = true)
     private String startIpAddress;
 
     /**
-     * the end IP address for the firewall rule.
+     * the end IP address for the firewall rule. This can be either ipv4 or
+     * ipv6. Start and End should be in the same protocol.
      */
     @JsonProperty(value = "properties.endIpAddress", required = true)
     private String endIpAddress;

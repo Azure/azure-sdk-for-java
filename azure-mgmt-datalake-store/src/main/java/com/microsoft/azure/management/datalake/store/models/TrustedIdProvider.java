@@ -10,10 +10,9 @@ package com.microsoft.azure.management.datalake.store.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.SubResource;
 
 /**
- * Data Lake Store firewall rule information.
+ * Data Lake Store Trusted Identity Provider information.
  */
 @JsonFlatten
 public class TrustedIdProvider extends SubResource {

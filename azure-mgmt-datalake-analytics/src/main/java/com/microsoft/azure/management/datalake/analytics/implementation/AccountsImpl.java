@@ -19,8 +19,8 @@ import com.microsoft.azure.management.datalake.analytics.models.DataLakeAnalytic
 import com.microsoft.azure.management.datalake.analytics.models.PageImpl;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -116,6 +116,9 @@ public class AccountsImpl implements Accounts {
      * Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next page, if any.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DataLakeAnalyticsAccount&gt; object if successful.
      */
     public PagedList<DataLakeAnalyticsAccount> listByResourceGroup(final String resourceGroupName) {
@@ -133,6 +136,7 @@ public class AccountsImpl implements Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<DataLakeAnalyticsAccount>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback) {
@@ -151,6 +155,7 @@ public class AccountsImpl implements Accounts {
      * Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next page, if any.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeAnalyticsAccount&gt; object
      */
     public Observable<Page<DataLakeAnalyticsAccount>> listByResourceGroupAsync(final String resourceGroupName) {
@@ -167,6 +172,7 @@ public class AccountsImpl implements Accounts {
      * Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next page, if any.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeAnalyticsAccount&gt; object
      */
     public Observable<ServiceResponse<Page<DataLakeAnalyticsAccount>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
@@ -187,6 +193,7 @@ public class AccountsImpl implements Accounts {
      * Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next page, if any.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DataLakeAnalyticsAccount&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DataLakeAnalyticsAccount>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
@@ -229,6 +236,9 @@ public class AccountsImpl implements Accounts {
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DataLakeAnalyticsAccount&gt; object if successful.
      */
     public PagedList<DataLakeAnalyticsAccount> listByResourceGroup(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
@@ -252,6 +262,7 @@ public class AccountsImpl implements Accounts {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<DataLakeAnalyticsAccount>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback) {
@@ -276,6 +287,7 @@ public class AccountsImpl implements Accounts {
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeAnalyticsAccount&gt; object
      */
     public Observable<Page<DataLakeAnalyticsAccount>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
@@ -298,6 +310,7 @@ public class AccountsImpl implements Accounts {
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeAnalyticsAccount&gt; object
      */
     public Observable<ServiceResponse<Page<DataLakeAnalyticsAccount>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
@@ -324,6 +337,7 @@ public class AccountsImpl implements Accounts {
     ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
     ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
     ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DataLakeAnalyticsAccount&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DataLakeAnalyticsAccount>>> listByResourceGroupSinglePageAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
@@ -360,6 +374,9 @@ public class AccountsImpl implements Accounts {
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DataLakeAnalyticsAccount&gt; object if successful.
      */
     public PagedList<DataLakeAnalyticsAccount> list() {
@@ -376,6 +393,7 @@ public class AccountsImpl implements Accounts {
      * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<DataLakeAnalyticsAccount>> listAsync(final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback) {
@@ -393,6 +411,7 @@ public class AccountsImpl implements Accounts {
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeAnalyticsAccount&gt; object
      */
     public Observable<Page<DataLakeAnalyticsAccount>> listAsync() {
@@ -408,6 +427,7 @@ public class AccountsImpl implements Accounts {
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeAnalyticsAccount&gt; object
      */
     public Observable<ServiceResponse<Page<DataLakeAnalyticsAccount>>> listWithServiceResponseAsync() {
@@ -427,6 +447,7 @@ public class AccountsImpl implements Accounts {
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DataLakeAnalyticsAccount&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DataLakeAnalyticsAccount>>> listSinglePageAsync() {
@@ -465,6 +486,9 @@ public class AccountsImpl implements Accounts {
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DataLakeAnalyticsAccount&gt; object if successful.
      */
     public PagedList<DataLakeAnalyticsAccount> list(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
@@ -487,6 +511,7 @@ public class AccountsImpl implements Accounts {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<DataLakeAnalyticsAccount>> listAsync(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback) {
@@ -510,6 +535,7 @@ public class AccountsImpl implements Accounts {
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeAnalyticsAccount&gt; object
      */
     public Observable<Page<DataLakeAnalyticsAccount>> listAsync(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
@@ -531,6 +557,7 @@ public class AccountsImpl implements Accounts {
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeAnalyticsAccount&gt; object
      */
     public Observable<ServiceResponse<Page<DataLakeAnalyticsAccount>>> listWithServiceResponseAsync(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
@@ -556,6 +583,7 @@ public class AccountsImpl implements Accounts {
     ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
     ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
     ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DataLakeAnalyticsAccount&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DataLakeAnalyticsAccount>>> listSinglePageAsync(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
@@ -591,6 +619,9 @@ public class AccountsImpl implements Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DataLakeAnalyticsAccount object if successful.
      */
     public DataLakeAnalyticsAccount get(String resourceGroupName, String accountName) {
@@ -603,6 +634,7 @@ public class AccountsImpl implements Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to retrieve.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<DataLakeAnalyticsAccount> getAsync(String resourceGroupName, String accountName, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback) {
@@ -614,6 +646,7 @@ public class AccountsImpl implements Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DataLakeAnalyticsAccount object
      */
     public Observable<DataLakeAnalyticsAccount> getAsync(String resourceGroupName, String accountName) {
@@ -630,6 +663,7 @@ public class AccountsImpl implements Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DataLakeAnalyticsAccount object
      */
     public Observable<ServiceResponse<DataLakeAnalyticsAccount>> getWithServiceResponseAsync(String resourceGroupName, String accountName) {
@@ -671,6 +705,9 @@ public class AccountsImpl implements Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to delete
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String accountName) {
         deleteWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().last().body();
@@ -682,6 +719,7 @@ public class AccountsImpl implements Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to delete
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) {
@@ -693,6 +731,7 @@ public class AccountsImpl implements Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to delete
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String accountName) {
@@ -709,6 +748,7 @@ public class AccountsImpl implements Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to delete
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String accountName) {
@@ -733,6 +773,9 @@ public class AccountsImpl implements Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to delete
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String accountName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
@@ -744,6 +787,7 @@ public class AccountsImpl implements Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to delete
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) {
@@ -755,6 +799,7 @@ public class AccountsImpl implements Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to delete
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String accountName) {
@@ -771,6 +816,7 @@ public class AccountsImpl implements Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to delete
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String accountName) {
@@ -805,6 +851,7 @@ public class AccountsImpl implements Accounts {
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -814,6 +861,9 @@ public class AccountsImpl implements Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.the account will be associated with.
      * @param accountName The name of the Data Lake Analytics account to create.
      * @param parameters Parameters supplied to the create Data Lake Analytics account operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DataLakeAnalyticsAccount object if successful.
      */
     public DataLakeAnalyticsAccount create(String resourceGroupName, String accountName, DataLakeAnalyticsAccount parameters) {
@@ -827,6 +877,7 @@ public class AccountsImpl implements Accounts {
      * @param accountName The name of the Data Lake Analytics account to create.
      * @param parameters Parameters supplied to the create Data Lake Analytics account operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<DataLakeAnalyticsAccount> createAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccount parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback) {
@@ -839,6 +890,7 @@ public class AccountsImpl implements Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.the account will be associated with.
      * @param accountName The name of the Data Lake Analytics account to create.
      * @param parameters Parameters supplied to the create Data Lake Analytics account operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<DataLakeAnalyticsAccount> createAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccount parameters) {
@@ -856,6 +908,7 @@ public class AccountsImpl implements Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.the account will be associated with.
      * @param accountName The name of the Data Lake Analytics account to create.
      * @param parameters Parameters supplied to the create Data Lake Analytics account operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<DataLakeAnalyticsAccount>> createWithServiceResponseAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccount parameters) {
@@ -885,6 +938,9 @@ public class AccountsImpl implements Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.the account will be associated with.
      * @param accountName The name of the Data Lake Analytics account to create.
      * @param parameters Parameters supplied to the create Data Lake Analytics account operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DataLakeAnalyticsAccount object if successful.
      */
     public DataLakeAnalyticsAccount beginCreate(String resourceGroupName, String accountName, DataLakeAnalyticsAccount parameters) {
@@ -898,6 +954,7 @@ public class AccountsImpl implements Accounts {
      * @param accountName The name of the Data Lake Analytics account to create.
      * @param parameters Parameters supplied to the create Data Lake Analytics account operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<DataLakeAnalyticsAccount> beginCreateAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccount parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback) {
@@ -910,6 +967,7 @@ public class AccountsImpl implements Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.the account will be associated with.
      * @param accountName The name of the Data Lake Analytics account to create.
      * @param parameters Parameters supplied to the create Data Lake Analytics account operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DataLakeAnalyticsAccount object
      */
     public Observable<DataLakeAnalyticsAccount> beginCreateAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccount parameters) {
@@ -927,6 +985,7 @@ public class AccountsImpl implements Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.the account will be associated with.
      * @param accountName The name of the Data Lake Analytics account to create.
      * @param parameters Parameters supplied to the create Data Lake Analytics account operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DataLakeAnalyticsAccount object
      */
     public Observable<ServiceResponse<DataLakeAnalyticsAccount>> beginCreateWithServiceResponseAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccount parameters) {
@@ -973,6 +1032,9 @@ public class AccountsImpl implements Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DataLakeAnalyticsAccount object if successful.
      */
     public DataLakeAnalyticsAccount update(String resourceGroupName, String accountName) {
@@ -985,6 +1047,7 @@ public class AccountsImpl implements Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to update.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<DataLakeAnalyticsAccount> updateAsync(String resourceGroupName, String accountName, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback) {
@@ -996,6 +1059,7 @@ public class AccountsImpl implements Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<DataLakeAnalyticsAccount> updateAsync(String resourceGroupName, String accountName) {
@@ -1012,6 +1076,7 @@ public class AccountsImpl implements Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<DataLakeAnalyticsAccount>> updateWithServiceResponseAsync(String resourceGroupName, String accountName) {
@@ -1037,6 +1102,9 @@ public class AccountsImpl implements Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to update.
      * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DataLakeAnalyticsAccount object if successful.
      */
     public DataLakeAnalyticsAccount update(String resourceGroupName, String accountName, DataLakeAnalyticsAccountUpdateParameters parameters) {
@@ -1050,6 +1118,7 @@ public class AccountsImpl implements Accounts {
      * @param accountName The name of the Data Lake Analytics account to update.
      * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<DataLakeAnalyticsAccount> updateAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccountUpdateParameters parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback) {
@@ -1062,6 +1131,7 @@ public class AccountsImpl implements Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to update.
      * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<DataLakeAnalyticsAccount> updateAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccountUpdateParameters parameters) {
@@ -1079,6 +1149,7 @@ public class AccountsImpl implements Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to update.
      * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<DataLakeAnalyticsAccount>> updateWithServiceResponseAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccountUpdateParameters parameters) {
@@ -1104,6 +1175,9 @@ public class AccountsImpl implements Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DataLakeAnalyticsAccount object if successful.
      */
     public DataLakeAnalyticsAccount beginUpdate(String resourceGroupName, String accountName) {
@@ -1116,6 +1190,7 @@ public class AccountsImpl implements Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to update.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<DataLakeAnalyticsAccount> beginUpdateAsync(String resourceGroupName, String accountName, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback) {
@@ -1127,6 +1202,7 @@ public class AccountsImpl implements Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DataLakeAnalyticsAccount object
      */
     public Observable<DataLakeAnalyticsAccount> beginUpdateAsync(String resourceGroupName, String accountName) {
@@ -1143,6 +1219,7 @@ public class AccountsImpl implements Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DataLakeAnalyticsAccount object
      */
     public Observable<ServiceResponse<DataLakeAnalyticsAccount>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String accountName) {
@@ -1179,6 +1256,9 @@ public class AccountsImpl implements Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to update.
      * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DataLakeAnalyticsAccount object if successful.
      */
     public DataLakeAnalyticsAccount beginUpdate(String resourceGroupName, String accountName, DataLakeAnalyticsAccountUpdateParameters parameters) {
@@ -1192,6 +1272,7 @@ public class AccountsImpl implements Accounts {
      * @param accountName The name of the Data Lake Analytics account to update.
      * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<DataLakeAnalyticsAccount> beginUpdateAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccountUpdateParameters parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback) {
@@ -1204,6 +1285,7 @@ public class AccountsImpl implements Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to update.
      * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DataLakeAnalyticsAccount object
      */
     public Observable<DataLakeAnalyticsAccount> beginUpdateAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccountUpdateParameters parameters) {
@@ -1221,6 +1303,7 @@ public class AccountsImpl implements Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to update.
      * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DataLakeAnalyticsAccount object
      */
     public Observable<ServiceResponse<DataLakeAnalyticsAccount>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String accountName, DataLakeAnalyticsAccountUpdateParameters parameters) {
@@ -1263,6 +1346,9 @@ public class AccountsImpl implements Accounts {
      * Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next page, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DataLakeAnalyticsAccount&gt; object if successful.
      */
     public PagedList<DataLakeAnalyticsAccount> listByResourceGroupNext(final String nextPageLink) {
@@ -1279,8 +1365,9 @@ public class AccountsImpl implements Accounts {
      * Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next page, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<DataLakeAnalyticsAccount>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<DataLakeAnalyticsAccount>> serviceFuture, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback) {
@@ -1299,6 +1386,7 @@ public class AccountsImpl implements Accounts {
      * Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next page, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeAnalyticsAccount&gt; object
      */
     public Observable<Page<DataLakeAnalyticsAccount>> listByResourceGroupNextAsync(final String nextPageLink) {
@@ -1315,6 +1403,7 @@ public class AccountsImpl implements Accounts {
      * Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next page, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeAnalyticsAccount&gt; object
      */
     public Observable<ServiceResponse<Page<DataLakeAnalyticsAccount>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1335,6 +1424,7 @@ public class AccountsImpl implements Accounts {
      * Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next page, if any.
      *
     ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DataLakeAnalyticsAccount&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DataLakeAnalyticsAccount>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
@@ -1367,6 +1457,9 @@ public class AccountsImpl implements Accounts {
      * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DataLakeAnalyticsAccount&gt; object if successful.
      */
     public PagedList<DataLakeAnalyticsAccount> listNext(final String nextPageLink) {
@@ -1383,8 +1476,9 @@ public class AccountsImpl implements Accounts {
      * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<DataLakeAnalyticsAccount>> listNextAsync(final String nextPageLink, final ServiceFuture<List<DataLakeAnalyticsAccount>> serviceFuture, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback) {
@@ -1403,6 +1497,7 @@ public class AccountsImpl implements Accounts {
      * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeAnalyticsAccount&gt; object
      */
     public Observable<Page<DataLakeAnalyticsAccount>> listNextAsync(final String nextPageLink) {
@@ -1419,6 +1514,7 @@ public class AccountsImpl implements Accounts {
      * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DataLakeAnalyticsAccount&gt; object
      */
     public Observable<ServiceResponse<Page<DataLakeAnalyticsAccount>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1439,6 +1535,7 @@ public class AccountsImpl implements Accounts {
      * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
      *
     ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DataLakeAnalyticsAccount&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DataLakeAnalyticsAccount>>> listNextSinglePageAsync(final String nextPageLink) {
