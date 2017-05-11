@@ -25,7 +25,8 @@ class ApplicationImpl
         implements
             Application,
             Application.Definition,
-            Application.Update {
+            Application.Update,
+            HasCredential<ApplicationImpl> {
     private GraphRbacManager manager;
     private ApplicationCreateParametersInner createParameters;
     private ApplicationUpdateParametersInner updateParameters;
@@ -136,8 +137,24 @@ class ApplicationImpl
     }
 
     @Override
-    public CredentialImpl<DefinitionStages.WithCreate> defineKey() {
-        return new CredentialImpl<DefinitionStages.WithCreate>();
+    public CredentialImpl<DefinitionStages.WithCreate> defineKey(String name) {
+        return new CredentialImpl<>(name, this);
+    }
+
+    @Override
+    public ApplicationImpl withCredential(CredentialImpl<?> credential) {
+        if (credential.passwordCredential() != null) {
+            if (createParameters.passwordCredentials() == null) {
+                createParameters.withPasswordCredentials(new ArrayList<PasswordCredentialInner>());
+            }
+            createParameters.passwordCredentials().add(credential.passwordCredential());
+        } else if (credential.certificateCredential() != null) {
+            if (createParameters.keyCredentials() == null) {
+                createParameters.withKeyCredentials(new ArrayList<KeyCredentialInner>());
+            }
+            createParameters.keyCredentials().add(credential.certificateCredential());
+        }
+        return this;
     }
 
     @Override

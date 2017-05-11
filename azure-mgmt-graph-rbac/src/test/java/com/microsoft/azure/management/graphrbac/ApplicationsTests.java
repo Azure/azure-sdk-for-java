@@ -6,14 +6,16 @@
 
 package com.microsoft.azure.management.graphrbac;
 
+import com.google.common.io.BaseEncoding;
+import org.joda.time.Duration;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class ApplicationsTests extends GraphRbacManagementTestBase {
-    private static final String RG_NAME = "javacsmrg350";
-    private static final String APP_NAME = "app-javacsm350";
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
+public class ApplicationsTests extends GraphRbacManagementTestBase {
     @BeforeClass
     public static void setup() throws Exception {
         createClients();
@@ -25,9 +27,18 @@ public class ApplicationsTests extends GraphRbacManagementTestBase {
 
     @Test
     public void canCreateApplication() throws Exception {
-        Application application = graphRbacManager.applications().define("anotherapp")
-                .withSignOnUrl("http://easycreate.azure.com/anotherapp")
-                .withIdentifierUrl("http://easycreate.azure.com/anotherapp")
+        Application application = graphRbacManager.applications().define("anotherapp8")
+                .withSignOnUrl("http://easycreate.azure.com/anotherapp/8")
+                .withIdentifierUrl("http://easycreate.azure.com/anotherapp/8")
+                .defineKey("passwd")
+                    .withPassword("P@ssw0rd")
+                    .withDuration(Duration.standardDays(700))
+                    .attach()
+                .defineKey("cert")
+                    .withCertificate(BaseEncoding.base64().encode(Files.readAllBytes(Paths.get("/Users/jianghlu/Documents/code/certs/myserver.crt"))))
+                    .withType(CertificateType.ASYMMETRIC_X509_CERT)
+                    .withDuration(Duration.standardDays(100))
+                    .attach()
                 .create();
         System.out.println(application.id() + " - " + application.appId());
     }

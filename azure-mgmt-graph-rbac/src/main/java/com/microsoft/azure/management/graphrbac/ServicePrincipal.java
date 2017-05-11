@@ -9,9 +9,11 @@ package com.microsoft.azure.management.graphrbac;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.graphrbac.implementation.ServicePrincipalInner;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 
 import java.util.List;
 
@@ -22,21 +24,13 @@ import java.util.List;
 @Beta
 public interface ServicePrincipal extends
         Indexable,
-        HasInner<ServicePrincipalInner> {
-    /**
-     * @return object Id.
-     */
-    String objectId();
-
+        HasInner<ServicePrincipalInner>,
+        HasId,
+        HasName {
     /**
      * @return object type.
      */
     String objectType();
-
-    /**
-     * @return service principal display name.
-     */
-    String displayName();
 
     /**
      * @return app id.
@@ -67,20 +61,18 @@ public interface ServicePrincipal extends
         /**
          * The first stage of the service principal definition.
          */
-        interface Blank extends WithCreate {
+        interface Blank extends WithApplication {
         }
 
-        /**
-         * The stage of service principal definition allowing specifying if the service principal account is enabled.
-         */
-        interface WithAccountEnabled {
-            /**
-             * Specifies whether the service principal account is enabled upon creation.
-             *
-             * @param enabled if set to true, the service principal account is enabled.
-             * @return the next stage in service principal definition
-             */
-            WithCreate withAccountEnabled(boolean enabled);
+        interface WithApplication {
+            WithCreate withExistingApplication(String id);
+            WithCreate withExistingApplication(Application application);
+            WithCreate withNewApplication(Creatable<Application> applicationCreatable);
+            WithCreate withNewApplication(String signOnUrl);
+        }
+
+        interface WithKey {
+            Credential.DefinitionStages.Blank<WithCreate> defineKey(String name);
         }
 
         /**
@@ -90,7 +82,7 @@ public interface ServicePrincipal extends
          */
         interface WithCreate extends
                 Creatable<ServicePrincipal>,
-                WithAccountEnabled {
+                WithKey {
         }
     }
 

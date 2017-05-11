@@ -58,7 +58,7 @@ class ServicePrincipalsImpl
         if (servicePrincipalInner == null) {
             return null;
         }
-        return new ServicePrincipalImpl(servicePrincipalInner, this.innerCollection);
+        return new ServicePrincipalImpl(servicePrincipalInner, manager());
     }
 
     @Override
@@ -75,7 +75,7 @@ class ServicePrincipalsImpl
                         if (servicePrincipalInner == null) {
                             return null;
                         }
-                        return new ServicePrincipalImpl(servicePrincipalInner, inner());
+                        return new ServicePrincipalImpl(servicePrincipalInner, manager());
                     }
                 });
     }
@@ -107,7 +107,7 @@ class ServicePrincipalsImpl
                         if (result == null || result.items() == null || result.items().isEmpty()) {
                             return null;
                         }
-                        return new ServicePrincipalImpl(result.items().get(0), innerCollection);
+                        return new ServicePrincipalImpl(result.items().get(0), manager());
                     }
                 });
     }
@@ -120,5 +120,10 @@ class ServicePrincipalsImpl
     @Override
     public ServicePrincipalsInner inner() {
         return this.innerCollection;
+    }
+
+    @Override
+    public ServicePrincipalImpl define(String name) {
+        return new ServicePrincipalImpl(new ServicePrincipalInner().withDisplayName(name), manager());
     }
 }

@@ -224,7 +224,7 @@ class VaultImpl
                                         throw new CloudException(String.format("User principal name %s is not found in tenant %s",
                                                 accessPolicy.userPrincipalName(), graphRbacManager.tenantId()), null);
                                     }
-                                    accessPolicy.forObjectId(sp.objectId());
+                                    accessPolicy.forObjectId(sp.id());
                                 }
                             }));
                 } else {

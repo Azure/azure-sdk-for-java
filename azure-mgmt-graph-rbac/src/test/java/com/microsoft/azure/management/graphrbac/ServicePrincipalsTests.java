@@ -6,18 +6,12 @@
 
 package com.microsoft.azure.management.graphrbac;
 
+import com.google.common.base.Joiner;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.List;
-
 public class ServicePrincipalsTests extends GraphRbacManagementTestBase {
-    private static final String RG_NAME = "javacsmrg350";
-    private static final String APP_NAME = "app-javacsm350";
-
     @BeforeClass
     public static void setup() throws Exception {
         createClients();
@@ -28,10 +22,14 @@ public class ServicePrincipalsTests extends GraphRbacManagementTestBase {
     }
 
     @Test
-    @Ignore("Doesn't work when logged as a service principal")
-    public void getServicePrincipal() throws Exception {
-        List<ServicePrincipal> servicePrincipals = graphRbacManager.servicePrincipals().list();
-        Assert.assertNotNull(servicePrincipals);
+    public void canCRUDSerivcePrincipal() throws Exception {
+        ServicePrincipal servicePrincipal = graphRbacManager.servicePrincipals().define("anothersp13")
+                .withNewApplication("http://easycreate.azure.com/anotherapp/13")
+                .defineKey("sppass")
+                    .withPassword("StrongPass!12")
+                    .attach()
+                .create();
+        System.out.println(servicePrincipal.id() + " - " + Joiner.on(", ").join(servicePrincipal.servicePrincipalNames()));
     }
 
 }

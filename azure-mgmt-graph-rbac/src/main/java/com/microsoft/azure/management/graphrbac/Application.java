@@ -143,7 +143,7 @@ public interface Application extends
              */
             WithValidTime withCertificate(byte[] pfxBlob);
 
-            Credential.DefinitionStages.Blank<WithCreate> defineKey();
+            Credential.DefinitionStages.Blank<WithCreate> defineKey(String name);
         }
 
         /**

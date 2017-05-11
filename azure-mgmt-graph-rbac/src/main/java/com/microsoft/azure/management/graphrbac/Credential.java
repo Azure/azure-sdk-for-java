@@ -33,11 +33,6 @@ public interface Credential extends
     DateTime endDate();
 
     /**
-     * @return key ID.
-     */
-    String keyId();
-
-    /**
      * @return key value.
      */
     String value();
@@ -52,6 +47,7 @@ public interface Credential extends
      */
     interface Definition<ParentT> extends
             DefinitionStages.Blank<ParentT>,
+            DefinitionStages.WithCertificateType<ParentT>,
             DefinitionStages.WithAttach<ParentT> {
     }
 
@@ -82,9 +78,23 @@ public interface Credential extends
             /**
              * Use a self signed certificate as a key.
              * @param certificate the certificate content
-             * @return the next stage in application definition
+             * @return the next stage in credential definition
              */
-            WithAttach<ParentT> withCertificate(String certificate);
+            WithCertificateType<ParentT> withCertificate(String certificate);
+        }
+
+        /**
+         * The credential definition stage allowing the certificate type to be set.
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
+        interface WithCertificateType<ParentT> {
+            /**
+             * Specifies the type of the certificate
+             * @param type the type of the certificate
+             * @return the next stage in credential definition
+             */
+            WithAttach<ParentT> withType(CertificateType type);
+            WithAttach<ParentT> withType(String type);
         }
 
         /**
@@ -133,6 +143,7 @@ public interface Credential extends
      */
     interface UpdateDefinition<ParentT> extends
             UpdateDefinitionStages.Blank<ParentT>,
+            UpdateDefinitionStages.WithCertificateType<ParentT>,
             UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
@@ -163,9 +174,22 @@ public interface Credential extends
             /**
              * Use a self signed certificate as a key.
              * @param certificate the certificate content
-             * @return the next stage in application definition
+             * @return the next stage in credential definition
              */
-            WithAttach<ParentT> withCertificate(String certificate);
+            WithCertificateType<ParentT> withCertificate(String certificate);
+        }
+
+        /**
+         * The credential definition stage allowing the certificate type to be set.
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
+        interface WithCertificateType<ParentT> {
+            /**
+             * Specifies the type of the certificate
+             * @param type the type of the certificate
+             * @return the next stage in credential definition
+             */
+            WithAttach<ParentT> withType(CertificateType type);
         }
 
         /**

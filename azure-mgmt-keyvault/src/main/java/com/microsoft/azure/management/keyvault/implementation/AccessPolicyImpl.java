@@ -165,7 +165,7 @@ class AccessPolicyImpl
 
     @Override
     public AccessPolicyImpl forServicePrincipal(ServicePrincipal servicePrincipal) {
-        inner().withObjectId(servicePrincipal.objectId());
+        inner().withObjectId(servicePrincipal.id());
         return this;
     }
 
