@@ -11,12 +11,14 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.graphrbac.implementation.ApplicationInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
+import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
-import org.joda.time.LocalDate;
+import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * An immutable client-side representation of an Azure AD application.
@@ -27,7 +29,8 @@ public interface Application extends
         Indexable,
         HasInner<ApplicationInner>,
         HasId,
-        HasName {
+        HasName,
+        Updatable<Application.Update> {
     /**
      * @return the object type
      */
@@ -63,6 +66,16 @@ public interface Application extends
      */
     String homepage();
 
+    /**
+     * @return the mapping of password credentials from their names
+     */
+    Map<String, PasswordCredential> passwordCredentials();
+
+    /**
+     * @return the mapping of certificate credentials from their names
+     */
+    Map<String, CertificateCredential> certificateCredentials();
+
     /**************************************************************
      * Fluent interfaces to provision an application
      **************************************************************/
@@ -72,8 +85,7 @@ public interface Application extends
      */
     interface Definition extends
             DefinitionStages.Blank,
-            DefinitionStages.WithCreate,
-            DefinitionStages.WithValidTime {
+            DefinitionStages.WithCreate {
     }
 
     /**
@@ -119,7 +131,7 @@ public interface Application extends
             /**
              * Adds an identifier URL to the application.
              *
-             * @param identifierUrl unique URIs that Azure AD can use for this app
+             * @param identifierUrl unique URI that Azure AD can use for this app
              * @return the next stage in application definition
              */
             WithCreate withIdentifierUrl(String identifierUrl);
@@ -128,35 +140,20 @@ public interface Application extends
         /**
          * The stage of application definition allowing specifying identifier keys.
          */
-        interface WithKey {
+        interface WithCredential {
             /**
-             * Use a password as a key.
-             * @param password the password value
-             * @return the next stage in application definition
+             * Starts the definition of a certificate credential.
+             * @param name the descriptive name of the certificate credential
+             * @return the first stage in certificate credential definition
              */
-            WithValidTime withPassword(String password);
+            CertificateCredential.DefinitionStages.Blank<WithCreate> defineCertificateCredential(String name);
 
             /**
-             * Use a self signed certificate as a key.
-             * @param pfxBlob the pfx certificate content
-             * @return the next stage in application definition
+             * Starts the definition of a password credential.
+             * @param name the descriptive name of the password credential
+             * @return the first stage in password credential definition
              */
-            WithValidTime withCertificate(byte[] pfxBlob);
-
-            Credential.DefinitionStages.Blank<WithCreate> defineKey(String name);
-        }
-
-        /**
-         * The stage of application definition allowing specifying when the key will be valid.
-         */
-        interface WithValidTime extends WithCreate {
-            /**
-             * Specifies the start date after which password or key would be valid. Default value is current time.
-             * @param startDate the start date for validity
-             * @return the next stage in application definition
-             */
-            WithValidTime withStartDate(LocalDate startDate);
-            WithValidTime withEndDate(LocalDate endDate);
+            PasswordCredential.DefinitionStages.Blank<WithCreate> definePasswordCredential(String name);
         }
 
         /**
@@ -180,7 +177,7 @@ public interface Application extends
                 Creatable<Application>,
                 WithIdentifierUrl,
                 WithReplyUrl,
-                WithKey,
+                WithCredential,
                 WithMultiTenant {
         }
     }
@@ -189,11 +186,109 @@ public interface Application extends
      * Grouping of all the application update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of application update allowing specifying the sign on URL.
+         */
+        interface WithSignOnUrl {
+            /**
+             * Specifies the sign on URL.
+             *
+             * @param signOnUrl the URL where users can sign in and use this app
+             * @return the next stage in application update
+             */
+            Update withSignOnUrl(String signOnUrl);
+        }
+
+        /**
+         * The stage of application update allowing specifying reply URLs.
+         */
+        interface WithReplyUrl {
+            /**
+             * Adds a reply URL to the application.
+             *
+             * @param replyUrl URIs to which Azure AD will redirect in response to an OAuth 2.0 request
+             * @return the next stage in application update
+             */
+            Update withReplyUrl(String replyUrl);
+
+            /**
+             * Removes a reply URL.
+             *
+             * @param replyUrl the reply URL to remove
+             * @return the next stage in application update
+             */
+            Update withoutReplyUrl(String replyUrl);
+        }
+
+        /**
+         * The stage of application update allowing specifying identifier URLs.
+         */
+        interface WithIdentifierUrl {
+            /**
+             * Adds an identifier URL to the application.
+             *
+             * @param identifierUrl unique URI that Azure AD can use for this app
+             * @return the next stage in application update
+             */
+            Update withIdentifierUrl(String identifierUrl);
+
+            /**
+             * Removes an identifier URL from the application.
+             *
+             * @param identifierUrl identifier URI to remove
+             * @return the next stage in application update
+             */
+            Update withoutIdentifierUrl(String identifierUrl);
+        }
+
+        /**
+         * The stage of application update allowing specifying identifier keys.
+         */
+        interface WithCredential {
+            /**
+             * Starts the definition of a certificate credential.
+             * @param name the descriptive name of the certificate credential
+             * @return the first stage in certificate credential definition
+             */
+            CertificateCredential.UpdateDefinitionStages.Blank<Update> defineCertificateCredential(String name);
+
+            /**
+             * Starts the definition of a password credential.
+             * @param name the descriptive name of the password credential
+             * @return the first stage in password credential definition
+             */
+            PasswordCredential.DefinitionStages.Blank<Update> definePasswordCredential(String name);
+
+            /**
+             * Removes a key.
+             * @param name the name of the key
+             * @return the next stage of the application update
+             */
+            Update withoutCredential(String name);
+        }
+
+        /**
+         * The stage of application update allowing specifying if the application can be used in multiple tenants.
+         */
+        interface WithMultiTenant {
+            /**
+             * Specifies if the application can be used in multiple tenants.
+             * @param availableToOtherTenants true if this application is available in other tenants
+             * @return the next stage in application update
+             */
+            Update withMultiTenant(boolean availableToOtherTenants);
+        }
     }
 
     /**
      * The template for an application update operation, containing all the settings that can be modified.
      */
-    interface Update {
+    interface Update extends
+            Appliable<Application>,
+            UpdateStages.WithSignOnUrl,
+            UpdateStages.WithIdentifierUrl,
+            UpdateStages.WithReplyUrl,
+            UpdateStages.WithCredential,
+            UpdateStages.WithMultiTenant {
     }
 }

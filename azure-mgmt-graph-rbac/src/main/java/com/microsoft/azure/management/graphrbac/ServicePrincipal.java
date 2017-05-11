@@ -64,15 +64,56 @@ public interface ServicePrincipal extends
         interface Blank extends WithApplication {
         }
 
+        /**
+         * A service principal definition allowing application to be specified.
+         */
         interface WithApplication {
+            /**
+             * Specifies an existing application by its app ID.
+             * @param id the app ID of the application
+             * @return the next stage of the service principal definition
+             */
             WithCreate withExistingApplication(String id);
+
+            /**
+             * Specifies an existing application to use by the service principal.
+             * @param application the application
+             * @return the next stage of the service principal definition
+             */
             WithCreate withExistingApplication(Application application);
+
+            /**
+             * Specifies a new application to create and use by the service principal.
+             * @param applicationCreatable the new application's creatable
+             * @return the next stage of the service principal definition
+             */
             WithCreate withNewApplication(Creatable<Application> applicationCreatable);
+
+            /**
+             * Specifies a new application to create and use by the service principal.
+             * @param signOnUrl the new application's sign on URL
+             * @return the next stage of the service principal definition
+             */
             WithCreate withNewApplication(String signOnUrl);
         }
 
-        interface WithKey {
-            Credential.DefinitionStages.Blank<WithCreate> defineKey(String name);
+        /**
+         * A service principal definition allowing credentials to be specified.
+         */
+        interface WithCredential {
+            /**
+             * Starts the definition of a certificate credential.
+             * @param name the descriptive name of the certificate credential
+             * @return the first stage in certificate credential definition
+             */
+            CertificateCredential.DefinitionStages.Blank<WithCreate> defineCertificateCredential(String name);
+
+            /**
+             * Starts the definition of a password credential.
+             * @param name the descriptive name of the password credential
+             * @return the first stage in password credential definition
+             */
+            PasswordCredential.DefinitionStages.Blank<WithCreate> definePasswordCredential(String name);
         }
 
         /**
@@ -82,19 +123,7 @@ public interface ServicePrincipal extends
          */
         interface WithCreate extends
                 Creatable<ServicePrincipal>,
-                WithKey {
+                WithCredential {
         }
-    }
-
-    /**
-     * Grouping of all the service principal update stages.
-     */
-    interface UpdateStages {
-    }
-
-    /**
-     * The template for a service principal update operation, containing all the settings that can be modified.
-     */
-    interface Update {
     }
 }

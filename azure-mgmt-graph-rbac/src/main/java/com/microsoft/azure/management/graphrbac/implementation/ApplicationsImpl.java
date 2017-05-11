@@ -14,6 +14,7 @@ import com.microsoft.azure.management.graphrbac.Applications;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -34,6 +35,7 @@ class ApplicationsImpl
             Applications,
             HasManager<GraphRbacManager>,
             HasInner<ApplicationsInner> {
+    private final PagedListConverter<ApplicationInner, Application> converter;
     private ApplicationsInner innerCollection;
     private GraphRbacManager manager;
 
@@ -42,6 +44,14 @@ class ApplicationsImpl
             final GraphRbacManager graphRbacManager) {
         this.innerCollection = client;
         this.manager = graphRbacManager;
+        converter = new PagedListConverter<ApplicationInner, Application>() {
+            @Override
+            public Application typeConvert(ApplicationInner applicationsInner) {
+                ApplicationImpl impl = wrapModel(applicationsInner);
+                return impl.refreshCredentialsAsync().toBlocking().single();
+            }
+        };
+
     }
 
     @Override
@@ -50,8 +60,19 @@ class ApplicationsImpl
     }
 
     @Override
+    protected PagedList<Application> wrapList(PagedList<ApplicationInner> pagedList) {
+        return converter.convert(pagedList);
+    }
+
+    @Override
     public Observable<Application> listAsync() {
-        return wrapPageAsync(this.inner().listAsync());
+        return wrapPageAsync(this.inner().listAsync())
+                .flatMap(new Func1<Application, Observable<Application>>() {
+                    @Override
+                    public Observable<Application> call(Application application) {
+                        return ((ApplicationImpl) application).refreshCredentialsAsync();
+                    }
+                });
     }
 
     @Override
@@ -70,13 +91,18 @@ class ApplicationsImpl
     @Override
     public Observable<Application> getByIdAsync(String id) {
         return innerCollection.getAsync(id)
-                .map(new Func1<ApplicationInner, Application>() {
+                .map(new Func1<ApplicationInner, ApplicationImpl>() {
                     @Override
-                    public Application call(ApplicationInner applicationInner) {
+                    public ApplicationImpl call(ApplicationInner applicationInner) {
                         if (applicationInner == null) {
                             return null;
                         }
                         return new ApplicationImpl(applicationInner, manager());
+                    }
+                }).flatMap(new Func1<ApplicationImpl, Observable<Application>>() {
+                    @Override
+                    public Observable<Application> call(ApplicationImpl application) {
+                        return application.refreshCredentialsAsync();
                     }
                 });
     }
@@ -102,13 +128,21 @@ class ApplicationsImpl
                         }
                         return Observable.just(result.body());
                     }
-                }).map(new Func1<Page<ApplicationInner>, Application>() {
+                }).map(new Func1<Page<ApplicationInner>, ApplicationImpl>() {
                     @Override
-                    public Application call(Page<ApplicationInner> result) {
+                    public ApplicationImpl call(Page<ApplicationInner> result) {
                         if (result == null || result.items() == null || result.items().isEmpty()) {
                             return null;
                         }
                         return new ApplicationImpl(result.items().get(0), manager());
+                    }
+                }).flatMap(new Func1<ApplicationImpl, Observable<Application>>() {
+                    @Override
+                    public Observable<Application> call(ApplicationImpl application) {
+                        if (application == null) {
+                            return null;
+                        }
+                        return application.refreshCredentialsAsync();
                     }
                 });
     }

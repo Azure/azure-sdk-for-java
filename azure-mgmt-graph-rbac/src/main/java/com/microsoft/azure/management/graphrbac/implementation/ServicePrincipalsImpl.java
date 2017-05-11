@@ -11,12 +11,14 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.graphrbac.ServicePrincipals;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -25,14 +27,15 @@ import rx.functions.Func1;
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 class ServicePrincipalsImpl
-        extends ReadableWrappersImpl<
-                    ServicePrincipal,
-                    ServicePrincipalImpl,
-                    ServicePrincipalInner>
+        extends CreatableWrappersImpl<
+            ServicePrincipal,
+            ServicePrincipalImpl,
+            ServicePrincipalInner>
         implements
             ServicePrincipals,
             HasManager<GraphRbacManager>,
             HasInner<ServicePrincipalsInner> {
+    private final PagedListConverter<ServicePrincipalInner, ServicePrincipal> converter;
     private ServicePrincipalsInner innerCollection;
     private GraphRbacManager manager;
 
@@ -41,6 +44,13 @@ class ServicePrincipalsImpl
             final GraphRbacManager graphRbacManager) {
         this.innerCollection = client;
         this.manager = graphRbacManager;
+        converter = new PagedListConverter<ServicePrincipalInner, ServicePrincipal>() {
+            @Override
+            public ServicePrincipal typeConvert(ServicePrincipalInner servicePrincipalInner) {
+                ServicePrincipalImpl impl = wrapModel(servicePrincipalInner);
+                return impl.refreshCredentialsAsync().toBlocking().single();
+            }
+        };
     }
 
     @Override
@@ -50,7 +60,13 @@ class ServicePrincipalsImpl
 
     @Override
     public Observable<ServicePrincipal> listAsync() {
-        return wrapPageAsync(this.inner().listAsync());
+        return wrapPageAsync(this.inner().listAsync())
+                .flatMap(new Func1<ServicePrincipal, Observable<ServicePrincipal>>() {
+                    @Override
+                    public Observable<ServicePrincipal> call(ServicePrincipal servicePrincipal) {
+                        return ((ServicePrincipalImpl) servicePrincipal).refreshCredentialsAsync();
+                    }
+                });
     }
 
     @Override
@@ -69,13 +85,21 @@ class ServicePrincipalsImpl
     @Override
     public Observable<ServicePrincipal> getByIdAsync(String id) {
         return innerCollection.getAsync(id)
-                .map(new Func1<ServicePrincipalInner, ServicePrincipal>() {
+                .map(new Func1<ServicePrincipalInner, ServicePrincipalImpl>() {
                     @Override
-                    public ServicePrincipal call(ServicePrincipalInner servicePrincipalInner) {
+                    public ServicePrincipalImpl call(ServicePrincipalInner servicePrincipalInner) {
                         if (servicePrincipalInner == null) {
                             return null;
                         }
                         return new ServicePrincipalImpl(servicePrincipalInner, manager());
+                    }
+                }).flatMap(new Func1<ServicePrincipalImpl, Observable<ServicePrincipal>>() {
+                    @Override
+                    public Observable<ServicePrincipal> call(ServicePrincipalImpl servicePrincipal) {
+                        if (servicePrincipal == null) {
+                            return null;
+                        }
+                        return servicePrincipal.refreshCredentialsAsync();
                     }
                 });
     }
@@ -101,13 +125,21 @@ class ServicePrincipalsImpl
                         }
                         return Observable.just(result.body());
                     }
-                }).map(new Func1<Page<ServicePrincipalInner>, ServicePrincipal>() {
+                }).map(new Func1<Page<ServicePrincipalInner>, ServicePrincipalImpl>() {
                     @Override
-                    public ServicePrincipal call(Page<ServicePrincipalInner> result) {
+                    public ServicePrincipalImpl call(Page<ServicePrincipalInner> result) {
                         if (result == null || result.items() == null || result.items().isEmpty()) {
                             return null;
                         }
                         return new ServicePrincipalImpl(result.items().get(0), manager());
+                    }
+                }).flatMap(new Func1<ServicePrincipalImpl, Observable<ServicePrincipal>>() {
+                    @Override
+                    public Observable<ServicePrincipal> call(ServicePrincipalImpl servicePrincipal) {
+                        if (servicePrincipal == null) {
+                            return null;
+                        }
+                        return servicePrincipal.refreshCredentialsAsync();
                     }
                 });
     }
@@ -125,5 +157,15 @@ class ServicePrincipalsImpl
     @Override
     public ServicePrincipalImpl define(String name) {
         return new ServicePrincipalImpl(new ServicePrincipalInner().withDisplayName(name), manager());
+    }
+
+    @Override
+    protected ServicePrincipalImpl wrapModel(String name) {
+        return new ServicePrincipalImpl(new ServicePrincipalInner().withDisplayName(name), manager());
+    }
+
+    @Override
+    public Completable deleteByIdAsync(String id) {
+        return manager().inner().servicePrincipals().deleteAsync(id).toCompletable();
     }
 }

@@ -6,10 +6,10 @@
 
 package com.microsoft.azure.management.graphrbac;
 
-import com.google.common.io.BaseEncoding;
 import org.joda.time.Duration;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.nio.file.Files;
@@ -26,21 +26,34 @@ public class ApplicationsTests extends GraphRbacManagementTestBase {
     }
 
     @Test
-    public void canCreateApplication() throws Exception {
-        Application application = graphRbacManager.applications().define("anotherapp8")
-                .withSignOnUrl("http://easycreate.azure.com/anotherapp/8")
-                .withIdentifierUrl("http://easycreate.azure.com/anotherapp/8")
-                .defineKey("passwd")
-                    .withPassword("P@ssw0rd")
-                    .withDuration(Duration.standardDays(700))
-                    .attach()
-                .defineKey("cert")
-                    .withCertificate(BaseEncoding.base64().encode(Files.readAllBytes(Paths.get("/Users/jianghlu/Documents/code/certs/myserver.crt"))))
-                    .withType(CertificateType.ASYMMETRIC_X509_CERT)
-                    .withDuration(Duration.standardDays(100))
-                    .attach()
-                .create();
-        System.out.println(application.id() + " - " + application.appId());
+    @Ignore("Need to login as user to run")
+    public void canCRUDApplication() throws Exception {
+        Application application = null;
+        try {
+            application = graphRbacManager.applications().define("anotherapp15")
+                    .withSignOnUrl("http://easycreate.azure.com/anotherapp/15")
+                    .withIdentifierUrl("http://easycreate.azure.com/anotherapp/15")
+                    .definePasswordCredential("passwd")
+                        .withPasswordValue("P@ssw0rd")
+                        .withDuration(Duration.standardDays(700))
+                        .attach()
+                    .defineCertificateCredential("cert")
+                        .withAsymmetricX509Cert()
+                        .withPublicKey(Files.readAllBytes(Paths.get("/Users/jianghlu/Documents/code/certs/myserver.crt")))
+                        .withDuration(Duration.standardDays(100))
+                        .attach()
+                    .create();
+            System.out.println(application.id() + " - " + application.appId());
+
+            application.update()
+                    .withoutCredential("passwd")
+                    .apply();
+            System.out.println(application.id() + " - " + application.appId());
+        } finally {
+            if (application != null) {
+                graphRbacManager.applications().deleteById(application.id());
+            }
+        }
     }
 
 }

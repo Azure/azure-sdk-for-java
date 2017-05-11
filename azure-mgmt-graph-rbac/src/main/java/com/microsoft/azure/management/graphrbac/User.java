@@ -21,7 +21,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 public interface User extends
         HasInner<UserInner>,
         HasId,
-        HasName{
+        HasName {
     /**
      * @return Gets or sets object type.
      */
