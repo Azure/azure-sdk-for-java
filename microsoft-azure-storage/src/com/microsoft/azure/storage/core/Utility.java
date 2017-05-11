@@ -50,6 +50,8 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
 import org.xml.sax.SAXException;
 
 import com.fasterxml.jackson.core.JsonFactory;
@@ -70,6 +72,15 @@ import com.microsoft.azure.storage.StorageExtendedErrorInformation;
  * RESERVED FOR INTERNAL USE. A class which provides utility methods.
  */
 public final class Utility {
+
+    private static ThreadLocal<org.joda.time.format.DateTimeFormatter>
+        RFC1123_GMT_DATE_TIME_FORMATTER = new ThreadLocal<org.joda.time.format.DateTimeFormatter>() {
+        @Override protected DateTimeFormatter initialValue() {
+            return org.joda.time.format.DateTimeFormat.forPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
+                .withZoneUTC().withLocale(Locale.US);
+        }
+    };
+
     /**
      * Stores a reference to the GMT time zone.
      */
@@ -84,11 +95,6 @@ public final class Utility {
      * Stores a reference to the US locale.
      */
     public static final Locale LOCALE_US = Locale.US;
-
-    /**
-     * Stores a reference to the RFC1123 date/time pattern.
-     */
-    private static final String RFC1123_PATTERN = "EEE, dd MMM yyyy HH:mm:ss z";
 
     /**
      * Stores a reference to the ISO8601 date/time pattern.
@@ -117,12 +123,18 @@ public final class Utility {
      */
     private static final JsonFactory jsonFactory = new JsonFactory();
     
-    /**
-     * A factory to create SAXParser instances.
-     */
-    private static final ThreadLocal<SAXParserFactory> saxParserFactory = new ThreadLocal<SAXParserFactory>() {
-        @Override public SAXParserFactory initialValue() {
-            return SAXParserFactory.newInstance();
+    private static final ThreadLocal<SAXParser> saxParserThreadLocal = new ThreadLocal<SAXParser>() {
+        SAXParserFactory factory;
+        @Override public SAXParser initialValue() {
+            factory = SAXParserFactory.newInstance();
+            factory.setNamespaceAware(true);
+            try {
+                return factory.newSAXParser();
+            } catch (SAXException e) {
+                throw new RuntimeException("Unable to create SAXParser", e);
+            } catch (ParserConfigurationException e) {
+                throw new RuntimeException("Check parser configuration", e);
+            }
         }
     };
 
@@ -562,23 +574,38 @@ public final class Utility {
      * @return A <code>String</code> that represents the current GMT date/time using the RFC1123 pattern.
      */
     public static String getGMTTime() {
-        return getGMTTime(new Date());
+        return getGMTTime(new org.joda.time.DateTime());
+    }
+
+    /**
+     * Returns the GTM date/time String for the specified value using the RFC1123 pattern.
+     *
+     * @param date
+     *            A <code>Date</code> object that represents the date to convert to GMT date/time in the RFC1123
+     *            pattern.
+     *
+     * @return A <code>String</code> that represents the GMT date/time for the specified value using the RFC1123
+     *         pattern.
+     */
+    public static String getGMTTime(final Date date) {
+        return getGMTTime(new DateTime(date.getTime()));
     }
 
     /**
      * Returns the GTM date/time String for the specified value using the RFC1123 pattern.
      * 
      * @param date
-     *            A <code>Date</code> object that represents the date to convert to GMT date/time in the RFC1123
+     *            A <code>DateTime</code> object that represents the date to
+     *            convert to GMT date/time in the RFC1123
      *            pattern.
      * 
      * @return A <code>String</code> that represents the GMT date/time for the specified value using the RFC1123
      *         pattern.
      */
-    public static String getGMTTime(final Date date) {
-        final DateFormat formatter = new SimpleDateFormat(RFC1123_PATTERN, LOCALE_US);
-        formatter.setTimeZone(GMT_ZONE);
-        return formatter.format(date);
+    public static String getGMTTime(final org.joda.time.DateTime date) {
+        StringBuilder sb = new StringBuilder(50);
+        RFC1123_GMT_DATE_TIME_FORMATTER.get().printTo(sb, date);
+        return sb.toString();
     }
 
     
@@ -668,8 +695,9 @@ public final class Utility {
      * @throws SAXException
      */
     public static SAXParser getSAXParser() throws ParserConfigurationException, SAXException {
-        saxParserFactory.get().setNamespaceAware(true);
-        return saxParserFactory.get().newSAXParser();
+        SAXParser parser = saxParserThreadLocal.get();
+        parser.reset(); //reset to original config
+        return parser;
     }
     
     /**
@@ -811,9 +839,7 @@ public final class Utility {
      *             If the specified string is invalid.
      */
     public static Date parseRFC1123DateFromStringInGMT(final String value) throws ParseException {
-        final DateFormat format = new SimpleDateFormat(RFC1123_PATTERN, Utility.LOCALE_US);
-        format.setTimeZone(GMT_ZONE);
-        return format.parse(value);
+        return DateTime.parse(value, RFC1123_GMT_DATE_TIME_FORMATTER.get()).toDate();
     }
 
     /**

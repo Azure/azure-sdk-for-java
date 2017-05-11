@@ -81,7 +81,12 @@
 			<version>0.8.0</version>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+        <dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+            <version>2.9.4</version>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<sourceDirectory>microsoft-azure-storage/src</sourceDirectory>
