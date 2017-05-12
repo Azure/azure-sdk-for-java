@@ -35,6 +35,8 @@ public interface NetworkWatcher extends
      */
     Topology topology(String targetResourceGroup);
 
+    SecurityGroupViewResult securityGroupViewResult(String vmId);
+
     /**
      * Container interface for all the definitions.
      */

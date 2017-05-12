@@ -58,6 +58,11 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
         Assert.assertTrue(topology.resources().containsKey("subnet1"));
         Assert.assertEquals(2, topology.resources().get(virtualMachines[0].getPrimaryNetworkInterface().name()).associations().size());
         Assert.assertEquals(0, topology.resources().get("subnet2").associations().size());
+
+        SecurityGroupViewResult sgViewResult = nw.securityGroupViewResult(virtualMachines[0].id());
+        Assert.assertEquals(1, sgViewResult.networkInterfaces().size());
+        Assert.assertEquals(virtualMachines[0].primaryNetworkInterfaceId(), sgViewResult.networkInterfaces().keySet().iterator().next());
+
         return nw;
     }
 

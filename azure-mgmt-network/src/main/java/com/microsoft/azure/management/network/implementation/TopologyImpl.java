@@ -25,7 +25,7 @@ class TopologyImpl extends WrapperImpl<TopologyInner> implements Topology {
 
     TopologyImpl(TopologyInner innerObject) {
         super(innerObject);
-        initializeResourceseFromInner();
+        initializeResourcesFromInner();
     }
 
     @Override
@@ -48,7 +48,7 @@ class TopologyImpl extends WrapperImpl<TopologyInner> implements Topology {
         return Collections.unmodifiableMap(this.resources);
     }
 
-    private void initializeResourceseFromInner() {
+    private void initializeResourcesFromInner() {
         this.resources = new TreeMap<>();
         List<TopologyResource> topologyResources = this.inner().resources();
         if (topologyResources != null) {

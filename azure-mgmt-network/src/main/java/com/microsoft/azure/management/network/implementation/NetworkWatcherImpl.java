@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.NetworkWatcher;
+import com.microsoft.azure.management.network.SecurityGroupViewResult;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import rx.Observable;
 
@@ -38,6 +39,13 @@ class NetworkWatcherImpl
         TopologyInner topologyInner = this.manager().inner().networkWatchers()
                 .getTopology(this.resourceGroupName(), this.name(), targetResourceGroup);
         return new TopologyImpl(topologyInner);
+    }
+
+    @Override
+    public SecurityGroupViewResult securityGroupViewResult(String vmId) {
+        SecurityGroupViewResultInner securityGroupViewResultInner = this.manager().inner().networkWatchers()
+                .getVMSecurityRules(this.resourceGroupName(), this.name(), vmId);
+        return new SecurityGroupViewResultImpl(securityGroupViewResultInner);
     }
 
     @Override
