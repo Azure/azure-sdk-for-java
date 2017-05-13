@@ -65,6 +65,7 @@ public class TestApplicationGateway {
      */
     public static class PrivateMinimal extends TestTemplate<ApplicationGateway, ApplicationGateways> {
         PrivateMinimal() {
+            super(true);
             initializeResourceNames();
         }
 
@@ -244,6 +245,7 @@ public class TestApplicationGateway {
          * @throws Exception when something goes wrong
          */
         public PrivateComplex() throws Exception {
+            super(true);
             initializeResourceNames();
         }
 
@@ -576,6 +578,7 @@ public class TestApplicationGateway {
          * @throws Exception when something goes wrong with test PIP creation
          */
         public PublicComplex() throws Exception {
+            super(true);
             initializeResourceNames();
         }
 
@@ -845,6 +848,7 @@ public class TestApplicationGateway {
     public static class PublicMinimal extends TestTemplate<ApplicationGateway, ApplicationGateways> {
 
         PublicMinimal() {
+            super(true);
             initializeResourceNames();
         }
         @Override
