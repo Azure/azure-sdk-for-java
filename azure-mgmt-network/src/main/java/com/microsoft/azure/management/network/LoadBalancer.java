@@ -84,6 +84,7 @@ public interface LoadBalancer extends
         DefinitionStages.WithBackendOrProbe,
         DefinitionStages.WithProbe,
         DefinitionStages.WithProbeOrLoadBalancingRule,
+        DefinitionStages.WithProbeOrNat,
         DefinitionStages.WithLoadBalancingRule,
         DefinitionStages.WithLoadBalancingRuleOrCreate,
         DefinitionStages.WithCreateAndInboundNatPool,
@@ -165,9 +166,15 @@ public interface LoadBalancer extends
         }
 
         /**
-         * The stage of a load balancer definition allowing to add a backend or start adding probes.
+         * The stage of a load balancer definition allowing to add a backend or start adding probes, or NAT rules, or NAT pools.
          */
-        interface WithBackendOrProbe extends WithBackend, WithProbe {
+        interface WithBackendOrProbe extends WithBackend, WithProbeOrNat {
+        }
+
+        /**
+         * The stage of a load balancer definition allowing to add a probe or an inbound NAT rule or pool.
+         */
+        interface WithProbeOrNat extends WithProbe, WithInboundNatRule, WithInboundNatPool {
         }
 
         /**
