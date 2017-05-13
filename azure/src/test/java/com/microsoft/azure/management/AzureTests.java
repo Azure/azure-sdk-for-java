@@ -278,7 +278,7 @@ public class AzureTests extends TestBase {
     }
 
     /**
-     * Tests the minimum Internet-facing load balancer.
+     * Tests the minimum Internet-facing load balancer with a load balancing rule only
      * @throws Exception
      */
     @Test
@@ -286,6 +286,16 @@ public class AzureTests extends TestBase {
         new TestLoadBalancer.InternetMinimal(
                 azure.virtualMachines(),
                 azure.availabilitySets())
+            .runTest(azure.loadBalancers(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests the minimum Internet-facing load balancer with a NAT rule only
+     * @throws Exception
+     */
+    @Test
+    public void testLoadBalancersNatOnly() throws Exception {
+        new TestLoadBalancer.InternetNatOnly(azure.virtualMachines().manager())
             .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
