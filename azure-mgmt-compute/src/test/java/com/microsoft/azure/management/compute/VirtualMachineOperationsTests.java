@@ -53,7 +53,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     @Test
     @Ignore("Can't be played from recording for some reason...")
     public void canDeleteRelatedResourcesFromFailedParallelVMCreations() {
-        final int desiredVMCount = 40;
+        final int desiredVMCount = 15;
         final Region region = Region.US_EAST;
         final String resourceGroupName = RG_NAME;
 
@@ -145,10 +145,17 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                         System.out.println("Created: " + resource.id());
                         if (resource instanceof VirtualMachine) {
                             VirtualMachine virtualMachine = (VirtualMachine) resource;
+
+                            // Record that this VM was created successfully
                             vmDefinitions.remove(virtualMachine.key());
+
+                            // Remove the associated resources from cleanup list
                             vmNonNicResourceDefinitions.remove(virtualMachine.key());
+
+                            // Remove the associated NIC from cleanup list
                             nicDefinitions.remove(virtualMachine.key());
                         } else {
+                            // Add this related resource to potential cleanup list
                             createdResourceIds.put(resource.key(), resource.id());
                         }
                     }
@@ -163,7 +170,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 }
             }).toBlocking().last();
 
-        // Delete successfully created NICs of failed VM creations
+        // Delete remaining successfully created NICs of failed VM creations
         Collection<String> nicIdsToDelete = new ArrayList<>();
         for (Creatable<NetworkInterface> nicDefinition : nicDefinitions.values()) {
             String nicId = createdResourceIds.get(nicDefinition.key());
@@ -183,11 +190,12 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 }
             }
         }
+
+        // Delete as much as possible, postponing the errors till the end
         Completable.mergeDelayError(deleteObservables).await();
         System.out.println("Number of failed/cleaned up VM creations: " + vmNonNicResourceDefinitions.size());
 
         // Verifications
-
         final int successfulVMCount = desiredVMCount - vmNonNicResourceDefinitions.size();
         final int actualVMCount = computeManager.virtualMachines().listByResourceGroup(resourceGroupName).size();
         Assert.assertEquals(successfulVMCount, actualVMCount);
@@ -272,7 +280,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assert.assertTrue(createdVirtualMachines.size() == count);
 
         Set<String> virtualMachineNames = new HashSet<>();
-        for (int i = 0; i < count; i ++) {
+        for (int i = 0; i < count; i++) {
             virtualMachineNames.add(String.format("%s-%d", vmNamePrefix, i));
         }
         for (VirtualMachine virtualMachine : createdVirtualMachines.values()) {
@@ -281,7 +289,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         }
 
         Set<String> networkNames = new HashSet<>();
-        for (int i = 0; i < count; i ++) {
+        for (int i = 0; i < count; i++) {
             networkNames.add(String.format("%s-%d", networkNamePrefix, i));
         }
         for (String networkCreatableKey : networkCreatableKeys) {
@@ -291,7 +299,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         }
 
         Set<String> publicIPAddressNames = new HashSet<>();
-        for (int i = 0; i < count; i ++) {
+        for (int i = 0; i < count; i++) {
             publicIPAddressNames.add(String.format("%s-%d", publicIpNamePrefix, i));
         }
         for (String publicIpCreatableKey : publicIpCreatableKeys) {
@@ -309,17 +317,17 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         int count = 5;
 
         final Set<String> virtualMachineNames = new HashSet<>();
-        for (int i = 0; i < count; i ++) {
+        for (int i = 0; i < count; i++) {
             virtualMachineNames.add(String.format("%s-%d", vmNamePrefix, i));
         }
 
         final Set<String> networkNames = new HashSet<>();
-        for (int i = 0; i < count; i ++) {
+        for (int i = 0; i < count; i++) {
             networkNames.add(String.format("%s-%d", networkNamePrefix, i));
         }
 
         final Set<String> publicIPAddressNames = new HashSet<>();
-        for (int i = 0; i < count; i ++) {
+        for (int i = 0; i < count; i++) {
             publicIPAddressNames.add(String.format("%s-%d", publicIpNamePrefix, i));
         }
 

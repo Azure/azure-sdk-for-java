@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT License. See License.txt in the project root for
  * license information.
@@ -36,13 +36,20 @@ public abstract class TestTemplate<
         & HasInner<?>
         & HasManager<? extends ManagerBase>> {
 
-    protected String testId = "";
+    protected final String testId;
     private ResourceT resource;
     private CollectionT collection;
     private ResourceGroups resourceGroups;
+    private final boolean useBeginDelete;
 
     protected TestTemplate() {
-        testId = SdkContext.randomResourceName("", 8);
+        this.testId = SdkContext.randomResourceName("", 8);
+        this.useBeginDelete = false;
+    }
+
+    protected TestTemplate(boolean useBeginDelete) {
+        this.testId = SdkContext.randomResourceName("", 8);
+        this.useBeginDelete = useBeginDelete;
     }
 
     /**
@@ -95,7 +102,11 @@ public abstract class TestTemplate<
     public void verifyDeleting() throws Exception {
         final String groupName = this.resource.resourceGroupName();
         this.collection.deleteById(this.resource.id());
-        this.resourceGroups.deleteByName(groupName);
+        if (this.useBeginDelete) {
+            this.resourceGroups.beginDeleteByName(groupName);
+        } else {
+            this.resourceGroups.deleteByName(groupName);
+        }
     }
 
     /**
