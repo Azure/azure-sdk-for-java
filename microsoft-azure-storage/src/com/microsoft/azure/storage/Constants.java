@@ -656,7 +656,7 @@ public final class Constants {
         /**
          * Specifies the value to use for UserAgent header.
          */
-        public static final String USER_AGENT_VERSION = "5.0.0";
+        public static final String USER_AGENT_VERSION = "5.1.1";
 
         /**
          * The default type for content-type and accept
