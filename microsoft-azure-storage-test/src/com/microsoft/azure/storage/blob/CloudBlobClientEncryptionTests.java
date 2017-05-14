@@ -23,7 +23,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -144,41 +143,7 @@ public class CloudBlobClientEncryptionTests {
         TestHelper.assertStreamsAreEqualAtIndex(stream, new ByteArrayInputStream(outputStream.toByteArray()), 0, 0, 
                 size, 2 * 1024);
     }
-
-    @Test
-    public void testDownloadUnencryptedBlobWithEncryptionPolicy() throws StorageException, IOException, URISyntaxException, NoSuchAlgorithmException
-    {
-        String blobName = BlobTestHelper.generateRandomBlobNameWithPrefix("test");
-        CloudBlockBlob blob = container.getBlockBlobReference(blobName);
-        blob.deleteIfExists();
-
-        byte[] msg = "my message".getBytes();
-        // Upload data without encryption
-        blob.uploadFromByteArray(msg, 0, msg.length);
-
-        // Create options with encryption policy
-        BlobRequestOptions options = new BlobRequestOptions();
-        options.setEncryptionPolicy(new BlobEncryptionPolicy(new RsaKey("myKey", 1024), null));
-        options.setRequireEncryption(true);
-
-        try {
-            blob.downloadText(Charset.defaultCharset().name(), null, options, null);
-            fail("Expect exception");
-        }
-        catch (StorageException e) {
-            assertEquals(SR.ENCRYPTION_DATA_NOT_PRESENT_ERROR, e.getMessage());
-        }
-
-        byte[] buffer = new byte[msg.length];
-        try {
-            blob.downloadRangeToByteArray(0, (long) buffer.length, buffer, 0, null, options, null);
-            fail("Expect exception");
-        }
-        catch (StorageException e) {
-            assertEquals(SR.ENCRYPTION_DATA_NOT_PRESENT_ERROR, e.getMessage());
-        }
-    }
-
+    
     @Test
     public void testBlobEncryptionWithFile() throws URISyntaxException, StorageException, IOException,
             InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {

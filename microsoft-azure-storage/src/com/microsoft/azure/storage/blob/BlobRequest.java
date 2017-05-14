@@ -373,7 +373,7 @@ final class BlobRequest {
                 break;
             case INCLUDE_SNAPSHOTS:
                 request.setRequestProperty(Constants.HeaderConstants.DELETE_SNAPSHOT_HEADER,
-                        HeaderConstants.INCLUDE_SNAPSHOTS_VALUE);
+                        BlobConstants.INCLUDE_SNAPSHOTS_VALUE);
                 break;
             case DELETE_SNAPSHOTS_ONLY:
                 request.setRequestProperty(Constants.HeaderConstants.DELETE_SNAPSHOT_HEADER,

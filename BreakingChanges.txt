@@ -1,13 +1,13 @@
-ï»¿Changes in 5.0.0
+Changes in 5.0.0
 
 BLOB
  * getQualifiedUri() has been deprecated. Please use getSnapshotQualifiedUri() instead. This new function will return the blob including the snapshot (if present) and no SAS token.
  * getQualifiedStorageUri() has been deprecated. Please use getSnapshotQualifiedStorageUri() instead. This new function will return the blob including the snapshot (if present) and no SAS token.
  * Fixed a bug where copying from a blob that included a SAS token and a snapshot did not use the SAS token.
  
-FILE
+ FILE
  * Fixed a bug where copying from a blob that included a SAS token and a snapshot did not use the SAS token.
-
+ 
 QUEUE
  * For addMessage() the CloudQueueMessage message passed in will be populated with the pop receipt, insertion/expiration time, and message ID.
 
@@ -164,8 +164,8 @@ Changes in 0.5.0
 
  OTHER
  * The packaging structure has changed to
-	1. com.microsoft.windowsazure.storage ï¿½ RetryPolicies, LocationMode, StorageException, Storage Credentials etc. Basically all public classes that are common across services.
-	2. com.microsoft.windowsazure.storage.core ï¿½ These classes are reserved for internal use and users never have to include this namespace in their projects. 
+	1. com.microsoft.windowsazure.storage – RetryPolicies, LocationMode, StorageException, Storage Credentials etc. Basically all public classes that are common across services.
+	2. com.microsoft.windowsazure.storage.core – These classes are reserved for internal use and users never have to include this namespace in their projects. 
 	3. com.microsoft.windowsazure.storage.blob
 	4. com.microsoft.windowsazure.storage.queue
 	5. com.microsoft.windowsazure.storage.table
