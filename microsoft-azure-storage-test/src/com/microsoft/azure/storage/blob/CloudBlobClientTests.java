@@ -247,11 +247,11 @@ public class CloudBlobClientTests {
         try {
             bClient.getDefaultRequestOptions().setSingleBlobPutThresholdInBytes(
                     BlobConstants.MAX_SINGLE_UPLOAD_BLOB_SIZE_IN_BYTES + 1);
-            fail("Cannot set upload blob threshold above 256 MB");
+            fail("Cannot set upload blob threshold above 64 MB");
         }
         catch (IllegalArgumentException e) {
             assertEquals(
-                    "The argument is out of range. Argument name: singleBlobPutThresholdInBytes, Value passed: 268435457.",
+                    "The argument is out of range. Argument name: singleBlobPutThresholdInBytes, Value passed: 67108865.",
                     e.getMessage());
         }
 
