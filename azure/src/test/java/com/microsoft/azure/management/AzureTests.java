@@ -181,7 +181,7 @@ public class AzureTests extends TestBase {
             .create();
         System.out.println("Created deployment: " + deployment.correlationId());
 
-        azure.resourceGroups().deleteByName("rg" + testId);
+        azure.resourceGroups().beginDeleteByName("rg" + testId);
     }
 
     /**

@@ -24,6 +24,10 @@ public class TestNetwork {
      * Test of plain subnets.
      */
     public static class WithSubnets extends TestTemplate<Network, Networks> {
+        public WithSubnets() {
+            super(true);
+        }
+
         @Override
         public Network createResource(Networks networks) throws Exception {
             final String newName = "net" + this.testId;

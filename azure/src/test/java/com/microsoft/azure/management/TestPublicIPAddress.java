@@ -19,6 +19,9 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
  * Tests public IPs.
  */
 public class TestPublicIPAddress extends TestTemplate<PublicIPAddress, PublicIPAddresses> {
+    public TestPublicIPAddress() {
+        super(true);
+    }
 
     @Override
     public PublicIPAddress createResource(PublicIPAddresses pips) throws Exception {

@@ -25,6 +25,10 @@ import java.util.Map;
  * Test of CDN management.
  */
 public class TestCdn extends TestTemplate<CdnProfile, CdnProfiles> {
+    public TestCdn() {
+        super(true);
+    }
+
     @Override
     public CdnProfile createResource(CdnProfiles profiles) throws Exception {
         final Region region = Region.US_EAST;

@@ -20,6 +20,9 @@ import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 public class TestNetworkInterface extends TestTemplate<NetworkInterface, NetworkInterfaces> {
+    public TestNetworkInterface() {
+        super(true);
+    }
 
     @Override
     public NetworkInterface createResource(NetworkInterfaces networkInterfaces) throws Exception {

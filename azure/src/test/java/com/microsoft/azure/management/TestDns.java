@@ -29,6 +29,11 @@ import org.junit.Assert;
  * Test of Dns management.
  */
 public class TestDns extends TestTemplate<DnsZone, DnsZones> {
+
+    public TestDns() {
+        super(true);
+    }
+
     @Override
     public DnsZone createResource(DnsZones dnsZones) throws Exception {
         final Region region = Region.US_EAST;
