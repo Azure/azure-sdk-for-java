@@ -130,8 +130,15 @@ public final class BlobEncryptionPolicy {
     OutputStream decryptBlob(OutputStream userProvidedStream, Map<String, String> metadata, Boolean requireEncryption,
             byte[] iv, boolean noPadding) throws StorageException {
         Utility.assertNotNull("metadata", metadata);
-        String encryptionDataString = metadata.get("encryptiondata");
 
+        // If encryption policy is set but the encryption metadata is absent, throw
+        // an exception.
+        String encryptionDataString = metadata.get("encryptiondata");
+        if (requireEncryption != null && requireEncryption && encryptionDataString == null)
+        {
+            throw new StorageException(StorageErrorCodeStrings.DECRYPTION_ERROR, SR.ENCRYPTION_DATA_NOT_PRESENT_ERROR, null);
+        }
+        
         try
         {
             if (encryptionDataString != null) {
@@ -227,14 +234,6 @@ public final class BlobEncryptionPolicy {
             BlobRequestOptions options, Map<String, String> metadata, long blobLength, boolean rangeRead, 
             Long endOffset, Long userSpecifiedLength, int discardFirst, boolean bufferIV) throws StorageException
     {
-        // If encryption policy is set but the encryption metadata is absent, throw
-        // an exception.
-        String encryptionDataString = metadata.get("encryptiondata");
-        if (options.requireEncryption() != null && options.requireEncryption() && encryptionDataString == null)
-        {
-            throw new StorageException(StorageErrorCodeStrings.DECRYPTION_ERROR, SR.ENCRYPTION_DATA_NOT_PRESENT_ERROR, null);
-        }
-        
         if (!rangeRead)
         {
             // The user provided stream should be wrapped in a TruncatingNonCloseableStream in order to 
