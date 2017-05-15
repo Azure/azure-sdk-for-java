@@ -6,46 +6,33 @@
 
 package com.microsoft.azure.management.graphrbac;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
+
+import java.util.Collection;
 
 /**
  * Defines values for certificate types.
  */
-public enum CertificateType {
-    /** Enum value AsymmetricX509Cert. */
-    ASYMMETRIC_X509_CERT("AsymmetricX509Cert"),
+public final class CertificateType extends ExpandableStringEnum<CertificateType> {
+    /** Static value AsymmetricX509Cert for CertificateType. */
+    public static final CertificateType ASYMMETRIC_X509_CERT = CertificateType.fromString("AsymmetricX509Cert");
 
-    /** Enum value Symmetric. */
-    SYMMETRIC("Symmetric");
+    /** Static value Symmetric for CertificateType. */
+    public static final CertificateType SYMMETRIC = CertificateType.fromString("Symmetric");
 
-    /** The actual serialized value for a AppServiceOperatingSystem instance. */
-    private String value;
-
-    CertificateType(String value) {
-        this.value = value;
+    /**
+     * Finds or creates a certificate type instance based on the specified name.
+     * @param name a name
+     * @return a CertificateType instance
+     */
+    public static CertificateType fromString(String name) {
+        return fromString(name, CertificateType.class);
     }
 
     /**
-     * Parses a serialized value to a certificate type instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed CertificateType object, or null if unable to parse.
+     * @return known certificate types
      */
-    @JsonCreator
-    public static CertificateType fromString(String value) {
-        CertificateType[] items = CertificateType.values();
-        for (CertificateType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<CertificateType> values() {
+        return values(CertificateType.class);
     }
 }

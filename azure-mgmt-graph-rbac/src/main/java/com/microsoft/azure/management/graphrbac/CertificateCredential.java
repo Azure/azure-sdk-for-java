@@ -40,7 +40,7 @@ public interface CertificateCredential extends
     }
 
     /**
-     * Grouping of credential definition stages applicable as part of a key vault creation.
+     * Grouping of credential definition stages applicable as part of a application or service principal creation.
      */
     interface DefinitionStages {
         /**
@@ -60,10 +60,10 @@ public interface CertificateCredential extends
              * Specifies the type of the certificate to be Asymmetric X509.
              * @return the next stage in credential definition
              */
-            WithPublicKey<ParentT> withAsymmetricX509Cert();
+            WithPublicKey<ParentT> withAsymmetricX509Certificate();
 
             /**
-             * Specifies the type of the certificate to be Symmetric.
+             * Specifies the type of the certificate to be symmetric.
              * @return the next stage in credential definition
              */
             WithSymmetricKey<ParentT> withSymmetricEncryption();
@@ -129,14 +129,14 @@ public interface CertificateCredential extends
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAttach<ParentT> extends
-                Attachable.InUpdate<ParentT>,
+                Attachable.InDefinition<ParentT>,
                 WithStartDate<ParentT>,
                 WithDuration<ParentT> {
         }
     }
 
     /**
-     * The entirety of a credential definition as part of a key vault update.
+     * The entirety of a credential definition as part of a application or service principal update.
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
     interface UpdateDefinition<ParentT> extends
@@ -148,7 +148,7 @@ public interface CertificateCredential extends
     }
 
     /**
-     * Grouping of credential definition stages applicable as part of a key vault update.
+     * Grouping of credential definition stages applicable as part of a application or service principal update.
      */
     interface UpdateDefinitionStages {
         /**
@@ -165,13 +165,13 @@ public interface CertificateCredential extends
          */
         interface WithCertificateType<ParentT> {
             /**
-             * Specifies the type of the certificate to be Asymmetric X509.
+             * Specifies the type of the certificate to be asymmetric X509.
              * @return the next stage in credential definition
              */
-            WithPublicKey<ParentT> withAsymmetricX509Cert();
+            WithPublicKey<ParentT> withAsymmetricX509Certificate();
 
             /**
-             * Specifies the type of the certificate to be Symmetric.
+             * Specifies the type of the certificate to be symmetric.
              * @return the next stage in credential definition
              */
             WithSymmetricKey<ParentT> withSymmetricEncryption();

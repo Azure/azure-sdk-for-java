@@ -11,7 +11,7 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.Application;
 import com.microsoft.azure.management.graphrbac.Applications;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
@@ -27,7 +27,7 @@ import rx.functions.Func1;
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 class ApplicationsImpl
-        extends CreatableWrappersImpl<
+        extends CreatableResourcesImpl<
             Application,
             ApplicationImpl,
             ApplicationInner>

@@ -42,7 +42,7 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
     }
 
     /**
-     * Creates an instance of GraphRbacManager that exposes graph rbac management API entry points.
+     * Creates an instance of GraphRbacManager that exposes Graph RBAC management API entry points.
      *
      * @param credentials the credentials to use
      * @return the GraphRbacManager instance
@@ -59,11 +59,11 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
     }
 
     /**
-     * Creates an instance of GraphRbacManager that exposes graph rbac management API entry points.
+     * Creates an instance of GraphRbacManager that exposes Graph RBAC management API entry points.
      *
      * @param restClient the RestClient to be used for API calls
      * @param tenantId the tenantId in Active Directory
-     * @return the interface exposing graph rbac management API entry points that work across subscriptions
+     * @return the interface exposing Graph RBAC management API entry points that work across subscriptions
      */
     public static GraphRbacManager authenticate(RestClient restClient, String tenantId) {
         return new GraphRbacManager(restClient, tenantId);
@@ -115,21 +115,21 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
     }
 
     /**
-     * @return the active directory user management API entry point
+     * @return the Active Directory user management API entry point
      */
     public Users users() {
         if (users == null) {
-            users = new UsersImpl(graphRbacManagementClient.users());
+            users = new UsersImpl(this);
         }
         return users;
     }
 
     /**
-     * @return the active directory group management API entry point
+     * @return the Active Directory group management API entry point
      */
     public Groups groups() {
         if (groups == null) {
-            groups = new GroupsImpl(graphRbacManagementClient.groups());
+            groups = new GroupsImpl(this);
         }
         return groups;
     }

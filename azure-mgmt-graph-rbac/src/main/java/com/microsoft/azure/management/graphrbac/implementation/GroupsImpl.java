@@ -28,15 +28,15 @@ class GroupsImpl
             ADGroupInner>
         implements
             Groups {
-    private GroupsInner innerCollection;
+    private final GraphRbacManager manager;
 
-    GroupsImpl(final GroupsInner client) {
-        this.innerCollection = client;
+    GroupsImpl(final GraphRbacManager manager) {
+        this.manager = manager;
     }
 
     @Override
     public PagedList<Group> list() {
-        return wrapList(this.innerCollection.list());
+        return wrapList(this.manager.inner().groups().list());
     }
 
     @Override
@@ -44,7 +44,7 @@ class GroupsImpl
         if (groupInner == null) {
             return null;
         }
-        return new GroupImpl(groupInner);
+        return new GroupImpl(groupInner, manager());
     }
 
     @Override
@@ -54,14 +54,14 @@ class GroupsImpl
 
     @Override
     public Observable<Group> getByIdAsync(String id) {
-        return innerCollection.getAsync(id)
+        return manager.inner().groups().getAsync(id)
                 .map(new Func1<ADGroupInner, Group>() {
                     @Override
                     public Group call(ADGroupInner groupInner) {
                         if (groupInner == null) {
                             return null;
                         } else {
-                            return new GroupImpl(groupInner);
+                            return new GroupImpl(groupInner, manager());
                         }
                     }
                 });
@@ -74,19 +74,19 @@ class GroupsImpl
 
     @Override
     public Observable<Group> listAsync() {
-        return wrapPageAsync(innerCollection.listAsync());
+        return wrapPageAsync(manager().inner().groups().listAsync());
     }
 
     @Override
     public Observable<Group> getByNameAsync(String name) {
-        return innerCollection.listAsync(String.format("displayName eq '%s'", name))
+        return manager().inner().groups().listAsync(String.format("displayName eq '%s'", name))
                 .map(new Func1<Page<ADGroupInner>, Group>() {
                     @Override
                     public Group call(Page<ADGroupInner> adGroupInnerPage) {
                         if (adGroupInnerPage.items() == null || adGroupInnerPage.items().isEmpty()) {
                             return null;
                         } else {
-                            return new GroupImpl(adGroupInnerPage.items().get(0));
+                            return new GroupImpl(adGroupInnerPage.items().get(0), manager());
                         }
                     }
                 });
@@ -95,5 +95,15 @@ class GroupsImpl
     @Override
     public Group getByName(String name) {
         return getByNameAsync(name).toBlocking().single();
+    }
+
+    @Override
+    public GraphRbacManager manager() {
+        return manager;
+    }
+
+    @Override
+    public GroupsInner inner() {
+        return manager().inner().groups();
     }
 }

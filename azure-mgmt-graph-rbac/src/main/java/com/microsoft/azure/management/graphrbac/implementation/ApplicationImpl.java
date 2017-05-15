@@ -8,6 +8,7 @@ package com.microsoft.azure.management.graphrbac.implementation;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.Application;
 import com.microsoft.azure.management.graphrbac.CertificateCredential;
@@ -16,10 +17,13 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 import rx.Observable;
 import rx.functions.Func1;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Implementation for ServicePrincipal and its parent interfaces.
@@ -145,17 +149,12 @@ class ApplicationImpl
     }
 
     @Override
-    public String objectType() {
-        return inner().objectType();
-    }
-
-    @Override
-    public String appId() {
+    public String applicationId() {
         return inner().appId();
     }
 
     @Override
-    public List<String> appPermissions() {
+    public List<String> applicationPermissions() {
         if (inner().appPermissions() == null) {
             return null;
         }
@@ -168,24 +167,28 @@ class ApplicationImpl
     }
 
     @Override
-    public List<String> identifierUris() {
+    public Set<String> identifierUris() {
         if (inner().identifierUris() == null) {
             return null;
         }
-        return Collections.unmodifiableList(inner().identifierUris());
+        return Collections.unmodifiableSet(Sets.newHashSet(inner().identifierUris()));
     }
 
     @Override
-    public List<String> replyUrls() {
+    public Set<String> replyUrls() {
         if (inner().replyUrls() == null) {
             return null;
         }
-        return Collections.unmodifiableList(inner().replyUrls());
+        return Collections.unmodifiableSet(Sets.newHashSet(inner().replyUrls()));
     }
 
     @Override
-    public String homepage() {
-        return inner().homepage();
+    public URL signOnUrl() {
+        try {
+            return new URL(inner().homepage());
+        } catch (MalformedURLException e) {
+            return null;
+        }
     }
 
     @Override
@@ -228,7 +231,7 @@ class ApplicationImpl
             createParameters.replyUrls().add(replyUrl);
         } else {
             if (updateParameters.replyUrls() == null) {
-                updateParameters.withReplyUrls(replyUrls());
+                updateParameters.withReplyUrls(new ArrayList<>(replyUrls()));
             }
             updateParameters.replyUrls().add(replyUrl);
         }
@@ -252,7 +255,7 @@ class ApplicationImpl
             createParameters.identifierUris().add(identifierUrl);
         } else {
             if (updateParameters.identifierUris() == null) {
-                updateParameters.withIdentifierUris(identifierUris());
+                updateParameters.withIdentifierUris(new ArrayList<>(identifierUris()));
             }
             updateParameters.identifierUris().add(identifierUrl);
         }
@@ -349,5 +352,10 @@ class ApplicationImpl
             updateParameters.withAvailableToOtherTenants(availableToOtherTenants);
         }
         return this;
+    }
+
+    @Override
+    public GraphRbacManager manager() {
+        return manager;
     }
 }

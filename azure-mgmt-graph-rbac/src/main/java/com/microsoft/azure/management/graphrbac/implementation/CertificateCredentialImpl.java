@@ -103,7 +103,7 @@ class CertificateCredentialImpl<T>
     }
 
     @Override
-    public CertificateCredentialImpl<T> withAsymmetricX509Cert() {
+    public CertificateCredentialImpl<T> withAsymmetricX509Certificate() {
         inner().withType(CertificateType.ASYMMETRIC_X509_CERT.toString());
         return this;
     }

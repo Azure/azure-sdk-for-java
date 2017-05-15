@@ -19,18 +19,16 @@ class UserImpl
         implements
             User {
 
-    UserImpl(UserInner innerObject) {
+    private final GraphRbacManager manager;
+
+    UserImpl(UserInner innerObject, GraphRbacManager manager) {
         super(innerObject);
+        this.manager = manager;
     }
 
     @Override
     public String id() {
         return inner().objectId();
-    }
-
-    @Override
-    public String objectType() {
-        return inner().objectType();
     }
 
     @Override
@@ -56,5 +54,10 @@ class UserImpl
     @Override
     public String mailNickname() {
         return inner().mailNickname();
+    }
+
+    @Override
+    public GraphRbacManager manager() {
+        return manager;
     }
 }

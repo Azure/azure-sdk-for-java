@@ -48,12 +48,7 @@ class ServicePrincipalImpl
     }
 
     @Override
-    public String objectType() {
-        return inner().objectType();
-    }
-
-    @Override
-    public String appId() {
+    public String applicationId() {
         return inner().appId();
     }
 
@@ -70,7 +65,7 @@ class ServicePrincipalImpl
     @Override
     public Observable<ServicePrincipal> createResourceAsync() {
         Application application = (Application) ((Object) super.createdModel(applicationCreatable.key()));
-        createParameters.withAppId(application.appId());
+        createParameters.withAppId(application.applicationId());
         return manager.inner().servicePrincipals().createAsync(createParameters)
                 .map(innerToFluentMap(this))
                 .flatMap(new Func1<ServicePrincipal, Observable<ServicePrincipal>>() {
@@ -188,7 +183,7 @@ class ServicePrincipalImpl
 
     @Override
     public ServicePrincipalImpl withExistingApplication(Application application) {
-        createParameters.withAppId(application.appId());
+        createParameters.withAppId(application.applicationId());
         return this;
     }
 
@@ -204,5 +199,10 @@ class ServicePrincipalImpl
         return withNewApplication(manager.applications().define(signOnUrl)
                 .withSignOnUrl(signOnUrl)
                 .withIdentifierUrl(signOnUrl));
+    }
+
+    @Override
+    public GraphRbacManager manager() {
+        return manager;
     }
 }

@@ -8,8 +8,10 @@ package com.microsoft.azure.management.graphrbac;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.graphrbac.implementation.ServicePrincipalInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
@@ -26,16 +28,12 @@ public interface ServicePrincipal extends
         Indexable,
         HasInner<ServicePrincipalInner>,
         HasId,
-        HasName {
-    /**
-     * @return object type.
-     */
-    String objectType();
-
+        HasName,
+        HasManager<GraphRbacManager> {
     /**
      * @return app id.
      */
-    String appId();
+    String applicationId();
 
     /**
      * @return the list of names.

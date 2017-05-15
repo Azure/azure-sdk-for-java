@@ -8,9 +8,13 @@ package com.microsoft.azure.management.graphrbac;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
+import com.microsoft.azure.management.graphrbac.implementation.GroupsInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByNameAsync;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
  * Entry point to AD group management API.
@@ -20,5 +24,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 public interface Groups extends
         SupportsListing<Group>,
         SupportsGettingById<Group>,
-        SupportsGettingByNameAsync<Group> {
+        SupportsGettingByNameAsync<Group>,
+        HasManager<GraphRbacManager>,
+        HasInner<GroupsInner> {
 }

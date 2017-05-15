@@ -8,8 +8,10 @@ package com.microsoft.azure.management.graphrbac;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.graphrbac.implementation.UserInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
@@ -21,12 +23,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 public interface User extends
         HasInner<UserInner>,
         HasId,
-        HasName {
-    /**
-     * @return Gets or sets object type.
-     */
-    String objectType();
-
+        HasName,
+        HasManager<GraphRbacManager> {
     /**
      * @return Gets or sets user principal name.
      */

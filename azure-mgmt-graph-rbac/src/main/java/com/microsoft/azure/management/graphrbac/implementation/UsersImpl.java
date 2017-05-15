@@ -30,16 +30,16 @@ class UsersImpl
         implements
             Users,
             HasInner<UsersInner> {
-    private UsersInner innerCollection;
+    private final GraphRbacManager manager;
 
     UsersImpl(
-            final UsersInner client) {
-        this.innerCollection = client;
+            final GraphRbacManager manager) {
+        this.manager = manager;
     }
 
     @Override
     public PagedList<User> list() {
-        return wrapList(this.innerCollection.list());
+        return wrapList(this.manager().inner().users().list());
     }
 
     @Override
@@ -47,7 +47,7 @@ class UsersImpl
         if (userInner == null) {
             return null;
         }
-        return new UserImpl(userInner);
+        return new UserImpl(userInner, manager());
     }
 
     @Override
@@ -57,13 +57,13 @@ class UsersImpl
 
     @Override
     public Observable<User> getByIdAsync(String id) {
-        return innerCollection.getAsync(id).map(new Func1<UserInner, User>() {
+        return manager().inner().users().getAsync(id).map(new Func1<UserInner, User>() {
             @Override
             public User call(UserInner userInner) {
                 if (userInner == null) {
                     return null;
                 } else {
-                    return new UserImpl(userInner);
+                    return new UserImpl(userInner, manager());
                 }
             }
         });
@@ -81,7 +81,7 @@ class UsersImpl
 
     @Override
     public Observable<User> getByNameAsync(final String name) {
-        return innerCollection.getAsync(name)
+        return manager().inner().users().getAsync(name)
                 .flatMap(new Func1<UserInner, Observable<UserInner>>() {
                     @Override
                     public Observable<UserInner> call(UserInner userInner) {
@@ -91,7 +91,7 @@ class UsersImpl
                         }
                         // Search mail & mail nickname
                         if (name.contains("@")) {
-                            return innerCollection.listAsync(String.format("mail eq '%s' or mailNickName eq '%s#EXT#'", name, name.replace("@", "_")))
+                            return manager().inner().users().listAsync(String.format("mail eq '%s' or mailNickName eq '%s#EXT#'", name, name.replace("@", "_")))
                                     .map(new Func1<Page<UserInner>, UserInner>() {
                                         @Override
                                         public UserInner call(Page<UserInner> userInnerPage) {
@@ -104,7 +104,7 @@ class UsersImpl
                         }
                         // Search display name
                         else {
-                            return innerCollection.listAsync(String.format("displayName eq '%s'", name))
+                            return manager().inner().users().listAsync(String.format("displayName eq '%s'", name))
                                     .map(new Func1<Page<UserInner>, UserInner>() {
                                         @Override
                                         public UserInner call(Page<UserInner> userInnerPage) {
@@ -123,18 +123,23 @@ class UsersImpl
                         if (userInnerServiceResponse == null) {
                             return null;
                         }
-                        return new UserImpl(userInnerServiceResponse);
+                        return new UserImpl(userInnerServiceResponse, manager());
                     }
                 });
     }
 
     @Override
     public UsersInner inner() {
-        return this.innerCollection;
+        return this.manager().inner().users();
     }
 
     @Override
     public Observable<User> listAsync() {
         return wrapPageAsync(this.inner().listAsync());
+    }
+
+    @Override
+    public GraphRbacManager manager() {
+        return manager;
     }
 }

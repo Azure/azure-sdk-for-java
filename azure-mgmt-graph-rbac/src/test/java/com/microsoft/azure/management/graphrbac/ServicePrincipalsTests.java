@@ -37,7 +37,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTestBase {
         } finally {
             if (servicePrincipal != null) {
                 graphRbacManager.servicePrincipals().deleteById(servicePrincipal.id());
-                graphRbacManager.applications().deleteById(graphRbacManager.applications().getByName(servicePrincipal.appId()).id());
+                graphRbacManager.applications().deleteById(graphRbacManager.applications().getByName(servicePrincipal.applicationId()).id());
             }
         }
     }

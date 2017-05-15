@@ -9,7 +9,9 @@ package com.microsoft.azure.management.graphrbac;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.graphrbac.implementation.ApplicationInner;
+import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -17,8 +19,10 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * An immutable client-side representation of an Azure AD application.
@@ -30,21 +34,17 @@ public interface Application extends
         HasInner<ApplicationInner>,
         HasId,
         HasName,
+        HasManager<GraphRbacManager>,
         Updatable<Application.Update> {
-    /**
-     * @return the object type
-     */
-    String objectType();
-
     /**
      * @return the application ID
      */
-    String appId();
+    String applicationId();
 
     /**
      * @return the application permissions
      */
-    List<String> appPermissions();
+    List<String> applicationPermissions();
 
     /**
      * @return whether the application is be available to other tenants
@@ -54,17 +54,17 @@ public interface Application extends
     /**
      * @return a collection of URIs for the application
      */
-    List<String> identifierUris();
+    Set<String> identifierUris();
 
     /**
      * @return a collection of reply URLs for the application
      */
-    List<String> replyUrls();
+    Set<String> replyUrls();
 
     /**
      * @return the home page of the application
      */
-    String homepage();
+    URL signOnUrl();
 
     /**
      * @return the mapping of password credentials from their names
@@ -257,7 +257,7 @@ public interface Application extends
              * @param name the descriptive name of the password credential
              * @return the first stage in password credential definition
              */
-            PasswordCredential.DefinitionStages.Blank<Update> definePasswordCredential(String name);
+            PasswordCredential.UpdateDefinitionStages.Blank<Update> definePasswordCredential(String name);
 
             /**
              * Removes a key.

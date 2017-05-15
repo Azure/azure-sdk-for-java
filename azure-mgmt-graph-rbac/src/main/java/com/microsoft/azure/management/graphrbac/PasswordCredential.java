@@ -37,7 +37,7 @@ public interface PasswordCredential extends
     }
 
     /**
-     * Grouping of credential definition stages applicable as part of a key vault creation.
+     * Grouping of credential definition stages applicable as part of a application or service principal creation.
      */
     interface DefinitionStages {
         /**
@@ -95,14 +95,14 @@ public interface PasswordCredential extends
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAttach<ParentT> extends
-                Attachable.InUpdate<ParentT>,
+                Attachable.InDefinition<ParentT>,
                 WithStartDate<ParentT>,
                 WithDuration<ParentT> {
         }
     }
 
     /**
-     * The entirety of a credential definition as part of a key vault update.
+     * The entirety of a credential definition as part of a application or service principal update.
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
     interface UpdateDefinition<ParentT> extends
@@ -111,7 +111,7 @@ public interface PasswordCredential extends
     }
 
     /**
-     * Grouping of credential definition stages applicable as part of a key vault update.
+     * Grouping of credential definition stages applicable as part of a application or service principal update.
      */
     interface UpdateDefinitionStages {
         /**

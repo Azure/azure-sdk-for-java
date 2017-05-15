@@ -9,6 +9,8 @@ package com.microsoft.azure.management.graphrbac;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.graphrbac.implementation.ADGroupInner;
+import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
@@ -17,7 +19,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 @Beta
 public interface Group extends
-        HasInner<ADGroupInner> {
+        HasInner<ADGroupInner>,
+        HasManager<GraphRbacManager> {
     /**
      * @return object Id.
      */

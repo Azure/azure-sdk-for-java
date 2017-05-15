@@ -18,8 +18,11 @@ class GroupImpl
         extends WrapperImpl<ADGroupInner>
         implements Group {
 
-    GroupImpl(ADGroupInner innerModel) {
+    private final GraphRbacManager manager;
+
+    GroupImpl(ADGroupInner innerModel, GraphRbacManager manager) {
         super(innerModel);
+        this.manager = manager;
     }
 
     @Override
@@ -45,5 +48,10 @@ class GroupImpl
     @Override
     public String mail() {
         return inner().mail();
+    }
+
+    @Override
+    public GraphRbacManager manager() {
+        return manager();
     }
 }
