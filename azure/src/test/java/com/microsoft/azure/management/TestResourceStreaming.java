@@ -27,7 +27,6 @@ public class TestResourceStreaming extends TestTemplate<VirtualMachine, VirtualM
     private final StorageAccounts storageAccounts;
 
     public TestResourceStreaming(StorageAccounts storageAccounts) {
-        super(true);
         this.storageAccounts = storageAccounts;
     }
 

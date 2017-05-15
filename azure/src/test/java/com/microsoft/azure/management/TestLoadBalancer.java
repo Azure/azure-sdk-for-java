@@ -78,7 +78,6 @@ public class TestLoadBalancer {
         public InternetWithNatPool(
                 VirtualMachines vms,
                 AvailabilitySets availabilitySets) {
-            super(true);
             initializeResourceNames();
             this.vms = vms;
             this.availabilitySets = availabilitySets;
@@ -249,7 +248,6 @@ public class TestLoadBalancer {
         public InternetWithNatRule(
                 VirtualMachines vms,
                 AvailabilitySets availabilitySets) {
-            super(true);
             initializeResourceNames();
             this.vms = vms;
             this.availabilitySets = availabilitySets;
@@ -435,7 +433,6 @@ public class TestLoadBalancer {
          * @param computeManager compute manager
          */
         public InternetNatOnly(ComputeManager computeManager) {
-            super(true);
             initializeResourceNames();
             this.computeManager = computeManager;
         }
@@ -565,7 +562,6 @@ public class TestLoadBalancer {
         public InternetMinimal(
                 VirtualMachines vms,
                 AvailabilitySets availabilitySets) {
-            super(true);
             initializeResourceNames();
             this.vms = vms;
             this.availabilitySets = availabilitySets;
@@ -736,7 +732,6 @@ public class TestLoadBalancer {
         public InternalMinimal(
                 VirtualMachines vms,
                 AvailabilitySets availabilitySets) {
-            super(true);
             initializeResourceNames();
             this.vms = vms;
             this.availabilitySets = availabilitySets;

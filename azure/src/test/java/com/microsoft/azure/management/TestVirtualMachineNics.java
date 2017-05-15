@@ -24,7 +24,6 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
     private final NetworkManager networkManager;
 
     public TestVirtualMachineNics(NetworkManager networkManager) {
-        super(true);
         this.networkManager = networkManager;
     }
 

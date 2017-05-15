@@ -30,7 +30,6 @@ public class TestVirtualMachineCustomData extends TestTemplate<VirtualMachine, V
     final PublicIPAddresses pips;
 
     public TestVirtualMachineCustomData(PublicIPAddresses pips) {
-        super(true);
         this.pips = pips;
     }
 
