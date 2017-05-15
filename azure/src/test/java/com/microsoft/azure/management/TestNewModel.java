@@ -8,6 +8,7 @@ package com.microsoft.azure.management;
 
 import org.junit.Assert;
 
+import com.microsoft.azure.management.network.NewChildModel;
 import com.microsoft.azure.management.network.NewTopLevelModel;
 import com.microsoft.azure.management.network.NewTopLevelModels;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -42,7 +43,19 @@ public class TestNewModel extends TestTemplate<NewTopLevelModel, NewTopLevelMode
                 .withAddressSpace("10.0.0.0/29")
                 .withAddressSpace("10.0.1.0/29")
                 .withAddressSpaces("10.2.0.0/29", "10.2.1.0/29")
+                .defineChildModel("foobar")
+                    .withAddressPrefix("10.0.0.0/29")
+                    .attach()
+                .defineChildModel("gdgdg")
+                    .withAddressPrefix("10.0.1.0/29")
+                    .attach()
                 .create();
+
+        Assert.assertEquals(2, resource.childModels().size());
+        NewChildModel child = resource.childModels().get("foobar");
+        Assert.assertEquals("10.0.0.0/29", child.addressPrefix());
+        child = resource.childModels().get("gdgdg");
+        Assert.assertEquals("10.0.1.0/29", child.addressPrefix());
 
         return resource;
     }
@@ -53,9 +66,21 @@ public class TestNewModel extends TestTemplate<NewTopLevelModel, NewTopLevelMode
             .withAddressSpace("10.5.0.0/28")
             .withoutAddressSpace("10.0.0.0/29")
             .withTag("foo", "bar")
+            .updateChildModel("foobar")
+                .withAddressPrefix("10.2.0.0/29")
+                .parent()
             .apply();
 
         Assert.assertNotNull(resource.tags().get("foo"));
+        NewChildModel child = resource.childModels().get("foobar");
+        Assert.assertEquals("10.2.0.0/29", child.addressPrefix());
+
+        resource.update()
+            .withoutChildModel("foobar")
+            .withoutChildModel("gdgdg")
+            .apply();
+
+        Assert.assertTrue(resource.childModels().isEmpty());
         return resource;
     }
 

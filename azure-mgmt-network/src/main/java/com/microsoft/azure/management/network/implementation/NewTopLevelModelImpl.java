@@ -6,13 +6,17 @@
 package com.microsoft.azure.management.network.implementation;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.AddressSpace;
 import com.microsoft.azure.management.network.DhcpOptions;
+import com.microsoft.azure.management.network.NewChildModel;
 import com.microsoft.azure.management.network.NewTopLevelModel;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import rx.Observable;
@@ -33,6 +37,8 @@ class NewTopLevelModelImpl
         NewTopLevelModel.Definition,
         NewTopLevelModel.Update {
 
+    private Map<String, NewChildModel> childModels;
+
     NewTopLevelModelImpl(String name,
             final VirtualNetworkInner innerModel,
             final NetworkManager networkManager) {
@@ -41,6 +47,14 @@ class NewTopLevelModelImpl
 
     @Override
     protected void initializeChildrenFromInner() {
+        this.childModels = new HashMap<>();
+        List<SubnetInner> inners = this.inner().subnets();
+        if (inners != null) {
+            for (SubnetInner inner : inners) {
+                NewChildModelImpl child = new NewChildModelImpl(inner, this);
+                this.childModels.put(inner.name(), child);
+            }
+        }
     }
 
     // Verbs
@@ -66,6 +80,11 @@ class NewTopLevelModelImpl
 
     // Setters (fluent)
 
+    NewTopLevelModelImpl withNewChildModel(NewChildModelImpl child) {
+        this.childModels.put(child.name(), child);
+        return this;
+    }
+
     // Getters
 
     @Override
@@ -75,7 +94,7 @@ class NewTopLevelModelImpl
         }
 
         // Reset and update subnets
-        //TODO this.inner().withSubnets(innersFromWrappers(this.subnets.values()));
+        this.inner().withSubnets(innersFromWrappers(this.childModels.values()));
     }
 
     @Override
@@ -149,5 +168,27 @@ class NewTopLevelModelImpl
             this.inner().addressSpace().addressPrefixes().remove(cidr);
             return this;
         }
+    }
+
+    @Override
+    public NewChildModelImpl defineChildModel(String name) {
+        SubnetInner inner = new SubnetInner().withName(name);
+        return new NewChildModelImpl(inner, this);
+    }
+
+    @Override
+    public NewChildModelImpl updateChildModel(String name) {
+        return (NewChildModelImpl) this.childModels.get(name);
+    }
+
+    @Override
+    public NewTopLevelModelImpl withoutChildModel(String name) {
+        this.childModels.remove(name);
+        return this;
+    }
+
+    @Override
+    public Map<String, NewChildModel> childModels() {
+        return Collections.unmodifiableMap(this.childModels);
     }
 }

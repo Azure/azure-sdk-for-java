@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
+import java.util.Map;
 import java.util.Set;
 
 import com.google.common.annotations.Beta;
@@ -38,6 +39,8 @@ public interface NewTopLevelModel extends
      */
     DhcpOptions dhcpOptions();
 
+    Map<String, NewChildModel> childModels();
+
     /**
      * The entirety of the virtual network definition.
      */
@@ -57,6 +60,10 @@ public interface NewTopLevelModel extends
          */
         interface Blank
             extends GroupableResource.DefinitionWithRegion<WithGroup> {
+        }
+
+        interface WithNewModelChild {
+            NewChildModel.DefinitionStages.Blank<WithCreate> defineChildModel(String name);
         }
 
         /**
@@ -108,6 +115,7 @@ public interface NewTopLevelModel extends
         interface WithCreate extends
             DefinitionStages.WithAddressSpace,
             DefinitionStages.WithDhcpOptions,
+            DefinitionStages.WithNewModelChild,
             Creatable<NewTopLevelModel>,
             Resource.DefinitionWithTags<WithCreate> {
         }
@@ -117,6 +125,12 @@ public interface NewTopLevelModel extends
      * Grouping of virtual network update stages.
      */
     interface UpdateStages {
+        interface WithChildModel {
+            NewChildModel.UpdateDefinitionStages.Blank<Update> defineChildModel(String name);
+            NewChildModel.Update updateChildModel(String name);
+            Update withoutChildModel(String name);
+        }
+
         /**
          * The stage of the New Model blah update allowing to modify the address space.
          */
@@ -165,6 +179,7 @@ public interface NewTopLevelModel extends
      */
     interface Update extends
         Appliable<NewTopLevelModel>,
+        UpdateStages.WithChildModel,
         UpdateStages.WithAddressSpace,
         UpdateStages.WithDhcpOptions,
         Resource.UpdateWithTags<Update> {
