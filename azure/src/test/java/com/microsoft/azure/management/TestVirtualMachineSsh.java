@@ -21,6 +21,7 @@ import org.junit.Assert;
 public class TestVirtualMachineSsh extends TestTemplate<VirtualMachine, VirtualMachines> {
     final PublicIPAddresses pips;
     public TestVirtualMachineSsh(PublicIPAddresses pips) {
+        super(true);
         this.pips = pips;
     }
 

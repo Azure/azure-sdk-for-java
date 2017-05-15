@@ -16,6 +16,10 @@ import org.junit.Assert;
 import java.util.List;
 
 public class TestVirtualMachineSizes extends TestTemplate<VirtualMachine, VirtualMachines> {
+    public TestVirtualMachineSizes() {
+        super(true);
+    }
+
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
         List<VirtualMachineSize> availableSizes = virtualMachines.sizes().listByRegion(Region.US_EAST);

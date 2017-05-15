@@ -539,9 +539,7 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testVirtualMachineNics() throws Exception {
-        new TestVirtualMachineNics(
-                azure.networks(),
-                azure.networkInterfaces())
+        new TestVirtualMachineNics(azure.networks().manager())
             .runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
