@@ -220,7 +220,7 @@ public final class CloudFileShare {
             opContext = new OperationContext();
         }
 
-        assertNoSnapshot();
+        //assertNoSnapshot();
         if (this.properties != null && this.properties.getShareQuota() != null) {
             Utility.assertInBounds("Share Quota", this.properties.getShareQuota(), 1, FileConstants.MAX_SHARE_QUOTA);
         }
@@ -656,7 +656,7 @@ public final class CloudFileShare {
             opContext = new OperationContext();
         }
 
-        assertNoSnapshot();
+        //assertNoSnapshot();
 
         opContext.initialize();
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
@@ -781,7 +781,7 @@ public final class CloudFileShare {
     protected final CloudFileShare createSnapshot(final HashMap<String, String> metadata,
             final AccessCondition accessCondition, FileRequestOptions options, OperationContext opContext)
             throws StorageException {
-        assertNoSnapshot();
+        //assertNoSnapshot();
 
         if (opContext == null) {
             opContext = new OperationContext();
@@ -883,7 +883,7 @@ public final class CloudFileShare {
             opContext = new OperationContext();
         }
 
-        assertNoSnapshot();
+        //assertNoSnapshot();
 
         opContext.initialize();
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
@@ -1057,14 +1057,14 @@ public final class CloudFileShare {
         }
     }
 
-    /**
-     * Asserts that the share is not a snapshot.
-     */
-    protected void assertNoSnapshot() {
-        if (isSnapshot()) {
-            throw new IllegalArgumentException(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT);
-        }
-    }
+//    /**
+//     * Asserts that the share is not a snapshot.
+//     */
+//    protected void assertNoSnapshot() {
+//        if (isSnapshot()) {
+//            throw new IllegalArgumentException(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT);
+//        }
+//    }
 
     /**
      * Returns a shared access signature for the share. Note this does not contain the leading "?".
@@ -1173,7 +1173,7 @@ public final class CloudFileShare {
     @DoesServiceRequest
     public void uploadMetadata(AccessCondition accessCondition, FileRequestOptions options, OperationContext opContext)
             throws StorageException {
-        assertNoSnapshot();
+        //assertNoSnapshot();
 
         if (opContext == null) {
             opContext = new OperationContext();
@@ -1263,7 +1263,7 @@ public final class CloudFileShare {
     public final void uploadProperties(
             AccessCondition accessCondition, FileRequestOptions options, OperationContext opContext)
             throws StorageException {
-        assertNoSnapshot();
+        //assertNoSnapshot();
 
         if (this.properties != null && this.properties.getShareQuota() != null) {
             Utility.assertInBounds("Share Quota", this.properties.getShareQuota(), 1, FileConstants.MAX_SHARE_QUOTA);
@@ -1350,7 +1350,7 @@ public final class CloudFileShare {
     @DoesServiceRequest
     public void uploadPermissions(final FileSharePermissions permissions, final AccessCondition accessCondition,
             FileRequestOptions options, OperationContext opContext) throws StorageException {
-        assertNoSnapshot();
+        //assertNoSnapshot();
 
         if (opContext == null) {
             opContext = new OperationContext();
