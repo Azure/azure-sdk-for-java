@@ -14,7 +14,6 @@ import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 public class TestAvailabilitySet extends TestTemplate<AvailabilitySet, AvailabilitySets> {
-
     @Override
     public AvailabilitySet createResource(AvailabilitySets availabilitySets) throws Exception {
         final String newName = "as" + this.testId;

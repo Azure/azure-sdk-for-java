@@ -30,7 +30,6 @@ public class TestRouteTables {
      * Test of minimal route tables.
      */
     public static class Minimal extends TestTemplate<RouteTable, RouteTables> {
-
         @Override
         public RouteTable createResource(RouteTables routeTables) throws Exception {
             final String newName = "rt" + this.testId;
