@@ -154,9 +154,8 @@ public final class CloudFile implements ListFileItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      */
-    public CloudFile(final URI fileAbsoluteUri, final StorageCredentials credentials) throws StorageException, URISyntaxException {
+    public CloudFile(final URI fileAbsoluteUri, final StorageCredentials credentials) throws StorageException {
         this(new StorageUri(fileAbsoluteUri), credentials);
     }
 
@@ -171,9 +170,8 @@ public final class CloudFile implements ListFileItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      */
-    public CloudFile(final StorageUri fileAbsoluteUri, final StorageCredentials credentials) throws StorageException, URISyntaxException {    
+    public CloudFile(final StorageUri fileAbsoluteUri, final StorageCredentials credentials) throws StorageException {
         this.parseQueryAndVerify(fileAbsoluteUri, credentials);
     }
 
@@ -231,10 +229,9 @@ public final class CloudFile implements ListFileItem {
      *
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      */
     @DoesServiceRequest
-    public final void abortCopy(final String copyId) throws StorageException, URISyntaxException {
+    public final void abortCopy(final String copyId) throws StorageException {
         this.abortCopy(copyId, null /* accessCondition */, null /* options */, null /* opContext */);
     }
 
@@ -255,17 +252,16 @@ public final class CloudFile implements ListFileItem {
      *            the operation.
      *
      * @throws StorageException
-     *             If a storage service error occurred.
-     * @throws URISyntaxException 
+     *             If a storage service error occurred. 
      */
     @DoesServiceRequest
     public final void abortCopy(final String copyId, final AccessCondition accessCondition, FileRequestOptions options,
-            OperationContext opContext) throws StorageException, URISyntaxException {
+            OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
 
-        this.getShare().assertNoSnapshot();
+        //this.getShare().assertNoSnapshot();
 
         opContext.initialize();
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
@@ -432,10 +428,9 @@ public final class CloudFile implements ListFileItem {
      *
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      */
     @DoesServiceRequest
-    public final String startCopy(final URI source) throws StorageException, URISyntaxException {
+    public final String startCopy(final URI source) throws StorageException {
         return this.startCopy(source, null /* sourceAccessCondition */,
                 null /* destinationAccessCondition */, null /* options */, null /* opContext */);
     }
@@ -463,18 +458,17 @@ public final class CloudFile implements ListFileItem {
      *
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      *
      */
     @DoesServiceRequest
     public final String startCopy(final URI source, final AccessCondition sourceAccessCondition,
             final AccessCondition destinationAccessCondition, FileRequestOptions options, OperationContext opContext)
-            throws StorageException, URISyntaxException {
+            throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
 
-        this.getShare().assertNoSnapshot();
+        //this.getShare().assertNoSnapshot();
 
         opContext.initialize();
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
@@ -544,10 +538,9 @@ public final class CloudFile implements ListFileItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      */
     @DoesServiceRequest
-    public void clearRange(final long offset, final long length) throws StorageException, URISyntaxException {
+    public void clearRange(final long offset, final long length) throws StorageException {
         this.clearRange(offset, length, null /* accessCondition */, null /* options */, null /* opContext */);
     }
 
@@ -574,16 +567,15 @@ public final class CloudFile implements ListFileItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      */
     @DoesServiceRequest
     public void clearRange(final long offset, final long length, final AccessCondition accessCondition,
-            FileRequestOptions options, OperationContext opContext) throws StorageException, URISyntaxException {
+            FileRequestOptions options, OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
 
-        this.getShare().assertNoSnapshot();
+        //this.getShare().assertNoSnapshot();
 
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
@@ -600,11 +592,10 @@ public final class CloudFile implements ListFileItem {
      *            A <code>long</code> which represents the size, in bytes, of the file.
      * 
      * @throws StorageException
-     *             If a storage service error occurred.
-     * @throws URISyntaxException 
+     *             If a storage service error occurred. 
      */
     @DoesServiceRequest
-    public void create(final long size) throws StorageException, URISyntaxException {
+    public void create(final long size) throws StorageException {
         this.create(size, null /* accessCondition */, null /* options */, null /* opContext */);
     }
 
@@ -627,17 +618,16 @@ public final class CloudFile implements ListFileItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      */
     @DoesServiceRequest
     public void create(final long size, final AccessCondition accessCondition, FileRequestOptions options,
-            OperationContext opContext) throws StorageException, URISyntaxException {
+            OperationContext opContext) throws StorageException {
 
         if (opContext == null) {
             opContext = new OperationContext();
         }
 
-        this.getShare().assertNoSnapshot();
+        //this.getShare().assertNoSnapshot();
 
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
@@ -690,10 +680,9 @@ public final class CloudFile implements ListFileItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      */
     @DoesServiceRequest
-    public final void delete() throws StorageException, URISyntaxException {
+    public final void delete() throws StorageException {
         this.delete(null /* accessCondition */, null /* options */, null /* opContext */);
     }
 
@@ -713,16 +702,15 @@ public final class CloudFile implements ListFileItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      */
     @DoesServiceRequest
     public final void delete(final AccessCondition accessCondition, FileRequestOptions options,
-            OperationContext opContext) throws StorageException, URISyntaxException {
+            OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
 
-        this.getShare().assertNoSnapshot();
+        //this.getShare().assertNoSnapshot();
 
         opContext.initialize();
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
@@ -738,11 +726,9 @@ public final class CloudFile implements ListFileItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
-     * 
      */
     @DoesServiceRequest
-    public final boolean deleteIfExists() throws StorageException, URISyntaxException {
+    public final boolean deleteIfExists() throws StorageException {
         return this.deleteIfExists(null /* accessCondition */, null /* options */, null /* opContext */);
     }
 
@@ -764,13 +750,12 @@ public final class CloudFile implements ListFileItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      */
     @DoesServiceRequest
     public final boolean deleteIfExists(final AccessCondition accessCondition, FileRequestOptions options,
-            OperationContext opContext) throws StorageException, URISyntaxException {
+            OperationContext opContext) throws StorageException {
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
-        this.getShare().assertNoSnapshot();
+        //this.getShare().assertNoSnapshot();
 
         boolean exists = this.exists(true, accessCondition, options, opContext);
         if (exists) {
@@ -1289,7 +1274,7 @@ public final class CloudFile implements ListFileItem {
             public HttpURLConnection buildRequest(CloudFileClient client, CloudFile file, OperationContext context)
                     throws Exception {
                 return FileRequest.getFileRanges(file.getTransformedAddress(context).getUri(this.getCurrentLocation()),
-                        options, context, accessCondition, file.getShare().snapshotID);
+                        options, context, accessCondition);
             }
 
             @Override
@@ -1356,7 +1341,7 @@ public final class CloudFile implements ListFileItem {
                 //         : accessCondition;
 
                 return FileRequest.getFile(file.getTransformedAddress(context).getUri(this.getCurrentLocation()),
-                        options, context, accessCondition, file.getShare().snapshotID, this.getOffset(), this.getLength(),
+                        options, context, accessCondition, this.getOffset(), this.getLength(),
                         (options.getUseTransactionalContentMD5() && !this.getArePropertiesPopulated()));
             }
 
@@ -1531,7 +1516,7 @@ public final class CloudFile implements ListFileItem {
                     throws Exception {
                 return FileRequest.getFileProperties(
                         file.getTransformedAddress(context).getUri(this.getCurrentLocation()),
-                        options, context, accessCondition, file.getShare().snapshotID);
+                        options, context, accessCondition);
             }
 
             @Override
@@ -1628,7 +1613,7 @@ public final class CloudFile implements ListFileItem {
                     throws Exception {
                 return FileRequest.getFileProperties(
                         file.getTransformedAddress(context).getUri(this.getCurrentLocation()),
-                        options, context, accessCondition, file.getShare().snapshotID);
+                        options, context, accessCondition);
             }
 
             @Override
@@ -1850,10 +1835,9 @@ public final class CloudFile implements ListFileItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      */
     @DoesServiceRequest
-    public FileOutputStream openWriteExisting() throws StorageException, URISyntaxException {
+    public FileOutputStream openWriteExisting() throws StorageException {
         return this
                 .openOutputStreamInternal(null /* length */, null /* accessCondition */, null /* options */, null /* opContext */);
     }
@@ -1877,11 +1861,10 @@ public final class CloudFile implements ListFileItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      */
     @DoesServiceRequest
     public FileOutputStream openWriteExisting(AccessCondition accessCondition, FileRequestOptions options,
-            OperationContext opContext) throws StorageException, URISyntaxException {
+            OperationContext opContext) throws StorageException {
         return this.openOutputStreamInternal(null /* length */, accessCondition, options, opContext);
     }
 
@@ -1900,10 +1883,9 @@ public final class CloudFile implements ListFileItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      */
     @DoesServiceRequest
-    public FileOutputStream openWriteNew(final long length) throws StorageException, URISyntaxException {
+    public FileOutputStream openWriteNew(final long length) throws StorageException {
         return this
                 .openOutputStreamInternal(length, null /* accessCondition */, null /* options */, null /* opContext */);
     }
@@ -1933,11 +1915,10 @@ public final class CloudFile implements ListFileItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      */
     @DoesServiceRequest
     public FileOutputStream openWriteNew(final long length, AccessCondition accessCondition,
-            FileRequestOptions options, OperationContext opContext) throws StorageException, URISyntaxException {
+            FileRequestOptions options, OperationContext opContext) throws StorageException {
         return openOutputStreamInternal(length, accessCondition, options, opContext);
     }
 
@@ -1964,15 +1945,14 @@ public final class CloudFile implements ListFileItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      */
     private FileOutputStream openOutputStreamInternal(Long length, AccessCondition accessCondition,
-            FileRequestOptions options, OperationContext opContext) throws StorageException, URISyntaxException {
+            FileRequestOptions options, OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
 
-        this.getShare().assertNoSnapshot();
+        //this.getShare().assertNoSnapshot();
 
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient, false /* setStartTime */);
 
@@ -2008,10 +1988,9 @@ public final class CloudFile implements ListFileItem {
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws IOException
-     * @throws URISyntaxException 
      */
     public void uploadFromByteArray(final byte[] buffer, final int offset, final int length) throws StorageException,
-            IOException, URISyntaxException {
+            IOException {
         uploadFromByteArray(buffer, offset, length, null /* accessCondition */, null /* options */, null /* opContext */);
     }
 
@@ -2038,11 +2017,10 @@ public final class CloudFile implements ListFileItem {
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws IOException
-     * @throws URISyntaxException 
      */
     public void uploadFromByteArray(final byte[] buffer, final int offset, final int length,
             final AccessCondition accessCondition, FileRequestOptions options, OperationContext opContext)
-            throws StorageException, IOException, URISyntaxException {
+            throws StorageException, IOException {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(buffer, offset, length);
         this.upload(inputStream, length, accessCondition, options, opContext);
         inputStream.close();
@@ -2057,9 +2035,8 @@ public final class CloudFile implements ListFileItem {
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws IOException
-     * @throws URISyntaxException 
      */
-    public void uploadFromFile(final String path) throws StorageException, IOException, URISyntaxException {
+    public void uploadFromFile(final String path) throws StorageException, IOException {
         uploadFromFile(path, null /* accessCondition */, null /* options */, null /* opContext */);
     }
 
@@ -2082,10 +2059,9 @@ public final class CloudFile implements ListFileItem {
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws IOException
-     * @throws URISyntaxException 
      */
     public void uploadFromFile(final String path, final AccessCondition accessCondition, FileRequestOptions options,
-            OperationContext opContext) throws StorageException, IOException, URISyntaxException {
+            OperationContext opContext) throws StorageException, IOException {
         File file = new File(path);
         long fileLength = file.length();
         InputStream inputStream = new BufferedInputStream(new java.io.FileInputStream(file));
@@ -2103,9 +2079,8 @@ public final class CloudFile implements ListFileItem {
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws IOException
-     * @throws URISyntaxException 
      */
-    public void uploadText(final String content) throws StorageException, IOException, URISyntaxException {
+    public void uploadText(final String content) throws StorageException, IOException {
         this.uploadText(content, null /* charsetName */, null /* accessCondition */, null /* options */, null /* opContext */);
     }
 
@@ -2132,10 +2107,9 @@ public final class CloudFile implements ListFileItem {
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws IOException
-     * @throws URISyntaxException 
      */
     public void uploadText(final String content, final String charsetName, final AccessCondition accessCondition,
-            FileRequestOptions options, OperationContext opContext) throws StorageException, IOException, URISyntaxException {
+            FileRequestOptions options, OperationContext opContext) throws StorageException, IOException {
         byte[] bytes = (charsetName == null) ? content.getBytes() : content.getBytes(charsetName);
         this.uploadFromByteArray(bytes, 0, bytes.length, accessCondition, options, opContext);
     }
@@ -2155,11 +2129,10 @@ public final class CloudFile implements ListFileItem {
      *             If an I/O exception occurred.
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      */
     @DoesServiceRequest
     public void uploadRange(final InputStream sourceStream, final long offset, final long length)
-            throws StorageException, IOException, URISyntaxException {
+            throws StorageException, IOException {
         this.uploadRange(sourceStream, offset, length, null /* accessCondition */, null /* options */, null /* opContext */);
     }
 
@@ -2188,17 +2161,16 @@ public final class CloudFile implements ListFileItem {
      *             If an I/O exception occurred.
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      */
     @DoesServiceRequest
     public void uploadRange(final InputStream sourceStream, final long offset, final long length,
             final AccessCondition accessCondition, FileRequestOptions options, OperationContext opContext)
-            throws StorageException, IOException, URISyntaxException {
+            throws StorageException, IOException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
 
-        this.getShare().assertNoSnapshot();
+        //this.getShare().assertNoSnapshot();
 
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
@@ -2327,10 +2299,9 @@ public final class CloudFile implements ListFileItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      */
     @DoesServiceRequest
-    public final void uploadMetadata() throws StorageException, URISyntaxException {
+    public final void uploadMetadata() throws StorageException {
         this.uploadMetadata(null /* accessCondition */, null /* options */, null /* opContext */);
     }
 
@@ -2354,17 +2325,16 @@ public final class CloudFile implements ListFileItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      */
     @DoesServiceRequest
     public final void uploadMetadata(final AccessCondition accessCondition, FileRequestOptions options,
-            OperationContext opContext) throws StorageException, URISyntaxException {
+            OperationContext opContext) throws StorageException {
 
         if (opContext == null) {
             opContext = new OperationContext();
         }
 
-        this.getShare().assertNoSnapshot();
+        //this.getShare().assertNoSnapshot();
 
         opContext.initialize();
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
@@ -2421,10 +2391,9 @@ public final class CloudFile implements ListFileItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      */
     @DoesServiceRequest
-    public final void uploadProperties() throws StorageException, URISyntaxException {
+    public final void uploadProperties() throws StorageException {
         this.uploadProperties(null /* accessCondition */, null /* options */, null /*opContext */);
     }
 
@@ -2447,16 +2416,15 @@ public final class CloudFile implements ListFileItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      */
     @DoesServiceRequest
     public final void uploadProperties(final AccessCondition accessCondition, FileRequestOptions options,
-            OperationContext opContext) throws StorageException, URISyntaxException {
+            OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
 
-        this.getShare().assertNoSnapshot();
+        //this.getShare().assertNoSnapshot();
 
         opContext.initialize();
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
@@ -2509,9 +2477,8 @@ public final class CloudFile implements ListFileItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      */
-    public void resize(long size) throws StorageException, URISyntaxException {
+    public void resize(long size) throws StorageException {
         this.resize(size, null /* accessCondition */, null /* options */, null /* operationContext */);
     }
 
@@ -2533,15 +2500,14 @@ public final class CloudFile implements ListFileItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      */
     public void resize(long size, AccessCondition accessCondition, FileRequestOptions options,
-            OperationContext opContext) throws StorageException, URISyntaxException {
+            OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
 
-        this.getShare().assertNoSnapshot();
+        //this.getShare().assertNoSnapshot();
 
         opContext.initialize();
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
@@ -2597,10 +2563,9 @@ public final class CloudFile implements ListFileItem {
      *             If an I/O exception occurred.
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      */
     @DoesServiceRequest
-    public void upload(final InputStream sourceStream, final long length) throws StorageException, IOException, URISyntaxException {
+    public void upload(final InputStream sourceStream, final long length) throws StorageException, IOException {
         this.upload(sourceStream, length, null /* accessCondition */, null /* options */, null /* opContext */);
     }
 
@@ -2627,17 +2592,16 @@ public final class CloudFile implements ListFileItem {
      * @throws IOException
      *             If an I/O exception occurred.
      * @throws StorageException
-     *             If a storage service error occurred.
-     * @throws URISyntaxException 
+     *             If a storage service error occurred. 
      */
     @DoesServiceRequest
     public void upload(final InputStream sourceStream, final long length, final AccessCondition accessCondition,
-            FileRequestOptions options, OperationContext opContext) throws StorageException, IOException, URISyntaxException {
+            FileRequestOptions options, OperationContext opContext) throws StorageException, IOException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
 
-        this.getShare().assertNoSnapshot();
+        //this.getShare().assertNoSnapshot();
 
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
@@ -2727,10 +2691,9 @@ public final class CloudFile implements ListFileItem {
      *            A {@link StorageCredentials} object used to authenticate access.
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException 
      */
     private void parseQueryAndVerify(final StorageUri completeUri, final StorageCredentials credentials)
-            throws StorageException, URISyntaxException {
+            throws StorageException {
        Utility.assertNotNull("completeUri", completeUri);
 
         if (!completeUri.isAbsolute()) {
@@ -2756,12 +2719,12 @@ public final class CloudFile implements ListFileItem {
             throw Utility.generateNewUnexpectedStorageException(e);
         }
 
-        final HashMap<String, String[]> queryParameters = PathUtility.parseQueryString(completeUri.getQuery());
+//        final HashMap<String, String[]> queryParameters = PathUtility.parseQueryString(completeUri.getQuery());
 
-        final String[] snapshotIDs = queryParameters.get(Constants.QueryConstants.SHARE_SNAPSHOT);
-        if (snapshotIDs != null && snapshotIDs.length > 0) {
-            this.getShare().snapshotID = snapshotIDs[0];
-        }
+//        final String[] snapshotIDs = queryParameters.get(Constants.QueryConstants.SHARE_SNAPSHOT);
+//        if (snapshotIDs != null && snapshotIDs.length > 0) {
+//            this.getShare().snapshotID = snapshotIDs[0];
+//        }
     }
 
     protected void updateEtagAndLastModifiedFromResponse(HttpURLConnection request) {

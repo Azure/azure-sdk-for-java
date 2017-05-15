@@ -155,8 +155,6 @@ public final class CloudFileShare {
      *            A <code>java.net.URI</code> object that represents the absolute URI of the share.
      * @param credentials
      *            A {@link StorageCredentials} object used to authenticate access.
-     * @param snapshotID
-     *            A <code>String</code> that represents the snapshot version, if applicable.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -418,7 +416,7 @@ public final class CloudFileShare {
             public HttpURLConnection buildRequest(
                     CloudFileClient client, CloudFileShare share, OperationContext context) throws Exception {
                 return FileRequest.deleteShare(
-                        share.getTransformedAddress().getPrimaryUri(), options, context, accessCondition, share.snapshotID, deleteSnapshotsOption);
+                        share.getTransformedAddress().getPrimaryUri(), options, context, accessCondition);
             }
 
             @Override
@@ -590,7 +588,7 @@ public final class CloudFileShare {
             public HttpURLConnection buildRequest(CloudFileClient client, CloudFileShare share, OperationContext context)
                     throws Exception {
                 return FileRequest.getShareProperties(share.getTransformedAddress().getUri(this.getCurrentLocation()),
-                        options, context, accessCondition, share.snapshotID);
+                        options, context, accessCondition);
             }
 
             @Override
@@ -1006,7 +1004,7 @@ public final class CloudFileShare {
             public HttpURLConnection buildRequest(CloudFileClient client, CloudFileShare share, OperationContext context)
                     throws Exception {
                 return FileRequest.getShareProperties(share.getTransformedAddress().getUri(this.getCurrentLocation()),
-                        options, context, accessCondition, share.snapshotID);
+                        options, context, accessCondition);
             }
 
             @Override
