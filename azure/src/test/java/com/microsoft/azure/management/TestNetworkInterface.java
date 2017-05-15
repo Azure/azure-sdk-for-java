@@ -20,7 +20,6 @@ import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 public class TestNetworkInterface extends TestTemplate<NetworkInterface, NetworkInterfaces> {
-
     @Override
     public NetworkInterface createResource(NetworkInterfaces networkInterfaces) throws Exception {
         final String newName = "nic" + this.testId;

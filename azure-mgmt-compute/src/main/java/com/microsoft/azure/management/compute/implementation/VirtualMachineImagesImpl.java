@@ -38,7 +38,7 @@ class VirtualMachineImagesImpl
                 offerName,
                 skuName,
                 version);
-        return new VirtualMachineImageImpl(region, publisherName, offerName, skuName, version, innerImage);
+        return (innerImage != null) ? new VirtualMachineImageImpl(region, publisherName, offerName, skuName, version, innerImage) : null;
     }
 
     @Override

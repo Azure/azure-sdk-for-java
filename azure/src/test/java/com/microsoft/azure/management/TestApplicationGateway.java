@@ -843,10 +843,10 @@ public class TestApplicationGateway {
      * Internet-facing LB test with NAT pool test.
      */
     public static class PublicMinimal extends TestTemplate<ApplicationGateway, ApplicationGateways> {
-
         PublicMinimal() {
             initializeResourceNames();
         }
+
         @Override
         public void print(ApplicationGateway resource) {
             TestApplicationGateway.printAppGateway(resource);
