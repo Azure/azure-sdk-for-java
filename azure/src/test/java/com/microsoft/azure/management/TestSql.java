@@ -18,6 +18,10 @@ import rx.Observable;
 import rx.functions.Action1;
 
 public class TestSql extends TestTemplate<SqlServer, SqlServers>  {
+    public TestSql() {
+        super(true);
+    }
+
     @Override
     public SqlServer createResource(SqlServers resources) throws Exception {
         final String sqlServerName = "sql" + this.testId;
