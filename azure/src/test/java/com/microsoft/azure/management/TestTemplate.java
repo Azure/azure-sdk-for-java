@@ -40,16 +40,9 @@ public abstract class TestTemplate<
     private ResourceT resource;
     private CollectionT collection;
     private ResourceGroups resourceGroups;
-    private final boolean useBeginDelete;
 
     protected TestTemplate() {
         this.testId = SdkContext.randomResourceName("", 8);
-        this.useBeginDelete = false;
-    }
-
-    protected TestTemplate(boolean useBeginDelete) {
-        this.testId = SdkContext.randomResourceName("", 8);
-        this.useBeginDelete = useBeginDelete;
     }
 
     /**
@@ -102,11 +95,7 @@ public abstract class TestTemplate<
     public void verifyDeleting() throws Exception {
         final String groupName = this.resource.resourceGroupName();
         this.collection.deleteById(this.resource.id());
-        if (this.useBeginDelete) {
-            this.resourceGroups.beginDeleteByName(groupName);
-        } else {
-            this.resourceGroups.deleteByName(groupName);
-        }
+        this.resourceGroups.beginDeleteByName(groupName);
     }
 
     /**

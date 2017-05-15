@@ -41,7 +41,6 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
     private final String nestedProfileEndpointName = "nested-profile-ep-1";
 
     public TestTrafficManager(PublicIPAddresses publicIPAddresses) {
-        super(true);
         this.publicIPAddresses = publicIPAddresses;
     }
 

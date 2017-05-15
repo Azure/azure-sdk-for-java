@@ -16,10 +16,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import org.junit.Assert;
 
 public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, VirtualMachines> {
-    public TestVirtualMachineDataDisk() {
-        super(true);
-    }
-
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
         final String vmName = "vm" + this.testId;

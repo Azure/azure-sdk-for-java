@@ -17,10 +17,6 @@ import rx.Observable;
 import rx.functions.Action1;
 
 public class TestBatch extends TestTemplate<BatchAccount, BatchAccounts>  {
-    public TestBatch() {
-        super(true);
-    }
-
     @Override
     public BatchAccount createResource(BatchAccounts resources) throws Exception {
         final String batchAccountName = "batch" + this.testId;

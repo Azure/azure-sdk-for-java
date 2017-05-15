@@ -17,10 +17,6 @@ import rx.Observable;
 import rx.functions.Action1;
 
 public class TestRedis extends TestTemplate<RedisCache, RedisCaches>  {
-    public TestRedis() {
-        super(true);
-    }
-
     @Override
     public RedisCache createResource(RedisCaches resources) throws Exception {
         final String redisName = "redis" + this.testId;
