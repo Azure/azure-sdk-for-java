@@ -1414,8 +1414,6 @@ public class CloudFileTests {
                     }
                     catch (StorageException e) {
                         fail("Delete should succeed.");
-                    } catch (URISyntaxException e) {
-                        fail("Delete should succeed.");
                     }
                 }
             }
@@ -1464,8 +1462,8 @@ public class CloudFileTests {
             FileRequestOptions options = new FileRequestOptions();
             OperationContext opContext = new OperationContext();
             try {
-                FileRequest.getFile(file.getUri(), options, opContext, null, null, 0L, 4L * Constants.MB, true);
-                FileRequest.getFile(file.getUri(), options, opContext, null, null, 0L, 4L * Constants.MB + 1, true);
+                FileRequest.getFile(file.getUri(), options, opContext, null, 0L, 4L * Constants.MB, true);
+                FileRequest.getFile(file.getUri(), options, opContext, null, 0L, 4L * Constants.MB + 1, true);
                 fail("The request for range ContentMD5 should have thrown an Exception for exceeding the limit.");
             }
             catch (IllegalArgumentException e)

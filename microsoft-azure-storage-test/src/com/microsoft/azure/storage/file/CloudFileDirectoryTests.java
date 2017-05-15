@@ -874,8 +874,6 @@ public class CloudFileDirectoryTests {
                     }
                     catch (StorageException e) {
                         fail("Delete should succeed.");
-                    } catch (URISyntaxException e) {
-                        fail("Delete should succeed.");
                     }
                 }
             }
