@@ -1,3 +1,7 @@
+Changes in 5.1.1
+OTHER
+  * Reverted the code from 5.1.0 because it contained a regression and an accidental change.
+
 Changes in 5.0.0
 
 BLOB
