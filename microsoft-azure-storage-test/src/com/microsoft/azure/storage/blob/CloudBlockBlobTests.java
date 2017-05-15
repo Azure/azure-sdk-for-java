@@ -33,8 +33,6 @@ import com.microsoft.azure.storage.file.FileTestHelper;
 import com.microsoft.azure.storage.file.SharedAccessFilePermissions;
 import com.microsoft.azure.storage.file.SharedAccessFilePolicy;
 
-import junit.framework.Assert;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,33 +58,11 @@ import java.util.Map;
 import java.util.Random;
 import java.util.TimeZone;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
-import com.microsoft.azure.storage.AccessCondition;
-import com.microsoft.azure.storage.Constants;
-import com.microsoft.azure.storage.NameValidator;
-import com.microsoft.azure.storage.OperationContext;
-import com.microsoft.azure.storage.RetryNoRetry;
-import com.microsoft.azure.storage.SendingRequestEvent;
-import com.microsoft.azure.storage.StorageCredentialsAnonymous;
-import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
-import com.microsoft.azure.storage.StorageEvent;
-import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.TestRunners.DevFabricTests;
 import com.microsoft.azure.storage.TestRunners.DevStoreTests;
 import com.microsoft.azure.storage.TestRunners.SlowTests;
-import com.microsoft.azure.storage.core.Utility;
-import com.microsoft.azure.storage.file.CloudFile;
-import com.microsoft.azure.storage.file.CloudFileShare;
-import com.microsoft.azure.storage.file.FileProperties;
-import com.microsoft.azure.storage.file.FileTestHelper;
-import com.microsoft.azure.storage.file.SharedAccessFilePermissions;
-import com.microsoft.azure.storage.file.SharedAccessFilePolicy;
 
 import static org.junit.Assert.*;
 
@@ -1018,6 +994,44 @@ public class CloudBlockBlobTests {
         blockBlobRef.download(dstStream);
         BlobTestHelper.assertStreamsAreEqual(srcStream, new ByteArrayInputStream(dstStream.toByteArray()));
     }
+    
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class, SlowTests.class })
+    public void testLargeSinglePutBlobTest() throws URISyntaxException, StorageException, IOException {
+        final String blockBlobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testBlockBlob");
+        final String blockBlobName2 = BlobTestHelper.generateRandomBlobNameWithPrefix("testBlockBlob");
+        final String blockBlobName3 = BlobTestHelper.generateRandomBlobNameWithPrefix("testBlockBlob");
+        final CloudBlockBlob blob = this.container.getBlockBlobReference(blockBlobName);
+        final CloudBlockBlob blob2 = this.container.getBlockBlobReference(blockBlobName2);
+        final CloudBlockBlob blob3 = this.container.getBlockBlobReference(blockBlobName3);
+        BlobRequestOptions options = new BlobRequestOptions();
+        options.setStoreBlobContentMD5(false);
+        options.setEncryptionPolicy(null);
+        try
+        {
+            byte[] buffer = BlobTestHelper.getRandomBuffer(256 * Constants.MB);
+
+            OperationContext operationContext = new OperationContext();
+
+            blob.uploadFromByteArray(buffer, 0, 128 * Constants.MB, null, null, operationContext);
+            assertEquals(1, operationContext.getRequestResults().size());
+
+            options.setSingleBlobPutThresholdInBytes(256 * Constants.MB);
+            blob2.uploadFromByteArray(buffer, 0, 256 * Constants.MB, null, options, operationContext);
+            assertEquals(1, operationContext.getRequestResults().size());
+
+            // Reduce threshold and upload data greater than the single put blob upload threshold
+            options.setSingleBlobPutThresholdInBytes(Constants.MB);
+            blob3.uploadFromByteArray(buffer, 0, 3 * Constants.MB, null, options, operationContext);
+            assertTrue(operationContext.getRequestResults().size() > 1);
+        }
+        finally
+        {
+            blob.delete();
+            blob2.delete();
+            blob3.delete();
+        }
+    }
 
     @Test
     @Category({ DevFabricTests.class, DevStoreTests.class })
@@ -1161,6 +1175,29 @@ public class CloudBlockBlobTests {
 
     @Test
     @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testVerifyTransactionalMD5ValidationMissingOverallMD5() throws URISyntaxException, StorageException, IOException {
+        final String blockBlobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testBlockBlob");
+        final CloudBlockBlob blockBlobRef = this.container.getBlockBlobReference(blockBlobName);
+
+        final int length = 2 * 1024 * 1024;
+        ByteArrayInputStream srcStream = BlobTestHelper.getRandomDataStream(length);
+        BlobRequestOptions options = new BlobRequestOptions();
+        options.setSingleBlobPutThresholdInBytes(1024*1024);
+        options.setDisableContentMD5Validation(true);
+        options.setStoreBlobContentMD5(false);
+
+        blockBlobRef.upload(srcStream, -1, null, options, null);
+
+        options.setDisableContentMD5Validation(false);
+        options.setStoreBlobContentMD5(true);
+        options.setUseTransactionalContentMD5(true);
+        final CloudBlockBlob blockBlobRef2 = this.container.getBlockBlobReference(blockBlobName);
+        blockBlobRef2.downloadRange(1024, (long)1024, new ByteArrayOutputStream(), null, options, null);
+        assertNull(blockBlobRef2.getProperties().getContentMD5());
+    }
+
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
     public void testBlockBlobUploadContentMD5() throws URISyntaxException, StorageException, IOException {
         final String blockBlobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testBlockBlob");
         CloudBlockBlob blockBlobRef = this.container.getBlockBlobReference(blockBlobName);
@@ -1198,7 +1235,7 @@ public class CloudBlockBlobTests {
             }
         };
 
-        length = 33 * Constants.MB;
+        length = BlobConstants.DEFAULT_SINGLE_BLOB_PUT_THRESHOLD_IN_BYTES + 1;
         srcStream = BlobTestHelper.getRandomDataStream(length);
 
         sendingRequestEventContext.getSendingRequestEventHandler().addListener(event);
@@ -1708,6 +1745,23 @@ public class CloudBlockBlobTests {
         blob.downloadAttributes();
         newETag = blob.getProperties().getEtag();
         assertFalse("ETage should be modified on write metadata", newETag.equals(currentETag));
+    }
+    
+    @Test
+    public void testBlobExceedMaxRange() throws URISyntaxException, StorageException, IOException
+    {
+        CloudBlockBlob blob = container.getBlockBlobReference("blockblob4");
+        blob.deleteIfExists();
+
+        byte[] msg = "my message".getBytes("UTF-8");
+        blob.uploadFromByteArray(msg, 0, msg.length);
+
+        byte[] buffer = new byte[msg.length + 5];
+
+        blob.downloadRangeToByteArray(0, (long) buffer.length, buffer, 0, null, null, null);
+        String expected = new String (msg, "UTF-8");
+        String actual = new String(buffer, "UTF-8").substring(0, 10);
+        assertEquals(expected, actual);
     }
 
     @Test

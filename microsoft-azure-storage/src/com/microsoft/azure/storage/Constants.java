@@ -500,7 +500,12 @@ public final class Constants {
          * The blob sequence number equal condition header.
          */
         public static final String IF_SEQUENCE_NUMBER_EQUAL = PREFIX_FOR_STORAGE_HEADER + "if-sequence-number-eq";
-        
+
+        /**
+         * Specifies snapshots are to be included.
+         */
+        public static final String INCLUDE_SNAPSHOTS_VALUE = "include";
+
         /**
          * The header that specifies the lease action to perform
          */
@@ -636,7 +641,7 @@ public final class Constants {
         /**
          * The current storage version header value.
          */
-        public static final String TARGET_STORAGE_VERSION = "2016-05-31";
+        public static final String TARGET_STORAGE_VERSION = "2016-10-16";
 
         /**
          * The header that specifies the next visible time for a queue message.
@@ -807,6 +812,11 @@ public final class Constants {
          * The query component for snapshot time.
          */
         public static final String SNAPSHOT = "snapshot";
+
+        /**
+         * The query component for snapshot time.
+         */
+        public static final String SHARE_SNAPSHOT = "sharesnapshot";
 
         /**
          * The query component for the SAS start partition key.
