@@ -18,6 +18,10 @@ import rx.Observable;
 import rx.functions.Action1;
 
 public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMachines> {
+    public TestVirtualMachine() {
+        super(true);
+    }
+
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
         final String vmName = "vm" + this.testId;
