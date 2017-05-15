@@ -206,17 +206,6 @@ final class FileResponse extends BaseResponse {
     }
 
     /**
-     * Gets the snapshot ID from the request header.
-     *
-     * @param request
-     *            The response from server.
-     * @return the snapshot ID from the request header.
-     */
-    public static String getSnapshotTime(final HttpURLConnection request) {
-        return request.getHeaderField(Constants.HeaderConstants.SNAPSHOT_ID_HEADER);
-    }
-
-    /**
      * Private Default Ctor
      */
     private FileResponse() {

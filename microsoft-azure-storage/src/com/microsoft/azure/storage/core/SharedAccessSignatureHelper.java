@@ -418,7 +418,7 @@ public class SharedAccessSignatureHelper {
      */
     public static StorageCredentialsSharedAccessSignature parseQuery(final HashMap<String, String[]> queryParams)
             throws StorageException {
-
+        
         boolean sasParameterFound = false;
         List<String> removeList = new ArrayList<String>();
         for (final Entry<String, String[]> entry : queryParams.entrySet()) {
@@ -434,11 +434,9 @@ public class SharedAccessSignatureHelper {
                 removeList.add(entry.getKey());
             } else if (lowerKey.equals(Constants.QueryConstants.API_VERSION)) {
                 removeList.add(entry.getKey());
-            } else if (lowerKey.equals(Constants.QueryConstants.SHARE_SNAPSHOT)) {
-                removeList.add(entry.getKey());
-            }
+            } 
         }
-
+        
         for (String removeParam : removeList) {
             queryParams.remove(removeParam);
         }
