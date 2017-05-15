@@ -36,7 +36,6 @@ public class ApplicationsTests extends GraphRbacManagementTestBase {
         try {
             application = graphRbacManager.applications().define(name)
                     .withSignOnUrl("http://easycreate.azure.com/" + name)
-                    .withIdentifierUrl("http://easycreate.azure.com/" + name)
                     .definePasswordCredential("passwd")
                         .withPasswordValue("P@ssw0rd")
                         .withDuration(Duration.standardDays(700))

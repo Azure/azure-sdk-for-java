@@ -56,6 +56,10 @@ class ApplicationImpl
 
     @Override
     public Observable<Application> createResourceAsync() {
+        if (createParameters.identifierUris() == null) {
+            createParameters.withIdentifierUris(new ArrayList<String>());
+            createParameters.identifierUris().add(createParameters.homepage());
+        }
         return manager.inner().applications().createAsync(createParameters)
                 .map(innerToFluentMap(this))
                 .flatMap(new Func1<Application, Observable<Application>>() {
@@ -345,7 +349,7 @@ class ApplicationImpl
     }
 
     @Override
-    public ApplicationImpl withMultiTenant(boolean availableToOtherTenants) {
+    public ApplicationImpl withAvailableToOtherTenants(boolean availableToOtherTenants) {
         if (isInCreateMode()) {
             createParameters.withAvailableToOtherTenants(availableToOtherTenants);
         } else {

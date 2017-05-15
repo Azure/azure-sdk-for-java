@@ -165,7 +165,7 @@ public interface Application extends
              * @param availableToOtherTenants true if this application is available in other tenants
              * @return the next stage in application definition
              */
-            WithCreate withMultiTenant(boolean availableToOtherTenants);
+            WithCreate withAvailableToOtherTenants(boolean availableToOtherTenants);
         }
 
         /**
@@ -276,7 +276,7 @@ public interface Application extends
              * @param availableToOtherTenants true if this application is available in other tenants
              * @return the next stage in application update
              */
-            Update withMultiTenant(boolean availableToOtherTenants);
+            Update withAvailableToOtherTenants(boolean availableToOtherTenants);
         }
     }
 
