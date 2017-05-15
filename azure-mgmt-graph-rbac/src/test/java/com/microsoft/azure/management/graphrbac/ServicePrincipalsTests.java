@@ -8,6 +8,7 @@ package com.microsoft.azure.management.graphrbac;
 
 import com.google.common.base.Joiner;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -34,6 +35,11 @@ public class ServicePrincipalsTests extends GraphRbacManagementTestBase {
                         .attach()
                     .create();
             System.out.println(servicePrincipal.id() + " - " + Joiner.on(", ").join(servicePrincipal.servicePrincipalNames()));
+            Assert.assertNotNull(servicePrincipal.id());
+            Assert.assertNotNull(servicePrincipal.applicationId());
+            Assert.assertEquals(2, servicePrincipal.servicePrincipalNames().size());
+            Assert.assertEquals(1, servicePrincipal.passwordCredentials().size());
+            Assert.assertEquals(0, servicePrincipal.certificateCredentials().size());
         } finally {
             if (servicePrincipal != null) {
                 graphRbacManager.servicePrincipals().deleteById(servicePrincipal.id());

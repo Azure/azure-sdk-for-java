@@ -17,6 +17,7 @@ import rx.Observable;
 import rx.functions.Func1;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -55,6 +56,22 @@ class ServicePrincipalImpl
     @Override
     public List<String> servicePrincipalNames() {
         return inner().servicePrincipalNames();
+    }
+
+    @Override
+    public Map<String, PasswordCredential> passwordCredentials() {
+        if (cachedPasswordCredentials == null) {
+            return null;
+        }
+        return Collections.unmodifiableMap(cachedPasswordCredentials);
+    }
+
+    @Override
+    public Map<String, CertificateCredential> certificateCredentials() {
+        if (cachedCertificateCredentials == null) {
+            return null;
+        }
+        return Collections.unmodifiableMap(cachedCertificateCredentials);
     }
 
     @Override

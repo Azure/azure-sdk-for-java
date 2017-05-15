@@ -18,6 +18,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * An immutable client-side representation of an Azure AD service principal.
@@ -39,6 +40,16 @@ public interface ServicePrincipal extends
      * @return the list of names.
      */
     List<String> servicePrincipalNames();
+
+    /**
+     * @return the mapping of password credentials from their names
+     */
+    Map<String, PasswordCredential> passwordCredentials();
+
+    /**
+     * @return the mapping of certificate credentials from their names
+     */
+    Map<String, CertificateCredential> certificateCredentials();
 
     /**************************************************************
      * Fluent interfaces to provision a service principal
