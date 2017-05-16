@@ -49,7 +49,7 @@ public interface ContainerServiceAgentPool extends
         DefinitionStages.WithAttach<ParentT>,
         DefinitionStages.Blank<ParentT>,
             DefinitionStages.WithVMSize<ParentT>,
-        DefinitionStages.WithDnsLabel<ParentT> {
+            DefinitionStages.WithLeafDomainLabel<ParentT> {
     }
 
     /**
@@ -78,7 +78,7 @@ public interface ContainerServiceAgentPool extends
              * @param count the count
              * @return the next stage of the definition
              */
-            WithVMSize<ParentT> withCount(int count);
+            WithVMSize<ParentT> withVMCount(int count);
         }
 
         /**
@@ -92,7 +92,7 @@ public interface ContainerServiceAgentPool extends
              * @param vmSize the size of the VM
              * @return the next stage of the definition
              */
-            WithDnsLabel<ParentT> withVMSize(ContainerServiceVMSizeTypes vmSize);
+            WithLeafDomainLabel<ParentT> withVMSize(ContainerServiceVMSizeTypes vmSize);
         }
 
         /**
@@ -100,13 +100,13 @@ public interface ContainerServiceAgentPool extends
          *
          * @param <ParentT>  the stage of the container service definition to return to after attaching this definition
          */
-        interface WithDnsLabel<ParentT> {
+        interface WithLeafDomainLabel<ParentT> {
             /**
              * Specify the DNS prefix to be used to create the FQDN for the agent pool.
              * @param dnsLabel the Dns label
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withDnsLabel(String dnsLabel);
+            WithAttach<ParentT> withLeafDomainLabel(String dnsLabel);
         }
     }
 }

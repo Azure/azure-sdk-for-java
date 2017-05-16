@@ -54,7 +54,7 @@ class ContainerServiceAgentPoolImpl
     }
 
     @Override
-    public ContainerServiceAgentPoolImpl withCount(int agentPoolCount) {
+    public ContainerServiceAgentPoolImpl withVMCount(int agentPoolCount) {
         if (agentPoolCount < 0 || agentPoolCount > 100) {
             throw new RuntimeException("Agent pool count  must be in the range of 1 to 100 (inclusive)");
         }
@@ -70,7 +70,7 @@ class ContainerServiceAgentPoolImpl
     }
 
     @Override
-    public ContainerServiceAgentPoolImpl withDnsLabel(String param0) {
+    public ContainerServiceAgentPoolImpl withLeafDomainLabel(String param0) {
         this.inner().withDnsPrefix(param0);
         return this;        
     }

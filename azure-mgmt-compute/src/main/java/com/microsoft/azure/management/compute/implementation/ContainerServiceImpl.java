@@ -6,21 +6,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.compute.ContainerService;
-import com.microsoft.azure.management.compute.ContainerServiceAgentPoolProfile;
-import com.microsoft.azure.management.compute.ContainerServiceOrchestratorProfile;
-import com.microsoft.azure.management.compute.ContainerServiceCustomProfile;
-import com.microsoft.azure.management.compute.ContainerServiceWindowsProfile;
-import com.microsoft.azure.management.compute.ContainerServiceLinuxProfile;
-import com.microsoft.azure.management.compute.ContainerServiceMasterProfile;
-import com.microsoft.azure.management.compute.ContainerServiceServicePrincipalProfile;
-import com.microsoft.azure.management.compute.ContainerServiceDiagnosticsProfile;
-import com.microsoft.azure.management.compute.ContainerServiceAgentPool;
-import com.microsoft.azure.management.compute.ContainerServiceMasterProfileCount;
-import com.microsoft.azure.management.compute.ContainerServiceSshConfiguration;
-import com.microsoft.azure.management.compute.ContainerServiceSshPublicKey;
-import com.microsoft.azure.management.compute.ContainerServiceOchestratorTypes;
-import com.microsoft.azure.management.compute.ContainerServiceVMDiagnostics;
+import com.microsoft.azure.management.compute.*;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import rx.Observable;
 import rx.functions.Func1;
@@ -50,47 +36,63 @@ public class ContainerServiceImpl
     }
 
     @Override
-    public ContainerServiceOrchestratorProfile orchestratorProfile() {
-        return this.inner().orchestratorProfile();
+    public int masterNodeCount() {
+        return this.inner().masterProfile().count();
     }
 
     @Override
-    public ContainerServiceCustomProfile customProfile() {
-        return this.inner().customProfile();
+    public ContainerServiceOchestratorTypes orchestratorType() {
+        return this.inner().orchestratorProfile().orchestratorType();
     }
 
     @Override
-    public ContainerServiceServicePrincipalProfile servicePrincipalProfile() {
-        return this.inner().servicePrincipalProfile();
+    public String masterLeafDomainLabel() {
+        return this.inner().masterProfile().dnsPrefix();
     }
 
     @Override
-    public ContainerServiceMasterProfile masterProfile() {
-        return this.inner().masterProfile();
+    public String masterFqdn() {
+        return this.inner().masterProfile().fqdn();
     }
 
     @Override
-    public ContainerServiceAgentPoolProfile agentPoolProfile() {
-        if (this.inner().agentPoolProfiles().size() > 0) {
-            return this.inner().agentPoolProfiles().get(0);
-        }
-
-        return null;
+    public String agentPoolName() {
+        return this.getSingleAgentPool().name();
     }
 
     @Override
-    public ContainerServiceWindowsProfile windowsProfile() {
-        return this.inner().windowsProfile();
+    public int agentPoolCount() {
+        return this.getSingleAgentPool().count();
     }
 
     @Override
-    public ContainerServiceLinuxProfile linuxProfile() {
-        return this.inner().linuxProfile();
+    public String agentPoolLeafDomainLabel() {
+        return this.getSingleAgentPool().dnsPrefix();
     }
 
     @Override
-    public ContainerServiceDiagnosticsProfile diagnosticsProfile() {
-        return this.inner().diagnosticsProfile();
+    public ContainerServiceVMSizeTypes agentPoolVMSize() {
+        return this.getSingleAgentPool().vmSize();
+    }
+
+    @Override
+    public String agentPoolFqdn() {
+        return this.getSingleAgentPool().fqdn();
+    }
+
+    @Override
+    public String linuxRootUsername() {
+        return this.inner().linuxProfile().adminUsername();
+    }
+
+    @Override
+    public String sshKey() {
+        return this.inner().linuxProfile().ssh().publicKeys().get(0).keyData();
+    }
+
+    @Override
+    public boolean isDiagnosticsEnabled() {
+        return this.inner().diagnosticsProfile().vmDiagnostics().enabled();
     }
 
     @Override
@@ -102,7 +104,7 @@ public class ContainerServiceImpl
     }
 
     @Override
-    public ContainerServiceImpl withMasterDnsLabel(String dnsPrefix) {
+    public ContainerServiceImpl withMasterLeafDomainLabel(String dnsPrefix) {
         this.inner().masterProfile().withDnsPrefix(dnsPrefix);
         return this;
     }
@@ -145,7 +147,7 @@ public class ContainerServiceImpl
     }
 
     @Override
-    public ContainerServiceImpl withLinuxProfile() {
+    public ContainerServiceImpl withLinux() {
         if (this.inner().linuxProfile() == null) {
             this.inner().withLinuxProfile(new ContainerServiceLinuxProfile());
         }
@@ -213,12 +215,16 @@ public class ContainerServiceImpl
     }
 
     @Override
-    public Update withAgentCount(int agentCount) {
+    public Update withAgentVMCount(int agentCount) {
         if (agentCount < 0 || agentCount > 100) {
             throw new RuntimeException("Agent pool count  must be in the range of 1 to 100 (inclusive)");
         }
 
         this.inner().agentPoolProfiles().get(0).withCount(agentCount);
         return this;
+    }
+
+    private ContainerServiceAgentPoolProfile getSingleAgentPool() {
+        return this.inner().agentPoolProfiles().get(0);
     }
 }
