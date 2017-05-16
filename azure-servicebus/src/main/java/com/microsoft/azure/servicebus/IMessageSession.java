@@ -11,9 +11,9 @@ public interface IMessageSession extends IMessageReceiver {
 	
 	Instant getLockedUntilUtc();
 	
-	void renewLock() throws InterruptedException, ServiceBusException;
+	void renewSessionLock() throws InterruptedException, ServiceBusException;
 	
-	CompletableFuture<Void> renewLockAsync();
+	CompletableFuture<Void> renewSessionLockAsync();
 	
 	void setState(byte[] state) throws InterruptedException, ServiceBusException;
 	

@@ -62,7 +62,7 @@ final class BrowsableMessageSession extends MessageSession
 	}
 	
 	@Override
-	public CompletableFuture<Void> renewLockAsync() {
+	public CompletableFuture<Void> renewSessionLockAsync() {
 		throw new UnsupportedOperationException(INVALID_OPERATION_ERROR_MESSAGE);
 	}
 	
@@ -113,7 +113,7 @@ final class BrowsableMessageSession extends MessageSession
 	}
 	
 	@Override
-	public CompletableFuture<IMessage> receiveAsync(long sequenceNumber)
+	public CompletableFuture<IMessage> receiveBySequenceNumberAsync(long sequenceNumber)
 	{
 		throw new UnsupportedOperationException(INVALID_OPERATION_ERROR_MESSAGE);
 	}

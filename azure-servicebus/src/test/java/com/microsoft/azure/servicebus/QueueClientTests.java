@@ -44,12 +44,12 @@ public class QueueClientTests {
 	
 	private void createQueueClient(ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
 	{
-		this.queueClient = new QueueClient(TestUtils.getNonPartitionedQueueConnectionStringBuilder().toString(), receiveMode);
+		this.queueClient = new QueueClient(TestUtils.getNonPartitionedQueueConnectionStringBuilder(), receiveMode);
 	}
 	
 	private void createSessionfulQueueClient(ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
 	{
-		this.sessionfulQueueClient = new QueueClient(TestUtils.getNonPartitionedSessionfulQueueConnectionStringBuilder().toString(), receiveMode);
+		this.sessionfulQueueClient = new QueueClient(TestUtils.getNonPartitionedSessionfulQueueConnectionStringBuilder(), receiveMode);
 	}
 	
 	@Test

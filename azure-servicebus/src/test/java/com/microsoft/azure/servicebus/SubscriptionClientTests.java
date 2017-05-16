@@ -63,14 +63,14 @@ public class SubscriptionClientTests {
 	
 	private void createSubscriptionClient(ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
 	{
-		this.topicClient = new TopicClient(TestUtils.getNonPartitionedTopicConnectionStringBuilder().toString());
-		this.subscriptionClient = new SubscriptionClient(TestUtils.getNonPartitionedSubscriptionConnectionStringBuilder().toString(), receiveMode);
+		this.topicClient = new TopicClient(TestUtils.getNonPartitionedTopicConnectionStringBuilder());
+		this.subscriptionClient = new SubscriptionClient(TestUtils.getNonPartitionedSubscriptionConnectionStringBuilder(), receiveMode);
 	}
 	
 	private void createSessionfulSubscriptionClient(ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
 	{
-		this.sessionfulTopicClient = new TopicClient(TestUtils.getNonPartitionedSessionfulTopicConnectionStringBuilder().toString());
-		this.sessionfulSubscriptionClient = new SubscriptionClient(TestUtils.getNonPartitionedSessionfulSubscriptionConnectionStringBuilder().toString(), receiveMode);
+		this.sessionfulTopicClient = new TopicClient(TestUtils.getNonPartitionedSessionfulTopicConnectionStringBuilder());
+		this.sessionfulSubscriptionClient = new SubscriptionClient(TestUtils.getNonPartitionedSessionfulSubscriptionConnectionStringBuilder(), receiveMode);
 	}
 	
 	@Test
@@ -215,4 +215,11 @@ public class SubscriptionClientTests {
 		this.createSessionfulSubscriptionClient();
 		MessageAndSessionPumpTests.testSessionPumpRenewLock(this.sessionfulTopicClient, this.sessionfulSubscriptionClient);
 	}
+	
+	@Test
+    public void testSubscriptionNameSplitting() throws InterruptedException, ServiceBusException
+    {
+	    this.subscriptionClient = new SubscriptionClient(TestUtils.getNonPartitionedSubscriptionConnectionStringBuilder(), ReceiveMode.PeekLock);
+        Assert.assertEquals("Wrong subscription name returned.", TestUtils.getProperty(TestUtils.SUBSCRIPTION_NAME_PROPERTY), this.subscriptionClient.getSubscriptionName());
+    }
 }

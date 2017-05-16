@@ -17,6 +17,7 @@ import com.microsoft.azure.servicebus.rules.RuleDescription;
 
 public final class SubscriptionClient extends InitializableEntity implements ISubscriptionClient
 {
+    private static final String SUBSCRIPTIONS_DELIMITER = "/subscriptions/";
 	private final ReceiveMode receiveMode;
 	private String subscriptionPath;
 	private MessagingFactory factory;
@@ -30,16 +31,15 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
 		this.receiveMode = receiveMode;
 	}
 	
-	public SubscriptionClient(String amqpConnectionString, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
+	public SubscriptionClient(ConnectionStringBuilder amqpConnectionStringBuilder, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
 	{
-		this(receiveMode);
-		ConnectionStringBuilder builder = new ConnectionStringBuilder(amqpConnectionString);
-		this.subscriptionPath = builder.getEntityPath();
-		CompletableFuture<MessagingFactory> factoryFuture = MessagingFactory.createFromConnectionStringBuilderAsync(builder);
+		this(receiveMode);		
+		this.subscriptionPath = amqpConnectionStringBuilder.getEntityPath();
+		CompletableFuture<MessagingFactory> factoryFuture = MessagingFactory.createFromConnectionStringBuilderAsync(amqpConnectionStringBuilder);
 		Utils.completeFuture(factoryFuture.thenComposeAsync((f) -> this.createPumpAndBrowserAsync(f)));
 	}
 	
-	public SubscriptionClient(MessagingFactory factory, String subscriptionPath, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
+	SubscriptionClient(MessagingFactory factory, String subscriptionPath, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
 	{
 		this(receiveMode);
 		this.subscriptionPath = subscriptionPath;
@@ -131,23 +131,23 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
 		return this.messageAndSessionPump.closeAsync().thenCompose((v) -> this.miscRequestResponseHandler.closeAsync().thenCompose((w) -> this.factory.closeAsync()));
 	}
 	
-	@Override
-	public Collection<IMessageSession> getMessageSessions() throws InterruptedException, ServiceBusException {
+//	@Override
+	Collection<IMessageSession> getMessageSessions() throws InterruptedException, ServiceBusException {
 		return Utils.completeFuture(this.getMessageSessionsAsync());
 	}
 
-	@Override
-	public Collection<IMessageSession> getMessageSessions(Instant lastUpdatedTime) throws InterruptedException, ServiceBusException {
+//	@Override
+	Collection<IMessageSession> getMessageSessions(Instant lastUpdatedTime) throws InterruptedException, ServiceBusException {
 		return Utils.completeFuture(this.getMessageSessionsAsync(lastUpdatedTime));
 	}
 
-	@Override
-	public CompletableFuture<Collection<IMessageSession>> getMessageSessionsAsync() {
+//	@Override
+	CompletableFuture<Collection<IMessageSession>> getMessageSessionsAsync() {
 		return this.sessionBrowser.getMessageSessionsAsync();
 	}
 
-	@Override
-	public CompletableFuture<Collection<IMessageSession>> getMessageSessionsAsync(Instant lastUpdatedTime) {
+//	@Override
+	CompletableFuture<Collection<IMessageSession>> getMessageSessionsAsync(Instant lastUpdatedTime) {
 		return this.sessionBrowser.getMessageSessionsAsync(Date.from(lastUpdatedTime));
 	}
 	
@@ -181,13 +181,13 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
 		return this.messageAndSessionPump.completeAsync(lockToken);
 	}
 
-	@Override
-	public void defer(UUID lockToken) throws InterruptedException, ServiceBusException {
+//	@Override
+	void defer(UUID lockToken) throws InterruptedException, ServiceBusException {
 		this.messageAndSessionPump.defer(lockToken);		
 	}
 
-	@Override
-	public void defer(UUID lockToken, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException {
+//	@Override
+	void defer(UUID lockToken, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException {
 		this.messageAndSessionPump.defer(lockToken, propertiesToModify);		
 	}
 
@@ -249,5 +249,17 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
     @Override
     public void setPrefetchCount(int prefetchCount) throws ServiceBusException {
         this.messageAndSessionPump.setPrefetchCount(prefetchCount);
+    }
+
+    @Override
+    public String getTopicName() {
+       String entityPath = this.getEntityPath();
+       return entityPath.substring(0, entityPath.indexOf(SUBSCRIPTIONS_DELIMITER));
+    }
+
+    @Override
+    public String getSubscriptionName() {
+        String entityPath = this.getEntityPath();
+        return entityPath.substring(entityPath.indexOf(SUBSCRIPTIONS_DELIMITER) + SUBSCRIPTIONS_DELIMITER.length());
     }
 }

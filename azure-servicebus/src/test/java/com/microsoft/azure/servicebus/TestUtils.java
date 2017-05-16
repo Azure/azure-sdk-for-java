@@ -21,7 +21,7 @@ public class TestUtils {
 	
 	//Topic and Subscription	
 	private static final String NON_PARTITIONED_TOPIC_NAME_PROPERTY = "non.partitioned.topic.name";
-	private static final String SUBSCRIPTION_NAME_PROPERTY = "subscription.name";
+	static final String SUBSCRIPTION_NAME_PROPERTY = "subscription.name";
 		
 	//Sessionful Topic and Subscription	
 	private static final String NON_PARTITIONED_SESSIONFUL_TOPIC_NAME_PROPERTY = "session.non.partitioned.topic.name";
@@ -52,7 +52,7 @@ public class TestUtils {
 		}
 	}
 	
-	private static String getProperty(String propertyName)
+	static String getProperty(String propertyName)
 	{
 		String defaultValue = "";		
 		return accessProperties.getProperty(propertyName, defaultValue);

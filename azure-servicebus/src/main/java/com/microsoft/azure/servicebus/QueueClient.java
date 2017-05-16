@@ -28,15 +28,14 @@ public final class QueueClient extends InitializableEntity implements IQueueClie
 		this.receiveMode = receiveMode;
 	}
 	
-	public QueueClient(String amqpConnectionString, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
+	public QueueClient(ConnectionStringBuilder amqpConnectionStringBuilder, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
 	{
 		this(receiveMode);		
-		ConnectionStringBuilder builder = new ConnectionStringBuilder(amqpConnectionString);
-		CompletableFuture<MessagingFactory> factoryFuture = MessagingFactory.createFromConnectionStringBuilderAsync(builder);		
-		Utils.completeFuture(factoryFuture.thenComposeAsync((f) -> this.createInternals(f, builder.getEntityPath(), receiveMode)));
+		CompletableFuture<MessagingFactory> factoryFuture = MessagingFactory.createFromConnectionStringBuilderAsync(amqpConnectionStringBuilder);		
+		Utils.completeFuture(factoryFuture.thenComposeAsync((f) -> this.createInternals(f, amqpConnectionStringBuilder.getEntityPath(), receiveMode)));
 	}
 	
-	public QueueClient(MessagingFactory factory, String queuePath, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
+	QueueClient(MessagingFactory factory, String queuePath, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
 	{
 		this(receiveMode);
 		Utils.completeFuture(this.createInternals(factory, queuePath, receiveMode));
@@ -142,23 +141,23 @@ public final class QueueClient extends InitializableEntity implements IQueueClie
 		return this.messageAndSessionPump.closeAsync().thenCompose((v) -> this.sender.closeAsync().thenCompose((u) -> this.miscRequestResponseHandler.closeAsync().thenCompose((w) -> this.factory.closeAsync())));
 	}
 
-	@Override
-	public Collection<IMessageSession> getMessageSessions() throws InterruptedException, ServiceBusException {
+//	@Override
+	Collection<IMessageSession> getMessageSessions() throws InterruptedException, ServiceBusException {
 		return Utils.completeFuture(this.getMessageSessionsAsync());
 	}
 
-	@Override
-	public Collection<IMessageSession> getMessageSessions(Instant lastUpdatedTime) throws InterruptedException, ServiceBusException {
+//	@Override
+	Collection<IMessageSession> getMessageSessions(Instant lastUpdatedTime) throws InterruptedException, ServiceBusException {
 		return Utils.completeFuture(this.getMessageSessionsAsync(lastUpdatedTime));
 	}
 
-	@Override
-	public CompletableFuture<Collection<IMessageSession>> getMessageSessionsAsync() {
+//	@Override
+	CompletableFuture<Collection<IMessageSession>> getMessageSessionsAsync() {
 		return this.sessionBrowser.getMessageSessionsAsync();
 	}
 
-	@Override
-	public CompletableFuture<Collection<IMessageSession>> getMessageSessionsAsync(Instant lastUpdatedTime) {
+//	@Override
+	CompletableFuture<Collection<IMessageSession>> getMessageSessionsAsync(Instant lastUpdatedTime) {
 		return this.sessionBrowser.getMessageSessionsAsync(Date.from(lastUpdatedTime));
 	}
 
@@ -192,13 +191,13 @@ public final class QueueClient extends InitializableEntity implements IQueueClie
 		return this.messageAndSessionPump.completeAsync(lockToken);
 	}
 
-	@Override
-	public void defer(UUID lockToken) throws InterruptedException, ServiceBusException {
+//	@Override
+	void defer(UUID lockToken) throws InterruptedException, ServiceBusException {
 		this.messageAndSessionPump.defer(lockToken);		
 	}
 
-	@Override
-	public void defer(UUID lockToken, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException {
+//	@Override
+	void defer(UUID lockToken, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException {
 		this.messageAndSessionPump.defer(lockToken, propertiesToModify);		
 	}
 
@@ -260,5 +259,11 @@ public final class QueueClient extends InitializableEntity implements IQueueClie
     @Override
     public void setPrefetchCount(int prefetchCount) throws ServiceBusException {
         this.messageAndSessionPump.setPrefetchCount(prefetchCount);
-    }	
+    }
+    
+    @Override
+    public String getQueueName()
+    {
+        return this.getEntityPath();
+    }
 }

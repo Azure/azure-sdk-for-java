@@ -28,9 +28,9 @@ interface IMessageAndSessionPump
     
     CompletableFuture<Void> completeAsync(UUID lockToken);
     
-    void defer(UUID lockToken) throws InterruptedException, ServiceBusException;
-
-    void defer(UUID lockToken, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException;
+//    void defer(UUID lockToken) throws InterruptedException, ServiceBusException;
+//
+//    void defer(UUID lockToken, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException;
 
     CompletableFuture<Void> deferAsync(UUID lockToken);
 

@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
+import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import com.microsoft.azure.servicebus.primitives.StringUtil;
@@ -18,14 +19,14 @@ public final class TopicClient extends InitializableEntity implements ITopicClie
 		super(StringUtil.getShortRandomString(), null);
 	}
 	
-	public TopicClient(String amqpConnectionString) throws InterruptedException, ServiceBusException
+	public TopicClient(ConnectionStringBuilder amqpConnectionStringBuilder) throws InterruptedException, ServiceBusException
 	{
 		this();
-		this.sender = ClientFactory.createMessageSenderFromConnectionString(amqpConnectionString);
+		this.sender = ClientFactory.createMessageSenderFromConnectionStringBuilder(amqpConnectionStringBuilder);
 		this.browser = new MessageBrowser((MessageSender)sender);
 	}
 	
-	public TopicClient(MessagingFactory factory, String topicPath) throws InterruptedException, ServiceBusException
+	TopicClient(MessagingFactory factory, String topicPath) throws InterruptedException, ServiceBusException
 	{
 		this();
 		this.sender = ClientFactory.createMessageSenderFromEntityPath(factory, topicPath);
@@ -127,4 +128,9 @@ public final class TopicClient extends InitializableEntity implements ITopicClie
 	protected CompletableFuture<Void> onClose() {
 		return this.sender.closeAsync();
 	}
+
+    @Override
+    public String getTopicName() {
+        return this.getEntityPath();
+    }
 }

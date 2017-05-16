@@ -319,8 +319,8 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 	}
 
 	@Override
-	public IMessage receive(long sequenceNumber) throws InterruptedException, ServiceBusException{
-		return Utils.completeFuture(this.receiveAsync(sequenceNumber));
+	public IMessage receiveBySequenceNumber(long sequenceNumber) throws InterruptedException, ServiceBusException{
+		return Utils.completeFuture(this.receiveBySequenceNumberAsync(sequenceNumber));
 	}
 
 	@Override
@@ -392,7 +392,7 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 	}
 	
 	@Override
-	public CompletableFuture<IMessage> receiveAsync(long sequenceNumber) {
+	public CompletableFuture<IMessage> receiveBySequenceNumberAsync(long sequenceNumber) {
 		ArrayList<Long> list = new ArrayList<>();
 		list.add(sequenceNumber);
 		return  this.receiveBatchAsync(list).thenApplyAsync(c -> 

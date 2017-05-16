@@ -209,10 +209,10 @@ public abstract class SessionTests {
 		String sessionId = getRandomString();
 		this.session = ClientFactory.acceptSessionFromEntityPath(factory, receiveBuilder.getEntityPath(), sessionId, ReceiveMode.PeekLock);
 		Instant initialValidity = this.session.getLockedUntilUtc();
-		this.session.renewLock();
+		this.session.renewSessionLock();
 		Instant renewedValidity = this.session.getLockedUntilUtc();
 		Assert.assertTrue("RenewSessionLock did not renew session lockeduntil time.", renewedValidity.isAfter(initialValidity));
-		this.session.renewLock();
+		this.session.renewSessionLock();
 		Instant renewedValidity2 = this.session.getLockedUntilUtc();
 		Assert.assertTrue("RenewSessionLock did not renew session lockeduntil time.", renewedValidity2.isAfter(renewedValidity));
 	}
