@@ -76,6 +76,11 @@ ipch/
 .classpath
 .project
 *.prefs
+/.metadata/
+
+# intellij java
+.idea/
+*.iml
 
 # Guidance Automation Toolkit
 *.gpState

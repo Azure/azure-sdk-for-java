@@ -173,20 +173,26 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     	return checkpoint;
     }
 
+    @Deprecated
     @Override
     public Future<Void> updateCheckpoint(Checkpoint checkpoint)
     {
-    	return EventProcessorHost.getExecutorService().submit(() -> updateCheckpointSync(checkpoint));
+    	throw new RuntimeException("Use updateCheckpoint(checkpoint, lease) instead."); 
     }
     
-    private Void updateCheckpointSync(Checkpoint checkpoint) throws Exception
+    @Override
+    public Future<Void> updateCheckpoint(Lease lease, Checkpoint checkpoint)
     {
-    	// Need to fetch the most current lease data so that we can update it correctly.
-    	AzureBlobLease lease = getLeaseSync(checkpoint.getPartitionId());
+    	return EventProcessorHost.getExecutorService().submit(() -> updateCheckpointSync(lease, checkpoint));
+    }
+    
+    private Void updateCheckpointSync(Lease lease, Checkpoint checkpoint) throws Exception
+    {
+    	AzureBlobLease updatedLease = new AzureBlobLease((AzureBlobLease) lease);
     	this.host.logWithHostAndPartition(Level.FINER, checkpoint.getPartitionId(), "Checkpointing at " + checkpoint.getOffset() + " // " + checkpoint.getSequenceNumber());
-    	lease.setOffset(checkpoint.getOffset());
-    	lease.setSequenceNumber(checkpoint.getSequenceNumber());
-    	updateLeaseSync(lease);
+    	updatedLease.setOffset(checkpoint.getOffset());
+    	updatedLease.setSequenceNumber(checkpoint.getSequenceNumber());
+    	updateLeaseSync(updatedLease);
     	return null;
     }
 
@@ -313,7 +319,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     public Iterable<Future<Lease>> getAllLeases() throws IllegalEntityException
     {
         ArrayList<Future<Lease>> leaseFutures = new ArrayList<Future<Lease>>();
-        Iterable<String> partitionIds = this.host.getPartitionManager().getPartitionIds(); 
+        String[] partitionIds = this.host.getPartitionManager().getPartitionIds();
         for (String id : partitionIds)
         {
             leaseFutures.add(getLease(id));
@@ -387,7 +393,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     	this.host.logWithHostAndPartition(Level.FINE, lease.getPartitionId(), "Acquiring lease");
     	
     	CloudBlockBlob leaseBlob = lease.getBlob();
-    	boolean retval = true;
+    	boolean succeeded = true;
     	String newLeaseId = EventProcessorHost.safeCreateUUID();
     	if ((newLeaseId == null) || newLeaseId.isEmpty())
     	{
@@ -400,23 +406,40 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 	    	if (leaseBlob.getProperties().getLeaseState() == LeaseState.LEASED)
 	    	{
 	    		this.host.logWithHostAndPartition(Level.FINER, lease.getPartitionId(), "changeLease");
-	    		newToken = leaseBlob.changeLease(newLeaseId, AccessCondition.generateLeaseCondition(lease.getToken()));
+	    		if ((lease.getToken() == null) || lease.getToken().isEmpty())
+	    		{
+	    			// We reach here in a race condition: when this instance of EventProcessorHost scanned the
+	    			// lease blobs, this partition was unowned (token is empty) but between then and now, another
+	    			// instance of EPH has established a lease (getLeaseState() is LEASED). We normally enforce
+	    			// that we only steal the lease if it is still owned by the instance which owned it when we
+	    			// scanned, but we can't do that when we don't know who owns it. The safest thing to do is just
+	    			// fail the acquisition. If that means that one EPH instance gets more partitions than it should,
+	    			// rebalancing will take care of that quickly enough.
+	    			succeeded = false;
+	    		}
+	    		else
+	    		{
+		    		newToken = leaseBlob.changeLease(newLeaseId, AccessCondition.generateLeaseCondition(lease.getToken()));
+	    		}
 	    	}
 	    	else
 	    	{
 	    		this.host.logWithHostAndPartition(Level.FINER, lease.getPartitionId(), "acquireLease");
 	    		newToken = leaseBlob.acquireLease(AzureStorageCheckpointLeaseManager.leaseDurationInSeconds, newLeaseId);
 	    	}
-	    	lease.setToken(newToken);
-	    	lease.setOwner(this.host.getHostName());
-	    	lease.incrementEpoch(); // Increment epoch each time lease is acquired or stolen by a new host
-	    	uploadLease(lease, leaseBlob, AccessCondition.generateLeaseCondition(lease.getToken()), UploadActivity.Acquire);
+	    	if (succeeded)
+	    	{
+		    	lease.setToken(newToken);
+		    	lease.setOwner(this.host.getHostName());
+		    	lease.incrementEpoch(); // Increment epoch each time lease is acquired or stolen by a new host
+		    	uploadLease(lease, leaseBlob, AccessCondition.generateLeaseCondition(lease.getToken()), UploadActivity.Acquire);
+	    	}
     	}
     	catch (StorageException se)
     	{
     		if (wasLeaseLost(se, lease.getPartitionId()))
     		{
-    			retval = false;
+    			succeeded = false;
     		}
     		else
     		{
@@ -424,7 +447,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     		}
     	}
     	
-    	return retval;
+    	return succeeded;
     }
 
     @Override

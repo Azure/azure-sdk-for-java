@@ -137,6 +137,21 @@ abstract class PartitionPump
     
     protected void onEvents(Iterable<EventData> events)
 	{
+    	// Update offset and sequence number in the PartitionContext to support argument-less overload of PartitionContext.checkpoint()
+		if (events != null)
+		{
+    		Iterator<EventData> blah = events.iterator();
+    		EventData last = null;
+    		while (blah.hasNext())
+    		{
+    			last = blah.next();
+    		}
+    		if (last != null)
+    		{
+    			this.partitionContext.setOffsetAndSequenceNumber(last);
+    		}
+		}
+		
     	try
         {
         	// Synchronize to serialize calls to the processor.
@@ -146,22 +161,6 @@ abstract class PartitionPump
         	synchronized(this.processingSynchronizer)
         	{
         		this.processor.onEvents(this.partitionContext, events);
-        		
-        		if (events != null)
-        		{
-	        		Iterator<EventData> blah = events.iterator();
-	        		EventData last = null;
-	        		while (blah.hasNext())
-	        		{
-	        			last = blah.next();
-	        		}
-	        		if (last != null)
-	        		{
-	        			this.host.logWithHostAndPartition(Level.FINER, this.partitionContext, "Updating offset in partition context with end of batch " +
-	        					last.getSystemProperties().getOffset() + "//" + last.getSystemProperties().getSequenceNumber());
-	        			this.partitionContext.setOffsetAndSequenceNumber(last);
-	        		}
-        		}
         	}
         }
         catch (Exception e)

@@ -37,7 +37,7 @@ public class Repros extends TestBase
 		String telltale = "conflictingHosts-telltale-" + EventProcessorHost.safeCreateUUID();
 		String conflictingName = "conflictingHosts-NOTSAFE";
 		String storageName = conflictingName.toLowerCase() + EventProcessorHost.safeCreateUUID();
-		boolean doCheckpointing = false;
+		PrefabEventProcessor.CheckpointChoices doCheckpointing = PrefabEventProcessor.CheckpointChoices.CKP_NONE;
 		boolean doMarker = false;
 		
 		PrefabGeneralErrorHandler general1 = new PrefabGeneralErrorHandler();

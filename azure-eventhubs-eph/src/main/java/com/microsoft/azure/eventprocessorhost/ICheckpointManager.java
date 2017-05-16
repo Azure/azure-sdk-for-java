@@ -69,12 +69,21 @@ public interface ICheckpointManager
     /***
      * Update the checkpoint in the store with the offset/sequenceNumber in the provided checkpoint.
      * 
-     * @param checkpoint  offset/sequeceNumber to update the store with.
+     * The lease argument is necessary to make the Azure Storage implementation work correctly. The
+     * Azure Storage implementation stores the checkpoint as part of the lease and we cannot completely
+     * hide the connection between the two. If you are doing an implementation which does not have this
+     * limitation, you are free to ignore the lease argument.
+     * 
+     * @param lease		  lease for the partition to be checkpointed.
+     * @param checkpoint  offset/sequenceNumber and partition id to update the store with.
      *   
      * @return  Void
      */
+    public Future<Void> updateCheckpoint(Lease lease, Checkpoint checkpoint);
+    
+    @Deprecated
     public Future<Void> updateCheckpoint(Checkpoint checkpoint);
-
+    
     /***
      * Delete the stored checkpoint for the given partition. If there is no stored checkpoint for the
      * given partition, that is treated as success.

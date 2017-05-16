@@ -139,8 +139,15 @@ public class InMemoryCheckpointManager implements ICheckpointManager
     	return returnCheckpoint;
     }
 
+    @Deprecated
     @Override
     public Future<Void> updateCheckpoint(Checkpoint checkpoint)
+    {
+    	return null;
+    }
+    
+    @Override
+    public Future<Void> updateCheckpoint(Lease lease, Checkpoint checkpoint)
     {
         return EventProcessorHost.getExecutorService().submit(() -> updateCheckpointSync(checkpoint.getPartitionId(), checkpoint.getOffset(), checkpoint.getSequenceNumber()));
     }

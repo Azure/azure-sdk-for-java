@@ -52,7 +52,7 @@ public final class ClientConstants {
     public final static String DEFAULT_RETRY = "Default";
 
     public final static String PRODUCT_NAME = "MSJavaClient";
-    public final static String CURRENT_JAVACLIENT_VERSION = "0.13.1";
+    public final static String CURRENT_JAVACLIENT_VERSION = "0.14.0";
 
     public static final String PLATFORM_INFO = getPlatformInfo();
 
@@ -77,6 +77,7 @@ public final class ClientConstants {
     public static final String MANAGEMENT_SECURITY_TOKEN_KEY = "security_token";
     public static final String MANAGEMENT_RESULT_PARTITION_IDS = "partition_ids";
     public static final String MANAGEMENT_RESULT_PARTITION_COUNT = "partition_count";
+    public static final String MANAGEMENT_RESULT_CREATED_AT = "created_at";
     public static final String MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER = "begin_sequence_number";
     public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER = "last_enqueued_sequence_number";
     public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET = "last_enqueued_offset";

@@ -147,7 +147,7 @@ the required version of Apache Qpid Proton-J, and the crytography library BCPKIX
    	<dependency> 
    		<groupId>com.microsoft.azure</groupId> 
    		<artifactId>azure-eventhubs</artifactId> 
-   		<version>0.13.1</version> 
+   		<version>0.14.0</version> 
    	</dependency>   
  ```
  
@@ -168,6 +168,9 @@ the required version of Apache Qpid Proton-J, and the crytography library BCPKIX
   * EVENT_HUB_CONNECTION_STRING
   * PARTITION_COUNT
   * EPHTESTSTORAGE
+
+## Samples
+Additional samples are provided here: [azure/azure-event-hubs](https://github.com/Azure/azure-event-hubs/tree/master/samples)
 
 ## How to provide feedback
 

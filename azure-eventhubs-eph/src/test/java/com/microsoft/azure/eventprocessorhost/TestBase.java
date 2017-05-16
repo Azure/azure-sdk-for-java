@@ -89,7 +89,7 @@ public class TestBase
 			String effectiveStorageContainerName = settings.getTestName().toLowerCase() + "-" + EventProcessorHost.safeCreateUUID();
 			if (settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.STORAGE_CONTAINER_OVERRIDE))
 			{
-				effectiveStorageContainerName = settings.inoutEPHConstructorArgs.getStorageContainerName();
+				effectiveStorageContainerName = settings.inoutEPHConstructorArgs.getStorageContainerName().toLowerCase();
 			}
 			else
 			{
@@ -220,8 +220,15 @@ public class TestBase
 			return null;
 		}
 
+		@Deprecated
 		@Override
 		public Future<Void> updateCheckpoint(Checkpoint checkpoint)
+		{
+			return null;
+		}
+
+		@Override
+		public Future<Void> updateCheckpoint(Lease lease, Checkpoint checkpoint)
 		{
 			return null;
 		}

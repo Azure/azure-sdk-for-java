@@ -19,8 +19,11 @@ import com.microsoft.azure.servicebus.amqp.AmqpException;
 import com.microsoft.azure.servicebus.amqp.IAmqpConnection;
 import com.microsoft.azure.servicebus.amqp.IOperation;
 import com.microsoft.azure.servicebus.amqp.IOperationResult;
+import com.microsoft.azure.servicebus.amqp.ISessionProvider;
 import com.microsoft.azure.servicebus.amqp.ReactorDispatcher;
 import com.microsoft.azure.servicebus.amqp.RequestResponseChannel;
+import com.microsoft.azure.servicebus.amqp.RequestResponseCloser;
+import com.microsoft.azure.servicebus.amqp.RequestResponseOpener;
 import com.microsoft.azure.servicebus.amqp.AmqpResponseCode;
 
 public class CBSChannel {
@@ -37,9 +40,11 @@ public class CBSChannel {
         this.sessionProvider = sessionProvider;
         this.connectionEventDispatcher = connection;
 
+        RequestResponseCloser closer = new RequestResponseCloser();
         this.innerChannel = new FaultTolerantObject<>(
-                new OpenRequestResponseChannel(),
-                new CloseRequestResponseChannel());
+        		new RequestResponseOpener(sessionProvider, "cbs-session", "cbs", ClientConstants.CBS_ADDRESS, connection),
+                closer);
+        closer.setInnerChannel(this.innerChannel);
     }
 
     public void sendToken(
@@ -95,87 +100,5 @@ public class CBSChannel {
             final IOperationResult<Void, Exception> closeCallback) {
 
         this.innerChannel.close(reactorDispatcher, closeCallback);
-    }
-
-    private class OpenRequestResponseChannel implements IOperation<RequestResponseChannel> {
-        @Override
-        public void run(IOperationResult<RequestResponseChannel, Exception> operationCallback) {
-
-            final Session session = CBSChannel.this.sessionProvider.getSession(
-                    "cbs-session",
-                    null,
-                    new BiConsumer<ErrorCondition, Exception>() {
-                        @Override
-                        public void accept(ErrorCondition error, Exception exception) {
-                            if (error != null)
-                                operationCallback.onError(new AmqpException(error));
-                            else if (exception != null)
-                                operationCallback.onError(exception);
-                        }
-                    });
-
-            if (session == null)
-                return;
-
-            final RequestResponseChannel requestResponseChannel = new RequestResponseChannel(
-                    "cbs",
-                    ClientConstants.CBS_ADDRESS,
-                    session);
-
-            requestResponseChannel.open(
-                    new IOperationResult<Void, Exception>() {
-                        @Override
-                        public void onComplete(Void result) {
-                            connectionEventDispatcher.registerForConnectionError(requestResponseChannel.getSendLink());
-                            connectionEventDispatcher.registerForConnectionError(requestResponseChannel.getReceiveLink());
-
-                            operationCallback.onComplete(requestResponseChannel);
-                        }
-
-                        @Override
-                        public void onError(Exception error) {
-                            operationCallback.onError(error);
-                        }
-                    },
-                    new IOperationResult<Void, Exception>() {
-                        @Override
-                        public void onComplete(Void result) {
-                            connectionEventDispatcher.deregisterForConnectionError(requestResponseChannel.getSendLink());
-                            connectionEventDispatcher.deregisterForConnectionError(requestResponseChannel.getReceiveLink());
-                        }
-
-                        @Override
-                        public void onError(Exception error) {
-                            connectionEventDispatcher.deregisterForConnectionError(requestResponseChannel.getSendLink());
-                            connectionEventDispatcher.deregisterForConnectionError(requestResponseChannel.getReceiveLink());
-                        }
-                    });
-        }
-    }
-
-    private class CloseRequestResponseChannel implements IOperation<Void> {
-
-        @Override
-        public void run(IOperationResult<Void, Exception> closeOperationCallback) {
-
-            final RequestResponseChannel channelToBeClosed = innerChannel.unsafeGetIfOpened();
-            if (channelToBeClosed == null) {
-
-                closeOperationCallback.onComplete(null);
-            } else {
-
-                channelToBeClosed.close(new IOperationResult<Void, Exception>() {
-                    @Override
-                    public void onComplete(Void result) {
-                        closeOperationCallback.onComplete(result);
-                    }
-
-                    @Override
-                    public void onError(Exception error) {
-                        closeOperationCallback.onError(error);
-                    }
-                });
-            }
-        }
     }
 }
