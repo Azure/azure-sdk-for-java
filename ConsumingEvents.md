@@ -1,4 +1,4 @@
-#Consuming Events with the Java client for Azure Event Hubs 
+# Consuming Events with the Java client for Azure Event Hubs 
 
 Consuming events from Event Hubs is different from typical messaging infrastuctures like queues or topic 
 subscriptions where a consumer simply fetches the "next" message.
@@ -21,7 +21,7 @@ from a single Event Hub in parallel, and coordinate which consumer is responsibl
 > The event processor host dramatically simplifies writing high-scale, high-throughput event consumer applications 
 > that distribute the processing load over a dynamic cluster of machines. 
    
-##Getting Started
+## Getting Started
 
 This library is available for use in Maven projects from the Maven Central Repository, and can be referenced using the
 following dependency declaration inside of your Maven project file:    
@@ -80,7 +80,7 @@ to *receive()* will fetch an iterable batch of events to process.
 		Iterable<EventData> receivedEvents = receiver.receiveSync(maxEventCount);         
 ```
 
-##Consumer Groups 
+## Consumer Groups 
 
 Event Hub receivers always receive via Consumer Groups. A consumer group is a named entity on an Event Hub that is
 conceptually similar to a Messaging Topic subscription, even though it provides no server-side filtering capabilities.
@@ -95,7 +95,7 @@ and Epochs](#ownership-failover-and-epochs) section below explains how to ensure
 
 You can create up to 20 such consumer groups on an Event Hub via the Azure portal or the HTTP API.
 
-##Using Offsets
+## Using Offsets
 
 Each Event Hub has a configurable event retention period, which defaults to one day and can be extended to seven days. 
 By contacting Microsoft product support you can ask for further extend the retention period to up to 30 days.
@@ -127,7 +127,7 @@ begin receiving events:
     ``` 
    
 
-##Ownership, Failover, and Epochs
+## Ownership, Failover, and Epochs
 
 As mentioned in the overview above, the common consumption model for Event Hubs is that multiple consumers process events 
 from a single Event Hub in parallel. Depending on the amount of processing work required and the data volume that has to be 
@@ -189,13 +189,13 @@ How often an event processor writes checkpoint information depends on the use-ca
 the checkpoint state location. Too infrequent checkpointing may cause too many events to be re-processed as the new onwer picks up from 
 an outdated offset. 
 
-##AMQP 1.0
+## AMQP 1.0
 Azure Event Hubs requires using the AMQP 1.0 protocol for consuming events. 
 
 AMQP 1.0 is a TCP based protocol. For Azure Event Hubs, all traffic *must* be protected using TLS (SSL) and is using 
 TCP port 5672. For the WebSocket binding of AMQP, traffic flows via port 443.  
 
-##Connection Strings
+## Connection Strings
 
 Azure Event Hubs and Azure Service Bus share a common format for connection strings. A connection string holds all required
 information to set up a connection with an Event Hub. The format is a simple property/value list of the form 
