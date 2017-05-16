@@ -11,7 +11,6 @@ import com.microsoft.azure.management.documentdb.Location;
 import com.microsoft.azure.management.documentdb.DatabaseAccountKind;
 import com.microsoft.azure.management.documentdb.DatabaseAccountOfferType;
 import com.microsoft.azure.management.documentdb.ConsistencyPolicy;
-import com.microsoft.azure.management.documentdb.FailoverPolicies;
 import com.microsoft.azure.management.documentdb.KeyKind;
 import com.microsoft.azure.management.documentdb.DefaultConsistencyLevel;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -97,7 +96,7 @@ class DatabaseAccountImpl
     @Override
     public Observable<Void> failoverPriorityChangeAsync(List<Location> failoverPolicies) {
         List<FailoverPolicyInner> policyInners = new ArrayList<FailoverPolicyInner>();
-        for(int i = 0 ; i < failoverPolicies.size(); i++) {
+        for (int i = 0; i < failoverPolicies.size(); i++) {
             Location location  = failoverPolicies.get(i);
             FailoverPolicyInner policyInner = new FailoverPolicyInner();
             policyInner.withLocationName(location.locationName());
@@ -189,11 +188,12 @@ class DatabaseAccountImpl
         createUpdateParametersInner.withIpRangeFilter(inner.ipRangeFilter());
         createUpdateParametersInner.withKind(inner.kind());
         createUpdateParametersInner.withTags(inner.getTags());
-        if(this.isInCreateMode()) {
+        if (this.isInCreateMode()) {
             this.addLocationsForCreateUpdateParameters(createUpdateParametersInner, this.failoverPolicies);
-        }else {
+        } else {
             this.addLocationsForCreateUpdateParameters(createUpdateParametersInner, this.inner().failoverPolicies());
         }
+
         return createUpdateParametersInner;
     }
 
@@ -249,7 +249,7 @@ class DatabaseAccountImpl
             long maxStalenessPrefix) {
         ConsistencyPolicy policy = new ConsistencyPolicy();
         policy.withDefaultConsistencyLevel(level);
-        if(level == DefaultConsistencyLevel.BOUNDED_STALENESS) {
+        if (level == DefaultConsistencyLevel.BOUNDED_STALENESS) {
             policy.withMaxIntervalInSeconds(maxIntervalInSeconds);
             policy.withMaxStalenessPrefix((long) maxStalenessPrefix);
         }
@@ -261,7 +261,7 @@ class DatabaseAccountImpl
             DatabaseAccountCreateUpdateParametersInner createUpdateParametersInner,
             List<FailoverPolicyInner> failoverPolicies) {
         List<Location> locations = new ArrayList<Location>();
-        for(int i = 0; i < failoverPolicies.size(); i++) {
+        for (int i = 0; i < failoverPolicies.size(); i++) {
             FailoverPolicyInner policyInner = failoverPolicies.get(i);
             Location location = new Location();
             location.withFailoverPriority(i);
@@ -269,7 +269,7 @@ class DatabaseAccountImpl
             locations.add(location);
         }
 
-        if(locations.size() > 0) {
+        if (locations.size() > 0) {
             createUpdateParametersInner.withLocations(locations);
         }
     }
