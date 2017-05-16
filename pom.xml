@@ -81,7 +81,7 @@
 			<version>0.8.0</version>
 			<scope>test</scope>
 		</dependency>
-    </dependencies>
+	</dependencies>
 
 	<build>
 		<sourceDirectory>microsoft-azure-storage/src</sourceDirectory>
