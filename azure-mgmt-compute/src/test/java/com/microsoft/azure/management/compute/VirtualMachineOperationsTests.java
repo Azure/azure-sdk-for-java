@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIPAddress;
@@ -53,7 +54,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     @Test
     @Ignore("Can't be played from recording for some reason...")
     public void canDeleteRelatedResourcesFromFailedParallelVMCreations() {
-        final int desiredVMCount = 15;
+        final int desiredVMCount = 40;
         final Region region = Region.US_EAST;
         final String resourceGroupName = RG_NAME;
 
@@ -65,6 +66,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         final Map<String, Creatable<NetworkInterface>> nicDefinitions = new HashMap<>(); // Tracking NICs separately because they have to be deleted first
         final Map<String, Creatable<VirtualMachine>> vmDefinitions = new HashMap<>();
         final Map<String, String> createdResourceIds = new HashMap<>();
+        final List<Throwable> errors = new ArrayList<>();
 
         // Prepare a number of VM definitions along with their related resource definitions
         for (int i = 0; i < desiredVMCount; i++) {
@@ -112,7 +114,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
             // Define a VM
             String userName;
-            if (i == 7) {
+            if (i == desiredVMCount/2) {
                 // Intentionally cause a failure in one of the VMs
                 userName = "";
             } else {
@@ -126,7 +128,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                     .withRootUsername(userName)
                     .withRootPassword("Abcdef.123456!")
                     .withNewStorageAccount(storageAccountDefinition)
-                    .withSize(VirtualMachineSizeTypes.BASIC_A1)
+                    .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
                     .withNewAvailabilitySet(availabilitySetDefinition);
 
             // Keep track of all the related resource definitions based on the VM definition
@@ -165,7 +167,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
            .onErrorReturn(new Func1<Throwable, Indexable>() {
                 @Override
                 public Indexable call(Throwable throwable) {
-                    throwable.printStackTrace();
+                    errors.add(throwable);
                     return null;
                 }
             }).toBlocking().last();
@@ -178,7 +180,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 nicIdsToDelete.add(nicId);
             }
         }
-        networkManager.networkInterfaces().deleteByIds(nicIdsToDelete);
+        if (!nicIdsToDelete.isEmpty()) {
+            networkManager.networkInterfaces().deleteByIds(nicIdsToDelete);
+        }
 
         // Delete remaining successfully created resources of failed VM creations
         Collection<Completable> deleteObservables = new ArrayList<>();
@@ -193,11 +197,25 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
         // Delete as much as possible, postponing the errors till the end
         Completable.mergeDelayError(deleteObservables).await();
+
+        // Show any errors
+        for (Throwable error : errors) {
+            System.out.println("\n### ERROR ###\n");
+            if (error instanceof CloudException) {
+                CloudException ce = (CloudException) error;
+                System.out.println("CLOUD EXCEPTION: " + ce.getMessage());
+            } else {
+                error.printStackTrace();
+            }
+        }
+
         System.out.println("Number of failed/cleaned up VM creations: " + vmNonNicResourceDefinitions.size());
 
         // Verifications
         final int successfulVMCount = desiredVMCount - vmNonNicResourceDefinitions.size();
         final int actualVMCount = computeManager.virtualMachines().listByResourceGroup(resourceGroupName).size();
+        System.out.println("Number of actual successful VMs: " + actualVMCount);
+
         Assert.assertEquals(successfulVMCount, actualVMCount);
         final int actualNicCount = networkManager.networkInterfaces().listByResourceGroup(resourceGroupName).size();
         Assert.assertEquals(successfulVMCount, actualNicCount);
