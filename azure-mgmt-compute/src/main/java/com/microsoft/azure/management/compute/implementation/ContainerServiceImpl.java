@@ -6,7 +6,19 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.compute.*;
+import com.microsoft.azure.management.compute.ContainerService;
+import com.microsoft.azure.management.compute.ContainerServiceAgentPoolProfile;
+import com.microsoft.azure.management.compute.ContainerServiceVMSizeTypes;
+import com.microsoft.azure.management.compute.ContainerServiceOchestratorTypes;
+import com.microsoft.azure.management.compute.ContainerServiceMasterProfileCount;
+import com.microsoft.azure.management.compute.ContainerServiceLinuxProfile;
+import com.microsoft.azure.management.compute.ContainerServiceOrchestratorProfile;
+import com.microsoft.azure.management.compute.ContainerServiceSshPublicKey;
+import com.microsoft.azure.management.compute.ContainerServiceMasterProfile;
+import com.microsoft.azure.management.compute.ContainerServiceSshConfiguration;
+import com.microsoft.azure.management.compute.ContainerServiceAgentPool;
+import com.microsoft.azure.management.compute.ContainerServiceVMDiagnostics;
+import com.microsoft.azure.management.compute.ContainerServiceDiagnosticsProfile;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import rx.Observable;
 import rx.functions.Func1;
