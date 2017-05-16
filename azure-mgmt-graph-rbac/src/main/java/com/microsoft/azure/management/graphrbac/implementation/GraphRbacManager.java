@@ -12,6 +12,8 @@ import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.graphrbac.Applications;
 import com.microsoft.azure.management.graphrbac.Groups;
+import com.microsoft.azure.management.graphrbac.RoleAssignment;
+import com.microsoft.azure.management.graphrbac.RoleAssignments;
 import com.microsoft.azure.management.graphrbac.ServicePrincipals;
 import com.microsoft.azure.management.graphrbac.Users;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
@@ -30,11 +32,13 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
     private String tenantId;
     // The sdk clients
     private final GraphRbacManagementClientImpl graphRbacManagementClient;
+    private final AuthorizationManagementClientImpl authorizationManagementClient;
     // The collections
     private Users users;
     private Groups groups;
     private ServicePrincipals servicePrincipals;
     private Applications applications;
+    private RoleAssignments roleAssignments;
 
     @Override
     public GraphRbacManagementClientImpl inner() {
@@ -104,7 +108,16 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
 
     private GraphRbacManager(RestClient restClient, String tenantId) {
         this.graphRbacManagementClient = new GraphRbacManagementClientImpl(restClient).withTenantID(tenantId);
+        this.authorizationManagementClient = new AuthorizationManagementClientImpl(restClient);
         this.tenantId = tenantId;
+    }
+
+    /**
+     * @return wrapped inner authorization client providing direct access to
+     * auto-generated API implementation, based on Azure REST API
+     */
+    public AuthorizationManagementClientImpl roleInner() {
+        return authorizationManagementClient;
     }
 
     /**
@@ -152,5 +165,15 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
             applications = new ApplicationsImpl(graphRbacManagementClient.applications(), this);
         }
         return applications;
+    }
+
+    /**
+     * @return the application management API entry point
+     */
+    public RoleAssignments roleAssignments() {
+        if (roleAssignments == null) {
+            roleAssignments = new Role(graphRbacManagementClient.applications(), this);
+        }
+        return roleAssignments;
     }
 }
