@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.regex.Pattern;
 
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
@@ -254,12 +255,21 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
     @Override
     public String getTopicName() {
        String entityPath = this.getEntityPath();
-       return entityPath.substring(0, entityPath.indexOf(SUBSCRIPTIONS_DELIMITER));
+       String[] parts = Pattern.compile(SUBSCRIPTIONS_DELIMITER, Pattern.CASE_INSENSITIVE).split(entityPath, 2);
+       return parts[0];
     }
 
     @Override
     public String getSubscriptionName() {
         String entityPath = this.getEntityPath();
-        return entityPath.substring(entityPath.indexOf(SUBSCRIPTIONS_DELIMITER) + SUBSCRIPTIONS_DELIMITER.length());
+        String[] parts = Pattern.compile(SUBSCRIPTIONS_DELIMITER, Pattern.CASE_INSENSITIVE).split(entityPath, 2);
+        if(parts.length == 2)
+        {
+        	return parts[1];
+        }
+        else
+        {
+        	throw new RuntimeException("Invalid entity path in the subscription client.");
+        }
     }
 }
