@@ -50,8 +50,6 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
 import org.xml.sax.SAXException;
 
 import com.fasterxml.jackson.core.JsonFactory;
@@ -73,11 +71,16 @@ import com.microsoft.azure.storage.StorageExtendedErrorInformation;
  */
 public final class Utility {
 
-    private static ThreadLocal<DateTimeFormatter>
-        RFC1123_GMT_DATE_TIME_FORMATTER = new ThreadLocal<DateTimeFormatter>() {
-        @Override protected DateTimeFormatter initialValue() {
-            return DateTimeFormat.forPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
-                .withZoneUTC().withLocale(Locale.US);
+    /**
+     * Thread local for storing GMT date format.
+     */
+    private static ThreadLocal<DateFormat>
+        RFC1123_GMT_DATE_TIME_FORMATTER = new ThreadLocal<DateFormat>() {
+        @Override
+        protected DateFormat initialValue() {
+            final DateFormat formatter = new SimpleDateFormat(RFC1123_PATTERN, LOCALE_US);
+            formatter.setTimeZone(GMT_ZONE);
+            return formatter;
         }
     };
 
@@ -95,6 +98,11 @@ public final class Utility {
      * Stores a reference to the US locale.
      */
     public static final Locale LOCALE_US = Locale.US;
+
+    /**
+     * Stores a reference to the RFC1123 date/time pattern.
+     */
+    private static final String RFC1123_PATTERN = "EEE, dd MMM yyyy HH:mm:ss z";
 
     /**
      * Stores a reference to the ISO8601 date/time pattern.
@@ -122,7 +130,10 @@ public final class Utility {
      * Used to create Json parsers and generators.
      */
     private static final JsonFactory jsonFactory = new JsonFactory();
-    
+
+    /**
+     * Thread local for SAXParser.
+     */
     private static final ThreadLocal<SAXParser> saxParserThreadLocal = new ThreadLocal<SAXParser>() {
         SAXParserFactory factory;
         @Override public SAXParser initialValue() {
@@ -574,7 +585,7 @@ public final class Utility {
      * @return A <code>String</code> that represents the current GMT date/time using the RFC1123 pattern.
      */
     public static String getGMTTime() {
-        return getGMTTime(new DateTime());
+        return getGMTTime(new Date());
     }
 
     /**
@@ -588,27 +599,9 @@ public final class Utility {
      *         pattern.
      */
     public static String getGMTTime(final Date date) {
-        return getGMTTime(new DateTime(date.getTime()));
+        return RFC1123_GMT_DATE_TIME_FORMATTER.get().format(date);
     }
 
-    /**
-     * Returns the GTM date/time String for the specified value using the RFC1123 pattern.
-     * 
-     * @param date
-     *            A <code>DateTime</code> object that represents the date to
-     *            convert to GMT date/time in the RFC1123
-     *            pattern.
-     * 
-     * @return A <code>String</code> that represents the GMT date/time for the specified value using the RFC1123
-     *         pattern.
-     */
-    public static String getGMTTime(final DateTime date) {
-        StringBuilder sb = new StringBuilder(50);
-        RFC1123_GMT_DATE_TIME_FORMATTER.get().printTo(sb, date);
-        return sb.toString();
-    }
-
-    
     /**
      * Returns the UTC date/time String for the specified value using Java's version of the ISO8601 pattern,
      * which is limited to millisecond precision.
@@ -839,7 +832,7 @@ public final class Utility {
      *             If the specified string is invalid.
      */
     public static Date parseRFC1123DateFromStringInGMT(final String value) throws ParseException {
-        return DateTime.parse(value, RFC1123_GMT_DATE_TIME_FORMATTER.get()).toDate();
+        return RFC1123_GMT_DATE_TIME_FORMATTER.get().parse(value);
     }
 
     /**
