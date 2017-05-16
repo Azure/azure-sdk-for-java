@@ -125,6 +125,10 @@ public interface ServicePrincipal extends
             PasswordCredential.DefinitionStages.Blank<WithCreate> definePasswordCredential(String name);
         }
 
+        interface WithRoleAssignment {
+            WithCreate withRoleAssignment(String roleName, String scope);
+        }
+
         /**
          * A service principal definition with sufficient inputs to create a new
          * service principal in the cloud, but exposing additional optional inputs to
@@ -132,7 +136,8 @@ public interface ServicePrincipal extends
          */
         interface WithCreate extends
                 Creatable<ServicePrincipal>,
-                WithCredential {
+                WithCredential,
+                WithRoleAssignment {
         }
     }
 }

@@ -10,6 +10,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.Group;
 import com.microsoft.azure.management.graphrbac.RoleAssignment;
 import com.microsoft.azure.management.graphrbac.RoleAssignmentPropertiesWithScope;
+import com.microsoft.azure.management.graphrbac.RoleDefinition;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.graphrbac.User;
 import com.microsoft.azure.management.resources.ResourceGroup;
@@ -80,7 +81,13 @@ class RoleAssignmentImpl
         if (roleDefinitionId != null) {
             roleDefinitionIdObservable = Observable.just(roleDefinitionId);
         } else if (roleName != null) {
-            roleDefinitionIdObservable = Observable.just(null); // TODO: Get role definition from name!
+            roleDefinitionIdObservable = manager().roleDefinitions().getByScopeAndRoleNameAsync(scope(), roleName)
+                    .map(new Func1<RoleDefinition, String>() {
+                        @Override
+                        public String call(RoleDefinition roleDefinition) {
+                            return roleDefinition.id();
+                        }
+                    });
         } else {
             throw new IllegalArgumentException("Please pass a non-null value for either role name or role definition ID");
         }

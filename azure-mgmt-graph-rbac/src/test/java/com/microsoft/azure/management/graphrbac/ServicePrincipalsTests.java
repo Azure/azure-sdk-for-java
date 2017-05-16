@@ -48,4 +48,31 @@ public class ServicePrincipalsTests extends GraphRbacManagementTestBase {
         }
     }
 
+    @Test
+    public void canCRUDServicePrincipalWithRole() throws Exception {
+        ServicePrincipal servicePrincipal = null;
+        try {
+            servicePrincipal = graphRbacManager.servicePrincipals().define("anothersp5")
+                    .withNewApplication("http://easycreate.azure.com/anotherapp/5")
+                    .definePasswordCredential("sppass")
+                        .withPasswordValue("StrongPass!12")
+                        .attach()
+                    .withRoleAssignment("Contributor", "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380")
+                    .create();
+            System.out.println(servicePrincipal.id() + " - " + Joiner.on(", ").join(servicePrincipal.servicePrincipalNames()));
+            Assert.assertNotNull(servicePrincipal.id());
+            Assert.assertNotNull(servicePrincipal.applicationId());
+            Assert.assertEquals(2, servicePrincipal.servicePrincipalNames().size());
+            Assert.assertEquals(1, servicePrincipal.passwordCredentials().size());
+            Assert.assertEquals(0, servicePrincipal.certificateCredentials().size());
+        } finally {
+            try {
+                graphRbacManager.servicePrincipals().deleteById(servicePrincipal.id());
+            } catch (Exception e) { }
+            try {
+                graphRbacManager.applications().deleteById(graphRbacManager.applications().getByName(servicePrincipal.applicationId()).id());
+            } catch (Exception e) { }
+        }
+    }
+
 }

@@ -12,8 +12,8 @@ import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.graphrbac.Applications;
 import com.microsoft.azure.management.graphrbac.Groups;
-import com.microsoft.azure.management.graphrbac.RoleAssignment;
 import com.microsoft.azure.management.graphrbac.RoleAssignments;
+import com.microsoft.azure.management.graphrbac.RoleDefinitions;
 import com.microsoft.azure.management.graphrbac.ServicePrincipals;
 import com.microsoft.azure.management.graphrbac.Users;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
@@ -39,6 +39,7 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
     private ServicePrincipals servicePrincipals;
     private Applications applications;
     private RoleAssignments roleAssignments;
+    private RoleDefinitions roleDefinitions;
 
     @Override
     public GraphRbacManagementClientImpl inner() {
@@ -101,13 +102,18 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
     private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public GraphRbacManager authenticate(AzureTokenCredentials credentials) {
             return GraphRbacManager.authenticate(
-                    buildRestClient(credentials, AzureEnvironment.Endpoint.GRAPH),
+                    buildRestClient(credentials, AzureEnvironment.Endpoint.RESOURCE_MANAGER),
                     credentials.domain());
         }
     }
 
     private GraphRbacManager(RestClient restClient, String tenantId) {
-        this.graphRbacManagementClient = new GraphRbacManagementClientImpl(restClient).withTenantID(tenantId);
+        String graphEndpoint = AzureEnvironment.AZURE.graphEndpoint();
+        if (restClient.credentials() instanceof AzureTokenCredentials) {
+            graphEndpoint = ((AzureTokenCredentials) restClient.credentials()).environment().graphEndpoint();
+        }
+        this.graphRbacManagementClient = new GraphRbacManagementClientImpl(
+                restClient.newBuilder().withBaseUrl(graphEndpoint).build()).withTenantID(tenantId);
         this.authorizationManagementClient = new AuthorizationManagementClientImpl(restClient);
         this.tenantId = tenantId;
     }
@@ -168,12 +174,22 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
     }
 
     /**
-     * @return the application management API entry point
+     * @return the role assignment management API entry point
      */
     public RoleAssignments roleAssignments() {
         if (roleAssignments == null) {
-            roleAssignments = new Role(graphRbacManagementClient.applications(), this);
+            roleAssignments = new RoleAssignmentsImpl(this);
         }
         return roleAssignments;
+    }
+
+    /**
+     * @return the role definition management API entry point
+     */
+    public RoleDefinitions roleDefinitions() {
+        if (roleDefinitions == null) {
+            roleDefinitions = new RoleDefinitionsImpl(this);
+        }
+        return roleDefinitions;
     }
 }

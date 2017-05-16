@@ -78,7 +78,7 @@ public interface RoleAssignment extends
              * @param objectId the object ID of an Active Directory identity
              * @return the next stage in role assignment definition
              */
-            WithCreate forObjectId(String objectId);
+            WithRole forObjectId(String objectId);
 
             /**
              * Specifies the assignee of the role assignment to be a user.
@@ -86,7 +86,7 @@ public interface RoleAssignment extends
              * @param user the user object
              * @return the next stage in role assignment definition
              */
-            WithCreate forUser(User user);
+            WithRole forUser(User user);
 
             /**
              * Specifies the assignee of the role assignment to be a user.
@@ -94,7 +94,7 @@ public interface RoleAssignment extends
              * @param name the user's user principal name, full display name, or email address
              * @return the next stage in role assignment definition
              */
-            WithCreate forUser(String name);
+            WithRole forUser(String name);
 
             /**
              * Specifies the assignee of the role assignment to be a group.
@@ -102,7 +102,7 @@ public interface RoleAssignment extends
              * @param group the user group
              * @return the next stage in role assignment definition
              */
-            WithCreate forGroup(Group group);
+            WithRole forGroup(Group group);
 
             /**
              * Specifies the assignee of the role assignment to be a service principal.
@@ -110,7 +110,7 @@ public interface RoleAssignment extends
              * @param servicePrincipal the service principal object
              * @return the next stage in role assignment definition
              */
-            WithCreate forServicePrincipal(ServicePrincipal servicePrincipal);
+            WithRole forServicePrincipal(ServicePrincipal servicePrincipal);
 
             /**
              * Specifies the assignee of the role assignment to be a service principal.
@@ -118,7 +118,7 @@ public interface RoleAssignment extends
              * @param servicePrincipalName the service principal name
              * @return the next stage in role assignment definition
              */
-            WithCreate forServicePrincipal(String servicePrincipalName);
+            WithRole forServicePrincipal(String servicePrincipalName);
         }
 
         /**
@@ -131,14 +131,14 @@ public interface RoleAssignment extends
              * @param name the name of the role
              * @return the next stage in role assignment definition
              */
-            WithCreate withRoleName(String name);
+            WithScope withRoleName(String name);
             /**
              * Specifies the ID of the custom role for this assignment.
              *
              * @param roleDefinitionId ID of the custom role definition
              * @return the next stage in role assignment definition
              */
-            WithCreate withRoleDefinition(String roleDefinitionId);
+            WithScope withRoleDefinition(String roleDefinitionId);
         }
 
         /**
