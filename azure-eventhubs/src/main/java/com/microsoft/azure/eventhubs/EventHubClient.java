@@ -113,7 +113,6 @@ public class EventHubClient extends ClientEntity {
     /**
      * Factory method to create an instance of {@link EventHubClient} using the supplied connectionString.
      * In a normal scenario (when re-direct is not enabled) - one EventHubClient instance maps to one Connection to the Azure ServiceBus EventHubs service.
-     * <p>
      * <p>The {@link EventHubClient} created from this method creates a Sender instance internally, which is used by the {@link #send(EventData)} methods.
      *
      * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
@@ -129,7 +128,6 @@ public class EventHubClient extends ClientEntity {
     /**
      * Factory method to create an instance of {@link EventHubClient} using the supplied connectionString.
      * In a normal scenario (when re-direct is not enabled) - one EventHubClient instance maps to one Connection to the Azure ServiceBus EventHubs service.
-     * <p>
      * <p>The {@link EventHubClient} created from this method creates a Sender instance internally, which is used by the {@link #send(EventData)} methods.
      *
      * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
@@ -188,7 +186,6 @@ public class EventHubClient extends ClientEntity {
 
     /**
      * Send {@link EventData} to EventHub. The sent {@link EventData} will land on any arbitrarily chosen EventHubs partition.
-     * <p>
      * <p>There are 3 ways to send to EventHubs, each exposed as a method (along with its sendBatch overload):
      * <ul>
      * <li>	{@link #send(EventData)} or {@link #send(Iterable)}
@@ -261,10 +258,8 @@ public class EventHubClient extends ClientEntity {
     /**
      * Send a batch of {@link EventData} to EventHub. The sent {@link EventData} will land on any arbitrarily chosen EventHubs partition.
      * This is the most recommended way to Send to EventHubs.
-     * <p>
      * <p>There are 3 ways to send to EventHubs, to understand this particular type of Send refer to the overload {@link #send(EventData)}, which is used to send single {@link EventData}.
      * Use this overload versus {@link #send(EventData)}, if you need to send a batch of {@link EventData}.
-     * <p>
      * <p> Sending a batch of {@link EventData}'s is useful in the following cases:
      * <pre>
      * i.	Efficient send - sending a batch of {@link EventData} maximizes the overall throughput by optimally using the number of sessions created to EventHubs' service.
@@ -294,7 +289,6 @@ public class EventHubClient extends ClientEntity {
      *     System.out.println(String.format("Sent Batch... Size: %s", events.size()));
      * }
      * </pre>
-     * <p>
      * <p> for Exceptions refer to {@link #sendSync(Iterable)}
      *
      * @param eventDatas batch of events to send to EventHub
@@ -428,9 +422,7 @@ public class EventHubClient extends ClientEntity {
     /**
      * Send a 'batch of {@link EventData} with the same partitionKey' to EventHub. All {@link EventData}'s with a partitionKey are guaranteed to land on the same partition.
      * Multiple PartitionKey's will be mapped to one Partition.
-     * <p>
      * <p>There are 3 ways to send to EventHubs, to understand this particular type of Send refer to the overload {@link #send(EventData, String)}, which is the same type of Send and is used to send single {@link EventData}.
-     * <p>
      * <p>Sending a batch of {@link EventData}'s is useful in the following cases:
      * <pre>
      * i.	Efficient send - sending a batch of {@link EventData} maximizes the overall throughput by optimally using the number of sessions created to EventHubs service.
@@ -557,7 +549,6 @@ public class EventHubClient extends ClientEntity {
 
     /**
      * The receiver is created for a specific EventHub partition from the specific consumer group.
-     * <p>
      * <p>NOTE: There can be a maximum number of receivers that can run in parallel per ConsumerGroup per Partition.
      * The limit is enforced by the Event Hub service - current limit is 5 receivers in parallel. Having multiple receivers
      * reading from offsets that are far apart on the same consumer group / partition combo will have significant performance Impact.
@@ -719,7 +710,6 @@ public class EventHubClient extends ClientEntity {
 
     /**
      * The receiver is created for a specific EventHub partition from the specific consumer group.
-     * <p>
      * <p>NOTE: There can be a maximum number of receivers that can run in parallel per ConsumerGroup per Partition.
      * The limit is enforced by the Event Hub service - current limit is 5 receivers in parallel. Having multiple receivers
      * reading from offsets that are far apart on the same consumer group / partition combo will have significant performance Impact.
@@ -1274,7 +1264,6 @@ public class EventHubClient extends ClientEntity {
      * returns null to indicate timeout.
      * 
      * @return CompletableFuture which returns an EventHubRuntimeInformation on success, or null on timeout.  
-     * @throws Exception On failures other than timeout.
      */
     public CompletableFuture<EventHubRuntimeInformation> getRuntimeInformation() {
     	CompletableFuture<EventHubRuntimeInformation> future1 = null;
@@ -1310,7 +1299,6 @@ public class EventHubClient extends ClientEntity {
      * 
      * @param partitionId  Partition to get information about. Must be one of the partition ids returned by getRuntimeInformation.
      * @return CompletableFuture which returns an EventHubPartitionRuntimeInformation on success, or null on timeout.  
-     * @throws Exception On failures other than timeout.
      */
     public CompletableFuture<EventHubPartitionRuntimeInformation> getPartitionRuntimeInformation(String partitionId) {
     	CompletableFuture<EventHubPartitionRuntimeInformation> future1 = null;
