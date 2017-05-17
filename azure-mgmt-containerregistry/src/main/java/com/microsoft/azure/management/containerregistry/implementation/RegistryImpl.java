@@ -10,7 +10,6 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.containerregistry.Registry;
 import com.microsoft.azure.management.containerregistry.Sku;
 import com.microsoft.azure.management.containerregistry.StorageAccountParameters;
-import com.microsoft.azure.management.containerregistry.StorageAccountProperties;
 import com.microsoft.azure.management.containerregistry.PasswordName;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
