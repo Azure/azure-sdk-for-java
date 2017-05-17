@@ -5,7 +5,6 @@
  */
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.ContainerService;
 import com.microsoft.azure.management.compute.ContainerServiceAgentPoolProfile;
@@ -50,8 +49,8 @@ public class ContainerServiceImpl
 
     @Override
     public int masterNodeCount() {
-        if (this.inner().masterProfile() == null ||
-                this.inner().masterProfile().count() == null) {
+        if (this.inner().masterProfile() == null
+                || this.inner().masterProfile().count() == null) {
             return 0;
         }
 
@@ -141,10 +140,10 @@ public class ContainerServiceImpl
 
     @Override
     public String sshKey() {
-        if (this.inner().linuxProfile() == null ||
-                this.inner().linuxProfile().ssh() == null ||
-                this.inner().linuxProfile().ssh().publicKeys() == null ||
-                this.inner().linuxProfile().ssh().publicKeys().size() == 0) {
+        if (this.inner().linuxProfile() == null
+                || this.inner().linuxProfile().ssh() == null
+                || this.inner().linuxProfile().ssh().publicKeys() == null
+                || this.inner().linuxProfile().ssh().publicKeys().size() == 0) {
             return null;
         }
 
@@ -153,8 +152,8 @@ public class ContainerServiceImpl
 
     @Override
     public boolean isDiagnosticsEnabled() {
-        if (this.inner().diagnosticsProfile() == null ||
-                this.inner().diagnosticsProfile().vmDiagnostics() == null) {
+        if (this.inner().diagnosticsProfile() == null
+                || this.inner().diagnosticsProfile().vmDiagnostics() == null) {
             throw new RuntimeException("Diagnostic profile is missing!");
         }
 
@@ -287,8 +286,8 @@ public class ContainerServiceImpl
     }
 
     private ContainerServiceAgentPoolProfile getSingleAgentPool() {
-        if (this.inner().agentPoolProfiles() == null ||
-                this.inner().agentPoolProfiles().size() == 0) {
+        if (this.inner().agentPoolProfiles() == null
+                || this.inner().agentPoolProfiles().size() == 0) {
             return null;
         }
 
