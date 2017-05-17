@@ -7,42 +7,38 @@
 package com.microsoft.azure.management.graphrbac.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.graphrbac.Group;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroup;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 
 /**
  * Implementation for Group and its parent interfaces.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
-class GroupImpl
+class ActiveDirectoryGroupImpl
         extends WrapperImpl<ADGroupInner>
-        implements Group {
+        implements ActiveDirectoryGroup {
 
     private final GraphRbacManager manager;
 
-    GroupImpl(ADGroupInner innerModel, GraphRbacManager manager) {
+    ActiveDirectoryGroupImpl(ADGroupInner innerModel, GraphRbacManager manager) {
         super(innerModel);
         this.manager = manager;
     }
 
     @Override
-    public String objectId() {
+    public String id() {
         return inner().objectId();
     }
 
     @Override
-    public String objectType() {
-        return inner().objectType();
-    }
-
-    @Override
-    public String displayName() {
+    public String name() {
         return inner().displayName();
     }
 
     @Override
-    public Boolean securityEnabled() {
-        return inner().securityEnabled();
+    public boolean securityEnabled() {
+        return Utils.toPrimitiveBoolean(inner().securityEnabled());
     }
 
     @Override
@@ -52,6 +48,6 @@ class GroupImpl
 
     @Override
     public GraphRbacManager manager() {
-        return manager();
+        return manager;
     }
 }

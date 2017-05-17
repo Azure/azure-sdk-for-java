@@ -9,7 +9,7 @@ package com.microsoft.azure.management.graphrbac.implementation;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.graphrbac.Group;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroup;
 import com.microsoft.azure.management.graphrbac.Groups;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.rest.ServiceCallback;
@@ -23,8 +23,8 @@ import rx.functions.Func1;
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 class GroupsImpl
         extends ReadableWrappersImpl<
-            Group,
-            GroupImpl,
+        ActiveDirectoryGroup,
+        ActiveDirectoryGroupImpl,
             ADGroupInner>
         implements
             Groups {
@@ -35,65 +35,65 @@ class GroupsImpl
     }
 
     @Override
-    public PagedList<Group> list() {
+    public PagedList<ActiveDirectoryGroup> list() {
         return wrapList(this.manager.inner().groups().list());
     }
 
     @Override
-    protected GroupImpl wrapModel(ADGroupInner groupInner) {
+    protected ActiveDirectoryGroupImpl wrapModel(ADGroupInner groupInner) {
         if (groupInner == null) {
             return null;
         }
-        return new GroupImpl(groupInner, manager());
+        return new ActiveDirectoryGroupImpl(groupInner, manager());
     }
 
     @Override
-    public GroupImpl getById(String objectId) {
-        return (GroupImpl) getByIdAsync(objectId).toBlocking().single();
+    public ActiveDirectoryGroupImpl getById(String objectId) {
+        return (ActiveDirectoryGroupImpl) getByIdAsync(objectId).toBlocking().single();
     }
 
     @Override
-    public Observable<Group> getByIdAsync(String id) {
+    public Observable<ActiveDirectoryGroup> getByIdAsync(String id) {
         return manager.inner().groups().getAsync(id)
-                .map(new Func1<ADGroupInner, Group>() {
+                .map(new Func1<ADGroupInner, ActiveDirectoryGroup>() {
                     @Override
-                    public Group call(ADGroupInner groupInner) {
+                    public ActiveDirectoryGroup call(ADGroupInner groupInner) {
                         if (groupInner == null) {
                             return null;
                         } else {
-                            return new GroupImpl(groupInner, manager());
+                            return new ActiveDirectoryGroupImpl(groupInner, manager());
                         }
                     }
                 });
     }
 
     @Override
-    public ServiceFuture<Group> getByIdAsync(String id, ServiceCallback<Group> callback) {
+    public ServiceFuture<ActiveDirectoryGroup> getByIdAsync(String id, ServiceCallback<ActiveDirectoryGroup> callback) {
         return ServiceFuture.fromBody(getByIdAsync(id), callback);
     }
 
     @Override
-    public Observable<Group> listAsync() {
+    public Observable<ActiveDirectoryGroup> listAsync() {
         return wrapPageAsync(manager().inner().groups().listAsync());
     }
 
     @Override
-    public Observable<Group> getByNameAsync(String name) {
+    public Observable<ActiveDirectoryGroup> getByNameAsync(String name) {
         return manager().inner().groups().listAsync(String.format("displayName eq '%s'", name))
-                .map(new Func1<Page<ADGroupInner>, Group>() {
+                .map(new Func1<Page<ADGroupInner>, ActiveDirectoryGroup>() {
                     @Override
-                    public Group call(Page<ADGroupInner> adGroupInnerPage) {
+                    public ActiveDirectoryGroup call(Page<ADGroupInner> adGroupInnerPage) {
                         if (adGroupInnerPage.items() == null || adGroupInnerPage.items().isEmpty()) {
                             return null;
                         } else {
-                            return new GroupImpl(adGroupInnerPage.items().get(0), manager());
+                            return new ActiveDirectoryGroupImpl(adGroupInnerPage.items().get(0), manager());
                         }
                     }
                 });
     }
 
     @Override
-    public Group getByName(String name) {
+    public ActiveDirectoryGroup getByName(String name) {
         return getByNameAsync(name).toBlocking().single();
     }
 

@@ -22,9 +22,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 @Beta
 public interface Groups extends
-        SupportsListing<Group>,
-        SupportsGettingById<Group>,
-        SupportsGettingByNameAsync<Group>,
+        SupportsListing<ActiveDirectoryGroup>,
+        SupportsGettingById<ActiveDirectoryGroup>,
+        SupportsGettingByNameAsync<ActiveDirectoryGroup>,
         HasManager<GraphRbacManager>,
         HasInner<GroupsInner> {
 }

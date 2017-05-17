@@ -100,10 +100,10 @@ public interface RoleAssignment extends
             /**
              * Specifies the assignee of the role assignment to be a group.
              *
-             * @param group the user group
+             * @param activeDirectoryGroup the user group
              * @return the next stage in role assignment definition
              */
-            WithRole forGroup(Group group);
+            WithRole forGroup(ActiveDirectoryGroup activeDirectoryGroup);
 
             /**
              * Specifies the assignee of the role assignment to be a service principal.

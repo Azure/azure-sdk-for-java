@@ -7,8 +7,8 @@
 package com.microsoft.azure.management.graphrbac.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroup;
 import com.microsoft.azure.management.graphrbac.BuiltInRole;
-import com.microsoft.azure.management.graphrbac.Group;
 import com.microsoft.azure.management.graphrbac.RoleAssignment;
 import com.microsoft.azure.management.graphrbac.RoleAssignmentPropertiesWithScope;
 import com.microsoft.azure.management.graphrbac.RoleDefinition;
@@ -162,8 +162,8 @@ class RoleAssignmentImpl
     }
 
     @Override
-    public RoleAssignmentImpl forGroup(Group group) {
-        this.objectId = group.objectId();
+    public RoleAssignmentImpl forGroup(ActiveDirectoryGroup activeDirectoryGroup) {
+        this.objectId = activeDirectoryGroup.id();
         return this;
     }
 
