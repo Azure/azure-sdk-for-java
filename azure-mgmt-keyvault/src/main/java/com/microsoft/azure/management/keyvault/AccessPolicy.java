@@ -9,8 +9,8 @@ package com.microsoft.azure.management.keyvault;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroup;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryUser;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
-import com.microsoft.azure.management.graphrbac.User;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
@@ -91,7 +91,7 @@ public interface AccessPolicy extends
              * @param user the AD user object
              * @return the next stage of access policy definition
              */
-            WithAttach<ParentT> forUser(User user);
+            WithAttach<ParentT> forUser(ActiveDirectoryUser user);
 
             /**
              * Specifies the Active Directory user this access policy is for.
@@ -233,7 +233,7 @@ public interface AccessPolicy extends
              * @param user the AD user object
              * @return the next stage of access policy definition
              */
-            WithAttach<ParentT> forUser(User user);
+            WithAttach<ParentT> forUser(ActiveDirectoryUser user);
 
             /**
              * Specifies the Active Directory user this access policy is for.

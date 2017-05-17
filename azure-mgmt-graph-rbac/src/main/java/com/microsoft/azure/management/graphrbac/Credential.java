@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.graphrbac;
 
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
@@ -17,7 +18,7 @@ import org.joda.time.DateTime;
  * An immutable client-side representation of an Azure AD credential.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
-@Beta
+@Beta(SinceVersion.V1_1_0)
 public interface Credential extends
         Indexable,
         HasId,

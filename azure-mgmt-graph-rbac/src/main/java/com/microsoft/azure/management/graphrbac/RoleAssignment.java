@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.graphrbac;
 
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.graphrbac.implementation.RoleAssignmentInner;
@@ -23,7 +24,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
  * An immutable client-side representation of an Azure AD role assignment.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
-@Beta
+@Beta(SinceVersion.V1_1_0)
 public interface RoleAssignment extends
         Indexable,
         HasInner<RoleAssignmentInner>,
@@ -87,7 +88,7 @@ public interface RoleAssignment extends
              * @param user the user object
              * @return the next stage in role assignment definition
              */
-            WithRole forUser(User user);
+            WithRole forUser(ActiveDirectoryUser user);
 
             /**
              * Specifies the assignee of the role assignment to be a user.

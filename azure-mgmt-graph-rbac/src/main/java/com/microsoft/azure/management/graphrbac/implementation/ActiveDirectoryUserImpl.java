@@ -7,21 +7,21 @@
 package com.microsoft.azure.management.graphrbac.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.graphrbac.User;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryUser;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
 /**
  * Implementation for User and its parent interfaces.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
-class UserImpl
+class ActiveDirectoryUserImpl
         extends WrapperImpl<UserInner>
         implements
-            User {
+        ActiveDirectoryUser {
 
     private final GraphRbacManager manager;
 
-    UserImpl(UserInner innerObject, GraphRbacManager manager) {
+    ActiveDirectoryUserImpl(UserInner innerObject, GraphRbacManager manager) {
         super(innerObject);
         this.manager = manager;
     }

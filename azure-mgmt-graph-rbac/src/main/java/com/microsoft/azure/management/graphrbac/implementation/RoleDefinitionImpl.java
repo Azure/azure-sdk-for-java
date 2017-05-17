@@ -6,11 +6,13 @@
 
 package com.microsoft.azure.management.graphrbac.implementation;
 
+import com.google.common.collect.Sets;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.RoleDefinition;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
-import java.util.List;
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * Implementation for ServicePrincipal and its parent interfaces.
@@ -74,18 +76,18 @@ class RoleDefinitionImpl
     }
 
     @Override
-    public List<PermissionInner> permissions() {
+    public Set<PermissionInner> permissions() {
         if (inner().properties() == null) {
             return null;
         }
-        return inner().properties().permissions();
+        return Collections.unmodifiableSet(Sets.newHashSet(inner().properties().permissions()));
     }
 
     @Override
-    public List<String> assignableScopes() {
+    public Set<String> assignableScopes() {
         if (inner().properties() == null) {
             return null;
         }
-        return inner().properties().assignableScopes();
+        return Collections.unmodifiableSet(Sets.newHashSet(inner().properties().assignableScopes()));
     }
 }

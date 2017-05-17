@@ -9,7 +9,7 @@ package com.microsoft.azure.management.graphrbac;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
-import com.microsoft.azure.management.graphrbac.implementation.GroupsInner;
+import com.microsoft.azure.management.graphrbac.implementation.UsersInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByNameAsync;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
@@ -17,14 +17,14 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
- * Entry point to AD group management API.
+ * Entry point to AD user management API.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 @Beta
-public interface Groups extends
-        SupportsListing<ActiveDirectoryGroup>,
-        SupportsGettingById<ActiveDirectoryGroup>,
-        SupportsGettingByNameAsync<ActiveDirectoryGroup>,
+public interface ActiveDirectoryUsers extends
+        SupportsGettingById<ActiveDirectoryUser>,
+        SupportsGettingByNameAsync<ActiveDirectoryUser>,
+        SupportsListing<ActiveDirectoryUser>,
         HasManager<GraphRbacManager>,
-        HasInner<GroupsInner> {
+        HasInner<UsersInner> {
 }

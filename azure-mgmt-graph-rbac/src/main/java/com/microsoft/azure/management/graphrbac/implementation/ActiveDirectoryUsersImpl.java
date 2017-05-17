@@ -9,8 +9,8 @@ package com.microsoft.azure.management.graphrbac.implementation;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.graphrbac.User;
-import com.microsoft.azure.management.graphrbac.Users;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryUser;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryUsers;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.rest.ServiceCallback;
@@ -22,65 +22,65 @@ import rx.functions.Func1;
  * The implementation of Users and its parent interfaces.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
-class UsersImpl
+class ActiveDirectoryUsersImpl
         extends ReadableWrappersImpl<
-                    User,
-                    UserImpl,
+        ActiveDirectoryUser,
+        ActiveDirectoryUserImpl,
                     UserInner>
         implements
-            Users,
+        ActiveDirectoryUsers,
             HasInner<UsersInner> {
     private final GraphRbacManager manager;
 
-    UsersImpl(
+    ActiveDirectoryUsersImpl(
             final GraphRbacManager manager) {
         this.manager = manager;
     }
 
     @Override
-    public PagedList<User> list() {
+    public PagedList<ActiveDirectoryUser> list() {
         return wrapList(this.manager().inner().users().list());
     }
 
     @Override
-    protected UserImpl wrapModel(UserInner userInner) {
+    protected ActiveDirectoryUserImpl wrapModel(UserInner userInner) {
         if (userInner == null) {
             return null;
         }
-        return new UserImpl(userInner, manager());
+        return new ActiveDirectoryUserImpl(userInner, manager());
     }
 
     @Override
-    public UserImpl getById(String objectId) {
-        return (UserImpl) getByIdAsync(objectId).toBlocking().single();
+    public ActiveDirectoryUserImpl getById(String objectId) {
+        return (ActiveDirectoryUserImpl) getByIdAsync(objectId).toBlocking().single();
     }
 
     @Override
-    public Observable<User> getByIdAsync(String id) {
-        return manager().inner().users().getAsync(id).map(new Func1<UserInner, User>() {
+    public Observable<ActiveDirectoryUser> getByIdAsync(String id) {
+        return manager().inner().users().getAsync(id).map(new Func1<UserInner, ActiveDirectoryUser>() {
             @Override
-            public User call(UserInner userInner) {
+            public ActiveDirectoryUser call(UserInner userInner) {
                 if (userInner == null) {
                     return null;
                 } else {
-                    return new UserImpl(userInner, manager());
+                    return new ActiveDirectoryUserImpl(userInner, manager());
                 }
             }
         });
     }
 
     @Override
-    public ServiceFuture<User> getByIdAsync(String id, ServiceCallback<User> callback) {
+    public ServiceFuture<ActiveDirectoryUser> getByIdAsync(String id, ServiceCallback<ActiveDirectoryUser> callback) {
         return ServiceFuture.fromBody(getByIdAsync(id), callback);
     }
 
     @Override
-    public UserImpl getByName(String upn) {
-        return (UserImpl) getByNameAsync(upn).toBlocking().single();
+    public ActiveDirectoryUserImpl getByName(String upn) {
+        return (ActiveDirectoryUserImpl) getByNameAsync(upn).toBlocking().single();
     }
 
     @Override
-    public Observable<User> getByNameAsync(final String name) {
+    public Observable<ActiveDirectoryUser> getByNameAsync(final String name) {
         return manager().inner().users().getAsync(name)
                 .flatMap(new Func1<UserInner, Observable<UserInner>>() {
                     @Override
@@ -117,13 +117,13 @@ class UsersImpl
                         }
                     }
                 })
-                .map(new Func1<UserInner, User>() {
+                .map(new Func1<UserInner, ActiveDirectoryUser>() {
                     @Override
-                    public User call(UserInner userInnerServiceResponse) {
+                    public ActiveDirectoryUser call(UserInner userInnerServiceResponse) {
                         if (userInnerServiceResponse == null) {
                             return null;
                         }
-                        return new UserImpl(userInnerServiceResponse, manager());
+                        return new ActiveDirectoryUserImpl(userInnerServiceResponse, manager());
                     }
                 });
     }
@@ -134,7 +134,7 @@ class UsersImpl
     }
 
     @Override
-    public Observable<User> listAsync() {
+    public Observable<ActiveDirectoryUser> listAsync() {
         return wrapPageAsync(this.inner().listAsync());
     }
 

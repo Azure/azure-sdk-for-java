@@ -10,7 +10,7 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroup;
-import com.microsoft.azure.management.graphrbac.Groups;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
@@ -21,16 +21,16 @@ import rx.functions.Func1;
  * The implementation of Users and its parent interfaces.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
-class GroupsImpl
+class ActiveDirectoryGroupsImpl
         extends ReadableWrappersImpl<
         ActiveDirectoryGroup,
         ActiveDirectoryGroupImpl,
             ADGroupInner>
         implements
-            Groups {
+        ActiveDirectoryGroups {
     private final GraphRbacManager manager;
 
-    GroupsImpl(final GraphRbacManager manager) {
+    ActiveDirectoryGroupsImpl(final GraphRbacManager manager) {
         this.manager = manager;
     }
 

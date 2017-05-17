@@ -20,7 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 @Beta
-public interface User extends
+public interface ActiveDirectoryUser extends
         HasInner<UserInner>,
         HasId,
         HasName,

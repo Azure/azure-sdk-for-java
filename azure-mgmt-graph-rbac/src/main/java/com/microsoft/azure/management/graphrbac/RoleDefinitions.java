@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.graphrbac;
 
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.graphrbac.implementation.RoleDefinitionsInner;
@@ -21,7 +22,7 @@ import rx.Observable;
  * Entry point to application management API.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
-@Beta
+@Beta(SinceVersion.V1_1_0)
 public interface RoleDefinitions extends
         SupportsGettingById<RoleDefinition>,
         HasManager<GraphRbacManager>,

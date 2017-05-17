@@ -49,6 +49,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTestBase {
     }
 
     @Test
+    @Ignore("Need to login as user to run")
     public void canCRUDServicePrincipalWithRole() throws Exception {
         ServicePrincipal servicePrincipal = null;
         try {

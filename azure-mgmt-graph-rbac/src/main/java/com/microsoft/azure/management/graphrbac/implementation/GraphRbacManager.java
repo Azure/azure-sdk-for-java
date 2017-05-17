@@ -10,12 +10,12 @@ import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryUsers;
 import com.microsoft.azure.management.graphrbac.Applications;
-import com.microsoft.azure.management.graphrbac.Groups;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroups;
 import com.microsoft.azure.management.graphrbac.RoleAssignments;
 import com.microsoft.azure.management.graphrbac.RoleDefinitions;
 import com.microsoft.azure.management.graphrbac.ServicePrincipals;
-import com.microsoft.azure.management.graphrbac.Users;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
@@ -34,8 +34,8 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
     private final GraphRbacManagementClientImpl graphRbacManagementClient;
     private final AuthorizationManagementClientImpl authorizationManagementClient;
     // The collections
-    private Users users;
-    private Groups groups;
+    private ActiveDirectoryUsers activeDirectoryUsers;
+    private ActiveDirectoryGroups activeDirectoryGroups;
     private ServicePrincipals servicePrincipals;
     private Applications applications;
     private RoleAssignments roleAssignments;
@@ -136,21 +136,21 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
     /**
      * @return the Active Directory user management API entry point
      */
-    public Users users() {
-        if (users == null) {
-            users = new UsersImpl(this);
+    public ActiveDirectoryUsers users() {
+        if (activeDirectoryUsers == null) {
+            activeDirectoryUsers = new ActiveDirectoryUsersImpl(this);
         }
-        return users;
+        return activeDirectoryUsers;
     }
 
     /**
      * @return the Active Directory group management API entry point
      */
-    public Groups groups() {
-        if (groups == null) {
-            groups = new GroupsImpl(this);
+    public ActiveDirectoryGroups groups() {
+        if (activeDirectoryGroups == null) {
+            activeDirectoryGroups = new ActiveDirectoryGroupsImpl(this);
         }
-        return groups;
+        return activeDirectoryGroups;
     }
 
     /**

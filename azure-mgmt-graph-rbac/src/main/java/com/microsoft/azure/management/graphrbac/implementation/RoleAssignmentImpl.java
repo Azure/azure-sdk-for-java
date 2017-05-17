@@ -8,12 +8,12 @@ package com.microsoft.azure.management.graphrbac.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroup;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryUser;
 import com.microsoft.azure.management.graphrbac.BuiltInRole;
 import com.microsoft.azure.management.graphrbac.RoleAssignment;
 import com.microsoft.azure.management.graphrbac.RoleAssignmentPropertiesWithScope;
 import com.microsoft.azure.management.graphrbac.RoleDefinition;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
-import com.microsoft.azure.management.graphrbac.User;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableImpl;
@@ -61,9 +61,9 @@ class RoleAssignmentImpl
             objectIdObservable = Observable.just(objectId);
         } else if (userName != null) {
             objectIdObservable = manager.users().getByNameAsync(userName)
-                    .map(new Func1<User, String>() {
+                    .map(new Func1<ActiveDirectoryUser, String>() {
                         @Override
-                        public String call(User user) {
+                        public String call(ActiveDirectoryUser user) {
                             return user.id();
                         }
                     });
@@ -150,7 +150,7 @@ class RoleAssignmentImpl
     }
 
     @Override
-    public RoleAssignmentImpl forUser(User user) {
+    public RoleAssignmentImpl forUser(ActiveDirectoryUser user) {
         this.objectId = user.id();
         return this;
     }

@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.graphrbac;
 
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.graphrbac.implementation.ServicePrincipalInner;
@@ -59,6 +60,7 @@ public interface ServicePrincipal extends
     /**
      * Container interface for all the definitions that need to be implemented.
      */
+    @Beta(SinceVersion.V1_1_0)
     interface Definition extends
             DefinitionStages.Blank,
             DefinitionStages.WithCreate {
@@ -67,6 +69,7 @@ public interface ServicePrincipal extends
     /**
      * Grouping of all the service principal definition stages.
      */
+    @Beta(SinceVersion.V1_1_0)
     interface DefinitionStages {
         /**
          * The first stage of the service principal definition.
@@ -137,6 +140,7 @@ public interface ServicePrincipal extends
          * service principal in the cloud, but exposing additional optional inputs to
          * specify.
          */
+        @Beta(SinceVersion.V1_1_0)
         interface WithCreate extends
                 Creatable<ServicePrincipal>,
                 WithCredential,

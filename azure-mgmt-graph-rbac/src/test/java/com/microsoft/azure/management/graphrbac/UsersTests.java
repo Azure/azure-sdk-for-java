@@ -28,21 +28,21 @@ public class UsersTests extends GraphRbacManagementTestBase {
     @Test
     @Ignore("Need a specific domain")
     public void canGetUserByEmail() throws Exception {
-        User user = graphRbacManager.users().getByName("admin@azuresdkteam.onmicrosoft.com");
+        ActiveDirectoryUser user = graphRbacManager.users().getByName("admin@azuresdkteam.onmicrosoft.com");
         Assert.assertEquals("Admin", user.name());
     }
 
     @Test
     @Ignore("Need a specific domain")
     public void canGetUserByForeignEmail() throws Exception {
-        User user = graphRbacManager.users().getByName("jianghlu@microsoft.com");
+        ActiveDirectoryUser user = graphRbacManager.users().getByName("jianghlu@microsoft.com");
         Assert.assertEquals("Jianghao Lu", user.name());
     }
 
     @Test
     @Ignore("Need a specific domain")
     public void canGetUserByDisplayName() throws Exception {
-        User user = graphRbacManager.users().getByName("Reader zero");
+        ActiveDirectoryUser user = graphRbacManager.users().getByName("Reader zero");
         Assert.assertEquals("Reader zero", user.name());
     }
 }
