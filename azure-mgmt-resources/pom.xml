@@ -45,14 +45,6 @@
     </developer>
   </developers>
 
-  <repositories>
-    <repository>
-      <id>commicrosoftazure-1768</id>
-      <name>commicrosoftazure-1768</name>
-      <url>http://oss.sonatype.org/service/local/repositories/commicrosoftazure-1768/content/</url>
-    </repository>
-  </repositories>
-
   <dependencies>
     <dependency>
       <groupId>org.slf4j</groupId>
