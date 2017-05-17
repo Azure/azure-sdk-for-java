@@ -112,6 +112,7 @@ public final class ExecutionEngine {
 
                 // 6. Process the request - Get response
                 RequestResult currResult = task.getResult();
+                currResult.setStartDate(new Date());
 
                 Logger.info(opContext, LogConstants.GET_RESPONSE);
                 try {
