@@ -24,7 +24,7 @@ import rx.Observable;
  * An immutable client-side representation of an Azure registry.
  */
 @Fluent
-@Beta()
+@Beta(Beta.SinceVersion.V1_1_0)
 public interface Registry extends
     GroupableResource<ContainerRegistryManager, RegistryInner>,
     Refreshable<Registry>,
@@ -51,9 +51,9 @@ public interface Registry extends
     boolean adminUserEnabled();
 
     /**
-     * @return the properties of the storage account for the container registry.
+     * @return the name of the storage account for the container registry.
      */
-    StorageAccountProperties storageAccount();
+    String storageAccountName();
 
     /**
      * @return the login credentials for the specified container registry.

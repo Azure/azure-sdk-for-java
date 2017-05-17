@@ -30,7 +30,7 @@ import java.util.List;
  *  Entry point to document db management API.
  */
 @Fluent()
-@Beta
+@Beta(Beta.SinceVersion.V1_1_0)
 public interface DatabaseAccounts extends
         SupportsCreating<DatabaseAccount.DefinitionStages.Blank>,
         HasManager<DocumentDBManager>,

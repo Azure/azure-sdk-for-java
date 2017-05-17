@@ -41,15 +41,15 @@ public class TestContainerService extends TestTemplate<ContainerService, Contain
                 .withDiagnostics()
                 .withTag("tag1", "value1")
                 .create();
-        Assert.assertTrue("Container service not found.", resource.id() != null);
-        Assert.assertTrue(resource.region().equals(Region.US_EAST));
-        Assert.assertTrue(resource.masterNodeCount() == ContainerServiceMasterProfileCount.MIN.count());
-        Assert.assertTrue(resource.linuxRootUsername().equals("testUserName"));
-        Assert.assertTrue(resource.agentPoolCount() == 1);
-        Assert.assertTrue(resource.agentPoolName().equals("agentPool0" + newName));
-        Assert.assertTrue(resource.agentPoolLeafDomainLabel().equals("ap0" + dnsPrefix));
-        Assert.assertTrue(resource.agentPoolVMSize().equals(ContainerServiceVMSizeTypes.STANDARD_A1));
-        Assert.assertTrue(resource.orchestratorType().equals(ContainerServiceOchestratorTypes.DCOS));
+        Assert.assertNotNull("Container service not found.", resource.id());
+        Assert.assertEquals(resource.region(), Region.US_EAST);
+        Assert.assertEquals(resource.masterNodeCount(), ContainerServiceMasterProfileCount.MIN.count());
+        Assert.assertEquals(resource.linuxRootUsername(), "testUserName");
+        Assert.assertEquals(resource.agentPoolCount(), 1);
+        Assert.assertEquals(resource.agentPoolName(), "agentPool0" + newName);
+        Assert.assertEquals(resource.agentPoolLeafDomainLabel(), "ap0" + dnsPrefix);
+        Assert.assertEquals(resource.agentPoolVMSize(), ContainerServiceVMSizeTypes.STANDARD_A1);
+        Assert.assertEquals(resource.orchestratorType(), ContainerServiceOchestratorTypes.DCOS);
         Assert.assertTrue(resource.isDiagnosticsEnabled());
         Assert.assertTrue(resource.tags().containsKey("tag1"));
         return resource;

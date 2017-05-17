@@ -23,11 +23,11 @@ public class TestDocumentDB extends TestTemplate<DatabaseAccount, DatabaseAccoun
                 .withStrongConsistencyPolicy()
                 .withIpRangeFilter("")
                 .create();
-        Assert.assertTrue(databaseAccount.name().equals(newName.toLowerCase()));
-        Assert.assertTrue(databaseAccount.kind().equals(DatabaseAccountKind.GLOBAL_DOCUMENT_DB));
-        Assert.assertTrue(databaseAccount.writableReplications().size() == 1);
-        Assert.assertTrue(databaseAccount.readableReplications().size() == 2);
-        Assert.assertTrue(databaseAccount.defaultConsistencyLevel().equals(DefaultConsistencyLevel.STRONG));
+        Assert.assertEquals(databaseAccount.name(), newName.toLowerCase());
+        Assert.assertEquals(databaseAccount.kind(), DatabaseAccountKind.GLOBAL_DOCUMENT_DB);
+        Assert.assertEquals(databaseAccount.writableReplications().size(), 1);
+        Assert.assertEquals(databaseAccount.readableReplications().size(), 2);
+        Assert.assertEquals(databaseAccount.defaultConsistencyLevel(), DefaultConsistencyLevel.STRONG);
         return databaseAccount;
     }
 
@@ -40,7 +40,7 @@ public class TestDocumentDB extends TestTemplate<DatabaseAccount, DatabaseAccoun
                 .withTag("tag3", "value3")
                 .withoutTag("tag1")
                 .apply();
-        Assert.assertTrue(resource.defaultConsistencyLevel().equals(DefaultConsistencyLevel.SESSION));
+        Assert.assertEquals(resource.defaultConsistencyLevel(), DefaultConsistencyLevel.SESSION);
         Assert.assertTrue(resource.tags().containsKey("tag2"));
         Assert.assertTrue(!resource.tags().containsKey("tag1"));
 

@@ -75,8 +75,12 @@ public class RegistryImpl
     }
 
     @Override
-    public StorageAccountProperties storageAccount() {
-        return this.inner().storageAccount();
+    public String storageAccountName() {
+        if (this.inner().storageAccount() == null) {
+            return null;
+        }
+
+        return this.inner().storageAccount().name();
     }
 
     @Override
@@ -102,13 +106,13 @@ public class RegistryImpl
     }
 
     @Override
-    public Registry.DefinitionStages.WithCreate withExistingStorageAccount(StorageAccount storageAccount) {
+    public RegistryImpl withExistingStorageAccount(StorageAccount storageAccount) {
         this.storageAccount = storageAccount;
         return this;
     }
 
     @Override
-    public Registry.DefinitionStages.WithCreate withNewStorageAccount(String storageAccountName) {
+    public RegistryImpl withNewStorageAccount(String storageAccountName) {
         StorageAccount.DefinitionStages.WithGroup definitionWithGroup = this.storageManager
                 .storageAccounts()
                 .define(storageAccountName)
@@ -124,7 +128,7 @@ public class RegistryImpl
     }
 
     @Override
-    public Registry.DefinitionStages.WithCreate withNewStorageAccount(Creatable<StorageAccount> creatable) {
+    public RegistryImpl withNewStorageAccount(Creatable<StorageAccount> creatable) {
         if (this.creatableStorageAccountKey == null) {
             this.creatableStorageAccountKey = creatable.key();
             this.addCreatableDependency(creatable);

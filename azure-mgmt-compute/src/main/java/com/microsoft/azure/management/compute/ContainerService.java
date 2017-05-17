@@ -20,7 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
  * An client-side representation for a container service.
  */
 @Fluent
-@Beta
+@Beta(Beta.SinceVersion.V1_1_0)
 public interface ContainerService extends
         GroupableResource<ComputeManager, ContainerServiceInner>,
         Refreshable<ContainerService>,

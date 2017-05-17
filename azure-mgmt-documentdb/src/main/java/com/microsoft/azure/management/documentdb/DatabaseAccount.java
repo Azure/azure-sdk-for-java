@@ -26,7 +26,7 @@ import java.util.List;
  * An immutable client-side representation of an Azure document db.
  */
 @Fluent
-@Beta()
+@Beta(Beta.SinceVersion.V1_1_0)
 public interface DatabaseAccount extends
     GroupableResource<DocumentDBManager, DatabaseAccountInner>,
     Refreshable<DatabaseAccount>,

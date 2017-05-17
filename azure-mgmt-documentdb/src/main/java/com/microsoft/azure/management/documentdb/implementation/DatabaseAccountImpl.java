@@ -75,6 +75,10 @@ class DatabaseAccountImpl
 
     @Override
     public DefaultConsistencyLevel defaultConsistencyLevel() {
+        if (this.inner().consistencyPolicy() == null) {
+            throw new RuntimeException("Consistency policy is missing!");
+        }
+
         return this.inner().consistencyPolicy().defaultConsistencyLevel();
     }
 
@@ -202,7 +206,7 @@ class DatabaseAccountImpl
     }
 
     @Override
-    public DatabaseAccount.DefinitionStages.WithCreate withReadableFailover(Region region) {
+    public DatabaseAccountImpl withReadableFailover(Region region) {
         FailoverPolicyInner failoverPolicyInner = new FailoverPolicyInner();
         failoverPolicyInner.withLocationName(region.name());
         this.failoverPolicies.add(0, failoverPolicyInner);

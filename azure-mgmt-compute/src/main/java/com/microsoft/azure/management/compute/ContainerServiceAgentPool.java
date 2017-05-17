@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
@@ -14,6 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
  * A client-side representation for a container service agent pool.
  */
 @Fluent
+@Beta(Beta.SinceVersion.V1_1_0)
 public interface ContainerServiceAgentPool extends
     ChildResource<ContainerService>,
     HasInner<ContainerServiceAgentPoolProfile> {

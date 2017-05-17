@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.ContainerService;
 import com.microsoft.azure.management.compute.ContainerServiceAgentPoolProfile;
@@ -49,61 +50,114 @@ public class ContainerServiceImpl
 
     @Override
     public int masterNodeCount() {
+        if (this.inner().masterProfile() == null ||
+                this.inner().masterProfile().count() == null) {
+            return 0;
+        }
+
         return this.inner().masterProfile().count();
     }
 
     @Override
     public ContainerServiceOchestratorTypes orchestratorType() {
+        if (this.inner().orchestratorProfile() == null) {
+            throw new RuntimeException("Orchestrator profile is missing!");
+        }
+
         return this.inner().orchestratorProfile().orchestratorType();
     }
 
     @Override
     public String masterLeafDomainLabel() {
+        if (this.inner().masterProfile() == null) {
+            return null;
+        }
+
         return this.inner().masterProfile().dnsPrefix();
     }
 
     @Override
     public String masterFqdn() {
+        if (this.inner().masterProfile() == null) {
+            return null;
+        }
+
         return this.inner().masterProfile().fqdn();
     }
 
     @Override
     public String agentPoolName() {
+        if (this.getSingleAgentPool() == null) {
+            return null;
+        }
+
         return this.getSingleAgentPool().name();
     }
 
     @Override
     public int agentPoolCount() {
+        if (this.getSingleAgentPool() == null) {
+            return 0;
+        }
+
         return this.getSingleAgentPool().count();
     }
 
     @Override
     public String agentPoolLeafDomainLabel() {
+        if (this.getSingleAgentPool() == null) {
+            return null;
+        }
+
         return this.getSingleAgentPool().dnsPrefix();
     }
 
     @Override
     public ContainerServiceVMSizeTypes agentPoolVMSize() {
+        if (this.getSingleAgentPool() == null) {
+            return new ContainerServiceVMSizeTypes("Unknown");
+        }
+
         return this.getSingleAgentPool().vmSize();
     }
 
     @Override
     public String agentPoolFqdn() {
+        if (this.getSingleAgentPool() == null) {
+            return null;
+        }
+
         return this.getSingleAgentPool().fqdn();
     }
 
     @Override
     public String linuxRootUsername() {
+        if (this.inner().linuxProfile() == null) {
+            return null;
+        }
+
         return this.inner().linuxProfile().adminUsername();
     }
 
     @Override
     public String sshKey() {
+        if (this.inner().linuxProfile() == null ||
+                this.inner().linuxProfile().ssh() == null ||
+                this.inner().linuxProfile().ssh().publicKeys() == null ||
+                this.inner().linuxProfile().ssh().publicKeys().size() == 0) {
+            return null;
+        }
+
         return this.inner().linuxProfile().ssh().publicKeys().get(0).keyData();
     }
 
     @Override
     public boolean isDiagnosticsEnabled() {
+        if (this.inner().diagnosticsProfile() == null ||
+                this.inner().diagnosticsProfile().vmDiagnostics() == null) {
+            throw new RuntimeException("Diagnostic profile is missing!");
+        }
+
         return this.inner().diagnosticsProfile().vmDiagnostics().enabled();
     }
 
@@ -126,24 +180,6 @@ public class ContainerServiceImpl
         ContainerServiceAgentPoolProfile innerPoolProfile = new ContainerServiceAgentPoolProfile();
         innerPoolProfile.withName(name);
         return new ContainerServiceAgentPoolImpl(innerPoolProfile, this);
-    }
-
-    @Override
-    protected Observable<ContainerServiceInner> getInnerAsync() {
-        return this.manager().inner().containerServices().getByResourceGroupAsync(this.resourceGroupName(), this.name());
-    }
-
-    @Override
-    public Observable<ContainerService> createResourceAsync() {
-        final ContainerServiceImpl self = this;
-        return this.manager().inner().containerServices().createOrUpdateAsync(resourceGroupName(), name(), inner())
-                .map(new Func1<ContainerServiceInner, ContainerService>() {
-                    @Override
-                    public ContainerService call(ContainerServiceInner containerServiceInner) {
-                        self.setInner(containerServiceInner);
-                        return self;
-                    }
-                });
     }
 
     @Override
@@ -227,16 +263,35 @@ public class ContainerServiceImpl
     }
 
     @Override
-    public Update withAgentVMCount(int agentCount) {
-        if (agentCount < 0 || agentCount > 100) {
-            throw new RuntimeException("Agent pool count  must be in the range of 1 to 100 (inclusive)");
-        }
-
+    public ContainerServiceImpl withAgentVMCount(int agentCount) {
         this.inner().agentPoolProfiles().get(0).withCount(agentCount);
         return this;
     }
 
+    @Override
+    protected Observable<ContainerServiceInner> getInnerAsync() {
+        return this.manager().inner().containerServices().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+    }
+
+    @Override
+    public Observable<ContainerService> createResourceAsync() {
+        final ContainerServiceImpl self = this;
+        return this.manager().inner().containerServices().createOrUpdateAsync(resourceGroupName(), name(), inner())
+                .map(new Func1<ContainerServiceInner, ContainerService>() {
+                    @Override
+                    public ContainerService call(ContainerServiceInner containerServiceInner) {
+                        self.setInner(containerServiceInner);
+                        return self;
+                    }
+                });
+    }
+
     private ContainerServiceAgentPoolProfile getSingleAgentPool() {
+        if (this.inner().agentPoolProfiles() == null ||
+                this.inner().agentPoolProfiles().size() == 0) {
+            return null;
+        }
+
         return this.inner().agentPoolProfiles().get(0);
     }
 }
