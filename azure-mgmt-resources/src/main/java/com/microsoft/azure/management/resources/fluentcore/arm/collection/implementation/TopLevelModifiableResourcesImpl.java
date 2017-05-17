@@ -76,7 +76,7 @@ public abstract class TopLevelModifiableResourcesImpl<
 
     @Override
     public Observable<String> deleteByIdsAsync(Collection<String> ids) {
-        if (ids == null) {
+        if (ids == null || ids.isEmpty()) {
             return Observable.empty();
         }
 
