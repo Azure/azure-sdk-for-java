@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.graphrbac;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
@@ -19,7 +20,7 @@ import com.microsoft.rest.ServiceFuture;
 import rx.Observable;
 
 /**
- * Entry point to application management API.
+ * Entry point to role definition management API.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 @Beta(SinceVersion.V1_1_0)
@@ -82,4 +83,20 @@ public interface RoleDefinitions extends
      * @return an immutable representation of the role definition
      */
     RoleDefinition getByScopeAndRoleName(String scope, String roleName);
+
+    /**
+     * List role definitions in a scope.
+     *
+     * @param scope the scope of the role definition
+     * @return an observable of role definitions
+     */
+    Observable<RoleDefinition> listByScopeAsync(String scope);
+
+    /**
+     * List role definitions in a scope.
+     *
+     * @param scope the scope of the role definition
+     * @return a list of role definitions
+     */
+    PagedList<RoleDefinition> listByScope(String scope);
 }

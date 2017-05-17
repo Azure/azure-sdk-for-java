@@ -9,6 +9,7 @@ package com.microsoft.azure.management.graphrbac;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class RoleDefinitionTests extends GraphRbacManagementTestBase {
@@ -22,6 +23,7 @@ public class RoleDefinitionTests extends GraphRbacManagementTestBase {
     }
 
     @Test
+    @Ignore("Need a specific subscription")
     public void canGetRoleByRoleName() throws Exception {
         RoleDefinition roleDefinition = graphRbacManager.roleDefinitions()
                 .getByScopeAndRoleName("subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380", "Contributor");

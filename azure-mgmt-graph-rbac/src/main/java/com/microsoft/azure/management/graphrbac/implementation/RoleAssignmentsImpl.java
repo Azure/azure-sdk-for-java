@@ -38,11 +38,6 @@ class RoleAssignmentsImpl
     }
 
     @Override
-    public PagedList<RoleAssignment> list() {
-        return wrapList(this.manager().roleInner().roleAssignments().list());
-    }
-
-    @Override
     protected RoleAssignmentImpl wrapModel(RoleAssignmentInner roleAssignmentInner) {
         if (roleAssignmentInner == null) {
             return null;
@@ -80,6 +75,16 @@ class RoleAssignmentsImpl
     }
 
     @Override
+    public Observable<RoleAssignment> listByScopeAsync(String scope) {
+        return wrapPageAsync(manager().roleInner().roleAssignments().listAsync());
+    }
+
+    @Override
+    public PagedList<RoleAssignment> listByScope(String scope) {
+        return wrapList(manager().roleInner().roleAssignments().list());
+    }
+
+    @Override
     public ServiceFuture<RoleAssignment> getByScopeAsync(String scope, String name, ServiceCallback<RoleAssignment> callback) {
         return ServiceFuture.fromBody(getByScopeAsync(scope, name), callback);
     }
@@ -101,11 +106,6 @@ class RoleAssignmentsImpl
     @Override
     public RoleAssignmentsInner inner() {
         return this.manager().roleInner().roleAssignments();
-    }
-
-    @Override
-    public Observable<RoleAssignment> listAsync() {
-        return wrapPageAsync(this.inner().listAsync());
     }
 
     @Override

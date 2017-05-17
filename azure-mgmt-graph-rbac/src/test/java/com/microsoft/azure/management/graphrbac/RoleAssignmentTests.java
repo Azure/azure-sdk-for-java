@@ -9,6 +9,7 @@ package com.microsoft.azure.management.graphrbac;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class RoleAssignmentTests extends GraphRbacManagementTestBase {
@@ -22,6 +23,7 @@ public class RoleAssignmentTests extends GraphRbacManagementTestBase {
     }
 
     @Test
+    @Ignore("Need a specific subscription")
     public void canCRUDRoleAssignment() throws Exception {
         RoleAssignment roleAssignment = graphRbacManager.roleAssignments()
                 .define("myassignment")

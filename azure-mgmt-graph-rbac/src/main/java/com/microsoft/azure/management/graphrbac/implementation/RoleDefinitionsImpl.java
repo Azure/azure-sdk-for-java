@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.graphrbac.implementation;
 
 import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.RoleDefinition;
 import com.microsoft.azure.management.graphrbac.RoleDefinitions;
@@ -94,6 +95,16 @@ class RoleDefinitionsImpl
     @Override
     public RoleDefinitionImpl getByScopeAndRoleName(String scope,  String roleName) {
         return (RoleDefinitionImpl) getByScopeAndRoleNameAsync(scope, roleName).toBlocking().single();
+    }
+
+    @Override
+    public Observable<RoleDefinition> listByScopeAsync(String scope) {
+        return wrapPageAsync(manager().roleInner().roleDefinitions().listAsync(scope));
+    }
+
+    @Override
+    public PagedList<RoleDefinition> listByScope(String scope) {
+        return wrapList(manager().roleInner().roleDefinitions().list(scope));
     }
 
     @Override

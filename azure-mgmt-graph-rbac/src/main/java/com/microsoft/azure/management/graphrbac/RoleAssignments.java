@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.graphrbac;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
@@ -16,19 +17,17 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Observable;
 
 /**
- * Entry point to application management API.
+ * Entry point to role assignment management API.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 @Beta(SinceVersion.V1_1_0)
 public interface RoleAssignments extends
-        SupportsListing<RoleAssignment>,
         SupportsGettingById<RoleAssignment>,
         SupportsCreating<RoleAssignment.DefinitionStages.Blank>,
         SupportsBatchCreation<RoleAssignment>,
@@ -62,4 +61,20 @@ public interface RoleAssignments extends
      * @return an immutable representation of the role assignment
      */
     RoleAssignment getByScope(String scope, String name);
+
+    /**
+     * List role assignments in a scope.
+     *
+     * @param scope the scope of the role assignments
+     * @return an observable of role assignments
+     */
+    Observable<RoleAssignment> listByScopeAsync(String scope);
+
+    /**
+     * List role assignments in a scope.
+     *
+     * @param scope the scope of the role assignments
+     * @return a list of role assignments
+     */
+    PagedList<RoleAssignment> listByScope(String scope);
 }

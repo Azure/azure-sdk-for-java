@@ -129,9 +129,32 @@ public interface ServicePrincipal extends
             PasswordCredential.DefinitionStages.Blank<WithCreate> definePasswordCredential(String name);
         }
 
+        /**
+         * A service principal definition allowing role assignments to be added.
+         */
         interface WithRoleAssignment {
+            /**
+             * Assigns a new role to the service principal.
+             * @param role the role to assign to the service principal
+             * @param scope the scope the service principal can access
+             * @return the next stage of the service principal definition
+             */
             WithCreate withNewRole(BuiltInRole role, String scope);
+
+            /**
+             * Assigns a new role to the service principal.
+             * @param role the role to assign to the service principal
+             * @param subscriptionId the subscription the service principal can access
+             * @return the next stage of the service principal definition
+             */
             WithCreate withNewRoleInSubscription(BuiltInRole role, String subscriptionId);
+
+            /**
+             * Assigns a new role to the service principal.
+             * @param role the role to assign to the service principal
+             * @param resourceGroup the resource group the service principal can access
+             * @return the next stage of the service principal definition
+             */
             WithCreate withNewRoleInResourceGroup(BuiltInRole role, ResourceGroup resourceGroup);
         }
 
