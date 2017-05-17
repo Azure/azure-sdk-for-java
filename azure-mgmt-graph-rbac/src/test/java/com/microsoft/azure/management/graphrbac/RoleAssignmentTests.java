@@ -26,7 +26,7 @@ public class RoleAssignmentTests extends GraphRbacManagementTestBase {
         RoleAssignment roleAssignment = graphRbacManager.roleAssignments()
                 .define("myassignment")
                 .forServicePrincipal("anotherapp12")
-                .withRoleName("Contributor")
+                .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
                 .withSubscriptionScope("ec0aa5f7-9e78-40c9-85cd-535c6305b380")
                 .create();
 

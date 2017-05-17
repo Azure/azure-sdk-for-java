@@ -9,20 +9,25 @@ package com.microsoft.azure.management.graphrbac.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.Application;
+import com.microsoft.azure.management.graphrbac.BuiltInRole;
 import com.microsoft.azure.management.graphrbac.CertificateCredential;
 import com.microsoft.azure.management.graphrbac.PasswordCredential;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
+import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
+import rx.exceptions.Exceptions;
 import rx.functions.Func1;
 import rx.functions.Func2;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Implementation for ServicePrincipal and its parent interfaces.
@@ -39,13 +44,13 @@ class ServicePrincipalImpl
     private Map<String, PasswordCredential> cachedPasswordCredentials;
     private Map<String, CertificateCredential> cachedCertificateCredentials;
     private Creatable<Application> applicationCreatable;
-    private String roleName;
-    private String roleScope;
+    private Map<String, BuiltInRole> roles;
 
     ServicePrincipalImpl(ServicePrincipalInner innerObject, GraphRbacManager manager) {
         super(innerObject.displayName(), innerObject);
         this.manager = manager;
         this.createParameters = new ServicePrincipalCreateParametersInner().withAccountEnabled(true);
+        this.roles = new HashMap<>();
     }
 
     @Override
@@ -88,7 +93,7 @@ class ServicePrincipalImpl
     public Observable<ServicePrincipal> createResourceAsync() {
         Application application = (Application) ((Object) super.createdModel(applicationCreatable.key()));
         createParameters.withAppId(application.applicationId());
-        Observable<ServicePrincipal> obs =  manager.inner().servicePrincipals().createAsync(createParameters)
+        Observable<ServicePrincipal> sp = manager.inner().servicePrincipals().createAsync(createParameters)
                 .map(innerToFluentMap(this))
                 .flatMap(new Func1<ServicePrincipal, Observable<ServicePrincipal>>() {
                     @Override
@@ -96,34 +101,50 @@ class ServicePrincipalImpl
                         return refreshCredentialsAsync();
                     }
                 });
-        if (roleName != null && roleScope != null) {
-            obs = obs.flatMap(new Func1<ServicePrincipal, Observable<ServicePrincipal>>() {
-                @Override
-                public Observable<ServicePrincipal> call(final ServicePrincipal servicePrincipal) {
-                    return manager().roleAssignments().define(applicationId())
-                            .forServicePrincipal(servicePrincipal)
-                            .withRoleName(roleName)
-                            .withScope(roleScope)
-                            .createAsync()
-                            .retry(new Func2<Integer, Throwable, Boolean>() {
-                                @Override
-                                public Boolean call(Integer integer, Throwable throwable) {
-                                    return integer <= 10
-                                            && throwable instanceof CloudException
-                                            && ((CloudException) throwable).body().code().equals("PrincipalNotFound");
-                                }
-                            })
-                            .last()
-                            .map(new Func1<Indexable, ServicePrincipal>() {
-                                @Override
-                                public ServicePrincipal call(Indexable roleAssignment) {
-                                    return servicePrincipal;
-                                }
-                            });
-                }
-            });
-        }
-        return obs;
+        return sp.flatMap(new Func1<ServicePrincipal, Observable<ServicePrincipal>>() {
+            @Override
+            public Observable<ServicePrincipal> call(final ServicePrincipal servicePrincipal) {
+                return Observable.from(roles.entrySet())
+                        .flatMap(new Func1<Map.Entry<String, BuiltInRole>, Observable<?>>() {
+                            @Override
+                            public Observable<?> call(Map.Entry<String, BuiltInRole> role) {
+                                return manager().roleAssignments().define(UUID.randomUUID().toString())
+                                        .forServicePrincipal(servicePrincipal)
+                                        .withBuiltInRole(role.getValue())
+                                        .withScope(role.getKey())
+                                        .createAsync()
+                                        .retryWhen(new Func1<Observable<? extends Throwable>, Observable<?>>() {
+                                            @Override
+                                            public Observable<?> call(Observable<? extends Throwable> observable) {
+                                                return observable.zipWith(Observable.range(1, 30), new Func2<Throwable, Integer, Integer>() {
+                                                    @Override
+                                                    public Integer call(Throwable throwable, Integer integer) {
+                                                        if (throwable instanceof CloudException
+                                                                && ((CloudException) throwable).body().code().equalsIgnoreCase("PrincipalNotFound")) {
+                                                            return integer;
+                                                        } else {
+                                                            throw Exceptions.propagate(throwable);
+                                                        }
+                                                    }
+                                                }).flatMap(new Func1<Integer, Observable<?>>() {
+                                                    @Override
+                                                    public Observable<?> call(Integer i) {
+                                                        return Observable.timer(i, TimeUnit.SECONDS);
+                                                    }
+                                                });
+                                            }
+                                        });
+                            }
+                        })
+                        .last()
+                        .map(new Func1<Object, ServicePrincipal>() {
+                            @Override
+                            public ServicePrincipal call(Object o) {
+                                return servicePrincipal;
+                            }
+                        });
+            }
+        });
     }
 
     @Override
@@ -257,9 +278,18 @@ class ServicePrincipalImpl
     }
 
     @Override
-    public ServicePrincipalImpl withRoleAssignment(String roleName, String scope) {
-        this.roleName = roleName;
-        this.roleScope = scope;
+    public ServicePrincipalImpl withNewRole(BuiltInRole role, String scope) {
+        this.roles.put(scope, role);
         return this;
+    }
+
+    @Override
+    public ServicePrincipalImpl withNewRoleInSubscription(BuiltInRole role, String subscriptionId) {
+        return withNewRole(role, "subscriptions/" + subscriptionId);
+    }
+
+    @Override
+    public ServicePrincipalImpl withNewRoleInResourceGroup(BuiltInRole role, ResourceGroup resourceGroup) {
+        return withNewRole(role, resourceGroup.id());
     }
 }

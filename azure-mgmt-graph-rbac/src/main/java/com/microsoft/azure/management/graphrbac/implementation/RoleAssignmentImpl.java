@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.graphrbac.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.graphrbac.BuiltInRole;
 import com.microsoft.azure.management.graphrbac.Group;
 import com.microsoft.azure.management.graphrbac.RoleAssignment;
 import com.microsoft.azure.management.graphrbac.RoleAssignmentPropertiesWithScope;
@@ -14,6 +15,7 @@ import com.microsoft.azure.management.graphrbac.RoleDefinition;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.graphrbac.User;
 import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableImpl;
 import rx.Observable;
 import rx.functions.Func1;
@@ -178,8 +180,8 @@ class RoleAssignmentImpl
     }
 
     @Override
-    public RoleAssignmentImpl withRoleName(String name) {
-        this.roleName = name;
+    public RoleAssignmentImpl withBuiltInRole(BuiltInRole role) {
+        this.roleName = role.toString();
         return this;
     }
 
@@ -204,7 +206,12 @@ class RoleAssignmentImpl
     }
 
     @Override
+    public RoleAssignmentImpl withResourceScope(Resource resource) {
+        return withScope(resource.id());
+    }
+
+    @Override
     public RoleAssignmentImpl withSubscriptionScope(String subscriptionId) {
-        return withScope("/subscriptions/" + subscriptionId);
+        return withScope("subscriptions/" + subscriptionId);
     }
 }

@@ -10,6 +10,7 @@ import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.graphrbac.implementation.ServicePrincipalInner;
+import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
@@ -126,7 +127,9 @@ public interface ServicePrincipal extends
         }
 
         interface WithRoleAssignment {
-            WithCreate withRoleAssignment(String roleName, String scope);
+            WithCreate withNewRole(BuiltInRole role, String scope);
+            WithCreate withNewRoleInSubscription(BuiltInRole role, String subscriptionId);
+            WithCreate withNewRoleInResourceGroup(BuiltInRole role, ResourceGroup resourceGroup);
         }
 
         /**

@@ -14,6 +14,7 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
@@ -128,10 +129,10 @@ public interface RoleAssignment extends
             /**
              * Specifies the name of a built in role for this assignment.
              *
-             * @param name the name of the role
+             * @param role the name of the role
              * @return the next stage in role assignment definition
              */
-            WithScope withRoleName(String name);
+            WithScope withBuiltInRole(BuiltInRole role);
             /**
              * Specifies the ID of the custom role for this assignment.
              *
@@ -161,6 +162,14 @@ public interface RoleAssignment extends
              * @return the next stage in role assignment definition
              */
             WithCreate withResourceGroupScope(ResourceGroup resourceGroup);
+
+            /**
+             * Specifies the scope of the role assignment to be a specific resource.
+             *
+             * @param resource the resource the assignee is assigned to access
+             * @return the next stage in role assignment definition
+             */
+            WithCreate withResourceScope(Resource resource);
 
             /**
              * Specifies the scope of the role assignment to be an entire subscription.

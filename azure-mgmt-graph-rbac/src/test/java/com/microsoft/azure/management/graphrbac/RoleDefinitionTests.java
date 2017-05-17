@@ -24,7 +24,7 @@ public class RoleDefinitionTests extends GraphRbacManagementTestBase {
     @Test
     public void canGetRoleByRoleName() throws Exception {
         RoleDefinition roleDefinition = graphRbacManager.roleDefinitions()
-                .getByScopeAndRoleName("/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380", "Contributor");
+                .getByScopeAndRoleName("subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380", "Contributor");
         Assert.assertNotNull(roleDefinition);
         Assert.assertEquals("Contributor", roleDefinition.roleName());
     }

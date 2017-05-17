@@ -28,8 +28,8 @@ public class ServicePrincipalsTests extends GraphRbacManagementTestBase {
     public void canCRUDServicePrincipal() throws Exception {
         ServicePrincipal servicePrincipal = null;
         try {
-            servicePrincipal = graphRbacManager.servicePrincipals().define("anothersp24")
-                    .withNewApplication("http://easycreate.azure.com/anotherapp/24")
+            servicePrincipal = graphRbacManager.servicePrincipals().define("anothersp40")
+                    .withNewApplication("http://easycreate.azure.com/anotherapp/40")
                     .definePasswordCredential("sppass")
                         .withPasswordValue("StrongPass!12")
                         .attach()
@@ -52,12 +52,13 @@ public class ServicePrincipalsTests extends GraphRbacManagementTestBase {
     public void canCRUDServicePrincipalWithRole() throws Exception {
         ServicePrincipal servicePrincipal = null;
         try {
-            servicePrincipal = graphRbacManager.servicePrincipals().define("anothersp5")
-                    .withNewApplication("http://easycreate.azure.com/anotherapp/5")
+            servicePrincipal = graphRbacManager.servicePrincipals().define("anothersp40")
+                    .withNewApplication("http://easycreate.azure.com/anothersp/40")
                     .definePasswordCredential("sppass")
                         .withPasswordValue("StrongPass!12")
                         .attach()
-                    .withRoleAssignment("Contributor", "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380")
+                    .withNewRoleInSubscription(BuiltInRole.CONTRIBUTOR, "ec0aa5f7-9e78-40c9-85cd-535c6305b380")
+                    .withNewRoleInSubscription(BuiltInRole.CONTRIBUTOR, "db1ab6f0-4769-4b27-930e-01e2ef9c123c")
                     .create();
             System.out.println(servicePrincipal.id() + " - " + Joiner.on(", ").join(servicePrincipal.servicePrincipalNames()));
             Assert.assertNotNull(servicePrincipal.id());
