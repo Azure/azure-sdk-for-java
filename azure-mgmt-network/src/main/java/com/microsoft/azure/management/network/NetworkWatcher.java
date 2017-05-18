@@ -29,13 +29,24 @@ public interface NetworkWatcher extends
     /***********************************************************
      * Getters
      ***********************************************************/
+
     /**
      * @param targetResourceGroup the name of the target resource group to perform topology on
      * @return current network topology by resource group
      */
     Topology topology(String targetResourceGroup);
 
+    /**
+     * @param vmId ID of the target VM
+     * @return the configured and effective security group rules on the specified VM
+     */
     SecurityGroupViewResult securityGroupViewResult(String vmId);
+
+    /**
+     * @param nsgId the name of the target resource group to perform topology on
+     * @return information on the configuration of flow log
+     */
+    FlowLogInformation flowLogStatus(String nsgId);
 
     /**
      * Container interface for all the definitions.

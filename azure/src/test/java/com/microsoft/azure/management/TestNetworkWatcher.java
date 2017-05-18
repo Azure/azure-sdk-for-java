@@ -13,6 +13,8 @@ import com.microsoft.azure.management.network.*;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
+import com.microsoft.azure.management.storage.StorageAccount;
+import com.microsoft.azure.management.storage.StorageAccounts;
 import org.junit.Assert;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -26,17 +28,19 @@ import java.util.List;
 public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatchers> {
     static String TEST_ID = "";
     static Region REGION = Region.US_NORTH_CENTRAL;
-    static String GROUP_NAME = "";
+    private String groupName = "";
 
     private final VirtualMachines vms;
+    private final NetworkInterfaces networkInterfaces;
 
-    private static void initializeResourceNames() {
+    private void initializeResourceNames() {
         TEST_ID = SdkContext.randomResourceName("", 8);
-        GROUP_NAME = "rg" + TEST_ID;
+        groupName = "rg" + TEST_ID;
     }
 
-    public TestNetworkWatcher(VirtualMachines vms) {
+    public TestNetworkWatcher(VirtualMachines vms, NetworkInterfaces networkInterfaces) {
         this.vms = vms;
+        this.networkInterfaces = networkInterfaces;
     }
 
     @Override
@@ -49,21 +53,7 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
                 .withNewResourceGroup()
                 .withTag("tag1", "value1")
                 .create();
-
-        // pre-create VMs to show topology on
-        VirtualMachine[] virtualMachines = ensureVMs(networkWatchers.manager().networks(), this.vms, 2);
-
-        Topology topology = nw.topology(GROUP_NAME);
-        Assert.assertEquals(7, topology.resources().size());
-        Assert.assertTrue(topology.resources().containsKey("subnet1"));
-        Assert.assertEquals(2, topology.resources().get(virtualMachines[0].getPrimaryNetworkInterface().name()).associations().size());
-        Assert.assertEquals(0, topology.resources().get("subnet2").associations().size());
-
-        SecurityGroupViewResult sgViewResult = nw.securityGroupViewResult(virtualMachines[0].id());
-        Assert.assertEquals(1, sgViewResult.networkInterfaces().size());
-        Assert.assertEquals(virtualMachines[0].primaryNetworkInterfaceId(), sgViewResult.networkInterfaces().keySet().iterator().next());
-
-        return nw;
+         return nw;
     }
 
     @Override
@@ -78,37 +68,66 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
         return resource;
     }
 
-    // Ensure VMs for the topology
-    private static VirtualMachine[] ensureVMs(Networks networks, VirtualMachines vms, int count) throws Exception {
+    // Helper method to pre-create infrastructure to test Network Watcher
+    VirtualMachine[] ensureNetwork(Networks networks, VirtualMachines vms, NetworkInterfaces networkInterfaces) throws Exception {
+        // Create an NSG
+        NetworkSecurityGroup nsg = networks.manager().networkSecurityGroups().define("nsg" + TEST_ID)
+                .withRegion(REGION)
+                .withNewResourceGroup(groupName)
+                .create();
+
         // Create a network for the VMs
         Network network = networks.define("net" + TEST_ID)
                 .withRegion(REGION)
-                .withNewResourceGroup(GROUP_NAME)
+                .withExistingResourceGroup(groupName)
                 .withAddressSpace("10.0.0.0/28")
-                .withSubnet("subnet1", "10.0.0.0/29")
+                .defineSubnet("subnet1")
+                    .withAddressPrefix("10.0.0.0/29")
+                    .withExistingNetworkSecurityGroup(nsg)
+                    .attach()
                 .withSubnet("subnet2", "10.0.0.8/29")
+                .create();
+
+        NetworkInterface nic = networkInterfaces.define("ni" + TEST_ID)
+                .withRegion(REGION)
+                .withExistingResourceGroup(groupName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withNewPrimaryPublicIPAddress("pipdns" + TEST_ID)
+                .withIPForwarding()
+                .withExistingNetworkSecurityGroup(nsg)
                 .create();
 
         // Create the requested number of VM definitions
         String userName = "testuser" + TEST_ID;
         List<Creatable<VirtualMachine>> vmDefinitions = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            String vmName = SdkContext.randomResourceName("vm", 15);
 
-            Creatable<VirtualMachine> vm = vms.define(vmName)
-                    .withRegion(REGION)
-                    .withExistingResourceGroup(GROUP_NAME)
-                    .withExistingPrimaryNetwork(network)
-                    .withSubnet(network.subnets().values().iterator().next().name())
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withoutPrimaryPublicIPAddress()
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
-                    .withRootUsername(userName)
-                    .withRootPassword("Abcdef.123456")
-                    .withSize(VirtualMachineSizeTypes.STANDARD_A1);
+        Creatable<VirtualMachine> vm1 = vms.define(SdkContext.randomResourceName("vm", 15))
+                .withRegion(REGION)
+                .withExistingResourceGroup(groupName)
+                .withExistingPrimaryNetworkInterface(nic)
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
+                .withRootUsername(userName)
+                .withRootPassword("Abcdef.123456")
+                .withSize(VirtualMachineSizeTypes.STANDARD_A1)
+                .withNewStorageAccount("sa" + TEST_ID);
 
-            vmDefinitions.add(vm);
-        }
+        String vmName = SdkContext.randomResourceName("vm", 15);
+
+        Creatable<VirtualMachine> vm2 = vms.define(vmName)
+                .withRegion(REGION)
+                .withExistingResourceGroup(groupName)
+                .withExistingPrimaryNetwork(network)
+                .withSubnet(network.subnets().values().iterator().next().name())
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
+                .withRootUsername(userName)
+                .withRootPassword("Abcdef.123456")
+                .withSize(VirtualMachineSizeTypes.STANDARD_A1);
+
+        vmDefinitions.add(vm1);
+        vmDefinitions.add(vm2);
         vms.create(vmDefinitions);
         CreatedResources<VirtualMachine> createdVMs2 = vms.create(vmDefinitions);
         VirtualMachine[] array = new VirtualMachine[createdVMs2.size()];
@@ -116,6 +135,14 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
             array[index] = createdVMs2.get(vmDefinitions.get(index).key());
         }
         return array;
+    }
+
+    // create a storage account
+    StorageAccount ensureStorageAccount(StorageAccounts storageAccounts) {
+        return  storageAccounts.define("sa" + TEST_ID)
+                .withRegion(REGION)
+                .withExistingResourceGroup(groupName)
+                .create();
     }
 
     @Override
@@ -127,5 +154,9 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
                 .append("\n\tRegion: ").append(nw.regionName())
                 .append("\n\tTags: ").append(nw.tags());
         System.out.println(info.toString());
+    }
+
+    public String groupName() {
+        return groupName;
     }
 }

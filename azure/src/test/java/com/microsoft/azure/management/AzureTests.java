@@ -18,7 +18,11 @@ import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachineSku;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
+import com.microsoft.azure.management.network.FlowLogInformation;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
+import com.microsoft.azure.management.network.NetworkWatcher;
+import com.microsoft.azure.management.network.SecurityGroupViewResult;
+import com.microsoft.azure.management.network.Topology;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.DeploymentMode;
 import com.microsoft.azure.management.resources.GenericResource;
@@ -519,7 +523,35 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testNetworkWatchers() throws Exception {
-        new TestNetworkWatcher(azure.virtualMachines()).runTest(azure.networkWatchers(), azure.resourceGroups());
+        new TestNetworkWatcher(azure.virtualMachines(), azure.networkInterfaces()).runTest(azure.networkWatchers(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testNetworkWatcherFunctions() throws Exception {
+        TestNetworkWatcher tnw = new TestNetworkWatcher(azure.virtualMachines(), azure.networkInterfaces());
+
+        NetworkWatcher nw = tnw.createResource(azure.networkWatchers());
+
+        // pre-create VMs to show topology on
+        VirtualMachine[] virtualMachines = tnw.ensureNetwork(azure.networkWatchers().manager().networks(),
+                azure.virtualMachines(), azure.networkInterfaces());
+
+        Topology topology = nw.topology(virtualMachines[0].resourceGroupName());
+        Assert.assertEquals(10, topology.resources().size());
+        Assert.assertTrue(topology.resources().containsKey("subnet1"));
+        Assert.assertEquals(4, topology.resources().get(virtualMachines[0].getPrimaryNetworkInterface().name()).associations().size());
+//        Assert.assertEquals(0, topology.resources().get("subnet2").associations().size());
+
+        SecurityGroupViewResult sgViewResult = nw.securityGroupViewResult(virtualMachines[0].id());
+        Assert.assertEquals(1, sgViewResult.networkInterfaces().size());
+        Assert.assertEquals(virtualMachines[0].primaryNetworkInterfaceId(), sgViewResult.networkInterfaces().keySet().iterator().next());
+
+        FlowLogInformation flowLogInformation = nw.flowLogStatus(virtualMachines[0].getPrimaryNetworkInterface().networkSecurityGroupId());
+        StorageAccount storageAccount = tnw.ensureStorageAccount(azure.storageAccounts());
+        flowLogInformation.update().withEnabled(true).withStorageAccount(storageAccount.id()).apply();
+
+        azure.resourceGroups().beginDeleteByName(nw.resourceGroupName());
+        azure.resourceGroups().beginDeleteByName(tnw.groupName());
     }
 
     /**
