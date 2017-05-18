@@ -22,10 +22,10 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 public class TestNetworkInterface extends TestTemplate<NetworkInterface, NetworkInterfaces> {
     @Override
     public NetworkInterface createResource(NetworkInterfaces networkInterfaces) throws Exception {
-        final String newName = "nic" + this.testId;
+        final String nicName = "nic" + this.testId;
         final String vnetName = "net" + this.testId;
         final String pipName = "pip" + this.testId;
-        Region region = Region.US_EAST;
+        final Region region = Region.US_EAST;
 
         Network network = networkInterfaces.manager().networks().define(vnetName)
                 .withRegion(region)
@@ -35,9 +35,9 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .withSubnet("subnet2", "10.0.0.8/29")
                 .create();
 
-        NetworkInterface nic = networkInterfaces.define(newName)
+        NetworkInterface nic = networkInterfaces.define(nicName)
                 .withRegion(region)
-                .withNewResourceGroup()
+                .withExistingResourceGroup(network.resourceGroupName())
                 .withExistingPrimaryNetwork(network)
                 .withSubnet("subnet1")
                 .withPrimaryPrivateIPAddressDynamic()
