@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.containerregistry;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.containerregistry.implementation.ContainerRegistryManager;
 import com.microsoft.azure.management.containerregistry.implementation.RegistryInner;
@@ -23,7 +24,7 @@ import rx.Observable;
  * An immutable client-side representation of an Azure registry.
  */
 @Fluent
-@Beta()
+@Beta(SinceVersion.V1_1_0)
 public interface Registry extends
     GroupableResource<ContainerRegistryManager, RegistryInner>,
     Refreshable<Registry>,
