@@ -23,12 +23,14 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import rx.Observable;
 
+import java.util.List;
+
 
 /**
  *  Entry point to document db management API.
  */
 @Fluent()
-@Beta
+@Beta(Beta.SinceVersion.V1_1_0)
 public interface DatabaseAccounts extends
         SupportsCreating<DatabaseAccount.DefinitionStages.Blank>,
         HasManager<DocumentDBManager>,
@@ -49,7 +51,7 @@ public interface DatabaseAccounts extends
      * @param accountName the account name
      * @param failoverPolicies the list of failover policies
      */
-    void failoverPriorityChange(String groupName, String accountName, FailoverPolicies failoverPolicies);
+    void failoverPriorityChange(String groupName, String accountName, List<Location> failoverPolicies);
 
     /**
      * Lists the access keys for the specified Azure DocumentDB database account.
@@ -84,7 +86,7 @@ public interface DatabaseAccounts extends
      * @param failoverPolicies the list of failover policies
      * @return the ServiceResponse object if successful.
      */
-    Observable<Void> failoverPriorityChangeAsync(String groupName, String accountName, FailoverPolicies failoverPolicies);
+    Observable<Void> failoverPriorityChangeAsync(String groupName, String accountName, List<Location> failoverPolicies);
 
     /**
      * Lists the access keys for the specified Azure DocumentDB database account.

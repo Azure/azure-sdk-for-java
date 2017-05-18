@@ -26,7 +26,7 @@ import rx.Observable;
  * Entry point to the registry management API.
  */
 @Fluent()
-@Beta()
+@Beta(Beta.SinceVersion.V1_1_0)
 public interface Registries extends
     SupportsCreating<Registry.DefinitionStages.Blank>,
     HasManager<ContainerRegistryManager>,
