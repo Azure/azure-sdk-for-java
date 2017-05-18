@@ -98,13 +98,7 @@ public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultMana
                 restClient,
                 subscriptionId,
                 new KeyVaultManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
-        String graphEndpoint = AzureEnvironment.AZURE.graphEndpoint();
-        if (restClient.credentials() instanceof AzureTokenCredentials) {
-            graphEndpoint = ((AzureTokenCredentials) restClient.credentials()).environment().graphEndpoint();
-        }
-        graphRbacManager = GraphRbacManager.authenticate(restClient.newBuilder()
-                .withBaseUrl(graphEndpoint)
-                .build(), tenantId);
+        graphRbacManager = GraphRbacManager.authenticate(restClient, tenantId);
         this.tenantId = tenantId;
     }
 

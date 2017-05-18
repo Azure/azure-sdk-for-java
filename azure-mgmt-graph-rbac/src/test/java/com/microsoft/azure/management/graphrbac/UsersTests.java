@@ -12,8 +12,6 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.List;
-
 public class UsersTests extends GraphRbacManagementTestBase {
     private static final String RG_NAME = "javacsmrg350";
     private static final String APP_NAME = "app-javacsm350";
@@ -28,18 +26,23 @@ public class UsersTests extends GraphRbacManagementTestBase {
     }
 
     @Test
-    @Ignore("Doesnt support creating users yet")
-    public void canCRUDUser() throws Exception {
-        //LIST
-        List<User> userList = graphRbacManager.users().list();
-        Assert.assertNotNull(userList);
-//        User user = graphRbacManager.users().define("newuser")
-//                .withDisplayName("Test User 309")
-//                .withPassword("Pa$$w0rd")
-//                .withMailNickname(null)
-//                .create();
-//        Assert.assertNotNull(user);
-//        Assert.assertEquals("Test User 309", user.displayName());
+    @Ignore("Need a specific domain")
+    public void canGetUserByEmail() throws Exception {
+        ActiveDirectoryUser user = graphRbacManager.users().getByName("admin@azuresdkteam.onmicrosoft.com");
+        Assert.assertEquals("Admin", user.name());
     }
 
+    @Test
+    @Ignore("Need a specific domain")
+    public void canGetUserByForeignEmail() throws Exception {
+        ActiveDirectoryUser user = graphRbacManager.users().getByName("jianghlu@microsoft.com");
+        Assert.assertEquals("Jianghao Lu", user.name());
+    }
+
+    @Test
+    @Ignore("Need a specific domain")
+    public void canGetUserByDisplayName() throws Exception {
+        ActiveDirectoryUser user = graphRbacManager.users().getByName("Reader zero");
+        Assert.assertEquals("Reader zero", user.name());
+    }
 }
