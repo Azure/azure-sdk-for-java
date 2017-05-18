@@ -295,7 +295,7 @@ class NicIPConfigurationImpl
         } else {
             if (subnetToAssociate != null) {
                 int idx = this.inner().subnet().id().lastIndexOf('/');
-                subnetInner.withId(this.inner().subnet().id().substring(0, idx) + subnetToAssociate);
+                subnetInner.withId(this.inner().subnet().id().substring(0, idx + 1) + subnetToAssociate);
             } else {
                 subnetInner.withId(this.inner().subnet().id());
             }
