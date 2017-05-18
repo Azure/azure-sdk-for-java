@@ -17,6 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
+import com.microsoft.azure.management.storage.StorageAccount;
 import org.joda.time.DateTime;
 import rx.Observable;
 
@@ -38,7 +39,7 @@ public interface Registry extends
     /**
      * @return the URL that can be used to log into the container registry.
      */
-    String loginServer();
+    String loginServerUrl();
 
     /**
      * @return the creation date of the container registry in ISO8601 format.
@@ -51,9 +52,9 @@ public interface Registry extends
     boolean adminUserEnabled();
 
     /**
-     * @return the properties of the storage account for the container registry.
+     * @return the name of the storage account for the container registry.
      */
-    StorageAccountProperties storageAccount();
+    String storageAccountName();
 
     /**
      * @return the login credentials for the specified container registry.
@@ -115,13 +116,7 @@ public interface Registry extends
              * Enable admin user.
              * @return the next stage of the definition
              */
-            WithCreate withAdminUserEnabled();
-
-            /**
-             * Disable admin user.
-             * @return the next stage of the definition
-             */
-            WithCreate withoutAdminUserEnabled();
+            WithCreate withRegistryNameAsAdminUser();
         }
 
         /**
@@ -131,11 +126,26 @@ public interface Registry extends
             /**
              * The parameters of a storage account for the container registry.
              * If specified, the storage account must be in the same physical location as the container registry.
-             * @param name the name of the storage account
-             * @param accessKey the access key for the storage account
+             * @param storageAccount the storage account
              * @return the next stage
              */
-            WithCreate withExistingStorageAccount(String name, String accessKey);
+            WithCreate withExistingStorageAccount(StorageAccount storageAccount);
+
+            /**
+             * The parameters for a storage account for the container registry.
+             * If specified, the storage account must be in the same physical location as the container registry.
+             * @param storageAccountName the name of the storage account
+             * @return the next stage
+             */
+            WithCreate withNewStorageAccount(String storageAccountName);
+
+            /**
+             * The parameters for a storage account for the container registry.
+             * If specified, the storage account must be in the same physical location as the container registry.
+             * @param creatable the storage account to create
+             * @return the next stage
+             */
+            WithCreate withNewStorageAccount(Creatable<StorageAccount> creatable);
         }
 
         /**
@@ -172,13 +182,13 @@ public interface Registry extends
              * Enable admin user.
              * @return the next stage of the definition
              */
-            Update withAdminUserEnabled();
+            Update withRegistryNameAsAdminUser();
 
             /**
              * Disable admin user.
              * @return the next stage of the definition
              */
-            Update withoutAdminUserEnabled();
+            Update withoutRegistryNameAsAdminUser();
         }
     }
 

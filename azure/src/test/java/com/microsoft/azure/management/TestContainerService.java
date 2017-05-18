@@ -27,30 +27,30 @@ public class TestContainerService extends TestTemplate<ContainerService, Contain
         ContainerService resource = containerServices.define(newName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
-                .withMasterNodeCount(ContainerServiceMasterProfileCount.MIN)
-                .withMasterDnsLabel("mp1" + dnsPrefix)
-                .withLinuxProfile()
+                .withDcosOrchestration()
+                .withLinux()
                 .withRootUsername("testUserName")
                 .withSshKey(sshKeyData)
+                .withMasterNodeCount(ContainerServiceMasterProfileCount.MIN)
+                .withMasterLeafDomainLabel("mp1" + dnsPrefix)
                 .defineAgentPool("agentPool0" + newName)
-                .withCount(1)
-                .withVMSize(ContainerServiceVMSizeTypes.STANDARD_A1)
-                .withDnsLabel("ap0" + dnsPrefix)
-                .attach()
-                .withDcosOrchestration()
+                    .withVMCount(1)
+                    .withVMSize(ContainerServiceVMSizeTypes.STANDARD_A1)
+                    .withLeafDomainLabel("ap0" + dnsPrefix)
+                    .attach()
                 .withDiagnostics()
                 .withTag("tag1", "value1")
                 .create();
-        Assert.assertTrue("Container service not found.", resource.id() != null);
-        Assert.assertTrue(resource.region().equals(Region.US_EAST));
-        Assert.assertTrue(resource.masterProfile().count() == ContainerServiceMasterProfileCount.MIN.count());
-        Assert.assertTrue(resource.linuxProfile().adminUsername().equals("testUserName"));
-        Assert.assertTrue(resource.agentPoolProfile().count() == 1);
-        Assert.assertTrue(resource.agentPoolProfile().name().equals("agentPool0" + newName));
-        Assert.assertTrue(resource.agentPoolProfile().dnsPrefix().equals("ap0" + dnsPrefix));
-        Assert.assertTrue(resource.agentPoolProfile().vmSize().equals(ContainerServiceVMSizeTypes.STANDARD_A1));
-        Assert.assertTrue(resource.orchestratorProfile().orchestratorType().equals(ContainerServiceOchestratorTypes.DCOS));
-        Assert.assertTrue(resource.diagnosticsProfile().vmDiagnostics().enabled());
+        Assert.assertNotNull("Container service not found.", resource.id());
+        Assert.assertEquals(resource.region(), Region.US_EAST);
+        Assert.assertEquals(resource.masterNodeCount(), ContainerServiceMasterProfileCount.MIN.count());
+        Assert.assertEquals(resource.linuxRootUsername(), "testUserName");
+        Assert.assertEquals(resource.agentPoolCount(), 1);
+        Assert.assertEquals(resource.agentPoolName(), "agentPool0" + newName);
+        Assert.assertEquals(resource.agentPoolLeafDomainLabel(), "ap0" + dnsPrefix);
+        Assert.assertEquals(resource.agentPoolVMSize(), ContainerServiceVMSizeTypes.STANDARD_A1);
+        Assert.assertEquals(resource.orchestratorType(), ContainerServiceOchestratorTypes.DCOS);
+        Assert.assertTrue(resource.isDiagnosticsEnabled());
         Assert.assertTrue(resource.tags().containsKey("tag1"));
         return resource;
     }
@@ -60,16 +60,17 @@ public class TestContainerService extends TestTemplate<ContainerService, Contain
         // Modify existing container service
         final String newName = "as" + this.testId;
         resource =  resource.update()
-                .withAgentCount(5)
+                .withAgentVMCount(5)
                 .withoutDiagnostics()
                 .withTag("tag2", "value2")
                 .withTag("tag3", "value3")
                 .withoutTag("tag1")
                 .apply();
-        Assert.assertTrue("Agent pool count was not updated.", resource.agentPoolProfile().count() == 5);
+
+        Assert.assertTrue("Agent pool count was not updated.", resource.agentPoolCount() == 5);
         Assert.assertTrue(resource.tags().containsKey("tag2"));
         Assert.assertTrue(!resource.tags().containsKey("tag1"));
-        Assert.assertTrue(!resource.diagnosticsProfile().vmDiagnostics().enabled());
+        Assert.assertTrue(!resource.isDiagnosticsEnabled());
         return resource;
     }
 

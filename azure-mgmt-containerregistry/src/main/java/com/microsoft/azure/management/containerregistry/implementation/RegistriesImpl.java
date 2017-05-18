@@ -13,6 +13,7 @@ import com.microsoft.azure.management.containerregistry.Registry;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
+import com.microsoft.azure.management.storage.implementation.StorageManager;
 import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
@@ -32,8 +33,11 @@ public class RegistriesImpl
                 ContainerRegistryManager>
         implements Registries {
 
-    protected RegistriesImpl(final ContainerRegistryManager manager) {
+    private final StorageManager storageManager;
+    protected RegistriesImpl(final ContainerRegistryManager manager,
+                             final StorageManager storageManager) {
         super(manager.inner().registries(), manager);
+        this.storageManager = storageManager;
     }
 
     @Override
@@ -93,7 +97,8 @@ public class RegistriesImpl
     protected RegistryImpl wrapModel(String name) {
         return new RegistryImpl(name,
                 new RegistryInner(),
-                this.manager());
+                this.manager(),
+                this.storageManager);
     }
 
     @Override
@@ -104,7 +109,8 @@ public class RegistriesImpl
 
         return new RegistryImpl(containerServiceInner.name(),
                 containerServiceInner,
-                this.manager());
+                this.manager(),
+                this.storageManager);
     }
 
     @Override
