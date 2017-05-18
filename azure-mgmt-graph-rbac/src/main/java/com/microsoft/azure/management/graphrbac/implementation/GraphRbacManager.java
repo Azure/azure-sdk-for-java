@@ -10,6 +10,7 @@ import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryUsers;
 import com.microsoft.azure.management.graphrbac.Applications;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroups;
@@ -146,6 +147,7 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
     /**
      * @return the Active Directory group management API entry point
      */
+    @Beta(SinceVersion.V1_1_0)
     public ActiveDirectoryGroups groups() {
         if (activeDirectoryGroups == null) {
             activeDirectoryGroups = new ActiveDirectoryGroupsImpl(this);
@@ -166,6 +168,7 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
     /**
      * @return the application management API entry point
      */
+    @Beta(SinceVersion.V1_1_0)
     public Applications applications() {
         if (applications == null) {
             applications = new ApplicationsImpl(graphRbacManagementClient.applications(), this);
@@ -176,6 +179,7 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
     /**
      * @return the role assignment management API entry point
      */
+    @Beta(SinceVersion.V1_1_0)
     public RoleAssignments roleAssignments() {
         if (roleAssignments == null) {
             roleAssignments = new RoleAssignmentsImpl(this);
@@ -186,6 +190,7 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
     /**
      * @return the role definition management API entry point
      */
+    @Beta(SinceVersion.V1_1_0)
     public RoleDefinitions roleDefinitions() {
         if (roleDefinitions == null) {
             roleDefinitions = new RoleDefinitionsImpl(this);

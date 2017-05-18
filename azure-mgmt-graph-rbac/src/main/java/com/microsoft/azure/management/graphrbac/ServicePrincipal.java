@@ -46,11 +46,13 @@ public interface ServicePrincipal extends
     /**
      * @return the mapping of password credentials from their names
      */
+    @Beta(SinceVersion.V1_1_0)
     Map<String, PasswordCredential> passwordCredentials();
 
     /**
      * @return the mapping of certificate credentials from their names
      */
+    @Beta(SinceVersion.V1_1_0)
     Map<String, CertificateCredential> certificateCredentials();
 
     /**************************************************************
@@ -60,7 +62,6 @@ public interface ServicePrincipal extends
     /**
      * Container interface for all the definitions that need to be implemented.
      */
-    @Beta(SinceVersion.V1_1_0)
     interface Definition extends
             DefinitionStages.Blank,
             DefinitionStages.WithCreate {
@@ -69,7 +70,6 @@ public interface ServicePrincipal extends
     /**
      * Grouping of all the service principal definition stages.
      */
-    @Beta(SinceVersion.V1_1_0)
     interface DefinitionStages {
         /**
          * The first stage of the service principal definition.
@@ -86,6 +86,7 @@ public interface ServicePrincipal extends
              * @param id the app ID of the application
              * @return the next stage of the service principal definition
              */
+            @Beta(SinceVersion.V1_1_0)
             WithCreate withExistingApplication(String id);
 
             /**
@@ -93,6 +94,7 @@ public interface ServicePrincipal extends
              * @param application the application
              * @return the next stage of the service principal definition
              */
+            @Beta(SinceVersion.V1_1_0)
             WithCreate withExistingApplication(Application application);
 
             /**
@@ -100,6 +102,7 @@ public interface ServicePrincipal extends
              * @param applicationCreatable the new application's creatable
              * @return the next stage of the service principal definition
              */
+            @Beta(SinceVersion.V1_1_0)
             WithCreate withNewApplication(Creatable<Application> applicationCreatable);
 
             /**
@@ -107,6 +110,7 @@ public interface ServicePrincipal extends
              * @param signOnUrl the new application's sign on URL
              * @return the next stage of the service principal definition
              */
+            @Beta(SinceVersion.V1_1_0)
             WithCreate withNewApplication(String signOnUrl);
         }
 
@@ -119,6 +123,7 @@ public interface ServicePrincipal extends
              * @param name the descriptive name of the certificate credential
              * @return the first stage in certificate credential definition
              */
+            @Beta(SinceVersion.V1_1_0)
             CertificateCredential.DefinitionStages.Blank<WithCreate> defineCertificateCredential(String name);
 
             /**
@@ -126,6 +131,7 @@ public interface ServicePrincipal extends
              * @param name the descriptive name of the password credential
              * @return the first stage in password credential definition
              */
+            @Beta(SinceVersion.V1_1_0)
             PasswordCredential.DefinitionStages.Blank<WithCreate> definePasswordCredential(String name);
         }
 
@@ -139,6 +145,7 @@ public interface ServicePrincipal extends
              * @param scope the scope the service principal can access
              * @return the next stage of the service principal definition
              */
+            @Beta(SinceVersion.V1_1_0)
             WithCreate withNewRole(BuiltInRole role, String scope);
 
             /**
@@ -147,6 +154,7 @@ public interface ServicePrincipal extends
              * @param subscriptionId the subscription the service principal can access
              * @return the next stage of the service principal definition
              */
+            @Beta(SinceVersion.V1_1_0)
             WithCreate withNewRoleInSubscription(BuiltInRole role, String subscriptionId);
 
             /**
@@ -155,6 +163,7 @@ public interface ServicePrincipal extends
              * @param resourceGroup the resource group the service principal can access
              * @return the next stage of the service principal definition
              */
+            @Beta(SinceVersion.V1_1_0)
             WithCreate withNewRoleInResourceGroup(BuiltInRole role, ResourceGroup resourceGroup);
         }
 
@@ -163,7 +172,6 @@ public interface ServicePrincipal extends
          * service principal in the cloud, but exposing additional optional inputs to
          * specify.
          */
-        @Beta(SinceVersion.V1_1_0)
         interface WithCreate extends
                 Creatable<ServicePrincipal>,
                 WithCredential,
