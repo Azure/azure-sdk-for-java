@@ -7,6 +7,7 @@ package com.microsoft.azure.management.documentdb;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.documentdb.implementation.DocumentDBManager;
 import com.microsoft.azure.management.documentdb.implementation.DatabaseAccountInner;
 import com.microsoft.azure.management.documentdb.implementation.DatabaseAccountListConnectionStringsResultInner;
@@ -26,7 +27,7 @@ import java.util.List;
  * An immutable client-side representation of an Azure document db.
  */
 @Fluent
-@Beta(Beta.SinceVersion.V1_1_0)
+@Beta(SinceVersion.V1_1_0)
 public interface DatabaseAccount extends
     GroupableResource<DocumentDBManager, DatabaseAccountInner>,
     Refreshable<DatabaseAccount>,
