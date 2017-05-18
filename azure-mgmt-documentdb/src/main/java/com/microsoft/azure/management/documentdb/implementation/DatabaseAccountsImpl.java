@@ -9,7 +9,7 @@ package com.microsoft.azure.management.documentdb.implementation;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.documentdb.DatabaseAccount;
 import com.microsoft.azure.management.documentdb.DatabaseAccounts;
-import com.microsoft.azure.management.documentdb.FailoverPolicies;
+import com.microsoft.azure.management.documentdb.Location;
 import com.microsoft.azure.management.documentdb.KeyKind;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
@@ -18,6 +18,7 @@ import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -109,13 +110,22 @@ class DatabaseAccountsImpl
     }
 
     @Override
-    public void failoverPriorityChange(String groupName, String accountName, FailoverPolicies failoverPolicies) {
-        this.failoverPriorityChangeAsync(groupName, accountName, failoverPolicies).toBlocking().last();
+    public void failoverPriorityChange(String groupName, String accountName, List<Location> failoverLocations) {
+        this.failoverPriorityChangeAsync(groupName, accountName, failoverLocations).toBlocking().last();
     }
 
     @Override
-    public Observable<Void> failoverPriorityChangeAsync(String groupName, String accountName, FailoverPolicies failoverPolicies) {
-        return this.manager().inner().databaseAccounts().failoverPriorityChangeAsync(groupName, accountName);
+    public Observable<Void> failoverPriorityChangeAsync(String groupName, String accountName, List<Location> failoverLocations) {
+        List<FailoverPolicyInner> policyInners = new ArrayList<FailoverPolicyInner>();
+        for (int i = 0; i < failoverLocations.size(); i++) {
+            Location location  = failoverLocations.get(i);
+            FailoverPolicyInner policyInner = new FailoverPolicyInner();
+            policyInner.withLocationName(location.locationName());
+            policyInner.withFailoverPriority(i);
+            policyInners.add(policyInner);
+        }
+
+        return this.manager().inner().databaseAccounts().failoverPriorityChangeAsync(groupName, accountName, policyInners);
     }
 
     @Override

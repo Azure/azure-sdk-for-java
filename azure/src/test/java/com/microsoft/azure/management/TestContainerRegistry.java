@@ -12,6 +12,8 @@ import com.microsoft.azure.management.compute.ContainerServices;
 import com.microsoft.azure.management.containerregistry.Registries;
 import com.microsoft.azure.management.containerregistry.Registry;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.storage.StorageAccount;
+import com.microsoft.azure.management.storage.implementation.StorageManager;
 import org.apache.commons.codec.binary.Base64;
 import org.junit.Assert;
 
@@ -26,18 +28,20 @@ public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
     @Override
     public Registry createResource(Registries registries) throws Exception {
         final String newName = "registry" + this.testId;
-        final String accessKey = "Zq9p44F3HHfqmn6sy8vuaD2YcSvWQLd12AtSUTRl25JB9KcZkVueZU7ixmCo2Ebk8VDYDIFRN5Qi+D63iYNrAw==";
-        return registries.define(newName)
+        Registry registry = registries.define(newName)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup()
-                .withExistingStorageAccount("registrytest1", accessKey)
+                .withNewStorageAccount("crsa" + this.testId)
+                .withRegistryNameAsAdminUser()
                 .create();
+
+        Assert.assertTrue(registry.adminUserEnabled());
+        Assert.assertEquals(registry.storageAccountName(), "crsa" + this.testId);
+        return registry;
     }
 
     @Override
     public Registry updateResource(Registry resource) throws Exception {
-        // Modify existing container service
-        final String newName = "as" + this.testId;
         resource =  resource.update()
                 .withTag("tag2", "value2")
                 .withTag("tag3", "value3")

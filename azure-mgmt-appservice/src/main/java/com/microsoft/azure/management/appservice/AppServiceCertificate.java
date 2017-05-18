@@ -101,11 +101,6 @@ public interface AppServiceCertificate extends
      */
     HostingEnvironmentProfile hostingEnvironmentProfile();
 
-
-    /**************************************************************
-     * Fluent interfaces to provision a App service certificate
-     **************************************************************/
-
     /**
      * Container interface for all the definitions that need to be implemented.
      */

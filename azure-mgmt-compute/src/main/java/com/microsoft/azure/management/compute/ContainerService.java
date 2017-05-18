@@ -7,6 +7,7 @@ package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.ContainerServiceInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -20,51 +21,71 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
  * An client-side representation for a container service.
  */
 @Fluent
-@Beta
+@Beta(SinceVersion.V1_1_0)
 public interface ContainerService extends
         GroupableResource<ComputeManager, ContainerServiceInner>,
         Refreshable<ContainerService>,
         Updatable<ContainerService.Update> {
 
     /**
-     * @return the properties of the orchestrator
+     * @return the master node count
      */
-    ContainerServiceOrchestratorProfile orchestratorProfile();
+    int masterNodeCount();
 
     /**
-     * @return the properties for custom clusters
+     * @return the type of the orchestrator
      */
-    ContainerServiceCustomProfile customProfile();
+    ContainerServiceOchestratorTypes orchestratorType();
 
     /**
-     * @return the properties for cluster service principals
+     * @return the master leaf domain label
      */
-    ContainerServiceServicePrincipalProfile servicePrincipalProfile();
+    String masterLeafDomainLabel();
 
     /**
-     * @return the properties for the master agent
+     * @return the master FQDN
      */
-    ContainerServiceMasterProfile masterProfile();
+    String masterFqdn();
 
     /**
-     * @return current set of agent pool profiles for this container service
+     * @return the agent pool name
      */
-    ContainerServiceAgentPoolProfile agentPoolProfile();
+    String agentPoolName();
 
     /**
-     * @return the properties for the Windows VMs
+     * @return the agent pool count
      */
-    ContainerServiceWindowsProfile windowsProfile();
+    int agentPoolCount();
 
     /**
-     * @return the properties for the Linux VMs
+     * @return the agent pool leaf domain label
      */
-    ContainerServiceLinuxProfile linuxProfile();
+    String agentPoolLeafDomainLabel();
 
     /**
-     * @return the properties for the diagnostic agent
+     * @return the agent pool VM size
      */
-    ContainerServiceDiagnosticsProfile diagnosticsProfile();
+    ContainerServiceVMSizeTypes agentPoolVMSize();
+
+    /**
+     * @return the agent pool FQDN
+     */
+    String agentPoolFqdn();
+
+    /**
+     * @return the linux root username
+     */
+    String linuxRootUsername();
+
+    /**
+     * @return the linux ssh key
+     */
+    String sshKey();
+
+    /**
+     * @return diagnostics enabled
+     */
+    boolean isDiagnosticsEnabled();
 
     // Fluent interfaces
 
@@ -74,12 +95,13 @@ public interface ContainerService extends
     interface Definition extends
             ContainerService.DefinitionStages.Blank,
             ContainerService.DefinitionStages.WithGroup,
+            ContainerService.DefinitionStages.WithOrchestrator,
             DefinitionStages.WithMasterNodeCount,
-            DefinitionStages.WithMasterDnsLabel,
-            ContainerService.DefinitionStages.WithLinuxProfile,
-            ContainerService.DefinitionStages.WithLinuxProfileRootUsername,
-            ContainerService.DefinitionStages.WithLinuxProfileSshKey,
-            ContainerService.DefinitionStages.DefineAgentPoolProfiles,
+            DefinitionStages.WithMasterLeafDomainLabel,
+            DefinitionStages.WithLinux,
+            DefinitionStages.WithLinuxRootUsername,
+            DefinitionStages.WithLinuxSshKey,
+            DefinitionStages.WithAgentPool,
             ContainerService.DefinitionStages.WithCreate {
     }
 
@@ -98,30 +120,30 @@ public interface ContainerService extends
          * The stage of the container service definition allowing to specify the resource group.
          */
         interface WithGroup extends
-                GroupableResource.DefinitionStages.WithGroup<WithMasterNodeCount> {
+                GroupableResource.DefinitionStages.WithGroup<WithOrchestrator> {
         }
 
         /**
          * The stage of the container service definition allowing to specify orchestration type.
          */
-        interface WithOrchestratorProfile {
+        interface WithOrchestrator {
             /**
              * Specifies the Swarm orchestration type for the container service.
              * @return the next stage of the definition
              */
-            WithCreate withSwarmOrchestration();
+            WithLinux withSwarmOrchestration();
 
             /**
              * Specifies the DCOS orchestration type for the container service.
              * @return the next stage of the definition
              */
-            WithCreate withDcosOrchestration();
+            WithLinux withDcosOrchestration();
 
             /**
              * Specifies the Kubernetes orchestration type for the container service.
              * @return the next stage of the definition
              */
-            WithCreate withKubernetesOrchestration();
+            WithLinux withKubernetesOrchestration();
         }
 
         /**
@@ -133,25 +155,25 @@ public interface ContainerService extends
              * @param count master profile count (1, 3, 5)
              * @return the next stage of the definition
              */
-            WithMasterDnsLabel withMasterNodeCount(ContainerServiceMasterProfileCount count);
+            WithMasterLeafDomainLabel withMasterNodeCount(ContainerServiceMasterProfileCount count);
         }
 
         /**
          * The stage of the container service definition allowing to specify the master Dns label.
          */
-        interface WithMasterDnsLabel {
+        interface WithMasterLeafDomainLabel {
             /**
              * Specifies the master node Dns label.
              * @param dnsLabel the Dns prefix
              * @return the next stage of the definition
              */
-            WithLinuxProfile withMasterDnsLabel(String dnsLabel);
+            WithAgentPool withMasterLeafDomainLabel(String dnsLabel);
         }
 
         /**
          * The stage of the container service definition allowing to specify an agent pool profile.
          */
-        interface DefineAgentPoolProfiles {
+        interface WithAgentPool {
             /**
              * Begins the definition of a agent pool profile to be attached to the container service.
              *
@@ -164,53 +186,47 @@ public interface ContainerService extends
         /**
          * The stage of the container service definition allowing the start of defining Linux specific settings.
          */
-        interface WithLinuxProfile {
+        interface WithLinux {
             /**
              * Begins the definition to specify Linux settings.
              * @return the stage representing configuration of Linux specific settings
              */
-            WithLinuxProfileRootUsername withLinuxProfile();
+            WithLinuxRootUsername withLinux();
         }
 
         /**
          * The stage of the container service definition allowing to specific the Linux root username.
          */
-        interface WithLinuxProfileRootUsername {
+        interface WithLinuxRootUsername {
             /**
              * Begins the definition to specify Linux root username.
              * @param rootUserName the root username
              * @return the next stage of the definition
              */
-            WithLinuxProfileSshKey withRootUsername(String rootUserName);
+            WithLinuxSshKey withRootUsername(String rootUserName);
         }
 
         /**
          * The stage of the container service definition allowing to specific the Linux SSH key.
          */
-        interface WithLinuxProfileSshKey {
+        interface WithLinuxSshKey {
             /**
              * Begins the definition to specify Linux ssh key.
              * @param sshKeyData the SSH key data
              * @return the next stage of the definition
              */
-            DefineAgentPoolProfiles withSshKey(String sshKeyData);
+            WithMasterNodeCount withSshKey(String sshKeyData);
         }
 
         /**
          * The stage of the container service definition allowing to specific diagnostic settings.
          */
-        interface WithDiagnosticsProfile {
+        interface WithDiagnostics {
             /**
              * Enable diagnostics.
              * @return the create stage of the definition
              */
             WithCreate withDiagnostics();
-
-            /**
-             * Disable diagnostics.
-             * @return the create stage of the definition
-             */
-            WithCreate withoutDiagnostics();
         }
 
         /**
@@ -221,8 +237,7 @@ public interface ContainerService extends
         interface WithCreate extends
                 Creatable<ContainerService>,
                 Resource.DefinitionWithTags<WithCreate>,
-                ContainerService.DefinitionStages.WithOrchestratorProfile,
-                ContainerService.DefinitionStages.WithDiagnosticsProfile {
+                WithDiagnostics {
         }
     }
 
@@ -234,7 +249,7 @@ public interface ContainerService extends
             Resource.UpdateWithTags<Update>,
             Appliable<ContainerService>,
             ContainerService.UpdateStages.WithUpdateAgentPoolCount,
-            ContainerService.UpdateStages.WithDiagnosticsProfile {
+            UpdateStages.WithDiagnostics {
     }
 
     /**
@@ -244,7 +259,7 @@ public interface ContainerService extends
         /**
          * The stage of the container service definition allowing to specific diagnostic settings.
          */
-        interface WithDiagnosticsProfile {
+        interface WithDiagnostics {
             /**
              * Enables diagnostics.
              * @return the next stage of the update
@@ -269,7 +284,7 @@ public interface ContainerService extends
              *                       The default value is 1.
              * @return the next stage of the update
              */
-            Update withAgentCount(int agentCount);
+            Update withAgentVMCount(int agentCount);
         }
     }
 }

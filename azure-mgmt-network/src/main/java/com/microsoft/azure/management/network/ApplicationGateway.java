@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayInner;
@@ -71,7 +72,7 @@ public interface ApplicationGateway extends
     /**
      * @return disabled SSL protocols
      */
-    @Beta //v1.0.0
+    @Beta(SinceVersion.V1_1_0)
     List<ApplicationGatewaySslProtocol> disabledSslProtocols();
 
     /**
@@ -446,7 +447,7 @@ public interface ApplicationGateway extends
              * @param protocol an SSL protocol
              * @return the next stage of the definition
              */
-            @Beta //v1.0.0
+            @Beta(SinceVersion.V1_1_0)
             WithCreate withDisabledSslProtocol(ApplicationGatewaySslProtocol protocol);
 
             /**
@@ -454,7 +455,7 @@ public interface ApplicationGateway extends
              * @param protocols SSL protocols
              * @return the next stage of the definition
              */
-            @Beta //v1.0.0
+            @Beta(SinceVersion.V1_1_0)
             WithCreate withDisabledSslProtocols(ApplicationGatewaySslProtocol...protocols);
         }
 
@@ -895,7 +896,7 @@ public interface ApplicationGateway extends
              * @param protocol an SSL protocol
              * @return the next stage of the update
              */
-            @Beta //v1.0.0
+            @Beta(SinceVersion.V1_1_0)
             Update withDisabledSslProtocol(ApplicationGatewaySslProtocol protocol);
 
             /**
@@ -903,7 +904,7 @@ public interface ApplicationGateway extends
              * @param protocols SSL protocols
              * @return the next stage of the update
              */
-            @Beta //v1.0.0
+            @Beta(SinceVersion.V1_1_0)
             Update withDisabledSslProtocols(ApplicationGatewaySslProtocol...protocols);
 
             /**
@@ -911,7 +912,7 @@ public interface ApplicationGateway extends
              * @param protocol an SSL protocol
              * @return the next stage of the update
              */
-            @Beta //v1.0.0
+            @Beta(SinceVersion.V1_1_0)
             Update withoutDisabledSslProtocol(ApplicationGatewaySslProtocol protocol);
 
             /**
@@ -919,14 +920,14 @@ public interface ApplicationGateway extends
              * @param protocols SSL protocols
              * @return the next stage of the update
              */
-            @Beta //v1.0.0
+            @Beta(SinceVersion.V1_1_0)
             Update withoutDisabledSslProtocols(ApplicationGatewaySslProtocol...protocols);
 
             /**
              * Enables all SSL protocols, if previously disabled.
              * @return the next stage of the update
              */
-            @Beta //v1.0.0
+            @Beta(SinceVersion.V1_1_0)
             @Method
             Update withoutAnyDisabledProtocols();
         }
