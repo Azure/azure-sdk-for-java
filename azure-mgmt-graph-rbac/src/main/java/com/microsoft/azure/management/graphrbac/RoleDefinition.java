@@ -7,31 +7,50 @@
 package com.microsoft.azure.management.graphrbac;
 
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.graphrbac.implementation.ADGroupInner;
 import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
+import com.microsoft.azure.management.graphrbac.implementation.PermissionInner;
+import com.microsoft.azure.management.graphrbac.implementation.RoleDefinitionInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
+import java.util.Set;
+
 /**
- * An immutable client-side representation of an Azure AD group.
+ * An immutable client-side representation of an Azure AD role definition.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
-@Beta
-public interface ActiveDirectoryGroup extends
+@Beta(SinceVersion.V1_1_0)
+public interface RoleDefinition extends
+        HasInner<RoleDefinitionInner>,
         HasId,
         HasName,
-        HasInner<ADGroupInner>,
         HasManager<GraphRbacManager> {
     /**
-     * @return security enabled field.
+     * @return the role name
      */
-    boolean securityEnabled();
+    String roleName();
 
     /**
-     * @return mail field.
+     * @return the role definition description
      */
-    String mail();
+    String description();
+
+    /**
+     * @return the role type
+     */
+    String type();
+
+    /**
+     * @return role definition permissions
+     */
+    Set<PermissionInner> permissions();
+
+    /**
+     * @return role definition assignable scopes
+     */
+    Set<String> assignableScopes();
 }

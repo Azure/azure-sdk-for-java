@@ -6,18 +6,14 @@
 
 package com.microsoft.azure.management.graphrbac;
 
+import com.google.common.base.Joiner;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.List;
-
 public class ServicePrincipalsTests extends GraphRbacManagementTestBase {
-    private static final String RG_NAME = "javacsmrg350";
-    private static final String APP_NAME = "app-javacsm350";
-
     @BeforeClass
     public static void setup() throws Exception {
         createClients();
@@ -28,10 +24,57 @@ public class ServicePrincipalsTests extends GraphRbacManagementTestBase {
     }
 
     @Test
-    @Ignore("Doesn't work when logged as a service principal")
-    public void getServicePrincipal() throws Exception {
-        List<ServicePrincipal> servicePrincipals = graphRbacManager.servicePrincipals().list();
-        Assert.assertNotNull(servicePrincipals);
+    @Ignore("Need to login as user to run")
+    public void canCRUDServicePrincipal() throws Exception {
+        ServicePrincipal servicePrincipal = null;
+        try {
+            servicePrincipal = graphRbacManager.servicePrincipals().define("anothersp40")
+                    .withNewApplication("http://easycreate.azure.com/anotherapp/40")
+                    .definePasswordCredential("sppass")
+                        .withPasswordValue("StrongPass!12")
+                        .attach()
+                    .create();
+            System.out.println(servicePrincipal.id() + " - " + Joiner.on(", ").join(servicePrincipal.servicePrincipalNames()));
+            Assert.assertNotNull(servicePrincipal.id());
+            Assert.assertNotNull(servicePrincipal.applicationId());
+            Assert.assertEquals(2, servicePrincipal.servicePrincipalNames().size());
+            Assert.assertEquals(1, servicePrincipal.passwordCredentials().size());
+            Assert.assertEquals(0, servicePrincipal.certificateCredentials().size());
+        } finally {
+            if (servicePrincipal != null) {
+                graphRbacManager.servicePrincipals().deleteById(servicePrincipal.id());
+                graphRbacManager.applications().deleteById(graphRbacManager.applications().getByName(servicePrincipal.applicationId()).id());
+            }
+        }
+    }
+
+    @Test
+    @Ignore("Need to login as user to run")
+    public void canCRUDServicePrincipalWithRole() throws Exception {
+        ServicePrincipal servicePrincipal = null;
+        try {
+            servicePrincipal = graphRbacManager.servicePrincipals().define("anothersp40")
+                    .withNewApplication("http://easycreate.azure.com/anothersp/40")
+                    .definePasswordCredential("sppass")
+                        .withPasswordValue("StrongPass!12")
+                        .attach()
+                    .withNewRoleInSubscription(BuiltInRole.CONTRIBUTOR, "ec0aa5f7-9e78-40c9-85cd-535c6305b380")
+                    .withNewRoleInSubscription(BuiltInRole.CONTRIBUTOR, "db1ab6f0-4769-4b27-930e-01e2ef9c123c")
+                    .create();
+            System.out.println(servicePrincipal.id() + " - " + Joiner.on(", ").join(servicePrincipal.servicePrincipalNames()));
+            Assert.assertNotNull(servicePrincipal.id());
+            Assert.assertNotNull(servicePrincipal.applicationId());
+            Assert.assertEquals(2, servicePrincipal.servicePrincipalNames().size());
+            Assert.assertEquals(1, servicePrincipal.passwordCredentials().size());
+            Assert.assertEquals(0, servicePrincipal.certificateCredentials().size());
+        } finally {
+            try {
+                graphRbacManager.servicePrincipals().deleteById(servicePrincipal.id());
+            } catch (Exception e) { }
+            try {
+                graphRbacManager.applications().deleteById(graphRbacManager.applications().getByName(servicePrincipal.applicationId()).id());
+            } catch (Exception e) { }
+        }
     }
 
 }

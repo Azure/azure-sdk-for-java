@@ -8,30 +8,40 @@ package com.microsoft.azure.management.graphrbac;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.graphrbac.implementation.ADGroupInner;
 import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
+import com.microsoft.azure.management.graphrbac.implementation.UserInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
- * An immutable client-side representation of an Azure AD group.
+ * An immutable client-side representation of an Azure AD user.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 @Beta
-public interface ActiveDirectoryGroup extends
+public interface ActiveDirectoryUser extends
+        HasInner<UserInner>,
         HasId,
         HasName,
-        HasInner<ADGroupInner>,
         HasManager<GraphRbacManager> {
     /**
-     * @return security enabled field.
+     * @return Gets or sets user principal name.
      */
-    boolean securityEnabled();
+    String userPrincipalName();
 
     /**
-     * @return mail field.
+     * @return Gets or sets user signIn name.
+     */
+    String signInName();
+
+    /**
+     * @return Gets or sets user mail.
      */
     String mail();
+
+    /**
+     * @return The mail alias for the user.
+     */
+    String mailNickname();
 }
