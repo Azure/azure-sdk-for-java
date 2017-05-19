@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.rest.serializer.JacksonAdapter;
-import okhttp3.OkHttpClient;
 
 import java.io.File;
 import java.io.IOException;
@@ -148,10 +147,5 @@ public final class AzureCliCredentials extends AzureTokenCredentials {
             token = subscriptions.get(defaultSubscriptionId).credentialInstance().getToken(resource);
         }
         return token;
-    }
-
-    @Override
-    public void applyCredentialsFilter(OkHttpClient.Builder clientBuilder) {
-        clientBuilder.interceptors().add(new AzureTokenCredentialsInterceptor(this));
     }
 }

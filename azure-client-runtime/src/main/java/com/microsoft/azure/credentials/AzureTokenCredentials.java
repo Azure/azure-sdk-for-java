@@ -35,7 +35,15 @@ public abstract class AzureTokenCredentials extends TokenCredentials {
 
     @Override
     protected final String getToken(Request request) throws IOException {
-        String resource = String.format("https://%s/", request.url().host());
+        String host = request.url().host();
+        for (String endpoint : environment().endpoints().values()) {
+            if (host.contains(endpoint)) {
+                // Remove leading dots
+                host = endpoint.replaceAll("^\\.*", "");
+                break;
+            }
+        }
+        String resource = String.format("https://%s/", host);
         return getToken(resource);
     }
 

@@ -100,7 +100,9 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
         /** The URL to Active Directory authentication. */
         AUTH_URL("authURL"),
         /** The URL to Active Directory Graph. */
-        GRAPH_URL("graphURL");
+        GRAPH_URL("graphURL"),
+        /** The suffix of Key Vaults. */
+        VAULT_SUFFIX("vaultSuffix");
 
         /** The name of the key in the properties file. */
         private final String name;
@@ -156,6 +158,7 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
         authSettings.put(CredentialSettings.BASE_URL.toString(), AzureEnvironment.AZURE.resourceManagerEndpoint());
         authSettings.put(CredentialSettings.MANAGEMENT_URI.toString(), AzureEnvironment.AZURE.managementEndpoint());
         authSettings.put(CredentialSettings.GRAPH_URL.toString(), AzureEnvironment.AZURE.graphEndpoint());
+        authSettings.put(CredentialSettings.VAULT_SUFFIX.toString(), AzureEnvironment.AZURE.keyVaultDnsSuffix());
 
         // Load the credentials from the file
         FileInputStream credentialsFileStream = new FileInputStream(credentialsFile);
@@ -171,6 +174,7 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
         final String authUrl = authSettings.getProperty(CredentialSettings.AUTH_URL.toString());
         final String baseUrl = authSettings.getProperty(CredentialSettings.BASE_URL.toString());
         final String graphUrl = authSettings.getProperty(CredentialSettings.GRAPH_URL.toString());
+        final String vaultSuffix = authSettings.getProperty(CredentialSettings.VAULT_SUFFIX.toString());
         final String defaultSubscriptionId = authSettings.getProperty(CredentialSettings.SUBSCRIPTION_ID.toString());
 
         if (clientKey != null) {
@@ -183,6 +187,7 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
                         put(AzureEnvironment.Endpoint.MANAGEMENT.toString(), mgmtUri);
                         put(AzureEnvironment.Endpoint.RESOURCE_MANAGER.toString(), baseUrl);
                         put(AzureEnvironment.Endpoint.GRAPH.toString(), graphUrl);
+                        put(AzureEnvironment.Endpoint.KEYVAULT.toString(), vaultSuffix);
                     }}
                     )).withDefaultSubscriptionId(defaultSubscriptionId);
         } else if (certificate != null) {
@@ -202,6 +207,7 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
                         put(AzureEnvironment.Endpoint.MANAGEMENT.toString(), mgmtUri);
                         put(AzureEnvironment.Endpoint.RESOURCE_MANAGER.toString(), baseUrl);
                         put(AzureEnvironment.Endpoint.GRAPH.toString(), graphUrl);
+                        put(AzureEnvironment.Endpoint.KEYVAULT.toString(), vaultSuffix);
                     }})).withDefaultSubscriptionId(defaultSubscriptionId);
         } else {
             throw new IllegalArgumentException("Please specify either a client key or a client certificate.");

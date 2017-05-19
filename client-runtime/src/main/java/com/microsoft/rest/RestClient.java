@@ -183,8 +183,6 @@ public final class RestClient {
                     this.userAgent = ((UserAgentInterceptor) interceptor).userAgent();
                 } else if (interceptor instanceof RetryHandler) {
                     this.retryStrategy = ((RetryHandler) interceptor).strategy();
-                } else if (interceptor instanceof RequestIdHeaderInterceptor
-                    || interceptor instanceof BaseUrlHandler) {
                 } else if (interceptor instanceof CustomHeadersInterceptor) {
                     this.customHeadersInterceptor = new CustomHeadersInterceptor();
                     this.customHeadersInterceptor.addHeaderMultimap(((CustomHeadersInterceptor) interceptor).headers());
@@ -221,7 +219,9 @@ public final class RestClient {
             // Set up OkHttp client
             this.httpClientBuilder = httpClientBuilder
                     .cookieJar(new JavaNetCookieJar(cookieManager))
-                    .readTimeout(60, TimeUnit.SECONDS);
+                    .readTimeout(60, TimeUnit.SECONDS)
+                    .addInterceptor(new RequestIdHeaderInterceptor())
+                    .addInterceptor(new BaseUrlHandler());
             this.retrofitBuilder = retrofitBuilder;
             this.loggingInterceptor = new LoggingInterceptor(LogLevel.NONE);
         }
@@ -445,12 +445,11 @@ public final class RestClient {
             }
             OkHttpClient httpClient = httpClientBuilder
                     .addInterceptor(userAgentInterceptor)
-                    .addInterceptor(new RequestIdHeaderInterceptor())
-                    .addInterceptor(new BaseUrlHandler())
                     .addInterceptor(customHeadersInterceptor)
                     .addInterceptor(retryHandler)
                     .addNetworkInterceptor(loggingInterceptor)
                     .build();
+
             return new RestClient(httpClient,
                     retrofitBuilder
                             .baseUrl(baseUrl)

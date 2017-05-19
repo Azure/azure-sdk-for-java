@@ -8,7 +8,6 @@ package com.microsoft.azure;
 
 import com.microsoft.rest.protocol.Environment;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,36 +15,8 @@ import java.util.Map;
  * An instance of this class describes an environment in Azure.
  */
 public final class AzureEnvironment implements Environment {
-    /** the management portal URL. */
-    private final String portalUrl;
-    /** the publish settings file URL. */
-    private final String publishingProfileUrl;
-    /** the management service endpoint. */
-    private final String managementEndpointUrl;
-    /** the resource management endpoint. */
-    private final String resourceManagerEndpointUrl;
-    /** the sql server management endpoint for mobile commands. */
-    private final String sqlManagementEndpointUrl;
-    /** the dns suffix for sql servers. */
-    private final String sqlServerHostnameSuffix;
-    /** the Active Directory login endpoint. */
-    private final String activeDirectoryEndpointUrl;
-    /** The resource ID to obtain AD tokens for. */
-    private final String activeDirectoryResourceId;
-    /** the template gallery endpoint. */
-    private final String galleryEndpointUrl;
-    /** the Active Directory resource ID. */
-    private final String activeDirectoryGraphResourceId;
-    /** the Active Directory api version. */
-    private final String activeDirectoryGraphApiVersion;
-    /** the endpoint suffix for storage accounts. */
-    private final String storageEndpointSuffix;
-    /** the keyvault service dns suffix. */
-    private final String keyVaultDnsSuffix;
-    /** the data lake store filesystem service dns suffix. */
-    private final String azureDataLakeStoreFileSystemEndpointSuffix;
-    /** the data lake analytics job and catalog service dns suffix. */
-    private final String azureDataLakeAnalyticsCatalogAndJobEndpointSuffix;
+    /** the map of all endpoints. */
+    private final Map<String, String> endpoints;
 
     /**
      * Initializes an instance of AzureEnvironment class.
@@ -53,21 +24,7 @@ public final class AzureEnvironment implements Environment {
      * @param endpoints a map storing all the endpoint info
      */
     public AzureEnvironment(Map<String, String> endpoints) {
-        this.portalUrl = endpoints.get("portalUrl");
-        this.publishingProfileUrl = endpoints.get("publishingProfileUrl");
-        this.managementEndpointUrl = endpoints.get("managementEndpointUrl");
-        this.resourceManagerEndpointUrl = endpoints.get("resourceManagerEndpointUrl");
-        this.sqlManagementEndpointUrl = endpoints.get("sqlManagementEndpointUrl");
-        this.sqlServerHostnameSuffix = endpoints.get("sqlServerHostnameSuffix");
-        this.activeDirectoryEndpointUrl = endpoints.get("activeDirectoryEndpointUrl");
-        this.activeDirectoryResourceId = endpoints.get("activeDirectoryResourceId");
-        this.galleryEndpointUrl = endpoints.get("galleryEndpointUrl");
-        this.activeDirectoryGraphResourceId = endpoints.get("activeDirectoryGraphResourceId");
-        this.activeDirectoryGraphApiVersion = endpoints.get("activeDirectoryGraphApiVersion");
-        this.storageEndpointSuffix = endpoints.get("storageEndpointSuffix");
-        this.keyVaultDnsSuffix = endpoints.get("keyVaultDnsSuffix");
-        this.azureDataLakeStoreFileSystemEndpointSuffix = endpoints.get("azureDataLakeStoreFileSystemEndpointSuffix");
-        this.azureDataLakeAnalyticsCatalogAndJobEndpointSuffix = endpoints.get("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix");
+        this.endpoints = endpoints;
     }
 
     /**
@@ -158,108 +115,115 @@ public final class AzureEnvironment implements Environment {
     }});
 
     /**
+     * @return the entirety of the endpoints associated with the current environment.
+     */
+    public Map<String, String> endpoints() {
+        return endpoints;
+    }
+
+    /**
      * @return the management portal URL.
      */
     public String portal() {
-        return portalUrl;
+        return endpoints.get("portalUrl");
     }
 
     /**
      * @return the publish settings file URL.
      */
     public String publishingProfile() {
-        return publishingProfileUrl;
+        return endpoints.get("publishingProfileUrl");
     }
 
     /**
      * @return the management service endpoint.
      */
     public String managementEndpoint() {
-        return managementEndpointUrl;
+        return endpoints.get("managementEndpointUrl");
     }
 
     /**
      * @return the resource management endpoint.
      */
     public String resourceManagerEndpoint() {
-        return resourceManagerEndpointUrl;
+        return endpoints.get("resourceManagerEndpointUrl");
     }
 
     /**
      * @return the sql server management endpoint for mobile commands.
      */
     public String sqlManagementEndpoint() {
-        return sqlManagementEndpointUrl;
+        return endpoints.get("sqlManagementEndpointUrl");
     }
 
     /**
      * @return the dns suffix for sql servers.
      */
     public String sqlServerHostnameSuffix() {
-        return sqlServerHostnameSuffix;
+        return endpoints.get("sqlServerHostnameSuffix");
     }
 
     /**
      * @return the Active Directory login endpoint.
      */
     public String activeDirectoryEndpoint() {
-        return activeDirectoryEndpointUrl;
+        return endpoints.get("activeDirectoryEndpointUrl");
     }
 
     /**
      * @return The resource ID to obtain AD tokens for.
      */
     public String activeDirectoryResourceId() {
-        return activeDirectoryResourceId;
+        return endpoints.get("activeDirectoryResourceId");
     }
 
     /**
      * @return the template gallery endpoint.
      */
     public String galleryEndpoint() {
-        return galleryEndpointUrl;
+        return endpoints.get("galleryEndpointUrl");
     }
 
     /**
      * @return the Active Directory resource ID.
      */
     public String graphEndpoint() {
-        return activeDirectoryGraphResourceId;
+        return endpoints.get("activeDirectoryGraphResourceId");
     }
 
     /**
      * @return the Active Directory api version.
      */
     public String activeDirectoryGraphApiVersion() {
-        return activeDirectoryGraphApiVersion;
+        return endpoints.get("activeDirectoryGraphApiVersion");
     }
 
     /**
      * @return the endpoint suffix for storage accounts.
      */
     public String storageEndpointSuffix() {
-        return storageEndpointSuffix;
+        return endpoints.get("storageEndpointSuffix");
     }
 
     /**
      * @return the keyvault service dns suffix.
      */
     public String keyVaultDnsSuffix() {
-        return keyVaultDnsSuffix;
+        return endpoints.get("keyVaultDnsSuffix");
     }
 
     /**
      * @return the data lake store filesystem service dns suffix.
      */
     public String azureDataLakeStoreFileSystemEndpointSuffix() {
-        return azureDataLakeStoreFileSystemEndpointSuffix;
+        return endpoints.get("azureDataLakeStoreFileSystemEndpointSuffix");
     }
 
     /**
      * @return the data lake analytics job and catalog service dns suffix.
      */
     public String azureDataLakeAnalyticsCatalogAndJobEndpointSuffix() {
-        return azureDataLakeAnalyticsCatalogAndJobEndpointSuffix;
+        return endpoints.get("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix");
     }
 
 
@@ -278,7 +242,9 @@ public final class AzureEnvironment implements Environment {
         /** Active Directory authentication endpoint. */
         ACTIVE_DIRECTORY("activeDirectoryEndpointUrl"),
         /** Azure management endpoint. */
-        MANAGEMENT("managementEndpointUrl");
+        MANAGEMENT("managementEndpointUrl"),
+        /** Key Vault DNS suffix. */
+        KEYVAULT("keyVaultDnsSuffix");
 
         private String field;
 
@@ -304,12 +270,6 @@ public final class AzureEnvironment implements Environment {
      * @return the URL
      */
     public String url(Environment.Endpoint endpoint) {
-        try {
-            Field f = AzureEnvironment.class.getDeclaredField(endpoint.identifier());
-            f.setAccessible(true);
-            return (String) f.get(this);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException("Unable to reflect on field " + endpoint.identifier(), e);
-        }
+        return endpoints.get(endpoint.identifier());
     }
 }
