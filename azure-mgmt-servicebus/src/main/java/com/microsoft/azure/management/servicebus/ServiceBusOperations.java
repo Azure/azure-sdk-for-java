@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.servicebus;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
@@ -14,5 +15,6 @@ import com.microsoft.azure.management.servicebus.implementation.ServiceBusManage
  * Entry point for service bus operations management API.
  */
 @Fluent
+@Beta(Beta.SinceVersion.V1_1_0)
 public interface ServiceBusOperations extends SupportsListing<ServiceBusOperation>, HasManager<ServiceBusManager> {
 }

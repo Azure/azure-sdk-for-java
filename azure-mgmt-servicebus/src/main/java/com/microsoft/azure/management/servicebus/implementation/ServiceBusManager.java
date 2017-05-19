@@ -9,6 +9,7 @@ package com.microsoft.azure.management.servicebus.implementation;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
@@ -108,6 +109,7 @@ public final class ServiceBusManager extends Manager<ServiceBusManager, ServiceB
     /**
      * @return the Service Bus operations management API entry point
      */
+    @Beta(Beta.SinceVersion.V1_1_0)
     public ServiceBusOperations operations() {
         if (operations == null) {
             operations = new ServiceBusOperationsImpl(this.inner().operations(), this);
