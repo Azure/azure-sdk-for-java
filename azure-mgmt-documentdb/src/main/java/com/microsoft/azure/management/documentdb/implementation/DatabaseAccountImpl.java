@@ -11,19 +11,15 @@ import com.microsoft.azure.management.documentdb.Location;
 import com.microsoft.azure.management.documentdb.DatabaseAccountKind;
 import com.microsoft.azure.management.documentdb.DatabaseAccountOfferType;
 import com.microsoft.azure.management.documentdb.ConsistencyPolicy;
-import com.microsoft.azure.management.documentdb.FailoverPolicies;
 import com.microsoft.azure.management.documentdb.KeyKind;
 import com.microsoft.azure.management.documentdb.DefaultConsistencyLevel;
-import com.microsoft.azure.management.documentdb.DBLocation;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import rx.Observable;
 import rx.functions.Func1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * The implementation for DatabaseAccount.
@@ -39,28 +35,15 @@ class DatabaseAccountImpl
         implements DatabaseAccount,
         DatabaseAccount.Definition,
         DatabaseAccount.Update {
-    private List<Location> allLocations;
-    private Map<String, FailoverPolicyInner> failoverPolicies;
+    private List<FailoverPolicyInner> failoverPolicies;
 
     DatabaseAccountImpl(String name, DatabaseAccountInner innerObject, DocumentDBManager manager) {
         super(fixDBName(name), innerObject, manager);
-        this.allLocations = new ArrayList<Location>();
-        if (this.inner().writeLocations() != null) {
-            for (Location location : this.inner().writeLocations()) {
-                this.allLocations.add(location);
-            }
-        }
 
-        if (this.inner().readLocations() != null) {
-            for (Location location : this.inner().readLocations()) {
-                this.allLocations.add(location);
-            }
-        }
-
-        this.failoverPolicies = new HashMap<String, FailoverPolicyInner>();
+        this.failoverPolicies = new ArrayList<FailoverPolicyInner>();
         if (this.inner().failoverPolicies() != null) {
             for (FailoverPolicyInner failoverPolicy : this.inner().failoverPolicies()) {
-                this.failoverPolicies.put(failoverPolicy.id(), failoverPolicy);
+                this.failoverPolicies.add(failoverPolicy);
             }
         }
     }
@@ -91,30 +74,43 @@ class DatabaseAccountImpl
     }
 
     @Override
-    public Map<String, Location> locations() {
-        Map<String, Location> locations = new HashMap<String, Location>();
-        for (Location location : this.allLocations) {
-            locations.put(location.id(), location);
+    public DefaultConsistencyLevel defaultConsistencyLevel() {
+        if (this.inner().consistencyPolicy() == null) {
+            throw new RuntimeException("Consistency policy is missing!");
         }
-        return locations;
+
+        return this.inner().consistencyPolicy().defaultConsistencyLevel();
     }
 
     @Override
-    public Map<String, FailoverPolicyInner> failoverPolicies() {
-        return this.failoverPolicies;
+    public List<Location> writableReplications() {
+        return this.inner().writeLocations();
     }
 
     @Override
-    public void failoverPriorityChange(FailoverPolicies failoverPolicies) {
+    public List<Location> readableReplications() {
+        return this.inner().readLocations();
+    }
+
+    @Override
+    public void failoverPriorityChange(List<Location> failoverPolicies) {
         this.failoverPriorityChangeAsync(failoverPolicies).toBlocking().last();
     }
 
     @Override
-    public Observable<Void> failoverPriorityChangeAsync(FailoverPolicies failoverPolicies) {
-        return this.manager().inner().databaseAccounts().failoverPriorityChangeAsync(this.resourceGroupName(),
-                this.name(), failoverPolicies.failoverPolicies());
-    }
+    public Observable<Void> failoverPriorityChangeAsync(List<Location> failoverPolicies) {
+        List<FailoverPolicyInner> policyInners = new ArrayList<FailoverPolicyInner>();
+        for (int i = 0; i < failoverPolicies.size(); i++) {
+            Location location  = failoverPolicies.get(i);
+            FailoverPolicyInner policyInner = new FailoverPolicyInner();
+            policyInner.withLocationName(location.locationName());
+            policyInner.withFailoverPriority(i);
+            policyInners.add(policyInner);
+        }
 
+        return this.manager().inner().databaseAccounts().failoverPriorityChangeAsync(this.resourceGroupName(),
+                this.name(), policyInners);
+    }
 
     @Override
     public DatabaseAccountListKeysResultInner listKeys() {
@@ -155,34 +151,6 @@ class DatabaseAccountImpl
         return this;        
     }
 
-    @Override
-    public DatabaseAccountImpl withConsistencyPolicy(DefaultConsistencyLevel defaultConsistencyLevel,
-                                                     int maxStalenessPrefix,
-                                                     int maxIntervalInSeconds) {
-        ConsistencyPolicy policy = new ConsistencyPolicy();
-        policy.withDefaultConsistencyLevel(defaultConsistencyLevel);
-        policy.withMaxIntervalInSeconds(maxIntervalInSeconds);
-        policy.withMaxStalenessPrefix((long) maxStalenessPrefix);
-        this.inner().withConsistencyPolicy(policy);
-        return null;
-    }
-
-    @Override
-    public DBLocationImpl defineLocation(Region region) {
-        DBLocationImpl dbLocation =  new DBLocationImpl(new Location(), this);
-        dbLocation.withLocation(region.name().toLowerCase());
-        return dbLocation;
-    }
-
-    @Override
-    public DatabaseAccountImpl removeLocation(Region region) {
-        String regionName = region.name().toLowerCase();
-        if (this.locations().containsKey(regionName)) {
-            this.locations().remove(regionName);
-        }
-
-        return this;
-    }
 
     @Override
     public DatabaseAccountImpl withIpRangeFilter(String ipRangeFilter) {
@@ -198,41 +166,115 @@ class DatabaseAccountImpl
     @Override
     public Observable<DatabaseAccount> createResourceAsync() {
         final DatabaseAccountImpl self = this;
+        DatabaseAccountCreateUpdateParametersInner createUpdateParametersInner =
+                this.createUpdateParametersInner(this.inner());
         return this.manager().inner().databaseAccounts().createOrUpdateAsync(
                 resourceGroupName(),
                 name(),
-                this.createUpdateParametersInner())
-                .map(new Func1<DatabaseAccountInner, DatabaseAccount>() {
+                createUpdateParametersInner)
+                .flatMap(new Func1<DatabaseAccountInner, Observable<? extends DatabaseAccount>>() {
                     @Override
-                    public DatabaseAccount call(DatabaseAccountInner databaseAccountInner) {
-                        self.setInner(databaseAccountInner);
-                        return self;
+                    public Observable<? extends DatabaseAccount> call(DatabaseAccountInner databaseAccountInner) {
+                        return manager().databaseAccounts().getByResourceGroupAsync(
+                                resourceGroupName(),
+                                name());
                     }
                 });
     }
 
-    private DatabaseAccountCreateUpdateParametersInner createUpdateParametersInner() {
+    private DatabaseAccountCreateUpdateParametersInner createUpdateParametersInner(DatabaseAccountInner inner) {
         DatabaseAccountCreateUpdateParametersInner createUpdateParametersInner =
                 new DatabaseAccountCreateUpdateParametersInner();
         createUpdateParametersInner.withLocation(this.regionName().toLowerCase());
-        createUpdateParametersInner.withConsistencyPolicy(this.inner().consistencyPolicy());
-        createUpdateParametersInner.withLocation(this.regionName().toLowerCase());
-        createUpdateParametersInner.withLocations(this.allLocations);
-        if (this.inner().databaseAccountOfferType() != null) {
-            createUpdateParametersInner.withDatabaseAccountOfferType(this.inner().databaseAccountOfferType().toString());
+        createUpdateParametersInner.withConsistencyPolicy(inner.consistencyPolicy());
+        createUpdateParametersInner.withDatabaseAccountOfferType(
+                DatabaseAccountOfferType.STANDARD.toString());
+        createUpdateParametersInner.withIpRangeFilter(inner.ipRangeFilter());
+        createUpdateParametersInner.withKind(inner.kind());
+        createUpdateParametersInner.withTags(inner.getTags());
+        if (this.isInCreateMode()) {
+            this.addLocationsForCreateUpdateParameters(createUpdateParametersInner, this.failoverPolicies);
+        } else {
+            this.addLocationsForCreateUpdateParameters(createUpdateParametersInner, this.inner().failoverPolicies());
         }
 
-        createUpdateParametersInner.withIpRangeFilter(this.inner().ipRangeFilter());
-        createUpdateParametersInner.withKind((this.inner().kind()));
-        createUpdateParametersInner.withTags(this.inner().getTags());
         return createUpdateParametersInner;
-    }
-
-    void addDBLocation(DBLocation dbLocation) {
-        this.allLocations.add(dbLocation.inner());
     }
 
     private static String fixDBName(String name) {
         return name.toLowerCase();
+    }
+
+    @Override
+    public DatabaseAccountImpl withReadableFailover(Region region) {
+        FailoverPolicyInner failoverPolicyInner = new FailoverPolicyInner();
+        failoverPolicyInner.withLocationName(region.name());
+        this.failoverPolicies.add(0, failoverPolicyInner);
+        return this;
+    }
+
+    @Override
+    public DatabaseAccountImpl withWritableFailover(Region region) {
+        FailoverPolicyInner failoverPolicyInner = new FailoverPolicyInner();
+        failoverPolicyInner.withLocationName(region.name());
+        this.failoverPolicies.add(failoverPolicyInner);
+        return this;
+    }
+
+    @Override
+    public DatabaseAccountImpl withEventualConsistencyPolicy() {
+        this.setConsistencyPolicy(DefaultConsistencyLevel.EVENTUAL, 0, 0);
+        return this;
+    }
+
+    @Override
+    public DatabaseAccountImpl withSessionConsistencyPolicy() {
+        this.setConsistencyPolicy(DefaultConsistencyLevel.SESSION, 0, 0);
+        return this;
+    }
+
+    @Override
+    public DatabaseAccountImpl withBoundedStalenessConsistencyPolicy(int maxStalenessPrefix, int maxIntervalInSeconds) {
+        this.setConsistencyPolicy(DefaultConsistencyLevel.BOUNDED_STALENESS,
+                maxStalenessPrefix,
+                maxIntervalInSeconds);
+        return this;
+    }
+
+    @Override
+    public DatabaseAccountImpl withStrongConsistencyPolicy() {
+        this.setConsistencyPolicy(DefaultConsistencyLevel.STRONG, 0, 0);
+        return this;
+    }
+
+    private void setConsistencyPolicy(
+            DefaultConsistencyLevel level,
+            int maxIntervalInSeconds,
+            long maxStalenessPrefix) {
+        ConsistencyPolicy policy = new ConsistencyPolicy();
+        policy.withDefaultConsistencyLevel(level);
+        if (level == DefaultConsistencyLevel.BOUNDED_STALENESS) {
+            policy.withMaxIntervalInSeconds(maxIntervalInSeconds);
+            policy.withMaxStalenessPrefix((long) maxStalenessPrefix);
+        }
+
+        this.inner().withConsistencyPolicy(policy);
+    }
+
+    private void addLocationsForCreateUpdateParameters(
+            DatabaseAccountCreateUpdateParametersInner createUpdateParametersInner,
+            List<FailoverPolicyInner> failoverPolicies) {
+        List<Location> locations = new ArrayList<Location>();
+        for (int i = 0; i < failoverPolicies.size(); i++) {
+            FailoverPolicyInner policyInner = failoverPolicies.get(i);
+            Location location = new Location();
+            location.withFailoverPriority(i);
+            location.withLocationName(policyInner.locationName());
+            locations.add(location);
+        }
+
+        if (locations.size() > 0) {
+            createUpdateParametersInner.withLocations(locations);
+        }
     }
 }

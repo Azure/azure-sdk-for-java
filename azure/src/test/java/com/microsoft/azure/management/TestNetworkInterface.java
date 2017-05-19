@@ -20,23 +20,35 @@ import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 public class TestNetworkInterface extends TestTemplate<NetworkInterface, NetworkInterfaces> {
-
     @Override
     public NetworkInterface createResource(NetworkInterfaces networkInterfaces) throws Exception {
-        final String newName = "nic" + this.testId;
-        NetworkInterface nic = networkInterfaces.define(newName)
-                .withRegion(Region.US_EAST)
+        final String nicName = "nic" + this.testId;
+        final String vnetName = "net" + this.testId;
+        final String pipName = "pip" + this.testId;
+        final Region region = Region.US_EAST;
+
+        Network network = networkInterfaces.manager().networks().define(vnetName)
+                .withRegion(region)
                 .withNewResourceGroup()
-                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withAddressSpace("10.0.0.0/28")
+                .withSubnet("subnet1", "10.0.0.0/29")
+                .withSubnet("subnet2", "10.0.0.8/29")
+                .create();
+
+        NetworkInterface nic = networkInterfaces.define(nicName)
+                .withRegion(region)
+                .withExistingResourceGroup(network.resourceGroupName())
+                .withExistingPrimaryNetwork(network)
+                .withSubnet("subnet1")
                 .withPrimaryPrivateIPAddressDynamic()
-                .withNewPrimaryPublicIPAddress("pipdns" + this.testId)
+                .withNewPrimaryPublicIPAddress(pipName)
                 .withIPForwarding()
                 .create();
 
-        // Verify NIC is properly referenced by subnet
+        // Verifications
         NicIPConfiguration ipConfig = nic.primaryIPConfiguration();
         Assert.assertNotNull(ipConfig);
-        Network network = ipConfig.getNetwork();
+        network = ipConfig.getNetwork();
         Assert.assertNotNull(network);
         Subnet subnet = network.subnets().get(ipConfig.subnetName());
         Assert.assertNotNull(subnet);
@@ -53,6 +65,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
     public NetworkInterface updateResource(NetworkInterface resource) throws Exception {
         resource =  resource.update()
                 .withoutIPForwarding()
+                .withSubnet("subnet2")
                 .updateIPConfiguration("primary") // Updating the primary ip configuration
                     .withPrivateIPAddressDynamic() // Equivalent to ..update().withPrimaryPrivateIPAddressDynamic()
                     .withoutPublicIPAddress()      // Equivalent to ..update().withoutPrimaryPublicIPAddress()
@@ -60,6 +73,14 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
                 .apply();
+
+        // Verifications
+        Assert.assertTrue(!resource.isIPForwardingEnabled());
+        NicIPConfiguration primaryIpConfig = resource.primaryIPConfiguration();
+        Assert.assertNotNull(primaryIpConfig);
+        Assert.assertTrue(primaryIpConfig.isPrimary());
+        Assert.assertTrue("subnet2".equalsIgnoreCase(primaryIpConfig.subnetName()));
+        Assert.assertNull(primaryIpConfig.publicIPAddressId());
         Assert.assertTrue(resource.tags().containsKey("tag1"));
         return resource;
     }

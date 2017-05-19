@@ -26,7 +26,6 @@ import rx.Subscriber;
  * Test for network security group CRUD.
  */
 public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityGroups> {
-
     @Override
     public NetworkSecurityGroup createResource(NetworkSecurityGroups nsgs) throws Exception {
         final String newName = "nsg" + this.testId;

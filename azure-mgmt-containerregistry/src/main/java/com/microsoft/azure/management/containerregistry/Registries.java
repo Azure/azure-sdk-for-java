@@ -7,6 +7,7 @@ package com.microsoft.azure.management.containerregistry;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.containerregistry.implementation.ContainerRegistryManager;
 import com.microsoft.azure.management.containerregistry.implementation.RegistriesInner;
 import com.microsoft.azure.management.containerregistry.implementation.RegistryListCredentialsResultInner;
@@ -26,7 +27,7 @@ import rx.Observable;
  * Entry point to the registry management API.
  */
 @Fluent()
-@Beta()
+@Beta(SinceVersion.V1_1_0)
 public interface Registries extends
     SupportsCreating<Registry.DefinitionStages.Blank>,
     HasManager<ContainerRegistryManager>,

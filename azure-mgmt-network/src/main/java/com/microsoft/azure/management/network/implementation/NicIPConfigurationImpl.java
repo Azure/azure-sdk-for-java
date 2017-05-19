@@ -267,7 +267,7 @@ class NicIPConfigurationImpl
     /**
      * Gets the subnet to associate with the IP configuration.
      * <p>
-     * this method will never return null as subnet is required for a IP configuration, in case of
+     * This method will never return null as subnet is required for a IP configuration, in case of
      * update mode if user didn't choose to change the subnet then existing subnet will be returned.
      * Updating the nic subnet has a restriction, the new subnet must reside in the same virtual network
      * as the current one.
@@ -295,7 +295,7 @@ class NicIPConfigurationImpl
         } else {
             if (subnetToAssociate != null) {
                 int idx = this.inner().subnet().id().lastIndexOf('/');
-                subnetInner.withId(this.inner().subnet().id().substring(0, idx) + subnetToAssociate);
+                subnetInner.withId(this.inner().subnet().id().substring(0, idx + 1) + subnetToAssociate);
             } else {
                 subnetInner.withId(this.inner().subnet().id());
             }

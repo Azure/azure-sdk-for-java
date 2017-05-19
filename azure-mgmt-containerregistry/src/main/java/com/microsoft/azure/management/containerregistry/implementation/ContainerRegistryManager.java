@@ -7,24 +7,24 @@
 package com.microsoft.azure.management.containerregistry.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.containerregistry.Registries;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
-import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
-import com.microsoft.azure.serializer.AzureJacksonAdapter;
+import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.rest.RestClient;
 
 /**
  * Entry point to Azure compute resource management.
  */
-@Beta
+@Beta(SinceVersion.V1_1_0)
 public final class ContainerRegistryManager extends Manager<ContainerRegistryManager, ContainerRegistryManagementClientImpl> {
     // The service managers
     private RegistriesImpl registries;
+    private StorageManager storageManager;
 
     /**
      * Get a Configurable instance that can be used to create ComputeManager with optional configuration.
@@ -46,9 +46,6 @@ public final class ContainerRegistryManager extends Manager<ContainerRegistryMan
         return new ContainerRegistryManager(new RestClient.Builder()
                 .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
-                .withSerializerAdapter(new AzureJacksonAdapter())
-                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
-                .withInterceptor(new ProviderRegistrationInterceptor(credentials))
                 .build(), subscriptionId);
     }
 
@@ -92,6 +89,8 @@ public final class ContainerRegistryManager extends Manager<ContainerRegistryMan
                 restClient,
                 subscriptionId,
                 new ContainerRegistryManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
+
+        this.storageManager = StorageManager.authenticate(restClient, subscriptionId);
     }
 
 
@@ -100,7 +99,7 @@ public final class ContainerRegistryManager extends Manager<ContainerRegistryMan
      */
     public Registries containerRegistries() {
         if (registries == null) {
-            registries = new RegistriesImpl(this);
+            registries = new RegistriesImpl(this, this.storageManager);
         }
         return registries;
     }

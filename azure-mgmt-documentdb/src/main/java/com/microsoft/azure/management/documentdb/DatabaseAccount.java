@@ -7,9 +7,9 @@ package com.microsoft.azure.management.documentdb;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.documentdb.implementation.DocumentDBManager;
 import com.microsoft.azure.management.documentdb.implementation.DatabaseAccountInner;
-import com.microsoft.azure.management.documentdb.implementation.FailoverPolicyInner;
 import com.microsoft.azure.management.documentdb.implementation.DatabaseAccountListConnectionStringsResultInner;
 import com.microsoft.azure.management.documentdb.implementation.DatabaseAccountListKeysResultInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -21,13 +21,13 @@ import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import rx.Observable;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * An immutable client-side representation of an Azure document db.
  */
 @Fluent
-@Beta
+@Beta(SinceVersion.V1_1_0)
 public interface DatabaseAccount extends
     GroupableResource<DocumentDBManager, DatabaseAccountInner>,
     Refreshable<DatabaseAccount>,
@@ -59,25 +59,30 @@ public interface DatabaseAccount extends
     ConsistencyPolicy consistencyPolicy();
 
     /**
-     * @return an array that contains the regions ordered by their failover priorities
+     * @return the default consistency level for the DocumentDB database account
      */
-    Map<String, FailoverPolicyInner> failoverPolicies();
+    DefaultConsistencyLevel defaultConsistencyLevel();
 
     /**
-     * @return an array that contains the georeplication locations enabled for the DocumentDB account
+     * @return an array that contains the writable georeplication locations enabled for the DocumentDB account
      */
-    Map<String, Location> locations();
+    List<Location> writableReplications();
+
+    /**
+     * @return an array that contains the readable georeplication locations enabled for the DocumentDB account
+     */
+    List<Location> readableReplications();
 
     /**
      * @param failoverPolicies the failover policies
      */
-    void failoverPriorityChange(FailoverPolicies failoverPolicies);
+    void failoverPriorityChange(List<Location> failoverPolicies);
 
     /**
      * @param failoverPolicies the failover policies
      * @return the ServiceResponse object if successful.
      */
-    Observable<Void> failoverPriorityChangeAsync(FailoverPolicies failoverPolicies);
+    Observable<Void> failoverPriorityChangeAsync(List<Location> failoverPolicies);
 
     /**
      * @return the access keys for the specified Azure DocumentDB database account
@@ -117,7 +122,8 @@ public interface DatabaseAccount extends
             DefinitionStages.Blank,
             DefinitionStages.WithGroup,
             DefinitionStages.WithKind,
-            DefinitionStages.DefineLocations,
+            DefinitionStages.WithReadLocation,
+            DefinitionStages.WithWriteLocations,
             DefinitionStages.WithCreate {
 
     }
@@ -148,7 +154,7 @@ public interface DatabaseAccount extends
              * The database account kind for the DocumentDB account.
              * @return the next stage of the definition
              */
-            DefineLocations withKind(DatabaseAccountKind kind);
+            WithReadLocation withKind(DatabaseAccountKind kind);
         }
 
         /**
@@ -156,13 +162,30 @@ public interface DatabaseAccount extends
          */
         interface WithConsistencyPolicy {
             /**
-             * The consistency policy for the DocumentDB account.
-             * @param defaultConsistencyLevel the default consistency level
+             * The eventual consistency policy for the DocumentDB account.
+             * @return the next stage of the definition
+             */
+            WithCreate withEventualConsistencyPolicy();
+
+            /**
+             * The session consistency policy for the DocumentDB account.
+             * @return the next stage of the definition
+             */
+            WithCreate withSessionConsistencyPolicy();
+
+            /**
+             * The bounded staleness consistency policy for the DocumentDB account.
              * @param maxStalenessPrefix the max staleness prefix
              * @param maxIntervalInSeconds the max interval in seconds
              * @return the next stage of the definition
              */
-            WithCreate withConsistencyPolicy(DefaultConsistencyLevel defaultConsistencyLevel, int maxStalenessPrefix, int maxIntervalInSeconds);
+            WithCreate withBoundedStalenessConsistencyPolicy(int maxStalenessPrefix, int maxIntervalInSeconds);
+
+            /**
+             * The strong consistency policy for the DocumentDB account.
+             * @return the next stage of the definition
+             */
+            WithCreate withStrongConsistencyPolicy();
         }
 
         /**
@@ -180,15 +203,27 @@ public interface DatabaseAccount extends
         }
 
         /**
-         * The stage of the document db definition allowing the definition of a location.
+         * The stage of the document db definition allowing the definition of a read location.
          */
-        interface DefineLocations {
+        interface WithReadLocation {
             /**
              * A georeplication location for the DocumentDB account.
              * @param region the region for the location
              * @return the next stage
              */
-            DBLocation.DefinitionStages.Blank<WithCreate> defineLocation(Region region);
+            WithCreate withReadableFailover(Region region);
+        }
+
+        /**
+         * The stage of the document db definition allowing the definition of a write location.
+         */
+        interface WithWriteLocations {
+            /**
+             * A georeplication location for the DocumentDB account.
+             * @param region the region for the location
+             * @return the next stage
+             */
+            WithCreate withWritableFailover(Region region);
         }
 
         /**
@@ -199,7 +234,7 @@ public interface DatabaseAccount extends
         interface WithCreate extends
             Creatable<DatabaseAccount>,
             WithConsistencyPolicy,
-            DefineLocations,
+                WithWriteLocations,
             WithIpRangeFilter {
         }
     }
@@ -211,7 +246,6 @@ public interface DatabaseAccount extends
         Resource.UpdateWithTags<Update>,
         Appliable<DatabaseAccount>,
         UpdateStages.WithConsistencyPolicy,
-        UpdateStages.DefineLocations,
         UpdateStages.WithIpRangeFilter {
     }
 
@@ -225,24 +259,29 @@ public interface DatabaseAccount extends
         interface WithConsistencyPolicy {
             /**
              * The consistency policy for the DocumentDB account.
-             * @param defaultConsistencyLevel the default consistency level
+             * @return the next stage of the definition
+             */
+            Update withEventualConsistencyPolicy();
+
+            /**
+             * The consistency policy for the DocumentDB account.
+             * @return the next stage of the definition
+             */
+            Update withSessionConsistencyPolicy();
+
+            /**
+             * The consistency policy for the DocumentDB account.
              * @param maxStalenessPrefix the max staleness prefix
              * @param maxIntervalInSeconds the max interval in seconds
              * @return the next stage of the definition
              */
-            Update withConsistencyPolicy(DefaultConsistencyLevel defaultConsistencyLevel, int maxStalenessPrefix, int maxIntervalInSeconds);
-        }
+            Update withBoundedStalenessConsistencyPolicy(int maxStalenessPrefix, int maxIntervalInSeconds);
 
-        /**
-         * The stage of the document db update allowing the definition of a location.
-         */
-        interface DefineLocations {
             /**
-             * Remove a georeplication location from the DocumentDB account.
-             * @param region the region for the location
-             * @return the next stage
+             * The consistency policy for the DocumentDB account.
+             * @return the next stage of the definition
              */
-            Update removeLocation(Region region);
+            Update withStrongConsistencyPolicy();
         }
 
         /**

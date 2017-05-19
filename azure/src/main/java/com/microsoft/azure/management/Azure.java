@@ -13,6 +13,7 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.appservice.WebApps;
 import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 import com.microsoft.azure.management.batch.BatchAccounts;
@@ -21,19 +22,27 @@ import com.microsoft.azure.management.cdn.CdnProfiles;
 import com.microsoft.azure.management.cdn.implementation.CdnManager;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.ComputeUsages;
+import com.microsoft.azure.management.compute.ContainerServices;
 import com.microsoft.azure.management.compute.Disks;
 import com.microsoft.azure.management.compute.Snapshots;
 import com.microsoft.azure.management.compute.VirtualMachineCustomImages;
 import com.microsoft.azure.management.compute.VirtualMachineImages;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSets;
 import com.microsoft.azure.management.compute.VirtualMachines;
-import com.microsoft.azure.management.compute.ContainerServices;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
+import com.microsoft.azure.management.containerregistry.Registries;
 import com.microsoft.azure.management.containerregistry.implementation.ContainerRegistryManager;
 import com.microsoft.azure.management.dns.DnsZones;
 import com.microsoft.azure.management.dns.implementation.DnsZoneManager;
 import com.microsoft.azure.management.documentdb.DatabaseAccounts;
 import com.microsoft.azure.management.documentdb.implementation.DocumentDBManager;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroups;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryUsers;
+import com.microsoft.azure.management.graphrbac.Applications;
+import com.microsoft.azure.management.graphrbac.RoleAssignments;
+import com.microsoft.azure.management.graphrbac.RoleDefinitions;
+import com.microsoft.azure.management.graphrbac.ServicePrincipals;
+import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.keyvault.Vaults;
 import com.microsoft.azure.management.keyvault.implementation.KeyVaultManager;
 import com.microsoft.azure.management.network.ApplicationGateways;
@@ -71,7 +80,6 @@ import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfiles;
 import com.microsoft.azure.management.trafficmanager.implementation.TrafficManager;
-import com.microsoft.azure.management.containerregistry.Registries;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 
@@ -234,6 +242,54 @@ public final class Azure {
         Tenants tenants();
 
         /**
+         * Entry point to AD user management APIs.
+         *
+         * @return ActiveDirectoryUsers interface providing access to tenant management
+         */
+        @Beta(SinceVersion.V1_1_0)
+        ActiveDirectoryUsers activeDirectoryUsers();
+
+        /**
+         * Entry point to AD group management APIs.
+         *
+         * @return ActiveDirectoryGroups interface providing access to tenant management
+         */
+        @Beta(SinceVersion.V1_1_0)
+        ActiveDirectoryGroups activeDirectoryGroups();
+
+        /**
+         * Entry point to AD service principal management APIs.
+         *
+         * @return ServicePrincipals interface providing access to tenant management
+         */
+        @Beta(SinceVersion.V1_1_0)
+        ServicePrincipals servicePrincipals();
+
+        /**
+         * Entry point to AD application management APIs.
+         *
+         * @return Applications interface providing access to tenant management
+         */
+        @Beta(SinceVersion.V1_1_0)
+        Applications applications();
+
+        /**
+         * Entry point to role definition management APIs.
+         *
+         * @return RoleDefinitions interface providing access to tenant management
+         */
+        @Beta(SinceVersion.V1_1_0)
+        RoleDefinitions roleDefinitions();
+
+        /**
+         * Entry point to role assignment management APIs.
+         *
+         * @return RoleAssignments interface providing access to tenant management
+         */
+        @Beta(SinceVersion.V1_1_0)
+        RoleAssignments roleAssignments();
+
+        /**
          * Selects a specific subscription for the APIs to work with.
          * <p>
          * Most Azure APIs require a specific subscription to be selected.
@@ -261,11 +317,13 @@ public final class Azure {
     private static final class AuthenticatedImpl implements Authenticated {
         private final RestClient restClient;
         private final ResourceManager.Authenticated resourceManagerAuthenticated;
+        private final GraphRbacManager graphRbacManager;
         private String defaultSubscription;
         private String tenantId;
 
         private AuthenticatedImpl(RestClient restClient, String tenantId) {
             this.resourceManagerAuthenticated = ResourceManager.authenticate(restClient);
+            this.graphRbacManager = GraphRbacManager.authenticate(restClient, tenantId);
             this.restClient = restClient;
             this.tenantId = tenantId;
         }
@@ -283,6 +341,36 @@ public final class Azure {
         @Override
         public Tenants tenants() {
             return resourceManagerAuthenticated.tenants();
+        }
+
+        @Override
+        public ActiveDirectoryUsers activeDirectoryUsers() {
+            return graphRbacManager.users();
+        }
+
+        @Override
+        public ActiveDirectoryGroups activeDirectoryGroups() {
+            return graphRbacManager.groups();
+        }
+
+        @Override
+        public ServicePrincipals servicePrincipals() {
+            return graphRbacManager.servicePrincipals();
+        }
+
+        @Override
+        public Applications applications() {
+            return graphRbacManager.applications();
+        }
+
+        @Override
+        public RoleDefinitions roleDefinitions() {
+            return graphRbacManager.roleDefinitions();
+        }
+
+        @Override
+        public RoleAssignments roleAssignments() {
+            return graphRbacManager.roleAssignments();
         }
 
         @Override
@@ -592,6 +680,7 @@ public final class Azure {
     /**
      * @return entry point to managing Service Bus.
      */
+    @Beta
     public ServiceBusNamespaces serviceBusNamespaces() {
         return serviceBusManager.namespaces();
     }
@@ -599,7 +688,7 @@ public final class Azure {
     /**
      * @return entry point to managing Container Services.
      */
-    @Beta
+    @Beta(SinceVersion.V1_1_0)
     public ContainerServices containerServices() {
         return computeManager.containerServices();
     }
@@ -607,7 +696,7 @@ public final class Azure {
     /**
      * @return entry point to managing Container Registries.
      */
-    @Beta
+    @Beta(SinceVersion.V1_1_0)
     public Registries containerRegistries() {
         return containerRegistryManager.containerRegistries();
     }
@@ -615,7 +704,7 @@ public final class Azure {
     /**
      * @return entry point to managing Container Regsitries.
      */
-    @Beta
+    @Beta(SinceVersion.V1_1_0)
     public DatabaseAccounts documentDBs() {
         return documentDBManager.databaseAccounts();
     }
