@@ -21,3 +21,4 @@ hs_err_pid*
 # ide
 .idea
 *.iml
+.DS_Store

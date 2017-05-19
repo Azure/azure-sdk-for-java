@@ -114,8 +114,10 @@ public final class ServiceResponseBuilder<T, E extends RestException> implements
             return new ServiceResponse<>(null, response);
         } else {
             try {
-                String responseContent = responseBody.string();
-                responseBody = ResponseBody.create(responseBody.contentType(), responseContent);
+                String responseContent = "";
+                if (responseBody != null) {
+                    responseContent = responseBody.source().buffer().clone().readUtf8();
+                }
                 throw exceptionType.getConstructor(String.class, Response.class, (Class<?>) responseTypes.get(0))
                         .newInstance("Status code " + statusCode + ", " + responseContent, response, buildBody(statusCode, responseBody));
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
@@ -207,8 +209,7 @@ public final class ServiceResponseBuilder<T, E extends RestException> implements
         }
         // Deserialize
         else {
-            String responseContent = responseBody.string();
-            responseBody.close();
+            String responseContent = responseBody.source().buffer().clone().readUtf8();
             if (responseContent.length() <= 0) {
                 return null;
             }

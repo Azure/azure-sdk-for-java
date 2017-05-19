@@ -129,7 +129,7 @@ public class LoggingInterceptor implements Interceptor {
         // log headers
         if (logLevel == LogLevel.HEADERS || logLevel == LogLevel.BODY_AND_HEADERS) {
             for (String header : response.headers().names()) {
-                log(logger, String.format("%s: %s", header, Joiner.on(", ").join(request.headers(header))));
+                log(logger, String.format("%s: %s", header, Joiner.on(", ").join(response.headers(header))));
             }
         }
 
