@@ -241,12 +241,12 @@ class VirtualMachineImpl
 
     @Override
     public Completable restartAsync() {
-        return null;
+        return this.manager().inner().virtualMachines().restartAsync(this.resourceGroupName(), this.name()).toCompletable();
     }
 
     @Override
     public ServiceFuture<Void> restartAsync(ServiceCallback<Void> callback) {
-        return null;
+        return ServiceFuture.fromBody(this.restartAsync().<Void>toObservable(), callback);
     }
 
     @Override
