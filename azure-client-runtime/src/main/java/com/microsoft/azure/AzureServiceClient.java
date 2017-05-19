@@ -14,8 +14,8 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
-import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.util.Enumeration;
 
 /**
  * ServiceClient is the abstraction for accessing REST operations and their payload data types.
@@ -67,11 +67,20 @@ public abstract class AzureServiceClient extends ServiceClient {
 
     static {
         OS = System.getProperty("os.name") + "/" + System.getProperty("os.version");
-        String macAddress;
+        String macAddress = "Unknown";
         try {
-            macAddress = Hashing.sha256().hashBytes(NetworkInterface.getByInetAddress(InetAddress.getLocalHost()).getHardwareAddress()).toString();
-        } catch (Exception e) {
-            macAddress = "Unknown";
+            Enumeration<NetworkInterface> networks = NetworkInterface.getNetworkInterfaces();
+            while (networks.hasMoreElements()) {
+                NetworkInterface network = networks.nextElement();
+                byte[] mac = network.getHardwareAddress();
+
+                if (mac != null) {
+                    macAddress = Hashing.sha256().hashBytes(mac).toString();
+                    break;
+                }
+            }
+        } catch (Throwable t) {
+            // It's okay ignore mac address hash telemetry
         }
         MAC_ADDRESS_HASH = macAddress;
     }
