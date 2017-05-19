@@ -14,7 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
 /**
- * Client-side representation of the configuration of flow log, associated with network watcher and an Azure resource
+ * Client-side representation of the configuration of flow log, associated with network watcher and an Azure resource.
  */
 @Fluent
 @Beta
