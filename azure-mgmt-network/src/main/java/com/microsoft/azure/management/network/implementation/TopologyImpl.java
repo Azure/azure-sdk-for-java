@@ -91,5 +91,6 @@ class TopologyImpl extends RefreshableWrapperImpl<TopologyInner, Topology>
     @Override
     protected Observable<TopologyInner> getInnerAsync() {
         return this.parent().manager().inner().networkWatchers()
-                .getTopologyAsync(parent().resourceGroupName(), parent().name(), groupName);}
+                .getTopologyAsync(parent().resourceGroupName(), parent().name(), groupName);
+    }
 }
