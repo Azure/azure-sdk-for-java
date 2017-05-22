@@ -49,6 +49,14 @@ public interface NetworkWatcher extends
     FlowLogInformation flowLogStatus(String nsgId);
 
     /**
+     * Initiate troubleshooting on a specified resource.
+     * @param targetResourceId the target resource to troubleshoot
+     * @param storageId the ID for the storage account to save the troubleshoot result
+     * @param storagePath the path to the blob to save the troubleshoot result in
+     */
+    Troubleshooting troubleshoot(String targetResourceId, String storageId, String storagePath);
+
+    /**
      * Container interface for all the definitions.
      */
     interface Definition extends

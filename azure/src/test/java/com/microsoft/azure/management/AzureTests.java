@@ -550,6 +550,9 @@ public class AzureTests extends TestBase {
         StorageAccount storageAccount = tnw.ensureStorageAccount(azure.storageAccounts());
         flowLogInformation.update().withEnabled(true).withStorageAccount(storageAccount.id()).apply();
 
+//        Troubleshooting troubleshooting = nw.troubleshoot(<virtual_network_gateway_id> or <virtual_network_gateway_connaction_id>,
+//                storageAccount.id(), "");
+
         azure.virtualMachines().deleteById(virtualMachines[1].id());
         topology.refresh();
         Assert.assertEquals(9, topology.resources().size());
