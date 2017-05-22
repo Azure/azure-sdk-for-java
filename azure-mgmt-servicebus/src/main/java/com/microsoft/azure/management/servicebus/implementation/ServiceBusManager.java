@@ -9,11 +9,13 @@ package com.microsoft.azure.management.servicebus.implementation;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
 import com.microsoft.azure.management.servicebus.ServiceBusNamespaces;
+import com.microsoft.azure.management.servicebus.ServiceBusOperations;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 
@@ -23,6 +25,7 @@ import com.microsoft.rest.RestClient;
 public final class ServiceBusManager extends Manager<ServiceBusManager, ServiceBusManagementClientImpl> {
     // Collections
     private ServiceBusNamespacesImpl namespaces;
+    private ServiceBusOperationsImpl operations;
     /**
      * Get a Configurable instance that can be used to create {@link ServiceBusManager}
      * with optional configuration.
@@ -101,5 +104,16 @@ public final class ServiceBusManager extends Manager<ServiceBusManager, ServiceB
             namespaces = new ServiceBusNamespacesImpl(this.inner().namespaces(), this);
         }
         return namespaces;
+    }
+
+    /**
+     * @return the Service Bus operations management API entry point
+     */
+    @Beta(Beta.SinceVersion.V1_1_0)
+    public ServiceBusOperations operations() {
+        if (operations == null) {
+            operations = new ServiceBusOperationsImpl(this.inner().operations(), this);
+        }
+        return operations;
     }
 }

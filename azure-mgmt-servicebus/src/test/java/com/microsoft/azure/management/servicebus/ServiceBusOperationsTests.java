@@ -514,4 +514,15 @@ public class ServiceBusOperationsTests extends TestBase {
         subscriptionsInTopic = topic.subscriptions().list();
         Assert.assertTrue(subscriptionsInTopic.size() == 0);
     }
+
+    @Test
+    public void canListServiceBusOperations() {
+        RG_NAME = null;
+        PagedList<ServiceBusOperation> operations = serviceBusManager.operations()
+                .list();
+        Assert.assertTrue(operations.size() > 0);
+        for (ServiceBusOperation op : operations) {
+            Assert.assertNotNull(op.name());
+        }
+    }
 }
