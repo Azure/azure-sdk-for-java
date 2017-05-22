@@ -74,17 +74,6 @@ public interface DatabaseAccount extends
     List<Location> readableReplications();
 
     /**
-     * @param failoverPolicies the failover policies
-     */
-    void failoverPriorityChange(List<Location> failoverPolicies);
-
-    /**
-     * @param failoverPolicies the failover policies
-     * @return the ServiceResponse object if successful.
-     */
-    Observable<Void> failoverPriorityChangeAsync(List<Location> failoverPolicies);
-
-    /**
      * @return the access keys for the specified Azure DocumentDB database account
      */
     DatabaseAccountListKeysResultInner listKeys();
@@ -243,16 +232,49 @@ public interface DatabaseAccount extends
      * Grouping of document db update stages.
      */
     interface Update extends
-        Resource.UpdateWithTags<Update>,
-        Appliable<DatabaseAccount>,
-        UpdateStages.WithConsistencyPolicy,
-        UpdateStages.WithIpRangeFilter {
+        UpdateStages.WithReadLocation,
+        UpdateStages.WithWriteLocations,
+        UpdateStages.WithOptionals {
     }
 
     /**
      * Grouping of document db update stages.
      */
     interface UpdateStages {
+        /**
+         * Grouping of document db update stages.
+         */
+        interface WithOptionals extends
+            Resource.UpdateWithTags<WithOptionals>,
+            Appliable<DatabaseAccount>,
+            UpdateStages.WithConsistencyPolicy,
+            UpdateStages.WithIpRangeFilter {
+        }
+
+        /**
+         * The stage of the document db definition allowing the definition of a read location.
+         */
+        interface WithReadLocation {
+            /**
+             * A georeplication location for the DocumentDB account.
+             * @param region the region for the location
+             * @return the next stage
+             */
+            WithWriteLocations withReadableFailover(Region region);
+        }
+
+        /**
+         * The stage of the document db definition allowing the definition of a write location.
+         */
+        interface WithWriteLocations extends WithOptionals {
+            /**
+             * A georeplication location for the DocumentDB account.
+             * @param region the region for the location
+             * @return the next stage
+             */
+            WithWriteLocations withWritableFailover(Region region);
+        }
+
         /**
          * The stage of the document db update allowing to set the consistency policy.
          */
@@ -261,13 +283,13 @@ public interface DatabaseAccount extends
              * The consistency policy for the DocumentDB account.
              * @return the next stage of the definition
              */
-            Update withEventualConsistencyPolicy();
+            WithOptionals withEventualConsistencyPolicy();
 
             /**
              * The consistency policy for the DocumentDB account.
              * @return the next stage of the definition
              */
-            Update withSessionConsistencyPolicy();
+            WithOptionals withSessionConsistencyPolicy();
 
             /**
              * The consistency policy for the DocumentDB account.
@@ -275,13 +297,13 @@ public interface DatabaseAccount extends
              * @param maxIntervalInSeconds the max interval in seconds
              * @return the next stage of the definition
              */
-            Update withBoundedStalenessConsistencyPolicy(int maxStalenessPrefix, int maxIntervalInSeconds);
+            WithOptionals withBoundedStalenessConsistencyPolicy(int maxStalenessPrefix, int maxIntervalInSeconds);
 
             /**
              * The consistency policy for the DocumentDB account.
              * @return the next stage of the definition
              */
-            Update withStrongConsistencyPolicy();
+            WithOptionals withStrongConsistencyPolicy();
         }
 
         /**
@@ -295,7 +317,7 @@ public interface DatabaseAccount extends
              * @param ipRangeFilter specifies the set of IP addresses or IP address ranges
              * @return the next stage of the definition
              */
-            Update withIpRangeFilter(String ipRangeFilter);
+            WithOptionals withIpRangeFilter(String ipRangeFilter);
         }
     }
 }

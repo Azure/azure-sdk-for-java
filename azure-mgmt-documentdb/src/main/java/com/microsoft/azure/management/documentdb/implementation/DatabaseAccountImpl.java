@@ -36,6 +36,7 @@ class DatabaseAccountImpl
         DatabaseAccount.Definition,
         DatabaseAccount.Update {
     private List<FailoverPolicyInner> failoverPolicies;
+    private boolean hasFailoverPolicyChanges;
 
     DatabaseAccountImpl(String name, DatabaseAccountInner innerObject, DocumentDBManager manager) {
         super(fixDBName(name), innerObject, manager);
@@ -93,26 +94,6 @@ class DatabaseAccountImpl
     }
 
     @Override
-    public void failoverPriorityChange(List<Location> failoverPolicies) {
-        this.failoverPriorityChangeAsync(failoverPolicies).toBlocking().last();
-    }
-
-    @Override
-    public Observable<Void> failoverPriorityChangeAsync(List<Location> failoverPolicies) {
-        List<FailoverPolicyInner> policyInners = new ArrayList<FailoverPolicyInner>();
-        for (int i = 0; i < failoverPolicies.size(); i++) {
-            Location location  = failoverPolicies.get(i);
-            FailoverPolicyInner policyInner = new FailoverPolicyInner();
-            policyInner.withLocationName(location.locationName());
-            policyInner.withFailoverPriority(i);
-            policyInners.add(policyInner);
-        }
-
-        return this.manager().inner().databaseAccounts().failoverPriorityChangeAsync(this.resourceGroupName(),
-                this.name(), policyInners);
-    }
-
-    @Override
     public DatabaseAccountListKeysResultInner listKeys() {
         return this.listKeysAsync().toBlocking().last();
     }
@@ -164,51 +145,11 @@ class DatabaseAccountImpl
     }
 
     @Override
-    public Observable<DatabaseAccount> createResourceAsync() {
-        final DatabaseAccountImpl self = this;
-        DatabaseAccountCreateUpdateParametersInner createUpdateParametersInner =
-                this.createUpdateParametersInner(this.inner());
-        return this.manager().inner().databaseAccounts().createOrUpdateAsync(
-                resourceGroupName(),
-                name(),
-                createUpdateParametersInner)
-                .flatMap(new Func1<DatabaseAccountInner, Observable<? extends DatabaseAccount>>() {
-                    @Override
-                    public Observable<? extends DatabaseAccount> call(DatabaseAccountInner databaseAccountInner) {
-                        return manager().databaseAccounts().getByResourceGroupAsync(
-                                resourceGroupName(),
-                                name());
-                    }
-                });
-    }
-
-    private DatabaseAccountCreateUpdateParametersInner createUpdateParametersInner(DatabaseAccountInner inner) {
-        DatabaseAccountCreateUpdateParametersInner createUpdateParametersInner =
-                new DatabaseAccountCreateUpdateParametersInner();
-        createUpdateParametersInner.withLocation(this.regionName().toLowerCase());
-        createUpdateParametersInner.withConsistencyPolicy(inner.consistencyPolicy());
-        createUpdateParametersInner.withDatabaseAccountOfferType(
-                DatabaseAccountOfferType.STANDARD.toString());
-        createUpdateParametersInner.withIpRangeFilter(inner.ipRangeFilter());
-        createUpdateParametersInner.withKind(inner.kind());
-        createUpdateParametersInner.withTags(inner.getTags());
-        if (this.isInCreateMode()) {
-            this.addLocationsForCreateUpdateParameters(createUpdateParametersInner, this.failoverPolicies);
-        } else {
-            this.addLocationsForCreateUpdateParameters(createUpdateParametersInner, this.inner().failoverPolicies());
-        }
-
-        return createUpdateParametersInner;
-    }
-
-    private static String fixDBName(String name) {
-        return name.toLowerCase();
-    }
-
-    @Override
     public DatabaseAccountImpl withReadableFailover(Region region) {
         FailoverPolicyInner failoverPolicyInner = new FailoverPolicyInner();
         failoverPolicyInner.withLocationName(region.name());
+        this.hasFailoverPolicyChanges = true;
+        this.failoverPolicies.clear();
         this.failoverPolicies.add(0, failoverPolicyInner);
         return this;
     }
@@ -247,6 +188,45 @@ class DatabaseAccountImpl
         return this;
     }
 
+
+    @Override
+    public Observable<DatabaseAccount> createResourceAsync() {
+        if(this.isInCreateMode() || !this.hasFailoverPolicyChanges) {
+            return this.doDatabaseUpdateCreate();
+        }else {
+            return this.updateFailoverPriorityAsync()
+                .flatMap(new Func1<DatabaseAccount, Observable<DatabaseAccount>>() {
+                    @Override
+                    public Observable<DatabaseAccount> call(DatabaseAccount databaseAccount) {
+                        return DatabaseAccountImpl.this.doDatabaseUpdateCreate();
+                    }
+                });
+        }
+    }
+
+    private DatabaseAccountCreateUpdateParametersInner createUpdateParametersInner(DatabaseAccountInner inner) {
+        DatabaseAccountCreateUpdateParametersInner createUpdateParametersInner =
+                new DatabaseAccountCreateUpdateParametersInner();
+        createUpdateParametersInner.withLocation(this.regionName().toLowerCase());
+        createUpdateParametersInner.withConsistencyPolicy(inner.consistencyPolicy());
+        createUpdateParametersInner.withDatabaseAccountOfferType(
+                DatabaseAccountOfferType.STANDARD.toString());
+        createUpdateParametersInner.withIpRangeFilter(inner.ipRangeFilter());
+        createUpdateParametersInner.withKind(inner.kind());
+        createUpdateParametersInner.withTags(inner.getTags());
+        if (this.isInCreateMode()) {
+            this.addLocationsForCreateUpdateParameters(createUpdateParametersInner, this.failoverPolicies);
+        } else {
+            this.addLocationsForCreateUpdateParameters(createUpdateParametersInner, this.inner().failoverPolicies());
+        }
+
+        return createUpdateParametersInner;
+    }
+
+    private static String fixDBName(String name) {
+        return name.toLowerCase();
+    }
+
     private void setConsistencyPolicy(
             DefaultConsistencyLevel level,
             int maxIntervalInSeconds,
@@ -276,5 +256,36 @@ class DatabaseAccountImpl
         if (locations.size() > 0) {
             createUpdateParametersInner.withLocations(locations);
         }
+    }
+
+    private Observable<DatabaseAccount> updateFailoverPriorityAsync() {
+        final DatabaseAccountImpl self = this;
+        return this.manager().inner().databaseAccounts().failoverPriorityChangeAsync(this.resourceGroupName(),
+                this.name(), this.failoverPolicies).map(new Func1<Void, DatabaseAccount>() {
+            @Override
+            public DatabaseAccount call(Void voidInner) {
+                self.inner().failoverPolicies().clear();
+                self.inner().failoverPolicies().addAll(self.failoverPolicies);
+                return self;
+            }
+        });
+    }
+
+    private Observable<DatabaseAccount> doDatabaseUpdateCreate() {
+        final DatabaseAccountImpl self = this;
+        DatabaseAccountCreateUpdateParametersInner createUpdateParametersInner =
+                this.createUpdateParametersInner(this.inner());
+        return this.manager().inner().databaseAccounts().createOrUpdateAsync(
+                resourceGroupName(),
+                name(),
+                createUpdateParametersInner)
+                .flatMap(new Func1<DatabaseAccountInner, Observable<? extends DatabaseAccount>>() {
+                    @Override
+                    public Observable<? extends DatabaseAccount> call(DatabaseAccountInner databaseAccountInner) {
+                        return manager().databaseAccounts().getByResourceGroupAsync(
+                                resourceGroupName(),
+                                name());
+                    }
+                });
     }
 }
