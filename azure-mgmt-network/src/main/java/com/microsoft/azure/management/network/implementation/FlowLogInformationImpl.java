@@ -8,7 +8,7 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.FlowLogInformation;
 import com.microsoft.azure.management.network.NetworkWatcher;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Observable;
@@ -18,20 +18,16 @@ import rx.functions.Func1;
  * Implementation for {@link FlowLogInformation} and its create and update interfaces.
  */
 @LangDefinition
-class FlowLogInformationImpl extends ChildResourceImpl<FlowLogInformationInner,
-        NetworkWatcherImpl,
-        NetworkWatcher>
+class FlowLogInformationImpl extends RefreshableWrapperImpl<FlowLogInformationInner,
+        FlowLogInformation>
         implements
         FlowLogInformation,
         FlowLogInformation.Update {
+    private final NetworkWatcherImpl parent;
 
     FlowLogInformationImpl(NetworkWatcherImpl parent, FlowLogInformationInner inner) {
-        super(inner, parent);
-    }
-
-    @Override
-    public String name() {
-        return null;
+        super(inner);
+        this.parent = parent;
     }
 
     @Override
@@ -46,7 +42,7 @@ class FlowLogInformationImpl extends ChildResourceImpl<FlowLogInformationInner,
                 .map(new Func1<FlowLogInformationInner, FlowLogInformation>() {
             @Override
             public FlowLogInformation call(FlowLogInformationInner flowLogInformationInner) {
-                return new FlowLogInformationImpl(FlowLogInformationImpl.this.parent(), flowLogInformationInner);
+                return new FlowLogInformationImpl(FlowLogInformationImpl.this.parent, flowLogInformationInner);
             }
         });
     }
@@ -71,5 +67,21 @@ class FlowLogInformationImpl extends ChildResourceImpl<FlowLogInformationInner,
     @Override
     public Update update() {
         return this;
+    }
+
+    @Override
+    protected Observable<FlowLogInformationInner> getInnerAsync() {
+        return this.parent().manager().inner().networkWatchers()
+                .getFlowLogStatusAsync(parent().resourceGroupName(), parent().name(), inner().targetResourceId());
+    }
+
+    @Override
+    public NetworkWatcher parent() {
+        return parent;
+    }
+
+    @Override
+    public String key() {
+        return null;
     }
 }

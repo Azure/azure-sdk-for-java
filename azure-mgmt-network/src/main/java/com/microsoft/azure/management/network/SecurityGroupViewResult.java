@@ -8,7 +8,9 @@ package com.microsoft.azure.management.network;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.SecurityGroupViewResultInner;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 
 import java.util.Map;
 
@@ -17,7 +19,9 @@ import java.util.Map;
  */
 @Fluent
 @Beta
-public interface SecurityGroupViewResult extends HasInner<SecurityGroupViewResultInner> {
+public interface SecurityGroupViewResult extends HasInner<SecurityGroupViewResultInner>,
+        HasParent<NetworkWatcher>,
+        Refreshable<SecurityGroupViewResult> {
     /**
      * @return network interfaces on the specified VM
      */

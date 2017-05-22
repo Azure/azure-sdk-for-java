@@ -11,6 +11,7 @@ import com.microsoft.azure.management.network.implementation.FlowLogInformationI
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
 /**
@@ -21,7 +22,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 public interface FlowLogInformation extends
         HasParent<NetworkWatcher>,
         HasInner<FlowLogInformationInner>,
-        Updatable<FlowLogInformation.Update> {
+        Updatable<FlowLogInformation.Update>,
+        Refreshable<FlowLogInformation> {
     /**
      * Grouping of flow log information update stages.
      */

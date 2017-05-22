@@ -540,7 +540,7 @@ public class AzureTests extends TestBase {
         Assert.assertEquals(10, topology.resources().size());
         Assert.assertTrue(topology.resources().containsKey("subnet1"));
         Assert.assertEquals(4, topology.resources().get(virtualMachines[0].getPrimaryNetworkInterface().name()).associations().size());
-//        Assert.assertEquals(0, topology.resources().get("subnet2").associations().size());
+        Assert.assertEquals(0, topology.resources().get("subnet2").associations().size());
 
         SecurityGroupViewResult sgViewResult = nw.securityGroupViewResult(virtualMachines[0].id());
         Assert.assertEquals(1, sgViewResult.networkInterfaces().size());
@@ -549,6 +549,10 @@ public class AzureTests extends TestBase {
         FlowLogInformation flowLogInformation = nw.flowLogStatus(virtualMachines[0].getPrimaryNetworkInterface().networkSecurityGroupId());
         StorageAccount storageAccount = tnw.ensureStorageAccount(azure.storageAccounts());
         flowLogInformation.update().withEnabled(true).withStorageAccount(storageAccount.id()).apply();
+
+        azure.virtualMachines().deleteById(virtualMachines[1].id());
+        topology.refresh();
+        Assert.assertEquals(9, topology.resources().size());
 
         azure.resourceGroups().beginDeleteByName(nw.resourceGroupName());
         azure.resourceGroups().beginDeleteByName(tnw.groupName());

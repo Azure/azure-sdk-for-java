@@ -39,14 +39,14 @@ class NetworkWatcherImpl
     public TopologyImpl topology(String targetResourceGroup) {
         TopologyInner topologyInner = this.manager().inner().networkWatchers()
                 .getTopology(this.resourceGroupName(), this.name(), targetResourceGroup);
-        return new TopologyImpl(topologyInner);
+        return new TopologyImpl(this, topologyInner, targetResourceGroup);
     }
 
     @Override
     public SecurityGroupViewResult securityGroupViewResult(String vmId) {
         SecurityGroupViewResultInner securityGroupViewResultInner = this.manager().inner().networkWatchers()
                 .getVMSecurityRules(this.resourceGroupName(), this.name(), vmId);
-        return new SecurityGroupViewResultImpl(securityGroupViewResultInner);
+        return new SecurityGroupViewResultImpl(this, securityGroupViewResultInner, vmId);
     }
 
     public FlowLogInformation flowLogStatus(String nsgId) {
