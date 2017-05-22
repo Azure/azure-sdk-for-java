@@ -9,6 +9,8 @@ import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.azure.management.servicebus.implementation.OperationsInner;
 import com.microsoft.azure.management.servicebus.implementation.ServiceBusManager;
 
 /**
@@ -16,5 +18,8 @@ import com.microsoft.azure.management.servicebus.implementation.ServiceBusManage
  */
 @Fluent
 @Beta(Beta.SinceVersion.V1_1_0)
-public interface ServiceBusOperations extends SupportsListing<ServiceBusOperation>, HasManager<ServiceBusManager> {
+public interface ServiceBusOperations extends
+    SupportsListing<ServiceBusOperation>,
+    HasManager<ServiceBusManager>,
+    HasInner<OperationsInner> {
 }

@@ -27,6 +27,11 @@ class ServiceBusOperationsImpl extends ReadableWrappersImpl<ServiceBusOperation,
     }
 
     @Override
+    public OperationsInner inner() {
+        return this.client;
+    }
+
+    @Override
     public PagedList<ServiceBusOperation> list() {
         return wrapList(this.client.list());
     }
