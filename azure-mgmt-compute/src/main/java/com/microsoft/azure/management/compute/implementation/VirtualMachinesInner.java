@@ -577,6 +577,28 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Response<ResponseBody>> beginDeleteWithResponse(String resourceGroupName, String vmName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (vmName == null) {
+            throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-04-30-preview";
+        return service.beginDelete(resourceGroupName, vmName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+    }
+
+    /**
+     * The operation to delete a virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.

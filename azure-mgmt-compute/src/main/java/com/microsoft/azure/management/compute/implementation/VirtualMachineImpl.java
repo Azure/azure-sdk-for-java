@@ -51,6 +51,7 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
+import com.microsoft.azure.management.resources.fluentcore.arm.DeleteOperationMonitor;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -343,6 +344,12 @@ class VirtualMachineImpl
                         return virtualMachineInstanceView;
                     }
                 });
+    }
+
+    @Override
+    public Observable<DeleteOperationMonitor> beginDeleteAsync() {
+        return DeleteOperationMonitor.fromDeleteResponse(this.manager().inner().restClient(),
+                this.manager().inner().virtualMachines().beginDeleteWithResponse(this.resourceGroupName(), this.name()));
     }
 
     // SETTERS
