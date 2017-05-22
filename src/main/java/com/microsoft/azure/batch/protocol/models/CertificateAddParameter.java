@@ -37,7 +37,7 @@ public class CertificateAddParameter {
 
     /**
      * The format of the certificate data.
-     * Possible values include: 'pfx', 'cer', 'unmapped'.
+     * Possible values include: 'pfx', 'cer'.
      */
     @JsonProperty(value = "certificateFormat")
     private CertificateFormat certificateFormat;

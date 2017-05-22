@@ -49,16 +49,20 @@ public class TaskExecutionInformation {
     private Integer exitCode;
 
     /**
-     * Details of any error encountered scheduling the task.
-     * This property is set only if the task is in the completed state.
+     * Information describing the task failure, if any.
+     * This property is set only if the task is in the completed state and
+     * encountered a failure.
      */
-    @JsonProperty(value = "schedulingError")
-    private TaskSchedulingError schedulingError;
+    @JsonProperty(value = "failureInfo")
+    private TaskFailureInformation failureInfo;
 
     /**
      * The number of times the task has been retried by the Batch service.
-     * The task is retried if it exits with a nonzero exit code, up to the
-     * specified maxTaskRetryCount.
+     * The number of times the task has been retried by the Batch service. Task
+     * application failures (non-zero exit code) are retried, pre-processing
+     * errors (the task could not be run) and file upload errors are not
+     * retried. The Batch service will retry the task up to the limit specified
+     * by the constraints.
      */
     @JsonProperty(value = "retryCount", required = true)
     private int retryCount;
@@ -92,6 +96,15 @@ public class TaskExecutionInformation {
      */
     @JsonProperty(value = "lastRequeueTime")
     private DateTime lastRequeueTime;
+
+    /**
+     * The result of the task execution.
+     * If the value is 'failed', then the details of the failure can be found
+     * in the failureInfo property. Possible values include: 'success',
+     * 'failure'.
+     */
+    @JsonProperty(value = "result")
+    private TaskExecutionResult result;
 
     /**
      * Get the startTime value.
@@ -154,22 +167,22 @@ public class TaskExecutionInformation {
     }
 
     /**
-     * Get the schedulingError value.
+     * Get the failureInfo value.
      *
-     * @return the schedulingError value
+     * @return the failureInfo value
      */
-    public TaskSchedulingError schedulingError() {
-        return this.schedulingError;
+    public TaskFailureInformation failureInfo() {
+        return this.failureInfo;
     }
 
     /**
-     * Set the schedulingError value.
+     * Set the failureInfo value.
      *
-     * @param schedulingError the schedulingError value to set
+     * @param failureInfo the failureInfo value to set
      * @return the TaskExecutionInformation object itself.
      */
-    public TaskExecutionInformation withSchedulingError(TaskSchedulingError schedulingError) {
-        this.schedulingError = schedulingError;
+    public TaskExecutionInformation withFailureInfo(TaskFailureInformation failureInfo) {
+        this.failureInfo = failureInfo;
         return this;
     }
 
@@ -250,6 +263,26 @@ public class TaskExecutionInformation {
      */
     public TaskExecutionInformation withLastRequeueTime(DateTime lastRequeueTime) {
         this.lastRequeueTime = lastRequeueTime;
+        return this;
+    }
+
+    /**
+     * Get the result value.
+     *
+     * @return the result value
+     */
+    public TaskExecutionResult result() {
+        return this.result;
+    }
+
+    /**
+     * Set the result value.
+     *
+     * @param result the result value to set
+     * @return the TaskExecutionInformation object itself.
+     */
+    public TaskExecutionInformation withResult(TaskExecutionResult result) {
+        this.result = result;
         return this;
     }
 

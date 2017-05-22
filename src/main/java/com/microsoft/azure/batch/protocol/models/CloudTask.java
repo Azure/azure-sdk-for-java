@@ -117,6 +117,15 @@ public class CloudTask {
     private List<ResourceFile> resourceFiles;
 
     /**
+     * A list of files that the Batch service will upload from the compute node
+     * after running the command line.
+     * For multi-instance tasks, the files will only be uploaded from the
+     * compute node on which the primary task is executed.
+     */
+    @JsonProperty(value = "outputFiles")
+    private List<OutputFile> outputFiles;
+
+    /**
      * A list of environment variable settings for the task.
      */
     @JsonProperty(value = "environmentSettings")
@@ -456,6 +465,26 @@ public class CloudTask {
      */
     public CloudTask withResourceFiles(List<ResourceFile> resourceFiles) {
         this.resourceFiles = resourceFiles;
+        return this;
+    }
+
+    /**
+     * Get the outputFiles value.
+     *
+     * @return the outputFiles value
+     */
+    public List<OutputFile> outputFiles() {
+        return this.outputFiles;
+    }
+
+    /**
+     * Set the outputFiles value.
+     *
+     * @param outputFiles the outputFiles value to set
+     * @return the CloudTask object itself.
+     */
+    public CloudTask withOutputFiles(List<OutputFile> outputFiles) {
+        this.outputFiles = outputFiles;
         return this;
     }
 

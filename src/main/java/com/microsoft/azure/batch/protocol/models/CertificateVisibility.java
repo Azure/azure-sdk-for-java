@@ -22,10 +22,7 @@ public enum CertificateVisibility {
     TASK("task"),
 
     /** Enum value remoteUser. */
-    REMOTE_USER("remoteUser"),
-
-    /** Enum value unmapped. */
-    UNMAPPED("unmapped");
+    REMOTE_USER("remoteUser");
 
     /** The actual serialized value for a CertificateVisibility instance. */
     private String value;

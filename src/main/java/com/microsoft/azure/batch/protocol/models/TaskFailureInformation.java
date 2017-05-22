@@ -12,32 +12,32 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Information about an error when scheduling a task.
+ * Information about a task failure.
  */
-public class TaskSchedulingError {
+public class TaskFailureInformation {
     /**
-     * The category of the task scheduling error.
-     * Possible values include: 'userError', 'serverError', 'unmapped'.
+     * The category of the task error.
+     * Possible values include: 'userError', 'serverError'.
      */
     @JsonProperty(value = "category", required = true)
-    private SchedulingErrorCategory category;
+    private ErrorCategory category;
 
     /**
-     * An identifier for the task scheduling error. Codes are invariant and are
-     * intended to be consumed programmatically.
+     * An identifier for the task error. Codes are invariant and are intended
+     * to be consumed programmatically.
      */
     @JsonProperty(value = "code")
     private String code;
 
     /**
-     * A message describing the task scheduling error, intended to be suitable
-     * for display in a user interface.
+     * A message describing the task error, intended to be suitable for display
+     * in a user interface.
      */
     @JsonProperty(value = "message")
     private String message;
 
     /**
-     * The list of additional error details related to the scheduling error.
+     * A list of additional details related to the error.
      */
     @JsonProperty(value = "details")
     private List<NameValuePair> details;
@@ -47,7 +47,7 @@ public class TaskSchedulingError {
      *
      * @return the category value
      */
-    public SchedulingErrorCategory category() {
+    public ErrorCategory category() {
         return this.category;
     }
 
@@ -55,9 +55,9 @@ public class TaskSchedulingError {
      * Set the category value.
      *
      * @param category the category value to set
-     * @return the TaskSchedulingError object itself.
+     * @return the TaskFailureInformation object itself.
      */
-    public TaskSchedulingError withCategory(SchedulingErrorCategory category) {
+    public TaskFailureInformation withCategory(ErrorCategory category) {
         this.category = category;
         return this;
     }
@@ -75,9 +75,9 @@ public class TaskSchedulingError {
      * Set the code value.
      *
      * @param code the code value to set
-     * @return the TaskSchedulingError object itself.
+     * @return the TaskFailureInformation object itself.
      */
-    public TaskSchedulingError withCode(String code) {
+    public TaskFailureInformation withCode(String code) {
         this.code = code;
         return this;
     }
@@ -95,9 +95,9 @@ public class TaskSchedulingError {
      * Set the message value.
      *
      * @param message the message value to set
-     * @return the TaskSchedulingError object itself.
+     * @return the TaskFailureInformation object itself.
      */
-    public TaskSchedulingError withMessage(String message) {
+    public TaskFailureInformation withMessage(String message) {
         this.message = message;
         return this;
     }
@@ -115,9 +115,9 @@ public class TaskSchedulingError {
      * Set the details value.
      *
      * @param details the details value to set
-     * @return the TaskSchedulingError object itself.
+     * @return the TaskFailureInformation object itself.
      */
-    public TaskSchedulingError withDetails(List<NameValuePair> details) {
+    public TaskFailureInformation withDetails(List<NameValuePair> details) {
         this.details = details;
         return this;
     }

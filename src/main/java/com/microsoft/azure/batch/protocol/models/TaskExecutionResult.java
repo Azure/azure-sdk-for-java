@@ -12,35 +12,32 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for TaskAddStatus.
+ * Defines values for TaskExecutionResult.
  */
-public enum TaskAddStatus {
+public enum TaskExecutionResult {
     /** Enum value success. */
     SUCCESS("success"),
 
-    /** Enum value clientError. */
-    CLIENT_ERROR("clientError"),
+    /** Enum value failure. */
+    FAILURE("failure");
 
-    /** Enum value serverError. */
-    SERVER_ERROR("serverError");
-
-    /** The actual serialized value for a TaskAddStatus instance. */
+    /** The actual serialized value for a TaskExecutionResult instance. */
     private String value;
 
-    TaskAddStatus(String value) {
+    TaskExecutionResult(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a TaskAddStatus instance.
+     * Parses a serialized value to a TaskExecutionResult instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed TaskAddStatus object, or null if unable to parse.
+     * @return the parsed TaskExecutionResult object, or null if unable to parse.
      */
     @JsonCreator
-    public static TaskAddStatus fromString(String value) {
-        TaskAddStatus[] items = TaskAddStatus.values();
-        for (TaskAddStatus item : items) {
+    public static TaskExecutionResult fromString(String value) {
+        TaskExecutionResult[] items = TaskExecutionResult.values();
+        for (TaskExecutionResult item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

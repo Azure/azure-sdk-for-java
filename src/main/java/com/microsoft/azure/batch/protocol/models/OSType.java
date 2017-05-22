@@ -19,10 +19,7 @@ public enum OSType {
     LINUX("linux"),
 
     /** Enum value windows. */
-    WINDOWS("windows"),
-
-    /** Enum value unmapped. */
-    UNMAPPED("unmapped");
+    WINDOWS("windows");
 
     /** The actual serialized value for a OSType instance. */
     private String value;

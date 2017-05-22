@@ -53,8 +53,8 @@ public class CloudPool {
     /**
      * The last modified time of the pool.
      * This is the last time at which the pool level data, such as the
-     * targetDedicated or enableAutoscale settings, changed. It does not factor
-     * in node-level changes such as a compute node changing state.
+     * targetDedicatedNodes or enableAutoscale settings, changed. It does not
+     * factor in node-level changes such as a compute node changing state.
      */
     @JsonProperty(value = "lastModified")
     private DateTime lastModified;
@@ -112,9 +112,9 @@ public class CloudPool {
      * Services pools (pools created with cloudServiceConfiguration), see Sizes
      * for Cloud Services
      * (http://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/).
-     * Batch supports all Cloud Services VM sizes except ExtraSmall. For
-     * information about available VM sizes for pools using images from the
-     * Virtual Machines Marketplace (pools created with
+     * Batch supports all Cloud Services VM sizes except ExtraSmall, A1V2 and
+     * A2V2. For information about available VM sizes for pools using images
+     * from the Virtual Machines Marketplace (pools created with
      * virtualMachineConfiguration) see Sizes for Virtual Machines (Linux)
      * (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/)
      * or Sizes for Virtual Machines (Windows)
@@ -153,32 +153,46 @@ public class CloudPool {
     private Period resizeTimeout;
 
     /**
-     * Details of any error encountered while performing the last resize on the
+     * A list of errors encountered while performing the last resize on the
      * pool.
-     * This property is set only if an error occurred during the last pool
-     * resize, and only when the pool allocationState is Steady.
+     * This property is set only if one or more errors occurred during the last
+     * pool resize, and only when the pool allocationState is Steady.
      */
-    @JsonProperty(value = "resizeError")
-    private ResizeError resizeError;
+    @JsonProperty(value = "resizeErrors")
+    private List<ResizeError> resizeErrors;
 
     /**
-     * The number of compute nodes currently in the pool.
+     * The number of dedicated compute nodes currently in the pool.
      */
-    @JsonProperty(value = "currentDedicated")
-    private Integer currentDedicated;
+    @JsonProperty(value = "currentDedicatedNodes")
+    private Integer currentDedicatedNodes;
 
     /**
-     * The desired number of compute nodes in the pool.
-     * This property is not set if enableAutoScale is true. It is required if
-     * enableAutoScale is false.
+     * The number of low-priority compute nodes currently in the pool.
+     * Low-priority compute nodes which have been preempted are included in
+     * this count.
      */
-    @JsonProperty(value = "targetDedicated")
-    private Integer targetDedicated;
+    @JsonProperty(value = "currentLowPriorityNodes")
+    private Integer currentLowPriorityNodes;
+
+    /**
+     * The desired number of dedicated compute nodes in the pool.
+     */
+    @JsonProperty(value = "targetDedicatedNodes")
+    private Integer targetDedicatedNodes;
+
+    /**
+     * The desired number of low-priority compute nodes in the pool.
+     */
+    @JsonProperty(value = "targetLowPriorityNodes")
+    private Integer targetLowPriorityNodes;
 
     /**
      * Whether the pool size should automatically adjust over time.
-     * If true, the autoScaleFormula property must be set. If false, the
-     * targetDedicated property must be set.
+     * If false, at least one of targetDedicateNodes and targetLowPriorityNodes
+     * must be specified. If true, the autoScaleFormula property is required
+     * and the pool automatically resizes according to the formula. The default
+     * value is false.
      */
     @JsonProperty(value = "enableAutoScale")
     private Boolean enableAutoScale;
@@ -250,6 +264,16 @@ public class CloudPool {
      */
     @JsonProperty(value = "applicationPackageReferences")
     private List<ApplicationPackageReference> applicationPackageReferences;
+
+    /**
+     * The list of application licenses the Batch service will make available
+     * on each compute node in the pool.
+     * The list of application licenses must be a subset of available Batch
+     * service application licenses. If a license is requested which is not
+     * supported, pool creation will fail.
+     */
+    @JsonProperty(value = "applicationLicenses")
+    private List<String> applicationLicenses;
 
     /**
      * The maximum number of tasks that can run concurrently on a single
@@ -565,62 +589,102 @@ public class CloudPool {
     }
 
     /**
-     * Get the resizeError value.
+     * Get the resizeErrors value.
      *
-     * @return the resizeError value
+     * @return the resizeErrors value
      */
-    public ResizeError resizeError() {
-        return this.resizeError;
+    public List<ResizeError> resizeErrors() {
+        return this.resizeErrors;
     }
 
     /**
-     * Set the resizeError value.
+     * Set the resizeErrors value.
      *
-     * @param resizeError the resizeError value to set
+     * @param resizeErrors the resizeErrors value to set
      * @return the CloudPool object itself.
      */
-    public CloudPool withResizeError(ResizeError resizeError) {
-        this.resizeError = resizeError;
+    public CloudPool withResizeErrors(List<ResizeError> resizeErrors) {
+        this.resizeErrors = resizeErrors;
         return this;
     }
 
     /**
-     * Get the currentDedicated value.
+     * Get the currentDedicatedNodes value.
      *
-     * @return the currentDedicated value
+     * @return the currentDedicatedNodes value
      */
-    public Integer currentDedicated() {
-        return this.currentDedicated;
+    public Integer currentDedicatedNodes() {
+        return this.currentDedicatedNodes;
     }
 
     /**
-     * Set the currentDedicated value.
+     * Set the currentDedicatedNodes value.
      *
-     * @param currentDedicated the currentDedicated value to set
+     * @param currentDedicatedNodes the currentDedicatedNodes value to set
      * @return the CloudPool object itself.
      */
-    public CloudPool withCurrentDedicated(Integer currentDedicated) {
-        this.currentDedicated = currentDedicated;
+    public CloudPool withCurrentDedicatedNodes(Integer currentDedicatedNodes) {
+        this.currentDedicatedNodes = currentDedicatedNodes;
         return this;
     }
 
     /**
-     * Get the targetDedicated value.
+     * Get the currentLowPriorityNodes value.
      *
-     * @return the targetDedicated value
+     * @return the currentLowPriorityNodes value
      */
-    public Integer targetDedicated() {
-        return this.targetDedicated;
+    public Integer currentLowPriorityNodes() {
+        return this.currentLowPriorityNodes;
     }
 
     /**
-     * Set the targetDedicated value.
+     * Set the currentLowPriorityNodes value.
      *
-     * @param targetDedicated the targetDedicated value to set
+     * @param currentLowPriorityNodes the currentLowPriorityNodes value to set
      * @return the CloudPool object itself.
      */
-    public CloudPool withTargetDedicated(Integer targetDedicated) {
-        this.targetDedicated = targetDedicated;
+    public CloudPool withCurrentLowPriorityNodes(Integer currentLowPriorityNodes) {
+        this.currentLowPriorityNodes = currentLowPriorityNodes;
+        return this;
+    }
+
+    /**
+     * Get the targetDedicatedNodes value.
+     *
+     * @return the targetDedicatedNodes value
+     */
+    public Integer targetDedicatedNodes() {
+        return this.targetDedicatedNodes;
+    }
+
+    /**
+     * Set the targetDedicatedNodes value.
+     *
+     * @param targetDedicatedNodes the targetDedicatedNodes value to set
+     * @return the CloudPool object itself.
+     */
+    public CloudPool withTargetDedicatedNodes(Integer targetDedicatedNodes) {
+        this.targetDedicatedNodes = targetDedicatedNodes;
+        return this;
+    }
+
+    /**
+     * Get the targetLowPriorityNodes value.
+     *
+     * @return the targetLowPriorityNodes value
+     */
+    public Integer targetLowPriorityNodes() {
+        return this.targetLowPriorityNodes;
+    }
+
+    /**
+     * Set the targetLowPriorityNodes value.
+     *
+     * @param targetLowPriorityNodes the targetLowPriorityNodes value to set
+     * @return the CloudPool object itself.
+     */
+    public CloudPool withTargetLowPriorityNodes(Integer targetLowPriorityNodes) {
+        this.targetLowPriorityNodes = targetLowPriorityNodes;
         return this;
     }
 
@@ -801,6 +865,26 @@ public class CloudPool {
      */
     public CloudPool withApplicationPackageReferences(List<ApplicationPackageReference> applicationPackageReferences) {
         this.applicationPackageReferences = applicationPackageReferences;
+        return this;
+    }
+
+    /**
+     * Get the applicationLicenses value.
+     *
+     * @return the applicationLicenses value
+     */
+    public List<String> applicationLicenses() {
+        return this.applicationLicenses;
+    }
+
+    /**
+     * Set the applicationLicenses value.
+     *
+     * @param applicationLicenses the applicationLicenses value to set
+     * @return the CloudPool object itself.
+     */
+    public CloudPool withApplicationLicenses(List<String> applicationLicenses) {
+        this.applicationLicenses = applicationLicenses;
         return this;
     }
 

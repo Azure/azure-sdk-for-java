@@ -17,8 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class TaskAddResult {
     /**
      * The status of the add task request.
-     * Possible values include: 'success', 'clientError', 'serverError',
-     * 'unmapped'.
+     * Possible values include: 'success', 'clientError', 'serverError'.
      */
     @JsonProperty(value = "status", required = true)
     private TaskAddStatus status;

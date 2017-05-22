@@ -52,6 +52,13 @@ public class JobManagerTask {
     private List<ResourceFile> resourceFiles;
 
     /**
+     * A list of files that the Batch service will upload from the compute node
+     * after running the command line.
+     */
+    @JsonProperty(value = "outputFiles")
+    private List<OutputFile> outputFiles;
+
+    /**
      * A list of environment variable settings for the Job Manager task.
      */
     @JsonProperty(value = "environmentSettings")
@@ -136,6 +143,13 @@ public class JobManagerTask {
     private AuthenticationTokenSettings authenticationTokenSettings;
 
     /**
+     * Whether the Job Manager task may run on a low-priority compute node.
+     * The default value is false.
+     */
+    @JsonProperty(value = "allowLowPriorityNode")
+    private Boolean allowLowPriorityNode;
+
+    /**
      * Get the id value.
      *
      * @return the id value
@@ -212,6 +226,26 @@ public class JobManagerTask {
      */
     public JobManagerTask withResourceFiles(List<ResourceFile> resourceFiles) {
         this.resourceFiles = resourceFiles;
+        return this;
+    }
+
+    /**
+     * Get the outputFiles value.
+     *
+     * @return the outputFiles value
+     */
+    public List<OutputFile> outputFiles() {
+        return this.outputFiles;
+    }
+
+    /**
+     * Set the outputFiles value.
+     *
+     * @param outputFiles the outputFiles value to set
+     * @return the JobManagerTask object itself.
+     */
+    public JobManagerTask withOutputFiles(List<OutputFile> outputFiles) {
+        this.outputFiles = outputFiles;
         return this;
     }
 
@@ -352,6 +386,26 @@ public class JobManagerTask {
      */
     public JobManagerTask withAuthenticationTokenSettings(AuthenticationTokenSettings authenticationTokenSettings) {
         this.authenticationTokenSettings = authenticationTokenSettings;
+        return this;
+    }
+
+    /**
+     * Get the allowLowPriorityNode value.
+     *
+     * @return the allowLowPriorityNode value
+     */
+    public Boolean allowLowPriorityNode() {
+        return this.allowLowPriorityNode;
+    }
+
+    /**
+     * Set the allowLowPriorityNode value.
+     *
+     * @param allowLowPriorityNode the allowLowPriorityNode value to set
+     * @return the JobManagerTask object itself.
+     */
+    public JobManagerTask withAllowLowPriorityNode(Boolean allowLowPriorityNode) {
+        this.allowLowPriorityNode = allowLowPriorityNode;
         return this;
     }
 

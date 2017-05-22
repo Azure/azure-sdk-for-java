@@ -114,7 +114,7 @@ public class JobTests extends BatchTestBase {
             job = batchClient.jobOperations().getJob(jobId);
             Assert.assertEquals(job.state(), JobState.DISABLING);
 
-            Thread.sleep(2 * 1000);
+            Thread.sleep(5 * 1000);
             job = batchClient.jobOperations().getJob(jobId);
             Assert.assertEquals(job.state(), JobState.DISABLED);
 

@@ -35,7 +35,7 @@ public class ComputeNode {
      * The current state of the compute node.
      * Possible values include: 'idle', 'rebooting', 'reimaging', 'running',
      * 'unusable', 'creating', 'starting', 'waitingForStartTask',
-     * 'startTaskFailed', 'unknown', 'leavingPool', 'offline'.
+     * 'startTaskFailed', 'unknown', 'leavingPool', 'offline', 'preempted'.
      */
     @JsonProperty(value = "state")
     private ComputeNodeState state;
@@ -93,9 +93,9 @@ public class ComputeNode {
      * Services pools (pools created with cloudServiceConfiguration), see Sizes
      * for Cloud Services
      * (http://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/).
-     * Batch supports all Cloud Services VM sizes except ExtraSmall. For
-     * information about available VM sizes for pools using images from the
-     * Virtual Machines Marketplace (pools created with
+     * Batch supports all Cloud Services VM sizes except ExtraSmall, A1V2 and
+     * A2V2. For information about available VM sizes for pools using images
+     * from the Virtual Machines Marketplace (pools created with
      * virtualMachineConfiguration) see Sizes for Virtual Machines (Linux)
      * (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/)
      * or Sizes for Virtual Machines (Windows)
@@ -169,6 +169,13 @@ public class ComputeNode {
      */
     @JsonProperty(value = "errors")
     private List<ComputeNodeError> errors;
+
+    /**
+     * Whether this compute node is a dedicated node. If false, the node is a
+     * low-priority node.
+     */
+    @JsonProperty(value = "isDedicated")
+    private Boolean isDedicated;
 
     /**
      * Get the id value.
@@ -527,6 +534,26 @@ public class ComputeNode {
      */
     public ComputeNode withErrors(List<ComputeNodeError> errors) {
         this.errors = errors;
+        return this;
+    }
+
+    /**
+     * Get the isDedicated value.
+     *
+     * @return the isDedicated value
+     */
+    public Boolean isDedicated() {
+        return this.isDedicated;
+    }
+
+    /**
+     * Set the isDedicated value.
+     *
+     * @param isDedicated the isDedicated value to set
+     * @return the ComputeNode object itself.
+     */
+    public ComputeNode withIsDedicated(Boolean isDedicated) {
+        this.isDedicated = isDedicated;
         return this;
     }
 

@@ -57,10 +57,12 @@ public class SubtaskInformation {
     private Integer exitCode;
 
     /**
-     * Details of any error encountered scheduling the subtask.
+     * Information describing the task failure, if any.
+     * This property is set only if the task is in the completed state and
+     * encountered a failure.
      */
-    @JsonProperty(value = "schedulingError")
-    private TaskSchedulingError schedulingError;
+    @JsonProperty(value = "failureInfo")
+    private TaskFailureInformation failureInfo;
 
     /**
      * The current state of the subtask.
@@ -89,6 +91,15 @@ public class SubtaskInformation {
      */
     @JsonProperty(value = "previousStateTransitionTime")
     private DateTime previousStateTransitionTime;
+
+    /**
+     * The result of the task execution.
+     * If the value is 'failed', then the details of the failure can be found
+     * in the failureInfo property. Possible values include: 'success',
+     * 'failure'.
+     */
+    @JsonProperty(value = "result")
+    private TaskExecutionResult result;
 
     /**
      * Get the id value.
@@ -191,22 +202,22 @@ public class SubtaskInformation {
     }
 
     /**
-     * Get the schedulingError value.
+     * Get the failureInfo value.
      *
-     * @return the schedulingError value
+     * @return the failureInfo value
      */
-    public TaskSchedulingError schedulingError() {
-        return this.schedulingError;
+    public TaskFailureInformation failureInfo() {
+        return this.failureInfo;
     }
 
     /**
-     * Set the schedulingError value.
+     * Set the failureInfo value.
      *
-     * @param schedulingError the schedulingError value to set
+     * @param failureInfo the failureInfo value to set
      * @return the SubtaskInformation object itself.
      */
-    public SubtaskInformation withSchedulingError(TaskSchedulingError schedulingError) {
-        this.schedulingError = schedulingError;
+    public SubtaskInformation withFailureInfo(TaskFailureInformation failureInfo) {
+        this.failureInfo = failureInfo;
         return this;
     }
 
@@ -287,6 +298,26 @@ public class SubtaskInformation {
      */
     public SubtaskInformation withPreviousStateTransitionTime(DateTime previousStateTransitionTime) {
         this.previousStateTransitionTime = previousStateTransitionTime;
+        return this;
+    }
+
+    /**
+     * Get the result value.
+     *
+     * @return the result value
+     */
+    public TaskExecutionResult result() {
+        return this.result;
+    }
+
+    /**
+     * Set the result value.
+     *
+     * @param result the result value to set
+     * @return the SubtaskInformation object itself.
+     */
+    public SubtaskInformation withResult(TaskExecutionResult result) {
+        this.result = result;
         return this;
     }
 

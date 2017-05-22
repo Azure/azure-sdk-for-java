@@ -48,7 +48,7 @@ public class FileTests extends BatchTestBase {
         // CREATE
         String jobId = getStringWithUserNamePrefix("-Job-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
         String taskId = "mytask";
-        int TASK_COMPLETE_TIMEOUT = 60; // 60 seconds timeout
+        int TASK_COMPLETE_TIMEOUT_IN_SECONDS = 60; // 60 seconds timeout
 
         try {
 
@@ -61,7 +61,7 @@ public class FileTests extends BatchTestBase {
                     .withCommandLine("cmd /c echo hello");
             batchClient.taskOperations().createTask(jobId, taskToAdd);
 
-            if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT)) {
+            if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
                 List<NodeFile> files = batchClient.fileOperations().listFilesFromTask(jobId, taskId);
                 boolean found = false;
                 for (NodeFile f : files) {
@@ -111,7 +111,7 @@ public class FileTests extends BatchTestBase {
         // CREATE
         String jobId = getStringWithUserNamePrefix("-Job-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
         String taskId = "mytask";
-        int TASK_COMPLETE_TIMEOUT = 60; // 60 seconds timeout
+        int TASK_COMPLETE_TIMEOUT_IN_SECONDS = 60; // 60 seconds timeout
 
         try {
             PoolInformation poolInfo = new PoolInformation();
@@ -123,7 +123,7 @@ public class FileTests extends BatchTestBase {
                     .withCommandLine("cmd /c echo hello");
             batchClient.taskOperations().createTask(jobId, taskToAdd);
 
-            if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT)) {
+            if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
                 CloudTask task = batchClient.taskOperations().getTask(jobId, taskId);
                 String nodeId = task.nodeInfo().nodeId();
 

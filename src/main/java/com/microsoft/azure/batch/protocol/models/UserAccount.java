@@ -11,7 +11,8 @@ package com.microsoft.azure.batch.protocol.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Properties used to create a user on an Azure Batch node.
+ * Properties used to create a user used to execute tasks on an Azure Batch
+ * node.
  */
 public class UserAccount {
     /**
@@ -37,13 +38,12 @@ public class UserAccount {
     private ElevationLevel elevationLevel;
 
     /**
-     * The SSH private key for the user account.
-     * The SSH private key establishes password-less SSH between nodes in a
-     * Linux pool when the pool's enableInterNodeCommunication property is
-     * true. This property will be ignored in a Windows pool.
+     * The Linux-specific user configuration for the user account.
+     * This property is ignored if specified on a Windows pool. If not
+     * specified, the user is created with the default options.
      */
-    @JsonProperty(value = "sshPrivateKey")
-    private String sshPrivateKey;
+    @JsonProperty(value = "linuxUserConfiguration")
+    private LinuxUserConfiguration linuxUserConfiguration;
 
     /**
      * Get the name value.
@@ -106,22 +106,22 @@ public class UserAccount {
     }
 
     /**
-     * Get the sshPrivateKey value.
+     * Get the linuxUserConfiguration value.
      *
-     * @return the sshPrivateKey value
+     * @return the linuxUserConfiguration value
      */
-    public String sshPrivateKey() {
-        return this.sshPrivateKey;
+    public LinuxUserConfiguration linuxUserConfiguration() {
+        return this.linuxUserConfiguration;
     }
 
     /**
-     * Set the sshPrivateKey value.
+     * Set the linuxUserConfiguration value.
      *
-     * @param sshPrivateKey the sshPrivateKey value to set
+     * @param linuxUserConfiguration the linuxUserConfiguration value to set
      * @return the UserAccount object itself.
      */
-    public UserAccount withSshPrivateKey(String sshPrivateKey) {
-        this.sshPrivateKey = sshPrivateKey;
+    public UserAccount withLinuxUserConfiguration(LinuxUserConfiguration linuxUserConfiguration) {
+        this.linuxUserConfiguration = linuxUserConfiguration;
         return this;
     }
 

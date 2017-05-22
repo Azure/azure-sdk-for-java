@@ -30,21 +30,30 @@ public class ExitConditions {
     private List<ExitCodeRangeMapping> exitCodeRanges;
 
     /**
-     * How the Batch service should respond if the task fails with a scheduling
-     * error.
+     * How the Batch service should respond if the task fails to start due to
+     * an error.
      */
-    @JsonProperty(value = "schedulingError")
-    private ExitOptions schedulingError;
+    @JsonProperty(value = "preProcessingError")
+    private ExitOptions preProcessingError;
+
+    /**
+     * How the Batch service should respond if a file upload error occurs.
+     * If the task exited with an exit code that was specified via exitCodes or
+     * exitCodeRanges, and then encountered a file upload error, then the
+     * action specified by the exit code takes precedence.
+     */
+    @JsonProperty(value = "fileUploadError")
+    private ExitOptions fileUploadError;
 
     /**
      * How the Batch service should respond if the task fails with an exit
-     * condition not covered by any of the other properties - that is, any
-     * nonzero exit code not listed in the exitCodes or exitCodeRanges
-     * collection, or a scheduling error if the schedulingError property is not
-     * present.
-     * Note that the default condition does not include exit code 0. If you
-     * want non-default behaviour on exit code 0, you must list it explicitly
-     * using the exitCodes or exitCodeRanges collection.
+     * condition not covered by any of the other properties.
+     * This value is used if the task exits with any nonzero exit code not
+     * listed in the exitCodes or exitCodeRanges collection, with a
+     * pre-processing error if the preProcessingError property is not present,
+     * or with a file upload error if the fileUploadError property is not
+     * present. If you want non-default behaviour on exit code 0, you must list
+     * it explicitly using the exitCodes or exitCodeRanges collection.
      */
     @JsonProperty(value = "default")
     private ExitOptions defaultProperty;
@@ -90,22 +99,42 @@ public class ExitConditions {
     }
 
     /**
-     * Get the schedulingError value.
+     * Get the preProcessingError value.
      *
-     * @return the schedulingError value
+     * @return the preProcessingError value
      */
-    public ExitOptions schedulingError() {
-        return this.schedulingError;
+    public ExitOptions preProcessingError() {
+        return this.preProcessingError;
     }
 
     /**
-     * Set the schedulingError value.
+     * Set the preProcessingError value.
      *
-     * @param schedulingError the schedulingError value to set
+     * @param preProcessingError the preProcessingError value to set
      * @return the ExitConditions object itself.
      */
-    public ExitConditions withSchedulingError(ExitOptions schedulingError) {
-        this.schedulingError = schedulingError;
+    public ExitConditions withPreProcessingError(ExitOptions preProcessingError) {
+        this.preProcessingError = preProcessingError;
+        return this;
+    }
+
+    /**
+     * Get the fileUploadError value.
+     *
+     * @return the fileUploadError value
+     */
+    public ExitOptions fileUploadError() {
+        return this.fileUploadError;
+    }
+
+    /**
+     * Set the fileUploadError value.
+     *
+     * @param fileUploadError the fileUploadError value to set
+     * @return the ExitConditions object itself.
+     */
+    public ExitConditions withFileUploadError(ExitOptions fileUploadError) {
+        this.fileUploadError = fileUploadError;
         return this;
     }
 

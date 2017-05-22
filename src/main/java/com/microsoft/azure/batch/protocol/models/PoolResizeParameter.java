@@ -16,10 +16,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class PoolResizeParameter {
     /**
-     * The desired number of compute nodes in the pool.
+     * The desired number of dedicated compute nodes in the pool.
      */
-    @JsonProperty(value = "targetDedicated", required = true)
-    private int targetDedicated;
+    @JsonProperty(value = "targetDedicatedNodes")
+    private Integer targetDedicatedNodes;
+
+    /**
+     * The desired number of low-priority compute nodes in the pool.
+     */
+    @JsonProperty(value = "targetLowPriorityNodes")
+    private Integer targetLowPriorityNodes;
 
     /**
      * The timeout for allocation of compute nodes to the pool or removal of
@@ -42,22 +48,42 @@ public class PoolResizeParameter {
     private ComputeNodeDeallocationOption nodeDeallocationOption;
 
     /**
-     * Get the targetDedicated value.
+     * Get the targetDedicatedNodes value.
      *
-     * @return the targetDedicated value
+     * @return the targetDedicatedNodes value
      */
-    public int targetDedicated() {
-        return this.targetDedicated;
+    public Integer targetDedicatedNodes() {
+        return this.targetDedicatedNodes;
     }
 
     /**
-     * Set the targetDedicated value.
+     * Set the targetDedicatedNodes value.
      *
-     * @param targetDedicated the targetDedicated value to set
+     * @param targetDedicatedNodes the targetDedicatedNodes value to set
      * @return the PoolResizeParameter object itself.
      */
-    public PoolResizeParameter withTargetDedicated(int targetDedicated) {
-        this.targetDedicated = targetDedicated;
+    public PoolResizeParameter withTargetDedicatedNodes(Integer targetDedicatedNodes) {
+        this.targetDedicatedNodes = targetDedicatedNodes;
+        return this;
+    }
+
+    /**
+     * Get the targetLowPriorityNodes value.
+     *
+     * @return the targetLowPriorityNodes value
+     */
+    public Integer targetLowPriorityNodes() {
+        return this.targetLowPriorityNodes;
+    }
+
+    /**
+     * Set the targetLowPriorityNodes value.
+     *
+     * @param targetLowPriorityNodes the targetLowPriorityNodes value to set
+     * @return the PoolResizeParameter object itself.
+     */
+    public PoolResizeParameter withTargetLowPriorityNodes(Integer targetLowPriorityNodes) {
+        this.targetLowPriorityNodes = targetLowPriorityNodes;
         return this;
     }
 

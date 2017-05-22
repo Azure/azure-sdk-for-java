@@ -19,10 +19,7 @@ public enum ComputeNodeFillType {
     SPREAD("spread"),
 
     /** Enum value pack. */
-    PACK("pack"),
-
-    /** Enum value unmapped. */
-    UNMAPPED("unmapped");
+    PACK("pack");
 
     /** The actual serialized value for a ComputeNodeFillType instance. */
     private String value;

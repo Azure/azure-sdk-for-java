@@ -19,10 +19,7 @@ public enum CertificateStoreLocation {
     CURRENT_USER("currentUser"),
 
     /** Enum value localMachine. */
-    LOCAL_MACHINE("localMachine"),
-
-    /** Enum value unmapped. */
-    UNMAPPED("unmapped");
+    LOCAL_MACHINE("localMachine");
 
     /** The actual serialized value for a CertificateStoreLocation instance. */
     private String value;

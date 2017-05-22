@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class TaskSchedulingPolicy {
     /**
      * How tasks should be distributed across compute nodes.
-     * Possible values include: 'spread', 'pack', 'unmapped'.
+     * Possible values include: 'spread', 'pack'.
      */
     @JsonProperty(value = "nodeFillType", required = true)
     private ComputeNodeFillType nodeFillType;

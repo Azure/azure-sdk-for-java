@@ -41,9 +41,9 @@ public class PoolAddParameter {
      * Services pools (pools created with cloudServiceConfiguration), see Sizes
      * for Cloud Services
      * (http://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/).
-     * Batch supports all Cloud Services VM sizes except ExtraSmall. For
-     * information about available VM sizes for pools using images from the
-     * Virtual Machines Marketplace (pools created with
+     * Batch supports all Cloud Services VM sizes except ExtraSmall, A1V2 and
+     * A2V2. For information about available VM sizes for pools using images
+     * from the Virtual Machines Marketplace (pools created with
      * virtualMachineConfiguration) see Sizes for Virtual Machines (Linux)
      * (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/)
      * or Sizes for Virtual Machines (Windows)
@@ -84,17 +84,29 @@ public class PoolAddParameter {
     private Period resizeTimeout;
 
     /**
-     * The desired number of compute nodes in the pool.
-     * This property must have the default value if enableAutoScale is true. It
-     * is required if enableAutoScale is false.
+     * The desired number of dedicated compute nodes in the pool.
+     * This property must not be specified if enableAutoScale is set to true.
+     * If enableAutoScale is set to false, then you must set either
+     * targetDedicatedNodes, targetLowPriorityNodes, or both.
      */
-    @JsonProperty(value = "targetDedicated")
-    private Integer targetDedicated;
+    @JsonProperty(value = "targetDedicatedNodes")
+    private Integer targetDedicatedNodes;
+
+    /**
+     * The desired number of low-priority compute nodes in the pool.
+     * This property must not be specified if enableAutoScale is set to true.
+     * If enableAutoScale is set to false, then you must set either
+     * targetDedicatedNodes, targetLowPriorityNodes, or both.
+     */
+    @JsonProperty(value = "targetLowPriorityNodes")
+    private Integer targetLowPriorityNodes;
 
     /**
      * Whether the pool size should automatically adjust over time.
-     * If true, the autoScaleFormula property must be set. If false, the
-     * targetDedicated property must be set. The default value is false.
+     * If false, at least one of targetDedicateNodes and targetLowPriorityNodes
+     * must be specified. If true, the autoScaleFormula property is required
+     * and the pool automatically resizes according to the formula. The default
+     * value is false.
      */
     @JsonProperty(value = "enableAutoScale")
     private Boolean enableAutoScale;
@@ -170,6 +182,16 @@ public class PoolAddParameter {
      */
     @JsonProperty(value = "applicationPackageReferences")
     private List<ApplicationPackageReference> applicationPackageReferences;
+
+    /**
+     * The list of application licenses the Batch service will make available
+     * on each compute node in the pool.
+     * The list of application licenses must be a subset of available Batch
+     * service application licenses. If a license is requested which is not
+     * supported, pool creation will fail.
+     */
+    @JsonProperty(value = "applicationLicenses")
+    private List<String> applicationLicenses;
 
     /**
      * The maximum number of tasks that can run concurrently on a single
@@ -322,22 +344,42 @@ public class PoolAddParameter {
     }
 
     /**
-     * Get the targetDedicated value.
+     * Get the targetDedicatedNodes value.
      *
-     * @return the targetDedicated value
+     * @return the targetDedicatedNodes value
      */
-    public Integer targetDedicated() {
-        return this.targetDedicated;
+    public Integer targetDedicatedNodes() {
+        return this.targetDedicatedNodes;
     }
 
     /**
-     * Set the targetDedicated value.
+     * Set the targetDedicatedNodes value.
      *
-     * @param targetDedicated the targetDedicated value to set
+     * @param targetDedicatedNodes the targetDedicatedNodes value to set
      * @return the PoolAddParameter object itself.
      */
-    public PoolAddParameter withTargetDedicated(Integer targetDedicated) {
-        this.targetDedicated = targetDedicated;
+    public PoolAddParameter withTargetDedicatedNodes(Integer targetDedicatedNodes) {
+        this.targetDedicatedNodes = targetDedicatedNodes;
+        return this;
+    }
+
+    /**
+     * Get the targetLowPriorityNodes value.
+     *
+     * @return the targetLowPriorityNodes value
+     */
+    public Integer targetLowPriorityNodes() {
+        return this.targetLowPriorityNodes;
+    }
+
+    /**
+     * Set the targetLowPriorityNodes value.
+     *
+     * @param targetLowPriorityNodes the targetLowPriorityNodes value to set
+     * @return the PoolAddParameter object itself.
+     */
+    public PoolAddParameter withTargetLowPriorityNodes(Integer targetLowPriorityNodes) {
+        this.targetLowPriorityNodes = targetLowPriorityNodes;
         return this;
     }
 
@@ -498,6 +540,26 @@ public class PoolAddParameter {
      */
     public PoolAddParameter withApplicationPackageReferences(List<ApplicationPackageReference> applicationPackageReferences) {
         this.applicationPackageReferences = applicationPackageReferences;
+        return this;
+    }
+
+    /**
+     * Get the applicationLicenses value.
+     *
+     * @return the applicationLicenses value
+     */
+    public List<String> applicationLicenses() {
+        return this.applicationLicenses;
+    }
+
+    /**
+     * Set the applicationLicenses value.
+     *
+     * @param applicationLicenses the applicationLicenses value to set
+     * @return the PoolAddParameter object itself.
+     */
+    public PoolAddParameter withApplicationLicenses(List<String> applicationLicenses) {
+        this.applicationLicenses = applicationLicenses;
         return this;
     }
 

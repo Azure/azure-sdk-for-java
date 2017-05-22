@@ -6,7 +6,7 @@ var fs = require('fs');
 
 var mappings = {
     'batchService': {
-        'source': 'batch/2017-01-01.4.0/swagger/BatchService.json',
+        'source': 'batch/2017-05-01.5.0/swagger/BatchService.json',
         'package': 'com.microsoft.azure.batch.protocol',
         'fluent': false,
         'args': '-FT 1'

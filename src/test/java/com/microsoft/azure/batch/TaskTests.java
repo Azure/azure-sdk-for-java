@@ -19,12 +19,15 @@ import java.util.*;
 
 public class TaskTests  extends BatchTestBase {
     private static CloudPool livePool;
+    private static CloudPool liveIaaSPool;
 
     @BeforeClass
     public static void setup() throws Exception {
         createClient(AuthMode.SharedKey);
         String poolId = getStringWithUserNamePrefix("-testpool");
         livePool = createIfNotExistPaaSPool(poolId);
+        poolId = getStringWithUserNamePrefix("-testIaaSpool");
+        liveIaaSPool = createIfNotExistIaaSPool(poolId);
         Assert.assertNotNull(livePool);
     }
 
@@ -39,7 +42,7 @@ public class TaskTests  extends BatchTestBase {
 
     @Test
     public void canCRUDTest() throws Exception {
-        int TASK_COMPLETE_TIMEOUT = 60; // 60 seconds timeout
+        int TASK_COMPLETE_TIMEOUT_IN_SECONDS = 60; // 60 seconds timeout
         String STANDARD_CONSOLE_OUTPUT_FILENAME = "stdout.txt";
         String BLOB_FILE_NAME = "test.txt";
         String taskId = "mytask";
@@ -102,7 +105,7 @@ public class TaskTests  extends BatchTestBase {
 
             Assert.assertTrue(found);
 
-            if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT)) {
+            if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
                 // Get the task command output file
                 task = batchClient.taskOperations().getTask(jobId, taskId);
 
@@ -170,6 +173,87 @@ public class TaskTests  extends BatchTestBase {
         }
     }
 
+    @Test
+    public void testOutputFiles() throws Exception {
+        int TASK_COMPLETE_TIMEOUT_IN_SECONDS = 60; // 60 seconds timeout
+        String jobId = getStringWithUserNamePrefix("-Job-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String taskId = "mytask";
+        String badTaskId = "mytask1";
+        String storageAccountName = System.getenv("STORAGE_ACCOUNT_NAME");
+        String storageAccountKey = System.getenv("STORAGE_ACCOUNT_KEY");
+
+        PoolInformation poolInfo = new PoolInformation();
+        poolInfo.withPoolId(liveIaaSPool.id());
+        batchClient.jobOperations().createJob(jobId, poolInfo);
+        CloudBlobContainer container = createBlobContainer(storageAccountName, storageAccountKey, "output");
+        String containerUrl = generateContainerSasToken(container);
+
+        try {
+            // CREATE
+            List<OutputFile> outputs = new ArrayList<>();
+            outputs.add(new OutputFile()
+                    .withFilePattern("../stdout.txt")
+                    .withDestination(new OutputFileDestination()
+                            .withContainer(new OutputFileBlobContainerDestination()
+                                    .withContainerUrl(containerUrl)
+                                    .withPath("taskLogs/output.txt")))
+                    .withUploadOptions(new OutputFileUploadOptions()
+                            .withUploadCondition(OutputFileUploadCondition.TASK_COMPLETION)));
+            outputs.add(new OutputFile()
+                    .withFilePattern("../stderr.txt")
+                    .withDestination(new OutputFileDestination()
+                            .withContainer(new OutputFileBlobContainerDestination()
+                                    .withContainerUrl(containerUrl)
+                                    .withPath("taskLogs/err.txt")))
+                    .withUploadOptions(new OutputFileUploadOptions()
+                            .withUploadCondition(OutputFileUploadCondition.TASK_FAILURE)));
+            TaskAddParameter taskToAdd = new TaskAddParameter();
+            taskToAdd.withId(taskId)
+                    .withCommandLine("bash -c \"echo hello\"")
+                    .withOutputFiles(outputs);
+
+            batchClient.taskOperations().createTask(jobId, taskToAdd);
+
+            if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
+                CloudTask task = batchClient.taskOperations().getTask(jobId, taskId);
+                Assert.assertNotNull(task);
+                Assert.assertEquals(task.executionInfo().result(), TaskExecutionResult.SUCCESS);
+                Assert.assertNull(task.executionInfo().failureInfo());
+
+                // Get the task command output file
+                String result = getContentFromContainer(container, "taskLogs/output.txt");
+                Assert.assertEquals(result, "hello\n");
+            }
+
+            taskToAdd = new TaskAddParameter();
+            taskToAdd.withId(badTaskId)
+                    .withCommandLine("bash -c \"bad command\"")
+                    .withOutputFiles(outputs);
+
+            batchClient.taskOperations().createTask(jobId, taskToAdd);
+
+            if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
+                CloudTask task = batchClient.taskOperations().getTask(jobId, badTaskId);
+                Assert.assertNotNull(task);
+                Assert.assertEquals(task.executionInfo().result(), TaskExecutionResult.FAILURE);
+                Assert.assertNotNull(task.executionInfo().failureInfo());
+                Assert.assertEquals(task.executionInfo().failureInfo().category(), ErrorCategory.USER_ERROR);
+                Assert.assertEquals(task.executionInfo().failureInfo().code(), "FailureExitCode");
+
+                // Get the task command output file
+                String result = getContentFromContainer(container, "taskLogs/err.txt");
+                Assert.assertEquals(result, "bash: bad: command not found\n");
+            }
+
+        } finally {
+            try {
+                container.delete();
+                batchClient.jobOperations().deleteJob(jobId);
+            } catch (Exception e) {
+                // Ignore here
+            }
+        }
+    }
     @Test
     public void testAddMultiTasks() throws Exception {
         String jobId = getStringWithUserNamePrefix("-Job1-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));

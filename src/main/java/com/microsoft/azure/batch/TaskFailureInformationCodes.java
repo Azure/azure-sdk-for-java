@@ -7,10 +7,15 @@
 package com.microsoft.azure.batch;
 
 /**
- * Contains error codes specific to task scheduling errors.
+ * Contains error codes specific to task failure information.
  */
-public final class TaskSchedulingErrorCodes
+public final class TaskFailureInformationCodes
 {
+    /**
+     * An error occurred when trying to deploy a required application package.
+     */
+    public static final String ApplicationPackageError = "ApplicationPackageError";
+
     /**
      * Access was denied when trying to download a resource file required for the task.
      */

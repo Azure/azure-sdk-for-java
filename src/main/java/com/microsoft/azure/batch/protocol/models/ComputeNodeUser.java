@@ -12,7 +12,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A user account on a compute node.
+ * A user account for RDP or SSH access on a compute node.
  */
 public class ComputeNodeUser {
     /**

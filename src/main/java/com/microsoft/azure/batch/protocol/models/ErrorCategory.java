@@ -12,35 +12,32 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for SchedulingErrorCategory.
+ * Defines values for ErrorCategory.
  */
-public enum SchedulingErrorCategory {
+public enum ErrorCategory {
     /** Enum value userError. */
     USER_ERROR("userError"),
 
     /** Enum value serverError. */
-    SERVER_ERROR("serverError"),
+    SERVER_ERROR("serverError");
 
-    /** Enum value unmapped. */
-    UNMAPPED("unmapped");
-
-    /** The actual serialized value for a SchedulingErrorCategory instance. */
+    /** The actual serialized value for a ErrorCategory instance. */
     private String value;
 
-    SchedulingErrorCategory(String value) {
+    ErrorCategory(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a SchedulingErrorCategory instance.
+     * Parses a serialized value to a ErrorCategory instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed SchedulingErrorCategory object, or null if unable to parse.
+     * @return the parsed ErrorCategory object, or null if unable to parse.
      */
     @JsonCreator
-    public static SchedulingErrorCategory fromString(String value) {
-        SchedulingErrorCategory[] items = SchedulingErrorCategory.values();
-        for (SchedulingErrorCategory item : items) {
+    public static ErrorCategory fromString(String value) {
+        ErrorCategory[] items = ErrorCategory.values();
+        for (ErrorCategory item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

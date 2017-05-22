@@ -49,7 +49,10 @@ public enum ComputeNodeState {
     LEAVING_POOL("leavingPool"),
 
     /** Enum value offline. */
-    OFFLINE("offline");
+    OFFLINE("offline"),
+
+    /** Enum value preempted. */
+    PREEMPTED("preempted");
 
     /** The actual serialized value for a ComputeNodeState instance. */
     private String value;

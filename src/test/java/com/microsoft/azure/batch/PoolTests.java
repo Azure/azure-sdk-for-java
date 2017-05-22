@@ -50,11 +50,101 @@ public class PoolTests extends BatchTestBase {
     }
 
     @Test
+    public void canCRUDLowPriIaaSPool() throws Exception {
+        // CREATE
+        String poolId = getStringWithUserNamePrefix("-testpool2");
+
+        // Create a pool with 3 Small VMs
+        String POOL_VM_SIZE = "STANDARD_A1";
+        int POOL_VM_COUNT = 0;
+        int POOL_LOW_PRI_VM_COUNT = 2;
+
+        // 5 minutes
+        long POOL_STEADY_TIMEOUT_IN_SECONDS = 5 * 60 * 1000;
+
+        // Check if pool exists
+        if (!batchClient.poolOperations().existsPool(poolId)) {
+            ImageReference imgRef = new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer").withSku("16.04-LTS").withVersion("latest");
+            VirtualMachineConfiguration configuration = new VirtualMachineConfiguration();
+            configuration.withNodeAgentSKUId("batch.node.ubuntu 16.04").withImageReference(imgRef);
+
+            batchClient.poolOperations().createPool(poolId, POOL_VM_SIZE, configuration, POOL_VM_COUNT, POOL_LOW_PRI_VM_COUNT);
+        }
+
+        try {
+            // GET
+            Assert.assertTrue(batchClient.poolOperations().existsPool(poolId));
+
+            long startTime = System.currentTimeMillis();
+            long elapsedTime = 0L;
+            boolean steady = false;
+            CloudPool pool = null;
+
+            // Wait for the VM to be allocated
+            while (elapsedTime < POOL_STEADY_TIMEOUT_IN_SECONDS) {
+                pool = batchClient.poolOperations().getPool(poolId);
+                Assert.assertNotNull(pool);
+
+                if (pool.allocationState() == AllocationState.STEADY) {
+                    steady = true;
+                    break;
+                }
+                System.out.println("wait 30 seconds for pool steady...");
+                Thread.sleep(30 * 1000);
+                elapsedTime = (new Date()).getTime() - startTime;
+            }
+
+            Assert.assertTrue("The pool did not reach a steady state in the allotted time", steady);
+            Assert.assertEquals((long)pool.currentDedicatedNodes(), POOL_VM_COUNT);
+            Assert.assertEquals((long)pool.currentLowPriorityNodes(), POOL_LOW_PRI_VM_COUNT);
+
+            // RESIZE
+            batchClient.poolOperations().resizePool(poolId, 1, 1);
+
+            pool = batchClient.poolOperations().getPool(poolId);
+            Assert.assertEquals((long)pool.targetDedicatedNodes(), 1);
+            Assert.assertEquals((long)pool.targetLowPriorityNodes(), 1);
+
+            // DELETE
+            boolean deleted = false;
+            batchClient.poolOperations().deletePool(poolId);
+            // Wait for the VM to be allocated
+            while (elapsedTime < POOL_STEADY_TIMEOUT_IN_SECONDS) {
+                try {
+                    batchClient.poolOperations().getPool(poolId);
+                } catch (BatchErrorException err) {
+                    if (err.body().code().equals(BatchErrorCodeStrings.PoolNotFound)) {
+                        deleted = true;
+                        break;
+                    } else {
+                        throw err;
+                    }
+                }
+                System.out.println("wait 5 seconds for pool delete...");
+                Thread.sleep(5 * 1000);
+                elapsedTime = (new Date()).getTime() - startTime;
+            }
+            Assert.assertTrue(deleted);
+        }
+        finally {
+            try {
+                if (batchClient.poolOperations().existsPool(poolId)) {
+                    batchClient.poolOperations().deletePool(poolId);
+                }
+            }
+            catch (Exception e)
+            {
+                // Ignore exception
+            }
+        }
+    }
+
+    @Test
     public void canCRUDIaaSPool() throws Exception {
         String poolId = getStringWithUserNamePrefix("-testpool2");
 
         // Create a pool with 3 Small VMs
-        String POOL_VM_SIZE = "Small";
+        String POOL_VM_SIZE = "STANDARD_D1";
         int POOL_VM_COUNT = 3;
 
         // Use IaaS VM with Linux
@@ -79,6 +169,107 @@ public class PoolTests extends BatchTestBase {
     }
 
     @Test
+    public void canCRUDLowPriPaaSPool() throws Exception {
+        // CREATE
+        String poolId = getStringWithUserNamePrefix("-testpool4");
+
+        // Create a pool with 3 Small VMs
+        String POOL_VM_SIZE = "Small";
+        int POOL_VM_COUNT = 1;
+        int POOL_LOW_PRI_VM_COUNT = 2;
+        String POOL_OS_FAMILY = "4";
+        String POOL_OS_VERSION = "*";
+
+        // 5 minutes
+        long POOL_STEADY_TIMEOUT_IN_SECONDS = 5 * 60 * 1000;
+
+        // Check if pool exists
+        if (!batchClient.poolOperations().existsPool(poolId)) {
+            // Use PaaS VM with Windows
+            CloudServiceConfiguration configuration = new CloudServiceConfiguration();
+            configuration.withOsFamily(POOL_OS_FAMILY).withTargetOSVersion(POOL_OS_VERSION);
+            List<String> licenses = new ArrayList<>();
+            licenses.add("maya");
+
+            PoolAddParameter addParameter = new PoolAddParameter()
+                    .withId(poolId)
+                    .withTargetDedicatedNodes(POOL_VM_COUNT)
+                    .withTargetLowPriorityNodes(POOL_LOW_PRI_VM_COUNT)
+                    .withVmSize(POOL_VM_SIZE)
+                    .withCloudServiceConfiguration(configuration)
+                    .withApplicationLicenses(licenses);
+            batchClient.poolOperations().createPool(addParameter);
+        }
+
+        try {
+            // GET
+            Assert.assertTrue(batchClient.poolOperations().existsPool(poolId));
+
+            long startTime = System.currentTimeMillis();
+            long elapsedTime = 0L;
+            boolean steady = false;
+            CloudPool pool = null;
+
+            // Wait for the VM to be allocated
+            while (elapsedTime < POOL_STEADY_TIMEOUT_IN_SECONDS) {
+                pool = batchClient.poolOperations().getPool(poolId);
+                Assert.assertNotNull(pool);
+
+                if (pool.allocationState() == AllocationState.STEADY) {
+                    steady = true;
+                    break;
+                }
+                System.out.println("wait 30 seconds for pool steady...");
+                Thread.sleep(30 * 1000);
+                elapsedTime = (new Date()).getTime() - startTime;
+            }
+
+            Assert.assertTrue("The pool did not reach a steady state in the allotted time", steady);
+            Assert.assertEquals((long)pool.currentDedicatedNodes(), POOL_VM_COUNT);
+            Assert.assertEquals((long)pool.currentLowPriorityNodes(), POOL_LOW_PRI_VM_COUNT);
+
+            // RESIZE
+            batchClient.poolOperations().resizePool(poolId, null, 1);
+
+            pool = batchClient.poolOperations().getPool(poolId);
+            Assert.assertEquals((long)pool.targetDedicatedNodes(), POOL_VM_COUNT);
+            Assert.assertEquals((long)pool.targetLowPriorityNodes(), 1);
+
+            // DELETE
+            boolean deleted = false;
+            batchClient.poolOperations().deletePool(poolId);
+            // Wait for the VM to be allocated
+            while (elapsedTime < POOL_STEADY_TIMEOUT_IN_SECONDS) {
+                try {
+                    batchClient.poolOperations().getPool(poolId);
+                } catch (BatchErrorException err) {
+                    if (err.body().code().equals(BatchErrorCodeStrings.PoolNotFound)) {
+                        deleted = true;
+                        break;
+                    } else {
+                        throw err;
+                    }
+                }
+                System.out.println("wait 5 seconds for pool delete...");
+                Thread.sleep(5 * 1000);
+                elapsedTime = (new Date()).getTime() - startTime;
+            }
+            Assert.assertTrue(deleted);
+        }
+        finally {
+            try {
+                if (batchClient.poolOperations().existsPool(poolId)) {
+                    batchClient.poolOperations().deletePool(poolId);
+                }
+            }
+            catch (Exception e)
+            {
+                // Ignore exception
+            }
+        }
+    }
+
+    @Test
     public void canCRUDPaaSPool() throws Exception {
         // CREATE
         String poolId = getStringWithUserNamePrefix("-testpool1");
@@ -90,7 +281,7 @@ public class PoolTests extends BatchTestBase {
         String POOL_OS_VERSION = "*";
 
         // 5 minutes
-        long POOL_STEADY_TIMEOUT = 5 * 60 * 1000;
+        long POOL_STEADY_TIMEOUT_IN_SECONDS = 5 * 60 * 1000;
 
         // Check if pool exists
         if (!batchClient.poolOperations().existsPool(poolId)) {
@@ -103,7 +294,7 @@ public class PoolTests extends BatchTestBase {
             userList.add(new UserAccount().withName("test-user-2").withPassword("kt#_gahr!@aGERDXA").withElevationLevel(ElevationLevel.ADMIN));
             PoolAddParameter addParameter = new PoolAddParameter()
                     .withId(poolId)
-                    .withTargetDedicated(POOL_VM_COUNT)
+                    .withTargetDedicatedNodes(POOL_VM_COUNT)
                     .withVmSize(POOL_VM_SIZE)
                     .withCloudServiceConfiguration(configuration)
                     .withUserAccounts(userList);
@@ -120,7 +311,7 @@ public class PoolTests extends BatchTestBase {
             CloudPool pool = null;
 
             // Wait for the VM to be allocated
-            while (elapsedTime < POOL_STEADY_TIMEOUT) {
+            while (elapsedTime < POOL_STEADY_TIMEOUT_IN_SECONDS) {
                 pool = batchClient.poolOperations().getPool(poolId);
                 Assert.assertNotNull(pool);
 
@@ -174,7 +365,7 @@ public class PoolTests extends BatchTestBase {
             boolean deleted = false;
             batchClient.poolOperations().deletePool(poolId);
             // Wait for the VM to be allocated
-            while (elapsedTime < POOL_STEADY_TIMEOUT) {
+            while (elapsedTime < POOL_STEADY_TIMEOUT_IN_SECONDS) {
                 try {
                     batchClient.poolOperations().getPool(poolId);
                 } catch (BatchErrorException err) {
@@ -192,8 +383,14 @@ public class PoolTests extends BatchTestBase {
             Assert.assertTrue(deleted);
         }
         finally {
-            if (batchClient.poolOperations().existsPool(poolId)) {
-                batchClient.poolOperations().deletePool(poolId);
+            try {
+                if (batchClient.poolOperations().existsPool(poolId)) {
+                    batchClient.poolOperations().deletePool(poolId);
+                }
+            }
+            catch (Exception e)
+            {
+                // Ignore exception
             }
         }
     }

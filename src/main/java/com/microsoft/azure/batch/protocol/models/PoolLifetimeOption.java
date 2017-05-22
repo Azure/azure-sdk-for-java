@@ -19,10 +19,7 @@ public enum PoolLifetimeOption {
     JOB_SCHEDULE("jobSchedule"),
 
     /** Enum value job. */
-    JOB("job"),
-
-    /** Enum value unmapped. */
-    UNMAPPED("unmapped");
+    JOB("job");
 
     /** The actual serialized value for a PoolLifetimeOption instance. */
     private String value;

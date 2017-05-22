@@ -24,7 +24,7 @@ public final class PoolResizeErrorCodes
     /**
      * The Batch service was unable to allocate the desired number of compute nodes within the resize timeout.
      */
-    public static final String AllocationTimedout= "AllocationTimedout";
+    public static final String AllocationTimedOut= "AllocationTimedout";
 
     /**
      * An error occurred when removing compute nodes from the pool.

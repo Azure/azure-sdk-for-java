@@ -30,8 +30,9 @@ public class NetworkConfiguration {
      * by checking if the specified VNet has any associated Network Security
      * Groups (NSG). If communication to the compute nodes in the specified
      * subnet is denied by an NSG, then the Batch service will set the state of
-     * the compute nodes to unusable. This property can only be specified for
-     * pools created with a cloudServiceConfiguration.
+     * the compute nodes to unusable. For pools created via
+     * virtualMachineConfiguration the Batch account must have
+     * poolAllocationMode userSubscription in order to use a VNet.
      */
     @JsonProperty(value = "subnetId")
     private String subnetId;

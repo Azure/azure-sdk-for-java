@@ -171,12 +171,12 @@ public class PoolOperations implements IInheritedBehaviors {
      * @param poolId The ID of the pool.
      * @param virtualMachineSize The size of virtual machines in the pool. See <a href="https://azure.microsoft.com/documentation/articles/virtual-machines-size-specs/">https://azure.microsoft.com/documentation/articles/virtual-machines-size-specs/</a> for sizes.
      * @param cloudServiceConfiguration The {@link CloudServiceConfiguration} for the pool.
-     * @param targetDedicated The desired number of compute nodes in the pool.
+     * @param targetDedicatedNodes The desired number of dedicated compute nodes in the pool.
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public void createPool(String poolId, String virtualMachineSize, CloudServiceConfiguration cloudServiceConfiguration, int targetDedicated) throws BatchErrorException, IOException {
-        createPool(poolId, virtualMachineSize, cloudServiceConfiguration, targetDedicated, null);
+    public void createPool(String poolId, String virtualMachineSize, CloudServiceConfiguration cloudServiceConfiguration, int targetDedicatedNodes) throws BatchErrorException, IOException {
+        createPool(poolId, virtualMachineSize, cloudServiceConfiguration, targetDedicatedNodes, 0, null);
     }
 
     /**
@@ -185,16 +185,33 @@ public class PoolOperations implements IInheritedBehaviors {
      * @param poolId The ID of the pool.
      * @param virtualMachineSize The size of virtual machines in the pool. See <a href="https://azure.microsoft.com/documentation/articles/virtual-machines-size-specs/">https://azure.microsoft.com/documentation/articles/virtual-machines-size-specs/</a> for sizes.
      * @param cloudServiceConfiguration The {@link CloudServiceConfiguration} for the pool.
-     * @param targetDedicated The desired number of compute nodes in the pool.
+     * @param targetDedicatedNodes The desired number of dedicated compute nodes in the pool.
+     * @param targetLowPriorityNodes The desired number of low-priority compute nodes in the pool.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
+     */
+    public void createPool(String poolId, String virtualMachineSize, CloudServiceConfiguration cloudServiceConfiguration, int targetDedicatedNodes, int targetLowPriorityNodes) throws BatchErrorException, IOException {
+        createPool(poolId, virtualMachineSize, cloudServiceConfiguration, targetDedicatedNodes, targetLowPriorityNodes, null);
+    }
+
+    /**
+     * Adds a pool to the Batch account.
+     *
+     * @param poolId The ID of the pool.
+     * @param virtualMachineSize The size of virtual machines in the pool. See <a href="https://azure.microsoft.com/documentation/articles/virtual-machines-size-specs/">https://azure.microsoft.com/documentation/articles/virtual-machines-size-specs/</a> for sizes.
+     * @param cloudServiceConfiguration The {@link CloudServiceConfiguration} for the pool.
+     * @param targetDedicatedNodes The desired number of dedicated compute nodes in the pool.
+     * @param targetLowPriorityNodes The desired number of low-priority compute nodes in the pool.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public void createPool(String poolId, String virtualMachineSize, CloudServiceConfiguration cloudServiceConfiguration, Integer targetDedicated, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+    public void createPool(String poolId, String virtualMachineSize, CloudServiceConfiguration cloudServiceConfiguration, int targetDedicatedNodes, int targetLowPriorityNodes, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         PoolAddParameter parameter = new PoolAddParameter()
                 .withId(poolId)
                 .withCloudServiceConfiguration(cloudServiceConfiguration)
-                .withTargetDedicated(targetDedicated)
+                .withTargetDedicatedNodes(targetDedicatedNodes)
+                .withTargetLowPriorityNodes(targetLowPriorityNodes)
                 .withVmSize(virtualMachineSize);
 
         createPool(parameter, additionalBehaviors);
@@ -206,12 +223,12 @@ public class PoolOperations implements IInheritedBehaviors {
      * @param poolId The ID of the pool.
      * @param virtualMachineSize The size of virtual machines in the pool. See <a href="https://azure.microsoft.com/documentation/articles/virtual-machines-size-specs/">https://azure.microsoft.com/documentation/articles/virtual-machines-size-specs/</a> for sizes.
      * @param virtualMachineConfiguration The {@link VirtualMachineConfiguration} for the pool.
-     * @param targetDedicated The desired number of compute nodes in the pool.
+     * @param targetDedicatedNodes The desired number of dedicated compute nodes in the pool.
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public void createPool(String poolId, String virtualMachineSize, VirtualMachineConfiguration virtualMachineConfiguration, int targetDedicated) throws BatchErrorException, IOException {
-        createPool(poolId, virtualMachineSize, virtualMachineConfiguration, targetDedicated, null);
+    public void createPool(String poolId, String virtualMachineSize, VirtualMachineConfiguration virtualMachineConfiguration, int targetDedicatedNodes) throws BatchErrorException, IOException {
+        createPool(poolId, virtualMachineSize, virtualMachineConfiguration, targetDedicatedNodes, 0, null);
     }
 
     /**
@@ -220,16 +237,33 @@ public class PoolOperations implements IInheritedBehaviors {
      * @param poolId The ID of the pool.
      * @param virtualMachineSize The size of virtual machines in the pool. See <a href="https://azure.microsoft.com/documentation/articles/virtual-machines-size-specs/">https://azure.microsoft.com/documentation/articles/virtual-machines-size-specs/</a> for sizes.
      * @param virtualMachineConfiguration The {@link VirtualMachineConfiguration} for the pool.
-     * @param targetDedicated The desired number of compute nodes in the pool.
+     * @param targetDedicatedNodes The desired number of dedicated compute nodes in the pool.
+     * @param targetLowPriorityNodes The desired number of low-priority compute nodes in the pool.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
+     */
+    public void createPool(String poolId, String virtualMachineSize, VirtualMachineConfiguration virtualMachineConfiguration, int targetDedicatedNodes, int targetLowPriorityNodes) throws BatchErrorException, IOException {
+        createPool(poolId, virtualMachineSize, virtualMachineConfiguration, targetDedicatedNodes, targetLowPriorityNodes, null);
+    }
+
+    /**
+     * Adds a pool to the Batch account.
+     *
+     * @param poolId The ID of the pool.
+     * @param virtualMachineSize The size of virtual machines in the pool. See <a href="https://azure.microsoft.com/documentation/articles/virtual-machines-size-specs/">https://azure.microsoft.com/documentation/articles/virtual-machines-size-specs/</a> for sizes.
+     * @param virtualMachineConfiguration The {@link VirtualMachineConfiguration} for the pool.
+     * @param targetDedicatedNodes The desired number of dedicated compute nodes in the pool.
+     * @param targetLowPriorityNodes The desired number of low-priority compute nodes in the pool.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public void createPool(String poolId, String virtualMachineSize, VirtualMachineConfiguration virtualMachineConfiguration, Integer targetDedicated, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+    public void createPool(String poolId, String virtualMachineSize, VirtualMachineConfiguration virtualMachineConfiguration, int targetDedicatedNodes, int targetLowPriorityNodes, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         PoolAddParameter parameter = new PoolAddParameter()
                 .withId(poolId)
                 .withVirtualMachineConfiguration(virtualMachineConfiguration)
-                .withTargetDedicated(targetDedicated)
+                .withTargetDedicatedNodes(targetDedicatedNodes)
+                .withTargetLowPriorityNodes(targetLowPriorityNodes)
                 .withVmSize(virtualMachineSize);
 
         createPool(parameter, additionalBehaviors);
@@ -266,53 +300,57 @@ public class PoolOperations implements IInheritedBehaviors {
      * Resizes the specified pool.
      *
      * @param poolId The ID of the pool.
-     * @param targetDedicated The desired number of compute nodes in the pool.
+     * @param targetDedicatedNodes The desired number of dedicated compute nodes in the pool.
+     * @param targetLowPriorityNodes The desired number of low-priority compute nodes in the pool.
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public void resizePool(String poolId, int targetDedicated) throws BatchErrorException, IOException {
-        resizePool(poolId, targetDedicated, null, null, null);
+    public void resizePool(String poolId, Integer targetDedicatedNodes, Integer targetLowPriorityNodes) throws BatchErrorException, IOException {
+        resizePool(poolId, targetDedicatedNodes, targetLowPriorityNodes, null, null, null);
     }
 
     /**
      * Resizes the specified pool.
      *
      * @param poolId The ID of the pool.
-     * @param targetDedicated The desired number of compute nodes in the pool.
+     * @param targetDedicatedNodes The desired number of dedicated compute nodes in the pool.
+     * @param targetLowPriorityNodes The desired number of low-priority compute nodes in the pool.
      * @param resizeTimeout The timeout for allocation of compute nodes to the pool or removal of compute nodes from the pool. If the pool has not reached the target size after this time, the resize is stopped.
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public void resizePool(String poolId, int targetDedicated, Period resizeTimeout) throws BatchErrorException, IOException {
-        resizePool(poolId, targetDedicated, resizeTimeout, null, null);
+    public void resizePool(String poolId, Integer targetDedicatedNodes, Integer targetLowPriorityNodes, Period resizeTimeout) throws BatchErrorException, IOException {
+        resizePool(poolId, targetDedicatedNodes, targetLowPriorityNodes, resizeTimeout, null, null);
     }
 
     /**
      * Resizes the specified pool.
      *
      * @param poolId The ID of the pool.
-     * @param targetDedicated The desired number of compute nodes in the pool.
+     * @param targetDedicatedNodes The desired number of dedicated compute nodes in the pool.
+     * @param targetLowPriorityNodes The desired number of low-priority compute nodes in the pool.
      * @param resizeTimeout The timeout for allocation of compute nodes to the pool or removal of compute nodes from the pool. If the pool has not reached the target size after this time, the resize is stopped.
      * @param deallocationOption Specifies when nodes may be removed from the pool, if the pool size is decreasing.
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public void resizePool(String poolId, int targetDedicated, Period resizeTimeout, ComputeNodeDeallocationOption deallocationOption) throws BatchErrorException, IOException {
-        resizePool(poolId, targetDedicated, resizeTimeout, deallocationOption, null);
+    public void resizePool(String poolId, Integer targetDedicatedNodes, Integer targetLowPriorityNodes, Period resizeTimeout, ComputeNodeDeallocationOption deallocationOption) throws BatchErrorException, IOException {
+        resizePool(poolId, targetDedicatedNodes, targetLowPriorityNodes, resizeTimeout, deallocationOption, null);
     }
 
     /**
      * Resizes the specified pool.
      *
      * @param poolId The ID of the pool.
-     * @param targetDedicated The desired number of compute nodes in the pool.
+     * @param targetDedicatedNodes The desired number of dedicated compute nodes in the pool.
+     * @param targetLowPriorityNodes The desired number of low-priority compute nodes in the pool.
      * @param resizeTimeout The timeout for allocation of compute nodes to the pool or removal of compute nodes from the pool. If the pool has not reached the target size after this time, the resize is stopped.
      * @param deallocationOption Specifies when nodes may be removed from the pool, if the pool size is decreasing.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public void resizePool(String poolId, int targetDedicated, Period resizeTimeout, ComputeNodeDeallocationOption deallocationOption, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+    public void resizePool(String poolId, Integer targetDedicatedNodes, Integer targetLowPriorityNodes, Period resizeTimeout, ComputeNodeDeallocationOption deallocationOption, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         PoolResizeOptions options = new PoolResizeOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
@@ -320,7 +358,8 @@ public class PoolOperations implements IInheritedBehaviors {
         PoolResizeParameter param = new PoolResizeParameter()
                 .withResizeTimeout(resizeTimeout)
                 .withNodeDeallocationOption(deallocationOption)
-                .withTargetDedicated(targetDedicated);
+                .withTargetDedicatedNodes(targetDedicatedNodes)
+                .withTargetLowPriorityNodes(targetLowPriorityNodes);
 
         this._parentBatchClient.protocolLayer().pools().resize(poolId, param, options);
     }

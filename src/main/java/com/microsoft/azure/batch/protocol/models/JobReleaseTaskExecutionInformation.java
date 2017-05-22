@@ -68,10 +68,21 @@ public class JobReleaseTaskExecutionInformation {
     private Integer exitCode;
 
     /**
-     * The error encountered by the Batch service when starting the task.
+     * Information describing the task failure, if any.
+     * This property is set only if the task is in the completed state and
+     * encountered a failure.
      */
-    @JsonProperty(value = "schedulingError")
-    private TaskSchedulingError schedulingError;
+    @JsonProperty(value = "failureInfo")
+    private TaskFailureInformation failureInfo;
+
+    /**
+     * The result of the task execution.
+     * If the value is 'failed', then the details of the failure can be found
+     * in the failureInfo property. Possible values include: 'success',
+     * 'failure'.
+     */
+    @JsonProperty(value = "result")
+    private TaskExecutionResult result;
 
     /**
      * Get the startTime value.
@@ -194,22 +205,42 @@ public class JobReleaseTaskExecutionInformation {
     }
 
     /**
-     * Get the schedulingError value.
+     * Get the failureInfo value.
      *
-     * @return the schedulingError value
+     * @return the failureInfo value
      */
-    public TaskSchedulingError schedulingError() {
-        return this.schedulingError;
+    public TaskFailureInformation failureInfo() {
+        return this.failureInfo;
     }
 
     /**
-     * Set the schedulingError value.
+     * Set the failureInfo value.
      *
-     * @param schedulingError the schedulingError value to set
+     * @param failureInfo the failureInfo value to set
      * @return the JobReleaseTaskExecutionInformation object itself.
      */
-    public JobReleaseTaskExecutionInformation withSchedulingError(TaskSchedulingError schedulingError) {
-        this.schedulingError = schedulingError;
+    public JobReleaseTaskExecutionInformation withFailureInfo(TaskFailureInformation failureInfo) {
+        this.failureInfo = failureInfo;
+        return this;
+    }
+
+    /**
+     * Get the result value.
+     *
+     * @return the result value
+     */
+    public TaskExecutionResult result() {
+        return this.result;
+    }
+
+    /**
+     * Set the result value.
+     *
+     * @param result the result value to set
+     * @return the JobReleaseTaskExecutionInformation object itself.
+     */
+    public JobReleaseTaskExecutionInformation withResult(TaskExecutionResult result) {
+        this.result = result;
         return this;
     }
 

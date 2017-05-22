@@ -36,7 +36,7 @@ public class NodeAgentSku {
     /**
      * The type of operating system (e.g. Windows or Linux) compatible with the
      * node agent SKU.
-     * Possible values include: 'linux', 'windows', 'unmapped'.
+     * Possible values include: 'linux', 'windows'.
      */
     @JsonProperty(value = "osType")
     private OSType osType;

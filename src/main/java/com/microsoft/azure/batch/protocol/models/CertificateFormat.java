@@ -19,10 +19,7 @@ public enum CertificateFormat {
     PFX("pfx"),
 
     /** Enum value cer. */
-    CER("cer"),
-
-    /** Enum value unmapped. */
-    UNMAPPED("unmapped");
+    CER("cer");
 
     /** The actual serialized value for a CertificateFormat instance. */
     private String value;

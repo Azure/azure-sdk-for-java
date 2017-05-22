@@ -40,8 +40,7 @@ public class CertificateReference {
      * to query for this location. For certificates with visibility of
      * 'remoteUser', a 'certs' directory is created in the user's home
      * directory (e.g., /home/{user-name}/certs) and certificates are placed in
-     * that directory. Possible values include: 'currentUser', 'localMachine',
-     * 'unmapped'.
+     * that directory. Possible values include: 'currentUser', 'localMachine'.
      */
     @JsonProperty(value = "storeLocation")
     private CertificateStoreLocation storeLocation;
