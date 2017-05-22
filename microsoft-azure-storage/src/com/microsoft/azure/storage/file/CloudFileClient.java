@@ -101,30 +101,30 @@ public final class CloudFileClient extends ServiceClient {
      */
     public CloudFileShare getShareReference(final String shareName) throws URISyntaxException, StorageException {
         Utility.assertNotNullOrEmpty("shareName", shareName);
-        return this.getShareReference(shareName, null);
+        return new CloudFileShare(shareName, this);
     }
 
-    /**
-     * Gets a {@link CloudFileShare} object with the specified name.
-     * 
-     * @param shareName
-     *            The name of the share, which must adhere to share naming rules. The share name should not
-     *            include any path separator characters (/).
-     *            Share names must be lowercase, between 3-63 characters long and must start with a letter or
-     *            number. Share names may contain only letters, numbers, and the dash (-) character.
-     * @param snapshotID
-     *            A <code>String</code> that represents the snapshot ID of the share.
-     * @return A reference to a {@link CloudFileShare} object.
-     * @throws StorageException
-     * @throws URISyntaxException
-     * 
-     * @see <a href="http://msdn.microsoft.com/en-us/library/azure/dn167011.aspx">Naming and Referencing Shares,
-     *      Directories, Files, and Metadata</a>
-     */
-    protected CloudFileShare getShareReference(final String shareName, String snapshotID) throws URISyntaxException, StorageException {
-        Utility.assertNotNullOrEmpty("shareName", shareName);
-        return new CloudFileShare(shareName, snapshotID, this);
-    }
+//    /**
+//     * Gets a {@link CloudFileShare} object with the specified name.
+//     * 
+//     * @param shareName
+//     *            The name of the share, which must adhere to share naming rules. The share name should not
+//     *            include any path separator characters (/).
+//     *            Share names must be lowercase, between 3-63 characters long and must start with a letter or
+//     *            number. Share names may contain only letters, numbers, and the dash (-) character.
+//     * @param snapshotID
+//     *            A <code>String</code> that represents the snapshot ID of the share.
+//     * @return A reference to a {@link CloudFileShare} object.
+//     * @throws StorageException
+//     * @throws URISyntaxException
+//     * 
+//     * @see <a href="http://msdn.microsoft.com/en-us/library/azure/dn167011.aspx">Naming and Referencing Shares,
+//     *      Directories, Files, and Metadata</a>
+//     */
+//    protected CloudFileShare getShareReference(final String shareName, String snapshotID) throws URISyntaxException, StorageException {
+//        Utility.assertNotNullOrEmpty("shareName", shareName);
+//        return new CloudFileShare(shareName, snapshotID, this);
+//    }
 
     /**
      * Returns an enumerable collection of shares for this File service client.
