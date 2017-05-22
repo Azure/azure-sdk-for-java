@@ -98,6 +98,12 @@ class HostNameSslBindingImpl<
     }
 
     @Override
+    public HostNameSslBindingImpl<FluentT, FluentImplT> withExistingCertificate(String certificateName) {
+        newCertificate = this.parent().manager().certificates().getByResourceGroupAsync(parent().resourceGroupName(), certificateName);
+        return this;
+    }
+
+    @Override
     public HostNameSslBindingImpl<FluentT, FluentImplT> withNewStandardSslCertificateOrder(final String certificateOrderName) {
         this.certificateInDefinition = this.parent().manager().certificateOrders().define(certificateOrderName)
                 .withExistingResourceGroup(parent().resourceGroupName())
