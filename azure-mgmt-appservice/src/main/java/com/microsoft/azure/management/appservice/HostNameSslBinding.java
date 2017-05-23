@@ -211,10 +211,10 @@ public interface HostNameSslBinding extends
 
             /**
              * Use an existing certificate in the resource group.
-             * @param certificateName the name of the certificate
+             * @param certificateNameOrThumbprint the name or the thumbprint of the certificate
              * @return the next stage of the definition
              */
-            WithSslType<ParentT> withExistingCertificate(String certificateName);
+            WithSslType<ParentT> withExistingCertificate(String certificateNameOrThumbprint);
 
             /**
              * Places a new App Service certificate order to use for the hostname.

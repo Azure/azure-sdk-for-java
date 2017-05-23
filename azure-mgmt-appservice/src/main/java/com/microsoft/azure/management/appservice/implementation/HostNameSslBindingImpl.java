@@ -98,8 +98,23 @@ class HostNameSslBindingImpl<
     }
 
     @Override
-    public HostNameSslBindingImpl<FluentT, FluentImplT> withExistingCertificate(String certificateName) {
-        newCertificate = this.parent().manager().certificates().getByResourceGroupAsync(parent().resourceGroupName(), certificateName);
+    public HostNameSslBindingImpl<FluentT, FluentImplT> withExistingCertificate(final String certificateNameOrThumbprint) {
+        newCertificate = this.parent().manager().certificates().getByResourceGroupAsync(parent().resourceGroupName(), certificateNameOrThumbprint)
+                .onErrorReturn(new Func1<Throwable, AppServiceCertificate>() {
+                    @Override
+                    public AppServiceCertificate call(Throwable throwable) {
+                        return null;
+                    }
+                })
+                .map(new Func1<AppServiceCertificate, AppServiceCertificate>() {
+                    @Override
+                    public AppServiceCertificate call(AppServiceCertificate appServiceCertificate) {
+                        if (appServiceCertificate == null) {
+                            withCertificateThumbprint(certificateNameOrThumbprint);
+                        }
+                        return appServiceCertificate;
+                    }
+                });
         return this;
     }
 
@@ -145,7 +160,9 @@ class HostNameSslBindingImpl<
         return newCertificate.doOnNext(new Action1<AppServiceCertificate>() {
             @Override
             public void call(AppServiceCertificate appServiceCertificate) {
-                withCertificateThumbprint(appServiceCertificate.thumbprint());
+                if (appServiceCertificate != null) {
+                    withCertificateThumbprint(appServiceCertificate.thumbprint());
+                }
             }
         });
     }
