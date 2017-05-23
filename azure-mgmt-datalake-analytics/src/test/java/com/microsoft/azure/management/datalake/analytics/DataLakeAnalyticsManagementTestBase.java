@@ -59,7 +59,7 @@ public class DataLakeAnalyticsManagementTestBase extends TestBase {
         // the tests are running in.
         String adlaSuffix = "azuredatalakeanalytics.net";
 
-        addTextReplacementRule("https://(.*)." + adlaSuffix, MOCK_URI);
+        addTextReplacementRule("https://(.*)." + adlaSuffix, this.mockUri());
 
         // Generate creds and a set of rest clients for catalog and job
         ApplicationTokenCredentials credentials = new AzureTestCredentials();
