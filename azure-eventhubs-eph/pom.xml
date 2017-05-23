@@ -3,7 +3,7 @@
   <parent>
 	<groupId>com.microsoft.azure</groupId>
 	<artifactId>azure-eventhubs-clients</artifactId>
-	<version>${client-current-version}</version>
+	<version>0.14.1-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>

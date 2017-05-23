@@ -5,9 +5,9 @@
   <description>libraries and extensions built on Microsoft Azure Event Hubs</description>
 
   <parent>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-eventhubs-clients</artifactId>
-    <version>${client-current-version}</version>
+	<groupId>com.microsoft.azure</groupId>
+	<artifactId>azure-eventhubs-clients</artifactId>
+	<version>0.14.1-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -20,7 +20,7 @@
 			<groupId>com.microsoft.azure</groupId> 
 			<artifactId>azure-eventhubs</artifactId>
 			<version>${project.parent.version}</version>
-            <scope>compile</scope>
+            		<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
