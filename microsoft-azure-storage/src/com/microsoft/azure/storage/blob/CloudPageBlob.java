@@ -832,8 +832,7 @@ public final class CloudPageBlob extends CloudBlob {
     @DoesServiceRequest
     public BlobOutputStream openWriteExisting(AccessCondition accessCondition, BlobRequestOptions options,
             OperationContext opContext) throws StorageException {
-        return this
-                .openOutputStreamInternal(null /* length */, null /* accessCondition */, null /* options */, null /* opContext */);
+        return this.openOutputStreamInternal(null /* length */, accessCondition, options, opContext);
     }
 
     /**

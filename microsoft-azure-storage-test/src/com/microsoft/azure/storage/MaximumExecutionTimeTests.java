@@ -191,6 +191,9 @@ public class MaximumExecutionTimeTests {
         BlobRequestOptions options = new BlobRequestOptions();
         options.setMaximumExecutionTimeInMs(5000);
 
+        // set a lower put blob threshold so that we perform multiple put block requests that timeout
+        options.setSingleBlobPutThresholdInBytes(32 * Constants.MB);
+
         CloudBlobClient blobClient = TestHelper.createCloudBlobClient();
         CloudBlobContainer container = blobClient.getContainerReference(generateRandomName("container"));
 

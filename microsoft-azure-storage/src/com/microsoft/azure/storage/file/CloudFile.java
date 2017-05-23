@@ -142,7 +142,7 @@ public final class CloudFile implements ListFileItem {
     public CloudFile(final StorageUri fileAbsoluteUri) throws StorageException, URISyntaxException {
         this(fileAbsoluteUri, null);
     }
-    
+
     /**
      * Creates an instance of the <code>CloudFile</code> class using the specified absolute URI 
      * and credentials.
@@ -171,7 +171,7 @@ public final class CloudFile implements ListFileItem {
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    public CloudFile(final StorageUri fileAbsoluteUri, final StorageCredentials credentials) throws StorageException {    
+    public CloudFile(final StorageUri fileAbsoluteUri, final StorageCredentials credentials) throws StorageException {
         this.parseQueryAndVerify(fileAbsoluteUri, credentials);
     }
 
@@ -252,7 +252,7 @@ public final class CloudFile implements ListFileItem {
      *            the operation.
      *
      * @throws StorageException
-     *             If a storage service error occurred.
+     *             If a storage service error occurred. 
      */
     @DoesServiceRequest
     public final void abortCopy(final String copyId, final AccessCondition accessCondition, FileRequestOptions options,
@@ -260,6 +260,8 @@ public final class CloudFile implements ListFileItem {
         if (opContext == null) {
             opContext = new OperationContext();
         }
+
+        //this.getShare().assertNoSnapshot();
 
         opContext.initialize();
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
@@ -466,6 +468,8 @@ public final class CloudFile implements ListFileItem {
             opContext = new OperationContext();
         }
 
+        //this.getShare().assertNoSnapshot();
+
         opContext.initialize();
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
@@ -571,6 +575,8 @@ public final class CloudFile implements ListFileItem {
             opContext = new OperationContext();
         }
 
+        //this.getShare().assertNoSnapshot();
+
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
         final FileRange range = new FileRange(offset, offset + length - 1);
@@ -586,7 +592,7 @@ public final class CloudFile implements ListFileItem {
      *            A <code>long</code> which represents the size, in bytes, of the file.
      * 
      * @throws StorageException
-     *             If a storage service error occurred.
+     *             If a storage service error occurred. 
      */
     @DoesServiceRequest
     public void create(final long size) throws StorageException {
@@ -620,6 +626,8 @@ public final class CloudFile implements ListFileItem {
         if (opContext == null) {
             opContext = new OperationContext();
         }
+
+        //this.getShare().assertNoSnapshot();
 
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
@@ -702,6 +710,8 @@ public final class CloudFile implements ListFileItem {
             opContext = new OperationContext();
         }
 
+        //this.getShare().assertNoSnapshot();
+
         opContext.initialize();
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
@@ -716,7 +726,6 @@ public final class CloudFile implements ListFileItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
-     * 
      */
     @DoesServiceRequest
     public final boolean deleteIfExists() throws StorageException {
@@ -746,6 +755,7 @@ public final class CloudFile implements ListFileItem {
     public final boolean deleteIfExists(final AccessCondition accessCondition, FileRequestOptions options,
             OperationContext opContext) throws StorageException {
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
+        //this.getShare().assertNoSnapshot();
 
         boolean exists = this.exists(true, accessCondition, options, opContext);
         if (exists) {
@@ -1354,18 +1364,18 @@ public final class CloudFile implements ListFileItem {
                     final FileAttributes retrievedAttributes = FileResponse.getFileAttributes(this.getConnection(),
                             file.getStorageUri());
 
-                    if (!options.getDisableContentMD5Validation() && options.getUseTransactionalContentMD5()
-                            && Utility.isNullOrEmpty(retrievedAttributes.getProperties().getContentMD5())) {
-                        throw new StorageException(StorageErrorCodeStrings.MISSING_MD5_HEADER, SR.MISSING_MD5,
-                                Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
-                    }
-
                     file.properties = retrievedAttributes.getProperties();
                     file.metadata = retrievedAttributes.getMetadata();
 
                     // Need to store the Content MD5 in case we fail part way through.
                     // We would still need to verify the entire range.
                     this.setContentMD5(this.getConnection().getHeaderField(Constants.HeaderConstants.CONTENT_MD5));
+
+                    if (!options.getDisableContentMD5Validation() && options.getUseTransactionalContentMD5()
+                            && Utility.isNullOrEmpty(this.getContentMD5())) {
+                        throw new StorageException(StorageErrorCodeStrings.MISSING_MD5_HEADER, SR.MISSING_MD5,
+                                Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
+                    }
 
                     this.setLockedETag(file.properties.getEtag());
                     this.setArePropertiesPopulated(true);
@@ -1855,8 +1865,7 @@ public final class CloudFile implements ListFileItem {
     @DoesServiceRequest
     public FileOutputStream openWriteExisting(AccessCondition accessCondition, FileRequestOptions options,
             OperationContext opContext) throws StorageException {
-        return this
-                .openOutputStreamInternal(null /* length */, null /* accessCondition */, null /* options */, null /* opContext */);
+        return this.openOutputStreamInternal(null /* length */, accessCondition, options, opContext);
     }
 
     /**
@@ -1943,16 +1952,18 @@ public final class CloudFile implements ListFileItem {
             opContext = new OperationContext();
         }
 
+        //this.getShare().assertNoSnapshot();
+
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient, false /* setStartTime */);
 
         if (length != null) {
+            this.create(length, accessCondition, options, opContext);
+        }
+        else {
             if (options.getStoreFileContentMD5()) {
                 throw new IllegalArgumentException(SR.FILE_MD5_NOT_POSSIBLE);
             }
 
-            this.create(length, accessCondition, options, opContext);
-        }
-        else {
             this.downloadAttributes(accessCondition, options, opContext);
             length = this.getProperties().getLength();
         }
@@ -2159,6 +2170,8 @@ public final class CloudFile implements ListFileItem {
             opContext = new OperationContext();
         }
 
+        //this.getShare().assertNoSnapshot();
+
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
         final FileRange range = new FileRange(offset, offset + length - 1);
@@ -2321,6 +2334,8 @@ public final class CloudFile implements ListFileItem {
             opContext = new OperationContext();
         }
 
+        //this.getShare().assertNoSnapshot();
+
         opContext.initialize();
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
@@ -2409,6 +2424,8 @@ public final class CloudFile implements ListFileItem {
             opContext = new OperationContext();
         }
 
+        //this.getShare().assertNoSnapshot();
+
         opContext.initialize();
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
@@ -2490,6 +2507,8 @@ public final class CloudFile implements ListFileItem {
             opContext = new OperationContext();
         }
 
+        //this.getShare().assertNoSnapshot();
+
         opContext.initialize();
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
@@ -2557,8 +2576,8 @@ public final class CloudFile implements ListFileItem {
      * @param sourceStream
      *            An {@link InputStream} object to read from.
      * @param length
-     *            A <code>long</code> which represents the length, in bytes, of the stream data. This must be great than
-     *            zero.
+     *            A <code>long</code> which represents the length, in bytes, of the stream data. This must be greater than
+     *            or equal to zero.
      * @param accessCondition
      *            An {@link AccessCondition} object which represents the access conditions for the file.
      * @param options
@@ -2573,7 +2592,7 @@ public final class CloudFile implements ListFileItem {
      * @throws IOException
      *             If an I/O exception occurred.
      * @throws StorageException
-     *             If a storage service error occurred.
+     *             If a storage service error occurred. 
      */
     @DoesServiceRequest
     public void upload(final InputStream sourceStream, final long length, final AccessCondition accessCondition,
@@ -2582,9 +2601,11 @@ public final class CloudFile implements ListFileItem {
             opContext = new OperationContext();
         }
 
+        //this.getShare().assertNoSnapshot();
+
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
-        if (length <= 0) {
+        if (length < 0) {
             throw new IllegalArgumentException(SR.INVALID_FILE_LENGTH);
         }
 
@@ -2680,7 +2701,7 @@ public final class CloudFile implements ListFileItem {
         }
 
         this.storageUri = PathUtility.stripURIQueryAndFragment(completeUri);
-        
+
         final StorageCredentialsSharedAccessSignature parsedCredentials = 
                 SharedAccessSignatureHelper.parseQuery(completeUri);
 
@@ -2697,6 +2718,13 @@ public final class CloudFile implements ListFileItem {
         catch (final URISyntaxException e) {
             throw Utility.generateNewUnexpectedStorageException(e);
         }
+
+//        final HashMap<String, String[]> queryParameters = PathUtility.parseQueryString(completeUri.getQuery());
+
+//        final String[] snapshotIDs = queryParameters.get(Constants.QueryConstants.SHARE_SNAPSHOT);
+//        if (snapshotIDs != null && snapshotIDs.length > 0) {
+//            this.getShare().snapshotID = snapshotIDs[0];
+//        }
     }
 
     protected void updateEtagAndLastModifiedFromResponse(HttpURLConnection request) {
@@ -2733,7 +2761,8 @@ public final class CloudFile implements ListFileItem {
         if (this.share == null) {
             final StorageUri shareUri = PathUtility.getShareURI(this.getStorageUri(),
                     this.fileServiceClient.isUsePathStyleUris());
-            this.share = new CloudFileShare(shareUri, this.fileServiceClient.getCredentials());
+
+            this.share = new CloudFileShare(shareUri, this.fileServiceClient.getCredentials()/*, null*/);
         }
 
         return this.share;

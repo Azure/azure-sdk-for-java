@@ -570,6 +570,11 @@ public final class StorageErrorCodeStrings {
     public static final String SHARE_DISABLED = "ShareDisabled";
 
     /**
+     * The specified share contains snapshots.
+     */
+    public static final String SHARE_HAS_SNAPSHOTS = "ShareHasSnapshots";
+
+    /**
      * The specified share was not found.
      */
     public static final String SHARE_NOT_FOUND = "ShareNotFound";
