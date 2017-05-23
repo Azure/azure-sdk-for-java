@@ -239,6 +239,7 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.20</version>
           <configuration>
+            <reuseForks>false</reuseForks>
             <includes>
               <include>**/Test*.java</include>
               <include>**/*Test.java</include>
