@@ -92,7 +92,7 @@ public class SR {
     public static final String INVALID_DATE_STRING = "Invalid Date String: %s.";
     public static final String INVALID_EDMTYPE_VALUE = "Invalid value '%s' for EdmType.";
     public static final String INVALID_ENCRYPTION_ALGORITHM = "Invalid Encryption Algorithm found on the resource. This version of the client library does not support the specified encryption algorithm.";
-    public static final String INVALID_FILE_LENGTH = "File length must be greater than 0 bytes.";
+    public static final String INVALID_FILE_LENGTH = "File length must be greater than or equal to 0 bytes.";
     public static final String INVALID_GEO_REPLICATION_STATUS = "Null or Invalid geo-replication status in response: %s.";
     public static final String INVALID_IP_ADDRESS = "Error when parsing IPv4 address: IP address '%s' is invalid.";
     public static final String INVALID_KEY = "Storage Key is not a valid base64 encoded string.";
@@ -103,6 +103,7 @@ public class SR {
     public static final String INVALID_MIME_RESPONSE = "Invalid MIME response received.";
     public static final String INVALID_NUMBER_OF_BYTES_IN_THE_BUFFER = "Page data must be a multiple of 512 bytes. Buffer currently contains %d bytes.";
     public static final String INVALID_OPERATION_FOR_A_SNAPSHOT = "Cannot perform this operation on a blob representing a snapshot.";
+    public static final String INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT = "Cannot perform this operation on a share representing a snapshot.";
     public static final String INVALID_PAGE_BLOB_LENGTH = "Page blob length must be multiple of 512.";
     public static final String INVALID_PAGE_START_OFFSET = "Page start offset must be multiple of 512.";
     public static final String INVALID_RANGE_CONTENT_MD5_HEADER = "Cannot specify x-ms-range-get-content-md5 header on ranges larger than 4 MB. Either use a BlobReadStream via openRead, or disable TransactionalMD5 via the BlobRequestOptions.";

@@ -194,6 +194,8 @@ public final class CloudFileDirectory implements ListFileItem {
             opContext = new OperationContext();
         }
 
+        //this.getShare().assertNoSnapshot();
+
         opContext.initialize();
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
@@ -277,6 +279,8 @@ public final class CloudFileDirectory implements ListFileItem {
     public boolean createIfNotExists(FileRequestOptions options, OperationContext opContext) throws StorageException {
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
+        //this.getShare().assertNoSnapshot();
+
         boolean exists = this.exists(true /* primaryOnly */, null /* accessCondition */, options, opContext);
         if (exists) {
             return false;
@@ -332,6 +336,8 @@ public final class CloudFileDirectory implements ListFileItem {
         if (opContext == null) {
             opContext = new OperationContext();
         }
+
+        //this.getShare().assertNoSnapshot();
 
         opContext.initialize();
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
@@ -512,6 +518,12 @@ public final class CloudFileDirectory implements ListFileItem {
                     OperationContext context) throws Exception {
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_OK) {
                     directory.updatePropertiesFromResponse(this.getConnection());
+//                    // Set properties
+//                    final FileDirectoryAttributes attributes =
+//                            FileResponse.getFileDirectoryAttributes(this.getConnection(), client.isUsePathStyleUris());
+//                    directory.setMetadata(attributes.getMetadata());
+//                    directory.setProperties(attributes.getProperties());
+
                     return Boolean.valueOf(true);
                 }
                 else if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
@@ -575,6 +587,8 @@ public final class CloudFileDirectory implements ListFileItem {
         if (opContext == null) {
             opContext = new OperationContext();
         }
+
+        //this.getShare().assertNoSnapshot();
 
         opContext.initialize();
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
@@ -1058,6 +1072,7 @@ public final class CloudFileDirectory implements ListFileItem {
 
             if (parentName != null) {
                 StorageUri parentURI = PathUtility.appendPathToUri(this.getShare().getStorageUri(), parentName);
+
                 this.parent = new CloudFileDirectory(parentURI, this.getServiceClient().getCredentials());
             }
         }
@@ -1145,7 +1160,7 @@ public final class CloudFileDirectory implements ListFileItem {
         }
 
         this.storageUri = PathUtility.stripURIQueryAndFragment(completeUri);
-        
+
         final StorageCredentialsSharedAccessSignature parsedCredentials = 
                 SharedAccessSignatureHelper.parseQuery(completeUri);
 
@@ -1162,6 +1177,13 @@ public final class CloudFileDirectory implements ListFileItem {
         catch (final URISyntaxException e) {
             throw Utility.generateNewUnexpectedStorageException(e);
         }
+
+//        final HashMap<String, String[]> queryParameters = PathUtility.parseQueryString(completeUri.getQuery());
+//
+//        final String[] snapshotIDs = queryParameters.get(Constants.QueryConstants.SHARE_SNAPSHOT);
+//        if (snapshotIDs != null && snapshotIDs.length > 0) {
+//            this.getShare().snapshotID = snapshotIDs[0];
+//        }
     }
 
     /**
