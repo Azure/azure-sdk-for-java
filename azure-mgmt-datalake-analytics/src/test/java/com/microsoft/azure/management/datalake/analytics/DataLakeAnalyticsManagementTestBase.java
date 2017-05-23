@@ -78,7 +78,7 @@ public class DataLakeAnalyticsManagementTestBase extends TestBase {
                     .withBaseUrl("https://{accountName}.{adlaJobDnsSuffix}")
                     .withCredentials(credentials)
                     .withLogLevel(LogLevel.BODY_AND_HEADERS)
-                    .withNetworkInterceptor(interceptor), IS_MOCKED);
+                    .withNetworkInterceptor(this.interceptor()), IS_MOCKED);
 
 
             dataLakeAnalyticsJobManagementClient = new DataLakeAnalyticsJobManagementClientImpl(restClientWithTimeout)
@@ -89,7 +89,7 @@ public class DataLakeAnalyticsManagementTestBase extends TestBase {
                     .withBaseUrl("https://{accountName}.{adlaCatalogDnsSuffix}")
                     .withCredentials(credentials)
                     .withLogLevel(LogLevel.BODY_AND_HEADERS)
-                    .withNetworkInterceptor(interceptor), IS_MOCKED);
+                    .withNetworkInterceptor(this.interceptor()), IS_MOCKED);
 
             dataLakeAnalyticsCatalogManagementClient = new DataLakeAnalyticsCatalogManagementClientImpl(catalogRestClient)
                     .withAdlaCatalogDnsSuffix(adlaSuffix);

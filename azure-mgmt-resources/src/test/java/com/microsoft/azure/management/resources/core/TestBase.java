@@ -45,7 +45,7 @@ public abstract class TestBase extends MockIntegrationTestBase {
                     .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                     .withCredentials(credentials)
                     .withLogLevel(LogLevel.BODY_AND_HEADERS)
-                    .withNetworkInterceptor(interceptor), true);
+                    .withNetworkInterceptor(this.interceptor()), true);
 
             defaultSubscription = MOCK_SUBSCRIPTION;
             System.out.println(this.mockUri());
@@ -67,7 +67,7 @@ public abstract class TestBase extends MockIntegrationTestBase {
                     .withCredentials(credentials)
                     .withLogLevel(LogLevel.BODY_AND_HEADERS)
                     .withReadTimeout(3, TimeUnit.MINUTES)
-                    .withNetworkInterceptor(interceptor), false);
+                    .withNetworkInterceptor(this.interceptor()), false);
 
             defaultSubscription = credentials.defaultSubscriptionId();
             addTextReplacementRule(defaultSubscription, MOCK_SUBSCRIPTION);

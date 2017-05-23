@@ -61,7 +61,11 @@ public class MockIntegrationTestBase {
 
     @Rule
     public TestName name = new TestName();
-    public static Interceptor interceptor;
+    private Interceptor interceptor;
+
+    protected Interceptor interceptor() {
+        return this.interceptor;
+    }
 
     protected String mockUri() {
         return "http://" + HOST + ":" + this.instanceRule.port();
@@ -102,7 +106,7 @@ public class MockIntegrationTestBase {
             testRecord = new TestRecord();
         }
 
-        interceptor = new Interceptor() {
+        this.interceptor = new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 if (IS_MOCKED) {
