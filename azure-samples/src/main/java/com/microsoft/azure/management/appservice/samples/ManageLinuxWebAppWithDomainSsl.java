@@ -157,7 +157,7 @@ public final class ManageLinuxWebAppWithDomainSsl {
                     .withManagedHostnameBindings(domain, app2Name)
                     .defineSslBinding()
                         .forHostname(app2Name + "." + domainName)
-                        .withPfxCertificateToUpload(new File(pfxPath), certPassword)
+                        .withExistingCertificate(app1.hostNameSslStates().get(app1Name + "." + domainName).thumbprint())
                         .withSniBasedSsl()
                         .attach()
                     .apply();
@@ -198,7 +198,7 @@ public final class ManageLinuxWebAppWithDomainSsl {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                    .withLogLevel(LogLevel.BODY)
+                    .withLogLevel(LogLevel.BODY_AND_HEADERS)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
