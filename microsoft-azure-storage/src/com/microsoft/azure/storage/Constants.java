@@ -500,7 +500,12 @@ public final class Constants {
          * The blob sequence number equal condition header.
          */
         public static final String IF_SEQUENCE_NUMBER_EQUAL = PREFIX_FOR_STORAGE_HEADER + "if-sequence-number-eq";
-        
+
+        /**
+         * Specifies snapshots are to be included.
+         */
+        public static final String INCLUDE_SNAPSHOTS_VALUE = "include";
+
         /**
          * The header that specifies the lease action to perform
          */
@@ -656,7 +661,7 @@ public final class Constants {
         /**
          * Specifies the value to use for UserAgent header.
          */
-        public static final String USER_AGENT_VERSION = "5.1.1";
+        public static final String USER_AGENT_VERSION = "5.2.0";
 
         /**
          * The default type for content-type and accept
@@ -807,6 +812,11 @@ public final class Constants {
          * The query component for snapshot time.
          */
         public static final String SNAPSHOT = "snapshot";
+
+        /**
+         * The query component for snapshot time.
+         */
+        public static final String SHARE_SNAPSHOT = "sharesnapshot";
 
         /**
          * The query component for the SAS start partition key.
