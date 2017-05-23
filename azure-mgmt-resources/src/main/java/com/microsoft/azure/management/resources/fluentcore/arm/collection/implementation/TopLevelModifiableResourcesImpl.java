@@ -98,7 +98,9 @@ public abstract class TopLevelModifiableResourcesImpl<
 
     @Override
     public void deleteByIds(Collection<String> ids) {
-        this.deleteByIdsAsync(ids).toBlocking().last();
+        if (ids != null && !ids.isEmpty()) {
+            this.deleteByIdsAsync(ids).toBlocking().last();
+        }
     }
 
     @Override
