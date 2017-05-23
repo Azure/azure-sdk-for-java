@@ -118,7 +118,8 @@ public final class ExecutionEngine {
                 try {
                     currResult.setStatusCode(request.getResponseCode());
                     currResult.setStatusMessage(request.getResponseMessage());
-                } finally {
+                }
+                finally {
                     currResult.setStopDate(new Date());
                 }
 
