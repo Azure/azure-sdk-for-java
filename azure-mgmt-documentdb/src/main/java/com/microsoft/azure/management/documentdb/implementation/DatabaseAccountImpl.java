@@ -6,19 +6,14 @@
 package com.microsoft.azure.management.documentdb.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.documentdb.DatabaseAccount;
-import com.microsoft.azure.management.documentdb.Location;
-import com.microsoft.azure.management.documentdb.DatabaseAccountKind;
-import com.microsoft.azure.management.documentdb.DatabaseAccountOfferType;
-import com.microsoft.azure.management.documentdb.ConsistencyPolicy;
-import com.microsoft.azure.management.documentdb.KeyKind;
-import com.microsoft.azure.management.documentdb.DefaultConsistencyLevel;
+import com.microsoft.azure.management.documentdb.*;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import rx.Observable;
 import rx.functions.Func1;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -40,13 +35,7 @@ class DatabaseAccountImpl
 
     DatabaseAccountImpl(String name, DatabaseAccountInner innerObject, DocumentDBManager manager) {
         super(fixDBName(name), innerObject, manager);
-
         this.failoverPolicies = new ArrayList<FailoverPolicyInner>();
-        if (this.inner().failoverPolicies() != null) {
-            for (FailoverPolicyInner failoverPolicy : this.inner().failoverPolicies()) {
-                this.failoverPolicies.add(failoverPolicy);
-            }
-        }
     }
 
     @Override
@@ -145,37 +134,52 @@ class DatabaseAccountImpl
     }
 
     @Override
-    public DatabaseAccountImpl withReadableFailover(Region region) {
+    public DatabaseAccountImpl withWriteReplication(Region region) {
         FailoverPolicyInner failoverPolicyInner = new FailoverPolicyInner();
         failoverPolicyInner.withLocationName(region.name());
         this.hasFailoverPolicyChanges = true;
-        this.failoverPolicies.clear();
-        this.failoverPolicies.add(0, failoverPolicyInner);
-        return this;
-    }
-
-    @Override
-    public DatabaseAccountImpl withWritableFailover(Region region) {
-        FailoverPolicyInner failoverPolicyInner = new FailoverPolicyInner();
-        failoverPolicyInner.withLocationName(region.name());
         this.failoverPolicies.add(failoverPolicyInner);
         return this;
     }
 
     @Override
-    public DatabaseAccountImpl withEventualConsistencyPolicy() {
+    public DatabaseAccountImpl withReadReplication(Region region) {
+        this.ensureFailoverIsInitialized();
+        FailoverPolicyInner failoverPolicyInner = new FailoverPolicyInner();
+        failoverPolicyInner.withLocationName(region.name());
+        failoverPolicyInner.withFailoverPriority(this.failoverPolicies.size());
+        this.hasFailoverPolicyChanges = true;
+        this.failoverPolicies.add(failoverPolicyInner);
+        return this;
+    }
+
+    @Override
+    public DatabaseAccountImpl withoutReadReplication(Region region) {
+        this.ensureFailoverIsInitialized();
+        for (int i = 1; i < this.failoverPolicies.size(); i++) {
+            if (this.failoverPolicies.get(i).locationName().equalsIgnoreCase(region.name())) {
+                this.failoverPolicies.remove(i);
+                break;
+            }
+        }
+
+        return this;
+    }
+
+    @Override
+    public DatabaseAccountImpl withEventualConsistency() {
         this.setConsistencyPolicy(DefaultConsistencyLevel.EVENTUAL, 0, 0);
         return this;
     }
 
     @Override
-    public DatabaseAccountImpl withSessionConsistencyPolicy() {
+    public DatabaseAccountImpl withSessionConsistency() {
         this.setConsistencyPolicy(DefaultConsistencyLevel.SESSION, 0, 0);
         return this;
     }
 
     @Override
-    public DatabaseAccountImpl withBoundedStalenessConsistencyPolicy(int maxStalenessPrefix, int maxIntervalInSeconds) {
+    public DatabaseAccountImpl withBoundedStalenessConsistency(int maxStalenessPrefix, int maxIntervalInSeconds) {
         this.setConsistencyPolicy(DefaultConsistencyLevel.BOUNDED_STALENESS,
                 maxStalenessPrefix,
                 maxIntervalInSeconds);
@@ -183,7 +187,7 @@ class DatabaseAccountImpl
     }
 
     @Override
-    public DatabaseAccountImpl withStrongConsistencyPolicy() {
+    public DatabaseAccountImpl withStrongConsistency() {
         this.setConsistencyPolicy(DefaultConsistencyLevel.STRONG, 0, 0);
         return this;
     }
@@ -191,20 +195,11 @@ class DatabaseAccountImpl
 
     @Override
     public Observable<DatabaseAccount> createResourceAsync() {
-        if(this.isInCreateMode() || !this.hasFailoverPolicyChanges) {
-            return this.doDatabaseUpdateCreate();
-        }else {
-            return this.updateFailoverPriorityAsync()
-                .flatMap(new Func1<DatabaseAccount, Observable<DatabaseAccount>>() {
-                    @Override
-                    public Observable<DatabaseAccount> call(DatabaseAccount databaseAccount) {
-                        return DatabaseAccountImpl.this.doDatabaseUpdateCreate();
-                    }
-                });
-        }
+        return this.doDatabaseUpdateCreate();
     }
 
     private DatabaseAccountCreateUpdateParametersInner createUpdateParametersInner(DatabaseAccountInner inner) {
+        this.ensureFailoverIsInitialized();
         DatabaseAccountCreateUpdateParametersInner createUpdateParametersInner =
                 new DatabaseAccountCreateUpdateParametersInner();
         createUpdateParametersInner.withLocation(this.regionName().toLowerCase());
@@ -214,12 +209,7 @@ class DatabaseAccountImpl
         createUpdateParametersInner.withIpRangeFilter(inner.ipRangeFilter());
         createUpdateParametersInner.withKind(inner.kind());
         createUpdateParametersInner.withTags(inner.getTags());
-        if (this.isInCreateMode()) {
-            this.addLocationsForCreateUpdateParameters(createUpdateParametersInner, this.failoverPolicies);
-        } else {
-            this.addLocationsForCreateUpdateParameters(createUpdateParametersInner, this.inner().failoverPolicies());
-        }
-
+        this.addLocationsForCreateUpdateParameters(createUpdateParametersInner, this.failoverPolicies);
         return createUpdateParametersInner;
     }
 
@@ -266,6 +256,7 @@ class DatabaseAccountImpl
             public DatabaseAccount call(Void voidInner) {
                 self.inner().failoverPolicies().clear();
                 self.inner().failoverPolicies().addAll(self.failoverPolicies);
+                self.failoverPolicies.clear();
                 return self;
             }
         });
@@ -282,10 +273,35 @@ class DatabaseAccountImpl
                 .flatMap(new Func1<DatabaseAccountInner, Observable<? extends DatabaseAccount>>() {
                     @Override
                     public Observable<? extends DatabaseAccount> call(DatabaseAccountInner databaseAccountInner) {
+                        self.setInner(databaseAccountInner);
+                        self.failoverPolicies.clear();
+                        self.hasFailoverPolicyChanges = false;
                         return manager().databaseAccounts().getByResourceGroupAsync(
                                 resourceGroupName(),
                                 name());
                     }
                 });
+    }
+
+    private void ensureFailoverIsInitialized() {
+        if (this.isInCreateMode()) {
+            return;
+        }
+
+        if (!this.hasFailoverPolicyChanges) {
+            this.failoverPolicies.clear();
+            this.inner().failoverPolicies().sort(new Comparator<FailoverPolicyInner>() {
+                @Override
+                public int compare(FailoverPolicyInner o1, FailoverPolicyInner o2) {
+                    return o1.failoverPriority().compareTo(o2.failoverPriority());
+                }
+            });
+
+            for (int i = 0; i < this.inner().failoverPolicies().size(); i++) {
+                this.failoverPolicies.add(this.inner().failoverPolicies().get(i));
+            }
+
+            this.hasFailoverPolicyChanges = true;
+        }
     }
 }

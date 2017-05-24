@@ -111,8 +111,8 @@ public interface DatabaseAccount extends
             DefinitionStages.Blank,
             DefinitionStages.WithGroup,
             DefinitionStages.WithKind,
-            DefinitionStages.WithReadLocation,
-            DefinitionStages.WithWriteLocations,
+            DefinitionStages.WithWriteReplication,
+            DefinitionStages.WithReadReplication,
             DefinitionStages.WithCreate {
 
     }
@@ -143,7 +143,7 @@ public interface DatabaseAccount extends
              * The database account kind for the DocumentDB account.
              * @return the next stage of the definition
              */
-            WithReadLocation withKind(DatabaseAccountKind kind);
+            WithConsistencyPolicy withKind(DatabaseAccountKind kind);
         }
 
         /**
@@ -154,13 +154,13 @@ public interface DatabaseAccount extends
              * The eventual consistency policy for the DocumentDB account.
              * @return the next stage of the definition
              */
-            WithCreate withEventualConsistencyPolicy();
+            WithWriteReplication withEventualConsistency();
 
             /**
              * The session consistency policy for the DocumentDB account.
              * @return the next stage of the definition
              */
-            WithCreate withSessionConsistencyPolicy();
+            WithWriteReplication withSessionConsistency();
 
             /**
              * The bounded staleness consistency policy for the DocumentDB account.
@@ -168,13 +168,13 @@ public interface DatabaseAccount extends
              * @param maxIntervalInSeconds the max interval in seconds
              * @return the next stage of the definition
              */
-            WithCreate withBoundedStalenessConsistencyPolicy(int maxStalenessPrefix, int maxIntervalInSeconds);
+            WithWriteReplication withBoundedStalenessConsistency(int maxStalenessPrefix, int maxIntervalInSeconds);
 
             /**
              * The strong consistency policy for the DocumentDB account.
              * @return the next stage of the definition
              */
-            WithCreate withStrongConsistencyPolicy();
+            WithCreate withStrongConsistency();
         }
 
         /**
@@ -194,25 +194,25 @@ public interface DatabaseAccount extends
         /**
          * The stage of the document db definition allowing the definition of a read location.
          */
-        interface WithReadLocation {
+        interface WithWriteReplication {
             /**
              * A georeplication location for the DocumentDB account.
              * @param region the region for the location
              * @return the next stage
              */
-            WithCreate withReadableFailover(Region region);
+            WithCreate withWriteReplication(Region region);
         }
 
         /**
          * The stage of the document db definition allowing the definition of a write location.
          */
-        interface WithWriteLocations {
+        interface WithReadReplication {
             /**
              * A georeplication location for the DocumentDB account.
              * @param region the region for the location
              * @return the next stage
              */
-            WithCreate withWritableFailover(Region region);
+            WithCreate withReadReplication(Region region);
         }
 
         /**
@@ -223,7 +223,7 @@ public interface DatabaseAccount extends
         interface WithCreate extends
             Creatable<DatabaseAccount>,
             WithConsistencyPolicy,
-                WithWriteLocations,
+                WithReadReplication,
             WithIpRangeFilter {
         }
     }
@@ -232,8 +232,7 @@ public interface DatabaseAccount extends
      * Grouping of document db update stages.
      */
     interface Update extends
-        UpdateStages.WithReadLocation,
-        UpdateStages.WithWriteLocations,
+            UpdateStages.WithReadLocations,
         UpdateStages.WithOptionals {
     }
 
@@ -252,27 +251,23 @@ public interface DatabaseAccount extends
         }
 
         /**
-         * The stage of the document db definition allowing the definition of a read location.
-         */
-        interface WithReadLocation {
-            /**
-             * A georeplication location for the DocumentDB account.
-             * @param region the region for the location
-             * @return the next stage
-             */
-            WithWriteLocations withReadableFailover(Region region);
-        }
-
-        /**
          * The stage of the document db definition allowing the definition of a write location.
          */
-        interface WithWriteLocations extends WithOptionals {
+        interface WithReadLocations
+                extends Appliable<DatabaseAccount> {
             /**
              * A georeplication location for the DocumentDB account.
              * @param region the region for the location
              * @return the next stage
              */
-            WithWriteLocations withWritableFailover(Region region);
+            WithReadLocations withReadReplication(Region region);
+
+            /**
+             * A georeplication location for the DocumentDB account.
+             * @param region the region for the location
+             * @return the next stage
+             */
+            WithReadLocations withoutReadReplication(Region region);
         }
 
         /**
@@ -283,13 +278,13 @@ public interface DatabaseAccount extends
              * The consistency policy for the DocumentDB account.
              * @return the next stage of the definition
              */
-            WithOptionals withEventualConsistencyPolicy();
+            WithOptionals withEventualConsistency();
 
             /**
              * The consistency policy for the DocumentDB account.
              * @return the next stage of the definition
              */
-            WithOptionals withSessionConsistencyPolicy();
+            WithOptionals withSessionConsistency();
 
             /**
              * The consistency policy for the DocumentDB account.
@@ -297,13 +292,13 @@ public interface DatabaseAccount extends
              * @param maxIntervalInSeconds the max interval in seconds
              * @return the next stage of the definition
              */
-            WithOptionals withBoundedStalenessConsistencyPolicy(int maxStalenessPrefix, int maxIntervalInSeconds);
+            WithOptionals withBoundedStalenessConsistency(int maxStalenessPrefix, int maxIntervalInSeconds);
 
             /**
              * The consistency policy for the DocumentDB account.
              * @return the next stage of the definition
              */
-            WithOptionals withStrongConsistencyPolicy();
+            WithOptionals withStrongConsistency();
         }
 
         /**
