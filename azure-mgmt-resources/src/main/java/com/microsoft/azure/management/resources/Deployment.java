@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
 import com.microsoft.azure.management.apigeneration.LangMethodDefinition.LangMethodType;
@@ -122,7 +121,6 @@ public interface Deployment extends
      * Cancel a currently running template deployment asynchronously.
      * @return a representation of the deferred computation of this call
      */
-    @Beta
     @Method
     Completable cancelAsync();
 
@@ -132,7 +130,6 @@ public interface Deployment extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta
     @Method
     ServiceFuture<Void> cancelAsync(ServiceCallback<Void> callback);
 
@@ -147,10 +144,9 @@ public interface Deployment extends
     /**
      * Exports a deployment template asynchronously.
      *
-     * @return observable to the export result
+     * @return a representation of the deferred computation of this call returning the export result
      */
     @Method
-    @Beta
     Observable<DeploymentExportResult> exportTemplateAsync();
 
     /**
@@ -160,7 +156,6 @@ public interface Deployment extends
      * @return a handle to cancel the request
      */
     @Method
-    @Beta
     ServiceFuture<DeploymentExportResult> exportTemplateAsync(ServiceCallback<DeploymentExportResult> callback);
 
     /**
