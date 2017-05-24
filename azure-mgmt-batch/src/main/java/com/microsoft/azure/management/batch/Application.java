@@ -19,6 +19,7 @@ import java.util.Map;
  * An immutable client-side representation of an Azure Batch account application.
  */
 @Fluent
+// TODO: This should be renamed as BatchApplication in 2.0
 public interface Application extends
         ExternalChildResource<Application, BatchAccount>,
         HasInner<ApplicationInner> {

@@ -20,6 +20,7 @@ import rx.Completable;
  * An immutable client-side representation of an Azure Batch application package.
  */
 @Fluent
+// TODO: This should be renamed as BatchApplicationPackage in 2.0
 public interface ApplicationPackage extends
         ExternalChildResource<ApplicationPackage, Application>,
         HasInner<ApplicationPackageInner> {
