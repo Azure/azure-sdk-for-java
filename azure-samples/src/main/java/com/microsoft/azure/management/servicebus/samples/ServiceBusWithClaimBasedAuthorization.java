@@ -15,7 +15,7 @@ import com.microsoft.azure.management.servicebus.NamespaceAuthorizationRule;
 import com.microsoft.azure.management.servicebus.NamespaceSku;
 import com.microsoft.azure.management.servicebus.Queue;
 import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
-import com.microsoft.azure.management.servicebus.Subscription;
+import com.microsoft.azure.management.servicebus.ServiceBusSubscription;
 import com.microsoft.azure.management.servicebus.Topic;
 import com.microsoft.rest.LogLevel;
 import com.microsoft.windowsazure.Configuration;
@@ -82,10 +82,10 @@ public final class ServiceBusWithClaimBasedAuthorization {
             System.out.println("Creating a subscription in the topic using update on topic");
             topic = topic.update().withNewSubscription(subscription1Name).apply();
 
-            Subscription subscription1 = topic.subscriptions().getByName(subscription1Name);
+            ServiceBusSubscription subscription1 = topic.subscriptions().getByName(subscription1Name);
 
             System.out.println("Creating another subscription in the topic using direct create method for subscription");
-            Subscription subscription2 = topic.subscriptions().define(subscription2Name).create();
+            ServiceBusSubscription subscription2 = topic.subscriptions().define(subscription2Name).create();
 
             Utils.print(subscription1);
             Utils.print(subscription2);

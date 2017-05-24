@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
@@ -35,27 +34,25 @@ public interface Providers extends
      * Unregisters provider from a subscription asynchronously.
      *
      * @param resourceProviderNamespace Namespace of the resource provider
-     * @return observable to the ProviderInner object wrapped in {@link ServiceResponse} if successful
+     * @return a representation of the deferred computation of this call returning the unregistered Provider if successful
      */
-    @Beta
     Observable<Provider> unregisterAsync(String resourceProviderNamespace);
 
     /**
      * Unregisters provider from a subscription asynchronously.
      *
-     * @param resourceProviderNamespace Namespace of the resource provider
+     * @param resourceProviderNamespace namespace of the resource provider
      * @param callback the callback to call on success or failure with the ProviderInner object wrapped as parameter if successful
      * @return a handle to cancel the request
      */
-    @Beta
     @Method
     ServiceFuture<Provider> unregisterAsync(String resourceProviderNamespace, ServiceCallback<Provider> callback);
 
     /**
      * Registers provider to be used with a subscription.
      *
-     * @param resourceProviderNamespace Namespace of the resource provider
-     * @return the ProviderInner object wrapped in {@link ServiceResponse} if successful
+     * @param resourceProviderNamespace namespace of the resource provider
+     * @return the registered provider
      */
     Provider register(String resourceProviderNamespace);
 
@@ -63,9 +60,8 @@ public interface Providers extends
      * Registers provider to be used with a subscription asynchronously.
      *
      * @param resourceProviderNamespace Namespace of the resource provider
-     * @return observable to the ProviderInner object wrapped in {@link ServiceResponse} if successful
+     * @return a representation of the deferred computation of this call returning the registered provider if successful
      */
-    @Beta
     Observable<Provider> registerAsync(String resourceProviderNamespace);
 
     /**
@@ -75,15 +71,13 @@ public interface Providers extends
      * @param callback the callback to call on success or failure with the ProviderInner object wrapped as parameter if successful
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<Provider> registerAsync(String resourceProviderNamespace, ServiceCallback<Provider> callback);
 
     /**
      * Gets the information about a provider from Azure based on the provider name.
      *
      * @param name the name of the provider
-     * @return an observable of the immutable representation of the Provider
+     * @return a representation of the deferred computation of this call returning the found provider, if any
      */
-    @Beta
     Observable<Provider> getByNameAsync(String name);
 }

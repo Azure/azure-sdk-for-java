@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.resources.fluentcore.arm.collection;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -25,9 +24,9 @@ public interface SupportsGettingByParent<T, ParentT extends Resource & HasResour
     /**
      * Gets the information about a resource from Azure based on the resource id.
      *
-     * @param resourceGroup the name of resource group.
-     * @param parentName the name of parent resource.
-     * @param name the name of resource.
+     * @param resourceGroup the name of resource group
+     * @param parentName the name of parent resource
+     * @param name the name of resource
      * @return an immutable representation of the resource
      */
     T getByParent(String resourceGroup, String parentName, String name);
@@ -35,8 +34,8 @@ public interface SupportsGettingByParent<T, ParentT extends Resource & HasResour
     /**
      * Gets the information about a resource from Azure based on the resource id.
      *
-     * @param parentResource the instance of parent resource.
-     * @param name the name of resource.
+     * @param parentResource the instance of parent resource
+     * @param name the name of resource
      * @return an immutable representation of the resource
      */
     T getByParent(ParentT parentResource, String name);
@@ -44,12 +43,11 @@ public interface SupportsGettingByParent<T, ParentT extends Resource & HasResour
     /**
      * Gets the information about a resource from Azure based on the resource id.
      *
-     * @param resourceGroup the name of resource group.
-     * @param parentName the name of parent resource.
-     * @param name the name of resource.
-     * @return Observable to an immutable representation of the resource
+     * @param resourceGroup the name of resource group
+     * @param parentName the name of parent resource
+     * @param name the name of resource
+     * @return a representation of the deferred computation of this call returning the found resource
      */
-    @Beta
     Observable<T> getByParentAsync(String resourceGroup, String parentName, String name);
 
     /**
@@ -57,8 +55,7 @@ public interface SupportsGettingByParent<T, ParentT extends Resource & HasResour
      *
      * @param parentResource the instance of parent resource.
      * @param name the name of resource.
-     * @return Observable to an immutable representation of the resource
+     * @return a representation of the deferred computation of this call returning the found resource
      */
-    @Beta
     Observable<T> getByParentAsync(ParentT parentResource, String name);
 }

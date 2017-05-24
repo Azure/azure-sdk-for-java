@@ -5,11 +5,14 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayCookieBasedAffinity;
+import com.microsoft.azure.management.network.ApplicationGatewayProbe;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 
@@ -34,6 +37,15 @@ class ApplicationGatewayBackendHttpConfigurationImpl
     @Override
     public String name() {
         return this.inner().name();
+    }
+
+    @Override
+    public ApplicationGatewayProbe probe() {
+        if (this.parent().probes() != null && this.inner().probe() != null) {
+            return this.parent().probes().get(ResourceUtils.nameFromResourceId(this.inner().probe().id()));
+        } else {
+            return null;
+        }
     }
 
     // Verbs
@@ -93,6 +105,24 @@ class ApplicationGatewayBackendHttpConfigurationImpl
     @Override
     public ApplicationGatewayBackendHttpConfigurationImpl withRequestTimeout(int seconds) {
         this.inner().withRequestTimeout(seconds);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayBackendHttpConfigurationImpl withProbe(String name) {
+        if (name == null) {
+            return this.withoutProbe();
+        } else {
+            SubResource probeRef = new SubResource()
+                .withId(this.parent().futureResourceId() + "/probes/" + name);
+            this.inner().withProbe(probeRef);
+            return this;
+        }
+    }
+
+    @Override
+    public ApplicationGatewayBackendHttpConfigurationImpl withoutProbe() {
+        this.inner().withProbe(null);
         return this;
     }
 }

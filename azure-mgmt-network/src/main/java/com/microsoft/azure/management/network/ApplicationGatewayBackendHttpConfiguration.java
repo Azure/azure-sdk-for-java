@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayBackendHttpSettingsInner;
@@ -17,10 +18,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
- * An immutable client-side representation of an application gateway's backend HTTP configuration.
+ * A client-side representation of an application gateway's backend HTTP configuration.
  */
 @Fluent()
-@Beta
 public interface ApplicationGatewayBackendHttpConfiguration extends
     HasInner<ApplicationGatewayBackendHttpSettingsInner>,
     ChildResource<ApplicationGateway>,
@@ -37,7 +37,12 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
      */
     int requestTimeout();
 
-    //TODO ApplicationGatewayProbe probe();
+    /**
+     * @return the probe associated with this backend
+     */
+    @Beta(SinceVersion.V1_1_0)
+    ApplicationGatewayProbe probe();
+
     //TODO Map<String, ApplicationGatewayCertificate> authenticationCertificates()
 
     /**
@@ -91,6 +96,23 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
             WithAttach<ParentT> withRequestTimeout(int seconds);
         }
 
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to associate an existing probe.
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         */
+        interface WithProbe<ParentT> {
+            /**
+             * Specifies an existing probe on this application gateway to associate with this backend.
+             * <p>
+             * If the probe with the specified name does not yet exist, it must be defined separately in the optional part
+             * of the application gateway definition. This only adds a reference to the probe by its name.
+             * @param name the name of an existing probe
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_1_0)
+            WithAttach<ParentT> withProbe(String name);
+        }
+
         /** The final stage of an application gateway backend HTTP configuration.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the definition
@@ -102,7 +124,8 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
             WithPort<ParentT>,
             WithAffinity<ParentT>,
             WithProtocol<ParentT>,
-            WithRequestTimeout<ParentT> {
+            WithRequestTimeout<ParentT>,
+            WithProbe<ParentT> {
         }
     }
 
@@ -160,6 +183,30 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
              */
             Update withRequestTimeout(int seconds);
         }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to associate an existing probe.
+         */
+        interface WithProbe {
+            /**
+             * Specifies an existing probe on this application gateway to associate with this backend.
+             * <p>
+             * If the probe with the specified name does not yet exist, it must be defined separately in the optional part
+             * of the application gateway definition. This only adds a reference to the probe by its name.
+             * @param name the name of an existing probe
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_1_0)
+            Update withProbe(String name);
+
+            /**
+             * Removes the association with a probe.
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_1_0)
+            @Method
+            Update withoutProbe();
+        }
     }
 
     /**
@@ -170,7 +217,8 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
         UpdateStages.WithPort,
         UpdateStages.WithAffinity,
         UpdateStages.WithProtocol,
-        UpdateStages.WithRequestTimeout {
+        UpdateStages.WithRequestTimeout,
+        UpdateStages.WithProbe {
     }
 
     /**
@@ -243,6 +291,23 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
              */
             @Method
             WithAttach<ParentT> withoutCookieBasedAffinity();
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to associate an existing probe.
+         * @param <ParentT> the stage of the parent application gateway update to return to after attaching this definition
+         */
+        interface WithProbe<ParentT> {
+            /**
+             * Specifies an existing probe on this application gateway to associate with this backend.
+             * <p>
+             * If the probe with the specified name does not yet exist, it must be defined separately in the optional part
+             * of the application gateway definition. This only adds a reference to the probe by its name.
+             * @param name the name of an existing probe
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_1_0)
+            WithAttach<ParentT> withProbe(String name);
         }
     }
 

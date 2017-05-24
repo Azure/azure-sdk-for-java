@@ -31,7 +31,7 @@ public abstract class TestBase extends MockIntegrationTestBase {
 
     @Before
     public void setup() throws Exception {
-        addTextReplacementRule("https://management.azure.com/", MOCK_URI + "/");
+        addTextReplacementRule("https://management.azure.com/", this.mockUri() + "/");
         setupTest(name.getMethodName());
         ApplicationTokenCredentials credentials;
         RestClient restClient;
@@ -40,15 +40,15 @@ public abstract class TestBase extends MockIntegrationTestBase {
         if (IS_MOCKED) {
             credentials = new AzureTestCredentials();
             restClient = buildRestClient(new RestClient.Builder()
-                    .withBaseUrl(MOCK_URI + "/")
+                    .withBaseUrl(this.mockUri() + "/")
                     .withSerializerAdapter(new AzureJacksonAdapter())
                     .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                     .withCredentials(credentials)
                     .withLogLevel(LogLevel.BODY_AND_HEADERS)
-                    .withNetworkInterceptor(interceptor), true);
+                    .withNetworkInterceptor(this.interceptor()), true);
 
             defaultSubscription = MOCK_SUBSCRIPTION;
-            System.out.println(MOCK_URI);
+            System.out.println(this.mockUri());
             out = System.out;
             System.setOut(new PrintStream(new OutputStream() {
                 public void write(int b) {
@@ -67,7 +67,7 @@ public abstract class TestBase extends MockIntegrationTestBase {
                     .withCredentials(credentials)
                     .withLogLevel(LogLevel.BODY_AND_HEADERS)
                     .withReadTimeout(3, TimeUnit.MINUTES)
-                    .withNetworkInterceptor(interceptor), false);
+                    .withNetworkInterceptor(this.interceptor()), false);
 
             defaultSubscription = credentials.defaultSubscriptionId();
             addTextReplacementRule(defaultSubscription, MOCK_SUBSCRIPTION);

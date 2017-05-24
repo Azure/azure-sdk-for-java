@@ -5,7 +5,6 @@
  */
 package com.microsoft.azure.management.trafficmanager;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
@@ -53,10 +52,8 @@ public interface TrafficManagerProfiles extends
      * Asynchronously checks that the DNS name is valid for traffic manager profile and is not in use.
      *
      * @param dnsNameLabel the DNS name to check
-     * @return observable to response containing whether the DNS is available to be used for a traffic manager profile
-     *          and other info if not
+     * @return a representation of the deferred computation of this call, returning whether the DNS is available to be used for a traffic manager profile and other info if not
      */
-    @Beta
     Observable<CheckProfileDnsNameAvailabilityResult> checkDnsNameAvailabilityAsync(String dnsNameLabel);
 
     /**

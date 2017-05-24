@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.resources.fluentcore.arm.collection;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
@@ -37,7 +36,6 @@ public interface SupportsDeletingByParent {
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<Void> deleteByParentAsync(String groupName, String parentName, String name, ServiceCallback<Void> callback);
 
     /**
@@ -48,6 +46,5 @@ public interface SupportsDeletingByParent {
      * @param name The name of the resource
      * @return a representation of the deferred computation of this call
      */
-    @Beta
     Completable deleteByParentAsync(String groupName, String parentName, String name);
 }
