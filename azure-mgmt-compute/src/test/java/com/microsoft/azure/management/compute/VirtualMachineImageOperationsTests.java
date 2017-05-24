@@ -62,6 +62,14 @@ public class VirtualMachineImageOperationsTests extends ComputeManagementTest {
         for (DataDiskImage diskImage : firstVMImage.dataDiskImages().values()) {
             Assert.assertNotNull(diskImage.lun());
         }
+
+        VirtualMachineImage vmImage = computeManager.virtualMachineImages()
+            .getImage(Region.US_EAST, firstVMImage.publisherName(), firstVMImage.offer(), firstVMImage.sku(), firstVMImage.version());
+        Assert.assertNotNull(vmImage);
+
+        vmImage = computeManager.virtualMachineImages()
+            .getImage("eastus", firstVMImage.publisherName(), firstVMImage.offer(), firstVMImage.sku(), firstVMImage.version());
+        Assert.assertNotNull(vmImage);
     }
 
 

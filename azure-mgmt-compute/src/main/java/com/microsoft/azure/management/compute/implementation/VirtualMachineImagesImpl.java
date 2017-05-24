@@ -41,7 +41,17 @@ class VirtualMachineImagesImpl
         return (innerImage != null) ? new VirtualMachineImageImpl(region, publisherName, offerName, skuName, version, innerImage) : null;
     }
 
-    @Override
+  @Override
+  public VirtualMachineImage getImage(String region, String publisherName, String offerName, String skuName, String version) {
+    VirtualMachineImageInner innerImage = this.client.get(region,
+        publisherName,
+        offerName,
+        skuName,
+        version);
+    return (innerImage != null) ? new VirtualMachineImageImpl(Region.fromName(region), publisherName, offerName, skuName, version, innerImage) : null;
+  }
+
+  @Override
     public PagedList<VirtualMachineImage> listByRegion(Region location) {
         return listByRegion(location.toString());
     }
