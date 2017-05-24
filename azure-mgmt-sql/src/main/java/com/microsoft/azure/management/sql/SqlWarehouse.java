@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.sql;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
@@ -28,7 +27,6 @@ public interface SqlWarehouse extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Beta
     Completable pauseDataWarehouseAsync();
 
     /**
@@ -37,7 +35,6 @@ public interface SqlWarehouse extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<Void> pauseDataWarehouseAsync(ServiceCallback<Void> callback);
 
     /**
@@ -50,7 +47,6 @@ public interface SqlWarehouse extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Beta
     Completable resumeDataWarehouseAsync();
 
     /**
@@ -59,7 +55,6 @@ public interface SqlWarehouse extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<Void> resumeDataWarehouseAsync(ServiceCallback<Void> callback);
  }
 

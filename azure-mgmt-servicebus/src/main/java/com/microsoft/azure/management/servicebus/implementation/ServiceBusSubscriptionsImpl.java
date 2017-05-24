@@ -10,8 +10,8 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.servicebus.Subscription;
-import com.microsoft.azure.management.servicebus.Subscriptions;
+import com.microsoft.azure.management.servicebus.ServiceBusSubscription;
+import com.microsoft.azure.management.servicebus.ServiceBusSubscriptions;
 import com.microsoft.azure.management.servicebus.Topic;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
@@ -23,21 +23,21 @@ import rx.Observable;
  * Implementation for Subscriptions.
  */
 @LangDefinition
-class SubscriptionsImpl
+class ServiceBusSubscriptionsImpl
         extends ServiceBusChildResourcesImpl<
-        Subscription,
-        SubscriptionImpl,
+        ServiceBusSubscription,
+        ServiceBusSubscriptionImpl,
         SubscriptionInner,
         SubscriptionsInner,
         ServiceBusManager,
         Topic>
-        implements Subscriptions {
+        implements ServiceBusSubscriptions {
     private final String resourceGroupName;
     private final String namespaceName;
     private final String topicName;
     private final Region region;
 
-    protected SubscriptionsImpl(String resourceGroupName,
+    protected ServiceBusSubscriptionsImpl(String resourceGroupName,
                                 String namespaceName,
                                 String topicName,
                                 Region region,
@@ -50,7 +50,7 @@ class SubscriptionsImpl
     }
 
     @Override
-    public SubscriptionImpl define(String name) {
+    public ServiceBusSubscriptionImpl define(String name) {
         return wrapModel(name);
     }
 
@@ -91,8 +91,8 @@ class SubscriptionsImpl
     }
 
     @Override
-    protected SubscriptionImpl wrapModel(String name) {
-        return new SubscriptionImpl(this.resourceGroupName,
+    protected ServiceBusSubscriptionImpl wrapModel(String name) {
+        return new ServiceBusSubscriptionImpl(this.resourceGroupName,
                 this.namespaceName,
                 this.topicName,
                 name,
@@ -102,8 +102,8 @@ class SubscriptionsImpl
     }
 
     @Override
-    protected SubscriptionImpl wrapModel(SubscriptionInner inner) {
-        return new SubscriptionImpl(this.resourceGroupName,
+    protected ServiceBusSubscriptionImpl wrapModel(SubscriptionInner inner) {
+        return new ServiceBusSubscriptionImpl(this.resourceGroupName,
                 this.namespaceName,
                 this.topicName,
                 inner.name(),
@@ -113,7 +113,7 @@ class SubscriptionsImpl
     }
 
     @Override
-    public PagedList<Subscription> listByParent(String resourceGroupName, String parentName) {
+    public PagedList<ServiceBusSubscription> listByParent(String resourceGroupName, String parentName) {
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
         // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
@@ -129,7 +129,7 @@ class SubscriptionsImpl
     }
 
     @Override
-    public Observable<Subscription> getByParentAsync(String resourceGroup, String parentName, String name) {
+    public Observable<ServiceBusSubscription> getByParentAsync(String resourceGroup, String parentName, String name) {
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
         // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //

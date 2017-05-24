@@ -7,7 +7,6 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
@@ -50,7 +49,6 @@ public interface VirtualMachine extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Beta
     Completable deallocateAsync();
 
     /**
@@ -59,7 +57,6 @@ public interface VirtualMachine extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<Void> deallocateAsync(ServiceCallback<Void> callback);
 
     /**
@@ -72,7 +69,6 @@ public interface VirtualMachine extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Beta
     Completable generalizeAsync();
 
     /**
@@ -81,7 +77,6 @@ public interface VirtualMachine extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<Void> generalizeAsync(ServiceCallback<Void> callback);
 
     /**
@@ -94,7 +89,6 @@ public interface VirtualMachine extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Beta
     Completable powerOffAsync();
 
     /**
@@ -103,7 +97,6 @@ public interface VirtualMachine extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<Void> powerOffAsync(ServiceCallback<Void> callback);
 
     /**
@@ -116,7 +109,6 @@ public interface VirtualMachine extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Beta
     Completable restartAsync();
 
     /**
@@ -125,7 +117,6 @@ public interface VirtualMachine extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<Void> restartAsync(ServiceCallback<Void> callback);
 
     /**
@@ -138,7 +129,6 @@ public interface VirtualMachine extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Beta
     Completable startAsync();
 
     /**
@@ -147,7 +137,6 @@ public interface VirtualMachine extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<Void> startAsync(ServiceCallback<Void> callback);
 
     /**
@@ -160,7 +149,6 @@ public interface VirtualMachine extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Beta
     Completable redeployAsync();
 
     /**
@@ -169,7 +157,6 @@ public interface VirtualMachine extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<Void> redeployAsync(ServiceCallback<Void> callback);
 
     /**
@@ -215,7 +202,7 @@ public interface VirtualMachine extends
      *
      * @return an observable that emits the instance view of the virtual machine.
      */
-    @Beta
+    @Method
     Observable<VirtualMachineInstanceView> refreshInstanceViewAsync();
 
     // Getters
@@ -306,9 +293,8 @@ public interface VirtualMachine extends
     String licenseType();
 
     /**
-     * @return extensions attached to the virtual machine
+     * @return a representation of the deferred computation of this call, returning extensions attached to the virtual machine
      */
-    @Beta
     Observable<VirtualMachineExtension> listExtensionsAsync();
 
     /**

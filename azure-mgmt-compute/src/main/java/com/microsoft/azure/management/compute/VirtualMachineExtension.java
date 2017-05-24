@@ -5,7 +5,6 @@
  */
 
 package com.microsoft.azure.management.compute;
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
@@ -23,9 +22,8 @@ public interface VirtualMachineExtension extends
         VirtualMachineExtensionBase,
         ExternalChildResource<VirtualMachineExtension, VirtualMachine> {
     /**
-     * @return observable that emits virtual machine extension instance view
+     * @return a representation of the deferred computation of this call returning the virtual machine extension instance view
      */
-    @Beta
     Observable<VirtualMachineExtensionInstanceView> getInstanceViewAsync();
 
     /**

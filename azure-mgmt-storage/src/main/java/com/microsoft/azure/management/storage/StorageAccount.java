@@ -109,9 +109,8 @@ public interface StorageAccount extends
     /**
      * Fetch the up-to-date access keys from Azure for this storage account asynchronously.
      *
-     * @return observable to the access keys for this storage account
+     * @return a representation of the deferred computation of this call, returning the access keys
      */
-    @Beta
     Observable<List<StorageAccountKey>> getKeysAsync();
 
     /**
@@ -120,7 +119,6 @@ public interface StorageAccount extends
      * @param callback the callback to call on success or failure, with access keys as parameter.
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<List<StorageAccountKey>> getKeysAsync(ServiceCallback<List<StorageAccountKey>> callback);
 
     /**
@@ -135,9 +133,8 @@ public interface StorageAccount extends
      * Regenerates the access keys for this storage account asynchronously.
      *
      * @param keyName if the key name
-     * @return observable to the access keys for this storage account
+     * @return a representation of the deferred computation of this call, returning the regenerated access key
      */
-    @Beta
     Observable<List<StorageAccountKey>> regenerateKeyAsync(String keyName);
 
     /**
@@ -147,7 +144,6 @@ public interface StorageAccount extends
      * @param callback the callback to call on success or failure, with access keys as parameter.
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<List<StorageAccountKey>> regenerateKeyAsync(String keyName, ServiceCallback<List<StorageAccountKey>> callback);
 
     /**

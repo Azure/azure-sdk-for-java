@@ -23,10 +23,10 @@ import org.joda.time.Period;
  */
 @Fluent
 @Beta
-public interface Subscription extends
+public interface ServiceBusSubscription extends
         IndependentChildResource<ServiceBusManager, SubscriptionInner>,
-        Refreshable<Subscription>,
-        Updatable<Subscription.Update> {
+        Refreshable<ServiceBusSubscription>,
+        Updatable<ServiceBusSubscription.Update> {
     /**
      * @return the exact time the message was created
      */
@@ -105,8 +105,8 @@ public interface Subscription extends
      * The entirety of the subscription definition.
      */
     interface Definition extends
-            Subscription.DefinitionStages.Blank,
-            Subscription.DefinitionStages.WithCreate {
+            ServiceBusSubscription.DefinitionStages.Blank,
+            ServiceBusSubscription.DefinitionStages.WithCreate {
     }
 
     /**
@@ -258,15 +258,15 @@ public interface Subscription extends
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
-                Creatable<Subscription>,
-                Subscription.DefinitionStages.WithDeleteOnIdle,
-                Subscription.DefinitionStages.WithMessageLockDuration,
-                Subscription.DefinitionStages.WithDefaultMessageTTL,
-                Subscription.DefinitionStages.WithSession,
-                Subscription.DefinitionStages.WithMessageBatching,
-                Subscription.DefinitionStages.WithExpiredMessageMovedToDeadLetterSubscription,
-                Subscription.DefinitionStages.WithMessageMovedToDeadLetterSubscriptionOnMaxDeliveryCount,
-                Subscription.DefinitionStages.WithMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException {
+                Creatable<ServiceBusSubscription>,
+                ServiceBusSubscription.DefinitionStages.WithDeleteOnIdle,
+                ServiceBusSubscription.DefinitionStages.WithMessageLockDuration,
+                ServiceBusSubscription.DefinitionStages.WithDefaultMessageTTL,
+                ServiceBusSubscription.DefinitionStages.WithSession,
+                ServiceBusSubscription.DefinitionStages.WithMessageBatching,
+                ServiceBusSubscription.DefinitionStages.WithExpiredMessageMovedToDeadLetterSubscription,
+                ServiceBusSubscription.DefinitionStages.WithMessageMovedToDeadLetterSubscriptionOnMaxDeliveryCount,
+                ServiceBusSubscription.DefinitionStages.WithMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException {
         }
     }
 
@@ -274,15 +274,15 @@ public interface Subscription extends
      * The template for a subscription update operation, containing all the settings that can be modified.
      */
     interface Update extends
-            Appliable<Subscription>,
-            Subscription.UpdateStages.WithDeleteOnIdle,
-            Subscription.UpdateStages.WithMessageLockDuration,
-            Subscription.UpdateStages.WithDefaultMessageTTL,
-            Subscription.UpdateStages.WithSession,
-            Subscription.UpdateStages.WithMessageBatching,
-            Subscription.UpdateStages.WithExpiredMessageMovedToDeadLetterSubscription,
-            Subscription.UpdateStages.WithMessageMovedToDeadLetterQueueOnMaxDeliveryCount,
-            Subscription.UpdateStages.WithMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException {
+            Appliable<ServiceBusSubscription>,
+            ServiceBusSubscription.UpdateStages.WithDeleteOnIdle,
+            ServiceBusSubscription.UpdateStages.WithMessageLockDuration,
+            ServiceBusSubscription.UpdateStages.WithDefaultMessageTTL,
+            ServiceBusSubscription.UpdateStages.WithSession,
+            ServiceBusSubscription.UpdateStages.WithMessageBatching,
+            ServiceBusSubscription.UpdateStages.WithExpiredMessageMovedToDeadLetterSubscription,
+            ServiceBusSubscription.UpdateStages.WithMessageMovedToDeadLetterQueueOnMaxDeliveryCount,
+            ServiceBusSubscription.UpdateStages.WithMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException {
     }
 
     /**

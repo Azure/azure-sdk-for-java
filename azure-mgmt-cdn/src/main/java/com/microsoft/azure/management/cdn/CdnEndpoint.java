@@ -7,7 +7,6 @@
 package com.microsoft.azure.management.cdn;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.cdn.implementation.EndpointInner;
@@ -123,7 +122,6 @@ public interface CdnEndpoint extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Beta
     Completable startAsync();
 
     /**
@@ -132,7 +130,6 @@ public interface CdnEndpoint extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<Void> startAsync(ServiceCallback<Void> callback);
 
     /**
@@ -145,7 +142,6 @@ public interface CdnEndpoint extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Beta
     Completable stopAsync();
 
 
@@ -155,7 +151,6 @@ public interface CdnEndpoint extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<Void> stopAsync(ServiceCallback<Void> callback);
 
     /**
@@ -226,7 +221,6 @@ public interface CdnEndpoint extends
      * @param hostName the host name, which must be a domain name, of the custom domain
      * @return an observable of the result
      */
-    @Beta
     Observable<CustomDomainValidationResult> validateCustomDomainAsync(String hostName);
 
     /**
@@ -236,7 +230,6 @@ public interface CdnEndpoint extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<CustomDomainValidationResult> validateCustomDomainAsync(String hostName, ServiceCallback<CustomDomainValidationResult> callback);
 
     /**

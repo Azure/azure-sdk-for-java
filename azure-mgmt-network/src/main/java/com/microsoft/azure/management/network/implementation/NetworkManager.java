@@ -171,9 +171,8 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
     }
 
     /**
-     * @return entry point to appplication gateway management
+     * @return entry point to application gateway management
      */
-    @Beta
     public ApplicationGateways applicationGateways() {
         if (this.applicationGateways == null) {
             this.applicationGateways = new ApplicationGatewaysImpl(this);

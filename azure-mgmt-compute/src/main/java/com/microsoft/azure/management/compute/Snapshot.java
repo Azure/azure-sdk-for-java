@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.SnapshotInner;
@@ -66,9 +65,8 @@ public interface Snapshot extends
      * Grants access to the snapshot asynchronously.
      *
      * @param accessDurationInSeconds the access duration in seconds
-     * @return the observable to read-only SAS URI to the disk
+     * @return a representation of the deferred computation of this call returning a read-only SAS URI to the disk
      */
-    @Beta
     Observable<String> grantAccessAsync(int accessDurationInSeconds);
 
     /**
@@ -78,7 +76,6 @@ public interface Snapshot extends
      * @param callback the callback to call on success or failure, on success it will pass read-only SAS URI to the disk in callback
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<String> grantAccessAsync(int accessDurationInSeconds, ServiceCallback<String> callback);
 
     /**
@@ -91,7 +88,6 @@ public interface Snapshot extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Beta
     Completable revokeAccessAsync();
 
     /**
@@ -100,7 +96,6 @@ public interface Snapshot extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<Void> revokeAccessAsync(ServiceCallback<Void> callback);
 
     /**

@@ -491,7 +491,7 @@ public class ServiceBusOperationsTests extends TestBase {
         // Create Topic subscriptions and list it
         //
         Topic topic = namespace.topics().getByName(topicName);
-        Subscription subscription = topic.subscriptions().define(subscriptionName)
+        ServiceBusSubscription subscription = topic.subscriptions().define(subscriptionName)
                 .withDefaultMessageTTL(new Period().withMinutes(20))
                 .create();
         Assert.assertNotNull(subscription);
@@ -500,10 +500,10 @@ public class ServiceBusOperationsTests extends TestBase {
         subscription = topic.subscriptions().getByName(subscriptionName);
         Assert.assertNotNull(subscription);
         Assert.assertNotNull(subscription.inner());
-        PagedList<Subscription> subscriptionsInTopic = topic.subscriptions().list();
+        PagedList<ServiceBusSubscription> subscriptionsInTopic = topic.subscriptions().list();
         Assert.assertTrue(subscriptionsInTopic.size() > 0);
         boolean foundSubscription = false;
-        for (Subscription s : subscriptionsInTopic) {
+        for (ServiceBusSubscription s : subscriptionsInTopic) {
             if (s.name().equalsIgnoreCase(subscription.name())) {
                 foundSubscription = true;
                 break;
