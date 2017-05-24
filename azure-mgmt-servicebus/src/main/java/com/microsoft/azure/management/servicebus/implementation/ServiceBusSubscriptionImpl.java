@@ -11,7 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.servicebus.EntityStatus;
-import com.microsoft.azure.management.servicebus.Subscription;
+import com.microsoft.azure.management.servicebus.ServiceBusSubscription;
 import com.microsoft.azure.management.servicebus.Topic;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
@@ -22,16 +22,16 @@ import rx.functions.Func1;
  * Implementation for Subscription.
  */
 @LangDefinition
-class SubscriptionImpl extends
-        IndependentChildResourceImpl<Subscription, Topic, SubscriptionInner, SubscriptionImpl, ServiceBusManager>
+class ServiceBusSubscriptionImpl extends
+        IndependentChildResourceImpl<ServiceBusSubscription, Topic, SubscriptionInner, ServiceBusSubscriptionImpl, ServiceBusManager>
         implements
-        Subscription,
-        Subscription.Definition,
-        Subscription.Update {
+        ServiceBusSubscription,
+        ServiceBusSubscription.Definition,
+        ServiceBusSubscription.Update {
     private final String namespaceName;
     private final Region region;
 
-    SubscriptionImpl(String resourceGroupName,
+    ServiceBusSubscriptionImpl(String resourceGroupName,
                      String namespaceName,
                      String topicName,
                      String name,
@@ -175,81 +175,81 @@ class SubscriptionImpl extends
     }
 
     @Override
-    public SubscriptionImpl withDeleteOnIdleDurationInMinutes(int durationInMinutes) {
+    public ServiceBusSubscriptionImpl withDeleteOnIdleDurationInMinutes(int durationInMinutes) {
         TimeSpan timeSpan = new TimeSpan().withMinutes(durationInMinutes);
         this.inner().withAutoDeleteOnIdle(timeSpan.toString());
         return this;
     }
 
     @Override
-    public SubscriptionImpl withMessageLockDurationInSeconds(int durationInSeconds) {
+    public ServiceBusSubscriptionImpl withMessageLockDurationInSeconds(int durationInSeconds) {
         TimeSpan timeSpan = new TimeSpan().withSeconds(durationInSeconds);
         this.inner().withLockDuration(timeSpan.toString());
         return this;
     }
 
     @Override
-    public SubscriptionImpl withDefaultMessageTTL(Period ttl) {
+    public ServiceBusSubscriptionImpl withDefaultMessageTTL(Period ttl) {
         this.inner().withDefaultMessageTimeToLive(TimeSpan.fromPeriod(ttl).toString());
         return this;
     }
 
     @Override
-    public SubscriptionImpl withSession() {
+    public ServiceBusSubscriptionImpl withSession() {
         this.inner().withRequiresSession(true);
         return this;
     }
 
     @Override
-    public SubscriptionImpl withoutSession() {
+    public ServiceBusSubscriptionImpl withoutSession() {
         this.inner().withRequiresSession(false);
         return this;
     }
 
     @Override
-    public SubscriptionImpl withMessageBatching() {
+    public ServiceBusSubscriptionImpl withMessageBatching() {
         this.inner().withEnableBatchedOperations(true);
         return this;
     }
 
     @Override
-    public SubscriptionImpl withoutMessageBatching() {
+    public ServiceBusSubscriptionImpl withoutMessageBatching() {
         this.inner().withEnableBatchedOperations(false);
         return this;
     }
 
     @Override
-    public SubscriptionImpl withMessageMovedToDeadLetterSubscriptionOnMaxDeliveryCount(int deliveryCount) {
+    public ServiceBusSubscriptionImpl withMessageMovedToDeadLetterSubscriptionOnMaxDeliveryCount(int deliveryCount) {
         this.inner().withMaxDeliveryCount(deliveryCount);
         return this;
     }
 
     @Override
-    public SubscriptionImpl withMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException() {
+    public ServiceBusSubscriptionImpl withMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException() {
         this.inner().withDeadLetteringOnFilterEvaluationExceptions(true);
         return this;
     }
 
     @Override
-    public SubscriptionImpl withoutMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException() {
+    public ServiceBusSubscriptionImpl withoutMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException() {
         this.inner().withDeadLetteringOnFilterEvaluationExceptions(false);
         return this;
     }
 
     @Override
-    public SubscriptionImpl withExpiredMessageMovedToDeadLetterSubscription() {
+    public ServiceBusSubscriptionImpl withExpiredMessageMovedToDeadLetterSubscription() {
         this.inner().withDeadLetteringOnMessageExpiration(true);
         return this;
     }
 
     @Override
-    public SubscriptionImpl withoutExpiredMessageMovedToDeadLetterSubscription() {
+    public ServiceBusSubscriptionImpl withoutExpiredMessageMovedToDeadLetterSubscription() {
         this.inner().withDeadLetteringOnMessageExpiration(false);
         return this;
     }
 
     @Override
-    public SubscriptionImpl withMessageMovedToDeadLetterQueueOnMaxDeliveryCount(int deliveryCount) {
+    public ServiceBusSubscriptionImpl withMessageMovedToDeadLetterQueueOnMaxDeliveryCount(int deliveryCount) {
         this.inner().withMaxDeliveryCount(deliveryCount);
         return this;
     }
@@ -264,17 +264,17 @@ class SubscriptionImpl extends
     }
 
     @Override
-    protected Observable<Subscription> createChildResourceAsync() {
-        final Subscription self = this;
+    protected Observable<ServiceBusSubscription> createChildResourceAsync() {
+        final ServiceBusSubscription self = this;
         return this.manager().inner().subscriptions()
                 .createOrUpdateAsync(this.resourceGroupName(),
                         this.namespaceName,
                         this.parentName,
                         this.name(),
                         this.inner())
-                .map(new Func1<SubscriptionInner, Subscription>() {
+                .map(new Func1<SubscriptionInner, ServiceBusSubscription>() {
                     @Override
-                    public Subscription call(SubscriptionInner inner) {
+                    public ServiceBusSubscription call(SubscriptionInner inner) {
                         setInner(inner);
                         return self;
                     }

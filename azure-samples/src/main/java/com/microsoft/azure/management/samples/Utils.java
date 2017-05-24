@@ -84,7 +84,7 @@ import com.microsoft.azure.management.servicebus.NamespaceAuthorizationRule;
 import com.microsoft.azure.management.servicebus.Queue;
 import com.microsoft.azure.management.servicebus.QueueAuthorizationRule;
 import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
-import com.microsoft.azure.management.servicebus.Subscription;
+import com.microsoft.azure.management.servicebus.ServiceBusSubscription;
 import com.microsoft.azure.management.servicebus.Topic;
 import com.microsoft.azure.management.servicebus.TopicAuthorizationRule;
 import com.microsoft.azure.management.sql.ElasticPoolActivity;
@@ -1662,7 +1662,7 @@ public final class Utils {
      * Print service bus subscription info.
      * @param serviceBusSubscription a service bus subscription
      */
-    public static void print(Subscription serviceBusSubscription) {
+    public static void print(ServiceBusSubscription serviceBusSubscription) {
         StringBuilder builder = new StringBuilder()
                 .append("Service bus subscription: ").append(serviceBusSubscription.id())
                 .append("\n\tName: ").append(serviceBusSubscription.name())

@@ -33,9 +33,8 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>> exten
     List<AccessRights> rights();
 
     /**
-     * @return stream that emits primary, secondary keys and connection strings
+     * @return a representation of the deferred computation of this call, returning the primary, secondary keys and the connection strings
      */
-    @Beta
     Observable<AuthorizationKeys> getKeysAsync();
 
     /**
@@ -47,9 +46,8 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>> exten
      * Regenerates primary or secondary keys.
      *
      * @param policykey the key to regenerate
-     * @return stream that emits primary, secondary keys and connection strings
+     * @return a representation of the deferred computation of this call, returning the primary, secondary keys and the connection strings
      */
-    @Beta
     Observable<AuthorizationKeys> regenerateKeyAsync(Policykey policykey);
 
     /**

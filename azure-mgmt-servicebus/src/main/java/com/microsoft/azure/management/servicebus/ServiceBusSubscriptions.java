@@ -21,10 +21,10 @@ import com.microsoft.azure.management.servicebus.implementation.SubscriptionsInn
  */
 @Fluent
 @Beta
-public interface Subscriptions extends
-        SupportsCreating<Subscription.DefinitionStages.Blank>,
-        SupportsListing<Subscription>,
-        SupportsGettingByNameAsync<Subscription>,
+public interface ServiceBusSubscriptions extends
+        SupportsCreating<ServiceBusSubscription.DefinitionStages.Blank>,
+        SupportsListing<ServiceBusSubscription>,
+        SupportsGettingByNameAsync<ServiceBusSubscription>,
         SupportsDeletingByName,
         HasManager<ServiceBusManager>,
         HasInner<SubscriptionsInner> {
