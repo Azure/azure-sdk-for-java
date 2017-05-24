@@ -97,25 +97,25 @@ public final class ExecutionEngine {
                 Logger.info(opContext, LogConstants.START_REQUEST, request.getURL(),
                         request.getRequestProperty(Constants.HeaderConstants.DATE));
 
-                // 5. Potentially upload data
-                if (task.getSendStream() != null) {
-                    Logger.info(opContext, LogConstants.UPLOAD);
-                    final StreamMd5AndLength descriptor = Utility.writeToOutputStream(task.getSendStream(),
-                            request.getOutputStream(), task.getLength(), false /* rewindStream */,
-                            false /* calculate MD5 */, opContext, task.getRequestOptions());
-
-                    task.validateStreamWrite(descriptor);
-                    Logger.info(opContext, LogConstants.UPLOADDONE);
-                }
-
-                Utility.logHttpRequest(request, opContext);
-
-                // 6. Process the request - Get response
-                RequestResult currResult = task.getResult();
-                currResult.setStartDate(new Date());
-
-                Logger.info(opContext, LogConstants.GET_RESPONSE);
                 try {
+                    // 5. Potentially upload data
+                    if (task.getSendStream() != null) {
+                        Logger.info(opContext, LogConstants.UPLOAD);
+                        final StreamMd5AndLength descriptor = Utility.writeToOutputStream(task.getSendStream(),
+                                request.getOutputStream(), task.getLength(), false /* rewindStream */,
+                                false /* calculate MD5 */, opContext, task.getRequestOptions());
+
+                        task.validateStreamWrite(descriptor);
+                        Logger.info(opContext, LogConstants.UPLOADDONE);
+                    }
+
+                    Utility.logHttpRequest(request, opContext);
+
+                    // 6. Process the request - Get response
+                    RequestResult currResult = task.getResult();
+                    currResult.setStartDate(new Date());
+
+                    Logger.info(opContext, LogConstants.GET_RESPONSE);
                     currResult.setStatusCode(request.getResponseCode());
                     currResult.setStatusMessage(request.getResponseMessage());
                 }
