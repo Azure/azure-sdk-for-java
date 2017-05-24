@@ -5,9 +5,8 @@
  */
 package com.microsoft.azure.management.network;
 
-import java.util.List;
+import java.util.Collection;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayBackendAddressPoolInner;
 import com.microsoft.azure.management.network.model.HasBackendNics;
@@ -17,19 +16,18 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
- * An immutable client-side representation of an application gateway backend.
+ * A client-side representation of an application gateway backend.
  */
 @Fluent()
-@Beta
 public interface ApplicationGatewayBackend extends
     HasInner<ApplicationGatewayBackendAddressPoolInner>,
     ChildResource<ApplicationGateway>,
     HasBackendNics {
 
     /**
-     * @return addresses on the backend of the application gateway, indexed by their FQDN
+     * @return addresses on the backend of the application gateway
      */
-    List<ApplicationGatewayBackendAddress> addresses();
+    Collection<ApplicationGatewayBackendAddress> addresses();
 
     /**
      * Checks whether the specified IP address is referenced by this backend address pool.
@@ -83,7 +81,7 @@ public interface ApplicationGatewayBackend extends
         /** The final stage of an application gateway backend definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the definition
-         * can be attached to the parent application gateway definition using {@link WithAttach#attach()}.
+         * can be attached to the parent application gateway definition.
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends
@@ -187,7 +185,7 @@ public interface ApplicationGatewayBackend extends
         /** The final stage of an application gateway backend definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the definition
-         * can be attached to the parent application gateway definition using {@link WithAttach#attach()}.
+         * can be attached to the parent application gateway definition.
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends

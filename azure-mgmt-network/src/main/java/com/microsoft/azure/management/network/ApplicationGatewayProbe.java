@@ -5,7 +5,6 @@
  */
 package com.microsoft.azure.management.network;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayProbeInner;
 import com.microsoft.azure.management.network.model.HasProtocol;
@@ -15,10 +14,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
- * An immutable client-side representation of an application gateway probe.
+ * A client-side representation of an application gateway probe.
  */
 @Fluent()
-@Beta()
 public interface ApplicationGatewayProbe extends
     HasInner<ApplicationGatewayProbeInner>,
     ChildResource<ApplicationGateway>,
@@ -160,7 +158,8 @@ public interface ApplicationGatewayProbe extends
         }
     }
 
-    /** The entirety of an application gateway probe definition.
+    /**
+     * The entirety of an application gateway probe definition.
      * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
      */
     interface Definition<ParentT> extends
