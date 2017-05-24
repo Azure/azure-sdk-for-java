@@ -232,6 +232,15 @@ class ApplicationGatewayImpl
 
         // Reset and update backend HTTP settings configs
         this.inner().withBackendHttpSettingsCollection(innersFromWrappers(this.backendHttpConfigs.values()));
+        for (ApplicationGatewayBackendHttpConfiguration config : this.backendHttpConfigs.values()) {
+            SubResource ref;
+
+            // Clear deleted probe references
+            ref = config.inner().probe();
+            if (ref != null && !this.probes().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
+                config.inner().withProbe(null);
+            }
+        }
 
         // Reset and update HTTP listeners
         this.inner().withHttpListeners(innersFromWrappers(this.listeners.values()));
