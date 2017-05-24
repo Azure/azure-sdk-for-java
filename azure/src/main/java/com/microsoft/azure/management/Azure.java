@@ -38,7 +38,7 @@ import com.microsoft.azure.management.documentdb.DatabaseAccounts;
 import com.microsoft.azure.management.documentdb.implementation.DocumentDBManager;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroups;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryUsers;
-import com.microsoft.azure.management.graphrbac.Applications;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryApplications;
 import com.microsoft.azure.management.graphrbac.RoleAssignments;
 import com.microsoft.azure.management.graphrbac.RoleDefinitions;
 import com.microsoft.azure.management.graphrbac.ServicePrincipals;
@@ -272,7 +272,7 @@ public final class Azure {
          * @return Applications interface providing access to tenant management
          */
         @Beta(SinceVersion.V1_1_0)
-        Applications applications();
+        ActiveDirectoryApplications activeDirectoryApplications();
 
         /**
          * Entry point to role definition management APIs.
@@ -360,7 +360,7 @@ public final class Azure {
         }
 
         @Override
-        public Applications applications() {
+        public ActiveDirectoryApplications activeDirectoryApplications() {
             return graphRbacManager.applications();
         }
 
@@ -531,7 +531,6 @@ public final class Azure {
     /**
      * @return entry point to managing application gateways
      */
-    @Beta
     public ApplicationGateways applicationGateways() {
         return networkManager.applicationGateways();
     }

@@ -8,7 +8,7 @@ package com.microsoft.azure.management.graphrbac.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.graphrbac.Application;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryApplication;
 import com.microsoft.azure.management.graphrbac.BuiltInRole;
 import com.microsoft.azure.management.graphrbac.CertificateCredential;
 import com.microsoft.azure.management.graphrbac.PasswordCredential;
@@ -43,7 +43,7 @@ class ServicePrincipalImpl
     private ServicePrincipalCreateParametersInner createParameters;
     private Map<String, PasswordCredential> cachedPasswordCredentials;
     private Map<String, CertificateCredential> cachedCertificateCredentials;
-    private Creatable<Application> applicationCreatable;
+    private Creatable<ActiveDirectoryApplication> applicationCreatable;
     private Map<String, BuiltInRole> roles;
 
     ServicePrincipalImpl(ServicePrincipalInner innerObject, GraphRbacManager manager) {
@@ -91,7 +91,7 @@ class ServicePrincipalImpl
 
     @Override
     public Observable<ServicePrincipal> createResourceAsync() {
-        Application application = (Application) ((Object) super.createdModel(applicationCreatable.key()));
+        ActiveDirectoryApplication application = (ActiveDirectoryApplication) ((Object) super.createdModel(applicationCreatable.key()));
         createParameters.withAppId(application.applicationId());
         Observable<ServicePrincipal> sp = manager.inner().servicePrincipals().createAsync(createParameters)
                 .map(innerToFluentMap(this))
@@ -163,7 +163,7 @@ class ServicePrincipalImpl
                 .map(new Func1<KeyCredentialInner, CertificateCredential>() {
                     @Override
                     public CertificateCredential call(KeyCredentialInner keyCredentialInner) {
-                        return new CertificateCredentialImpl<Application>(keyCredentialInner);
+                        return new CertificateCredentialImpl<ActiveDirectoryApplication>(keyCredentialInner);
                     }
                 })
                 .toMap(new Func1<CertificateCredential, String>() {
@@ -188,7 +188,7 @@ class ServicePrincipalImpl
                 .map(new Func1<PasswordCredentialInner, PasswordCredential>() {
                     @Override
                     public PasswordCredential call(PasswordCredentialInner passwordCredentialInner) {
-                        return new PasswordCredentialImpl<Application>(passwordCredentialInner);
+                        return new PasswordCredentialImpl<ActiveDirectoryApplication>(passwordCredentialInner);
                     }
                 })
                 .toMap(new Func1<PasswordCredential, String>() {
@@ -253,13 +253,13 @@ class ServicePrincipalImpl
     }
 
     @Override
-    public ServicePrincipalImpl withExistingApplication(Application application) {
+    public ServicePrincipalImpl withExistingApplication(ActiveDirectoryApplication application) {
         createParameters.withAppId(application.applicationId());
         return this;
     }
 
     @Override
-    public ServicePrincipalImpl withNewApplication(Creatable<Application> applicationCreatable) {
+    public ServicePrincipalImpl withNewApplication(Creatable<ActiveDirectoryApplication> applicationCreatable) {
         addCreatableDependency(applicationCreatable);
         this.applicationCreatable = applicationCreatable;
         return this;

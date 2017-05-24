@@ -9,8 +9,8 @@ package com.microsoft.azure.management.graphrbac.implementation;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.graphrbac.Application;
-import com.microsoft.azure.management.graphrbac.Applications;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryApplication;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryApplications;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
@@ -26,28 +26,28 @@ import rx.functions.Func1;
  * The implementation of Applications and its parent interfaces.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
-class ApplicationsImpl
+class ActiveDirectoryApplicationsImpl
         extends CreatableResourcesImpl<
-            Application,
-            ApplicationImpl,
+            ActiveDirectoryApplication,
+            ActiveDirectoryApplicationImpl,
             ApplicationInner>
         implements
-            Applications,
+            ActiveDirectoryApplications,
             HasManager<GraphRbacManager>,
             HasInner<ApplicationsInner> {
-    private final PagedListConverter<ApplicationInner, Application> converter;
+    private final PagedListConverter<ApplicationInner, ActiveDirectoryApplication> converter;
     private ApplicationsInner innerCollection;
     private GraphRbacManager manager;
 
-    ApplicationsImpl(
+    ActiveDirectoryApplicationsImpl(
             final ApplicationsInner client,
             final GraphRbacManager graphRbacManager) {
         this.innerCollection = client;
         this.manager = graphRbacManager;
-        converter = new PagedListConverter<ApplicationInner, Application>() {
+        converter = new PagedListConverter<ApplicationInner, ActiveDirectoryApplication>() {
             @Override
-            public Application typeConvert(ApplicationInner applicationsInner) {
-                ApplicationImpl impl = wrapModel(applicationsInner);
+            public ActiveDirectoryApplication typeConvert(ApplicationInner applicationsInner) {
+                ActiveDirectoryApplicationImpl impl = wrapModel(applicationsInner);
                 return impl.refreshCredentialsAsync().toBlocking().single();
             }
         };
@@ -55,70 +55,70 @@ class ApplicationsImpl
     }
 
     @Override
-    public PagedList<Application> list() {
+    public PagedList<ActiveDirectoryApplication> list() {
         return wrapList(this.innerCollection.list());
     }
 
     @Override
-    protected PagedList<Application> wrapList(PagedList<ApplicationInner> pagedList) {
+    protected PagedList<ActiveDirectoryApplication> wrapList(PagedList<ApplicationInner> pagedList) {
         return converter.convert(pagedList);
     }
 
     @Override
-    public Observable<Application> listAsync() {
+    public Observable<ActiveDirectoryApplication> listAsync() {
         return wrapPageAsync(this.inner().listAsync())
-                .flatMap(new Func1<Application, Observable<Application>>() {
+                .flatMap(new Func1<ActiveDirectoryApplication, Observable<ActiveDirectoryApplication>>() {
                     @Override
-                    public Observable<Application> call(Application application) {
-                        return ((ApplicationImpl) application).refreshCredentialsAsync();
+                    public Observable<ActiveDirectoryApplication> call(ActiveDirectoryApplication application) {
+                        return ((ActiveDirectoryApplicationImpl) application).refreshCredentialsAsync();
                     }
                 });
     }
 
     @Override
-    protected ApplicationImpl wrapModel(ApplicationInner applicationInner) {
+    protected ActiveDirectoryApplicationImpl wrapModel(ApplicationInner applicationInner) {
         if (applicationInner == null) {
             return null;
         }
-        return new ApplicationImpl(applicationInner, manager());
+        return new ActiveDirectoryApplicationImpl(applicationInner, manager());
     }
 
     @Override
-    public ApplicationImpl getById(String id) {
-        return (ApplicationImpl) getByIdAsync(id).toBlocking().single();
+    public ActiveDirectoryApplicationImpl getById(String id) {
+        return (ActiveDirectoryApplicationImpl) getByIdAsync(id).toBlocking().single();
     }
 
     @Override
-    public Observable<Application> getByIdAsync(String id) {
+    public Observable<ActiveDirectoryApplication> getByIdAsync(String id) {
         return innerCollection.getAsync(id)
-                .map(new Func1<ApplicationInner, ApplicationImpl>() {
+                .map(new Func1<ApplicationInner, ActiveDirectoryApplicationImpl>() {
                     @Override
-                    public ApplicationImpl call(ApplicationInner applicationInner) {
+                    public ActiveDirectoryApplicationImpl call(ApplicationInner applicationInner) {
                         if (applicationInner == null) {
                             return null;
                         }
-                        return new ApplicationImpl(applicationInner, manager());
+                        return new ActiveDirectoryApplicationImpl(applicationInner, manager());
                     }
-                }).flatMap(new Func1<ApplicationImpl, Observable<Application>>() {
+                }).flatMap(new Func1<ActiveDirectoryApplicationImpl, Observable<ActiveDirectoryApplication>>() {
                     @Override
-                    public Observable<Application> call(ApplicationImpl application) {
+                    public Observable<ActiveDirectoryApplication> call(ActiveDirectoryApplicationImpl application) {
                         return application.refreshCredentialsAsync();
                     }
                 });
     }
 
     @Override
-    public ServiceFuture<Application> getByIdAsync(String id, ServiceCallback<Application> callback) {
+    public ServiceFuture<ActiveDirectoryApplication> getByIdAsync(String id, ServiceCallback<ActiveDirectoryApplication> callback) {
         return ServiceFuture.fromBody(getByIdAsync(id), callback);
     }
 
     @Override
-    public Application getByName(String spn) {
+    public ActiveDirectoryApplication getByName(String spn) {
         return getByNameAsync(spn).toBlocking().single();
     }
 
     @Override
-    public Observable<Application> getByNameAsync(final String name) {
+    public Observable<ActiveDirectoryApplication> getByNameAsync(final String name) {
         return innerCollection.listWithServiceResponseAsync(String.format("appId eq '%s'", name))
                 .flatMap(new Func1<ServiceResponse<Page<ApplicationInner>>, Observable<Page<ApplicationInner>>>() {
                     @Override
@@ -128,17 +128,17 @@ class ApplicationsImpl
                         }
                         return Observable.just(result.body());
                     }
-                }).map(new Func1<Page<ApplicationInner>, ApplicationImpl>() {
+                }).map(new Func1<Page<ApplicationInner>, ActiveDirectoryApplicationImpl>() {
                     @Override
-                    public ApplicationImpl call(Page<ApplicationInner> result) {
+                    public ActiveDirectoryApplicationImpl call(Page<ApplicationInner> result) {
                         if (result == null || result.items() == null || result.items().isEmpty()) {
                             return null;
                         }
-                        return new ApplicationImpl(result.items().get(0), manager());
+                        return new ActiveDirectoryApplicationImpl(result.items().get(0), manager());
                     }
-                }).flatMap(new Func1<ApplicationImpl, Observable<Application>>() {
+                }).flatMap(new Func1<ActiveDirectoryApplicationImpl, Observable<ActiveDirectoryApplication>>() {
                     @Override
-                    public Observable<Application> call(ApplicationImpl application) {
+                    public Observable<ActiveDirectoryApplication> call(ActiveDirectoryApplicationImpl application) {
                         if (application == null) {
                             return null;
                         }
@@ -158,8 +158,8 @@ class ApplicationsImpl
     }
 
     @Override
-    protected ApplicationImpl wrapModel(String name) {
-        return new ApplicationImpl(new ApplicationInner().withDisplayName(name), manager());
+    protected ActiveDirectoryApplicationImpl wrapModel(String name) {
+        return new ActiveDirectoryApplicationImpl(new ApplicationInner().withDisplayName(name), manager());
     }
 
     @Override
@@ -168,7 +168,7 @@ class ApplicationsImpl
     }
 
     @Override
-    public ApplicationImpl define(String name) {
+    public ActiveDirectoryApplicationImpl define(String name) {
         return wrapModel(name);
     }
 }

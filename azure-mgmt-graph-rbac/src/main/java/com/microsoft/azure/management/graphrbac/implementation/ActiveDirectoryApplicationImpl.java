@@ -10,7 +10,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.graphrbac.Application;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryApplication;
 import com.microsoft.azure.management.graphrbac.CertificateCredential;
 import com.microsoft.azure.management.graphrbac.PasswordCredential;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
@@ -29,20 +29,20 @@ import java.util.Set;
  * Implementation for ServicePrincipal and its parent interfaces.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
-class ApplicationImpl
-        extends CreatableUpdatableImpl<Application, ApplicationInner, ApplicationImpl>
+class ActiveDirectoryApplicationImpl
+        extends CreatableUpdatableImpl<ActiveDirectoryApplication, ApplicationInner, ActiveDirectoryApplicationImpl>
         implements
-            Application,
-            Application.Definition,
-            Application.Update,
-            HasCredential<ApplicationImpl> {
+            ActiveDirectoryApplication,
+            ActiveDirectoryApplication.Definition,
+            ActiveDirectoryApplication.Update,
+            HasCredential<ActiveDirectoryApplicationImpl> {
     private GraphRbacManager manager;
     private ApplicationCreateParametersInner createParameters;
     private ApplicationUpdateParametersInner updateParameters;
     private Map<String, PasswordCredential> cachedPasswordCredentials;
     private Map<String, CertificateCredential> cachedCertificateCredentials;
 
-    ApplicationImpl(ApplicationInner innerObject, GraphRbacManager manager) {
+    ActiveDirectoryApplicationImpl(ApplicationInner innerObject, GraphRbacManager manager) {
         super(innerObject.displayName(), innerObject);
         this.manager = manager;
         this.createParameters = new ApplicationCreateParametersInner().withDisplayName(innerObject.displayName());
@@ -55,34 +55,34 @@ class ApplicationImpl
     }
 
     @Override
-    public Observable<Application> createResourceAsync() {
+    public Observable<ActiveDirectoryApplication> createResourceAsync() {
         if (createParameters.identifierUris() == null) {
             createParameters.withIdentifierUris(new ArrayList<String>());
             createParameters.identifierUris().add(createParameters.homepage());
         }
         return manager.inner().applications().createAsync(createParameters)
                 .map(innerToFluentMap(this))
-                .flatMap(new Func1<Application, Observable<Application>>() {
+                .flatMap(new Func1<ActiveDirectoryApplication, Observable<ActiveDirectoryApplication>>() {
                     @Override
-                    public Observable<Application> call(Application application) {
+                    public Observable<ActiveDirectoryApplication> call(ActiveDirectoryApplication application) {
                         return refreshCredentialsAsync();
                     }
                 });
     }
 
     @Override
-    public Observable<Application> updateResourceAsync() {
+    public Observable<ActiveDirectoryApplication> updateResourceAsync() {
         return manager.inner().applications().patchAsync(id(), updateParameters)
-                .flatMap(new Func1<Void, Observable<Application>>() {
+                .flatMap(new Func1<Void, Observable<ActiveDirectoryApplication>>() {
                     @Override
-                    public Observable<Application> call(Void aVoid) {
+                    public Observable<ActiveDirectoryApplication> call(Void aVoid) {
                         return refreshAsync();
                     }
                 });
     }
 
-    Observable<Application> refreshCredentialsAsync() {
-        final Observable<Application> keyCredentials = manager.inner().applications().listKeyCredentialsAsync(id())
+    Observable<ActiveDirectoryApplication> refreshCredentialsAsync() {
+        final Observable<ActiveDirectoryApplication> keyCredentials = manager.inner().applications().listKeyCredentialsAsync(id())
                 .flatMapIterable(new Func1<List<KeyCredentialInner>, Iterable<KeyCredentialInner>>() {
                     @Override
                     public Iterable<KeyCredentialInner> call(List<KeyCredentialInner> keyCredentialInners) {
@@ -92,7 +92,7 @@ class ApplicationImpl
                 .map(new Func1<KeyCredentialInner, CertificateCredential>() {
                     @Override
                     public CertificateCredential call(KeyCredentialInner keyCredentialInner) {
-                        return new CertificateCredentialImpl<Application>(keyCredentialInner);
+                        return new CertificateCredentialImpl<ActiveDirectoryApplication>(keyCredentialInner);
                     }
                 })
                 .toMap(new Func1<CertificateCredential, String>() {
@@ -100,14 +100,14 @@ class ApplicationImpl
                     public String call(CertificateCredential certificateCredential) {
                         return certificateCredential.name();
                     }
-                }).map(new Func1<Map<String, CertificateCredential>, Application>() {
+                }).map(new Func1<Map<String, CertificateCredential>, ActiveDirectoryApplication>() {
                     @Override
-                    public Application call(Map<String, CertificateCredential> stringCertificateCredentialMap) {
-                        ApplicationImpl.this.cachedCertificateCredentials = stringCertificateCredentialMap;
-                        return ApplicationImpl.this;
+                    public ActiveDirectoryApplication call(Map<String, CertificateCredential> stringCertificateCredentialMap) {
+                        ActiveDirectoryApplicationImpl.this.cachedCertificateCredentials = stringCertificateCredentialMap;
+                        return ActiveDirectoryApplicationImpl.this;
                     }
                 });
-        final Observable<Application> passwordCredentials = manager.inner().applications().listPasswordCredentialsAsync(id())
+        final Observable<ActiveDirectoryApplication> passwordCredentials = manager.inner().applications().listPasswordCredentialsAsync(id())
                 .flatMapIterable(new Func1<List<PasswordCredentialInner>, Iterable<PasswordCredentialInner>>() {
                     @Override
                     public Iterable<PasswordCredentialInner> call(List<PasswordCredentialInner> passwordCredentialInners) {
@@ -117,7 +117,7 @@ class ApplicationImpl
                 .map(new Func1<PasswordCredentialInner, PasswordCredential>() {
                     @Override
                     public PasswordCredential call(PasswordCredentialInner passwordCredentialInner) {
-                        return new PasswordCredentialImpl<Application>(passwordCredentialInner);
+                        return new PasswordCredentialImpl<ActiveDirectoryApplication>(passwordCredentialInner);
                     }
                 })
                 .toMap(new Func1<PasswordCredential, String>() {
@@ -125,23 +125,23 @@ class ApplicationImpl
                     public String call(PasswordCredential passwordCredential) {
                         return passwordCredential.name();
                     }
-                }).map(new Func1<Map<String, PasswordCredential>, Application>() {
+                }).map(new Func1<Map<String, PasswordCredential>, ActiveDirectoryApplication>() {
                     @Override
-                    public Application call(Map<String, PasswordCredential> stringPasswordCredentialMap) {
-                        ApplicationImpl.this.cachedPasswordCredentials = stringPasswordCredentialMap;
-                        return ApplicationImpl.this;
+                    public ActiveDirectoryApplication call(Map<String, PasswordCredential> stringPasswordCredentialMap) {
+                        ActiveDirectoryApplicationImpl.this.cachedPasswordCredentials = stringPasswordCredentialMap;
+                        return ActiveDirectoryApplicationImpl.this;
                     }
                 });
         return keyCredentials.mergeWith(passwordCredentials).last();
     }
 
     @Override
-    public Observable<Application> refreshAsync() {
+    public Observable<ActiveDirectoryApplication> refreshAsync() {
         return getInnerAsync()
                 .map(innerToFluentMap(this))
-                .flatMap(new Func1<Application, Observable<Application>>() {
+                .flatMap(new Func1<ActiveDirectoryApplication, Observable<ActiveDirectoryApplication>>() {
                     @Override
-                    public Observable<Application> call(Application application) {
+                    public Observable<ActiveDirectoryApplication> call(ActiveDirectoryApplication application) {
                         return refreshCredentialsAsync();
                     }
                 });
@@ -217,7 +217,7 @@ class ApplicationImpl
     }
 
     @Override
-    public ApplicationImpl withSignOnUrl(String signOnUrl) {
+    public ActiveDirectoryApplicationImpl withSignOnUrl(String signOnUrl) {
         if (isInCreateMode()) {
             createParameters.withHomepage(signOnUrl);
         } else {
@@ -227,7 +227,7 @@ class ApplicationImpl
     }
 
     @Override
-    public ApplicationImpl withReplyUrl(String replyUrl) {
+    public ActiveDirectoryApplicationImpl withReplyUrl(String replyUrl) {
         if (isInCreateMode()) {
             if (createParameters.replyUrls() == null) {
                 createParameters.withReplyUrls(new ArrayList<String>());
@@ -243,7 +243,7 @@ class ApplicationImpl
     }
 
     @Override
-    public ApplicationImpl withoutReplyUrl(String replyUrl) {
+    public ActiveDirectoryApplicationImpl withoutReplyUrl(String replyUrl) {
         if (updateParameters.replyUrls() != null) {
             updateParameters.replyUrls().remove(replyUrl);
         }
@@ -251,7 +251,7 @@ class ApplicationImpl
     }
 
     @Override
-    public ApplicationImpl withIdentifierUrl(String identifierUrl) {
+    public ActiveDirectoryApplicationImpl withIdentifierUrl(String identifierUrl) {
         if (isInCreateMode()) {
             if (createParameters.identifierUris() == null) {
                 createParameters.withIdentifierUris(new ArrayList<String>());
@@ -287,7 +287,7 @@ class ApplicationImpl
     }
 
     @Override
-    public ApplicationImpl withoutCredential(final String name) {
+    public ActiveDirectoryApplicationImpl withoutCredential(final String name) {
         if (cachedPasswordCredentials.containsKey(name)) {
             cachedPasswordCredentials.remove(name);
             if (updateParameters.passwordCredentials() == null) {
@@ -317,7 +317,7 @@ class ApplicationImpl
     }
 
     @Override
-    public ApplicationImpl withCertificateCredential(CertificateCredentialImpl<?> credential) {
+    public ActiveDirectoryApplicationImpl withCertificateCredential(CertificateCredentialImpl<?> credential) {
         if (isInCreateMode()) {
             if (createParameters.keyCredentials() == null) {
                 createParameters.withKeyCredentials(new ArrayList<KeyCredentialInner>());
@@ -333,7 +333,7 @@ class ApplicationImpl
     }
 
     @Override
-    public ApplicationImpl withPasswordCredential(PasswordCredentialImpl<?> credential) {
+    public ActiveDirectoryApplicationImpl withPasswordCredential(PasswordCredentialImpl<?> credential) {
         if (isInCreateMode()) {
             if (createParameters.passwordCredentials() == null) {
                 createParameters.withPasswordCredentials(new ArrayList<PasswordCredentialInner>());
@@ -349,7 +349,7 @@ class ApplicationImpl
     }
 
     @Override
-    public ApplicationImpl withAvailableToOtherTenants(boolean availableToOtherTenants) {
+    public ActiveDirectoryApplicationImpl withAvailableToOtherTenants(boolean availableToOtherTenants) {
         if (isInCreateMode()) {
             createParameters.withAvailableToOtherTenants(availableToOtherTenants);
         } else {
