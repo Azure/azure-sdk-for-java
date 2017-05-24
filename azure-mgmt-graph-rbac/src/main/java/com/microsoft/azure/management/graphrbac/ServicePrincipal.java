@@ -95,7 +95,7 @@ public interface ServicePrincipal extends
              * @return the next stage of the service principal definition
              */
             @Beta(SinceVersion.V1_1_0)
-            WithCreate withExistingApplication(Application application);
+            WithCreate withExistingApplication(ActiveDirectoryApplication application);
 
             /**
              * Specifies a new application to create and use by the service principal.
@@ -103,7 +103,7 @@ public interface ServicePrincipal extends
              * @return the next stage of the service principal definition
              */
             @Beta(SinceVersion.V1_1_0)
-            WithCreate withNewApplication(Creatable<Application> applicationCreatable);
+            WithCreate withNewApplication(Creatable<ActiveDirectoryApplication> applicationCreatable);
 
             /**
              * Specifies a new application to create and use by the service principal.

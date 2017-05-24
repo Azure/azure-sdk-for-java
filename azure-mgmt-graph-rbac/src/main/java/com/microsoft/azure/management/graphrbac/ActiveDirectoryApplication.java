@@ -30,13 +30,13 @@ import java.util.Set;
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 @Beta(SinceVersion.V1_1_0)
-public interface Application extends
+public interface ActiveDirectoryApplication extends
         Indexable,
         HasInner<ApplicationInner>,
         HasId,
         HasName,
         HasManager<GraphRbacManager>,
-        Updatable<Application.Update> {
+        Updatable<ActiveDirectoryApplication.Update> {
     /**
      * @return the application ID
      */
@@ -175,7 +175,7 @@ public interface Application extends
          * specify.
          */
         interface WithCreate extends
-                Creatable<Application>,
+                Creatable<ActiveDirectoryApplication>,
                 WithIdentifierUrl,
                 WithReplyUrl,
                 WithCredential,
@@ -285,7 +285,7 @@ public interface Application extends
      * The template for an application update operation, containing all the settings that can be modified.
      */
     interface Update extends
-            Appliable<Application>,
+            Appliable<ActiveDirectoryApplication>,
             UpdateStages.WithSignOnUrl,
             UpdateStages.WithIdentifierUrl,
             UpdateStages.WithReplyUrl,
