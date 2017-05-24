@@ -53,6 +53,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfi
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayIPConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayListener;
+import com.microsoft.azure.management.network.ApplicationGatewayProbe;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
 import com.microsoft.azure.management.network.LoadBalancer;
@@ -108,6 +109,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -1262,15 +1264,16 @@ public final class Utils {
                 .append("\n\tInternet-facing? ").append(resource.isPublic())
                 .append("\n\tInternal? ").append(resource.isPrivate())
                 .append("\n\tDefault private IP address: ").append(resource.privateIPAddress())
-                .append("\n\tPrivate IP address allocation method: ").append(resource.privateIPAllocationMethod());
+                .append("\n\tPrivate IP address allocation method: ").append(resource.privateIPAllocationMethod())
+                .append("\n\tDisabled SSL protocols: ").append(resource.disabledSslProtocols().toString());
 
         // Show IP configs
         Map<String, ApplicationGatewayIPConfiguration> ipConfigs = resource.ipConfigurations();
         info.append("\n\tIP configurations: ").append(ipConfigs.size());
         for (ApplicationGatewayIPConfiguration ipConfig : ipConfigs.values()) {
             info.append("\n\t\tName: ").append(ipConfig.name())
-                    .append("\n\t\t\tNetwork id: ").append(ipConfig.networkId())
-                    .append("\n\t\t\tSubnet name: ").append(ipConfig.subnetName());
+                .append("\n\t\t\tNetwork id: ").append(ipConfig.networkId())
+                .append("\n\t\t\tSubnet name: ").append(ipConfig.subnetName());
         }
 
         // Show frontends
@@ -1278,7 +1281,7 @@ public final class Utils {
         info.append("\n\tFrontends: ").append(frontends.size());
         for (ApplicationGatewayFrontend frontend : frontends.values()) {
             info.append("\n\t\tName: ").append(frontend.name())
-                    .append("\n\t\t\tPublic? ").append(frontend.isPublic());
+                .append("\n\t\t\tPublic? ").append(frontend.isPublic());
 
             if (frontend.isPublic()) {
                 // Show public frontend info
@@ -1288,9 +1291,9 @@ public final class Utils {
             if (frontend.isPrivate()) {
                 // Show private frontend info
                 info.append("\n\t\t\tPrivate IP address: ").append(frontend.privateIPAddress())
-                        .append("\n\t\t\tPrivate IP allocation method: ").append(frontend.privateIPAllocationMethod())
-                        .append("\n\t\t\tSubnet name: ").append(frontend.subnetName())
-                        .append("\n\t\t\tVirtual network ID: ").append(frontend.networkId());
+                    .append("\n\t\t\tPrivate IP allocation method: ").append(frontend.privateIPAllocationMethod())
+                    .append("\n\t\t\tSubnet name: ").append(frontend.subnetName())
+                    .append("\n\t\t\tVirtual network ID: ").append(frontend.networkId());
             }
         }
 
@@ -1299,14 +1302,14 @@ public final class Utils {
         info.append("\n\tBackends: ").append(backends.size());
         for (ApplicationGatewayBackend backend : backends.values()) {
             info.append("\n\t\tName: ").append(backend.name())
-                    .append("\n\t\t\tAssociated NIC IP configuration IDs: ").append(backend.backendNicIPConfigurationNames().keySet());
+                .append("\n\t\t\tAssociated NIC IP configuration IDs: ").append(backend.backendNicIPConfigurationNames().keySet());
 
             // Show addresses
-            List<ApplicationGatewayBackendAddress> addresses = backend.addresses();
+            Collection<ApplicationGatewayBackendAddress> addresses = backend.addresses();
             info.append("\n\t\t\tAddresses: ").append(addresses.size());
             for (ApplicationGatewayBackendAddress address : addresses) {
                 info.append("\n\t\t\t\tFQDN: ").append(address.fqdn())
-                        .append("\n\t\t\t\tIP: ").append(address.ipAddress());
+                    .append("\n\t\t\t\tIP: ").append(address.ipAddress());
             }
         }
 
@@ -1315,10 +1318,15 @@ public final class Utils {
         info.append("\n\tHTTP Configurations: ").append(httpConfigs.size());
         for (ApplicationGatewayBackendHttpConfiguration httpConfig : httpConfigs.values()) {
             info.append("\n\t\tName: ").append(httpConfig.name())
-                    .append("\n\t\t\tCookie based affinity: ").append(httpConfig.cookieBasedAffinity())
-                    .append("\n\t\t\tPort: ").append(httpConfig.port())
-                    .append("\n\t\t\tRequest timeout in seconds: ").append(httpConfig.requestTimeout())
-                    .append("\n\t\t\tProtocol: ").append(httpConfig.protocol());
+                .append("\n\t\t\tCookie based affinity: ").append(httpConfig.cookieBasedAffinity())
+                .append("\n\t\t\tPort: ").append(httpConfig.port())
+                .append("\n\t\t\tRequest timeout in seconds: ").append(httpConfig.requestTimeout())
+                .append("\n\t\t\tProtocol: ").append(httpConfig.protocol());
+
+            ApplicationGatewayProbe probe = httpConfig.probe();
+            if (probe != null) {
+                info.append("\n\t\tProbe: " + probe.name());
+            }
         }
 
         // Show SSL certificates
@@ -1326,7 +1334,7 @@ public final class Utils {
         info.append("\n\tSSL certificates: ").append(sslCerts.size());
         for (ApplicationGatewaySslCertificate cert : sslCerts.values()) {
             info.append("\n\t\tName: ").append(cert.name())
-                    .append("\n\t\t\tCert data: ").append(cert.publicData());
+                .append("\n\t\t\tCert data: ").append(cert.publicData());
         }
 
         // Show HTTP listeners
@@ -1334,15 +1342,27 @@ public final class Utils {
         info.append("\n\tHTTP listeners: ").append(listeners.size());
         for (ApplicationGatewayListener listener : listeners.values()) {
             info.append("\n\t\tName: ").append(listener.name())
-                    .append("\n\t\t\tHost name: ").append(listener.hostName())
-                    .append("\n\t\t\tServer name indication required? ").append(listener.requiresServerNameIndication())
-                    .append("\n\t\t\tAssociated frontend name: ").append(listener.frontend().name())
-                    .append("\n\t\t\tFrontend port name: ").append(listener.frontendPortName())
-                    .append("\n\t\t\tFrontend port number: ").append(listener.frontendPortNumber())
-                    .append("\n\t\t\tProtocol: ").append(listener.protocol().toString());
-            if (listener.sslCertificate() != null) {
-                info.append("\n\t\t\tAssociated SSL certificate: ").append(listener.sslCertificate().name());
-            }
+                .append("\n\t\t\tHost name: ").append(listener.hostName())
+                .append("\n\t\t\tServer name indication required? ").append(listener.requiresServerNameIndication())
+                .append("\n\t\t\tAssociated frontend name: ").append(listener.frontend().name())
+                .append("\n\t\t\tFrontend port name: ").append(listener.frontendPortName())
+                .append("\n\t\t\tFrontend port number: ").append(listener.frontendPortNumber())
+                .append("\n\t\t\tProtocol: ").append(listener.protocol().toString());
+                if (listener.sslCertificate() != null) {
+                    info.append("\n\t\t\tAssociated SSL certificate: ").append(listener.sslCertificate().name());
+                }
+        }
+
+        // Show probes
+        Map<String, ApplicationGatewayProbe> probes = resource.probes();
+        info.append("\n\tProbes: ").append(probes.size());
+        for (ApplicationGatewayProbe probe : probes.values()) {
+            info.append("\n\t\tName: ").append(probe.name())
+                .append("\n\t\tProtocol:").append(probe.protocol().toString())
+                .append("\n\t\tInterval in seconds: ").append(probe.timeBetweenProbesInSeconds())
+                .append("\n\t\tRetries: ").append(probe.retriesBeforeUnhealthy())
+                .append("\n\t\tTimeout: ").append(probe.timeoutInSeconds())
+                .append("\n\t\tHost: ").append(probe.host());
         }
 
         // Show request routing rules
@@ -1350,22 +1370,22 @@ public final class Utils {
         info.append("\n\tRequest routing rules: ").append(rules.size());
         for (ApplicationGatewayRequestRoutingRule rule : rules.values()) {
             info.append("\n\t\tName: ").append(rule.name())
-                    .append("\n\t\t\tType: ").append(rule.ruleType())
-                    .append("\n\t\t\tPublic IP address ID: ").append(rule.publicIPAddressId())
-                    .append("\n\t\t\tHost name: ").append(rule.hostName())
-                    .append("\n\t\t\tServer name indication required? ").append(rule.requiresServerNameIndication())
-                    .append("\n\t\t\tFrontend port: ").append(rule.frontendPort())
-                    .append("\n\t\t\tFrontend protocol: ").append(rule.frontendProtocol().toString())
-                    .append("\n\t\t\tBackend port: ").append(rule.backendPort())
-                    .append("\n\t\t\tCookie based affinity enabled? ").append(rule.cookieBasedAffinity());
+                .append("\n\t\t\tType: ").append(rule.ruleType())
+                .append("\n\t\t\tPublic IP address ID: ").append(rule.publicIPAddressId())
+                .append("\n\t\t\tHost name: ").append(rule.hostName())
+                .append("\n\t\t\tServer name indication required? ").append(rule.requiresServerNameIndication())
+                .append("\n\t\t\tFrontend port: ").append(rule.frontendPort())
+                .append("\n\t\t\tFrontend protocol: ").append(rule.frontendProtocol().toString())
+                .append("\n\t\t\tBackend port: ").append(rule.backendPort())
+                .append("\n\t\t\tCookie based affinity enabled? ").append(rule.cookieBasedAffinity());
 
             // Show backend addresses
-            List<ApplicationGatewayBackendAddress> addresses = rule.backendAddresses();
+            Collection<ApplicationGatewayBackendAddress> addresses = rule.backendAddresses();
             info.append("\n\t\t\tBackend addresses: ").append(addresses.size());
             for (ApplicationGatewayBackendAddress address : addresses) {
                 info.append("\n\t\t\t\t")
-                        .append(address.fqdn())
-                        .append(" [").append(address.ipAddress()).append("]");
+                    .append(address.fqdn())
+                    .append(" [").append(address.ipAddress()).append("]");
             }
 
             // Show SSL cert

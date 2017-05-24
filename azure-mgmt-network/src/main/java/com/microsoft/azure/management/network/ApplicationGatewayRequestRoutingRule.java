@@ -5,7 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
-import java.util.List;
+import java.util.Collection;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
@@ -67,7 +67,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
     /**
      * @return the addresses assigned to the associated backend
      */
-    List<ApplicationGatewayBackendAddress> backendAddresses();
+    Collection<ApplicationGatewayBackendAddress> backendAddresses();
 
     // TODO urlPathMap()
 
