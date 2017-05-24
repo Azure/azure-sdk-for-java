@@ -18,7 +18,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
- * An immutable client-side representation of an application gateway's backend HTTP configuration.
+ * A client-side representation of an application gateway's backend HTTP configuration.
  */
 @Fluent()
 public interface ApplicationGatewayBackendHttpConfiguration extends
@@ -103,6 +103,9 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
         interface WithProbe<ParentT> {
             /**
              * Specifies an existing probe on this application gateway to associate with this backend.
+             * <p>
+             * If the probe with the specified name does not yet exist, it must be defined separately in the optional part
+             * of the application gateway definition. This only adds a reference to the probe by its name.
              * @param name the name of an existing probe
              * @return the next stage of the definition
              */
@@ -187,6 +190,9 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
         interface WithProbe {
             /**
              * Specifies an existing probe on this application gateway to associate with this backend.
+             * <p>
+             * If the probe with the specified name does not yet exist, it must be defined separately in the optional part
+             * of the application gateway definition. This only adds a reference to the probe by its name.
              * @param name the name of an existing probe
              * @return the next stage of the update
              */
@@ -294,6 +300,9 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
         interface WithProbe<ParentT> {
             /**
              * Specifies an existing probe on this application gateway to associate with this backend.
+             * <p>
+             * If the probe with the specified name does not yet exist, it must be defined separately in the optional part
+             * of the application gateway definition. This only adds a reference to the probe by its name.
              * @param name the name of an existing probe
              * @return the next stage of the definition
              */

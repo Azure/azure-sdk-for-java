@@ -7,7 +7,6 @@ package com.microsoft.azure.management.network;
 
 import java.util.Collection;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewaysInner;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
@@ -30,7 +29,6 @@ import rx.Observable;
  * Entry point to application gateway management API in Azure.
  */
 @Fluent()
-@Beta()
 public interface ApplicationGateways extends
     SupportsCreating<ApplicationGateway.DefinitionStages.Blank>,
     SupportsListing<ApplicationGateway>,
@@ -59,17 +57,15 @@ public interface ApplicationGateways extends
     /**
      * Starts the specified application gateways in parallel asynchronously.
      * @param ids application gateway resource id
-     * @return an Observable emitting the resource ID for each successfully started application gateway
+     * @return an emitter of the resource ID for each successfully started application gateway
      */
-    @Beta
     Observable<String> startAsync(String... ids);
 
     /**
      * Starts the specified application gateways in parallel asynchronously.
      * @param ids application gateway resource id
-     * @return an Observable emitting the resource ID for each successfully started application gateway
+     * @return an emitter of the resource ID for each successfully started application gateway
      */
-    @Beta
     Observable<String> startAsync(Collection<String> ids);
 
     /**
@@ -87,16 +83,14 @@ public interface ApplicationGateways extends
     /**
      * Stops the specified application gateways in parallel asynchronously.
      * @param ids application gateway resource ids
-     * @return an Observable emitting the resource ID for each successfully stopped application gateway
+     * @return an emitter of the resource ID for each successfully stopped application gateway
      */
-    @Beta
     Observable<String> stopAsync(String...ids);
 
     /**
      * Stops the specified application gateways in parallel asynchronously.
      * @param ids application gateway resource id
-     * @return an Observable emitting the resource ID for each successfully stopped application gateway
+     * @return an emitter of the resource ID for each successfully stopped application gateway
      */
-    @Beta
     Observable<String> stopAsync(Collection<String> ids);
 }
