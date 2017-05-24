@@ -7,7 +7,6 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetVMInner;
@@ -218,10 +217,9 @@ public interface VirtualMachineScaleSetVM extends
     /**
      * Updates the version of the installed operating system in the virtual machine instance.
      *
-     * @return the observable to the reimage action
+     * @return a representation of the deferred computation of this call
      */
     @Method
-    @Beta
     Completable reimageAsync();
 
     /**
@@ -232,10 +230,9 @@ public interface VirtualMachineScaleSetVM extends
     /**
      * Shuts down the virtual machine instance and releases the associated compute resources.
      *
-     * @return the observable to the deallocate action
+     * @return a representation of the deferred computation of this call
      */
     @Method
-    @Beta
     Completable deallocateAsync();
 
     /**
@@ -246,10 +243,9 @@ public interface VirtualMachineScaleSetVM extends
     /**
      * Stops the virtual machine instance.
      *
-     * @return the observable to the poweroff action
+     * @return a representation of the deferred computation of this call
      */
     @Method
-    @Beta
     Completable powerOffAsync();
 
     /**
@@ -260,10 +256,9 @@ public interface VirtualMachineScaleSetVM extends
     /**
      * Starts the virtual machine instance.
      *
-     * @return the observable to the start action
+     * @return a representation of the deferred computation of this call
      */
     @Method
-    @Beta
     Completable startAsync();
 
     /**
@@ -274,10 +269,9 @@ public interface VirtualMachineScaleSetVM extends
     /**
      * Restarts the virtual machine instance.
      *
-     * @return the observable to the restart action
+     * @return a representation of the deferred computation of this call
      */
     @Method
-    @Beta
     Completable restartAsync();
 
     /**
@@ -288,10 +282,9 @@ public interface VirtualMachineScaleSetVM extends
     /**
      * Deletes the virtual machine instance.
      *
-     * @return the observable to the delete action
+     * @return a representation of the deferred computation of this call
      */
     @Method
-    @Beta
     Completable deleteAsync();
 
     /**
