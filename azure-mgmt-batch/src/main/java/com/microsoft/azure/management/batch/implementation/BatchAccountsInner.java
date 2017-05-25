@@ -126,7 +126,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     /**
      * Creates a new Batch account with the specified parameters. Existing accounts cannot be updated with this API and should instead be updated with the Update Batch Account API.
      *
-     * @param resourceGroupName The name of the resource group that contains the new Batch account.
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName A name for the Batch account which must be unique within the region. Batch account names must be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
      * @param parameters Additional parameters for account creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -141,7 +141,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     /**
      * Creates a new Batch account with the specified parameters. Existing accounts cannot be updated with this API and should instead be updated with the Update Batch Account API.
      *
-     * @param resourceGroupName The name of the resource group that contains the new Batch account.
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName A name for the Batch account which must be unique within the region. Batch account names must be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
      * @param parameters Additional parameters for account creation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -155,7 +155,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     /**
      * Creates a new Batch account with the specified parameters. Existing accounts cannot be updated with this API and should instead be updated with the Update Batch Account API.
      *
-     * @param resourceGroupName The name of the resource group that contains the new Batch account.
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName A name for the Batch account which must be unique within the region. Batch account names must be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
      * @param parameters Additional parameters for account creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -173,7 +173,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     /**
      * Creates a new Batch account with the specified parameters. Existing accounts cannot be updated with this API and should instead be updated with the Update Batch Account API.
      *
-     * @param resourceGroupName The name of the resource group that contains the new Batch account.
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName A name for the Batch account which must be unique within the region. Batch account names must be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
      * @param parameters Additional parameters for account creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -203,7 +203,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     /**
      * Creates a new Batch account with the specified parameters. Existing accounts cannot be updated with this API and should instead be updated with the Update Batch Account API.
      *
-     * @param resourceGroupName The name of the resource group that contains the new Batch account.
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName A name for the Batch account which must be unique within the region. Batch account names must be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
      * @param parameters Additional parameters for account creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -218,7 +218,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     /**
      * Creates a new Batch account with the specified parameters. Existing accounts cannot be updated with this API and should instead be updated with the Update Batch Account API.
      *
-     * @param resourceGroupName The name of the resource group that contains the new Batch account.
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName A name for the Batch account which must be unique within the region. Batch account names must be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
      * @param parameters Additional parameters for account creation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -232,7 +232,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     /**
      * Creates a new Batch account with the specified parameters. Existing accounts cannot be updated with this API and should instead be updated with the Update Batch Account API.
      *
-     * @param resourceGroupName The name of the resource group that contains the new Batch account.
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName A name for the Batch account which must be unique within the region. Batch account names must be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
      * @param parameters Additional parameters for account creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -250,7 +250,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     /**
      * Creates a new Batch account with the specified parameters. Existing accounts cannot be updated with this API and should instead be updated with the Update Batch Account API.
      *
-     * @param resourceGroupName The name of the resource group that contains the new Batch account.
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName A name for the Batch account which must be unique within the region. Batch account names must be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
      * @param parameters Additional parameters for account creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -299,7 +299,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
      * Updates the properties of an existing Batch account.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the account.
+     * @param accountName The name of the Batch account.
      * @param parameters Additional parameters for account update.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -314,7 +314,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
      * Updates the properties of an existing Batch account.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the account.
+     * @param accountName The name of the Batch account.
      * @param parameters Additional parameters for account update.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -328,7 +328,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
      * Updates the properties of an existing Batch account.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the account.
+     * @param accountName The name of the Batch account.
      * @param parameters Additional parameters for account update.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BatchAccountInner object
@@ -346,7 +346,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
      * Updates the properties of an existing Batch account.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the account.
+     * @param accountName The name of the Batch account.
      * @param parameters Additional parameters for account update.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BatchAccountInner object
@@ -392,8 +392,8 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     /**
      * Deletes the specified Batch account.
      *
-     * @param resourceGroupName The name of the resource group that contains the Batch account to be deleted.
-     * @param accountName The name of the account to be deleted.
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -405,8 +405,8 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     /**
      * Deletes the specified Batch account.
      *
-     * @param resourceGroupName The name of the resource group that contains the Batch account to be deleted.
-     * @param accountName The name of the account to be deleted.
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -418,8 +418,8 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     /**
      * Deletes the specified Batch account.
      *
-     * @param resourceGroupName The name of the resource group that contains the Batch account to be deleted.
-     * @param accountName The name of the account to be deleted.
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -435,8 +435,8 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     /**
      * Deletes the specified Batch account.
      *
-     * @param resourceGroupName The name of the resource group that contains the Batch account to be deleted.
-     * @param accountName The name of the account to be deleted.
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -460,8 +460,8 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     /**
      * Deletes the specified Batch account.
      *
-     * @param resourceGroupName The name of the resource group that contains the Batch account to be deleted.
-     * @param accountName The name of the account to be deleted.
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -473,8 +473,8 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     /**
      * Deletes the specified Batch account.
      *
-     * @param resourceGroupName The name of the resource group that contains the Batch account to be deleted.
-     * @param accountName The name of the account to be deleted.
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -486,8 +486,8 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     /**
      * Deletes the specified Batch account.
      *
-     * @param resourceGroupName The name of the resource group that contains the Batch account to be deleted.
-     * @param accountName The name of the account to be deleted.
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
@@ -503,8 +503,8 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     /**
      * Deletes the specified Batch account.
      *
-     * @param resourceGroupName The name of the resource group that contains the Batch account to be deleted.
-     * @param accountName The name of the account to be deleted.
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
@@ -539,6 +539,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .buildWithHeaders(response, BatchAccountDeleteHeadersInner.class);
     }
@@ -547,7 +548,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
      * Gets information about the specified Batch account.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the account.
+     * @param accountName The name of the Batch account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -561,7 +562,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
      * Gets information about the specified Batch account.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the account.
+     * @param accountName The name of the Batch account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -574,7 +575,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
      * Gets information about the specified Batch account.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the account.
+     * @param accountName The name of the Batch account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BatchAccountInner object
      */
@@ -591,7 +592,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
      * Gets information about the specified Batch account.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the account.
+     * @param accountName The name of the Batch account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BatchAccountInner object
      */
@@ -737,9 +738,9 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     }
 
     /**
-     * Gets information about the Batch accounts associated within the specified resource group.
+     * Gets information about the Batch accounts associated with the specified resource group.
      *
-     * @param resourceGroupName The name of the resource group whose Batch accounts to list.
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -756,9 +757,9 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     }
 
     /**
-     * Gets information about the Batch accounts associated within the specified resource group.
+     * Gets information about the Batch accounts associated with the specified resource group.
      *
-     * @param resourceGroupName The name of the resource group whose Batch accounts to list.
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -776,9 +777,9 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     }
 
     /**
-     * Gets information about the Batch accounts associated within the specified resource group.
+     * Gets information about the Batch accounts associated with the specified resource group.
      *
-     * @param resourceGroupName The name of the resource group whose Batch accounts to list.
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BatchAccountInner&gt; object
      */
@@ -793,9 +794,9 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     }
 
     /**
-     * Gets information about the Batch accounts associated within the specified resource group.
+     * Gets information about the Batch accounts associated with the specified resource group.
      *
-     * @param resourceGroupName The name of the resource group whose Batch accounts to list.
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BatchAccountInner&gt; object
      */
@@ -814,9 +815,9 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     }
 
     /**
-     * Gets information about the Batch accounts associated within the specified resource group.
+     * Gets information about the Batch accounts associated with the specified resource group.
      *
-    ServiceResponse<PageImpl<BatchAccountInner>> * @param resourceGroupName The name of the resource group whose Batch accounts to list.
+    ServiceResponse<PageImpl<BatchAccountInner>> * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;BatchAccountInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -852,7 +853,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     }
 
     /**
-     * Synchronizes access keys for the auto storage account configured for the specified Batch account.
+     * Synchronizes access keys for the auto-storage account configured for the specified Batch account.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
@@ -865,7 +866,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     }
 
     /**
-     * Synchronizes access keys for the auto storage account configured for the specified Batch account.
+     * Synchronizes access keys for the auto-storage account configured for the specified Batch account.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
@@ -878,7 +879,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     }
 
     /**
-     * Synchronizes access keys for the auto storage account configured for the specified Batch account.
+     * Synchronizes access keys for the auto-storage account configured for the specified Batch account.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
@@ -895,7 +896,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     }
 
     /**
-     * Synchronizes access keys for the auto storage account configured for the specified Batch account.
+     * Synchronizes access keys for the auto-storage account configured for the specified Batch account.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
@@ -940,7 +941,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
      * Regenerates the specified account key for the Batch account.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the account.
+     * @param accountName The name of the Batch account.
      * @param keyName The type of account key to regenerate. Possible values include: 'Primary', 'Secondary'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -955,7 +956,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
      * Regenerates the specified account key for the Batch account.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the account.
+     * @param accountName The name of the Batch account.
      * @param keyName The type of account key to regenerate. Possible values include: 'Primary', 'Secondary'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -969,7 +970,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
      * Regenerates the specified account key for the Batch account.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the account.
+     * @param accountName The name of the Batch account.
      * @param keyName The type of account key to regenerate. Possible values include: 'Primary', 'Secondary'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BatchAccountKeysInner object
@@ -987,7 +988,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
      * Regenerates the specified account key for the Batch account.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the account.
+     * @param accountName The name of the Batch account.
      * @param keyName The type of account key to regenerate. Possible values include: 'Primary', 'Secondary'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BatchAccountKeysInner object
@@ -1033,9 +1034,10 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
 
     /**
      * Gets the account keys for the specified Batch account.
+     * This operation applies only to Batch accounts created with a poolAllocationMode of 'BatchService'. If the Batch account was created with a poolAllocationMode of 'UserSubscription', clients cannot use access to keys to authenticate, and must use Azure Active Directory instead. In this case, getting the keys will fail.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the account.
+     * @param accountName The name of the Batch account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1047,9 +1049,10 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
 
     /**
      * Gets the account keys for the specified Batch account.
+     * This operation applies only to Batch accounts created with a poolAllocationMode of 'BatchService'. If the Batch account was created with a poolAllocationMode of 'UserSubscription', clients cannot use access to keys to authenticate, and must use Azure Active Directory instead. In this case, getting the keys will fail.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the account.
+     * @param accountName The name of the Batch account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1060,9 +1063,10 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
 
     /**
      * Gets the account keys for the specified Batch account.
+     * This operation applies only to Batch accounts created with a poolAllocationMode of 'BatchService'. If the Batch account was created with a poolAllocationMode of 'UserSubscription', clients cannot use access to keys to authenticate, and must use Azure Active Directory instead. In this case, getting the keys will fail.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the account.
+     * @param accountName The name of the Batch account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BatchAccountKeysInner object
      */
@@ -1077,9 +1081,10 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
 
     /**
      * Gets the account keys for the specified Batch account.
+     * This operation applies only to Batch accounts created with a poolAllocationMode of 'BatchService'. If the Batch account was created with a poolAllocationMode of 'UserSubscription', clients cannot use access to keys to authenticate, and must use Azure Active Directory instead. In this case, getting the keys will fail.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the account.
+     * @param accountName The name of the Batch account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BatchAccountKeysInner object
      */
@@ -1229,7 +1234,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     }
 
     /**
-     * Gets information about the Batch accounts associated within the specified resource group.
+     * Gets information about the Batch accounts associated with the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1248,7 +1253,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     }
 
     /**
-     * Gets information about the Batch accounts associated within the specified resource group.
+     * Gets information about the Batch accounts associated with the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
@@ -1269,7 +1274,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     }
 
     /**
-     * Gets information about the Batch accounts associated within the specified resource group.
+     * Gets information about the Batch accounts associated with the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1286,7 +1291,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     }
 
     /**
-     * Gets information about the Batch accounts associated within the specified resource group.
+     * Gets information about the Batch accounts associated with the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1307,7 +1312,7 @@ public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, 
     }
 
     /**
-     * Gets information about the Batch accounts associated within the specified resource group.
+     * Gets information about the Batch accounts associated with the specified resource group.
      *
     ServiceResponse<PageImpl<BatchAccountInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation

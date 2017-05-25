@@ -12,43 +12,16 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Contains information about the auto storage account associated with a Batch
+ * Contains information about the auto-storage account associated with a Batch
  * account.
  */
-public class AutoStorageProperties {
-    /**
-     * The resource ID of the storage account to be used for auto storage
-     * account.
-     */
-    @JsonProperty(value = "storageAccountId", required = true)
-    private String storageAccountId;
-
+public class AutoStorageProperties extends AutoStorageBaseProperties {
     /**
      * The UTC time at which storage keys were last synchronized with the Batch
      * account.
      */
     @JsonProperty(value = "lastKeySync", required = true)
     private DateTime lastKeySync;
-
-    /**
-     * Get the storageAccountId value.
-     *
-     * @return the storageAccountId value
-     */
-    public String storageAccountId() {
-        return this.storageAccountId;
-    }
-
-    /**
-     * Set the storageAccountId value.
-     *
-     * @param storageAccountId the storageAccountId value to set
-     * @return the AutoStorageProperties object itself.
-     */
-    public AutoStorageProperties withStorageAccountId(String storageAccountId) {
-        this.storageAccountId = storageAccountId;
-        return this;
-    }
 
     /**
      * Get the lastKeySync value.

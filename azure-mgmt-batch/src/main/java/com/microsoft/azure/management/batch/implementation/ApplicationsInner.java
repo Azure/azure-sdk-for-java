@@ -64,7 +64,7 @@ public class ApplicationsInner {
     interface ApplicationsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batch.Applications create" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationId}")
-        Observable<Response<ResponseBody>> create(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("applicationId") String applicationId, @Path("subscriptionId") String subscriptionId, @Body AddApplicationParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> create(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("applicationId") String applicationId, @Path("subscriptionId") String subscriptionId, @Body ApplicationCreateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batch.Applications delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationId}", method = "DELETE", hasBody = true)
@@ -76,7 +76,7 @@ public class ApplicationsInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batch.Applications update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationId}")
-        Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("applicationId") String applicationId, @Path("subscriptionId") String subscriptionId, @Body UpdateApplicationParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("applicationId") String applicationId, @Path("subscriptionId") String subscriptionId, @Body ApplicationUpdateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batch.Applications list" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications")
@@ -160,7 +160,7 @@ public class ApplicationsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        final AddApplicationParametersInner parameters = null;
+        final ApplicationCreateParametersInner parameters = null;
         return service.create(resourceGroupName, accountName, applicationId, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ApplicationInner>>>() {
                 @Override
@@ -187,7 +187,7 @@ public class ApplicationsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ApplicationInner object if successful.
      */
-    public ApplicationInner create(String resourceGroupName, String accountName, String applicationId, AddApplicationParametersInner parameters) {
+    public ApplicationInner create(String resourceGroupName, String accountName, String applicationId, ApplicationCreateParametersInner parameters) {
         return createWithServiceResponseAsync(resourceGroupName, accountName, applicationId, parameters).toBlocking().single().body();
     }
 
@@ -202,7 +202,7 @@ public class ApplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ApplicationInner> createAsync(String resourceGroupName, String accountName, String applicationId, AddApplicationParametersInner parameters, final ServiceCallback<ApplicationInner> serviceCallback) {
+    public ServiceFuture<ApplicationInner> createAsync(String resourceGroupName, String accountName, String applicationId, ApplicationCreateParametersInner parameters, final ServiceCallback<ApplicationInner> serviceCallback) {
         return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, accountName, applicationId, parameters), serviceCallback);
     }
 
@@ -216,7 +216,7 @@ public class ApplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationInner object
      */
-    public Observable<ApplicationInner> createAsync(String resourceGroupName, String accountName, String applicationId, AddApplicationParametersInner parameters) {
+    public Observable<ApplicationInner> createAsync(String resourceGroupName, String accountName, String applicationId, ApplicationCreateParametersInner parameters) {
         return createWithServiceResponseAsync(resourceGroupName, accountName, applicationId, parameters).map(new Func1<ServiceResponse<ApplicationInner>, ApplicationInner>() {
             @Override
             public ApplicationInner call(ServiceResponse<ApplicationInner> response) {
@@ -235,7 +235,7 @@ public class ApplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationInner object
      */
-    public Observable<ServiceResponse<ApplicationInner>> createWithServiceResponseAsync(String resourceGroupName, String accountName, String applicationId, AddApplicationParametersInner parameters) {
+    public Observable<ServiceResponse<ApplicationInner>> createWithServiceResponseAsync(String resourceGroupName, String accountName, String applicationId, ApplicationCreateParametersInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -469,7 +469,7 @@ public class ApplicationsInner {
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void update(String resourceGroupName, String accountName, String applicationId, UpdateApplicationParametersInner parameters) {
+    public void update(String resourceGroupName, String accountName, String applicationId, ApplicationUpdateParametersInner parameters) {
         updateWithServiceResponseAsync(resourceGroupName, accountName, applicationId, parameters).toBlocking().single().body();
     }
 
@@ -484,7 +484,7 @@ public class ApplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> updateAsync(String resourceGroupName, String accountName, String applicationId, UpdateApplicationParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<Void> updateAsync(String resourceGroupName, String accountName, String applicationId, ApplicationUpdateParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName, applicationId, parameters), serviceCallback);
     }
 
@@ -498,7 +498,7 @@ public class ApplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> updateAsync(String resourceGroupName, String accountName, String applicationId, UpdateApplicationParametersInner parameters) {
+    public Observable<Void> updateAsync(String resourceGroupName, String accountName, String applicationId, ApplicationUpdateParametersInner parameters) {
         return updateWithServiceResponseAsync(resourceGroupName, accountName, applicationId, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
@@ -517,7 +517,7 @@ public class ApplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String resourceGroupName, String accountName, String applicationId, UpdateApplicationParametersInner parameters) {
+    public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String resourceGroupName, String accountName, String applicationId, ApplicationUpdateParametersInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
