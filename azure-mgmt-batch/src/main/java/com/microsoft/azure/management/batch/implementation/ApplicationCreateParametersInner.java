@@ -11,9 +11,9 @@ package com.microsoft.azure.management.batch.implementation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters for an ApplicationOperations.AddApplication request.
+ * Parameters for adding an Application.
  */
-public class AddApplicationParametersInner {
+public class ApplicationCreateParametersInner {
     /**
      * A value indicating whether packages within the application may be
      * overwritten using the same version string.
@@ -40,9 +40,9 @@ public class AddApplicationParametersInner {
      * Set the allowUpdates value.
      *
      * @param allowUpdates the allowUpdates value to set
-     * @return the AddApplicationParametersInner object itself.
+     * @return the ApplicationCreateParametersInner object itself.
      */
-    public AddApplicationParametersInner withAllowUpdates(Boolean allowUpdates) {
+    public ApplicationCreateParametersInner withAllowUpdates(Boolean allowUpdates) {
         this.allowUpdates = allowUpdates;
         return this;
     }
@@ -60,9 +60,9 @@ public class AddApplicationParametersInner {
      * Set the displayName value.
      *
      * @param displayName the displayName value to set
-     * @return the AddApplicationParametersInner object itself.
+     * @return the ApplicationCreateParametersInner object itself.
      */
-    public AddApplicationParametersInner withDisplayName(String displayName) {
+    public ApplicationCreateParametersInner withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }

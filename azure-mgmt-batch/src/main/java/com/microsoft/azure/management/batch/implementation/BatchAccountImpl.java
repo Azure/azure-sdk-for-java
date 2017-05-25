@@ -44,6 +44,7 @@ public class BatchAccountImpl
     private String creatableStorageAccountKey;
     private StorageAccount existingStorageAccountToAssociate;
     private ApplicationsImpl applicationsImpl;
+    private AutoStorageProperties autoStorage;
 
     protected BatchAccountImpl(String name,
                                BatchAccountInner innerObject,
@@ -77,9 +78,9 @@ public class BatchAccountImpl
 
         handleStorageSettings();
         BatchAccountCreateParametersInner batchAccountCreateParametersInner = new BatchAccountCreateParametersInner();
-        if (this.inner().autoStorage() != null) {
+        if (autoStorage != null) {
             batchAccountCreateParametersInner.withAutoStorage(new AutoStorageBaseProperties());
-            batchAccountCreateParametersInner.autoStorage().withStorageAccountId(this.inner().autoStorage().storageAccountId());
+            batchAccountCreateParametersInner.autoStorage().withStorageAccountId(autoStorage.storageAccountId());
         }
         else {
             batchAccountCreateParametersInner.withAutoStorage(null);
@@ -156,7 +157,7 @@ public class BatchAccountImpl
 
     @Override
     public int coreQuota() {
-        return Utils.toPrimitiveInt(this.inner().coreQuota());
+        return Utils.toPrimitiveInt(this.inner().dedicatedCoreQuota());
     }
 
     @Override
@@ -231,7 +232,7 @@ public class BatchAccountImpl
     public BatchAccountImpl withoutStorageAccount() {
         this.existingStorageAccountToAssociate = null;
         this.creatableStorageAccountKey = null;
-        this.inner().withAutoStorage(null);
+        this.autoStorage = null;
         return this;
     }
 
@@ -262,11 +263,11 @@ public class BatchAccountImpl
             return;
         }
 
-        if (this.inner().autoStorage() == null) {
-            this.inner().withAutoStorage(new AutoStorageProperties());
+        if (autoStorage == null) {
+            autoStorage = new AutoStorageProperties();
         }
 
-        inner().autoStorage().withStorageAccountId(storageAccount.id());
+        autoStorage.withStorageAccountId(storageAccount.id());
     }
 
     BatchAccountImpl withApplication(ApplicationImpl application) {

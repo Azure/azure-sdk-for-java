@@ -9,6 +9,8 @@
 package com.microsoft.azure.management.batch.implementation;
 
 import com.microsoft.azure.management.batch.ProvisioningState;
+import com.microsoft.azure.management.batch.PoolAllocationMode;
+import com.microsoft.azure.management.batch.KeyVaultReference;
 import com.microsoft.azure.management.batch.AutoStorageProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -20,7 +22,7 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class BatchAccountInner extends Resource {
     /**
-     * The endpoint used by this account to interact with the Batch services.
+     * The account endpoint used to interact with the Batch service.
      */
     @JsonProperty(value = "properties.accountEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String accountEndpoint;
@@ -29,32 +31,51 @@ public class BatchAccountInner extends Resource {
      * The provisioned state of the resource. Possible values include:
      * 'Invalid', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Cancelled'.
      */
-    @JsonProperty(value = "properties.provisioningState")
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
-     * The properties and status of any auto storage account associated with
-     * the account.
+     * The allocation mode to use for creating pools in the Batch account.
+     * Possible values include: 'BatchService', 'UserSubscription'.
      */
-    @JsonProperty(value = "properties.autoStorage")
+    @JsonProperty(value = "properties.poolAllocationMode", access = JsonProperty.Access.WRITE_ONLY)
+    private PoolAllocationMode poolAllocationMode;
+
+    /**
+     * A reference to the Azure key vault associated with the Batch account.
+     */
+    @JsonProperty(value = "properties.keyVaultReference", access = JsonProperty.Access.WRITE_ONLY)
+    private KeyVaultReference keyVaultReference;
+
+    /**
+     * The properties and status of any auto-storage account associated with
+     * the Batch account.
+     */
+    @JsonProperty(value = "properties.autoStorage", access = JsonProperty.Access.WRITE_ONLY)
     private AutoStorageProperties autoStorage;
 
     /**
-     * The core quota for this Batch account.
+     * The dedicated core quota for this Batch account.
      */
-    @JsonProperty(value = "properties.coreQuota", required = true)
-    private int coreQuota;
+    @JsonProperty(value = "properties.dedicatedCoreQuota", access = JsonProperty.Access.WRITE_ONLY)
+    private int dedicatedCoreQuota;
+
+    /**
+     * The low-priority core quota for this Batch account.
+     */
+    @JsonProperty(value = "properties.lowPriorityCoreQuota", access = JsonProperty.Access.WRITE_ONLY)
+    private int lowPriorityCoreQuota;
 
     /**
      * The pool quota for this Batch account.
      */
-    @JsonProperty(value = "properties.poolQuota", required = true)
+    @JsonProperty(value = "properties.poolQuota", access = JsonProperty.Access.WRITE_ONLY)
     private int poolQuota;
 
     /**
      * The active job and job schedule quota for this Batch account.
      */
-    @JsonProperty(value = "properties.activeJobAndJobScheduleQuota", required = true)
+    @JsonProperty(value = "properties.activeJobAndJobScheduleQuota", access = JsonProperty.Access.WRITE_ONLY)
     private int activeJobAndJobScheduleQuota;
 
     /**
@@ -76,14 +97,21 @@ public class BatchAccountInner extends Resource {
     }
 
     /**
-     * Set the provisioningState value.
+     * Get the poolAllocationMode value.
      *
-     * @param provisioningState the provisioningState value to set
-     * @return the BatchAccountInner object itself.
+     * @return the poolAllocationMode value
      */
-    public BatchAccountInner withProvisioningState(ProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
+    public PoolAllocationMode poolAllocationMode() {
+        return this.poolAllocationMode;
+    }
+
+    /**
+     * Get the keyVaultReference value.
+     *
+     * @return the keyVaultReference value
+     */
+    public KeyVaultReference keyVaultReference() {
+        return this.keyVaultReference;
     }
 
     /**
@@ -96,34 +124,21 @@ public class BatchAccountInner extends Resource {
     }
 
     /**
-     * Set the autoStorage value.
+     * Get the dedicatedCoreQuota value.
      *
-     * @param autoStorage the autoStorage value to set
-     * @return the BatchAccountInner object itself.
+     * @return the dedicatedCoreQuota value
      */
-    public BatchAccountInner withAutoStorage(AutoStorageProperties autoStorage) {
-        this.autoStorage = autoStorage;
-        return this;
+    public int dedicatedCoreQuota() {
+        return this.dedicatedCoreQuota;
     }
 
     /**
-     * Get the coreQuota value.
+     * Get the lowPriorityCoreQuota value.
      *
-     * @return the coreQuota value
+     * @return the lowPriorityCoreQuota value
      */
-    public int coreQuota() {
-        return this.coreQuota;
-    }
-
-    /**
-     * Set the coreQuota value.
-     *
-     * @param coreQuota the coreQuota value to set
-     * @return the BatchAccountInner object itself.
-     */
-    public BatchAccountInner withCoreQuota(int coreQuota) {
-        this.coreQuota = coreQuota;
-        return this;
+    public int lowPriorityCoreQuota() {
+        return this.lowPriorityCoreQuota;
     }
 
     /**
@@ -136,34 +151,12 @@ public class BatchAccountInner extends Resource {
     }
 
     /**
-     * Set the poolQuota value.
-     *
-     * @param poolQuota the poolQuota value to set
-     * @return the BatchAccountInner object itself.
-     */
-    public BatchAccountInner withPoolQuota(int poolQuota) {
-        this.poolQuota = poolQuota;
-        return this;
-    }
-
-    /**
      * Get the activeJobAndJobScheduleQuota value.
      *
      * @return the activeJobAndJobScheduleQuota value
      */
     public int activeJobAndJobScheduleQuota() {
         return this.activeJobAndJobScheduleQuota;
-    }
-
-    /**
-     * Set the activeJobAndJobScheduleQuota value.
-     *
-     * @param activeJobAndJobScheduleQuota the activeJobAndJobScheduleQuota value to set
-     * @return the BatchAccountInner object itself.
-     */
-    public BatchAccountInner withActiveJobAndJobScheduleQuota(int activeJobAndJobScheduleQuota) {
-        this.activeJobAndJobScheduleQuota = activeJobAndJobScheduleQuota;
-        return this;
     }
 
 }

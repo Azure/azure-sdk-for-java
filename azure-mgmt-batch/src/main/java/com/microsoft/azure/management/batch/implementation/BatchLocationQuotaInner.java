@@ -18,7 +18,7 @@ public class BatchLocationQuotaInner {
      * The number of Batch accounts that may be created under the subscription
      * in the specified region.
      */
-    @JsonProperty(value = "accountQuota")
+    @JsonProperty(value = "accountQuota", access = JsonProperty.Access.WRITE_ONLY)
     private Integer accountQuota;
 
     /**
@@ -28,17 +28,6 @@ public class BatchLocationQuotaInner {
      */
     public Integer accountQuota() {
         return this.accountQuota;
-    }
-
-    /**
-     * Set the accountQuota value.
-     *
-     * @param accountQuota the accountQuota value to set
-     * @return the BatchLocationQuotaInner object itself.
-     */
-    public BatchLocationQuotaInner withAccountQuota(Integer accountQuota) {
-        this.accountQuota = accountQuota;
-        return this;
     }
 
 }

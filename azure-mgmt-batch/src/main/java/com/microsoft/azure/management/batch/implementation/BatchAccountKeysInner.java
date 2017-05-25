@@ -15,16 +15,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class BatchAccountKeysInner {
     /**
+     * The Batch account name.
+     */
+    @JsonProperty(value = "accountName", access = JsonProperty.Access.WRITE_ONLY)
+    private String accountName;
+
+    /**
      * The primary key associated with the account.
      */
-    @JsonProperty(value = "primary")
+    @JsonProperty(value = "primary", access = JsonProperty.Access.WRITE_ONLY)
     private String primary;
 
     /**
      * The secondary key associated with the account.
      */
-    @JsonProperty(value = "secondary")
+    @JsonProperty(value = "secondary", access = JsonProperty.Access.WRITE_ONLY)
     private String secondary;
+
+    /**
+     * Get the accountName value.
+     *
+     * @return the accountName value
+     */
+    public String accountName() {
+        return this.accountName;
+    }
 
     /**
      * Get the primary value.
@@ -36,34 +51,12 @@ public class BatchAccountKeysInner {
     }
 
     /**
-     * Set the primary value.
-     *
-     * @param primary the primary value to set
-     * @return the BatchAccountKeysInner object itself.
-     */
-    public BatchAccountKeysInner withPrimary(String primary) {
-        this.primary = primary;
-        return this;
-    }
-
-    /**
      * Get the secondary value.
      *
      * @return the secondary value
      */
     public String secondary() {
         return this.secondary;
-    }
-
-    /**
-     * Set the secondary value.
-     *
-     * @param secondary the secondary value to set
-     * @return the BatchAccountKeysInner object itself.
-     */
-    public BatchAccountKeysInner withSecondary(String secondary) {
-        this.secondary = secondary;
-        return this;
     }
 
 }
