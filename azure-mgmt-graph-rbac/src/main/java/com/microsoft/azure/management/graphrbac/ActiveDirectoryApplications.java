@@ -25,12 +25,12 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 @Beta(SinceVersion.V1_1_0)
-public interface Applications extends
-        SupportsListing<Application>,
-        SupportsGettingById<Application>,
-        SupportsGettingByNameAsync<Application>,
-        SupportsCreating<Application.DefinitionStages.Blank>,
-        SupportsBatchCreation<Application>,
+public interface ActiveDirectoryApplications extends
+        SupportsListing<ActiveDirectoryApplication>,
+        SupportsGettingById<ActiveDirectoryApplication>,
+        SupportsGettingByNameAsync<ActiveDirectoryApplication>,
+        SupportsCreating<ActiveDirectoryApplication.DefinitionStages.Blank>,
+        SupportsBatchCreation<ActiveDirectoryApplication>,
         SupportsDeletingById,
         HasManager<GraphRbacManager>,
         HasInner<ApplicationsInner> {

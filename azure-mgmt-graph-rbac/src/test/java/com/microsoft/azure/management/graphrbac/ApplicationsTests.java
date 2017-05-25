@@ -32,7 +32,7 @@ public class ApplicationsTests extends GraphRbacManagementTestBase {
     public void canCRUDApplication() throws Exception {
         String name = SdkContext.randomResourceName("javasdkapp", 20);
 
-        Application application = null;
+        ActiveDirectoryApplication application = null;
         try {
             application = graphRbacManager.applications().define(name)
                     .withSignOnUrl("http://easycreate.azure.com/" + name)

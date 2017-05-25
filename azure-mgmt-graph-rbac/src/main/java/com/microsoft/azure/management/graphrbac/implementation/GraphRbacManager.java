@@ -12,7 +12,7 @@ import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryUsers;
-import com.microsoft.azure.management.graphrbac.Applications;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryApplications;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroups;
 import com.microsoft.azure.management.graphrbac.RoleAssignments;
 import com.microsoft.azure.management.graphrbac.RoleDefinitions;
@@ -38,7 +38,7 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
     private ActiveDirectoryUsers activeDirectoryUsers;
     private ActiveDirectoryGroups activeDirectoryGroups;
     private ServicePrincipals servicePrincipals;
-    private Applications applications;
+    private ActiveDirectoryApplications applications;
     private RoleAssignments roleAssignments;
     private RoleDefinitions roleDefinitions;
 
@@ -169,9 +169,9 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
      * @return the application management API entry point
      */
     @Beta(SinceVersion.V1_1_0)
-    public Applications applications() {
+    public ActiveDirectoryApplications applications() {
         if (applications == null) {
-            applications = new ApplicationsImpl(graphRbacManagementClient.applications(), this);
+            applications = new ActiveDirectoryApplicationsImpl(graphRbacManagementClient.applications(), this);
         }
         return applications;
     }
