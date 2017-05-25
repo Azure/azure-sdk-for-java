@@ -61,79 +61,79 @@ Some of the APIs that were still in Beta in V1.0 are now GA in V1.1, in particul
   <tr>
     <td>Networking</td>
     <td><code>ApplicationGatewayBackend.addresses()</code></td>
-    <td><code>List<></code></td>
-    <td><code>Collection<></code></td>
+    <td><code>List&lt;&gt;</code></td>
+    <td><code>Collection&lt;&gt;</code></td>
     <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1694">#1694</a></td>
   </tr>
   <tr>
     <td>Networking</td>
     <td><code> ApplicationGatewayRequestRoutingRule.backendAddresses()</code></td>
-    <td><code>List<></code></td>
-    <td><code>Collection<></code></td>
+    <td><code>List&lt;&gt;</code></td>
+    <td><code>Collection&lt;&gt;</code></td>
     <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1694">#1694</a></td>
   </tr>
 
   <tr>
     <td>CDN</td>
     <td><code>CdnEndpoint.contentTypesToCompress()</code></td>
-    <td><code>List<String></code></td>
-    <td><code>Set<String></code></td>
+    <td><code>List&lt;String&gt;</code></td>
+    <td><code>Set&lt;String&gt;</code></td>
     <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1634">#1634</a></td>
   </tr>
   <tr>
     <td>CDN</td>
     <td><code>CdnEndpoint.withContentTypesToCompress()</code></td>
-    <td><code>List<String></code></td>
-    <td><code>Set<String></code></td>
+    <td><code>List&lt;String&gt;</code></td>
+    <td><code>Set&lt;String&gt;</code></td>
     <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1634">#1634</a></td>
   </tr>
   <tr>
     <td>CDN</td>
     <td><code>CdnEndpoint.customDomains()</code></td>
-    <td><code>List<String></code></td>
-    <td><code>Set<String></code></td>
+    <td><code>List&lt;String&gt;</code></td>
+    <td><code>Set&lt;String&gt;</code></td>
     <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1634">#1634</a></td>
   </tr>
   <tr>
     <td>CDN</td>
     <td><code>CdnEndpoint.purgeContent() /  .purgeContentAsync()</code></td>
-    <td><code>List<String></code></td>
-    <td><code>Set<String></code></td>
+    <td><code>List&lt;String&gt;</code></td>
+    <td><code>Set&lt;String&gt;</code></td>
     <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1634">#1634</a></td>
   </tr>
   <tr>
     <td>CDN</td>
     <td><code>CdnEndpoint.loadContent() / .loadContentAsync()</code></td>
-    <td><code>List<String></code></td>
-    <td><code>Set<String></code></td>
+    <td><code>List&lt;String&gt;</code></td>
+    <td><code>Set&lt;String&gt;</code></td>
     <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1634">#1634</a></td>
   </tr>
   <tr>
     <td>CDN</td>
     <td><code>CdnEndpoint.withGeoFilters()</code></td>
-    <td><code>List<></code></td>
-    <td><code>Collection<></code></td>
+    <td><code>List&lt;&gt;</code></td>
+    <td><code>Collection&lt;&gt;</code></td>
     <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1634">#1634</a></td>
   </tr>
   <tr>
     <td>CDN</td>
     <td><code>CdnEndpoint.withGeoFilter()</code></td>
-    <td><code>List<></code></td>
-    <td><code>Collection<></code></td>
+    <td><code>List&lt;&gt;</code></td>
+    <td><code>Collection&lt;&gt;</code></td>
     <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1634">#1634</a></td>
   </tr>
   <tr>
     <td>CDN</td>
     <td><code>CdnProfile.purgeEndpointContent() / .purgeEndpointContentAsync()</code></td>
-    <td><code>List<String></code></td>
-    <td><code>Set<String></code></td>
+    <td><code>List&lt;String&gt;</code></td>
+    <td><code>Set&lt;String&gt;</code></td>
     <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1634">#1634</a></td>
   </tr>
   <tr>
     <td>CDN</td>
     <td><code>CdnProfile.loadEndpointContent() / .loadEndpointContentAsync()</code></td>
-    <td><code>List<String></code></td>
-    <td><code>Set<String></code></td>
+    <td><code>List&lt;String&gt;</code></td>
+    <td><code>Set&lt;String&gt;</code></td>
     <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1634">#1634</a></td>
   </tr>
 </table>
