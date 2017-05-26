@@ -500,7 +500,7 @@ class ApplicationGatewayImpl
     @Override
     public ApplicationGatewayImpl withDisabledSslProtocols(ApplicationGatewaySslProtocol... protocols) {
         if (protocols == null) {
-            return null;
+            return this;
         }
 
         for (ApplicationGatewaySslProtocol protocol : protocols) {
@@ -523,7 +523,7 @@ class ApplicationGatewayImpl
     @Override
     public ApplicationGatewayImpl withoutDisabledSslProtocols(ApplicationGatewaySslProtocol...protocols) {
         if (protocols == null) {
-            return null;
+            return this;
         } else {
             for (ApplicationGatewaySslProtocol protocol : protocols) {
                 this.withoutDisabledSslProtocol(protocol);
