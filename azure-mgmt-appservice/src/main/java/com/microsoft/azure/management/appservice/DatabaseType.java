@@ -23,6 +23,9 @@ public final class DatabaseType {
     /** Static value LocalMySql for DatabaseType. */
     public static final DatabaseType LOCAL_MY_SQL = new DatabaseType("LocalMySql");
 
+    /** Static value PostgreSql for DatabaseType. */
+    public static final DatabaseType POSTGRE_SQL = new DatabaseType("PostgreSql");
+
     private String value;
 
     /**

@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class DatabaseBackupSetting {
     /**
      * Database type (e.g. SqlAzure / MySql). Possible values include:
-     * 'SqlAzure', 'MySql', 'LocalMySql'.
+     * 'SqlAzure', 'MySql', 'LocalMySql', 'PostgreSql'.
      */
     @JsonProperty(value = "databaseType", required = true)
     private DatabaseType databaseType;
