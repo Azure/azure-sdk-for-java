@@ -118,11 +118,6 @@ public interface ApplicationGateway extends
     ApplicationGatewayOperationalState operationalState();
 
     /**
-     * @return the SSL policy for the application gateway
-     */
-    ApplicationGatewaySslPolicy sslPolicy();
-
-    /**
      * @return IP configurations of this application gateway, indexed by name
      */
     Map<String, ApplicationGatewayIPConfiguration> ipConfigurations();

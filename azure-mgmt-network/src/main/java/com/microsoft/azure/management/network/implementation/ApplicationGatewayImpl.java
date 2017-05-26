@@ -1142,11 +1142,6 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewaySslPolicy sslPolicy() {
-        return this.inner().sslPolicy();
-    }
-
-    @Override
     public Map<String, Integer> frontendPorts() {
         Map<String, Integer> ports = new TreeMap<>();
         if (this.inner().frontendPorts() != null) {
