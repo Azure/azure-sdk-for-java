@@ -94,6 +94,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	private Instant lastKnownErrorReportedAt;
 	private int nextCreditToFlow;
 	private ScheduledFuture<?> sasTokenRenewTimerFuture;
+	private CompletableFuture<Void> requestResponseLinkCreationFuture;
 		
 	private final Runnable timedOutUpdateStateRequestsDaemon;
 	
@@ -230,20 +231,20 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	
 	private CompletableFuture<Void> createRequestResponseLink()
 	{
-		synchronized (this.requestResonseLinkCreationLock)
-		{
-			if(this.requestResponseLink == null)
-			{
-				String requestResponseLinkPath = RequestResponseLink.getManagementNodeLinkPath(this.receivePath);
-				CompletableFuture<Void> crateAndAssignRequestResponseLink =
-								RequestResponseLink.createAsync(this.underlyingFactory, this.getClientId() + "-RequestResponse", requestResponseLinkPath).thenAccept((rrlink) -> {this.requestResponseLink = rrlink;});
-				return crateAndAssignRequestResponseLink;
-			}
-			else
-			{
-				return CompletableFuture.completedFuture(null);
-			}
-		}				
+	    synchronized (this.requestResonseLinkCreationLock) {
+            if(this.requestResponseLinkCreationFuture == null)
+            {
+                String requestResponseLinkPath = RequestResponseLink.getManagementNodeLinkPath(this.receivePath);
+                this.requestResponseLinkCreationFuture =
+                                RequestResponseLink.createAsync(this.underlyingFactory, this.getClientId() + "-RequestResponse", requestResponseLinkPath).thenAcceptAsync((rrlink) ->
+                                    {
+                                        this.requestResponseLink = rrlink;
+                                        this.requestResponseLinkCreationFuture.complete(null);
+                                    });
+            }
+        }
+        
+        return this.requestResponseLinkCreationFuture;
 	}
 	
 	private void createReceiveLink()

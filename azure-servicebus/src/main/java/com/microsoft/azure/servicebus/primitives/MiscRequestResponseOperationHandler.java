@@ -15,6 +15,7 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
 	private final String entityPath;
 	private final MessagingFactory underlyingFactory;
 	private RequestResponseLink requestResponseLink;
+	private CompletableFuture<Void> requestResponseLinkCreationFuture;
 	
 	private MiscRequestResponseOperationHandler(MessagingFactory factory, String linkName, String entityPath)
 	{
@@ -39,19 +40,20 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
 	
 	private CompletableFuture<Void> createRequestResponseLink()
 	{
-		synchronized (this.requestResonseLinkCreationLock) {
-			if(this.requestResponseLink == null)
-			{
-				String requestResponseLinkPath = RequestResponseLink.getManagementNodeLinkPath(this.entityPath);
-				CompletableFuture<Void> crateAndAssignRequestResponseLink =
-								RequestResponseLink.createAsync(this.underlyingFactory, this.getClientId() + "-RequestResponse", requestResponseLinkPath).thenAccept((rrlink) -> {this.requestResponseLink = rrlink;});
-				return crateAndAssignRequestResponseLink;
-			}
-			else
-			{
-				return CompletableFuture.completedFuture(null);
-			}
-		}				
+	    synchronized (this.requestResonseLinkCreationLock) {
+            if(this.requestResponseLinkCreationFuture == null)
+            {
+                String requestResponseLinkPath = RequestResponseLink.getManagementNodeLinkPath(this.entityPath);
+                this.requestResponseLinkCreationFuture =
+                                RequestResponseLink.createAsync(this.underlyingFactory, this.getClientId() + "-RequestResponse", requestResponseLinkPath).thenAcceptAsync((rrlink) ->
+                                    {
+                                        this.requestResponseLink = rrlink;
+                                        this.requestResponseLinkCreationFuture.complete(null);
+                                    });
+            }
+        }
+        
+        return this.requestResponseLinkCreationFuture;
 	}
 	
 	public CompletableFuture<Pair<String[], Integer>> getMessageSessionsAsync(Date lastUpdatedTime, int skip, int top, String lastSessionId)

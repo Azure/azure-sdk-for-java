@@ -106,7 +106,7 @@ public final class ConnectionHandler extends BaseHandler
 			TRACE_LOGGER.log(Level.FINE, "Connection.onConnectionRemoteOpen: hostname[" + event.getConnection().getHostname() + ", " + event.getConnection().getRemoteContainer() +"]");
 		}
 
-		this.messagingFactory.onOpenComplete(null);
+		this.messagingFactory.onOpenComplete();
 	}
 
 	@Override
