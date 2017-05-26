@@ -20,12 +20,13 @@ public class TestDocumentDB extends TestTemplate<DatabaseAccount, DatabaseAccoun
                 .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
                 .withSessionConsistency()
                 .withWriteReplication(Region.US_EAST)
+                .withReadReplication(Region.US_CENTRAL)
                 .withIpRangeFilter("")
                 .create();
         Assert.assertEquals(databaseAccount.name(), newName.toLowerCase());
         Assert.assertEquals(databaseAccount.kind(), DatabaseAccountKind.GLOBAL_DOCUMENT_DB);
         Assert.assertEquals(databaseAccount.writableReplications().size(), 1);
-        Assert.assertEquals(databaseAccount.readableReplications().size(), 1);
+        Assert.assertEquals(databaseAccount.readableReplications().size(), 2);
         Assert.assertEquals(databaseAccount.defaultConsistencyLevel(), DefaultConsistencyLevel.SESSION);
         return databaseAccount;
     }
@@ -34,16 +35,18 @@ public class TestDocumentDB extends TestTemplate<DatabaseAccount, DatabaseAccoun
     public DatabaseAccount updateResource(DatabaseAccount resource) throws Exception {
         // Modify existing container service
         resource =  resource.update()
+                .withReadReplication(Region.ASIA_SOUTHEAST)
+                .withoutReadReplication(Region.US_EAST)
                 .withReadReplication(Region.US_CENTRAL)
                 .apply();
 
         resource =  resource.update()
-                .withSessionConsistency()
+                .withEventualConsistency()
                 .withTag("tag2", "value2")
                 .withTag("tag3", "value3")
                 .withoutTag("tag1")
                 .apply();
-        Assert.assertEquals(resource.defaultConsistencyLevel(), DefaultConsistencyLevel.SESSION);
+        Assert.assertEquals(resource.defaultConsistencyLevel(), DefaultConsistencyLevel.EVENTUAL);
         Assert.assertTrue(resource.tags().containsKey("tag2"));
         Assert.assertTrue(!resource.tags().containsKey("tag1"));
 

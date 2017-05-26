@@ -221,10 +221,10 @@ public interface DatabaseAccount extends
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
-            Creatable<DatabaseAccount>,
-            WithConsistencyPolicy,
+                Creatable<DatabaseAccount>,
+                WithConsistencyPolicy,
                 WithReadReplication,
-            WithIpRangeFilter {
+                WithIpRangeFilter {
         }
     }
 
@@ -233,7 +233,7 @@ public interface DatabaseAccount extends
      */
     interface Update extends
             UpdateStages.WithReadLocations,
-        UpdateStages.WithOptionals {
+            UpdateStages.WithOptionals {
     }
 
     /**

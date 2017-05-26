@@ -15,6 +15,7 @@ import rx.functions.Func1;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The implementation for DatabaseAccount.
@@ -157,7 +158,7 @@ class DatabaseAccountImpl
     public DatabaseAccountImpl withoutReadReplication(Region region) {
         this.ensureFailoverIsInitialized();
         for (int i = 1; i < this.failoverPolicies.size(); i++) {
-            if (this.failoverPolicies.get(i).locationName().equalsIgnoreCase(region.name())) {
+            if (this.failoverPolicies.get(i).id().endsWith(region.name())) {
                 this.failoverPolicies.remove(i);
                 break;
             }
@@ -273,12 +274,41 @@ class DatabaseAccountImpl
                 .flatMap(new Func1<DatabaseAccountInner, Observable<? extends DatabaseAccount>>() {
                     @Override
                     public Observable<? extends DatabaseAccount> call(DatabaseAccountInner databaseAccountInner) {
-                        self.setInner(databaseAccountInner);
                         self.failoverPolicies.clear();
                         self.hasFailoverPolicyChanges = false;
                         return manager().databaseAccounts().getByResourceGroupAsync(
                                 resourceGroupName(),
-                                name());
+                                name()
+                        ).repeatWhen(new Func1<Observable<? extends java.lang.Void>, Observable<?>>() {
+                            @Override
+                            public Observable<?> call(Observable<? extends Void> observable) {
+                                return observable.delay(5, TimeUnit.SECONDS);
+                            }
+                        })
+                        .filter(new Func1<DatabaseAccount, Boolean>() {
+                            @Override
+                            public Boolean call(DatabaseAccount databaseAccount) {
+                                if (databaseAccount.id() == null ||
+                                        databaseAccount.id().length() == 0) {
+                                    return false;
+                                }
+
+                                if (isAFinalProvisioningState(databaseAccount.inner().provisioningState())) {
+                                    for (Location location : databaseAccount.readableReplications()) {
+                                        if (!isAFinalProvisioningState(location.provisioningState())) {
+                                            return false;
+                                        }
+
+                                    }
+                                } else {
+                                    return false;
+                                }
+
+                                return true;
+                            }
+                        })
+                        .first();
+
                     }
                 });
     }
@@ -303,5 +333,9 @@ class DatabaseAccountImpl
 
             this.hasFailoverPolicyChanges = true;
         }
+    }
+
+    private boolean isAFinalProvisioningState(String state) {
+        return state.equalsIgnoreCase("succeeded");
     }
 }
