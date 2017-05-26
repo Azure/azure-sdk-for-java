@@ -923,7 +923,7 @@ public interface ApplicationGateway extends
              */
             @Beta(SinceVersion.V1_1_0)
             @Method
-            Update withoutAnyDisabledProtocols();
+            Update withoutAnyDisabledSslProtocols();
         }
     }
 

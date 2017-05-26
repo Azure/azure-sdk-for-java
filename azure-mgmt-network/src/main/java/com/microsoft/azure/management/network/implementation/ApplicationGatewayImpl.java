@@ -533,7 +533,7 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayImpl withoutAnyDisabledProtocols() {
+    public ApplicationGatewayImpl withoutAnyDisabledSslProtocols() {
         this.inner().withSslPolicy(null);
         return this;
     }
