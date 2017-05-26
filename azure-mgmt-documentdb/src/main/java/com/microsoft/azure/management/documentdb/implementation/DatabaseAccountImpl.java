@@ -6,7 +6,13 @@
 package com.microsoft.azure.management.documentdb.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.documentdb.*;
+import com.microsoft.azure.management.documentdb.DatabaseAccount;
+import com.microsoft.azure.management.documentdb.DatabaseAccountKind;
+import com.microsoft.azure.management.documentdb.DatabaseAccountOfferType;
+import com.microsoft.azure.management.documentdb.ConsistencyPolicy;
+import com.microsoft.azure.management.documentdb.DefaultConsistencyLevel;
+import com.microsoft.azure.management.documentdb.Location;
+import com.microsoft.azure.management.documentdb.KeyKind;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import rx.Observable;
@@ -289,8 +295,8 @@ class DatabaseAccountImpl
                         .filter(new Func1<DatabaseAccount, Boolean>() {
                             @Override
                             public Boolean call(DatabaseAccount databaseAccount) {
-                                if (databaseAccount.id() == null ||
-                                        databaseAccount.id().length() == 0) {
+                                if (databaseAccount.id() == null
+                                        || databaseAccount.id().length() == 0) {
                                     return false;
                                 }
 
