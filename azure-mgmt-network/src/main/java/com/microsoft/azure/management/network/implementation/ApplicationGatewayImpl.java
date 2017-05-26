@@ -486,25 +486,21 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayImpl withDisabledSslProtocol(ApplicationGatewaySslProtocol protocol) {
-        if (protocol == null) {
-            return this;
-        }
-
-        ApplicationGatewaySslPolicy policy = ensureSslPolicy();
-        if (!policy.disabledSslProtocols().contains(protocol)) {
-            policy.disabledSslProtocols().add(protocol);
+        if (protocol != null) {
+            ApplicationGatewaySslPolicy policy = ensureSslPolicy();
+            if (!policy.disabledSslProtocols().contains(protocol)) {
+                policy.disabledSslProtocols().add(protocol);
+            }
         }
         return this;
     }
 
     @Override
     public ApplicationGatewayImpl withDisabledSslProtocols(ApplicationGatewaySslProtocol... protocols) {
-        if (protocols == null) {
-            return this;
-        }
-
-        for (ApplicationGatewaySslProtocol protocol : protocols) {
-            withDisabledSslProtocol(protocol);
+        if (protocols != null) {
+            for (ApplicationGatewaySslProtocol protocol : protocols) {
+                withDisabledSslProtocol(protocol);
+            }
         }
 
         return this;
@@ -512,19 +508,18 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayImpl withoutDisabledSslProtocol(ApplicationGatewaySslProtocol protocol) {
-        if (this.inner().sslPolicy() == null || this.inner().sslPolicy().disabledSslProtocols() == null) {
-            return this;
-        } else {
+        if (this.inner().sslPolicy() != null && this.inner().sslPolicy().disabledSslProtocols() != null) {
             this.inner().sslPolicy().disabledSslProtocols().remove(protocol);
+            if (this.inner().sslPolicy().disabledSslProtocols().isEmpty()) {
+                this.withoutAnyDisabledSslProtocols();
+            }
         }
         return this;
     }
 
     @Override
     public ApplicationGatewayImpl withoutDisabledSslProtocols(ApplicationGatewaySslProtocol...protocols) {
-        if (protocols == null) {
-            return this;
-        } else {
+        if (protocols != null) {
             for (ApplicationGatewaySslProtocol protocol : protocols) {
                 this.withoutDisabledSslProtocol(protocol);
             }
