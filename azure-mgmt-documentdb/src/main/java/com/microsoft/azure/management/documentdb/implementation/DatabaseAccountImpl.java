@@ -13,6 +13,7 @@ import rx.Observable;
 import rx.functions.Func1;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -320,15 +321,17 @@ class DatabaseAccountImpl
 
         if (!this.hasFailoverPolicyChanges) {
             this.failoverPolicies.clear();
-            this.inner().failoverPolicies().sort(new Comparator<FailoverPolicyInner>() {
+            FailoverPolicyInner[] policyInners = new FailoverPolicyInner[this.inner().failoverPolicies().size()];
+            this.inner().failoverPolicies().toArray(policyInners);
+            Arrays.sort(policyInners, new Comparator<FailoverPolicyInner>() {
                 @Override
                 public int compare(FailoverPolicyInner o1, FailoverPolicyInner o2) {
                     return o1.failoverPriority().compareTo(o2.failoverPriority());
                 }
             });
 
-            for (int i = 0; i < this.inner().failoverPolicies().size(); i++) {
-                this.failoverPolicies.add(this.inner().failoverPolicies().get(i));
+            for (int i = 0; i < policyInners.length; i++) {
+                this.failoverPolicies.add(policyInners[i]);
             }
 
             this.hasFailoverPolicyChanges = true;
