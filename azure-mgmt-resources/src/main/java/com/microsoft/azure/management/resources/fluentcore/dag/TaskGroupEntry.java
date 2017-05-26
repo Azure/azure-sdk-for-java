@@ -18,7 +18,7 @@ import rx.functions.Func0;
  * @param <ResultT> the type of the result produced by the task
  * @param <TaskT> the task type that can return a value
  */
-final class TaskGroupEntry<ResultT, TaskT extends TaskItem<ResultT>>
+final public class TaskGroupEntry<ResultT, TaskT extends TaskItem<ResultT>>
         extends DAGNode<TaskT, TaskGroupEntry<ResultT, TaskT>> {
     /**
      * indicates that one or more decedent dependency tasks are faulted.
