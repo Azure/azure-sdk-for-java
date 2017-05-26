@@ -150,7 +150,7 @@ Some of the APIs that were still in Beta in V1.0 are now GA in V1.1, in particul
   <tr>
     <td><code>ApplicationGateway.sslPolicy()</code></td>
     <td><code>ApplicationGateway.disabledSslProtocols()</code></td>
-    <td><a href=""></a></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1703">#1703</a></td>
   </tr>
 </table>
 
