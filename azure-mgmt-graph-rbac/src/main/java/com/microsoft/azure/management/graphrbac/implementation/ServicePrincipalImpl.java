@@ -101,6 +101,9 @@ class ServicePrincipalImpl
                         return refreshCredentialsAsync();
                     }
                 });
+        if (roles == null || roles.isEmpty()) {
+            return sp;
+        }
         return sp.flatMap(new Func1<ServicePrincipal, Observable<ServicePrincipal>>() {
             @Override
             public Observable<ServicePrincipal> call(final ServicePrincipal servicePrincipal) {
@@ -154,24 +157,21 @@ class ServicePrincipalImpl
 
     Observable<ServicePrincipal> refreshCredentialsAsync() {
         final Observable<ServicePrincipal> keyCredentials = manager.inner().servicePrincipals().listKeyCredentialsAsync(id())
-                .flatMapIterable(new Func1<List<KeyCredentialInner>, Iterable<KeyCredentialInner>>() {
+                .map(new Func1<List<KeyCredentialInner>, Map<String, CertificateCredential>>() {
                     @Override
-                    public Iterable<KeyCredentialInner> call(List<KeyCredentialInner> keyCredentialInners) {
-                        return keyCredentialInners;
+                    public Map<String, CertificateCredential> call(List<KeyCredentialInner> keyCredentialInners) {
+                        if (keyCredentialInners == null || keyCredentialInners.isEmpty()) {
+                            return null;
+                        }
+                        Map<String, CertificateCredential> certificateCredentialMap = new HashMap<String, CertificateCredential>();
+                        for (KeyCredentialInner inner : keyCredentialInners) {
+                            CertificateCredential credential = new CertificateCredentialImpl<>(inner);
+                            certificateCredentialMap.put(credential.name(), credential);
+                        }
+                        return certificateCredentialMap;
                     }
                 })
-                .map(new Func1<KeyCredentialInner, CertificateCredential>() {
-                    @Override
-                    public CertificateCredential call(KeyCredentialInner keyCredentialInner) {
-                        return new CertificateCredentialImpl<ActiveDirectoryApplication>(keyCredentialInner);
-                    }
-                })
-                .toMap(new Func1<CertificateCredential, String>() {
-                    @Override
-                    public String call(CertificateCredential certificateCredential) {
-                        return certificateCredential.name();
-                    }
-                }).map(new Func1<Map<String, CertificateCredential>, ServicePrincipal>() {
+                .map(new Func1<Map<String, CertificateCredential>, ServicePrincipal>() {
                     @Override
                     public ServicePrincipal call(Map<String, CertificateCredential> stringCertificateCredentialMap) {
                         ServicePrincipalImpl.this.cachedCertificateCredentials = stringCertificateCredentialMap;
@@ -179,22 +179,18 @@ class ServicePrincipalImpl
                     }
                 });
         final Observable<ServicePrincipal> passwordCredentials = manager.inner().servicePrincipals().listPasswordCredentialsAsync(id())
-                .flatMapIterable(new Func1<List<PasswordCredentialInner>, Iterable<PasswordCredentialInner>>() {
+                .map(new Func1<List<PasswordCredentialInner>, Map<String, PasswordCredential>>() {
                     @Override
-                    public Iterable<PasswordCredentialInner> call(List<PasswordCredentialInner> passwordCredentialInners) {
-                        return passwordCredentialInners;
-                    }
-                })
-                .map(new Func1<PasswordCredentialInner, PasswordCredential>() {
-                    @Override
-                    public PasswordCredential call(PasswordCredentialInner passwordCredentialInner) {
-                        return new PasswordCredentialImpl<ActiveDirectoryApplication>(passwordCredentialInner);
-                    }
-                })
-                .toMap(new Func1<PasswordCredential, String>() {
-                    @Override
-                    public String call(PasswordCredential passwordCredential) {
-                        return passwordCredential.name();
+                    public Map<String, PasswordCredential> call(List<PasswordCredentialInner> passwordCredentialInners) {
+                        if (passwordCredentialInners == null || passwordCredentialInners.isEmpty()) {
+                            return null;
+                        }
+                        Map<String, PasswordCredential> passwordCredentialMap = new HashMap<String, PasswordCredential>();
+                        for (PasswordCredentialInner inner : passwordCredentialInners) {
+                            PasswordCredential credential = new PasswordCredentialImpl<>(inner);
+                            passwordCredentialMap.put(credential.name(), credential);
+                        }
+                        return passwordCredentialMap;
                     }
                 }).map(new Func1<Map<String, PasswordCredential>, ServicePrincipal>() {
                     @Override
