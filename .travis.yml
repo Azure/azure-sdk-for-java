@@ -1,8 +1,15 @@
-dist: trusty
 language: java
-jdk:
-  - oraclejdk8
-  - openjdk8
+
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      jdk:
+        - oraclejdk8
+        - openjdk8
+    - os: osx
+      jdk: oraclejdk8
+
 script: cd azure-documentdb-rx && mvn clean package
 
 # uncomment and edit the following line if your project needs to run something other than `rake`:
