@@ -148,8 +148,8 @@ Some of the APIs that were still in Beta in V1.0 are now GA in V1.1, in particul
     <th>PR</th>
   </tr>
   <tr>
-    <td><code></code></td>
-    <td></td>
+    <td><code>ApplicationGateway.sslPolicy()</code></td>
+    <td><code>ApplicationGateway.disabledSslProtocols()</code></td>
     <td><a href=""></a></td>
   </tr>
 </table>
