@@ -60,7 +60,7 @@ public class LocationsInner {
     /**
      * Gets the Batch service quotas for the specified subscription at the given location.
      *
-     * @param locationName The desired region for the quotas.
+     * @param locationName The region for which to retrieve Batch service quotas.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -73,7 +73,7 @@ public class LocationsInner {
     /**
      * Gets the Batch service quotas for the specified subscription at the given location.
      *
-     * @param locationName The desired region for the quotas.
+     * @param locationName The region for which to retrieve Batch service quotas.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -85,7 +85,7 @@ public class LocationsInner {
     /**
      * Gets the Batch service quotas for the specified subscription at the given location.
      *
-     * @param locationName The desired region for the quotas.
+     * @param locationName The region for which to retrieve Batch service quotas.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BatchLocationQuotaInner object
      */
@@ -101,7 +101,7 @@ public class LocationsInner {
     /**
      * Gets the Batch service quotas for the specified subscription at the given location.
      *
-     * @param locationName The desired region for the quotas.
+     * @param locationName The region for which to retrieve Batch service quotas.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BatchLocationQuotaInner object
      */
