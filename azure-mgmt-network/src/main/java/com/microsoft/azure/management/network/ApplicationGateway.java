@@ -5,7 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 import com.microsoft.azure.management.apigeneration.Beta;
@@ -70,7 +70,7 @@ public interface ApplicationGateway extends
      * @return disabled SSL protocols
      */
     @Beta(SinceVersion.V1_1_0)
-    List<ApplicationGatewaySslProtocol> disabledSslProtocols();
+    Collection<ApplicationGatewaySslProtocol> disabledSslProtocols();
 
     /**
      * @return true if the application gateway has at least one internally load balanced frontend accessible within the virtual network

@@ -31,6 +31,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -1034,11 +1035,11 @@ class ApplicationGatewayImpl
     // Getters
 
     @Override
-    public List<ApplicationGatewaySslProtocol> disabledSslProtocols() {
+    public Collection<ApplicationGatewaySslProtocol> disabledSslProtocols() {
         if (this.inner().sslPolicy() == null || this.inner().sslPolicy().disabledSslProtocols() == null) {
             return new ArrayList<>();
         } else {
-            return Collections.unmodifiableList(this.inner().sslPolicy().disabledSslProtocols());
+            return Collections.unmodifiableCollection(this.inner().sslPolicy().disabledSslProtocols());
         }
     }
 
