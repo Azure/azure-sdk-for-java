@@ -262,8 +262,11 @@ class DatabaseAccountImpl
                 this.name(), this.failoverPolicies).map(new Func1<Void, DatabaseAccount>() {
             @Override
             public DatabaseAccount call(Void voidInner) {
-                self.inner().failoverPolicies().clear();
-                self.inner().failoverPolicies().addAll(self.failoverPolicies);
+                if(self.inner().failoverPolicies() != null) {
+                    self.inner().failoverPolicies().clear();
+                    self.inner().failoverPolicies().addAll(self.failoverPolicies);
+                }
+
                 self.failoverPolicies.clear();
                 return self;
             }
