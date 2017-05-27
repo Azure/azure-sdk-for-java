@@ -868,9 +868,9 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the RegistryListCredentialsResultInner object if successful.
+     * @return the RegistryListCredentials object if successful.
      */
-    public RegistryListCredentialsResultInner listCredentials(String resourceGroupName, String registryName) {
+    public RegistryListCredentials listCredentials(String resourceGroupName, String registryName) {
         return listCredentialsWithServiceResponseAsync(resourceGroupName, registryName).toBlocking().single().body();
     }
 
@@ -883,7 +883,7 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<RegistryListCredentialsResultInner> listCredentialsAsync(String resourceGroupName, String registryName, final ServiceCallback<RegistryListCredentialsResultInner> serviceCallback) {
+    public ServiceFuture<RegistryListCredentials> listCredentialsAsync(String resourceGroupName, String registryName, final ServiceCallback<RegistryListCredentials> serviceCallback) {
         return ServiceFuture.fromResponse(listCredentialsWithServiceResponseAsync(resourceGroupName, registryName), serviceCallback);
     }
 
@@ -893,12 +893,12 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RegistryListCredentialsResultInner object
+     * @return the observable to the RegistryListCredentials object
      */
-    public Observable<RegistryListCredentialsResultInner> listCredentialsAsync(String resourceGroupName, String registryName) {
-        return listCredentialsWithServiceResponseAsync(resourceGroupName, registryName).map(new Func1<ServiceResponse<RegistryListCredentialsResultInner>, RegistryListCredentialsResultInner>() {
+    public Observable<RegistryListCredentials> listCredentialsAsync(String resourceGroupName, String registryName) {
+        return listCredentialsWithServiceResponseAsync(resourceGroupName, registryName).map(new Func1<ServiceResponse<RegistryListCredentials>, RegistryListCredentials>() {
             @Override
-            public RegistryListCredentialsResultInner call(ServiceResponse<RegistryListCredentialsResultInner> response) {
+            public RegistryListCredentials call(ServiceResponse<RegistryListCredentials> response) {
                 return response.body();
             }
         });
@@ -910,9 +910,9 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RegistryListCredentialsResultInner object
+     * @return the observable to the RegistryListCredentials object
      */
-    public Observable<ServiceResponse<RegistryListCredentialsResultInner>> listCredentialsWithServiceResponseAsync(String resourceGroupName, String registryName) {
+    public Observable<ServiceResponse<RegistryListCredentials>> listCredentialsWithServiceResponseAsync(String resourceGroupName, String registryName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -926,11 +926,11 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.listCredentials(this.client.subscriptionId(), resourceGroupName, registryName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RegistryListCredentialsResultInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RegistryListCredentials>>>() {
                 @Override
-                public Observable<ServiceResponse<RegistryListCredentialsResultInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<RegistryListCredentials>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<RegistryListCredentialsResultInner> clientResponse = listCredentialsDelegate(response);
+                        ServiceResponse<RegistryListCredentials> clientResponse = listCredentialsDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -939,9 +939,9 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
             });
     }
 
-    private ServiceResponse<RegistryListCredentialsResultInner> listCredentialsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<RegistryListCredentialsResultInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<RegistryListCredentialsResultInner>() { }.getType())
+    private ServiceResponse<RegistryListCredentials> listCredentialsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<RegistryListCredentials, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<RegistryListCredentials>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -955,9 +955,9 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the RegistryListCredentialsResultInner object if successful.
+     * @return the RegistryListCredentials object if successful.
      */
-    public RegistryListCredentialsResultInner regenerateCredential(String resourceGroupName, String registryName, PasswordName name) {
+    public RegistryListCredentials regenerateCredential(String resourceGroupName, String registryName, PasswordName name) {
         return regenerateCredentialWithServiceResponseAsync(resourceGroupName, registryName, name).toBlocking().single().body();
     }
 
@@ -971,7 +971,7 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<RegistryListCredentialsResultInner> regenerateCredentialAsync(String resourceGroupName, String registryName, PasswordName name, final ServiceCallback<RegistryListCredentialsResultInner> serviceCallback) {
+    public ServiceFuture<RegistryListCredentials> regenerateCredentialAsync(String resourceGroupName, String registryName, PasswordName name, final ServiceCallback<RegistryListCredentials> serviceCallback) {
         return ServiceFuture.fromResponse(regenerateCredentialWithServiceResponseAsync(resourceGroupName, registryName, name), serviceCallback);
     }
 
@@ -982,12 +982,12 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @param registryName The name of the container registry.
      * @param name Specifies name of the password which should be regenerated -- password or password2. Possible values include: 'password', 'password2'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RegistryListCredentialsResultInner object
+     * @return the observable to the RegistryListCredentials object
      */
-    public Observable<RegistryListCredentialsResultInner> regenerateCredentialAsync(String resourceGroupName, String registryName, PasswordName name) {
-        return regenerateCredentialWithServiceResponseAsync(resourceGroupName, registryName, name).map(new Func1<ServiceResponse<RegistryListCredentialsResultInner>, RegistryListCredentialsResultInner>() {
+    public Observable<RegistryListCredentials> regenerateCredentialAsync(String resourceGroupName, String registryName, PasswordName name) {
+        return regenerateCredentialWithServiceResponseAsync(resourceGroupName, registryName, name).map(new Func1<ServiceResponse<RegistryListCredentials>, RegistryListCredentials>() {
             @Override
-            public RegistryListCredentialsResultInner call(ServiceResponse<RegistryListCredentialsResultInner> response) {
+            public RegistryListCredentials call(ServiceResponse<RegistryListCredentials> response) {
                 return response.body();
             }
         });
@@ -1000,9 +1000,9 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @param registryName The name of the container registry.
      * @param name Specifies name of the password which should be regenerated -- password or password2. Possible values include: 'password', 'password2'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RegistryListCredentialsResultInner object
+     * @return the observable to the RegistryListCredentials object
      */
-    public Observable<ServiceResponse<RegistryListCredentialsResultInner>> regenerateCredentialWithServiceResponseAsync(String resourceGroupName, String registryName, PasswordName name) {
+    public Observable<ServiceResponse<RegistryListCredentials>> regenerateCredentialWithServiceResponseAsync(String resourceGroupName, String registryName, PasswordName name) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -1021,11 +1021,11 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
         RegenerateCredentialParameters regenerateCredentialParameters = new RegenerateCredentialParameters();
         regenerateCredentialParameters.withName(name);
         return service.regenerateCredential(this.client.subscriptionId(), resourceGroupName, registryName, this.client.apiVersion(), this.client.acceptLanguage(), regenerateCredentialParameters, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RegistryListCredentialsResultInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RegistryListCredentials>>>() {
                 @Override
-                public Observable<ServiceResponse<RegistryListCredentialsResultInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<RegistryListCredentials>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<RegistryListCredentialsResultInner> clientResponse = regenerateCredentialDelegate(response);
+                        ServiceResponse<RegistryListCredentials> clientResponse = regenerateCredentialDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1034,9 +1034,9 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
             });
     }
 
-    private ServiceResponse<RegistryListCredentialsResultInner> regenerateCredentialDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<RegistryListCredentialsResultInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<RegistryListCredentialsResultInner>() { }.getType())
+    private ServiceResponse<RegistryListCredentials> regenerateCredentialDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<RegistryListCredentials, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<RegistryListCredentials>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
