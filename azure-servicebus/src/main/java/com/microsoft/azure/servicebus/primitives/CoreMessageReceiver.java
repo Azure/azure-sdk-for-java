@@ -234,17 +234,30 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	    synchronized (this.requestResonseLinkCreationLock) {
             if(this.requestResponseLinkCreationFuture == null)
             {
-                String requestResponseLinkPath = RequestResponseLink.getManagementNodeLinkPath(this.receivePath);
-                this.requestResponseLinkCreationFuture =
-                                RequestResponseLink.createAsync(this.underlyingFactory, this.getClientId() + "-RequestResponse", requestResponseLinkPath).thenAcceptAsync((rrlink) ->
-                                    {
-                                        this.requestResponseLink = rrlink;
-                                        this.requestResponseLinkCreationFuture.complete(null);
-                                    });
+                this.requestResponseLinkCreationFuture = new CompletableFuture<Void>();
+                String requestResponseLinkPath = RequestResponseLink.getManagementNodeLinkPath(this.receivePath);                
+                RequestResponseLink.createAsync(this.underlyingFactory, this.getClientId() + "-RequestResponse", requestResponseLinkPath).handleAsync((rrlink, ex) ->
+                {
+                    if(ex == null)
+                    {
+                        this.requestResponseLink = rrlink;
+                        this.requestResponseLinkCreationFuture.complete(null);
+                    }
+                    else
+                    {
+                        this.requestResponseLinkCreationFuture.completeExceptionally(ExceptionUtil.extractAsyncCompletionCause(ex));
+                     // Set it to null so next call will retry rr link creation
+                        synchronized (this.requestResonseLinkCreationLock)
+                        {
+                            this.requestResponseLinkCreationFuture = null;
+                        }                        
+                    }
+                    return null;
+                });
             }
-        }
-        
-        return this.requestResponseLinkCreationFuture;
+            
+            return this.requestResponseLinkCreationFuture;
+        }        
 	}
 	
 	private void createReceiveLink()

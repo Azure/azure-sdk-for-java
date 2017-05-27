@@ -43,6 +43,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	public static final Duration DefaultOperationTimeout = Duration.ofSeconds(30);
 
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
+	private static final int MAX_CBS_LINK_CREATION_ATTEMPTS = 3;
 	private final ConnectionStringBuilder builder;
 	private final String hostName;
 	private final CompletableFuture<Void> connetionCloseFuture;
@@ -60,6 +61,8 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	private CompletableFuture<MessagingFactory> factoryOpenFuture;
 	private CompletableFuture<Void> cbsLinkCreationFuture;
 	private RequestResponseLink cbsLink;
+	private int cbsLinkCreationAttempts = 0;
+	private Throwable lastCBSLinkCreationException = null;
 
 	/**
 	 * @param reactor parameter reactor is purely for testing purposes and the SDK code should always set it to null
@@ -492,9 +495,31 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	
 	private CompletableFuture<Void> createCBSLinkAsync()
     {
-	    String requestResponseLinkPath = RequestResponseLink.getCBSNodeLinkPath();
-        CompletableFuture<Void> crateAndAssignRequestResponseLink =
-                        RequestResponseLink.createAsync(this, this.getClientId() + "-cbs", requestResponseLinkPath).thenAcceptAsync((rrlink) -> {this.cbsLink = rrlink; this.cbsLinkCreationFuture.complete(null);});
-        return crateAndAssignRequestResponseLink;
+	    if(++this.cbsLinkCreationAttempts > MAX_CBS_LINK_CREATION_ATTEMPTS )
+	    {
+	        Throwable completionEx = this.lastCBSLinkCreationException == null ? new Exception("CBS link creation failed multiple times.") : this.lastCBSLinkCreationException;
+	        this.cbsLinkCreationFuture.completeExceptionally(completionEx);
+	        return CompletableFuture.completedFuture(null);	        
+	    }
+	    else
+	    {
+	        String requestResponseLinkPath = RequestResponseLink.getCBSNodeLinkPath();
+	        CompletableFuture<Void> crateAndAssignRequestResponseLink =
+	                        RequestResponseLink.createAsync(this, this.getClientId() + "-cbs", requestResponseLinkPath).handleAsync((cbsLink, ex) ->
+	                        {
+	                            if(ex == null)
+	                            {
+	                                this.cbsLink = cbsLink;
+	                                this.cbsLinkCreationFuture.complete(null);
+	                            }
+	                            else
+	                            {
+	                                this.lastCBSLinkCreationException = ExceptionUtil.extractAsyncCompletionCause(ex);
+	                                this.createCBSLinkAsync();
+	                            }
+	                            return null;
+	                        });       
+	        return crateAndAssignRequestResponseLink;
+	    }	    
     }
 }
