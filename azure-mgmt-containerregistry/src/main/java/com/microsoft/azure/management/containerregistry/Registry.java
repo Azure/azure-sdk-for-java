@@ -10,7 +10,7 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.containerregistry.implementation.ContainerRegistryManager;
 import com.microsoft.azure.management.containerregistry.implementation.RegistryInner;
-import com.microsoft.azure.management.containerregistry.implementation.RegistryListCredentialsResultInner;
+import com.microsoft.azure.management.containerregistry.implementation.RegistryListCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -59,26 +59,26 @@ public interface Registry extends
     /**
      * @return the login credentials for the specified container registry.
      */
-    RegistryListCredentialsResultInner listCredentials();
+    RegistryListCredentials listCredentials();
 
     /**
      * @return the login credentials for the specified container registry.
      */
-    Observable<RegistryListCredentialsResultInner> listCredentialsAsync();
+    Observable<RegistryListCredentials> listCredentialsAsync();
 
     /**
      * Regenerates one of the login credentials for the specified container registry.
      * @param passwordName the password name
      * @return the result of the regeneration
      */
-    RegistryListCredentialsResultInner regenerateCredential(PasswordName passwordName);
+    RegistryListCredentials regenerateCredential(PasswordName passwordName);
 
     /**
      * Regenerates one of the login credentials for the specified container registry.
      * @param passwordName the password name
      * @return the result of the regeneration
      */
-    Observable<RegistryListCredentialsResultInner> regenerateCredentialAsync(PasswordName passwordName);
+    Observable<RegistryListCredentials> regenerateCredentialAsync(PasswordName passwordName);
 
     /**
      * Container interface for all the definitions related to a registry.

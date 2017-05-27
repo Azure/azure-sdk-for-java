@@ -180,24 +180,24 @@ public class RegistryImpl
     }
 
     @Override
-    public RegistryListCredentialsResultInner regenerateCredential(PasswordName passwordName) {
+    public RegistryListCredentials regenerateCredential(PasswordName passwordName) {
         return this.regenerateCredentialAsync(passwordName).toBlocking().last();
 
     }
 
     @Override
-    public Observable<RegistryListCredentialsResultInner> regenerateCredentialAsync(PasswordName passwordName) {
+    public Observable<RegistryListCredentials> regenerateCredentialAsync(PasswordName passwordName) {
         return this.manager().inner().registries().regenerateCredentialAsync(this.resourceGroupName(),
                 this.name(), passwordName);
     }
 
     @Override
-    public RegistryListCredentialsResultInner listCredentials() {
+    public RegistryListCredentials listCredentials() {
         return this.listCredentialsAsync().toBlocking().last();
     }
 
     @Override
-    public Observable<RegistryListCredentialsResultInner> listCredentialsAsync() {
+    public Observable<RegistryListCredentials> listCredentialsAsync() {
         return this.manager().inner().registries().listCredentialsAsync(this.resourceGroupName(),
                 this.name());
     }
