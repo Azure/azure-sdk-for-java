@@ -140,13 +140,13 @@ class PasswordCredentialImpl<T>
         }
 
         StringBuilder builder = new StringBuilder();
-        builder.append(String.format("client=%s", servicePrincipal.applicationId()));
-        builder.append(String.format("key=%s", value()));
-        builder.append(String.format("tenant=%s", servicePrincipal.manager().tenantId()));
-        builder.append(String.format("subscription=%s", servicePrincipal.assignedSubscription));
-        builder.append(String.format("authURL=%s", normalizeAuthFileUrl(environment.activeDirectoryEndpoint())));
-        builder.append(String.format("baseURL=%s", normalizeAuthFileUrl(environment.resourceManagerEndpoint())));
-        builder.append(String.format("graphURL=%s", normalizeAuthFileUrl(environment.graphEndpoint())));
+        builder.append(String.format("client=%s", servicePrincipal.applicationId())).append("\n");
+        builder.append(String.format("key=%s", value())).append("\n");
+        builder.append(String.format("tenant=%s", servicePrincipal.manager().tenantId())).append("\n");
+        builder.append(String.format("subscription=%s", servicePrincipal.assignedSubscription)).append("\n");
+        builder.append(String.format("authURL=%s", normalizeAuthFileUrl(environment.activeDirectoryEndpoint()))).append("\n");
+        builder.append(String.format("baseURL=%s", normalizeAuthFileUrl(environment.resourceManagerEndpoint()))).append("\n");
+        builder.append(String.format("graphURL=%s", normalizeAuthFileUrl(environment.graphEndpoint()))).append("\n");
         builder.append(String.format("managementURI=%s", normalizeAuthFileUrl(environment.managementEndpoint())));
         try {
             authFile.write(builder.toString().getBytes());
