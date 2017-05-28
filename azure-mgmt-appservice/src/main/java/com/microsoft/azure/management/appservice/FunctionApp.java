@@ -14,6 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.storage.StorageAccount;
+import rx.Completable;
 import rx.Observable;
 
 /**
@@ -40,6 +41,10 @@ public interface FunctionApp extends
      * @return the master key for the function app
      */
     Observable<String> getMasterKeyAsync();
+
+    void syncTriggers();
+
+    Completable syncTriggersAsync();
 
     /**************************************************************
      * Fluent interfaces to provision a Function App

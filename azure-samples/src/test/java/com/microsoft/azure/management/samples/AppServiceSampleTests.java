@@ -116,7 +116,6 @@ public class AppServiceSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Ignore("Failing in playback - dependent on git")
     public void testManageFunctionAppSourceControl() {
         Assert.assertTrue(ManageFunctionAppSourceControl.runSample(azure));
     }

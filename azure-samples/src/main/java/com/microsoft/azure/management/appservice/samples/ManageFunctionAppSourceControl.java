@@ -82,15 +82,18 @@ public final class ManageFunctionAppSourceControl {
             Utils.uploadFileToFtp(app1.getPublishingProfile(), "square/function.json", ManageFunctionAppSourceControl.class.getResourceAsStream("/square-function-app/square/function.json"));
             Utils.uploadFileToFtp(app1.getPublishingProfile(), "square/index.js", ManageFunctionAppSourceControl.class.getResourceAsStream("/square-function-app/square/index.js"));
 
+            // sync triggers
+//            app1.syncTriggers();
+
             System.out.println("Deployment square app to function app " + app1.name() + " completed");
             Utils.print(app1);
 
-            // warm up
-            System.out.println("Warming up " + app1Url + "/api/square...");
-            post("http://" + app1Url + "/api/square", "625");
-            Thread.sleep(5000);
-            System.out.println("CURLing " + app1Url + "/api/square...");
-            System.out.println("Square of 625 is " + post("http://" + app1Url + "/api/square", "625"));
+//            // warm up
+//            System.out.println("Warming up " + app1Url + "/api/square...");
+//            post("http://" + app1Url + "/api/square", "625");
+//            Thread.sleep(5000);
+//            System.out.println("CURLing " + app1Url + "/api/square...");
+//            System.out.println("Square of 625 is " + post("http://" + app1Url + "/api/square", "625"));
 
             //============================================================
             // Create a second function app with local git source control
