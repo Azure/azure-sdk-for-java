@@ -50,9 +50,9 @@ import rx.observers.TestSubscriber;
 
 public class TestSuiteBase {
 
-    protected static final int TIMEOUT = 4000;
-    protected static final int SETUP_TIMEOUT = 6000;
-    protected static final int SHUTDOWN_TIMEOUT = 6000;
+    protected static final int TIMEOUT = 10000;
+    protected static final int SETUP_TIMEOUT = 20000;
+    protected static final int SHUTDOWN_TIMEOUT = 20000;
 
     protected int subscriberValidationTimeout = TIMEOUT;
     

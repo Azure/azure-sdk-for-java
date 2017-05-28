@@ -22,6 +22,14 @@
  */
 package com.microsoft.azure.documentdb.rx;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
+
 /**
  * Contains the configurations for test file
  */
@@ -29,7 +37,13 @@ public final class TestConfigurations {
     // Replace MASTER_KEY and HOST with values from your DocumentDB account.
     // The default values are credentials of the local emulator, which are not used in any production environment.
     // <!--[SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine")]-->
-    public static final String MASTER_KEY =
-            "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
-    public static final String HOST = "https://localhost:443/";
+//    public static final String MASTER_KEY =
+            //"C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
+//    public static final String HOST = "https://localhost:443/";
+
+      public static String MASTER_KEY = System.getProperty("ACCOUNT_KEY");
+      public static String HOST = System.getProperty("ACCOUNT_HOST");
+      static {
+         System.out.println("host is " + System.getProperty("ACCOUNT_HOST"));
+      }
 }
