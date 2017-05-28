@@ -19,13 +19,14 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
 /**
  * An immutable client-side representation of an Azure AD service principal.
  */
-@Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
+@Fluent(ContainerName = "/Microsoft.Azure.Management.Graph.RBAC.Fluent")
 @Beta
 public interface ServicePrincipal extends
         Indexable,
@@ -64,7 +65,8 @@ public interface ServicePrincipal extends
      */
     interface Definition extends
             DefinitionStages.Blank,
-            DefinitionStages.WithCreate {
+            DefinitionStages.WithCreate,
+            DefinitionStages.WithAuthFileCreate {
     }
 
     /**
@@ -155,7 +157,7 @@ public interface ServicePrincipal extends
              * @return the next stage of the service principal definition
              */
             @Beta(SinceVersion.V1_1_0)
-            WithCreate withNewRoleInSubscription(BuiltInRole role, String subscriptionId);
+            WithAuthFileCreate withNewRoleInSubscription(BuiltInRole role, String subscriptionId);
 
             /**
              * Assigns a new role to the service principal.
@@ -165,6 +167,19 @@ public interface ServicePrincipal extends
              */
             @Beta(SinceVersion.V1_1_0)
             WithCreate withNewRoleInResourceGroup(BuiltInRole role, ResourceGroup resourceGroup);
+        }
+
+        /**
+         * A service principal definition stage allowing exporting the auth file for the service principal.
+         */
+        interface WithAuthFileCreate extends WithCreate {
+            /**
+             * Export the information of this service principal into an auth file.
+             * @param outputStream the output stream to export the file
+             * @return the next stage of the service principal definition
+             */
+            @Beta(SinceVersion.V1_1_0)
+            WithCreate withAuthFileToExport(OutputStream outputStream);
         }
 
         /**

@@ -18,7 +18,7 @@ import org.joda.time.Duration;
 /**
  * An immutable client-side representation of an Azure AD credential.
  */
-@Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
+@Fluent(ContainerName = "/Microsoft.Azure.Management.Graph.RBAC.Fluent")
 @Beta(SinceVersion.V1_1_0)
 public interface CertificateCredential extends
         Credential,

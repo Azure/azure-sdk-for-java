@@ -15,10 +15,12 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
+import java.io.OutputStream;
+
 /**
  * An immutable client-side representation of an Azure AD credential.
  */
-@Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
+@Fluent(ContainerName = "/Microsoft.Azure.Management.Graph.RBAC.Fluent")
 @Beta(SinceVersion.V1_1_0)
 public interface PasswordCredential extends
         Credential,

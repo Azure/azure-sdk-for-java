@@ -18,7 +18,7 @@ import rx.Observable;
 /**
  * Implementation for ServicePrincipal and its parent interfaces.
  */
-@LangDefinition(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.Graph.RBAC.Fluent")
 class CertificateCredentialImpl<T>
         extends IndexableRefreshableWrapperImpl<CertificateCredential, KeyCredentialInner>
         implements
