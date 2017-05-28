@@ -90,6 +90,18 @@ public interface PasswordCredential extends
             WithAttach<ParentT> withDuration(Duration duration);
         }
 
+        /**
+         * A credential definition stage allowing exporting the auth file for the service principal.
+         */
+        interface WithAuthFile<ParentT> {
+            /**
+             * Export the information of this service principal into an auth file.
+             * @param outputStream the output stream to export the file
+             * @return the next stage in credential definition
+             */
+            WithAttach<ParentT> withAuthFileToExport(OutputStream outputStream);
+        }
+
         /** The final stage of the credential definition.
          * <p>
          * At this stage, more settings can be specified, or the credential definition can be
@@ -100,7 +112,8 @@ public interface PasswordCredential extends
         interface WithAttach<ParentT> extends
                 Attachable.InDefinition<ParentT>,
                 WithStartDate<ParentT>,
-                WithDuration<ParentT> {
+                WithDuration<ParentT>,
+                WithAuthFile<ParentT> {
         }
     }
 
@@ -164,6 +177,18 @@ public interface PasswordCredential extends
             WithAttach<ParentT> withDuration(Duration duration);
         }
 
+        /**
+         * A credential definition stage allowing exporting the auth file for the service principal.
+         */
+        interface WithAuthFile<ParentT> {
+            /**
+             * Export the information of this service principal into an auth file.
+             * @param outputStream the output stream to export the file
+             * @return the next stage in credential definition
+             */
+            WithAttach<ParentT> withAuthFileToExport(OutputStream outputStream);
+        }
+
         /** The final stage of the credential definition.
          * <p>
          * At this stage, more settings can be specified, or the credential definition can be
@@ -174,7 +199,8 @@ public interface PasswordCredential extends
         interface WithAttach<ParentT> extends
                 Attachable.InUpdate<ParentT>,
                 WithStartDate<ParentT>,
-                WithDuration<ParentT> {
+                WithDuration<ParentT>,
+                WithAuthFile<ParentT> {
         }
     }
 }

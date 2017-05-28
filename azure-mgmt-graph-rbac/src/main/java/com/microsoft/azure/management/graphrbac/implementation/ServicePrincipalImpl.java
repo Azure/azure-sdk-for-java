@@ -6,9 +6,7 @@
 
 package com.microsoft.azure.management.graphrbac.implementation;
 
-import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryApplication;
 import com.microsoft.azure.management.graphrbac.BuiltInRole;
@@ -18,14 +16,11 @@ import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.microsoft.rest.RestClient;
-import com.microsoft.rest.credentials.ServiceClientCredentials;
 import rx.Observable;
 import rx.exceptions.Exceptions;
 import rx.functions.Func1;
 import rx.functions.Func2;
 
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -50,12 +45,17 @@ class ServicePrincipalImpl
     private Map<String, CertificateCredential> cachedCertificateCredentials;
     private Creatable<ActiveDirectoryApplication> applicationCreatable;
     private Map<String, BuiltInRole> roles;
+    String assignedSubscription;
+    private List<CertificateCredentialImpl<?>> certificateCredentials;
+    private List<PasswordCredentialImpl<?>> passwordCredentials;
 
     ServicePrincipalImpl(ServicePrincipalInner innerObject, GraphRbacManager manager) {
         super(innerObject.displayName(), innerObject);
         this.manager = manager;
         this.createParameters = new ServicePrincipalCreateParametersInner().withAccountEnabled(true);
         this.roles = new HashMap<>();
+        this.certificateCredentials = new ArrayList<>();
+        this.passwordCredentials = new ArrayList<>();
     }
 
     @Override
@@ -152,6 +152,17 @@ class ServicePrincipalImpl
                             }
                         });
             }
+        }).map(new Func1<ServicePrincipal, ServicePrincipal>() {
+            @Override
+            public ServicePrincipal call(ServicePrincipal servicePrincipal) {
+                for (PasswordCredentialImpl<?> passwordCredential : passwordCredentials) {
+                    passwordCredential.exportAuthFile((ServicePrincipalImpl) servicePrincipal);
+                }
+                for (CertificateCredentialImpl<?> certificateCredential : certificateCredentials) {
+                    certificateCredential.exportAuthFile((ServicePrincipalImpl) servicePrincipal);
+                }
+                return servicePrincipal;
+            }
         });
     }
 
@@ -235,6 +246,7 @@ class ServicePrincipalImpl
             createParameters.withKeyCredentials(new ArrayList<KeyCredentialInner>());
         }
         createParameters.keyCredentials().add(credential.inner());
+        this.certificateCredentials.add(credential);
         return this;
     }
 
@@ -244,6 +256,7 @@ class ServicePrincipalImpl
             createParameters.withPasswordCredentials(new ArrayList<PasswordCredentialInner>());
         }
         createParameters.passwordCredentials().add(credential.inner());
+        this.passwordCredentials.add(credential);
         return this;
     }
 
@@ -286,27 +299,12 @@ class ServicePrincipalImpl
 
     @Override
     public ServicePrincipalImpl withNewRoleInSubscription(BuiltInRole role, String subscriptionId) {
+        this.assignedSubscription = subscriptionId;
         return withNewRole(role, "subscriptions/" + subscriptionId);
     }
 
     @Override
     public ServicePrincipalImpl withNewRoleInResourceGroup(BuiltInRole role, ResourceGroup resourceGroup) {
         return withNewRole(role, resourceGroup.id());
-    }
-
-    @Override
-    public ServicePrincipalImpl withAuthFileToExport(OutputStream outputStream) {
-        RestClient restClient = manager().roleInner().restClient();
-        AzureEnvironment environment;
-        if (restClient.credentials() instanceof AzureTokenCredentials) {
-            environment = ((AzureTokenCredentials) restClient.credentials()).environment();
-        } else {
-            String baseUrl = restClient.retrofit().baseUrl().toString();
-            if (baseUrl.equals(AzureEnvironment.AZURE.resourceManagerEndpoint())) {
-                environment = AzureEnvironment.AZURE;
-            }
-        }
-
-        return this;
     }
 }

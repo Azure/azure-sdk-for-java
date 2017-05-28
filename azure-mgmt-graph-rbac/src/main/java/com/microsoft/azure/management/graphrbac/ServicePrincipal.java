@@ -19,7 +19,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 
-import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -65,8 +64,7 @@ public interface ServicePrincipal extends
      */
     interface Definition extends
             DefinitionStages.Blank,
-            DefinitionStages.WithCreate,
-            DefinitionStages.WithAuthFileCreate {
+            DefinitionStages.WithCreate {
     }
 
     /**
@@ -157,7 +155,7 @@ public interface ServicePrincipal extends
              * @return the next stage of the service principal definition
              */
             @Beta(SinceVersion.V1_1_0)
-            WithAuthFileCreate withNewRoleInSubscription(BuiltInRole role, String subscriptionId);
+            WithCreate withNewRoleInSubscription(BuiltInRole role, String subscriptionId);
 
             /**
              * Assigns a new role to the service principal.
@@ -167,19 +165,6 @@ public interface ServicePrincipal extends
              */
             @Beta(SinceVersion.V1_1_0)
             WithCreate withNewRoleInResourceGroup(BuiltInRole role, ResourceGroup resourceGroup);
-        }
-
-        /**
-         * A service principal definition stage allowing exporting the auth file for the service principal.
-         */
-        interface WithAuthFileCreate extends WithCreate {
-            /**
-             * Export the information of this service principal into an auth file.
-             * @param outputStream the output stream to export the file
-             * @return the next stage of the service principal definition
-             */
-            @Beta(SinceVersion.V1_1_0)
-            WithCreate withAuthFileToExport(OutputStream outputStream);
         }
 
         /**
