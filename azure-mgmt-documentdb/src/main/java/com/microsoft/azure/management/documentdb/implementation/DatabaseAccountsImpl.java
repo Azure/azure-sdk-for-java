@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.documentdb.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.documentdb.DatabaseAccount;
 import com.microsoft.azure.management.documentdb.DatabaseAccounts;
@@ -24,6 +25,7 @@ import java.util.List;
 /**
  * Implementation for Registries.
  */
+@LangDefinition
 class DatabaseAccountsImpl
         extends
         GroupableResourcesImpl<

@@ -348,6 +348,13 @@ class DatabaseAccountImpl
     }
 
     private boolean isAFinalProvisioningState(String state) {
-        return state.equalsIgnoreCase("succeeded");
+        switch (state.ToLower()) {
+            case "succeeded":
+            case "canceled":
+            case "failed":
+                return true;
+            default:
+                return false;
+        }
     }
 }
