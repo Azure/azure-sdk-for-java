@@ -348,7 +348,7 @@ class DatabaseAccountImpl
     }
 
     private boolean isAFinalProvisioningState(String state) {
-        switch (state.toLowerCase()) {
+        switch (state.ToLower()) {
             case "succeeded":
             case "canceled":
             case "failed":
