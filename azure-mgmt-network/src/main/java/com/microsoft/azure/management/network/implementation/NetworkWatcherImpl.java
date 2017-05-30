@@ -55,14 +55,6 @@ class NetworkWatcherImpl
         return new FlowLogInformationImpl(this, flowLogInformationInner);
     }
 
-    public TroubleshootingImpl troubleshoot(String targetResourceId, String storageId, String storagePath) {
-        TroubleshootingParametersInner parameters = new TroubleshootingParametersInner().withTargetResourceId(targetResourceId)
-                .withStorageId(storageId).withStoragePath(storagePath);
-        TroubleshootingResultInner inner = this.manager().inner().networkWatchers()
-                .getTroubleshooting(this.resourceGroupName(), this.name(), parameters);
-        return new TroubleshootingImpl(this, inner, targetResourceId);
-    }
-
     public NextHopImpl nextHop() {
         return new NextHopImpl(this);
     }
