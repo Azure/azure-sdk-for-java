@@ -14,7 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 /**
  * Implementation for Group and its parent interfaces.
  */
-@LangDefinition(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.Graph.RBAC.Fluent")
 class ActiveDirectoryGroupImpl
         extends WrapperImpl<ADGroupInner>
         implements ActiveDirectoryGroup {

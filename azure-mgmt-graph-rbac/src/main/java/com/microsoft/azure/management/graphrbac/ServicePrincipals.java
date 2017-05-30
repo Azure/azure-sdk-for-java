@@ -21,7 +21,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 /**
  * Entry point to service principal management API.
  */
-@Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
+@Fluent(ContainerName = "/Microsoft.Azure.Management.Graph.RBAC.Fluent")
 @Beta
 public interface ServicePrincipals extends
         SupportsListing<ServicePrincipal>,

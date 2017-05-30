@@ -17,7 +17,7 @@ import java.util.Set;
 /**
  * Implementation for ServicePrincipal and its parent interfaces.
  */
-@LangDefinition(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.Graph.RBAC.Fluent")
 class RoleDefinitionImpl
         extends WrapperImpl<RoleDefinitionInner>
         implements

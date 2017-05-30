@@ -15,10 +15,12 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
+import java.io.OutputStream;
+
 /**
  * An immutable client-side representation of an Azure AD credential.
  */
-@Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
+@Fluent(ContainerName = "/Microsoft.Azure.Management.Graph.RBAC.Fluent")
 @Beta(SinceVersion.V1_1_0)
 public interface CertificateCredential extends
         Credential,
@@ -37,7 +39,9 @@ public interface CertificateCredential extends
             DefinitionStages.WithCertificateType<ParentT>,
             DefinitionStages.WithPublicKey<ParentT>,
             DefinitionStages.WithSymmetricKey<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+            DefinitionStages.WithAttach<ParentT>,
+            DefinitionStages.WithAuthFileCertificate<ParentT>,
+            DefinitionStages.WithAuthFileCertificatePassword<ParentT> {
     }
 
     /**
@@ -122,6 +126,42 @@ public interface CertificateCredential extends
             WithAttach<ParentT> withDuration(Duration duration);
         }
 
+        /**
+         * A credential definition stage allowing exporting the auth file for the service principal.
+         */
+        interface WithAuthFile<ParentT> {
+            /**
+             * Export the information of this service principal into an auth file.
+             * @param outputStream the output stream to export the file
+             * @return the next stage in credential definition
+             */
+            WithAuthFileCertificate<ParentT> withAuthFileToExport(OutputStream outputStream);
+        }
+
+        /**
+         * A credential definition stage allowing specifying the private key for exporting an auth file.
+         */
+        interface WithAuthFileCertificate<ParentT> {
+            /**
+             * Export the information of this service principal into an auth file.
+             * @param privateKeyPath the path to the private key file
+             * @return the next stage in credential definition
+             */
+            WithAuthFileCertificatePassword<ParentT> withPrivateKeyFile(String privateKeyPath);
+        }
+
+        /**
+         * A credential definition stage allowing specifying the password for the private key for exporting an auth file.
+         */
+        interface WithAuthFileCertificatePassword<ParentT> {
+            /**
+             * Export the information of this service principal into an auth file.
+             * @param privateKeyPassword the password for the private key
+             * @return the next stage in credential definition
+             */
+            WithAttach<ParentT> withPrivateKeyPassword(String privateKeyPassword);
+        }
+
         /** The final stage of the credential definition.
          * <p>
          * At this stage, more settings can be specified, or the credential definition can be
@@ -132,7 +172,8 @@ public interface CertificateCredential extends
         interface WithAttach<ParentT> extends
                 Attachable.InDefinition<ParentT>,
                 WithStartDate<ParentT>,
-                WithDuration<ParentT> {
+                WithDuration<ParentT>,
+                WithAuthFile<ParentT> {
         }
     }
 
@@ -145,7 +186,9 @@ public interface CertificateCredential extends
             UpdateDefinitionStages.WithCertificateType<ParentT>,
             UpdateDefinitionStages.WithPublicKey<ParentT>,
             UpdateDefinitionStages.WithSymmetricKey<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT> {
+            UpdateDefinitionStages.WithAttach<ParentT>,
+            UpdateDefinitionStages.WithAuthFileCertificate<ParentT>,
+            UpdateDefinitionStages.WithAuthFileCertificatePassword<ParentT> {
     }
 
     /**
@@ -230,6 +273,42 @@ public interface CertificateCredential extends
             WithAttach<ParentT> withDuration(Duration duration);
         }
 
+        /**
+         * A credential definition stage allowing exporting the auth file for the service principal.
+         */
+        interface WithAuthFile<ParentT> {
+            /**
+             * Export the information of this service principal into an auth file.
+             * @param outputStream the output stream to export the file
+             * @return the next stage in credential definition
+             */
+            WithAuthFileCertificate<ParentT> withAuthFileToExport(OutputStream outputStream);
+        }
+
+        /**
+         * A credential definition stage allowing specifying the private key for exporting an auth file.
+         */
+        interface WithAuthFileCertificate<ParentT> {
+            /**
+             * Export the information of this service principal into an auth file.
+             * @param privateKeyPath the path to the private key file
+             * @return the next stage in credential definition
+             */
+            WithAuthFileCertificatePassword<ParentT> withPrivateKeyFile(String privateKeyPath);
+        }
+
+        /**
+         * A credential definition stage allowing specifying the password for the private key for exporting an auth file.
+         */
+        interface WithAuthFileCertificatePassword<ParentT> {
+            /**
+             * Export the information of this service principal into an auth file.
+             * @param privateKeyPassword the password for the private key
+             * @return the next stage in credential definition
+             */
+            WithAttach<ParentT> withPrivateKeyPassword(String privateKeyPassword);
+        }
+
         /** The final stage of the credential definition.
          * <p>
          * At this stage, more settings can be specified, or the credential definition can be
@@ -240,7 +319,8 @@ public interface CertificateCredential extends
         interface WithAttach<ParentT> extends
                 Attachable.InUpdate<ParentT>,
                 WithStartDate<ParentT>,
-                WithDuration<ParentT> {
+                WithDuration<ParentT>,
+                WithAuthFile<ParentT> {
         }
     }
 }
