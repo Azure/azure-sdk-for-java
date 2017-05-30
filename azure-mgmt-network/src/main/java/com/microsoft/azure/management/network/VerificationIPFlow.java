@@ -10,6 +10,10 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.resources.fluentcore.model.Executable;
 
+/**
+ * A client-side reperesentation allowing to verify IP packet flow from specific vm
+ * based on direction, protocol, local IP, remote IP, local port and remote port.
+ */
 @Fluent
 @Beta
 public interface VerificationIPFlow extends Executable<VerificationIPFlow> {
@@ -56,7 +60,7 @@ public interface VerificationIPFlow extends Executable<VerificationIPFlow> {
              * Set the targetResourceId value.
              *
              * @param vmId the targetResourceId value to set
-             * @return the VerificationIPFlow object itself.
+             * @return the next stage of the definition.
              */
             WithDirection withTargetResourceId(String vmId);
         }
@@ -70,21 +74,21 @@ public interface VerificationIPFlow extends Executable<VerificationIPFlow> {
              * Set the direction value.
              *
              * @param direction the direction value to set
-             * @return the VerificationIPFlow object itself.
+             * @return the next stage of the definition.
              */
             WithProtocol withDirection(Direction direction);
 
             /**
              * Set inbound direction.
              *
-             * @return the VerificationIPFlow object itself.
+             * @return the next stage of the definition.
              */
             WithProtocol inbound();
 
             /**
              * Set outbound direction.
              *
-             * @return the VerificationIPFlow object itself.
+             * @return the next stage of the definition.
              */
             WithProtocol outbound();
         }
@@ -93,6 +97,19 @@ public interface VerificationIPFlow extends Executable<VerificationIPFlow> {
          * Protocol to be verified on. Possible values include: 'TCP', 'UDP'.
          */
         interface WithProtocol extends HasProtocol.DefinitionStages.WithProtocol<WithLocalIP, Protocol> {
+            /**
+             * Set TCP protocol.
+             *
+             * @return the next stage of the definition
+             */
+            WithLocalIP withTCP();
+
+            /**
+             * Set UDP protocol
+             *
+             * @return the next stage of the definition
+             */
+            WithLocalIP withUDP();
         }
 
         /**
@@ -103,7 +120,7 @@ public interface VerificationIPFlow extends Executable<VerificationIPFlow> {
              * Set the localIPAddress value.
              *
              * @param localIPAddress the localIPAddress value to set
-             * @return the VerificationIPFlow object itself.
+             * @return the next stage of the definition.
              */
             WithRemoteIP withLocalIPAddress(String localIPAddress);
         }
@@ -116,7 +133,7 @@ public interface VerificationIPFlow extends Executable<VerificationIPFlow> {
              * Set the remoteIPAddress value.
              *
              * @param remoteIPAddress the remoteIPAddress value to set
-             * @return the VerificationIPFlow object itself.
+             * @return the next stage of the definition.
              */
             WithLocalPort withRemoteIPAddress(String remoteIPAddress);
         }
@@ -131,7 +148,7 @@ public interface VerificationIPFlow extends Executable<VerificationIPFlow> {
              * Set the localPort value.
              *
              * @param localPort the localPort value to set
-             * @return the VerificationIPFlow object itself.
+             * @return the next stage of the definition.
              */
             WithRemotePort withLocalPort(String localPort);
         }
@@ -146,7 +163,7 @@ public interface VerificationIPFlow extends Executable<VerificationIPFlow> {
              * Set the remotePort value.
              *
              * @param remotePort the remotePort value to set
-             * @return the VerificationIPFlow object itself.
+             * @return the next stage of the definition.
              */
             WithExecute withRemotePort(String remotePort);
         }
@@ -160,7 +177,7 @@ public interface VerificationIPFlow extends Executable<VerificationIPFlow> {
              * Set the targetNicResourceId value.
              *
              * @param targetNicResourceId the targetNicResourceId value to set
-             * @return the VerificationIPFlow object itself.
+             * @return the next stage of the definition.
              */
             VerificationIPFlow withTargetNicResourceId(String targetNicResourceId);
         }

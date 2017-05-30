@@ -57,6 +57,16 @@ public class VerificationIPFlowImpl implements VerificationIPFlow, VerificationI
     }
 
     @Override
+    public DefinitionStages.WithLocalIP withTCP() {
+        return withProtocol(Protocol.TCP);
+    }
+
+    @Override
+    public DefinitionStages.WithLocalIP withUDP() {
+        return withProtocol(Protocol.UDP);
+    }
+
+    @Override
     public VerificationIPFlowImpl withLocalPort(String localPort) {
         parameters.withLocalPort(localPort);
         return this;
