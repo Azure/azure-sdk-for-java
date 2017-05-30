@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.model.Executable;
 
 /**
@@ -14,7 +15,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Executable;
  */
 @Fluent
 @Beta
-public interface NextHop extends Executable<NextHop> {
+public interface NextHop extends Executable<NextHop>,
+        HasParent<NetworkWatcher> {
     /**
      * Next hop type. Possible values include: 'Internet', 'VirtualAppliance',
      * 'VirtualNetworkGateway', 'VnetLocal', 'HyperNetGateway', 'None'.

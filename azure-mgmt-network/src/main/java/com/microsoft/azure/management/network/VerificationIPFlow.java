@@ -8,6 +8,7 @@ package com.microsoft.azure.management.network;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.model.HasProtocol;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.model.Executable;
 
 /**
@@ -16,7 +17,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Executable;
  */
 @Fluent
 @Beta
-public interface VerificationIPFlow extends Executable<VerificationIPFlow> {
+public interface VerificationIPFlow extends Executable<VerificationIPFlow>,
+        HasParent<NetworkWatcher> {
     /**
      * Get the access value. Indicates whether the traffic is allowed or denied. Possible values
      * include: 'Allow', 'Deny'.
@@ -105,7 +107,7 @@ public interface VerificationIPFlow extends Executable<VerificationIPFlow> {
             WithLocalIP withTCP();
 
             /**
-             * Set UDP protocol
+             * Set UDP protocol.
              *
              * @return the next stage of the definition
              */
