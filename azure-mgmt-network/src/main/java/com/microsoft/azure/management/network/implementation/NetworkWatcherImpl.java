@@ -36,7 +36,7 @@ class NetworkWatcherImpl
     // Verbs
 
     @Override
-    public TopologyImpl topology(String targetResourceGroup) {
+    public TopologyImpl getTopology(String targetResourceGroup) {
         TopologyInner topologyInner = this.manager().inner().networkWatchers()
                 .getTopology(this.resourceGroupName(), this.name(), targetResourceGroup);
         return new TopologyImpl(this, topologyInner, targetResourceGroup);
@@ -49,7 +49,7 @@ class NetworkWatcherImpl
         return new SecurityGroupViewResultImpl(this, securityGroupViewResultInner, vmId);
     }
 
-    public FlowLogInformation flowLogStatus(String nsgId) {
+    public FlowLogInformation getFlowLogStatus(String nsgId) {
         FlowLogInformationInner flowLogInformationInner = this.manager().inner().networkWatchers()
                 .getFlowLogStatus(this.resourceGroupName(), this.name(), nsgId);
         return new FlowLogInformationImpl(this, flowLogInformationInner);
@@ -61,6 +61,15 @@ class NetworkWatcherImpl
         TroubleshootingResultInner inner = this.manager().inner().networkWatchers()
                 .getTroubleshooting(this.resourceGroupName(), this.name(), parameters);
         return new TroubleshootingImpl(this, inner, targetResourceId);
+    }
+
+    public NextHopImpl nextHop() {
+        return new NextHopImpl(this);
+    }
+
+    @Override
+    public VerificationIPFlowImpl verifyIPFlow() {
+        return new VerificationIPFlowImpl(this);
     }
 
     @Override

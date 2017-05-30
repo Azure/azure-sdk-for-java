@@ -7,7 +7,6 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.FlowLogInformation;
-import com.microsoft.azure.management.network.NetworkWatcher;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
@@ -76,7 +75,7 @@ class FlowLogInformationImpl extends RefreshableWrapperImpl<FlowLogInformationIn
     }
 
     @Override
-    public NetworkWatcher parent() {
+    public NetworkWatcherImpl parent() {
         return parent;
     }
 

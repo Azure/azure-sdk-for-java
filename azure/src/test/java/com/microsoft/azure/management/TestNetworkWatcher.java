@@ -30,17 +30,9 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
     static Region REGION = Region.US_NORTH_CENTRAL;
     private String groupName = "";
 
-    private final VirtualMachines vms;
-    private final NetworkInterfaces networkInterfaces;
-
     private void initializeResourceNames() {
         TEST_ID = SdkContext.randomResourceName("", 8);
         groupName = "rg" + TEST_ID;
-    }
-
-    public TestNetworkWatcher(VirtualMachines vms, NetworkInterfaces networkInterfaces) {
-        this.vms = vms;
-        this.networkInterfaces = networkInterfaces;
     }
 
     @Override

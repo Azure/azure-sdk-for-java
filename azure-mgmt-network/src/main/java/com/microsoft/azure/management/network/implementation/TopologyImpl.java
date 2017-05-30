@@ -66,7 +66,7 @@ class TopologyImpl extends RefreshableWrapperImpl<TopologyInner, Topology>
         List<TopologyResource> topologyResources = this.inner().resources();
         if (topologyResources != null) {
             for (TopologyResource resource : topologyResources) {
-                this.resources.put(resource.name(), resource);
+                this.resources.put(resource.id(), resource);
             }
         }
     }

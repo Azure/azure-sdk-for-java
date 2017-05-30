@@ -31,10 +31,10 @@ public interface NetworkWatcher extends
      ***********************************************************/
 
     /**
-     * @param targetResourceGroup the name of the target resource group to perform topology on
+     * @param targetResourceGroup the name of the target resource group to perform getTopology on
      * @return current network topology by resource group
      */
-    Topology topology(String targetResourceGroup);
+    Topology getTopology(String targetResourceGroup);
 
     /**
      * @param vmId ID of the target VM
@@ -43,10 +43,10 @@ public interface NetworkWatcher extends
     SecurityGroupViewResult securityGroupViewResult(String vmId);
 
     /**
-     * @param nsgId the name of the target resource group to perform topology on
+     * @param nsgId the name of the target resource group to get flow log status for
      * @return information on the configuration of flow log
      */
-    FlowLogInformation flowLogStatus(String nsgId);
+    FlowLogInformation getFlowLogStatus(String nsgId);
 
     /**
      * Initiate troubleshooting on a specified resource.
@@ -56,6 +56,18 @@ public interface NetworkWatcher extends
      * @return troubleshooting result information
      */
     Troubleshooting troubleshoot(String targetResourceId, String storageId, String storagePath);
+
+    /**
+     * First step specifying the parameters to get next hop for the VM.
+     * @return a stage to specify target vm
+     */
+    NextHop.DefinitionStages.WithTargetResource nextHop();
+
+    /**
+     * Verify IP flow from the specified VM to a location given the currently configured NSG rules.
+     * @return a stage to specify target vm
+     */
+    VerificationIPFlow.DefinitionStages.WithTargetResource verifyIPFlow();
 
     /**
      * Container interface for all the definitions.
