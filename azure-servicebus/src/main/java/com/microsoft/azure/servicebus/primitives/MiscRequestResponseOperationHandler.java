@@ -1,9 +1,14 @@
 package com.microsoft.azure.servicebus.primitives;
 
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ScheduledFuture;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.qpid.proton.message.Message;
 
@@ -11,10 +16,15 @@ import com.microsoft.azure.servicebus.rules.RuleDescription;
 
 public final class MiscRequestResponseOperationHandler extends ClientEntity
 {
+    private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
+    
 	private final Object requestResonseLinkCreationLock = new Object();
 	private final String entityPath;
+	private final String sasTokenAudienceURI;
 	private final MessagingFactory underlyingFactory;
 	private RequestResponseLink requestResponseLink;
+	private CompletableFuture<Void> requestResponseLinkCreationFuture;
+	private ScheduledFuture<?> sasTokenRenewTimerFuture;
 	
 	private MiscRequestResponseOperationHandler(MessagingFactory factory, String linkName, String entityPath)
 	{
@@ -22,36 +32,105 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
 		
 		this.underlyingFactory = factory;
 		this.entityPath = entityPath;
+		this.sasTokenAudienceURI = String.format(ClientConstants.SAS_TOKEN_AUDIENCE_FORMAT, factory.getHostName(), entityPath);
 	}	
 	
-	public static CompletableFuture<MiscRequestResponseOperationHandler> create(
-			MessagingFactory factory,			
-			String entityPath)
+	public static CompletableFuture<MiscRequestResponseOperationHandler> create(MessagingFactory factory, String entityPath)
 	{
-		MiscRequestResponseOperationHandler sessionBrowser = new MiscRequestResponseOperationHandler(factory, StringUtil.getShortRandomString(), entityPath);
-		return CompletableFuture.completedFuture(sessionBrowser);		
+	    CompletableFuture<MiscRequestResponseOperationHandler> creationFuture = new CompletableFuture<MiscRequestResponseOperationHandler>();
+	    MiscRequestResponseOperationHandler requestResponseOperationHandler = new MiscRequestResponseOperationHandler(factory, StringUtil.getShortRandomString(), entityPath);
+	    requestResponseOperationHandler.sendSASTokenAndSetRenewTimer().handleAsync((v, ex) -> {
+	        if(ex == null)
+	        {
+	            creationFuture.complete(requestResponseOperationHandler);
+	        }
+	        else
+	        {
+	            creationFuture.completeExceptionally(ExceptionUtil.extractAsyncCompletionCause(ex));
+	        }
+	        return null;
+	    });
+	    
+	    Timer.schedule(
+                new Runnable()
+                {
+                    public void run()
+                    {
+                        if (!creationFuture.isDone())
+                        {
+                            requestResponseOperationHandler.cancelSASTokenRenewTimer();
+                            Exception operationTimedout = new TimeoutException(
+                                    String.format(Locale.US, "Open operation on CBSLink(%s) on Entity(%s) timed out at %s.", requestResponseOperationHandler.getClientId(), requestResponseOperationHandler.entityPath, ZonedDateTime.now().toString()));
+                            if (TRACE_LOGGER.isLoggable(Level.WARNING))
+                            {
+                                TRACE_LOGGER.log(Level.WARNING, operationTimedout.getMessage());
+                            }
+
+                            creationFuture.completeExceptionally(operationTimedout);
+                        }
+                    }
+                }
+                , factory.getOperationTimeout()
+                , TimerType.OneTimeRun);       
+	    return creationFuture;		
 	}
 	
 	@Override
 	protected CompletableFuture<Void> onClose() {
+	    this.cancelSASTokenRenewTimer();
 		return this.requestResponseLink == null ? CompletableFuture.completedFuture(null) : this.requestResponseLink.closeAsync();
 	}
 	
+	CompletableFuture<Void> sendSASTokenAndSetRenewTimer()
+    {
+        if(this.getIsClosingOrClosed())
+        {
+            return CompletableFuture.completedFuture(null);
+        }
+        else
+        {
+            CompletableFuture<ScheduledFuture<?>> sendTokenFuture = this.underlyingFactory.sendSASTokenAndSetRenewTimer(this.sasTokenAudienceURI, () -> this.sendSASTokenAndSetRenewTimer());
+            return sendTokenFuture.thenAccept((f) -> {this.sasTokenRenewTimerFuture = f;});
+        }
+    }
+    
+    private void cancelSASTokenRenewTimer()
+    {
+        if(this.sasTokenRenewTimerFuture != null && !this.sasTokenRenewTimerFuture.isDone())
+        {
+            this.sasTokenRenewTimerFuture.cancel(true);
+        }
+    }
+	
 	private CompletableFuture<Void> createRequestResponseLink()
 	{
-		synchronized (this.requestResonseLinkCreationLock) {
-			if(this.requestResponseLink == null)
-			{
-				String requestResponseLinkPath = RequestResponseLink.getManagementNodeLinkPath(this.entityPath);
-				CompletableFuture<Void> crateAndAssignRequestResponseLink =
-								RequestResponseLink.createAsync(this.underlyingFactory, this.getClientId() + "-RequestResponse", requestResponseLinkPath).thenAccept((rrlink) -> {this.requestResponseLink = rrlink;});
-				return crateAndAssignRequestResponseLink;
-			}
-			else
-			{
-				return CompletableFuture.completedFuture(null);
-			}
-		}				
+	    synchronized (this.requestResonseLinkCreationLock) {
+            if(this.requestResponseLinkCreationFuture == null)
+            {
+                this.requestResponseLinkCreationFuture = new CompletableFuture<Void>();
+                String requestResponseLinkPath = RequestResponseLink.getManagementNodeLinkPath(this.entityPath);                
+                RequestResponseLink.createAsync(this.underlyingFactory, this.getClientId() + "-RequestResponse", requestResponseLinkPath).handleAsync((rrlink, ex) ->
+                {
+                    if(ex == null)
+                    {
+                        this.requestResponseLink = rrlink;
+                        this.requestResponseLinkCreationFuture.complete(null);
+                    }
+                    else
+                    {
+                        this.requestResponseLinkCreationFuture.completeExceptionally(ExceptionUtil.extractAsyncCompletionCause(ex));
+                        // Set it to null so next call will retry rr link creation
+                        synchronized (this.requestResonseLinkCreationLock)
+                        {
+                            this.requestResponseLinkCreationFuture = null;
+                        }                        
+                    }
+                    return null;
+                });
+            }
+            
+            return this.requestResponseLinkCreationFuture;
+        }
 	}
 	
 	public CompletableFuture<Pair<String[], Integer>> getMessageSessionsAsync(Date lastUpdatedTime, int skip, int top, String lastSessionId)

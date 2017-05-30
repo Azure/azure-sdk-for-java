@@ -25,9 +25,9 @@ public class MessageConverter
 	public static org.apache.qpid.proton.message.Message convertBrokeredMessageToAmqpMessage(Message brokeredMessage)	
 	{
 		org.apache.qpid.proton.message.Message amqpMessage = Proton.message();
-		if(brokeredMessage.getContent() != null)
+		if(brokeredMessage.getBody() != null)
 		{
-			amqpMessage.setBody(new Data(new Binary(brokeredMessage.getContent())));
+			amqpMessage.setBody(new Data(new Binary(brokeredMessage.getBody())));
 		}
 		
 		if(brokeredMessage.getProperties() != null)

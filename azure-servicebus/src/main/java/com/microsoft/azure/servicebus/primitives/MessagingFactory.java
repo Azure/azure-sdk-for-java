@@ -43,10 +43,10 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	public static final Duration DefaultOperationTimeout = Duration.ofSeconds(30);
 
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
-	private final Object requestResponseLinkCreationLock = new Object();
+	private static final int MAX_CBS_LINK_CREATION_ATTEMPTS = 3;
 	private final ConnectionStringBuilder builder;
 	private final String hostName;
-	private final CompletableFuture<Void> closeTask;
+	private final CompletableFuture<Void> connetionCloseFuture;
 	private final ConnectionHandler connectionHandler;
 	private final ReactorHandler reactorHandler;
 	private final LinkedList<Link> registeredLinks;
@@ -58,9 +58,11 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 
 	private Duration operationTimeout;
 	private RetryPolicy retryPolicy;
-	private CompletableFuture<MessagingFactory> open;
-	private CompletableFuture<Connection> openConnection;
+	private CompletableFuture<MessagingFactory> factoryOpenFuture;
+	private CompletableFuture<Void> cbsLinkCreationFuture;
 	private RequestResponseLink cbsLink;
+	private int cbsLinkCreationAttempts = 0;
+	private Throwable lastCBSLinkCreationException = null;
 
 	/**
 	 * @param reactor parameter reactor is purely for testing purposes and the SDK code should always set it to null
@@ -76,11 +78,11 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		this.operationTimeout = builder.getOperationTimeout();
 		this.retryPolicy = builder.getRetryPolicy();
 		this.registeredLinks = new LinkedList<Link>();
-		this.closeTask = new CompletableFuture<Void>();
+		this.connetionCloseFuture = new CompletableFuture<Void>();
 		this.reactorLock = new Object();
 		this.connectionHandler = new ConnectionHandler(this);
-		this.open = new CompletableFuture<MessagingFactory>();
-		this.openConnection = new CompletableFuture<Connection>();
+		this.factoryOpenFuture = new CompletableFuture<MessagingFactory>();
+		this.cbsLinkCreationFuture = new CompletableFuture<Void>();
 		
 		this.reactorHandler = new ReactorHandler()
 		{
@@ -125,7 +127,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 			this.reactorScheduler = new ReactorDispatcher(newReactor);
 		}
 		
-		final Thread reactorThread = new Thread(new RunReactor(newReactor));
+		final Thread reactorThread = new Thread(new RunReactor());
 		reactorThread.start();
 	}
 
@@ -157,9 +159,9 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 			messagingFactory.startReactor(messagingFactory.reactorHandler);
 		} catch (IOException e) {			
 			e.printStackTrace();
-			messagingFactory.open.completeExceptionally(e);
+			messagingFactory.factoryOpenFuture.completeExceptionally(e);
 		}
-		return messagingFactory.open;
+		return messagingFactory.factoryOpenFuture;
 	}
 	
 	public static CompletableFuture<MessagingFactory> createFromConnectionStringAsync(final String connectionString)
@@ -179,74 +181,48 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	}
 
 	@Override
-	public void onOpenComplete(Exception exception)
+	public void onOpenComplete()
 	{
-		if (exception == null)
-		{
-			AsyncUtil.completeFuture(this.open, this);
-			AsyncUtil.completeFuture(this.openConnection, this.connection);			
-		}
-		else
-		{
-			AsyncUtil.completeFutureExceptionally(this.open, exception);
-			AsyncUtil.completeFutureExceptionally(this.openConnection, exception);
-		}
+	    if(!factoryOpenFuture.isDone())
+	    {
+	        AsyncUtil.completeFuture(this.factoryOpenFuture, this);
+	    }
+	    
+	    // Connection opened. Initiate new cbs link creation
+	    this.createCBSLinkAsync();
 	}
 
 	@Override
 	public void onConnectionError(ErrorCondition error)
 	{
-		if (!this.open.isDone())
+		if (!this.factoryOpenFuture.isDone())
 		{
-			this.onOpenComplete(ExceptionUtil.toException(error));
+		    AsyncUtil.completeFutureExceptionally(this.factoryOpenFuture, ExceptionUtil.toException(error));
 		}
 		else
 		{
-			final Connection currentConnection = this.connection;			
-			Link[] links = this.registeredLinks.toArray(new Link[0]);
-
-			this.openConnection = new CompletableFuture<Connection>();
-
-			for(Link link : links)
-			{				
-				if (link.getLocalState() != EndpointState.CLOSED && link.getRemoteState() != EndpointState.CLOSED)
-				{
-					link.close();
-				}
-			}
-
-			if (currentConnection.getLocalState() != EndpointState.CLOSED && currentConnection.getRemoteState() != EndpointState.CLOSED)
-			{
-				currentConnection.close();
-			}
-			
-			for(Link link : links)
-			{				
-				Handler handler = BaseHandler.getHandler(link);
-				if (handler != null && handler instanceof BaseLinkHandler)
-				{
-					BaseLinkHandler linkHandler = (BaseLinkHandler) handler;
-					linkHandler.processOnClose(link, error);
-				}
-			}
+		    this.closeConnection(error, null);
 		}
 
-		if (this.getIsClosingOrClosed() && !this.closeTask.isDone())
+		if (this.getIsClosingOrClosed() && !this.connetionCloseFuture.isDone())
 		{
-			this.closeTask.complete(null);
+		    this.connetionCloseFuture.complete(null);
 			Timer.unregister(this.getClientId());
 		}
 	}
 
 	private void onReactorError(Exception cause)
 	{
-		if (!this.open.isDone())
+		if (!this.factoryOpenFuture.isDone())
 		{
-			this.onOpenComplete(cause);
+		    AsyncUtil.completeFutureExceptionally(this.factoryOpenFuture, cause);
 		}
 		else
 		{
-			final Connection currentConnection = this.connection;
+		    if(this.getIsClosingOrClosed())
+            {
+                return;
+            }
 			
 			try
 			{
@@ -254,36 +230,69 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 			}
 			catch (IOException e)
 			{
-				TRACE_LOGGER.log(Level.SEVERE, ExceptionUtil.toStackTraceString(e, "Re-starting reactor failed with error"));
-				
+				TRACE_LOGGER.log(Level.SEVERE, ExceptionUtil.toStackTraceString(e, "Re-starting reactor failed with error"));				
 				this.onReactorError(cause);
-			}		
-			
-			Link[] links = this.registeredLinks.toArray(new Link[0]);
-			
-			for(Link link : links)
-			{
-				if (link.getLocalState() != EndpointState.CLOSED && link.getRemoteState() != EndpointState.CLOSED)
-				{
-					link.close();
-				}
 			}
-
-			if (currentConnection.getLocalState() != EndpointState.CLOSED && currentConnection.getRemoteState() != EndpointState.CLOSED)
-			{
-				currentConnection.close();
-			}
-
-			for(Link link : links)
-			{
-				Handler handler = BaseHandler.getHandler(link);
-				if (handler != null && handler instanceof BaseLinkHandler)
-				{
-					BaseLinkHandler linkHandler = (BaseLinkHandler) handler;
-					linkHandler.processOnClose(link, cause);
-				}
-			}			
+			
+			this.closeConnection(null, cause);
 		}
+	}
+	
+	// One of the parameters must be null
+	private void closeConnection(ErrorCondition error, Exception cause)
+	{
+	    // Important to copy the reference of the connection as a call to getConnection might create a new connection while we are still in this method
+	    Connection currentConnection = this.connection;
+	    if(connection != null)
+	    {
+	        Link[] links = this.registeredLinks.toArray(new Link[0]);
+	        
+	        for(Link link : links)
+	        {
+	            if (link.getLocalState() != EndpointState.CLOSED && link.getRemoteState() != EndpointState.CLOSED)
+	            {
+	                link.close();
+	            }
+	        }
+	        
+	        if(this.cbsLink != null)
+	        {
+	            try {
+	                this.cbsLink.close();
+	            } catch (ServiceBusException e) {
+	               // Ignore this exception
+	            }
+	        }
+	        
+	        if(this.cbsLinkCreationFuture != null && !this.cbsLinkCreationFuture.isDone())
+	        {
+	            AsyncUtil.completeFutureExceptionally(this.cbsLinkCreationFuture, new Exception("Connection closed."));
+	        }
+	        
+	        this.cbsLinkCreationFuture = new CompletableFuture<Void>();
+
+	        if (currentConnection.getLocalState() != EndpointState.CLOSED && currentConnection.getRemoteState() != EndpointState.CLOSED)
+	        {
+	            currentConnection.close();
+	        }
+	        
+	        for(Link link : links)
+	        {
+	            Handler handler = BaseHandler.getHandler(link);
+	            if (handler != null && handler instanceof BaseLinkHandler)
+	            {
+	                BaseLinkHandler linkHandler = (BaseLinkHandler) handler;
+	                if(error != null)
+	                {
+	                    linkHandler.processOnClose(link, error);
+	                }
+	                else
+	                {
+	                    linkHandler.processOnClose(link, cause);
+	                }
+	            }
+	        }
+	    }
 	}
 
 	@Override
@@ -291,53 +300,74 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	{
 		if (!this.getIsClosed())
 		{
-			if (this.connection != null && this.connection.getRemoteState() != EndpointState.CLOSED)
-			{				
-				try {
-					this.scheduleOnReactorThread(new DispatchHandler()
-					{
-						@Override
-						public void onEvent()
-						{
-							if (MessagingFactory.this.connection != null && MessagingFactory.this.connection.getLocalState() != EndpointState.CLOSED)
-							{
-								MessagingFactory.this.connection.close();
-							}
-						}
-					});
-				} catch (IOException e) {
-					AsyncUtil.completeFutureExceptionally(this.closeTask, e);
-				}
+		    CompletableFuture<Void> cbsLinkCloseFuture;
+		    if(this.cbsLink == null)
+		    {
+		        cbsLinkCloseFuture = CompletableFuture.completedFuture(null);
+		    }
+		    else
+		    {
+		        cbsLinkCloseFuture = this.cbsLink.closeAsync();
+		    }
+		    
+		    cbsLinkCloseFuture.thenRun(() -> {
+		        if(this.cbsLinkCreationFuture != null && !this.cbsLinkCreationFuture.isDone())
+	            {
+	                AsyncUtil.completeFutureExceptionally(this.cbsLinkCreationFuture, new Exception("Connection closed."));
+	            }
+		        
+		        if (this.connection != null && this.connection.getRemoteState() != EndpointState.CLOSED)
+	            {
+	                try {
+	                    this.scheduleOnReactorThread(new DispatchHandler()
+	                    {
+	                        @Override
+	                        public void onEvent()
+	                        {
+	                            if (MessagingFactory.this.connection != null && MessagingFactory.this.connection.getLocalState() != EndpointState.CLOSED)
+	                            {
+	                                MessagingFactory.this.connection.close();
+	                            }
+	                        }
+	                    });
+	                } catch (IOException e) {
+	                    AsyncUtil.completeFutureExceptionally(this.connetionCloseFuture, e);
+	                }
 
-				Timer.schedule(new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						if (!MessagingFactory.this.closeTask.isDone())
-						{
-							MessagingFactory.this.closeTask.completeExceptionally(new TimeoutException("Closing MessagingFactory timed out."));
-						}
-					}
-				},
-				this.operationTimeout, TimerType.OneTimeRun);
-			}
-			else if(this.connection == null || this.connection.getRemoteState() == EndpointState.CLOSED)
-			{				
-				AsyncUtil.completeFuture(this.closeTask, null);
-			}
-		}		
-
-		return this.closeTask;
+	                Timer.schedule(new Runnable()
+	                {
+	                    @Override
+	                    public void run()
+	                    {
+	                        if (!MessagingFactory.this.connetionCloseFuture.isDone())
+	                        {
+	                            MessagingFactory.this.connetionCloseFuture.completeExceptionally(new TimeoutException("Closing MessagingFactory timed out."));
+	                        }
+	                    }
+	                },
+	                this.operationTimeout, TimerType.OneTimeRun);
+	            }
+	            else if(this.connection == null || this.connection.getRemoteState() == EndpointState.CLOSED)
+	            {
+	                this.connetionCloseFuture.complete(null);
+	            }
+		    });
+			
+			return this.connetionCloseFuture;
+		}
+		else
+		{
+		    return CompletableFuture.completedFuture(null);
+		}
 	}
 
 	private class RunReactor implements Runnable
 	{
 		final private Reactor rctr;
 
-		public RunReactor(final Reactor reactor)
+		public RunReactor()
 		{
-			this.rctr = reactor;
+			this.rctr = MessagingFactory.this.getReactor();
 		}
 
 		public void run()
@@ -351,7 +381,16 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 			{
 				this.rctr.setTimeout(3141);
 				this.rctr.start();
-				while(!Thread.interrupted() && this.rctr.process()) {}
+				boolean continuteProcessing = true;
+				while(!Thread.interrupted() && continuteProcessing)
+				{
+				    // If factory is closed, stop reactor too
+				    if(MessagingFactory.this.getIsClosed())
+				    {
+				        break;
+				    }
+				    continuteProcessing = this.rctr.process();
+				}
 				this.rctr.stop();
 			}
 			catch (HandlerException handlerException)
@@ -436,7 +475,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
         final String finalSasToken = sasToken;
         final boolean finalIsSasTokenGenerated = isSasTokenGenerated;
 
-        CompletableFuture<Void> sendTokenFuture = this.createCBSLink().thenComposeAsync((v) -> {
+        CompletableFuture<Void> sendTokenFuture = this.cbsLinkCreationFuture.thenComposeAsync((v) -> {
             return CommonRequestResponseOperations.sendCBSTokenAsync(this.cbsLink, Util.adjustServerTimeout(this.operationTimeout), finalSasToken, ClientConstants.SAS_TOKEN_TYPE, sasTokenAudienceURI);
         });
         return sendTokenFuture.thenApplyAsync((v) -> {
@@ -454,20 +493,33 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
         });
     }
 	
-	private CompletableFuture<Void> createCBSLink()
+	private CompletableFuture<Void> createCBSLinkAsync()
     {
-        synchronized (this.requestResponseLinkCreationLock) {
-            if(this.cbsLink == null)
-            {
-                String requestResponseLinkPath = RequestResponseLink.getCBSNodeLinkPath();
-                CompletableFuture<Void> crateAndAssignRequestResponseLink =
-                                RequestResponseLink.createAsync(this, this.getClientId() + "-cbs", requestResponseLinkPath).thenAccept((rrlink) -> {this.cbsLink = rrlink;});
-                return crateAndAssignRequestResponseLink;
-            }
-            else
-            {
-                return CompletableFuture.completedFuture(null);
-            }
-        }
+	    if(++this.cbsLinkCreationAttempts > MAX_CBS_LINK_CREATION_ATTEMPTS )
+	    {
+	        Throwable completionEx = this.lastCBSLinkCreationException == null ? new Exception("CBS link creation failed multiple times.") : this.lastCBSLinkCreationException;
+	        this.cbsLinkCreationFuture.completeExceptionally(completionEx);
+	        return CompletableFuture.completedFuture(null);	        
+	    }
+	    else
+	    {
+	        String requestResponseLinkPath = RequestResponseLink.getCBSNodeLinkPath();
+	        CompletableFuture<Void> crateAndAssignRequestResponseLink =
+	                        RequestResponseLink.createAsync(this, this.getClientId() + "-cbs", requestResponseLinkPath).handleAsync((cbsLink, ex) ->
+	                        {
+	                            if(ex == null)
+	                            {
+	                                this.cbsLink = cbsLink;
+	                                this.cbsLinkCreationFuture.complete(null);
+	                            }
+	                            else
+	                            {
+	                                this.lastCBSLinkCreationException = ExceptionUtil.extractAsyncCompletionCause(ex);
+	                                this.createCBSLinkAsync();
+	                            }
+	                            return null;
+	                        });       
+	        return crateAndAssignRequestResponseLink;
+	    }	    
     }
 }

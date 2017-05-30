@@ -78,6 +78,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 	private Exception lastKnownLinkError;
 	private Instant lastKnownErrorReportedAt;
 	private ScheduledFuture<?> sasTokenRenewTimerFuture;
+	private CompletableFuture<Void> requestResponseLinkCreationFuture;
 
 	public static CompletableFuture<CoreMessageSender> create(
 			final MessagingFactory factory,
@@ -121,20 +122,34 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 	}
 	
 	private CompletableFuture<Void> createRequestResponseLink()
-	{
+	{		
 		synchronized (this.requestResonseLinkCreationLock) {
-			if(this.requestResponseLink == null)
-			{
-				String requestResponseLinkPath = RequestResponseLink.getManagementNodeLinkPath(this.sendPath);
-				CompletableFuture<Void> crateAndAssignRequestResponseLink =
-								RequestResponseLink.createAsync(this.underlyingFactory, this.getClientId() + "-RequestResponse", requestResponseLinkPath).thenAccept((rrlink) -> {this.requestResponseLink = rrlink;});
-				return crateAndAssignRequestResponseLink;
-			}
-			else
-			{
-				return CompletableFuture.completedFuture(null);
-			}
-		}				
+            if(this.requestResponseLinkCreationFuture == null)
+            {
+                this.requestResponseLinkCreationFuture = new CompletableFuture<Void>();
+                String requestResponseLinkPath = RequestResponseLink.getManagementNodeLinkPath(this.sendPath);                
+                RequestResponseLink.createAsync(this.underlyingFactory, this.getClientId() + "-RequestResponse", requestResponseLinkPath).handleAsync((rrlink, ex) ->
+                {
+                    if(ex == null)
+                    {
+                        this.requestResponseLink = rrlink;
+                        this.requestResponseLinkCreationFuture.complete(null);
+                    }
+                    else
+                    {
+                        this.requestResponseLinkCreationFuture.completeExceptionally(ExceptionUtil.extractAsyncCompletionCause(ex));
+                        // Set it to null so next call will retry rr link creation
+                        synchronized (this.requestResonseLinkCreationLock)
+                        {
+                            this.requestResponseLinkCreationFuture = null;
+                        }                        
+                    }
+                    return null;
+                });
+            }
+            
+            return this.requestResponseLinkCreationFuture;
+        }
 	}
 
 	private CoreMessageSender(final MessagingFactory factory, final String sendLinkName, final String senderPath)

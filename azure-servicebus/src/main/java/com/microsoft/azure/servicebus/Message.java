@@ -183,7 +183,7 @@ final public class Message implements Serializable, IMessage {
 	}
 	
 	@Override
-	public byte[] getContent() {
+	public byte[] getBody() {
 		return this.content;
 	}
 

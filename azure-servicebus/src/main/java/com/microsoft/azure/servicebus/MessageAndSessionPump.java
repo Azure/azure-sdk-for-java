@@ -602,7 +602,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
 				if(renewInterval != null && !renewInterval.isNegative())
 				{
 					this.timerFuture = Timer.schedule(() -> {
-						this.session.renewLockAsync().handleAsync((v, renewLockEx) ->
+						this.session.renewSessionLockAsync().handleAsync((v, renewLockEx) ->
 						{
 							if(renewLockEx != null)
 							{
@@ -664,14 +664,14 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
 		return this.innerReceiver.completeAsync(lockToken);
 	}
 
-	@Override
-	public void defer(UUID lockToken) throws InterruptedException, ServiceBusException {
+//	@Override
+	void defer(UUID lockToken) throws InterruptedException, ServiceBusException {
 		this.checkInnerReceiveCreated();
 		this.innerReceiver.defer(lockToken);
 	}
 
-	@Override
-	public void defer(UUID lockToken, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException {
+//	@Override
+	void defer(UUID lockToken, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException {
 		this.checkInnerReceiveCreated();
 		this.innerReceiver.defer(lockToken, propertiesToModify);	
 	}

@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.regex.Pattern;
 
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
@@ -17,8 +18,10 @@ import com.microsoft.azure.servicebus.rules.RuleDescription;
 
 public final class SubscriptionClient extends InitializableEntity implements ISubscriptionClient
 {
+    private static final String SUBSCRIPTIONS_DELIMITER = "/subscriptions/";
 	private final ReceiveMode receiveMode;
 	private String subscriptionPath;
+	private MessagingFactory factory;
 	private MessageAndSessionPump messageAndSessionPump;
 	private SessionBrowser sessionBrowser;
 	private MiscRequestResponseOperationHandler miscRequestResponseHandler;
@@ -29,16 +32,15 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
 		this.receiveMode = receiveMode;
 	}
 	
-	public SubscriptionClient(String amqpConnectionString, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
+	public SubscriptionClient(ConnectionStringBuilder amqpConnectionStringBuilder, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
 	{
-		this(receiveMode);
-		ConnectionStringBuilder builder = new ConnectionStringBuilder(amqpConnectionString);
-		this.subscriptionPath = builder.getEntityPath();
-		CompletableFuture<MessagingFactory> factoryFuture = MessagingFactory.createFromConnectionStringBuilderAsync(builder);
+		this(receiveMode);		
+		this.subscriptionPath = amqpConnectionStringBuilder.getEntityPath();
+		CompletableFuture<MessagingFactory> factoryFuture = MessagingFactory.createFromConnectionStringBuilderAsync(amqpConnectionStringBuilder);
 		Utils.completeFuture(factoryFuture.thenComposeAsync((f) -> this.createPumpAndBrowserAsync(f)));
 	}
 	
-	public SubscriptionClient(MessagingFactory factory, String subscriptionPath, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
+	SubscriptionClient(MessagingFactory factory, String subscriptionPath, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
 	{
 		this(receiveMode);
 		this.subscriptionPath = subscriptionPath;
@@ -46,7 +48,8 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
 	}
 	
 	private CompletableFuture<Void> createPumpAndBrowserAsync(MessagingFactory factory)
-	{		
+	{
+	    this.factory = factory;
 		CompletableFuture<Void> postSessionBrowserFuture = MiscRequestResponseOperationHandler.create(factory, this.subscriptionPath).thenAcceptAsync((msoh) -> {
 			this.miscRequestResponseHandler = msoh;
 			this.sessionBrowser = new SessionBrowser(factory, this.subscriptionPath, msoh);
@@ -126,26 +129,26 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
 
 	@Override
 	protected CompletableFuture<Void> onClose() {
-		return this.messageAndSessionPump.closeAsync().thenCompose((v) -> this.miscRequestResponseHandler.closeAsync());
+		return this.messageAndSessionPump.closeAsync().thenCompose((v) -> this.miscRequestResponseHandler.closeAsync().thenCompose((w) -> this.factory.closeAsync()));
 	}
 	
-	@Override
-	public Collection<IMessageSession> getMessageSessions() throws InterruptedException, ServiceBusException {
+//	@Override
+	Collection<IMessageSession> getMessageSessions() throws InterruptedException, ServiceBusException {
 		return Utils.completeFuture(this.getMessageSessionsAsync());
 	}
 
-	@Override
-	public Collection<IMessageSession> getMessageSessions(Instant lastUpdatedTime) throws InterruptedException, ServiceBusException {
+//	@Override
+	Collection<IMessageSession> getMessageSessions(Instant lastUpdatedTime) throws InterruptedException, ServiceBusException {
 		return Utils.completeFuture(this.getMessageSessionsAsync(lastUpdatedTime));
 	}
 
-	@Override
-	public CompletableFuture<Collection<IMessageSession>> getMessageSessionsAsync() {
+//	@Override
+	CompletableFuture<Collection<IMessageSession>> getMessageSessionsAsync() {
 		return this.sessionBrowser.getMessageSessionsAsync();
 	}
 
-	@Override
-	public CompletableFuture<Collection<IMessageSession>> getMessageSessionsAsync(Instant lastUpdatedTime) {
+//	@Override
+	CompletableFuture<Collection<IMessageSession>> getMessageSessionsAsync(Instant lastUpdatedTime) {
 		return this.sessionBrowser.getMessageSessionsAsync(Date.from(lastUpdatedTime));
 	}
 	
@@ -179,13 +182,13 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
 		return this.messageAndSessionPump.completeAsync(lockToken);
 	}
 
-	@Override
-	public void defer(UUID lockToken) throws InterruptedException, ServiceBusException {
+//	@Override
+	void defer(UUID lockToken) throws InterruptedException, ServiceBusException {
 		this.messageAndSessionPump.defer(lockToken);		
 	}
 
-	@Override
-	public void defer(UUID lockToken, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException {
+//	@Override
+	void defer(UUID lockToken, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException {
 		this.messageAndSessionPump.defer(lockToken, propertiesToModify);		
 	}
 
@@ -247,5 +250,26 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
     @Override
     public void setPrefetchCount(int prefetchCount) throws ServiceBusException {
         this.messageAndSessionPump.setPrefetchCount(prefetchCount);
+    }
+
+    @Override
+    public String getTopicName() {
+       String entityPath = this.getEntityPath();
+       String[] parts = Pattern.compile(SUBSCRIPTIONS_DELIMITER, Pattern.CASE_INSENSITIVE).split(entityPath, 2);
+       return parts[0];
+    }
+
+    @Override
+    public String getSubscriptionName() {
+        String entityPath = this.getEntityPath();
+        String[] parts = Pattern.compile(SUBSCRIPTIONS_DELIMITER, Pattern.CASE_INSENSITIVE).split(entityPath, 2);
+        if(parts.length == 2)
+        {
+        	return parts[1];
+        }
+        else
+        {
+        	throw new RuntimeException("Invalid entity path in the subscription client.");
+        }
     }
 }

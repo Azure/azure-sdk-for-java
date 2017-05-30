@@ -51,12 +51,12 @@ public class MessageSession extends MessageReceiver implements IMessageSession
 	}
 
 	@Override
-	public void renewLock() throws InterruptedException, ServiceBusException {
-		Utils.completeFuture(this.renewLockAsync());
+	public void renewSessionLock() throws InterruptedException, ServiceBusException {
+		Utils.completeFuture(this.renewSessionLockAsync());
 	}
 
 	@Override
-	public CompletableFuture<Void> renewLockAsync() {
+	public CompletableFuture<Void> renewSessionLockAsync() {
 		return this.getInternalReceiver().renewSessionLocksAsync();
 	}
 

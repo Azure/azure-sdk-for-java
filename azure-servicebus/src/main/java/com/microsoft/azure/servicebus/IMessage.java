@@ -36,7 +36,7 @@ public interface IMessage {
 	
 	public void setSessionId(String sessionId);
 	
-	public byte[] getContent();
+	public byte[] getBody();
 	
 	public void setContent(byte[] content);
 	

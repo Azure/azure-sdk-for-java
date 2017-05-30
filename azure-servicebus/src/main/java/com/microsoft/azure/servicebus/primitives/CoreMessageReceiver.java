@@ -94,6 +94,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	private Instant lastKnownErrorReportedAt;
 	private int nextCreditToFlow;
 	private ScheduledFuture<?> sasTokenRenewTimerFuture;
+	private CompletableFuture<Void> requestResponseLinkCreationFuture;
 		
 	private final Runnable timedOutUpdateStateRequestsDaemon;
 	
@@ -230,20 +231,33 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	
 	private CompletableFuture<Void> createRequestResponseLink()
 	{
-		synchronized (this.requestResonseLinkCreationLock)
-		{
-			if(this.requestResponseLink == null)
-			{
-				String requestResponseLinkPath = RequestResponseLink.getManagementNodeLinkPath(this.receivePath);
-				CompletableFuture<Void> crateAndAssignRequestResponseLink =
-								RequestResponseLink.createAsync(this.underlyingFactory, this.getClientId() + "-RequestResponse", requestResponseLinkPath).thenAccept((rrlink) -> {this.requestResponseLink = rrlink;});
-				return crateAndAssignRequestResponseLink;
-			}
-			else
-			{
-				return CompletableFuture.completedFuture(null);
-			}
-		}				
+	    synchronized (this.requestResonseLinkCreationLock) {
+            if(this.requestResponseLinkCreationFuture == null)
+            {
+                this.requestResponseLinkCreationFuture = new CompletableFuture<Void>();
+                String requestResponseLinkPath = RequestResponseLink.getManagementNodeLinkPath(this.receivePath);                
+                RequestResponseLink.createAsync(this.underlyingFactory, this.getClientId() + "-RequestResponse", requestResponseLinkPath).handleAsync((rrlink, ex) ->
+                {
+                    if(ex == null)
+                    {
+                        this.requestResponseLink = rrlink;
+                        this.requestResponseLinkCreationFuture.complete(null);
+                    }
+                    else
+                    {
+                        this.requestResponseLinkCreationFuture.completeExceptionally(ExceptionUtil.extractAsyncCompletionCause(ex));
+                     // Set it to null so next call will retry rr link creation
+                        synchronized (this.requestResonseLinkCreationLock)
+                        {
+                            this.requestResponseLinkCreationFuture = null;
+                        }                        
+                    }
+                    return null;
+                });
+            }
+            
+            return this.requestResponseLinkCreationFuture;
+        }        
 	}
 	
 	private void createReceiveLink()
