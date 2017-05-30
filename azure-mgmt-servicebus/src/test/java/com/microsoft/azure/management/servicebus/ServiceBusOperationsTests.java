@@ -515,14 +515,15 @@ public class ServiceBusOperationsTests extends TestBase {
         Assert.assertTrue(subscriptionsInTopic.size() == 0);
     }
 
-    @Test
-    public void canListServiceBusOperations() {
-        RG_NAME = null;
-        PagedList<ServiceBusOperation> operations = serviceBusManager.operations()
-                .list();
-        Assert.assertTrue(operations.size() > 0);
-        for (ServiceBusOperation op : operations) {
-            Assert.assertNotNull(op.name());
-        }
-    }
+    //@Test
+    //TODO To be revisited in the future
+    //public void canListServiceBusOperations() {
+    //    RG_NAME = null;
+    //    PagedList<ServiceBusOperation> operations = serviceBusManager.operations()
+    //            .list();
+    //    Assert.assertTrue(operations.size() > 0);
+    //    for (ServiceBusOperation op : operations) {
+    //        Assert.assertNotNull(op.name());
+    //    }
+    //}
 }
