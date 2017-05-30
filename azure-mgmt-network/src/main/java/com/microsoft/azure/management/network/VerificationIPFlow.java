@@ -73,6 +73,20 @@ public interface VerificationIPFlow extends Executable<VerificationIPFlow> {
              * @return the VerificationIPFlow object itself.
              */
             WithProtocol withDirection(Direction direction);
+
+            /**
+             * Set inbound direction.
+             *
+             * @return the VerificationIPFlow object itself.
+             */
+            WithProtocol inbound();
+
+            /**
+             * Set outbound direction.
+             *
+             * @return the VerificationIPFlow object itself.
+             */
+            WithProtocol outbound();
         }
 
         /**

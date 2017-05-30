@@ -26,21 +26,25 @@ public class NextHopImpl implements NextHop, NextHop.Definition {
         this.parent = parent;
     }
 
+    @Override
     public NextHopImpl withTargetResourceId(String targetResourceId) {
         this.parameters.withTargetResourceId(targetResourceId);
         return this;
     }
 
+    @Override
     public NextHopImpl withSourceIPAddress(String sourceIPAddress) {
         this.parameters.withSourceIPAddress(sourceIPAddress);
         return this;
     }
 
+    @Override
     public NextHopImpl withDestinationIPAddress(String destinationIPAddress) {
         this.parameters.withDestinationIPAddress(destinationIPAddress);
         return this;
     }
 
+    @Override
     public NextHopImpl withTargetNicResourceId(String targetNicResourceId) {
         this.parameters.withTargetNicResourceId(targetNicResourceId);
         return this;
@@ -50,14 +54,17 @@ public class NextHopImpl implements NextHop, NextHop.Definition {
         return parent;
     }
 
+    @Override
     public NextHopType nextHopType() {
         return result.nextHopType();
     }
 
+    @Override
     public String nextHopIpAddress() {
         return result.nextHopIpAddress();
     }
 
+    @Override
     public String routeTableId() {
         return result.routeTableId();
     }

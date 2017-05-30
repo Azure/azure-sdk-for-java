@@ -41,6 +41,16 @@ public class VerificationIPFlowImpl implements VerificationIPFlow, VerificationI
     }
 
     @Override
+    public DefinitionStages.WithProtocol inbound() {
+        return withDirection(Direction.INBOUND);
+    }
+
+    @Override
+    public DefinitionStages.WithProtocol outbound() {
+        return withDirection(Direction.OUTBOUND);
+    }
+
+    @Override
     public VerificationIPFlowImpl withProtocol(Protocol protocol) {
         parameters.withProtocol(protocol);
         return this;
