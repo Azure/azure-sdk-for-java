@@ -16,7 +16,7 @@ import rx.Observable;
 import rx.functions.Func1;
 
 /**
- * Implementation of VerificationIPFlow
+ * Implementation of VerificationIPFlow.
  */
 @LangDefinition
 public class VerificationIPFlowImpl implements VerificationIPFlow, VerificationIPFlow.Definition {

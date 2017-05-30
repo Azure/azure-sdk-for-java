@@ -14,7 +14,7 @@ import rx.Observable;
 import rx.functions.Func1;
 
 /**
- * Implementation of NextHop
+ * Implementation of NextHop.
  */
 @LangDefinition
 public class NextHopImpl implements NextHop, NextHop.Definition {
