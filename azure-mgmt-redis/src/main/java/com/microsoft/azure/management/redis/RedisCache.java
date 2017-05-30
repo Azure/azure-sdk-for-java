@@ -99,6 +99,12 @@ public interface RedisCache extends
     /**
      * @return a Redis Cache's access keys. This operation requires write permission to the Cache resource.
      */
+    @Method
+    RedisAccessKeys getKeys();
+
+    /**
+     * @return a Redis Cache's access keys. This operation requires write permission to the Cache resource.
+     */
     RedisAccessKeys keys();
 
     /**
