@@ -256,8 +256,8 @@ abstract class Canonicalizer {
         final StringBuilder canonicalizedResource = new StringBuilder(resourcepath.toString());
 
         // query parameters
-        if (address.getQuery()!= null  && !address.getQuery().contains("=")) {
-            //no query params. Safe to return empty
+        if (address.getQuery() == null  || !address.getQuery().contains("=")) {
+            //no query params.
             return canonicalizedResource.toString();
         }
 
