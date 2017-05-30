@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.dns;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.dns.implementation.DnsZoneManager;
 import com.microsoft.azure.management.dns.implementation.ZoneInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -318,6 +319,7 @@ public interface DnsZone extends
              *
              * @return the stage representing configuration for the TXT record set
              */
+            @Method
             DnsRecordSet.UpdateSoaRecord updateSoaRecord();
 
             /**
