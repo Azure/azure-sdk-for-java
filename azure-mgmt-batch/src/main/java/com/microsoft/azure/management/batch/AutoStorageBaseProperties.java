@@ -11,11 +11,11 @@ package com.microsoft.azure.management.batch;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The properties related to auto storage account.
+ * The properties related to the auto-storage account.
  */
 public class AutoStorageBaseProperties {
     /**
-     * The resource ID of the storage account to be used for auto storage
+     * The resource ID of the storage account to be used for auto-storage
      * account.
      */
     @JsonProperty(value = "storageAccountId", required = true)

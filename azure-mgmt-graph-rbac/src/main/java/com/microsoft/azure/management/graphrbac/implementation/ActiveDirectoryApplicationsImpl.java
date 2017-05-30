@@ -119,12 +119,12 @@ class ActiveDirectoryApplicationsImpl
 
     @Override
     public Observable<ActiveDirectoryApplication> getByNameAsync(final String name) {
-        return innerCollection.listWithServiceResponseAsync(String.format("appId eq '%s'", name))
+        return innerCollection.listWithServiceResponseAsync(String.format("displayName eq '%s'", name))
                 .flatMap(new Func1<ServiceResponse<Page<ApplicationInner>>, Observable<Page<ApplicationInner>>>() {
                     @Override
                     public Observable<Page<ApplicationInner>> call(ServiceResponse<Page<ApplicationInner>> result) {
                         if (result == null || result.body().items() == null || result.body().items().isEmpty()) {
-                            return innerCollection.listAsync(String.format("displayName eq '%s'", name));
+                            return innerCollection.listAsync(String.format("appId eq '%s'", name));
                         }
                         return Observable.just(result.body());
                     }

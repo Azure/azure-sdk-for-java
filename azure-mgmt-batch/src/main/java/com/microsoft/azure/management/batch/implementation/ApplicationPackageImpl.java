@@ -37,9 +37,7 @@ public class ApplicationPackageImpl
     }
 
     protected static ApplicationPackageImpl newApplicationPackage(String name, ApplicationImpl parent, ApplicationPackagesInner client) {
-        ApplicationPackageInner inner = new ApplicationPackageInner();
-        inner.withVersion(name);
-        return new ApplicationPackageImpl(name, parent, inner, client);
+        return new ApplicationPackageImpl(name, parent, new ApplicationPackageInner(), client);
     }
 
     @Override
@@ -50,11 +48,6 @@ public class ApplicationPackageImpl
     @Override
     public String id() {
         return this.parent().parent().id() + "/applications/" + this.parent().name() + "/versions/" + this.name();
-    }
-
-    @Override
-    public String name() {
-        return this.inner().version();
     }
 
     @Override

@@ -128,7 +128,7 @@ var mappings = {
     },
     'batch': {
         'dir': 'azure-mgmt-batch',
-        'source': 'arm-batch/2015-12-01/swagger/BatchManagement.json',
+        'source': 'arm-batch/2017-05-01/swagger/BatchManagement.json',
         'package': 'com.microsoft.azure.management.batch',
         'args': '-FT 1'
     },

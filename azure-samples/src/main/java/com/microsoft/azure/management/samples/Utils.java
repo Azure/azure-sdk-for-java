@@ -1260,7 +1260,6 @@ public final class Utils {
                 .append("\n\tTags: ").append(resource.tags())
                 .append("\n\tSKU: ").append(resource.sku().toString())
                 .append("\n\tOperational state: ").append(resource.operationalState())
-                .append("\n\tSSL policy: ").append(resource.sslPolicy())
                 .append("\n\tInternet-facing? ").append(resource.isPublic())
                 .append("\n\tInternal? ").append(resource.isPrivate())
                 .append("\n\tDefault private IP address: ").append(resource.privateIPAddress())

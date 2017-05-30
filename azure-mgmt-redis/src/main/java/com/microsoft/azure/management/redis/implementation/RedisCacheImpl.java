@@ -143,6 +143,12 @@ class RedisCacheImpl
     }
 
     @Override
+    public RedisAccessKeys getKeys() {
+        // TODO: Either this or keys() is redundant, but this was added for parity between Java and .NEt without breaking compat. In V2.0, this needs to be cleaned up.
+        return this.refreshKeys();
+    }
+
+    @Override
     public RedisAccessKeys refreshKeys() {
         RedisAccessKeysInner response =
                 this.manager().inner().redis().listKeys(this.resourceGroupName(), this.name());

@@ -62,7 +62,7 @@ class ApplicationsImpl extends
     @Override
     protected List<ApplicationImpl> listChildResources() {
         List<ApplicationImpl> childResources = new ArrayList<>();
-        if (this.parent().inner().id() == null || this.parent().inner().autoStorage() == null) {
+        if (this.parent().inner().id() == null || this.parent().autoStorage() == null) {
             return childResources;
         }
 

@@ -11,9 +11,9 @@ package com.microsoft.azure.management.batch.implementation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters for an ApplicationOperations.UpdateApplication request.
+ * Parameters for an update application request.
  */
-public class UpdateApplicationParametersInner {
+public class ApplicationUpdateParametersInner {
     /**
      * A value indicating whether packages within the application may be
      * overwritten using the same version string.
@@ -47,9 +47,9 @@ public class UpdateApplicationParametersInner {
      * Set the allowUpdates value.
      *
      * @param allowUpdates the allowUpdates value to set
-     * @return the UpdateApplicationParametersInner object itself.
+     * @return the ApplicationUpdateParametersInner object itself.
      */
-    public UpdateApplicationParametersInner withAllowUpdates(Boolean allowUpdates) {
+    public ApplicationUpdateParametersInner withAllowUpdates(Boolean allowUpdates) {
         this.allowUpdates = allowUpdates;
         return this;
     }
@@ -67,9 +67,9 @@ public class UpdateApplicationParametersInner {
      * Set the defaultVersion value.
      *
      * @param defaultVersion the defaultVersion value to set
-     * @return the UpdateApplicationParametersInner object itself.
+     * @return the ApplicationUpdateParametersInner object itself.
      */
-    public UpdateApplicationParametersInner withDefaultVersion(String defaultVersion) {
+    public ApplicationUpdateParametersInner withDefaultVersion(String defaultVersion) {
         this.defaultVersion = defaultVersion;
         return this;
     }
@@ -87,9 +87,9 @@ public class UpdateApplicationParametersInner {
      * Set the displayName value.
      *
      * @param displayName the displayName value to set
-     * @return the UpdateApplicationParametersInner object itself.
+     * @return the ApplicationUpdateParametersInner object itself.
      */
-    public UpdateApplicationParametersInner withDisplayName(String displayName) {
+    public ApplicationUpdateParametersInner withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }

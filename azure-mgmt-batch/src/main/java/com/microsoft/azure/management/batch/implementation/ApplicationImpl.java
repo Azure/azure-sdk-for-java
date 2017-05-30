@@ -70,7 +70,7 @@ public class ApplicationImpl
     @Override
     public Observable<Application> createAsync() {
         final ApplicationImpl self = this;
-        AddApplicationParametersInner createParameter = new AddApplicationParametersInner();
+        ApplicationCreateParametersInner createParameter = new ApplicationCreateParametersInner();
         createParameter.withDisplayName(this.inner().displayName());
         createParameter.withAllowUpdates(this.inner().allowUpdates());
 
@@ -103,7 +103,7 @@ public class ApplicationImpl
     public Observable<Application> updateAsync() {
         final ApplicationImpl self = this;
 
-        UpdateApplicationParametersInner updateParameter = new UpdateApplicationParametersInner();
+        ApplicationUpdateParametersInner updateParameter = new ApplicationUpdateParametersInner();
         updateParameter.withDisplayName(this.inner().displayName());
         updateParameter.withAllowUpdates(this.inner().allowUpdates());
 

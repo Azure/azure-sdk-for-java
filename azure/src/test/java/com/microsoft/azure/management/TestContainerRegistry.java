@@ -11,6 +11,7 @@ import com.microsoft.azure.management.compute.ContainerServiceVMSizeTypes;
 import com.microsoft.azure.management.compute.ContainerServices;
 import com.microsoft.azure.management.containerregistry.Registries;
 import com.microsoft.azure.management.containerregistry.Registry;
+import com.microsoft.azure.management.containerregistry.implementation.RegistryListCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
@@ -37,6 +38,11 @@ public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
 
         Assert.assertTrue(registry.adminUserEnabled());
         Assert.assertEquals(registry.storageAccountName(), "crsa" + this.testId);
+
+        RegistryListCredentials registryCredentials = registry.listCredentials();
+        Assert.assertNotNull(registryCredentials);
+        Assert.assertEquals(newName, registryCredentials.username());
+        Assert.assertEquals(2, registryCredentials.passwords().size());
         return registry;
     }
 
