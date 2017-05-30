@@ -180,9 +180,19 @@ class CertificateCredentialImpl<T>
     }
 
     @Override
-    public CertificateCredentialImpl<T> withAuthFileToExport(String privateKeyPath, String privateKeyPassword, OutputStream outputStream) {
+    public CertificateCredentialImpl<T> withAuthFileToExport(OutputStream outputStream) {
         this.authFile = outputStream;
+        return this;
+    }
+
+    @Override
+    public CertificateCredentialImpl<T> withPrivateKeyFile(String privateKeyPath) {
         this.privateKeyPath = privateKeyPath;
+        return this;
+    }
+
+    @Override
+    public CertificateCredentialImpl<T> withPrivateKeyPassword(String privateKeyPassword) {
         this.privateKeyPassword = privateKeyPassword;
         return this;
     }

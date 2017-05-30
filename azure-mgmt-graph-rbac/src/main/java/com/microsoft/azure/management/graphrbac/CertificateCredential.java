@@ -39,7 +39,9 @@ public interface CertificateCredential extends
             DefinitionStages.WithCertificateType<ParentT>,
             DefinitionStages.WithPublicKey<ParentT>,
             DefinitionStages.WithSymmetricKey<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+            DefinitionStages.WithAttach<ParentT>,
+            DefinitionStages.WithAuthFileCertificate<ParentT>,
+            DefinitionStages.WithAuthFileCertificatePassword<ParentT> {
     }
 
     /**
@@ -130,12 +132,34 @@ public interface CertificateCredential extends
         interface WithAuthFile<ParentT> {
             /**
              * Export the information of this service principal into an auth file.
-             * @param privateKeyPath the path to the private key file
-             * @param privateKeyPassword the password for the private key file
              * @param outputStream the output stream to export the file
              * @return the next stage in credential definition
              */
-            WithAttach<ParentT> withAuthFileToExport(String privateKeyPath, String privateKeyPassword, OutputStream outputStream);
+            WithAuthFileCertificate<ParentT> withAuthFileToExport(OutputStream outputStream);
+        }
+
+        /**
+         * A credential definition stage allowing specifying the private key for exporting an auth file.
+         */
+        interface WithAuthFileCertificate<ParentT> {
+            /**
+             * Export the information of this service principal into an auth file.
+             * @param privateKeyPath the path to the private key file
+             * @return the next stage in credential definition
+             */
+            WithAuthFileCertificatePassword<ParentT> withPrivateKeyFile(String privateKeyPath);
+        }
+
+        /**
+         * A credential definition stage allowing specifying the password for the private key for exporting an auth file.
+         */
+        interface WithAuthFileCertificatePassword<ParentT> {
+            /**
+             * Export the information of this service principal into an auth file.
+             * @param privateKeyPassword the password for the private key
+             * @return the next stage in credential definition
+             */
+            WithAttach<ParentT> withPrivateKeyPassword(String privateKeyPassword);
         }
 
         /** The final stage of the credential definition.
@@ -162,7 +186,9 @@ public interface CertificateCredential extends
             UpdateDefinitionStages.WithCertificateType<ParentT>,
             UpdateDefinitionStages.WithPublicKey<ParentT>,
             UpdateDefinitionStages.WithSymmetricKey<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT> {
+            UpdateDefinitionStages.WithAttach<ParentT>,
+            UpdateDefinitionStages.WithAuthFileCertificate<ParentT>,
+            UpdateDefinitionStages.WithAuthFileCertificatePassword<ParentT> {
     }
 
     /**
@@ -253,12 +279,34 @@ public interface CertificateCredential extends
         interface WithAuthFile<ParentT> {
             /**
              * Export the information of this service principal into an auth file.
-             * @param privateKeyPath the path to the private key file
-             * @param privateKeyPassword the password for the private key file
              * @param outputStream the output stream to export the file
              * @return the next stage in credential definition
              */
-            WithAttach<ParentT> withAuthFileToExport(String privateKeyPath, String privateKeyPassword, OutputStream outputStream);
+            WithAuthFileCertificate<ParentT> withAuthFileToExport(OutputStream outputStream);
+        }
+
+        /**
+         * A credential definition stage allowing specifying the private key for exporting an auth file.
+         */
+        interface WithAuthFileCertificate<ParentT> {
+            /**
+             * Export the information of this service principal into an auth file.
+             * @param privateKeyPath the path to the private key file
+             * @return the next stage in credential definition
+             */
+            WithAuthFileCertificatePassword<ParentT> withPrivateKeyFile(String privateKeyPath);
+        }
+
+        /**
+         * A credential definition stage allowing specifying the password for the private key for exporting an auth file.
+         */
+        interface WithAuthFileCertificatePassword<ParentT> {
+            /**
+             * Export the information of this service principal into an auth file.
+             * @param privateKeyPassword the password for the private key
+             * @return the next stage in credential definition
+             */
+            WithAttach<ParentT> withPrivateKeyPassword(String privateKeyPassword);
         }
 
         /** The final stage of the credential definition.
