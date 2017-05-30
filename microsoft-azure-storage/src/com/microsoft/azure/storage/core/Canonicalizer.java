@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.StorageException;
@@ -44,6 +46,8 @@ abstract class Canonicalizer {
      * The expected length for the canonicalized string when SharedKeyFull is used to sign table requests.
      */
     private static final int ExpectedTableCanonicalizedStringLength = 200;
+
+    private static final Pattern CRLF  = Pattern.compile("\r\n", Pattern.LITERAL);
 
     /**
      * Add x-ms- prefixed headers in a fixed order.
@@ -85,7 +89,8 @@ abstract class Canonicalizer {
                 }
 
                 // Unfolding is simply removal of CRLF.
-                final String unfoldedValue = value.replace("\r\n", Constants.EMPTY_STRING);
+                final String unfoldedValue = CRLF.matcher(value)
+                    .replaceAll(Matcher.quoteReplacement(Constants.EMPTY_STRING));
 
                 // Append it to the canonicalized element string.
                 canonicalizedElement.append(delimiter);
@@ -251,6 +256,11 @@ abstract class Canonicalizer {
         final StringBuilder canonicalizedResource = new StringBuilder(resourcepath.toString());
 
         // query parameters
+        if (address.getQuery() == null  || !address.getQuery().contains("=")) {
+            //no query params.
+            return canonicalizedResource.toString();
+        }
+
         final Map<String, String[]> queryVariables = PathUtility.parseQueryString(address.getQuery());
 
         final Map<String, String> lowercasedKeyNameValue = new HashMap<String, String>();

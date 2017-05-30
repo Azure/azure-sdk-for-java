@@ -70,6 +70,20 @@ import com.microsoft.azure.storage.StorageExtendedErrorInformation;
  * RESERVED FOR INTERNAL USE. A class which provides utility methods.
  */
 public final class Utility {
+
+    /**
+     * Thread local for storing GMT date format.
+     */
+    private static ThreadLocal<DateFormat>
+        RFC1123_GMT_DATE_TIME_FORMATTER = new ThreadLocal<DateFormat>() {
+        @Override
+        protected DateFormat initialValue() {
+            final DateFormat formatter = new SimpleDateFormat(RFC1123_PATTERN, LOCALE_US);
+            formatter.setTimeZone(GMT_ZONE);
+            return formatter;
+        }
+    };
+
     /**
      * Stores a reference to the GMT time zone.
      */
@@ -116,13 +130,22 @@ public final class Utility {
      * Used to create Json parsers and generators.
      */
     private static final JsonFactory jsonFactory = new JsonFactory();
-    
+
     /**
-     * A factory to create SAXParser instances.
+     * Thread local for SAXParser.
      */
-    private static final ThreadLocal<SAXParserFactory> saxParserFactory = new ThreadLocal<SAXParserFactory>() {
-        @Override public SAXParserFactory initialValue() {
-            return SAXParserFactory.newInstance();
+    private static final ThreadLocal<SAXParser> saxParserThreadLocal = new ThreadLocal<SAXParser>() {
+        SAXParserFactory factory;
+        @Override public SAXParser initialValue() {
+            factory = SAXParserFactory.newInstance();
+            factory.setNamespaceAware(true);
+            try {
+                return factory.newSAXParser();
+            } catch (SAXException e) {
+                throw new RuntimeException("Unable to create SAXParser", e);
+            } catch (ParserConfigurationException e) {
+                throw new RuntimeException("Check parser configuration", e);
+            }
         }
     };
 
@@ -567,21 +590,18 @@ public final class Utility {
 
     /**
      * Returns the GTM date/time String for the specified value using the RFC1123 pattern.
-     * 
+     *
      * @param date
      *            A <code>Date</code> object that represents the date to convert to GMT date/time in the RFC1123
      *            pattern.
-     * 
+     *
      * @return A <code>String</code> that represents the GMT date/time for the specified value using the RFC1123
      *         pattern.
      */
     public static String getGMTTime(final Date date) {
-        final DateFormat formatter = new SimpleDateFormat(RFC1123_PATTERN, LOCALE_US);
-        formatter.setTimeZone(GMT_ZONE);
-        return formatter.format(date);
+        return RFC1123_GMT_DATE_TIME_FORMATTER.get().format(date);
     }
 
-    
     /**
      * Returns the UTC date/time String for the specified value using Java's version of the ISO8601 pattern,
      * which is limited to millisecond precision.
@@ -668,8 +688,9 @@ public final class Utility {
      * @throws SAXException
      */
     public static SAXParser getSAXParser() throws ParserConfigurationException, SAXException {
-        saxParserFactory.get().setNamespaceAware(true);
-        return saxParserFactory.get().newSAXParser();
+        SAXParser parser = saxParserThreadLocal.get();
+        parser.reset(); //reset to original config
+        return parser;
     }
     
     /**
@@ -811,9 +832,7 @@ public final class Utility {
      *             If the specified string is invalid.
      */
     public static Date parseRFC1123DateFromStringInGMT(final String value) throws ParseException {
-        final DateFormat format = new SimpleDateFormat(RFC1123_PATTERN, Utility.LOCALE_US);
-        format.setTimeZone(GMT_ZONE);
-        return format.parse(value);
+        return RFC1123_GMT_DATE_TIME_FORMATTER.get().parse(value);
     }
 
     /**
