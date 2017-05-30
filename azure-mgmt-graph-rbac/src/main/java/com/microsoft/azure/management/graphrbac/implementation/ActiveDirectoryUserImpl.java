@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 /**
  * Implementation for User and its parent interfaces.
  */
-@LangDefinition(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.Graph.RBAC.Fluent")
 class ActiveDirectoryUserImpl
         extends WrapperImpl<UserInner>
         implements

@@ -24,7 +24,7 @@ import rx.functions.Func2;
 /**
  * Implementation for ServicePrincipal and its parent interfaces.
  */
-@LangDefinition(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.Graph.RBAC.Fluent")
 class RoleAssignmentImpl
         extends CreatableImpl<RoleAssignment, RoleAssignmentInner, RoleAssignmentImpl>
         implements

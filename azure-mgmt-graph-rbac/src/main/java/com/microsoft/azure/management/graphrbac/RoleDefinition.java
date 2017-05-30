@@ -22,7 +22,7 @@ import java.util.Set;
 /**
  * An immutable client-side representation of an Azure AD role definition.
  */
-@Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
+@Fluent(ContainerName = "/Microsoft.Azure.Management.Graph.RBAC.Fluent")
 @Beta(SinceVersion.V1_1_0)
 public interface RoleDefinition extends
         HasInner<RoleDefinitionInner>,

@@ -25,7 +25,7 @@ import rx.Observable;
 /**
  * Entry point to role assignment management API.
  */
-@Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
+@Fluent(ContainerName = "/Microsoft.Azure.Management.Graph.RBAC.Fluent")
 @Beta(SinceVersion.V1_1_0)
 public interface RoleAssignments extends
         SupportsGettingById<RoleAssignment>,
