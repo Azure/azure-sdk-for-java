@@ -15,6 +15,9 @@ import com.microsoft.rest.ServiceFuture;
 import rx.Observable;
 import rx.functions.Func1;
 
+/**
+ * Implementation of VerificationIPFlow
+ */
 @LangDefinition
 public class VerificationIPFlowImpl implements VerificationIPFlow, VerificationIPFlow.Definition {
     private final NetworkWatcherImpl parent;

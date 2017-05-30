@@ -13,6 +13,9 @@ import com.microsoft.rest.ServiceFuture;
 import rx.Observable;
 import rx.functions.Func1;
 
+/**
+ * Implementation of NextHop
+ */
 @LangDefinition
 public class NextHopImpl implements NextHop, NextHop.Definition {
     private final NetworkWatcherImpl parent;
