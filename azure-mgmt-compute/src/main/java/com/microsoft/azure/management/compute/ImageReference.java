@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 /**
  * The image reference.
  */
-@LangDefinition
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.Compute.Fluent.Models")
 public class ImageReference extends WrapperImpl<ImageReferenceInner> {
     private String id;
     private String publisher;
