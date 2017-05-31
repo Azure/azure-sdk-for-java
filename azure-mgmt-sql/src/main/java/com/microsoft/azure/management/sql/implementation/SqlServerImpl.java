@@ -214,11 +214,6 @@ public class SqlServerImpl
     }
 
     @Override
-    public SqlServerManager manager() {
-        return this.myManager;
-    }
-
-    @Override
     public SqlServerImpl withNewDatabase(String databaseName) {
         this.databaseCreatableMap.remove(databaseName);
 
