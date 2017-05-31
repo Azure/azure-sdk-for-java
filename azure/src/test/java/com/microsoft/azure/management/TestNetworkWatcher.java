@@ -102,7 +102,13 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
                 .withRootUsername(userName)
                 .withRootPassword("Abcdef.123456")
                 .withSize(VirtualMachineSizeTypes.STANDARD_A1)
-                .withNewStorageAccount("sa" + TEST_ID);
+                .withNewStorageAccount("sa" + TEST_ID)
+                .defineNewExtension("packetCapture")
+                    .withPublisher("Microsoft.Azure.NetworkWatcher")
+                    .withType("NetworkWatcherAgentLinux")
+                    .withVersion("1.4")
+                    .withMinorVersionAutoUpgrade()
+                    .attach();
 
         String vmName = SdkContext.randomResourceName("vm", 15);
 

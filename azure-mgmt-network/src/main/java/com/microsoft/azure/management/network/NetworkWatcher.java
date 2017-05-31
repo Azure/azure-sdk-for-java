@@ -15,6 +15,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
+import rx.Observable;
+
+import java.util.List;
 
 /**
  * Entry point for Network Watcher API in Azure.
@@ -40,13 +43,23 @@ public interface NetworkWatcher extends
      * @param vmId ID of the target VM
      * @return the configured and effective security group rules on the specified VM
      */
-    SecurityGroupViewResult securityGroupViewResult(String vmId);
+    SecurityGroupViewResult getSecurityGroupViewResult(String vmId);
 
     /**
      * @param nsgId the name of the target resource group to get flow log status for
      * @return information on the configuration of flow log
      */
     FlowLogInformation getFlowLogStatus(String nsgId);
+
+    /**
+     * @return a representation of the deferred computation of this call, returning packet captures associated with this network watcher
+     */
+    Observable<PacketCapture> listPacketCapturesAsync();
+
+    /**
+     * @return packet captures associated with the network watcher
+     */
+    List<PacketCapture> listPacketCaptures();
 
     /**
      * First step specifying the parameters to get next hop for the VM.

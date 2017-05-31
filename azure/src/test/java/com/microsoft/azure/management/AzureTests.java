@@ -25,6 +25,7 @@ import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkWatcher;
 import com.microsoft.azure.management.network.NextHop;
 import com.microsoft.azure.management.network.NextHopType;
+import com.microsoft.azure.management.network.PacketCapture;
 import com.microsoft.azure.management.network.Protocol;
 import com.microsoft.azure.management.network.SecurityGroupViewResult;
 import com.microsoft.azure.management.network.Topology;
@@ -553,7 +554,7 @@ public class AzureTests extends TestBase {
         Assert.assertTrue(topology.resources().containsKey(virtualMachines[0].getPrimaryNetworkInterface().networkSecurityGroupId()));
         Assert.assertEquals(4, topology.resources().get(virtualMachines[0].primaryNetworkInterfaceId()).associations().size());
 
-        SecurityGroupViewResult sgViewResult = nw.securityGroupViewResult(virtualMachines[0].id());
+        SecurityGroupViewResult sgViewResult = nw.getSecurityGroupViewResult(virtualMachines[0].id());
         Assert.assertEquals(1, sgViewResult.networkInterfaces().size());
         Assert.assertEquals(virtualMachines[0].primaryNetworkInterfaceId(), sgViewResult.networkInterfaces().keySet().iterator().next());
 
@@ -581,6 +582,9 @@ public class AzureTests extends TestBase {
                 .execute();
         Assert.assertEquals(Access.ALLOW, verificationIPFlow.access());
         Assert.assertEquals("defaultSecurityRules/AllowInternetOutBound", verificationIPFlow.ruleName());
+
+        List<PacketCapture> packetCaptures = nw.listPacketCaptures();
+        Assert.assertEquals(0, packetCaptures.size());
 
         azure.virtualMachines().deleteById(virtualMachines[1].id());
         topology.refresh();
