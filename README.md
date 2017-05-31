@@ -5,4 +5,4 @@
 
 ## License
 MIT License
-https://github.com/Azure/azure-documentdb-rxjava/blob/master/LICENSE
+Copyright (c) 2017 Copyright (c) Microsoft Corporation
