@@ -1189,11 +1189,6 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public NetworkManager manager() {
-        return super.myManager;
-    }
-
-    @Override
     public String privateIPAddress() {
         ApplicationGatewayFrontend frontend = defaultPrivateFrontend();
         if (frontend == null) {

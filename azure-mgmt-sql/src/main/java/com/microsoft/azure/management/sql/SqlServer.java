@@ -8,7 +8,6 @@ package com.microsoft.azure.management.sql;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
@@ -28,8 +27,7 @@ import java.util.Map;
 public interface SqlServer extends
         GroupableResource<SqlServerManager, ServerInner>,
         Refreshable<SqlServer>,
-        Updatable<SqlServer.Update>,
-        HasManager<SqlServerManager> {
+        Updatable<SqlServer.Update> {
 
     /**
      * @return fully qualified name of the SQL Server
