@@ -22,7 +22,7 @@ import rx.Observable;
 /**
  * Entry point to role definition management API.
  */
-@Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
+@Fluent(ContainerName = "/Microsoft.Azure.Management.Graph.RBAC.Fluent")
 @Beta(SinceVersion.V1_1_0)
 public interface RoleDefinitions extends
         SupportsGettingById<RoleDefinition>,

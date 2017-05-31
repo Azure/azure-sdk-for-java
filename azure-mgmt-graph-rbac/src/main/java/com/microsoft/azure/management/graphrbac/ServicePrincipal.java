@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * An immutable client-side representation of an Azure AD service principal.
  */
-@Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
+@Fluent(ContainerName = "/Microsoft.Azure.Management.Graph.RBAC.Fluent")
 @Beta
 public interface ServicePrincipal extends
         Indexable,

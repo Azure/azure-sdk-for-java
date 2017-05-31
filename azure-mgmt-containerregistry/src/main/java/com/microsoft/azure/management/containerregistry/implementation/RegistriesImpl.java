@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.containerregistry.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.containerregistry.PasswordName;
 import com.microsoft.azure.management.containerregistry.Registries;
@@ -23,6 +24,7 @@ import java.util.List;
 /**
  * Implementation for Registries.
  */
+@LangDefinition
 public class RegistriesImpl
         extends
         GroupableResourcesImpl<

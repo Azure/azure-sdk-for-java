@@ -25,7 +25,7 @@ import rx.functions.Func1;
 /**
  * The implementation of ServicePrincipals and its parent interfaces.
  */
-@LangDefinition(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.Graph.RBAC.Fluent")
 class ServicePrincipalsImpl
         extends CreatableWrappersImpl<
             ServicePrincipal,
