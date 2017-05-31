@@ -9,12 +9,12 @@ import com.microsoft.azure.management.documentdb.*;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import org.junit.Assert;
 
-public class TestDocumentDB extends TestTemplate<DatabaseAccount, DatabaseAccounts> {
+public class TestDocumentDB extends TestTemplate<DocumentDBAccount, DocumentDBAccounts> {
 
     @Override
-    public DatabaseAccount createResource(DatabaseAccounts resources) throws Exception {
+    public DocumentDBAccount createResource(DocumentDBAccounts resources) throws Exception {
         final String newName = "docDB" + this.testId;
-        DatabaseAccount databaseAccount = resources.define(newName)
+        DocumentDBAccount databaseAccount = resources.define(newName)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup()
                 .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
@@ -32,7 +32,7 @@ public class TestDocumentDB extends TestTemplate<DatabaseAccount, DatabaseAccoun
     }
 
     @Override
-    public DatabaseAccount updateResource(DatabaseAccount resource) throws Exception {
+    public DocumentDBAccount updateResource(DocumentDBAccount resource) throws Exception {
         // Modify existing container service
         resource =  resource.update()
                 .withReadReplication(Region.ASIA_SOUTHEAST)
@@ -54,7 +54,7 @@ public class TestDocumentDB extends TestTemplate<DatabaseAccount, DatabaseAccoun
     }
 
     @Override
-    public void print(DatabaseAccount resource) {
+    public void print(DocumentDBAccount resource) {
         System.out.println(new StringBuilder().append("Regsitry: ").append(resource.id())
                 .append("Name: ").append(resource.name())
                 .append("\n\tResource group: ").append(resource.resourceGroupName())

@@ -8,8 +8,8 @@ package com.microsoft.azure.management.documentdb.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.documentdb.DatabaseAccount;
-import com.microsoft.azure.management.documentdb.DatabaseAccounts;
+import com.microsoft.azure.management.documentdb.DocumentDBAccount;
+import com.microsoft.azure.management.documentdb.DocumentDBAccounts;
 import com.microsoft.azure.management.documentdb.Location;
 import com.microsoft.azure.management.documentdb.KeyKind;
 import com.microsoft.azure.management.resources.ResourceGroup;
@@ -26,26 +26,26 @@ import java.util.List;
  * Implementation for Registries.
  */
 @LangDefinition
-class DatabaseAccountsImpl
+class DocumentDBAccountsImpl
         extends
         GroupableResourcesImpl<
-                DatabaseAccount,
-                DatabaseAccountImpl,
+                DocumentDBAccount,
+                DocumentDBAccountImpl,
                 DatabaseAccountInner,
                 DatabaseAccountsInner,
                 DocumentDBManager>
-        implements DatabaseAccounts {
+        implements DocumentDBAccounts {
 
-    DatabaseAccountsImpl(final DocumentDBManager manager) {
+    DocumentDBAccountsImpl(final DocumentDBManager manager) {
         super(manager.inner().databaseAccounts(), manager);
     }
 
     @Override
-    public PagedList<DatabaseAccount> list() {
-        final DatabaseAccountsImpl self = this;
-        return new GroupPagedList<DatabaseAccount>(this.manager().resourceManager().resourceGroups().list()) {
+    public PagedList<DocumentDBAccount> list() {
+        final DocumentDBAccountsImpl self = this;
+        return new GroupPagedList<DocumentDBAccount>(this.manager().resourceManager().resourceGroups().list()) {
             @Override
-            public List<DatabaseAccount> listNextGroup(String resourceGroupName) {
+            public List<DocumentDBAccount> listNextGroup(String resourceGroupName) {
                 return wrapList(self.inner().listByResourceGroup(resourceGroupName));
 
             }
@@ -53,24 +53,24 @@ class DatabaseAccountsImpl
     }
 
     @Override
-    public Observable<DatabaseAccount> listAsync() {
+    public Observable<DocumentDBAccount> listAsync() {
         return this.manager().resourceManager().resourceGroups().listAsync()
-                .flatMap(new Func1<ResourceGroup, Observable<DatabaseAccount>>() {
+                .flatMap(new Func1<ResourceGroup, Observable<DocumentDBAccount>>() {
                     @Override
-                    public Observable<DatabaseAccount> call(ResourceGroup resourceGroup) {
+                    public Observable<DocumentDBAccount> call(ResourceGroup resourceGroup) {
                         return wrapPageAsync(inner().listByResourceGroupAsync(resourceGroup.name()));
                     }
                 });
     }
 
     @Override
-    public Observable<DatabaseAccount> listByResourceGroupAsync(String resourceGroupName) {
+    public Observable<DocumentDBAccount> listByResourceGroupAsync(String resourceGroupName) {
         return wrapPageAsync(this.inner().listByResourceGroupAsync(resourceGroupName));
     }
 
 
     @Override
-    public PagedList<DatabaseAccount> listByResourceGroup(String groupName) {
+    public PagedList<DocumentDBAccount> listByResourceGroup(String groupName) {
         return wrapList(this.inner().listByResourceGroup(groupName));
     }
 
@@ -80,7 +80,7 @@ class DatabaseAccountsImpl
     }
 
     @Override
-    public DatabaseAccountImpl define(String name) {
+    public DocumentDBAccountImpl define(String name) {
         return wrapModel(name);
     }
 
@@ -94,19 +94,19 @@ class DatabaseAccountsImpl
      **************************************************************/
 
     @Override
-    protected DatabaseAccountImpl wrapModel(String name) {
-        return new DatabaseAccountImpl(name,
+    protected DocumentDBAccountImpl wrapModel(String name) {
+        return new DocumentDBAccountImpl(name,
                 new DatabaseAccountInner(),
                 this.manager());
     }
 
     @Override
-    protected DatabaseAccountImpl wrapModel(DatabaseAccountInner containerServiceInner) {
+    protected DocumentDBAccountImpl wrapModel(DatabaseAccountInner containerServiceInner) {
         if (containerServiceInner == null) {
             return null;
         }
 
-        return new DatabaseAccountImpl(containerServiceInner.name(),
+        return new DocumentDBAccountImpl(containerServiceInner.name(),
                 containerServiceInner,
                 this.manager());
     }
