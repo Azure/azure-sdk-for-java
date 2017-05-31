@@ -1,4 +1,6 @@
 language: java
+sudo: false # faster builds
+
 matrix:
   include:
   - os: linux
@@ -12,7 +14,6 @@ script:
 - mvn test -P fast -DargLine="-DACCOUNT_HOST=$ACCOUNT_HOST -DACCOUNT_KEY=$ACCOUNT_KEY" cobertura:cobertura
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-
 
 cache:
   directories:
