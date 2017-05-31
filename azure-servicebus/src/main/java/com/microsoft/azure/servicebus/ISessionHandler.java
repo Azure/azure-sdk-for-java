@@ -8,8 +8,8 @@ public interface ISessionHandler
 	
 	/**
 	 * Called just before a session is closed by the session pump
-	 * @param session
-	 * @return
+	 * @param session session being closed
+	 * @return a future that executes the action
 	 */
 	public CompletableFuture<Void> OnCloseSessionAsync(IMessageSession session);
 	

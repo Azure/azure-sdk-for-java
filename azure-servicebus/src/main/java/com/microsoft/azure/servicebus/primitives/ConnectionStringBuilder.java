@@ -124,7 +124,7 @@ public class ConnectionStringBuilder
 	/**
 	 * Build a connection string
 	 * @param namespaceName Namespace name (dns suffix - ex: .servicebus.windows.net is not required)
-	 * @param entityPath Entity path. For queue or topic, use name. For subscription use <topicName>/subscriptions/<subscriptionName>.
+	 * @param entityPath Entity path. For queue or topic, use name. For subscription use &lt;topicName&gt;/subscriptions/&lt;subscriptionName&gt;
 	 * @param sharedAccessKeyName Shared Access Key name
 	 * @param sharedAccessKey Shared Access Key
 	 */
@@ -140,22 +140,22 @@ public class ConnectionStringBuilder
 	/**
      * Build a connection string
      * @param namespaceName Namespace name (dns suffix - ex: .servicebus.windows.net is not required)
-     * @param entityPath Entity path. For queue or topic, use name. For subscription use <topicName>/subscriptions/<subscriptionName>.
+     * @param entityPath Entity path. For queue or topic, use name. For subscription use &lt;topicName&gt;/subscriptions/&lt;subscriptionName&gt;
      * @param sharedAccessSingature Shared Access Signature already generated
      */
 	public ConnectionStringBuilder(
             final String namespaceName,
             final String entityPath,
-            final String sharedAccessSingatureToken)
+            final String sharedAccessSingature)
     {
-        this(namespaceName, entityPath, sharedAccessSingatureToken, MessagingFactory.DefaultOperationTimeout, RetryPolicy.getDefault());
+        this(namespaceName, entityPath, sharedAccessSingature, MessagingFactory.DefaultOperationTimeout, RetryPolicy.getDefault());
     }
 	
 
 	/**
 	 * Build a connection string
 	 * @param endpointAddress namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
-	 * @param entityPath Entity path. For queue or topic, use name. For subscription use <topicName>/subscriptions/<subscriptionName>.
+	 * @param entityPath Entity path. For queue or topic, use name. For subscription use &lt;topicName&gt;/subscriptions/&lt;subscriptionName&gt;
 	 * @param sharedAccessKeyName Shared Access Key name
 	 * @param sharedAccessKey Shared Access Key
 	 */
@@ -171,7 +171,7 @@ public class ConnectionStringBuilder
 	/**
 	 * Build a connection string
 	 * @param endpointAddress namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
-	 * @param entityPath Entity path. For queue or topic, use name. For subscription use <topicName>/subscriptions/<subscriptionName>.
+	 * @param entityPath Entity path. For queue or topic, use name. For subscription use &lt;topicName&gt;/subscriptions/&lt;subscriptionName&gt;
 	 * @param sharedAccessSingature Shared Access Signature already generated
 	 */
 	public ConnectionStringBuilder(

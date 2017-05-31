@@ -29,9 +29,8 @@ final public class Timer
 	{
 	}
 
-	/**
-	 * @param runFrequency implemented only for TimeUnit granularity - Seconds
-	 */
+	
+	// runFrequency implemented only for TimeUnit granularity - Seconds	 
 	public static ScheduledFuture<?> schedule(Runnable runnable, Duration runFrequency, TimerType timerType)
 	{
 		switch (timerType)

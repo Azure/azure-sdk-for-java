@@ -19,8 +19,8 @@ public final class MessageHandlerOptions
 	
 	/**
 	 * 
-	 * @param maxConcurrentCalls
-	 * @param autoComplete
+	 * @param maxConcurrentCalls maximum number of concurrent calls to the onMessage handler
+	 * @param autoComplete true if the pump should automatically complete message after onMessageHandler action is completed. false otherwise.
 	 * @param maxAutoRenewDuration - Maximum duration within which the client keeps renewing the message lock if the processing of the message is not completed by the handler.
 	 */
 	public MessageHandlerOptions(int maxConcurrentCalls, boolean autoComplete, Duration maxAutoRenewDuration)

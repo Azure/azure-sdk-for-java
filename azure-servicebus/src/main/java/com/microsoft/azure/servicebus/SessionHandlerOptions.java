@@ -20,8 +20,8 @@ public final class SessionHandlerOptions {
 	
 	/**
 	 * 
-	 * @param maxConcurrentSessions
-	 * @param autoComplete
+	 * @param maxConcurrentSessions maximum number of concurrent sessions accepted by the session pump
+	 * @param autoComplete true if the pump should automatically complete message after onMessageHandler action is completed. false otherwise.
 	 * @param maxAutoRenewDuration - Maximum duration within which the client keeps renewing the session lock if the processing of the session messages or onclose action
 	 * is not completed by the handler.
 	 */
@@ -32,10 +32,11 @@ public final class SessionHandlerOptions {
 	
 	/**
 	 * 
-	 * @param maxConcurrentSessions
-	 * @param maxConcurrentCallsPerSession
-	 * @param autoComplete
-	 * @param maxAutoRenewDuration
+	 * @param maxConcurrentSessions maximum number of concurrent sessions accepted by the session pump
+	 * @param maxConcurrentCallsPerSession maximum number of concurrent calls to the onMessage handler
+	 * @param autoComplete true if the pump should automatically complete message after onMessageHandler action is completed. false otherwise
+	 * @param maxAutoRenewDuration Maximum duration within which the client keeps renewing the session lock if the processing of the session messages or onclose action
+     * is not completed by the handler.
 	 */
 	public SessionHandlerOptions(int maxConcurrentSessions, int maxConcurrentCallsPerSession, boolean autoComplete, Duration maxAutoRenewDuration)
 	{
