@@ -11,7 +11,7 @@ import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
-import com.microsoft.azure.management.documentdb.DatabaseAccounts;
+import com.microsoft.azure.management.documentdb.DocumentDBAccounts;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
@@ -24,7 +24,7 @@ import com.microsoft.rest.RestClient;
  */
 @Beta(SinceVersion.V1_1_0)
 public final class DocumentDBManager extends Manager<DocumentDBManager, DocumentDBImpl> {
-    private DatabaseAccountsImpl databaseAccounts;
+    private DocumentDBAccountsImpl databaseAccounts;
     /**
      * Get a Configurable instance that can be used to create ComputeManager with optional configuration.
      *
@@ -96,9 +96,9 @@ public final class DocumentDBManager extends Manager<DocumentDBManager, Document
     /**
      * @return the document db database account resource management API entry point
      */
-    public DatabaseAccounts databaseAccounts() {
+    public DocumentDBAccounts databaseAccounts() {
         if (databaseAccounts == null) {
-            databaseAccounts = new DatabaseAccountsImpl(this);
+            databaseAccounts = new DocumentDBAccountsImpl(this);
         }
         return databaseAccounts;
     }
