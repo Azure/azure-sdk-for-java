@@ -96,8 +96,10 @@ class ServicePrincipalImpl
 
     @Override
     public Observable<ServicePrincipal> createResourceAsync() {
-        ActiveDirectoryApplication application = (ActiveDirectoryApplication) ((Object) super.createdModel(applicationCreatable.key()));
-        createParameters.withAppId(application.applicationId());
+        if (applicationCreatable != null) {
+            ActiveDirectoryApplication application = (ActiveDirectoryApplication) ((Object) super.createdModel(applicationCreatable.key()));
+            createParameters.withAppId(application.applicationId());
+        }
         Observable<ServicePrincipal> sp = manager.inner().servicePrincipals().createAsync(createParameters)
                 .map(innerToFluentMap(this))
                 .flatMap(new Func1<ServicePrincipal, Observable<ServicePrincipal>>() {
