@@ -9,6 +9,7 @@ package com.microsoft.azure.management.compute.implementation;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.MissingNode;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.DiskVolumeEncryptionMonitor;
 import com.microsoft.azure.management.compute.EncryptionStatus;
 import com.microsoft.azure.management.compute.InstanceViewStatus;
@@ -25,6 +26,7 @@ import java.util.List;
 /**
  * The implementation for DiskVolumeEncryptionStatus for Linux virtual machine.
  */
+@LangDefinition
 class LinuxDiskVolumeEncryptionMonitorImpl implements DiskVolumeEncryptionMonitor {
     private final String rgName;
     private final String vmName;
