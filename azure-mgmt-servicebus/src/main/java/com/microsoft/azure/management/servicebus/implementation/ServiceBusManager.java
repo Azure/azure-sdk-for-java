@@ -15,13 +15,13 @@ import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Az
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
 import com.microsoft.azure.management.servicebus.ServiceBusNamespaces;
-import com.microsoft.azure.management.servicebus.ServiceBusOperations;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 
 /**
  * Entry point to Azure ServiceBus management.
  */
+@Beta
 public final class ServiceBusManager extends Manager<ServiceBusManager, ServiceBusManagementClientImpl> {
     // Collections
     private ServiceBusNamespacesImpl namespaces;
@@ -109,11 +109,12 @@ public final class ServiceBusManager extends Manager<ServiceBusManager, ServiceB
     /**
      * @return the Service Bus operations management API entry point
      */
-    @Beta(Beta.SinceVersion.V1_1_0)
-    public ServiceBusOperations operations() {
-        if (operations == null) {
-            operations = new ServiceBusOperationsImpl(this.inner().operations(), this);
-        }
-        return operations;
-    }
+/// TODO: To be revisited in the future
+//    @Beta(Beta.SinceVersion.V1_1_0)
+//    public ServiceBusOperations operations() {
+//        if (operations == null) {
+//            operations = new ServiceBusOperationsImpl(this.inner().operations(), this);
+//        }
+//        return operations;
+//    }
 }

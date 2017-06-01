@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.DiskEncryptionSettings;
 import com.microsoft.azure.management.compute.DiskVolumeEncryptionMonitor;
 import com.microsoft.azure.management.compute.EncryptionStatus;
@@ -21,6 +22,7 @@ import java.util.LinkedHashMap;
 /**
  * The implementation for DiskVolumeEncryptionStatus for Windows virtual machine.
  */
+@LangDefinition
 class WindowsVolumeEncryptionMonitorImpl implements DiskVolumeEncryptionMonitor {
     private final String rgName;
     private final String vmName;
