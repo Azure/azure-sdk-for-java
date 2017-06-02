@@ -111,7 +111,7 @@ public final class ManageLinuxWebAppStorageAccountConnection {
 
             System.out.println("Deploying azure-samples-blob-traverser.war to " + app1Name + " through FTP...");
 
-            Utils.uploadFileToFtp(app1.getPublishingProfile(), "azure-samples-blob-traverser.war", ManageLinuxWebAppStorageAccountConnection.class.getResourceAsStream("/azure-samples-blob-traverser.war"));
+            Utils.uploadFileToWebApp(app1.getPublishingProfile(), "azure-samples-blob-traverser.war", ManageLinuxWebAppStorageAccountConnection.class.getResourceAsStream("/azure-samples-blob-traverser.war"));
 
             System.out.println("Deployment azure-samples-blob-traverser.war to web app " + app1.name() + " completed");
             Utils.print(app1);

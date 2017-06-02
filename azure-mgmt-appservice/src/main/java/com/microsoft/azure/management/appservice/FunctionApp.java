@@ -42,8 +42,14 @@ public interface FunctionApp extends
      */
     Observable<String> getMasterKeyAsync();
 
+    /**
+     * Syncs the triggers on the function app.
+     */
     void syncTriggers();
 
+    /**
+     * Syncs the triggers on the function app.
+     */
     Completable syncTriggersAsync();
 
     /**************************************************************

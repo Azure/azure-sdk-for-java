@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.AppServicePlan;
 import com.microsoft.azure.management.appservice.FunctionApp;
@@ -192,7 +193,17 @@ class FunctionAppImpl
 
     @Override
     public Completable syncTriggersAsync() {
-        return manager().inner().webApps().syncFunctionTriggersAsync(resourceGroupName(), name()).toCompletable();
+        return manager().inner().webApps().syncFunctionTriggersAsync(resourceGroupName(), name()).toCompletable()
+                .onErrorResumeNext(new Func1<Throwable, Completable>() {
+                    @Override
+                    public Completable call(Throwable throwable) {
+                        if (throwable instanceof CloudException && ((CloudException) throwable).response().code() == 200) {
+                            return Completable.complete();
+                        } else {
+                            return Completable.error(throwable);
+                        }
+                    }
+                });
     }
 
     @Override
