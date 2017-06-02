@@ -76,12 +76,12 @@ class RoleAssignmentsImpl
 
     @Override
     public Observable<RoleAssignment> listByScopeAsync(String scope) {
-        return wrapPageAsync(manager().roleInner().roleAssignments().listAsync());
+        return wrapPageAsync(manager().roleInner().roleAssignments().listForScopeAsync(scope));
     }
 
     @Override
     public PagedList<RoleAssignment> listByScope(String scope) {
-        return wrapList(manager().roleInner().roleAssignments().list());
+        return wrapList(manager().roleInner().roleAssignments().listForScope(scope));
     }
 
     @Override

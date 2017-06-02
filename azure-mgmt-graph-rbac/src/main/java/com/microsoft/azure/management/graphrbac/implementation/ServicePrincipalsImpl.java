@@ -55,7 +55,7 @@ class ServicePrincipalsImpl
 
     @Override
     public PagedList<ServicePrincipal> list() {
-        return wrapList(this.innerCollection.list());
+        return converter.convert(this.inner().list());
     }
 
     @Override

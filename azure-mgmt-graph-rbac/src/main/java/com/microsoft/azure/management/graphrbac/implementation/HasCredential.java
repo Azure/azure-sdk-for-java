@@ -10,7 +10,7 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 /**
  * An interface representing a model that can attach a credential.
  */
-@Fluent
+@Fluent(ContainerName = "/Microsoft.Azure.Management.Graph.RBAC.Fluent")
 interface HasCredential<T extends HasCredential<T>> {
     /**
      * Attach a credential to this model.
