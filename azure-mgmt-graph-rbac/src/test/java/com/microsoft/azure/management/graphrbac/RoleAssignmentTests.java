@@ -6,30 +6,30 @@
 
 package com.microsoft.azure.management.graphrbac;
 
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class RoleAssignmentTests extends GraphRbacManagementTestBase {
-    @BeforeClass
-    public static void setup() throws Exception {
-        createClients();
-    }
-
-    @AfterClass
-    public static void cleanup() throws Exception {
-    }
-
+public class RoleAssignmentTests extends GraphRbacManagementTest {
     @Test
-    @Ignore("Need a specific subscription")
     public void canCRUDRoleAssignment() throws Exception {
+        String roleAssignmentName = SdkContext.randomUuid();
+        String spName = SdkContext.randomResourceName("sp", 20);
+
+        ServicePrincipal sp = graphRbacManager.servicePrincipals().define(spName)
+                .withNewApplication("http://" + spName)
+                .create();
+
+        SdkContext.sleep(15000);
+
         RoleAssignment roleAssignment = graphRbacManager.roleAssignments()
-                .define("myassignment")
-                .forServicePrincipal("anotherapp12")
+                .define(roleAssignmentName)
+                .forServicePrincipal(sp)
                 .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
-                .withSubscriptionScope("ec0aa5f7-9e78-40c9-85cd-535c6305b380")
+                .withSubscriptionScope(resourceManager.subscriptionId())
                 .create();
 
         Assert.assertNotNull(roleAssignment);
