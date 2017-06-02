@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.graphrbac;
 
+import com.google.common.io.ByteStreams;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.joda.time.Duration;
 import org.junit.AfterClass;
@@ -17,18 +18,8 @@ import org.junit.Test;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class ApplicationsTests extends GraphRbacManagementTestBase {
-    @BeforeClass
-    public static void setup() throws Exception {
-        createClients();
-    }
-
-    @AfterClass
-    public static void cleanup() throws Exception {
-    }
-
+public class ApplicationsTests extends GraphRbacManagementTest {
     @Test
-    @Ignore("Need to login as user to run")
     public void canCRUDApplication() throws Exception {
         String name = SdkContext.randomResourceName("javasdkapp", 20);
 
@@ -42,7 +33,7 @@ public class ApplicationsTests extends GraphRbacManagementTestBase {
                         .attach()
                     .defineCertificateCredential("cert")
                         .withAsymmetricX509Certificate()
-                        .withPublicKey(Files.readAllBytes(Paths.get("/Users/jianghlu/Documents/code/certs/myserver.crt")))
+                        .withPublicKey(ByteStreams.toByteArray(this.getClass().getResourceAsStream("/myTest.cer")))
                         .withDuration(Duration.standardDays(100))
                         .attach()
                     .create();
