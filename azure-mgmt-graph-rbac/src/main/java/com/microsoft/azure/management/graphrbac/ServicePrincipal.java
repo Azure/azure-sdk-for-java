@@ -15,6 +15,7 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
+import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
@@ -177,5 +178,67 @@ public interface ServicePrincipal extends
                 WithCredential,
                 WithRoleAssignment {
         }
+    }
+
+    interface UpdateStages{
+        /**
+         * A service principal definition allowing credentials to be specified.
+         */
+        interface WithCredential {
+            /**
+             * Starts the definition of a certificate credential.
+             * @param name the descriptive name of the certificate credential
+             * @return the first stage in certificate credential definition
+             */
+            @Beta(SinceVersion.V1_1_0)
+            CertificateCredential.DefinitionStages.Blank<Update> defineCertificateCredential(String name);
+
+            /**
+             * Starts the definition of a password credential.
+             * @param name the descriptive name of the password credential
+             * @return the first stage in password credential definition
+             */
+            @Beta(SinceVersion.V1_1_0)
+            PasswordCredential.DefinitionStages.Blank<Update> definePasswordCredential(String name);
+        }
+
+        /**
+         * A service principal definition allowing role assignments to be added.
+         */
+        interface WithRoleAssignment {
+            /**
+             * Assigns a new role to the service principal.
+             * @param role the role to assign to the service principal
+             * @param scope the scope the service principal can access
+             * @return the next stage of the service principal definition
+             */
+            @Beta(SinceVersion.V1_1_0)
+            Update withNewRole(BuiltInRole role, String scope);
+
+            /**
+             * Assigns a new role to the service principal.
+             * @param role the role to assign to the service principal
+             * @param subscriptionId the subscription the service principal can access
+             * @return the next stage of the service principal definition
+             */
+            @Beta(SinceVersion.V1_1_0)
+            Update withNewRoleInSubscription(BuiltInRole role, String subscriptionId);
+
+            /**
+             * Assigns a new role to the service principal.
+             * @param role the role to assign to the service principal
+             * @param resourceGroup the resource group the service principal can access
+             * @return the next stage of the service principal definition
+             */
+            @Beta(SinceVersion.V1_1_0)
+            Update withNewRoleInResourceGroup(BuiltInRole role, ResourceGroup resourceGroup);
+        }
+    }
+
+    interface Update extends
+            Appliable<ServicePrincipal>,
+            ServicePrincipal.UpdateStages.WithCredential,
+            ServicePrincipal.UpdateStages.WithRoleAssignment {
+
     }
 }
