@@ -51,7 +51,7 @@ You can easily create a service principal and grant it access privileges for a g
 1. Install Azure CLI (>=2.0) by following the [README](https://github.com/Azure/azure-cli/blob/master/README.md).
 1. Login as a user by running command `az login`. If you are not in Azure public cloud, use `az cloud set` command to switch to your cloud before login.
 1. Select the subscription you want your service principal to have access to by running `az account set --subscription <subscription name>`. You can view your subscriptions by `az account list --out jsonc`.
-1. Run the following command to create a service principal authentication file.
+1. Run the following command to create an authentication file.
 
 ```
 curl -L https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/tools/authgen.py | python > my.azureauth
