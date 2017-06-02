@@ -22,8 +22,10 @@ import java.util.List;
 
 /**
  * Azure Users, Groups and Roles sample.
- * - Get user by email
  * - List users
+ * - Get user by email
+ * - Assign role to AD user
+ * - Revoke role from AD user
  * - Get role by scope and role name
  * - Create Service Principal
  * - Assign role to Service Principal
@@ -39,15 +41,10 @@ public final class ManageUsersGroupsAndRoles {
      */
     public static boolean runSample(Azure.Authenticated authenticated, String defaultSubscription) {
         final String spName = Utils.createRandomName("sp");
-        final String raName = SdkContext.randomUuid();
+        final String raName1 = SdkContext.randomUuid();
+        final String raName2 = SdkContext.randomUuid();
         String spId = "";
         try {
-            // ============================================================
-            // Get user by email
-
-            ActiveDirectoryUser user = authenticated.activeDirectoryUsers().getByName("admin@azuresdkteam.onmicrosoft.com");
-            Utils.print(user);
-
             // ============================================================
             // List users
 
@@ -56,6 +53,30 @@ public final class ManageUsersGroupsAndRoles {
             for (ActiveDirectoryUser adUser : users) {
                 Utils.print(adUser);
             }
+
+            // ============================================================
+            // Get user by email
+
+            ActiveDirectoryUser user = authenticated.activeDirectoryUsers().getByName("admin@azuresdkteam.onmicrosoft.com");
+            Utils.print(user);
+
+            // ============================================================
+            // Assign role to AD user
+
+            RoleAssignment roleAssignment1 = authenticated.roleAssignments()
+                    .define(raName1)
+                    .forUser(user)
+                    .withBuiltInRole(BuiltInRole.READER)
+                    .withSubscriptionScope(defaultSubscription)
+                    .create();
+            System.out.println("Created Role Assignment:");
+            Utils.print(roleAssignment1);
+
+            // ============================================================
+            // Revoke role from AD user
+
+            authenticated.roleAssignments().deleteById(roleAssignment1.id());
+            System.out.println("Revoked Role Assignment: " + roleAssignment1.id());
 
             // ============================================================
             // Get role by scope and role name
@@ -70,23 +91,23 @@ public final class ManageUsersGroupsAndRoles {
             ServicePrincipal sp = authenticated.servicePrincipals().define(spName)
                     .withNewApplication("http://" + spName)
                     .create();
-            // wait till service principal created
-            SdkContext.sleep(10000);
+            // wait till service principal created and propagated
+            SdkContext.sleep(15000);
             System.out.println("Created Service Principal:");
-//            Utils.print(sp);
+            Utils.print(sp);
             spId = sp.id();
 
             // ============================================================
             // Assign role to Service Principal
 
-            RoleAssignment roleAssignment = authenticated.roleAssignments()
-                    .define(raName)
+            RoleAssignment roleAssignment2 = authenticated.roleAssignments()
+                    .define(raName2)
                     .forServicePrincipal(sp)
                     .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
                     .withSubscriptionScope(defaultSubscription)
                     .create();
             System.out.println("Created Role Assignment:");
-            Utils.print(roleAssignment);
+            Utils.print(roleAssignment2);
 
             // ============================================================
             // List Active Directory groups

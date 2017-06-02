@@ -48,6 +48,7 @@ import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroup;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryUser;
 import com.microsoft.azure.management.graphrbac.RoleAssignment;
 import com.microsoft.azure.management.graphrbac.RoleDefinition;
+import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.graphrbac.implementation.PermissionInner;
 import com.microsoft.azure.management.keyvault.AccessPolicy;
 import com.microsoft.azure.management.keyvault.Vault;
@@ -1792,6 +1793,25 @@ public final class Utils {
                 .append("\n\tMail: ").append(group.mail())
                 .append("\n\tSecurity Enabled: ").append(group.securityEnabled());
 
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print Service Principal info.
+     *
+     * @param servicePrincipal service principal
+     */
+    public static void print(ServicePrincipal servicePrincipal) {
+        StringBuilder builder = new StringBuilder()
+                .append("Service Principal: ").append(servicePrincipal.id())
+                .append("\n\tName: ").append(servicePrincipal.name())
+                .append("\n\tApplication Id: ").append(servicePrincipal.applicationId());
+
+        List<String> names = servicePrincipal.servicePrincipalNames();
+        builder.append("\n\tNames: ").append(names.size());
+        for (String name : names) {
+            builder.append("\n\t\tName: ").append(name);
+        }
         System.out.println(builder.toString());
     }
 }
