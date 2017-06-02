@@ -7,24 +7,19 @@
 package com.microsoft.azure.management.documentdb.samples;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.documentdb.*;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.documentdb.DatabaseAccountKind;
 import com.microsoft.azure.management.documentdb.DocumentDBAccount;
-import com.microsoft.azure.management.documentdb.implementation.DatabaseAccountListConnectionStringsResult;
-import com.microsoft.azure.management.documentdb.implementation.DatabaseAccountListKeysResult;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
+import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 
 import java.io.File;
 
 /**
  * Azure DocumentDB sample for high availability -
- *  - Create a document db configured with a single read location
- *  - Get the credentials for the document db
- *  - Update the document db with additional read locations
- *  - add collection to the docuemnt db
+ *  - Create a documentdb configured with IP range filter
  *  - Delete the document db.
  */
 public final class DocumentDBWithIPRange {
@@ -43,11 +38,9 @@ public final class DocumentDBWithIPRange {
 
         try {
             //============================================================
-            // Create a key vault with empty access policy
+            // Create a documentdb
 
-            System.out.println("Creating a docuemnt db...");
-            // Connect to document db and add a collection
-
+            System.out.println("Creating a documentdb...");
             DocumentDBAccount documentDBAccount = azure.documentDBs().define(docDBName)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
@@ -55,30 +48,17 @@ public final class DocumentDBWithIPRange {
                     .withSessionConsistency()
                     .withWriteReplication(Region.US_WEST)
                     .withReadReplication(Region.US_CENTRAL)
-                    .withReadReplication(Region.ASIA_EAST)
-                    .withReadReplication(Region.AUSTRALIA_SOUTHEAST)
-                    .withReadReplication(Region.UK_SOUTH)
                     .withIpRangeFilter("13.91.6.132,13.91.6.1/24")
                     .create();
 
-            System.out.println("Created document db");
-            //Utils.print(documentDBAccount);
-
-            System.out.println("Updated document db");
-            //Utils.print(documentDBAccount);
-
-            DatabaseAccountListKeysResult databaseAccountListKeysResult = documentDBAccount.listKeys();
-            String masterKey = databaseAccountListKeysResult.primaryMasterKey();
-            String endPoint = documentDBAccount.documentEndpoint();
-            //============================================================
-            // Connect to document db and add a collection
-            createDBAndAddCollection(masterKey, endPoint);
+            System.out.println("Created documentdb");
+            Utils.print(documentDBAccount);
 
             //============================================================
-            // Delete key vaults
-            System.out.println("Deleting the docuemnt db");
+            // Delete documentdb
+            System.out.println("Deleting the docuemntdb");
             azure.documentDBs().deleteById(documentDBAccount.id());
-            System.out.println("Deleted the document db");
+            System.out.println("Deleted the documentdb");
 
             return true;
         } catch (Exception e) {
@@ -96,39 +76,6 @@ public final class DocumentDBWithIPRange {
         }
 
         return false;
-    }
-
-    private static void createDBAndAddCollection(String masterKey, String endPoint) throws DocumentClientException {
-        try {
-            DocumentClient documentClient = new DocumentClient(endPoint,
-                    masterKey, ConnectionPolicy.GetDefault(),
-                    ConsistencyLevel.Session);
-
-            // Define a new database using the id above.
-            Database myDatabase = new Database();
-            myDatabase.setId(DATABASE_ID);
-
-            myDatabase = documentClient.createDatabase(myDatabase, null)
-                    .getResource();
-
-            System.out.println("Created a new database:");
-            System.out.println(myDatabase.toString());
-
-            // Define a new collection using the id above.
-            DocumentCollection myCollection = new DocumentCollection();
-            myCollection.setId(COLLECTION_ID);
-
-            // Set the provisioned throughput for this collection to be 1000 RUs.
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions.setOfferThroughput(4000);
-
-            // Create a new collection.
-            myCollection = documentClient.createCollection(
-                    "dbs/" + DATABASE_ID, myCollection, requestOptions)
-                    .getResource();
-        }catch(Exception ex) {
-            throw ex;
-        }
     }
 
     /**

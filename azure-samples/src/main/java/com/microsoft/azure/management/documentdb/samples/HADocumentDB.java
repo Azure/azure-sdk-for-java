@@ -7,23 +7,30 @@
 package com.microsoft.azure.management.documentdb.samples;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.documentdb.*;
+import com.microsoft.azure.documentdb.DocumentClient;
+import com.microsoft.azure.documentdb.ConsistencyLevel;
+import com.microsoft.azure.documentdb.ConnectionPolicy;
+import com.microsoft.azure.documentdb.Database;
+import com.microsoft.azure.documentdb.DocumentCollection;
+import com.microsoft.azure.documentdb.DocumentClientException;
+import com.microsoft.azure.documentdb.RequestOptions;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.documentdb.DatabaseAccountKind;
 import com.microsoft.azure.management.documentdb.DocumentDBAccount;
 import com.microsoft.azure.management.documentdb.implementation.DatabaseAccountListKeysResult;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
+import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 
 import java.io.File;
 
 /**
  * Azure DocumentDB sample for high availability -
- *  - Create a document db configured with a single read location
- *  - Get the credentials for the document db
- *  - Update the document db with additional read locations
- *  - add collection to the docuemnt db
+ *  - Create a documentdb configured with a single read location
+ *  - Get the credentials for the documentdb
+ *  - Update the documentdb with additional read locations
+ *  - add collection to the docuemntdb with throughput 4000
  *  - Delete the document db.
  */
 public final class HADocumentDB {
@@ -42,11 +49,9 @@ public final class HADocumentDB {
 
         try {
             //============================================================
-            // Create a key vault with empty access policy
+            // Create a documentdb
 
-            System.out.println("Creating a docuemnt db...");
-            // Connect to document db and add a collection
-
+            System.out.println("Creating a documentdb...");
             DocumentDBAccount documentDBAccount = azure.documentDBs().define(docDBName)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
@@ -56,35 +61,41 @@ public final class HADocumentDB {
                     .withReadReplication(Region.US_CENTRAL)
                     .create();
 
-            System.out.println("Created document db");
-            //Utils.print(documentDBAccount);
+            System.out.println("Created documentdb");
+            Utils.print(documentDBAccount);
 
             //============================================================
-            // Authorize an application
+            // Update document db with three additional read regions
 
-            System.out.println("Adding three additional read replication regions");
-
+            System.out.println("Updating documentdb with three additional read replication regions");
             documentDBAccount = documentDBAccount.update()
                     .withReadReplication(Region.ASIA_EAST)
                     .withReadReplication(Region.AUSTRALIA_SOUTHEAST)
                     .withReadReplication(Region.UK_SOUTH)
                     .apply();
                     
-            System.out.println("Updated document db");
-            //Utils.print(documentDBAccount);
+            System.out.println("Updated documentdb");
+            Utils.print(documentDBAccount);
 
+            //============================================================
+            // Get credentials for the documentdb.
+
+            System.out.println("Get credentials for the documentdb");
             DatabaseAccountListKeysResult databaseAccountListKeysResult = documentDBAccount.listKeys();
             String masterKey = databaseAccountListKeysResult.primaryMasterKey();
             String endPoint = documentDBAccount.documentEndpoint();
+
             //============================================================
-            // Connect to document db and add a collection
+            // Connect to documentdb and add a collection
+
+            System.out.println("Connecting and adding collection");
             createDBAndAddCollection(masterKey, endPoint);
 
             //============================================================
-            // Delete key vaults
-            System.out.println("Deleting the docuemnt db");
+            // Delete documentdb.
+            System.out.println("Deleting the docuemntdb");
             azure.documentDBs().deleteById(documentDBAccount.id());
-            System.out.println("Deleted the document db");
+            System.out.println("Deleted the documentdb");
 
             return true;
         } catch (Exception e) {

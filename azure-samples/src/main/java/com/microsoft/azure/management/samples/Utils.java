@@ -44,6 +44,7 @@ import com.microsoft.azure.management.dns.SrvRecord;
 import com.microsoft.azure.management.dns.SrvRecordSet;
 import com.microsoft.azure.management.dns.TxtRecord;
 import com.microsoft.azure.management.dns.TxtRecordSet;
+import com.microsoft.azure.management.documentdb.DocumentDBAccount;
 import com.microsoft.azure.management.keyvault.AccessPolicy;
 import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.network.ApplicationGateway;
@@ -76,6 +77,7 @@ import com.microsoft.azure.management.redis.RedisAccessKeys;
 import com.microsoft.azure.management.redis.RedisCache;
 import com.microsoft.azure.management.redis.RedisCachePremium;
 import com.microsoft.azure.management.redis.ScheduleEntry;
+import com.microsoft.azure.management.resources.Location;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.servicebus.AccessRights;
 import com.microsoft.azure.management.servicebus.AuthorizationKeys;
@@ -1686,6 +1688,33 @@ public final class Utils {
         for (AccessRights right: rights) {
             builder.append("\n\t\tAccessRight: ")
                     .append("\n\t\t\tName :").append(right.name());
+        }
+
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print DocumentDB info.
+     * @param documentDBAccount a documentdb
+     */
+    public static void print(DocumentDBAccount documentDBAccount) {
+        StringBuilder builder = new StringBuilder()
+                .append("DocumentDB: ").append(documentDBAccount.id())
+                .append("\n\tName: ").append(documentDBAccount.name())
+                .append("\n\tResourceGroupName: ").append(documentDBAccount.resourceGroupName())
+                .append("\n\tKind: ").append(documentDBAccount.kind().toString())
+                .append("\n\tDefault consistency level: ").append(documentDBAccount.consistencyPolicy().defaultConsistencyLevel())
+                .append("\n\tIP range filter: ").append(documentDBAccount.ipRangeFilter());
+
+        for(com.microsoft.azure.management.documentdb.Location writeReplica : documentDBAccount.writableReplications()) {
+            builder.append("\n\t\tWrite replication: ")
+                    .append("\n\t\t\tName :").append(writeReplica.locationName());
+        }
+
+        builder.append("\n\tNumber of read replications: ").append(documentDBAccount.readableReplications().size());
+        for(com.microsoft.azure.management.documentdb.Location readReplica : documentDBAccount.readableReplications()) {
+            builder.append("\n\t\tRead replication: ")
+                    .append("\n\t\t\tName :").append(readReplica.locationName());
         }
 
         System.out.println(builder.toString());

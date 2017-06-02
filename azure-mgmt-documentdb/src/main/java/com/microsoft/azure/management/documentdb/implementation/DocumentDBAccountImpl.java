@@ -40,6 +40,7 @@ class DocumentDBAccountImpl
         DocumentDBAccount.Update {
     private List<FailoverPolicyInner> failoverPolicies;
     private boolean hasFailoverPolicyChanges;
+    private final int maxDelayDueToMissingFailovers = 60 * 10;
 
     DocumentDBAccountImpl(String name, DatabaseAccountInner innerObject, DocumentDBManager manager) {
         super(fixDBName(name), innerObject, manager);
@@ -279,6 +280,8 @@ class DocumentDBAccountImpl
 
     private Observable<DocumentDBAccount> doDatabaseUpdateCreate() {
         final DocumentDBAccountImpl self = this;
+        final List<Integer> data = new ArrayList<Integer>();
+        data.add(0);
         final DatabaseAccountCreateUpdateParametersInner createUpdateParametersInner =
                 this.createUpdateParametersInner(this.inner());
         return this.manager().inner().databaseAccounts().createOrUpdateAsync(
@@ -296,16 +299,19 @@ class DocumentDBAccountImpl
                         ).repeatWhen(new Func1<Observable<? extends java.lang.Void>, Observable<?>>() {
                             @Override
                             public Observable<?> call(Observable<? extends Void> observable) {
+                                data.set(0, data.get(0) + 5);
                                 return observable.delay(5, TimeUnit.SECONDS);
                             }
                         })
                         .filter(new Func1<DocumentDBAccount, Boolean>() {
                             @Override
                             public Boolean call(DocumentDBAccount databaseAccount) {
-                                if (databaseAccount.id() == null
-                                        || databaseAccount.id().length() == 0 ||
-                                        databaseAccount.inner().failoverPolicies().size() !=
-                                            createUpdateParametersInner.locations().size()) {
+                                if (maxDelayDueToMissingFailovers > data.get(0)
+                                        && (databaseAccount.id() == null
+                                        || databaseAccount.id().length() == 0
+                                        || createUpdateParametersInner.locations().size() >
+                                            databaseAccount.inner().failoverPolicies().size())) {
+                                    data.set(0, data.get(0) + 5);
                                     return false;
                                 }
 
