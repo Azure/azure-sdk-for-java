@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The response from the ListCredentials operation.
  */
-public class RegistryListCredentialsResultInner {
+public class RegistryListCredentials {
     /**
      * The username for a container registry.
      */
@@ -41,9 +41,9 @@ public class RegistryListCredentialsResultInner {
      * Set the username value.
      *
      * @param username the username value to set
-     * @return the RegistryListCredentialsResultInner object itself.
+     * @return the RegistryListCredentials object itself.
      */
-    public RegistryListCredentialsResultInner withUsername(String username) {
+    public RegistryListCredentials withUsername(String username) {
         this.username = username;
         return this;
     }
@@ -61,9 +61,9 @@ public class RegistryListCredentialsResultInner {
      * Set the passwords value.
      *
      * @param passwords the passwords value to set
-     * @return the RegistryListCredentialsResultInner object itself.
+     * @return the RegistryListCredentials object itself.
      */
-    public RegistryListCredentialsResultInner withPasswords(List<RegistryPassword> passwords) {
+    public RegistryListCredentials withPasswords(List<RegistryPassword> passwords) {
         this.passwords = passwords;
         return this;
     }

@@ -34,7 +34,7 @@ import com.microsoft.azure.management.containerregistry.Registries;
 import com.microsoft.azure.management.containerregistry.implementation.ContainerRegistryManager;
 import com.microsoft.azure.management.dns.DnsZones;
 import com.microsoft.azure.management.dns.implementation.DnsZoneManager;
-import com.microsoft.azure.management.documentdb.DatabaseAccounts;
+import com.microsoft.azure.management.documentdb.DocumentDBAccounts;
 import com.microsoft.azure.management.documentdb.implementation.DocumentDBManager;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroups;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryUsers;
@@ -72,7 +72,6 @@ import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistr
 import com.microsoft.azure.management.resources.implementation.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.servicebus.ServiceBusNamespaces;
-import com.microsoft.azure.management.servicebus.ServiceBusOperations;
 import com.microsoft.azure.management.servicebus.implementation.ServiceBusManager;
 import com.microsoft.azure.management.sql.SqlServers;
 import com.microsoft.azure.management.sql.implementation.SqlServerManager;
@@ -688,10 +687,11 @@ public final class Azure {
     /**
      * @return entry point to managing Service Bus operations.
      */
-    @Beta(SinceVersion.V1_1_0)
-    public ServiceBusOperations serviceBusOperations() {
-        return serviceBusManager.operations();
-    }
+    // TODO: To be revisited in the future
+    //@Beta(SinceVersion.V1_1_0)
+    //public ServiceBusOperations serviceBusOperations() {
+    //    return serviceBusManager.operations();
+    //}
 
     /**
      * @return entry point to managing Container Services.
@@ -713,7 +713,7 @@ public final class Azure {
      * @return entry point to managing Container Regsitries.
      */
     @Beta(SinceVersion.V1_1_0)
-    public DatabaseAccounts documentDBs() {
+    public DocumentDBAccounts documentDBs() {
         return documentDBManager.databaseAccounts();
     }
 }

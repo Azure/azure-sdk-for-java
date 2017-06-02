@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Provides information about edge node of CDN service.
  */
-@LangDefinition
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.Cdn.Fluent.Models")
 public class EdgeNode {
     private EdgeNodeInner inner;
 

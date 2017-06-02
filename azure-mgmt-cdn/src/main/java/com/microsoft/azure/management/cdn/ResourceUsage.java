@@ -13,7 +13,7 @@ import com.microsoft.azure.management.cdn.implementation.ResourceUsageInner;
 /**
  * Provides information about CDN resource usages.
  */
-@LangDefinition
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.Cdn.Fluent.Models")
 public class ResourceUsage {
     private ResourceUsageInner inner;
 
