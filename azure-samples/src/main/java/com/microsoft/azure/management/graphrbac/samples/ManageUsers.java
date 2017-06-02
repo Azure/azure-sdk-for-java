@@ -5,24 +5,66 @@
  */
 package com.microsoft.azure.management.graphrbac.samples;
 
+import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryUser;
+import com.microsoft.azure.management.graphrbac.BuiltInRole;
+import com.microsoft.azure.management.graphrbac.RoleAssignment;
+import com.microsoft.azure.management.graphrbac.RoleDefinition;
+import com.microsoft.azure.management.graphrbac.ServicePrincipal;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
+import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 
 import java.io.File;
 
 /**
- * Azure Service Principal sample
+ * Azure Users, Groups and Roles sample
  */
 public final class ManageUsers {
     /**
      * Main function which runs the actual sample.
+     *
      * @param authenticated instance of Authenticated
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure.Authenticated authenticated) {
+    public static boolean runSample(Azure.Authenticated authenticated, String defaultSubscription) {
+        final String spName = Utils.createRandomName("sp");
+        final String raName = SdkContext.randomUuid();
         try {
+            // ============================================================
+            // Get user by email
+
             ActiveDirectoryUser user = authenticated.activeDirectoryUsers().getByName("admin@azuresdkteam.onmicrosoft.com");
+            Utils.print(user);
+
+            // ============================================================
+            // Get role by scope and role name
+            RoleDefinition roleDefinition = authenticated.roleDefinitions()
+                    .getByScopeAndRoleName("subscriptions/" + defaultSubscription, "Contributor");
+            Utils.print(roleDefinition);
+
+            // ============================================================
+            // Create Service Principal
+
+            ServicePrincipal sp = authenticated.servicePrincipals().define(spName)
+                    .withNewApplication("http://" + spName)
+                    .create();
+            // wait till service principal created
+            SdkContext.sleep(10000);
+            System.out.println("Created Service Principal:");
+//            Utils.print(sp);
+
+            // ============================================================
+            // Assign role to Service Principal
+            RoleAssignment roleAssignment = authenticated.roleAssignments()
+                    .define(raName)
+                    .forServicePrincipal(sp)
+                    .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
+                    .withSubscriptionScope(defaultSubscription)
+                    .create();
+            System.out.println("Created Role Assignment:");
+            Utils.print(roleAssignment);
 
             return true;
         } catch (Exception f) {
@@ -35,17 +77,18 @@ public final class ManageUsers {
 
     /**
      * Main entry point.
+     *
      * @param args the parameters
      */
     public static void main(String[] args) {
         try {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
-
+            ApplicationTokenCredentials credentials = ApplicationTokenCredentials.fromFile(credFile);
             Azure.Authenticated authenticated = Azure.configure()
                     .withLogLevel(LogLevel.BODY)
-                    .authenticate(credFile);
+                    .authenticate(credentials);
 
-            runSample(authenticated);
+            runSample(authenticated, credentials.defaultSubscriptionId());
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

@@ -14,15 +14,17 @@ import org.junit.Test;
 
 public class GraphRbacTests extends TestBase {
     private Azure.Authenticated authenticated;
+    private String defaultSubscription;
 
     @Test
     public void testManageUsers() {
-        Assert.assertTrue(ManageUsers.runSample(authenticated));
+        Assert.assertTrue(ManageUsers.runSample(authenticated, defaultSubscription));
     }
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
         authenticated = Azure.authenticate(restClient, defaultSubscription, domain);
+        this.defaultSubscription = defaultSubscription;
     }
 
     @Override
