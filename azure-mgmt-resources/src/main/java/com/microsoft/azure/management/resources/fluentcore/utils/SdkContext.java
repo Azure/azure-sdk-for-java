@@ -46,6 +46,11 @@ public class SdkContext {
         return resourceNamer.randomName(prefix, maxLen);
     }
 
+    /**
+     * Gets a random UUID.
+     *
+     * @return the random UUID.
+     */
     public static String randomUuid() {
         ResourceNamer resourceNamer = SdkContext.getResourceNamerFactory().createResourceNamer("");
         return resourceNamer.randomUuid();
