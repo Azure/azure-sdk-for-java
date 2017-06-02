@@ -33,13 +33,14 @@ public abstract class TestBase extends MockIntegrationTestBase {
     @Before
     public void setup() throws Exception {
         addTextReplacementRule("https://management.azure.com/", this.mockUri() + "/");
+        addTextReplacementRule("https://graph.windows.net/", this.mockUri() + "/");
         setupTest(name.getMethodName());
         ApplicationTokenCredentials credentials;
         RestClient restClient;
         String defaultSubscription;
 
         if (IS_MOCKED) {
-            credentials = new AzureTestCredentials();
+            credentials = new AzureTestCredentials(this.mockUri());
             restClient = buildRestClient(new RestClient.Builder()
                     .withBaseUrl(this.mockUri() + "/")
                     .withSerializerAdapter(new AzureJacksonAdapter())
@@ -73,6 +74,7 @@ public abstract class TestBase extends MockIntegrationTestBase {
 
             defaultSubscription = credentials.defaultSubscriptionId();
             addTextReplacementRule(defaultSubscription, MOCK_SUBSCRIPTION);
+            addTextReplacementRule(credentials.domain(), MOCK_TENANT);
         }
         initializeClients(restClient, defaultSubscription, credentials.domain());
     }

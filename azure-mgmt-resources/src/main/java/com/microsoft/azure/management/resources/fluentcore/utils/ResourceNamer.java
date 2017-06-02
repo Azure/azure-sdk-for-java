@@ -54,6 +54,14 @@ public class ResourceNamer {
         return str + randomString((maxLen - str.length()) / 2);
     }
 
+    /**
+     * Creates a random UUID.
+     * @return the UUID string.
+     */
+    public String randomUuid() {
+        return UUID.randomUUID().toString();
+    }
+
     private String randomString(int length) {
         String str = "";
         while (str.length() < length) {

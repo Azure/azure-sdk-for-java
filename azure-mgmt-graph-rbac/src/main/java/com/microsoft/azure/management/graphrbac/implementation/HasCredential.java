@@ -5,12 +5,15 @@
  */
 package com.microsoft.azure.management.graphrbac.implementation;
 
+import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 
 /**
  * An interface representing a model that can attach a credential.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Graph.RBAC.Fluent")
+@Beta(SinceVersion.V1_1_0)
 interface HasCredential<T extends HasCredential<T>> {
     /**
      * Attach a credential to this model.
