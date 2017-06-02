@@ -49,6 +49,7 @@ public interface FunctionApp extends
 
     /**
      * Syncs the triggers on the function app.
+     * @return a completable for the operation
      */
     Completable syncTriggersAsync();
 
