@@ -44,6 +44,7 @@ import com.microsoft.azure.management.dns.SrvRecord;
 import com.microsoft.azure.management.dns.SrvRecordSet;
 import com.microsoft.azure.management.dns.TxtRecord;
 import com.microsoft.azure.management.dns.TxtRecordSet;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroup;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryUser;
 import com.microsoft.azure.management.graphrbac.RoleAssignment;
 import com.microsoft.azure.management.graphrbac.RoleDefinition;
@@ -1776,6 +1777,20 @@ public final class Utils {
                 .append("\n\tScope: ").append(roleAssignment.scope())
                 .append("\n\tPrincipal Id: ").append(roleAssignment.principalId())
                 .append("\n\tRole Definition Id: ").append(roleAssignment.roleDefinitionId());
+
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print Active Directory Group info.
+     * @param group active directory group
+     */
+    public static void print(ActiveDirectoryGroup group) {
+        StringBuilder builder = new StringBuilder()
+                .append("Active Directory Group: ").append(group.id())
+                .append("\n\tName: ").append(group.name())
+                .append("\n\tMail: ").append(group.mail())
+                .append("\n\tSecurity Enabled: ").append(group.securityEnabled());
 
         System.out.println(builder.toString());
     }

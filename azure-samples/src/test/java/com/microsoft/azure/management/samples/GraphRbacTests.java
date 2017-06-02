@@ -6,7 +6,7 @@
 package com.microsoft.azure.management.samples;
 
 import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.graphrbac.samples.ManageUsers;
+import com.microsoft.azure.management.graphrbac.samples.ManageUsersGroupsAndRoles;
 import com.microsoft.azure.management.resources.core.TestBase;
 import com.microsoft.rest.RestClient;
 import org.junit.Assert;
@@ -18,7 +18,7 @@ public class GraphRbacTests extends TestBase {
 
     @Test
     public void testManageUsers() {
-        Assert.assertTrue(ManageUsers.runSample(authenticated, defaultSubscription));
+        Assert.assertTrue(ManageUsersGroupsAndRoles.runSample(authenticated, defaultSubscription));
     }
 
     @Override

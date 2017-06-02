@@ -7,6 +7,7 @@ package com.microsoft.azure.management.graphrbac.samples;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.Azure;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroup;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryUser;
 import com.microsoft.azure.management.graphrbac.BuiltInRole;
 import com.microsoft.azure.management.graphrbac.RoleAssignment;
@@ -17,11 +18,12 @@ import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Azure Users, Groups and Roles sample
  */
-public final class ManageUsers {
+public final class ManageUsersGroupsAndRoles {
     /**
      * Main function which runs the actual sample.
      *
@@ -31,6 +33,7 @@ public final class ManageUsers {
     public static boolean runSample(Azure.Authenticated authenticated, String defaultSubscription) {
         final String spName = Utils.createRandomName("sp");
         final String raName = SdkContext.randomUuid();
+        String spId = "";
         try {
             // ============================================================
             // Get user by email
@@ -54,6 +57,7 @@ public final class ManageUsers {
             SdkContext.sleep(10000);
             System.out.println("Created Service Principal:");
 //            Utils.print(sp);
+            spId = sp.id();
 
             // ============================================================
             // Assign role to Service Principal
@@ -66,11 +70,26 @@ public final class ManageUsers {
             System.out.println("Created Role Assignment:");
             Utils.print(roleAssignment);
 
+            // ============================================================
+            // List Active Directory groups
+            List<ActiveDirectoryGroup> groups = authenticated.activeDirectoryGroups().list();
+            for (ActiveDirectoryGroup group : groups) {
+                Utils.print(group);
+            }
+
             return true;
         } catch (Exception f) {
             System.out.println(f.getMessage());
             f.printStackTrace();
         } finally {
+            try {
+                System.out.println("Deleting Service Principal: " + spName);
+                authenticated.servicePrincipals().deleteById(spId);
+                System.out.println("Deleted Service Principal: " + spName);
+            }
+            catch (Exception e) {
+                System.out.println("Did not create Service Principal in Azure. No clean up is necessary");
+            }
         }
         return false;
     }
@@ -95,6 +114,6 @@ public final class ManageUsers {
         }
     }
 
-    private ManageUsers() {
+    private ManageUsersGroupsAndRoles() {
     }
 }
