@@ -20,7 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.rest.RestClient;
 import org.junit.Assert;
-import org.junit.Ignore;
+import org.junit.Assume;
 import org.junit.Test;
 
 import rx.Completable;
@@ -52,8 +52,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     }
 
     @Test
-    @Ignore("Can't be played from recording for some reason...")
     public void canDeleteRelatedResourcesFromFailedParallelVMCreations() {
+        Assume.assumeFalse(IS_MOCKED); // Can't be played from recording for some reason...
+
         final int desiredVMCount = 40;
         final Region region = Region.US_EAST;
         final String resourceGroupName = RG_NAME;
