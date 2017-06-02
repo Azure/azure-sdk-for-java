@@ -16,6 +16,7 @@ import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import rx.Observable;
 import rx.exceptions.Exceptions;
 import rx.functions.Func1;
@@ -118,7 +119,7 @@ class ServicePrincipalImpl
                         .flatMap(new Func1<Map.Entry<String, BuiltInRole>, Observable<?>>() {
                             @Override
                             public Observable<?> call(Map.Entry<String, BuiltInRole> role) {
-                                return manager().roleAssignments().define(UUID.randomUUID().toString())
+                                return manager().roleAssignments().define(SdkContext.randomUuid())
                                         .forServicePrincipal(servicePrincipal)
                                         .withBuiltInRole(role.getValue())
                                         .withScope(role.getKey())

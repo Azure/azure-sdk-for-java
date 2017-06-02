@@ -42,7 +42,8 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
 public class MockIntegrationTestBase {
     public static Boolean IS_MOCKED = IsMocked();
     protected static Boolean IS_RECORD = !IS_MOCKED;
-    protected final static String MOCK_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
+    final static String MOCK_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
+    final static String MOCK_TENANT = "00000000-0000-0000-0000-000000000000";
     private final static String HOST = "localhost";
     private final static String RECORD_FOLDER = "session-records/";
 

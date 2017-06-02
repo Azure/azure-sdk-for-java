@@ -23,7 +23,7 @@ public class RoleAssignmentTests extends GraphRbacManagementTest {
                 .withNewApplication("http://" + spName)
                 .create();
 
-        SdkContext.sleep(10000);
+        SdkContext.sleep(15000);
 
         RoleAssignment roleAssignment = graphRbacManager.roleAssignments()
                 .define(roleAssignmentName)
