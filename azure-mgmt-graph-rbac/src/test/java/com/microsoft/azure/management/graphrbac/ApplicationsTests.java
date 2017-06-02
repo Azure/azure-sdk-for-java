@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.graphrbac;
 
+import com.google.common.io.ByteStreams;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.joda.time.Duration;
 import org.junit.AfterClass;
@@ -17,18 +18,8 @@ import org.junit.Test;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class ApplicationsTests extends GraphRbacManagementTestBase {
-    @BeforeClass
-    public static void setup() throws Exception {
-        createClients();
-    }
-
-    @AfterClass
-    public static void cleanup() throws Exception {
-    }
-
+public class ApplicationsTests extends GraphRbacManagementTest {
     @Test
-    @Ignore("Need to login as user to run")
     public void canCRUDApplication() throws Exception {
         String name = SdkContext.randomResourceName("javasdkapp", 20);
 
@@ -42,25 +33,25 @@ public class ApplicationsTests extends GraphRbacManagementTestBase {
                         .attach()
                     .defineCertificateCredential("cert")
                         .withAsymmetricX509Certificate()
-                        .withPublicKey(Files.readAllBytes(Paths.get("/Users/jianghlu/Documents/code/certs/myserver.crt")))
+                        .withPublicKey(ByteStreams.toByteArray(this.getClass().getResourceAsStream("/myTest.cer")))
                         .withDuration(Duration.standardDays(100))
                         .attach()
                     .create();
             System.out.println(application.id() + " - " + application.applicationId());
             Assert.assertNotNull(application.id());
             Assert.assertNotNull(application.applicationId());
-            Assert.assertEquals("anotherapp15", application.name());
+            Assert.assertEquals(name, application.name());
             Assert.assertEquals(1, application.certificateCredentials().size());
             Assert.assertEquals(1, application.passwordCredentials().size());
             Assert.assertEquals(1, application.replyUrls().size());
             Assert.assertEquals(1, application.identifierUris().size());
-            Assert.assertEquals("http://easycreate.azure.com/anotherapp/15", application.signOnUrl().toString());
+            Assert.assertEquals("http://easycreate.azure.com/" + name, application.signOnUrl().toString());
 
             application.update()
                     .withoutCredential("passwd")
                     .apply();
             System.out.println(application.id() + " - " + application.applicationId());
-            Assert.assertEquals(0, application.certificateCredentials().size());
+            Assert.assertEquals(0, application.passwordCredentials().size());
         } finally {
             if (application != null) {
                 graphRbacManager.applications().deleteById(application.id());
