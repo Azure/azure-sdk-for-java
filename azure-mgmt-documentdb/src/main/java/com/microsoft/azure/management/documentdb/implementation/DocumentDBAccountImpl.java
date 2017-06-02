@@ -165,9 +165,13 @@ class DocumentDBAccountImpl
     public DocumentDBAccountImpl withoutReadReplication(Region region) {
         this.ensureFailoverIsInitialized();
         for (int i = 1; i < this.failoverPolicies.size(); i++) {
-            if (this.failoverPolicies.get(i).id().endsWith(region.name())) {
-                this.failoverPolicies.remove(i);
-                break;
+            if (this.failoverPolicies.get(i).locationName() != null)
+            {
+                String locName = this.failoverPolicies.get(i).locationName().replace(" ", "").toLowerCase();
+                if (locName.equals(region.name()))
+                {
+                    this.failoverPolicies.remove(i);
+                }
             }
         }
 
@@ -275,7 +279,7 @@ class DocumentDBAccountImpl
 
     private Observable<DocumentDBAccount> doDatabaseUpdateCreate() {
         final DocumentDBAccountImpl self = this;
-        DatabaseAccountCreateUpdateParametersInner createUpdateParametersInner =
+        final DatabaseAccountCreateUpdateParametersInner createUpdateParametersInner =
                 this.createUpdateParametersInner(this.inner());
         return this.manager().inner().databaseAccounts().createOrUpdateAsync(
                 resourceGroupName(),
@@ -299,7 +303,9 @@ class DocumentDBAccountImpl
                             @Override
                             public Boolean call(DocumentDBAccount databaseAccount) {
                                 if (databaseAccount.id() == null
-                                        || databaseAccount.id().length() == 0) {
+                                        || databaseAccount.id().length() == 0 ||
+                                        databaseAccount.inner().failoverPolicies().size() !=
+                                            createUpdateParametersInner.locations().size()) {
                                     return false;
                                 }
 
@@ -314,6 +320,7 @@ class DocumentDBAccountImpl
                                     return false;
                                 }
 
+                                self.setInner(databaseAccount.inner());
                                 return true;
                             }
                         })
