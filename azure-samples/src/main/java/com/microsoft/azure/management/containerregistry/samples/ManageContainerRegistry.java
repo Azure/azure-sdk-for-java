@@ -27,7 +27,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Azure Container Registry sample for managing container registry    -
+ * Azure Container Registry sample for managing container registry.
  *    - Create an Azure Container Registry to be used for holding the Docker images
  *    - Create a Linux virtual machine that will host a Docker engine to be used for this sample if a local one cannot be found
  *    - Use Docker Java to create a Docker client that will push/pull an image to/from Azure Container Registry

@@ -36,7 +36,7 @@ import java.security.Security;
 import java.util.Date;
 
 /**
- * Utility class to be used by
+ * Utility class to be used by Azure Container Registry sample.
  * - Creates "in memory" SSL configuration to be used by the Java Docker client
  * - Builds a Docker client config object
  * - Creates a new Azure virtual machine and installs Docker
@@ -44,9 +44,18 @@ import java.util.Date;
  */
 public class DockerUtils {
 
+    /**
+     * Creates "in memory" SSL configuration to be used by the Java Docker Client.
+     */
     public static class DockerSSLConfig    implements SSLConfig, Serializable {
         private SslConfigurator sslConfig;
 
+        /**
+         * Constructor for the class.
+         * @param caPem - content of the ca.pem certificate file
+         * @param keyPem - content of the key.pem certificate file
+         * @param certPem - content of the cert.pem certificate file
+         */
         public DockerSSLConfig(String caPem, String keyPem, String certPem) {
             try {
                 Security.addProvider(new BouncyCastleProvider());
@@ -65,36 +74,45 @@ public class DockerUtils {
             }
         }
 
+        @Override
         public SSLContext getSSLContext() {
             return sslConfig.createSSLContext();
         }
     }
 
     /**
-     * Instantiate a Docker client that will be used for Docker client related operations
+     * Instantiate a Docker client that will be used for Docker client related operations.
+     * @param azure - instance of Azure
+     * @param rgName - name of the Azure resource group to be used when creating a virtual machine
+     * @param region - region to be used when creating a virtual machine
+     * @param registryServerUrl - address of the private container registry
+     * @param username - user name to connect with to the private container registry
+     * @param password - password to connect with to the private container registry
+     * @return an instance of DockerClient
+     * @throws Exception exception thrown
      */
     public static DockerClient createDockerClient(Azure azure, String rgName, Region region,
-                                                                                                String registryServerUrl, String username, String password) throws    Exception {
-        final String DOCKER_HOST_ENV = System.getenv("DOCKER_HOST");
-        final String DOCKER_CERT_PATH_ENV = System.getenv("DOCKER_CERT_PATH");
+                                                  String registryServerUrl, String username, String password) throws Exception {
+        final String envDockerHost = System.getenv("DOCKER_HOST");
+        final String envDockerCertPath = System.getenv("DOCKER_CERT_PATH");
         String dockerHostUrl;
         DockerClient dockerClient;
 
-        if (DOCKER_HOST_ENV == null || DOCKER_HOST_ENV.isEmpty()) {
+        if (envDockerHost == null || envDockerHost.isEmpty()) {
             // Could not find a Docker environment; presume that there is no local Docker engine running and
             //    attempt to configure a Docker engine running inside a new    Azure virtual machine
             dockerClient = fromNewDockerVM(azure, rgName, region, registryServerUrl, username, password);
         } else {
-            dockerHostUrl = DOCKER_HOST_ENV;
+            dockerHostUrl = envDockerHost;
             System.out.println("Using local settings to connect to a Docker service: " + dockerHostUrl);
 
             DockerClientConfig dockerClientConfig;
-            if (DOCKER_CERT_PATH_ENV == null || DOCKER_CERT_PATH_ENV.isEmpty()) {
+            if (envDockerCertPath == null || envDockerCertPath.isEmpty()) {
                 dockerClientConfig = createDockerClientConfig(dockerHostUrl, registryServerUrl, username, password);
             } else {
-                String caPemPath = DOCKER_CERT_PATH_ENV + File.separator + "ca.pem";
-                String keyPemPath = DOCKER_CERT_PATH_ENV + File.separator + "key.pem";
-                String certPemPath = DOCKER_CERT_PATH_ENV + File.separator + "cert.pem";
+                String caPemPath = envDockerCertPath + File.separator + "ca.pem";
+                String keyPemPath = envDockerCertPath + File.separator + "key.pem";
+                String certPemPath = envDockerCertPath + File.separator + "cert.pem";
 
                 String keyPemContent = new String(Files.readAllBytes(Paths.get(keyPemPath)));
                 String certPemContent = new String(Files.readAllBytes(Paths.get(certPemPath)));
@@ -115,10 +133,18 @@ public class DockerUtils {
     }
 
     /**
-     * Creates a DockerClientConfig object to be used when creating the Java Docker client using a secured connection
+     * Creates a DockerClientConfig object to be used when creating the Java Docker client using a secured connection.
+     * @param host - Docker host address (IP) to connect to
+     * @param registryServerUrl - address of the private container registry
+     * @param username - user name to connect with to the private container registry
+     * @param password - password to connect with to the private container registry
+     * @param caPemContent - content of the ca.pem certificate file
+     * @param keyPemContent - content of the key.pem certificate file
+     * @param certPemContent - content of the cert.pem certificate file
+     * @return an instance of DockerClient configuration
      */
     public static DockerClientConfig createDockerClientConfig(String host, String registryServerUrl, String username, String password,
-                                                                                                                        String caPemContent, String keyPemContent, String certPemContent) {
+                                                              String caPemContent, String keyPemContent, String certPemContent) {
         return DefaultDockerClientConfig.createDefaultConfigBuilder()
                 .withDockerHost(host)
                 .withDockerTlsVerify(true)
@@ -130,7 +156,12 @@ public class DockerUtils {
     }
 
     /**
-     * Creates a DockerClientConfig object to be used when creating the Java Docker client using an unsecured connection
+     * Creates a DockerClientConfig object to be used when creating the Java Docker client using an unsecured connection.
+     * @param host - Docker host address (IP) to connect to
+     * @param registryServerUrl - address of the private container registry
+     * @param username - user name to connect with to the private container registry
+     * @param password - password to connect with to the private container registry
+     * @return an instance of DockerClient configuration
      */
     public static DockerClientConfig createDockerClientConfig(String host, String registryServerUrl, String username, String password) {
         return DefaultDockerClientConfig.createDefaultConfigBuilder()
@@ -143,10 +174,18 @@ public class DockerUtils {
     }
 
     /**
-     * It creates a new Azure virtual machine and it instantiate a Java Docker client
+     * It creates a new Azure virtual machine and it instantiate a Java Docker client.
+     * @param azure - instance of Azure
+     * @param rgName - name of the Azure resource group to be used when creating a virtual machine
+     * @param region - region to be used when creating a virtual machine
+     * @param registryServerUrl - address of the private container registry
+     * @param username - user name to connect with to the private container registry
+     * @param password - password to connect with to the private container registry
+     * @return an instance of DockerClient
+     * @throws Exception exception thrown
      */
     public static DockerClient fromNewDockerVM(Azure azure, String rgName, Region region,
-                                                                                         String registrySrvUrl, String username, String password) throws    Exception {
+                                               String registryServerUrl, String username, String password) throws Exception {
         final String dockerVMName = SdkContext.randomResourceName("dockervm", 15);
         final String publicIPDnsLabel = SdkContext.randomResourceName("pip", 10);
         final String vmUserName = "dockerUser";
@@ -178,7 +217,7 @@ public class DockerUtils {
         PublicIPAddress publicIp = nicIPConfiguration.getPublicIPAddress();
         String dockerHostIP = publicIp.ipAddress();
 
-        DockerClient dockerClient = installDocker(dockerHostIP, vmUserName, vmPassword, registrySrvUrl, username, password);
+        DockerClient dockerClient = installDocker(dockerHostIP, vmUserName, vmPassword, registryServerUrl, username, password);
         System.out.println("List Docker host info");
         System.out.println("\tFound Docker version: " + dockerClient.versionCmd().exec().toString());
         System.out.println("\tFound Docker info: " + dockerClient.infoCmd().exec().toString());
@@ -187,10 +226,17 @@ public class DockerUtils {
     }
 
     /**
-     * Install Docker on a given virtual machine and return a DockerClient
+     * Install Docker on a given virtual machine and return a DockerClient.
+     * @param dockerHostIP - address (IP) of the Docker host machine
+     * @param vmUserName - user name to connect with to the Docker host machine
+     * @param vmPassword - password to connect with to the Docker host machine
+     * @param registryServerUrl - address of the private container registry
+     * @param username - user name to connect with to the private container registry
+     * @param password - password to connect with to the private container registry
+     * @return an instance of DockerClient
      */
     public static DockerClient installDocker(String dockerHostIP, String vmUserName, String vmPassword,
-                                                                                     String registryServerUrl, String username, String password) {
+                                             String registryServerUrl, String username, String password) {
         String keyPemContent = ""; // it stores the content of the key.pem certificate file
         String certPemContent = ""; // it stores the content of the cert.pem certificate file
         String caPemContent = ""; // it stores the content of the ca.pem certificate file
@@ -349,118 +395,123 @@ public class DockerUtils {
     }
 
 
-    public static final String INSTALL_DOCKER_FOR_UBUNTU_SERVER_16_04_LTS = "" +
-            "echo Running: \"if [ ! -d ~/.azuredocker/tls ]; then mkdir -p ~/.azuredocker/tls ; fi\" \n" +
-            "if [ ! -d ~/.azuredocker/tls ]; then mkdir -p ~/.azuredocker/tls ; fi \n" +
-            "echo Running: sudo apt-get update \n" +
-            "sudo apt-get update \n" +
-            "echo Running: sudo apt-get install -y --no-install-recommends apt-transport-https ca-certificates curl software-properties-common \n" +
-            "sudo apt-get install -y --no-install-recommends apt-transport-https ca-certificates curl software-properties-common \n" +
-            "echo Running: curl -fsSL https://apt.dockerproject.org/gpg | sudo apt-key add - \n" +
-            "curl -fsSL https://apt.dockerproject.org/gpg | sudo apt-key add - \n" +
-            "echo Running: sudo add-apt-repository \"deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main\" \n" +
-            "sudo add-apt-repository \"deb https://apt.dockerproject.org/repo/ ubuntu-xenial main\" \n" +
-            "echo Running: sudo apt-get update \n" +
-            "sudo apt-get update \n" +
-            "echo Running: sudo apt-get -y install docker-engine \n" +
-            "sudo apt-get -y install docker-engine \n" +
-            "echo Running: sudo groupadd docker \n" +
-            "sudo groupadd docker \n" +
-            "echo Running: sudo usermod -aG docker $USER \n" +
-            "sudo usermod -aG docker $USER \n";
+    /**
+     * Installs Docker Engine and tools and adds current user to the docker group.
+     */
+    public static final String INSTALL_DOCKER_FOR_UBUNTU_SERVER_16_04_LTS = ""
+            + "echo Running: \"if [ ! -d ~/.azuredocker/tls ]; then mkdir -p ~/.azuredocker/tls ; fi\" \n"
+            + "if [ ! -d ~/.azuredocker/tls ]; then mkdir -p ~/.azuredocker/tls ; fi \n"
+            + "echo Running: sudo apt-get update \n"
+            + "sudo apt-get update \n"
+            + "echo Running: sudo apt-get install -y --no-install-recommends apt-transport-https ca-certificates curl software-properties-common \n"
+            + "sudo apt-get install -y --no-install-recommends apt-transport-https ca-certificates curl software-properties-common \n"
+            + "echo Running: curl -fsSL https://apt.dockerproject.org/gpg | sudo apt-key add - \n"
+            + "curl -fsSL https://apt.dockerproject.org/gpg | sudo apt-key add - \n"
+            + "echo Running: sudo add-apt-repository \"deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main\" \n"
+            + "sudo add-apt-repository \"deb https://apt.dockerproject.org/repo/ ubuntu-xenial main\" \n"
+            + "echo Running: sudo apt-get update \n"
+            + "sudo apt-get update \n"
+            + "echo Running: sudo apt-get -y install docker-engine \n"
+            + "sudo apt-get -y install docker-engine \n"
+            + "echo Running: sudo groupadd docker \n"
+            + "sudo groupadd docker \n"
+            + "echo Running: sudo usermod -aG docker $USER \n"
+            + "sudo usermod -aG docker $USER \n";
 
-    public static final String CREATE_OPENSSL_TLS_CERTS_FOR_UBUNTU = "" +
-            "echo Running: \"if [ ! -d ~/.azuredocker/tls ]; then rm -f -r ~/.azuredocker/tls ; fi\" \n" +
-            "if [ ! -d ~/.azuredocker/tls ]; then rm -f -r ~/.azuredocker/tls ; fi \n" +
-            "echo Running: mkdir -p ~/.azuredocker/tls \n" +
-            "mkdir -p ~/.azuredocker/tls \n" +
-            "echo Running: cd ~/.azuredocker/tls \n" +
-            "cd ~/.azuredocker/tls \n" +
+    /**
+     * Linux bash script that creates the TLS certificates for a secured Docker connection.
+     */
+    public static final String CREATE_OPENSSL_TLS_CERTS_FOR_UBUNTU = ""
+            + "echo Running: \"if [ ! -d ~/.azuredocker/tls ]; then rm -f -r ~/.azuredocker/tls ; fi\" \n"
+            + "if [ ! -d ~/.azuredocker/tls ]; then rm -f -r ~/.azuredocker/tls ; fi \n"
+            + "echo Running: mkdir -p ~/.azuredocker/tls \n"
+            + "mkdir -p ~/.azuredocker/tls \n"
+            + "echo Running: cd ~/.azuredocker/tls \n"
+            + "cd ~/.azuredocker/tls \n"
             // Generate CA certificate
-            "echo Running: openssl genrsa -passout pass:$CERT_CA_PWD_PARAM$ -aes256 -out ca-key.pem 2048 \n" +
-            "openssl genrsa -passout pass:$CERT_CA_PWD_PARAM$ -aes256 -out ca-key.pem 2048 \n" +
+            + "echo Running: openssl genrsa -passout pass:$CERT_CA_PWD_PARAM$ -aes256 -out ca-key.pem 2048 \n"
+            + "openssl genrsa -passout pass:$CERT_CA_PWD_PARAM$ -aes256 -out ca-key.pem 2048 \n"
             // Generate Server certificates
-            "echo Running: openssl req -passin pass:$CERT_CA_PWD_PARAM$ -subj '/CN=Docker Host CA/C=US' -new -x509 -days 365 -key ca-key.pem -sha256 -out ca.pem \n" +
-            "openssl req -passin pass:$CERT_CA_PWD_PARAM$ -subj '/CN=Docker Host CA/C=US' -new -x509 -days 365 -key ca-key.pem -sha256 -out ca.pem \n" +
-            "echo Running: openssl genrsa -out server-key.pem 2048 \n" +
-            "openssl genrsa -out server-key.pem 2048 \n" +
-//            "openssl req -passin pass:$CERT_CA_PWD_PARAM$ -subj '/CN=$HOSTNAME$' -sha256 -new -key server-key.pem -out server.csr \n" +
-            "echo Running: openssl req -subj '/CN=HOST_IP' -sha256 -new -key server-key.pem -out server.csr \n" +
-            "openssl req -subj '/CN=HOST_IP' -sha256 -new -key server-key.pem -out server.csr \n" +
-            "echo Running: \"echo subjectAltName = DNS:HOST_IP IP:127.0.0.1 > extfile.cnf \" \n" +
-            "echo subjectAltName = DNS:HOST_IP IP:127.0.0.1 > extfile.cnf \n" +
-            "echo Running: openssl x509 -req -passin pass:$CERT_CA_PWD_PARAM$ -days 365 -sha256 -in server.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out server.pem -extfile extfile.cnf \n" +
-            "openssl x509 -req -passin pass:$CERT_CA_PWD_PARAM$ -days 365 -sha256 -in server.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out server.pem -extfile extfile.cnf \n" +
+            + "echo Running: openssl req -passin pass:$CERT_CA_PWD_PARAM$ -subj '/CN=Docker Host CA/C=US' -new -x509 -days 365 -key ca-key.pem -sha256 -out ca.pem \n"
+            + "openssl req -passin pass:$CERT_CA_PWD_PARAM$ -subj '/CN=Docker Host CA/C=US' -new -x509 -days 365 -key ca-key.pem -sha256 -out ca.pem \n"
+            + "echo Running: openssl genrsa -out server-key.pem 2048 \n"
+            + "openssl genrsa -out server-key.pem 2048 \n"
+            + "echo Running: openssl req -subj '/CN=HOST_IP' -sha256 -new -key server-key.pem -out server.csr \n"
+            + "openssl req -subj '/CN=HOST_IP' -sha256 -new -key server-key.pem -out server.csr \n"
+            + "echo Running: \"echo subjectAltName = DNS:HOST_IP IP:127.0.0.1 > extfile.cnf \" \n"
+            + "echo subjectAltName = DNS:HOST_IP IP:127.0.0.1 > extfile.cnf \n"
+            + "echo Running: openssl x509 -req -passin pass:$CERT_CA_PWD_PARAM$ -days 365 -sha256 -in server.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out server.pem -extfile extfile.cnf \n"
+            + "openssl x509 -req -passin pass:$CERT_CA_PWD_PARAM$ -days 365 -sha256 -in server.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out server.pem -extfile extfile.cnf \n"
             // Generate Client certificates
-            "echo Running: openssl genrsa -passout pass:$CERT_CA_PWD_PARAM$ -out key.pem \n" +
-            "openssl genrsa -passout pass:$CERT_CA_PWD_PARAM$ -out key.pem \n" +
-            "echo Running: openssl req -passin pass:$CERT_CA_PWD_PARAM$ -subj '/CN=client' -new -key key.pem -out client.csr \n" +
-            "openssl req -passin pass:$CERT_CA_PWD_PARAM$ -subj '/CN=client' -new -key key.pem -out client.csr \n" +
-            "echo Running: \"echo extendedKeyUsage = clientAuth,serverAuth > extfile.cnf \" \n" +
-            "echo extendedKeyUsage = clientAuth,serverAuth > extfile.cnf \n" +
-            "echo Running: openssl x509 -req -passin pass:$CERT_CA_PWD_PARAM$ -days 365 -sha256 -in client.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out cert.pem -extfile extfile.cnf \n" +
-            "openssl x509 -req -passin pass:$CERT_CA_PWD_PARAM$ -days 365 -sha256 -in client.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out cert.pem -extfile extfile.cnf \n" +
-            "echo Running: cd ~ \n" +
-            "cd ~ \n";
+            + "echo Running: openssl genrsa -passout pass:$CERT_CA_PWD_PARAM$ -out key.pem \n"
+            + "openssl genrsa -passout pass:$CERT_CA_PWD_PARAM$ -out key.pem \n"
+            + "echo Running: openssl req -passin pass:$CERT_CA_PWD_PARAM$ -subj '/CN=client' -new -key key.pem -out client.csr \n"
+            + "openssl req -passin pass:$CERT_CA_PWD_PARAM$ -subj '/CN=client' -new -key key.pem -out client.csr \n"
+            + "echo Running: \"echo extendedKeyUsage = clientAuth,serverAuth > extfile.cnf \" \n"
+            + "echo extendedKeyUsage = clientAuth,serverAuth > extfile.cnf \n"
+            + "echo Running: openssl x509 -req -passin pass:$CERT_CA_PWD_PARAM$ -days 365 -sha256 -in client.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out cert.pem -extfile extfile.cnf \n"
+            + "openssl x509 -req -passin pass:$CERT_CA_PWD_PARAM$ -days 365 -sha256 -in client.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out cert.pem -extfile extfile.cnf \n"
+            + "echo Running: cd ~ \n"
+            + "cd ~ \n";
 
     /**
-     * Bash script that sets up the TLS certificates to be used in a secured Docker configuration file; must be run on the Docker dockerHostUrl after the VM is provisioned
+     * Bash script that sets up the TLS certificates to be used in a secured Docker configuration file; must be run on the Docker dockerHostUrl after the VM is provisioned.
      */
-    public static final String INSTALL_DOCKER_TLS_CERTS_FOR_UBUNTU = "" +
-            "echo \"if [ ! -d /etc/docker/tls ]; then sudo mkdir -p /etc/docker/tls ; fi\" \n" +
-            "if [ ! -d /etc/docker/tls ]; then sudo mkdir -p /etc/docker/tls ; fi \n" +
-            "echo sudo cp -f ~/.azuredocker/tls/ca.pem /etc/docker/tls/ca.pem \n" +
-            "sudo cp -f ~/.azuredocker/tls/ca.pem /etc/docker/tls/ca.pem \n" +
-            "echo sudo cp -f ~/.azuredocker/tls/server.pem /etc/docker/tls/server.pem \n" +
-            "sudo cp -f ~/.azuredocker/tls/server.pem /etc/docker/tls/server.pem \n" +
-            "echo sudo cp -f ~/.azuredocker/tls/server-key.pem /etc/docker/tls/server-key.pem \n" +
-            "sudo cp -f ~/.azuredocker/tls/server-key.pem /etc/docker/tls/server-key.pem \n" +
-            "echo sudo chmod -R 755 /etc/docker \n" +
-            "sudo chmod -R 755 /etc/docker \n";
+    public static final String INSTALL_DOCKER_TLS_CERTS_FOR_UBUNTU = ""
+            + "echo \"if [ ! -d /etc/docker/tls ]; then sudo mkdir -p /etc/docker/tls ; fi\" \n"
+            + "if [ ! -d /etc/docker/tls ]; then sudo mkdir -p /etc/docker/tls ; fi \n"
+            + "echo sudo cp -f ~/.azuredocker/tls/ca.pem /etc/docker/tls/ca.pem \n"
+            + "sudo cp -f ~/.azuredocker/tls/ca.pem /etc/docker/tls/ca.pem \n"
+            + "echo sudo cp -f ~/.azuredocker/tls/server.pem /etc/docker/tls/server.pem \n"
+            + "sudo cp -f ~/.azuredocker/tls/server.pem /etc/docker/tls/server.pem \n"
+            + "echo sudo cp -f ~/.azuredocker/tls/server-key.pem /etc/docker/tls/server-key.pem \n"
+            + "sudo cp -f ~/.azuredocker/tls/server-key.pem /etc/docker/tls/server-key.pem \n"
+            + "echo sudo chmod -R 755 /etc/docker \n"
+            + "sudo chmod -R 755 /etc/docker \n";
 
     /**
-     * Docker daemon config file allowing connections from any Docker client
+     * Docker daemon config file allowing connections from any Docker client.
      */
-    public static final String DEFAULT_DOCKERD_CONFIG_TLS_ENABLED = "" +
-            "[Service]\n" +
-            "ExecStart=\n" +
-            "ExecStart=/usr/bin/dockerd --tlsverify --tlscacert=/etc/docker/tls/ca.pem --tlscert=/etc/docker/tls/server.pem --tlskey=/etc/docker/tls/server-key.pem -H tcp://0.0.0.0:2376 -H unix:///var/run/docker.sock\n";
+    public static final String DEFAULT_DOCKERD_CONFIG_TLS_ENABLED = ""
+            + "[Service]\n"
+            + "ExecStart=\n"
+            + "ExecStart=/usr/bin/dockerd --tlsverify --tlscacert=/etc/docker/tls/ca.pem --tlscert=/etc/docker/tls/server.pem --tlskey=/etc/docker/tls/server-key.pem -H tcp://0.0.0.0:2376 -H unix:///var/run/docker.sock\n";
 
     /**
-     * Bash script that creates a default TLS secured Docker configuration file; must be run on the Docker dockerHostUrl after the VM is provisioned
+     * Bash script that creates a default TLS secured Docker configuration file; must be run on the Docker dockerHostUrl after the VM is provisioned.
      */
-    public static final String CREATE_DEFAULT_DOCKERD_OPTS_TLS_ENABLED = "" +
-            "echo Running: sudo service docker stop \n" +
-            "sudo service docker stop \n" +
-            "echo \"if [ ! -d /etc/systemd/system/docker.service.d ]; then sudo mkdir -p /etc/systemd/system/docker.service.d ; fi\" \n" +
-            "if [ ! -d /etc/systemd/system/docker.service.d ]; then sudo mkdir -p /etc/systemd/system/docker.service.d ; fi \n" +
-            "echo sudo cp -f ~/.azuredocker/dockerd_tls.config /etc/systemd/system/docker.service.d/custom.conf \n" +
-            "sudo cp -f ~/.azuredocker/dockerd_tls.config /etc/systemd/system/docker.service.d/custom.conf \n" +
-            "echo Running: sudo systemctl daemon-reload \n" +
-            "sudo systemctl daemon-reload \n" +
-            "echo Running: sudo service docker start \n" +
-            "sudo service docker start \n";
+    public static final String CREATE_DEFAULT_DOCKERD_OPTS_TLS_ENABLED = ""
+            + "echo Running: sudo service docker stop \n"
+            + "sudo service docker stop \n"
+            + "echo \"if [ ! -d /etc/systemd/system/docker.service.d ]; then sudo mkdir -p /etc/systemd/system/docker.service.d ; fi\" \n"
+            + "if [ ! -d /etc/systemd/system/docker.service.d ]; then sudo mkdir -p /etc/systemd/system/docker.service.d ; fi \n"
+            + "echo sudo cp -f ~/.azuredocker/dockerd_tls.config /etc/systemd/system/docker.service.d/custom.conf \n"
+            + "sudo cp -f ~/.azuredocker/dockerd_tls.config /etc/systemd/system/docker.service.d/custom.conf \n"
+            + "echo Running: sudo systemctl daemon-reload \n"
+            + "sudo systemctl daemon-reload \n"
+            + "echo Running: sudo service docker start \n"
+            + "sudo service docker start \n";
 
     /**
-     * Docker daemon config file allowing connections from any Docker client
+     * Docker daemon config file allowing connections from any Docker client.
      */
-    public static final String DEFAULT_DOCKERD_CONFIG_TLS_DISABLED = "" +
-            "[Service]\n" +
-            "ExecStart=\n" +
-            "ExecStart=/usr/bin/dockerd --tls=false -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock\n";
+    public static final String DEFAULT_DOCKERD_CONFIG_TLS_DISABLED = ""
+            + "[Service]\n"
+            + "ExecStart=\n"
+            + "ExecStart=/usr/bin/dockerd --tls=false -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock\n";
 
     /**
-     * Bash script that creates a default unsecured Docker configuration file; must be run on the Docker dockerHostUrl after the VM is provisioned
+     * Bash script that creates a default unsecured Docker configuration file; must be run on the Docker dockerHostUrl after the VM is provisioned.
      */
-    public static final String CREATE_DEFAULT_DOCKERD_OPTS_TLS_DISABLED = "" +
-            "echo Running: sudo service docker stop\n" +
-            "sudo service docker stop\n" +
-            "echo \"if [ ! -d /etc/systemd/system/docker.service.d ]; then sudo mkdir -p /etc/systemd/system/docker.service.d ; fi\" \n" +
-            "if [ ! -d /etc/systemd/system/docker.service.d ]; then sudo mkdir -p /etc/systemd/system/docker.service.d ; fi \n" +
-            "echo sudo cp -f ~/.azuredocker/dockerd_notls.config /etc/systemd/system/docker.service.d/custom.conf \n" +
-            "sudo cp -f ~/.azuredocker/dockerd_notls.config /etc/systemd/system/docker.service.d/custom.conf \n" +
-            "echo Running: sudo systemctl daemon-reload \n" +
-            "sudo systemctl daemon-reload \n" +
-            "echo Running: sudo service docker start \n" +
-            "sudo service docker start \n";
+    public static final String CREATE_DEFAULT_DOCKERD_OPTS_TLS_DISABLED = ""
+            + "echo Running: sudo service docker stop\n"
+            + "sudo service docker stop\n"
+            + "echo \"if [ ! -d /etc/systemd/system/docker.service.d ]; then sudo mkdir -p /etc/systemd/system/docker.service.d ; fi\" \n"
+            + "if [ ! -d /etc/systemd/system/docker.service.d ]; then sudo mkdir -p /etc/systemd/system/docker.service.d ; fi \n"
+            + "echo sudo cp -f ~/.azuredocker/dockerd_notls.config /etc/systemd/system/docker.service.d/custom.conf \n"
+            + "sudo cp -f ~/.azuredocker/dockerd_notls.config /etc/systemd/system/docker.service.d/custom.conf \n"
+            + "echo Running: sudo systemctl daemon-reload \n"
+            + "sudo systemctl daemon-reload \n"
+            + "echo Running: sudo service docker start \n"
+            + "sudo service docker start \n";
 }

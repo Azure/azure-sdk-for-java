@@ -6,7 +6,13 @@
 
 package com.microsoft.azure.management.samples;
 
-import com.jcraft.jsch.*;
+import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.ChannelShell;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
 import expect4j.Closure;
 import expect4j.Expect4j;
 import expect4j.ExpectState;
@@ -106,7 +112,7 @@ public final class SSHShell {
     }
 
     /**
-     * Executes a command on the remote host
+     * Executes a command on the remote host.
      *
      * @param command the command to be executed
      * @param getExitStatus return the exit status captured in the stdout
@@ -119,24 +125,30 @@ public final class SSHShell {
         String resultErr = "";
 
         Channel channel = this.session.openChannel("exec");
-        ((ChannelExec)channel).setCommand(command);
+        ((ChannelExec) channel).setCommand(command);
         InputStream commandOutput = channel.getInputStream();
         InputStream commandErr = ((ChannelExec) channel).getErrStream();
         channel.connect();
         byte[] tmp  = new byte[4096];
-        while(true){
-            while(commandOutput.available()>0){
-                int i=commandOutput.read(tmp, 0, 4096);
-                if(i<0)break;
+        while (true) {
+            while (commandOutput.available() > 0) {
+                int i = commandOutput.read(tmp, 0, 4096);
+                if (i < 0) {
+                    break;
+                }
                 result += new String(tmp, 0, i);
             }
-            while(commandErr.available()>0){
-                int i=commandErr.read(tmp, 0, 4096);
-                if(i<0)break;
+            while (commandErr.available() > 0) {
+                int i = commandErr.read(tmp, 0, 4096);
+                if (i < 0) {
+                    break;
+                }
                 resultErr += new String(tmp, 0, i);
             }
-            if(channel.isClosed()){
-                if(commandOutput.available()>0) continue;
+            if (channel.isClosed()) {
+                if (commandOutput.available() > 0) {
+                    continue;
+                }
                 if (getExitStatus) {
                     result += "exit-status: " + channel.getExitStatus();
                     if (withErr) {
@@ -145,7 +157,9 @@ public final class SSHShell {
                 }
                 break;
             }
-            try{Thread.sleep(100);}catch(Exception ee){}
+            try {
+                Thread.sleep(100);
+            } catch (Exception ee) { }
         }
         channel.disconnect();
 
@@ -153,7 +167,7 @@ public final class SSHShell {
     }
 
     /**
-     * Downloads the content of a file from the remote host as a String
+     * Downloads the content of a file from the remote host as a String.
      *
      * @param fileName the name of the file for which the content will be downloaded
      * @param fromPath the path of the file for which the content will be downloaded
@@ -176,8 +190,9 @@ public final class SSHShell {
     }
 
     /**
-     * Creates a new file on the remote host using the input content
+     * Creates a new file on the remote host using the input content.
      *
+     * @param from the byte array content to be uploaded
      * @param fileName the name of the file for which the content will be saved into
      * @param toPath the path of the file for which the content will be saved into
      * @param isUserHomeBased true if the path of the file is relative to the user's home directory
