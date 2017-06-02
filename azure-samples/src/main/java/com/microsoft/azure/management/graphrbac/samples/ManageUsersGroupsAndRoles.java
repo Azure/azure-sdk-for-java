@@ -21,13 +21,20 @@ import java.io.File;
 import java.util.List;
 
 /**
- * Azure Users, Groups and Roles sample
+ * Azure Users, Groups and Roles sample.
+ * - Get user by email
+ * - List users
+ * - Get role by scope and role name
+ * - Create Service Principal
+ * - Assign role to Service Principal
+ * - List Active Directory groups.
  */
 public final class ManageUsersGroupsAndRoles {
     /**
      * Main function which runs the actual sample.
      *
      * @param authenticated instance of Authenticated
+     * @param defaultSubscription default subscription id
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure.Authenticated authenticated, String defaultSubscription) {
