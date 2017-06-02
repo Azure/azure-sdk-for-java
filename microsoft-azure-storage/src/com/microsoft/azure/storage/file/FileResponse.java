@@ -125,6 +125,8 @@ final class FileResponse extends BaseResponse {
         directoryProperties.setEtag(BaseResponse.getEtag(request));
         directoryProperties.setLastModified(new Date(request.getLastModified()));
         directoryAttributes.setMetadata(getMetadata(request));
+        directoryProperties.setServerEncrypted(
+                Constants.TRUE.equals(request.getHeaderField(Constants.HeaderConstants.SERVER_ENCRYPTED)));
 
         return directoryAttributes;
     }
@@ -161,6 +163,8 @@ final class FileResponse extends BaseResponse {
         properties.setContentType(request.getHeaderField(Constants.HeaderConstants.CONTENT_TYPE));
         properties.setEtag(BaseResponse.getEtag(request));
         properties.setCopyState(FileResponse.getCopyState(request));
+        properties.setServerEncrypted(
+                Constants.TRUE.equals(request.getHeaderField(Constants.HeaderConstants.SERVER_ENCRYPTED)));
 
         final Calendar lastModifiedCalendar = Calendar.getInstance(Utility.LOCALE_US);
         lastModifiedCalendar.setTimeZone(Utility.UTC_ZONE);

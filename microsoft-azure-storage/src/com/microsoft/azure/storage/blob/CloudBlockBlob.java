@@ -20,6 +20,7 @@ import com.microsoft.azure.storage.file.CloudFile;
 
 import javax.crypto.Cipher;
 import javax.xml.stream.XMLStreamException;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -379,7 +380,7 @@ public final class CloudBlockBlob extends CloudBlob {
                     }
 
                     blob.updateEtagAndLastModifiedFromResponse(this.getConnection());
-                    this.getResult().setRequestServiceEncrypted(CloudBlob.isServerRequestEncrypted(this.getConnection()));
+                    this.getResult().setRequestServiceEncrypted(BaseResponse.isServerRequestEncrypted(this.getConnection()));
                     return null;
                 }
 
@@ -915,7 +916,7 @@ public final class CloudBlockBlob extends CloudBlob {
                 }
 
                 blob.updateEtagAndLastModifiedFromResponse(this.getConnection());
-                this.getResult().setRequestServiceEncrypted(CloudBlob.isServerRequestEncrypted(this.getConnection()));
+                this.getResult().setRequestServiceEncrypted(BaseResponse.isServerRequestEncrypted(this.getConnection()));
                 return null;
             }
 
@@ -1111,7 +1112,7 @@ public final class CloudBlockBlob extends CloudBlob {
                     return null;
                 }
 
-                this.getResult().setRequestServiceEncrypted(CloudBlob.isServerRequestEncrypted(this.getConnection()));
+                this.getResult().setRequestServiceEncrypted(BaseResponse.isServerRequestEncrypted(this.getConnection()));
                 return null;
             }
 
