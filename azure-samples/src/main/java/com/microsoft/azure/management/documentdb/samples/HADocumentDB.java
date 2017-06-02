@@ -11,13 +11,9 @@ import com.microsoft.azure.documentdb.*;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.documentdb.DatabaseAccountKind;
 import com.microsoft.azure.management.documentdb.DocumentDBAccount;
-import com.microsoft.azure.management.documentdb.implementation.DatabaseAccountListKeysResultInner;
-import com.microsoft.azure.management.keyvault.KeyPermissions;
-import com.microsoft.azure.management.keyvault.SecretPermissions;
-import com.microsoft.azure.management.keyvault.Vault;
+import com.microsoft.azure.management.documentdb.implementation.DatabaseAccountListKeysResult;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 
 import java.io.File;
@@ -52,11 +48,11 @@ public final class HADocumentDB {
             // Connect to document db and add a collection
 
             DocumentDBAccount documentDBAccount = azure.documentDBs().define(docDBName)
-                    .withRegion(Region.US_WEST)
+                    .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
                     .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
                     .withSessionConsistency()
-                    .withWriteReplication(Region.US_EAST)
+                    .withWriteReplication(Region.US_WEST)
                     .withReadReplication(Region.US_CENTRAL)
                     .create();
 
@@ -77,8 +73,8 @@ public final class HADocumentDB {
             System.out.println("Updated document db");
             //Utils.print(documentDBAccount);
 
-            DatabaseAccountListKeysResultInner databaseAccountListKeysResultInner = documentDBAccount.listKeys();
-            String masterKey = databaseAccountListKeysResultInner.primaryMasterKey();
+            DatabaseAccountListKeysResult databaseAccountListKeysResult = documentDBAccount.listKeys();
+            String masterKey = databaseAccountListKeysResult.primaryMasterKey();
             String endPoint = documentDBAccount.documentEndpoint();
             //============================================================
             // Connect to document db and add a collection

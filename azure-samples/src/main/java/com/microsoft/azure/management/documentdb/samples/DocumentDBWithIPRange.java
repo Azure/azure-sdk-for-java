@@ -11,6 +11,7 @@ import com.microsoft.azure.documentdb.*;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.documentdb.DatabaseAccountKind;
 import com.microsoft.azure.management.documentdb.DocumentDBAccount;
+import com.microsoft.azure.management.documentdb.implementation.DatabaseAccountListConnectionStringsResult;
 import com.microsoft.azure.management.documentdb.implementation.DatabaseAccountListKeysResult;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
@@ -26,7 +27,7 @@ import java.io.File;
  *  - add collection to the docuemnt db
  *  - Delete the document db.
  */
-public final class DocumentDBWithEventualConsistency {
+public final class DocumentDBWithIPRange {
     static final String DATABASE_ID = "TestDB";
     static final String COLLECTION_ID = "TestCollection";
 
@@ -48,27 +49,20 @@ public final class DocumentDBWithEventualConsistency {
             // Connect to document db and add a collection
 
             DocumentDBAccount documentDBAccount = azure.documentDBs().define(docDBName)
-                    .withRegion(Region.US_WEST)
+                    .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
                     .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
-                    .withEventualConsistency()
-                    .withWriteReplication(Region.US_EAST)
+                    .withSessionConsistency()
+                    .withWriteReplication(Region.US_WEST)
                     .withReadReplication(Region.US_CENTRAL)
+                    .withReadReplication(Region.ASIA_EAST)
+                    .withReadReplication(Region.AUSTRALIA_SOUTHEAST)
+                    .withReadReplication(Region.UK_SOUTH)
+                    .withIpRangeFilter("13.91.6.132,13.91.6.1/24")
                     .create();
 
             System.out.println("Created document db");
             //Utils.print(documentDBAccount);
-
-            //============================================================
-            // Authorize an application
-
-            System.out.println("Adding three additional read replication regions");
-
-            documentDBAccount = documentDBAccount.update()
-                    .withReadReplication(Region.ASIA_EAST)
-                    .withReadReplication(Region.AUSTRALIA_SOUTHEAST)
-                    .withReadReplication(Region.UK_SOUTH)
-                    .apply();
 
             System.out.println("Updated document db");
             //Utils.print(documentDBAccount);
@@ -126,7 +120,7 @@ public final class DocumentDBWithEventualConsistency {
 
             // Set the provisioned throughput for this collection to be 1000 RUs.
             RequestOptions requestOptions = new RequestOptions();
-            requestOptions.setOfferThroughput(1000);
+            requestOptions.setOfferThroughput(4000);
 
             // Create a new collection.
             myCollection = documentClient.createCollection(
@@ -164,6 +158,6 @@ public final class DocumentDBWithEventualConsistency {
         }
     }
 
-    private DocumentDBWithEventualConsistency() {
+    private DocumentDBWithIPRange() {
     }
 }

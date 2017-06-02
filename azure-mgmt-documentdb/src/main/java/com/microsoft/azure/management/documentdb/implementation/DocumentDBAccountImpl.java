@@ -91,23 +91,23 @@ class DocumentDBAccountImpl
     }
 
     @Override
-    public DatabaseAccountListKeysResultInner listKeys() {
+    public DatabaseAccountListKeysResult listKeys() {
         return this.listKeysAsync().toBlocking().last();
     }
 
     @Override
-    public Observable<DatabaseAccountListKeysResultInner> listKeysAsync() {
+    public Observable<DatabaseAccountListKeysResult> listKeysAsync() {
         return this.manager().inner().databaseAccounts().listKeysAsync(this.resourceGroupName(),
                 this.name());
     }
 
     @Override
-    public DatabaseAccountListConnectionStringsResultInner listConnectionStrings() {
+    public DatabaseAccountListConnectionStringsResult listConnectionStrings() {
         return this.listConnectionStringsAsync().toBlocking().last();
     }
 
     @Override
-    public Observable<DatabaseAccountListConnectionStringsResultInner> listConnectionStringsAsync() {
+    public Observable<DatabaseAccountListConnectionStringsResult> listConnectionStringsAsync() {
         return this.manager().inner().databaseAccounts().listConnectionStringsAsync(this.resourceGroupName(),
                 this.name());
     }

@@ -11,7 +11,8 @@ import com.microsoft.azure.documentdb.*;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.documentdb.DatabaseAccountKind;
 import com.microsoft.azure.management.documentdb.DocumentDBAccount;
-import com.microsoft.azure.management.documentdb.implementation.DatabaseAccountListKeysResultInner;
+import com.microsoft.azure.management.documentdb.implementation.DatabaseAccountListConnectionStringsResult;
+import com.microsoft.azure.management.documentdb.implementation.DatabaseAccountListKeysResult;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.rest.LogLevel;
@@ -48,11 +49,11 @@ public final class DocumentDBWithKindMongoDB {
             // Connect to document db and add a collection
 
             DocumentDBAccount documentDBAccount = azure.documentDBs().define(docDBName)
-                    .withRegion(Region.US_WEST)
+                    .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
                     .withKind(DatabaseAccountKind.MONGO_DB)
                     .withEventualConsistency()
-                    .withWriteReplication(Region.US_EAST)
+                    .withWriteReplication(Region.US_WEST)
                     .withReadReplication(Region.US_CENTRAL)
                     .create();
 
@@ -73,8 +74,9 @@ public final class DocumentDBWithKindMongoDB {
             System.out.println("Updated document db");
             //Utils.print(documentDBAccount);
 
-            DatabaseAccountListKeysResultInner databaseAccountListKeysResultInner = documentDBAccount.listKeys();
-            String masterKey = databaseAccountListKeysResultInner.primaryMasterKey();
+            DatabaseAccountListConnectionStringsResult databaseAccountListConnectionStringsResult = documentDBAccount.listConnectionStrings();
+            DatabaseAccountListKeysResult databaseAccountListKeysResult = documentDBAccount.listKeys();
+            String masterKey = databaseAccountListKeysResult.primaryMasterKey();
             String endPoint = documentDBAccount.documentEndpoint();
             //============================================================
             // Connect to document db and add a collection
@@ -126,7 +128,7 @@ public final class DocumentDBWithKindMongoDB {
 
             // Set the provisioned throughput for this collection to be 1000 RUs.
             RequestOptions requestOptions = new RequestOptions();
-            requestOptions.setOfferThroughput(4000);
+            requestOptions.setOfferThroughput(1000);
 
             // Create a new collection.
             myCollection = documentClient.createCollection(
