@@ -42,7 +42,17 @@ public final class ManageUsersGroupsAndRoles {
             Utils.print(user);
 
             // ============================================================
+            // List users
+
+            List<ActiveDirectoryUser> users = authenticated.activeDirectoryUsers().list();
+            System.out.println("Active Directory Groups:");
+            for (ActiveDirectoryUser adUser : users) {
+                Utils.print(adUser);
+            }
+
+            // ============================================================
             // Get role by scope and role name
+
             RoleDefinition roleDefinition = authenticated.roleDefinitions()
                     .getByScopeAndRoleName("subscriptions/" + defaultSubscription, "Contributor");
             Utils.print(roleDefinition);
@@ -61,6 +71,7 @@ public final class ManageUsersGroupsAndRoles {
 
             // ============================================================
             // Assign role to Service Principal
+
             RoleAssignment roleAssignment = authenticated.roleAssignments()
                     .define(raName)
                     .forServicePrincipal(sp)
@@ -72,7 +83,9 @@ public final class ManageUsersGroupsAndRoles {
 
             // ============================================================
             // List Active Directory groups
+
             List<ActiveDirectoryGroup> groups = authenticated.activeDirectoryGroups().list();
+            System.out.println("Active Directory Groups:");
             for (ActiveDirectoryGroup group : groups) {
                 Utils.print(group);
             }
