@@ -166,11 +166,9 @@ class DocumentDBAccountImpl
     public DocumentDBAccountImpl withoutReadReplication(Region region) {
         this.ensureFailoverIsInitialized();
         for (int i = 1; i < this.failoverPolicies.size(); i++) {
-            if (this.failoverPolicies.get(i).locationName() != null)
-            {
+            if (this.failoverPolicies.get(i).locationName() != null) {
                 String locName = this.failoverPolicies.get(i).locationName().replace(" ", "").toLowerCase();
-                if (locName.equals(region.name()))
-                {
+                if (locName.equals(region.name())) {
                     this.failoverPolicies.remove(i);
                 }
             }
@@ -309,8 +307,8 @@ class DocumentDBAccountImpl
                                 if (maxDelayDueToMissingFailovers > data.get(0)
                                         && (databaseAccount.id() == null
                                         || databaseAccount.id().length() == 0
-                                        || createUpdateParametersInner.locations().size() >
-                                            databaseAccount.inner().failoverPolicies().size())) {
+                                        || createUpdateParametersInner.locations().size()
+                                        > databaseAccount.inner().failoverPolicies().size())) {
                                     data.set(0, data.get(0) + 5);
                                     return false;
                                 }
