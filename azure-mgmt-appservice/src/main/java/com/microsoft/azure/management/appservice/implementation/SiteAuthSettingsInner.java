@@ -8,13 +8,12 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.azure.Resource;
-import com.microsoft.azure.management.appservice.BuiltInAuthenticationProvider;
 import com.microsoft.azure.management.appservice.UnauthenticatedClientAction;
-import com.microsoft.rest.serializer.JsonFlatten;
-
 import java.util.List;
+import com.microsoft.azure.management.appservice.BuiltInAuthenticationProvider;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.Resource;
 
 /**
  * Configuration settings for the Azure App Service Authentication /

@@ -92,6 +92,13 @@ public class CloningInfo {
     private String trafficManagerProfileName;
 
     /**
+     * &lt;code&gt;true&lt;/code&gt; if quotas should be ignored; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;.
+     */
+    @JsonProperty(value = "ignoreQuotas")
+    private Boolean ignoreQuotas;
+
+    /**
      * Get the correlationId value.
      *
      * @return the correlationId value
@@ -288,6 +295,26 @@ public class CloningInfo {
      */
     public CloningInfo withTrafficManagerProfileName(String trafficManagerProfileName) {
         this.trafficManagerProfileName = trafficManagerProfileName;
+        return this;
+    }
+
+    /**
+     * Get the ignoreQuotas value.
+     *
+     * @return the ignoreQuotas value
+     */
+    public Boolean ignoreQuotas() {
+        return this.ignoreQuotas;
+    }
+
+    /**
+     * Set the ignoreQuotas value.
+     *
+     * @param ignoreQuotas the ignoreQuotas value to set
+     * @return the CloningInfo object itself.
+     */
+    public CloningInfo withIgnoreQuotas(Boolean ignoreQuotas) {
+        this.ignoreQuotas = ignoreQuotas;
         return this;
     }
 

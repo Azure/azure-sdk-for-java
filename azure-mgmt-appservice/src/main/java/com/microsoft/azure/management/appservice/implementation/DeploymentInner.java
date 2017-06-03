@@ -51,19 +51,19 @@ public class DeploymentInner extends Resource {
     /**
      * Author email.
      */
-    @JsonProperty(value = "properties.author_email")
+    @JsonProperty(value = "properties.authorEmail")
     private String authorEmail;
 
     /**
      * Start time.
      */
-    @JsonProperty(value = "properties.start_time")
+    @JsonProperty(value = "properties.startTime")
     private DateTime startTime;
 
     /**
      * End time.
      */
-    @JsonProperty(value = "properties.end_time")
+    @JsonProperty(value = "properties.endTime")
     private DateTime endTime;
 
     /**
