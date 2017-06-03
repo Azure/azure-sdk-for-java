@@ -87,6 +87,16 @@ public interface ContainerService extends
      */
     boolean isDiagnosticsEnabled();
 
+    /**
+     * @return the service principal clientId
+     */
+    String servicePrincipalClientId();
+
+    /**
+     * @return the service principal secret
+     */
+    String servicePrincipalSecret();
+
     // Fluent interfaces
 
     /**
@@ -102,6 +112,8 @@ public interface ContainerService extends
             DefinitionStages.WithLinuxRootUsername,
             DefinitionStages.WithLinuxSshKey,
             DefinitionStages.WithAgentPool,
+            DefinitionStages.WithServicePrincipalProfile,
+            DefinitionStages.WithDiagnostics,
             ContainerService.DefinitionStages.WithCreate {
     }
 
@@ -131,19 +143,32 @@ public interface ContainerService extends
              * Specifies the Swarm orchestration type for the container service.
              * @return the next stage of the definition
              */
-            WithLinux withSwarmOrchestration();
+            WithDiagnostics withSwarmOrchestration();
 
             /**
              * Specifies the DCOS orchestration type for the container service.
              * @return the next stage of the definition
              */
-            WithLinux withDcosOrchestration();
+            WithDiagnostics withDcosOrchestration();
 
             /**
              * Specifies the Kubernetes orchestration type for the container service.
              * @return the next stage of the definition
              */
-            WithLinux withKubernetesOrchestration();
+            WithServicePrincipalProfile withKubernetesOrchestration();
+        }
+
+        /**
+         * The stage allowing properties for cluster service principals.
+         */
+        interface WithServicePrincipalProfile {
+            /**
+             * Properties for cluster service principals.
+             * @param clientId The ID for the service principal.
+             * @param secret The secret password associated with the service principal.
+             * @return the next stage
+             */
+            WithLinux withServicePrincipal(String clientId,String secret);
         }
 
         /**
@@ -221,12 +246,13 @@ public interface ContainerService extends
         /**
          * The stage of the container service definition allowing to specific diagnostic settings.
          */
-        interface WithDiagnostics {
+        interface WithDiagnostics extends
+                WithLinux {
             /**
              * Enable diagnostics.
              * @return the create stage of the definition
              */
-            WithCreate withDiagnostics();
+            WithLinux withDiagnostics();
         }
 
         /**
@@ -236,8 +262,7 @@ public interface ContainerService extends
          */
         interface WithCreate extends
                 Creatable<ContainerService>,
-                Resource.DefinitionWithTags<WithCreate>,
-                WithDiagnostics {
+                Resource.DefinitionWithTags<WithCreate> {
         }
     }
 
@@ -248,31 +273,13 @@ public interface ContainerService extends
     interface Update extends
             Resource.UpdateWithTags<Update>,
             Appliable<ContainerService>,
-            ContainerService.UpdateStages.WithUpdateAgentPoolCount,
-            UpdateStages.WithDiagnostics {
+            ContainerService.UpdateStages.WithUpdateAgentPoolCount {
     }
 
     /**
      * Grouping of container service update stages.
      */
     interface UpdateStages {
-        /**
-         * The stage of the container service definition allowing to specific diagnostic settings.
-         */
-        interface WithDiagnostics {
-            /**
-             * Enables diagnostics.
-             * @return the next stage of the update
-             */
-            Update withDiagnostics();
-
-            /**
-             * Disables diagnostics.
-             * @return the next stage of the update
-             */
-            Update withoutDiagnostics();
-        }
-
         /**
          * The stage of the container service definition allowing to specific diagnostic settings.
          */
