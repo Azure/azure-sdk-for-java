@@ -96,7 +96,7 @@ public class CertificateInner extends Resource {
     /**
      * Raw bytes of .cer file.
      */
-    @JsonProperty(value = "properties.cerBlob")
+    @JsonProperty(value = "properties.cerBlob", access = JsonProperty.Access.WRITE_ONLY)
     private String cerBlob;
 
     /**
@@ -134,6 +134,18 @@ public class CertificateInner extends Resource {
      */
     @JsonProperty(value = "properties.keyVaultSecretStatus", access = JsonProperty.Access.WRITE_ONLY)
     private KeyVaultSecretStatus keyVaultSecretStatus;
+
+    /**
+     * Region of the certificate.
+     */
+    @JsonProperty(value = "properties.geoRegion", access = JsonProperty.Access.WRITE_ONLY)
+    private String geoRegion;
+
+    /**
+     * Resource name of the certificate.
+     */
+    @JsonProperty(value = "properties.name", access = JsonProperty.Access.WRITE_ONLY)
+    private String certificateName;
 
     /**
      * Resource ID of the associated App Service plan, formatted as:
@@ -293,17 +305,6 @@ public class CertificateInner extends Resource {
     }
 
     /**
-     * Set the cerBlob value.
-     *
-     * @param cerBlob the cerBlob value to set
-     * @return the CertificateInner object itself.
-     */
-    public CertificateInner withCerBlob(String cerBlob) {
-        this.cerBlob = cerBlob;
-        return this;
-    }
-
-    /**
      * Get the publicKeyHash value.
      *
      * @return the publicKeyHash value
@@ -368,6 +369,24 @@ public class CertificateInner extends Resource {
      */
     public KeyVaultSecretStatus keyVaultSecretStatus() {
         return this.keyVaultSecretStatus;
+    }
+
+    /**
+     * Get the geoRegion value.
+     *
+     * @return the geoRegion value
+     */
+    public String geoRegion() {
+        return this.geoRegion;
+    }
+
+    /**
+     * Get the certificateName value.
+     *
+     * @return the certificateName value
+     */
+    public String certificateName() {
+        return this.certificateName;
     }
 
     /**

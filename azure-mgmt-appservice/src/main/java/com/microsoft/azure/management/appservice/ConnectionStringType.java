@@ -43,7 +43,10 @@ public enum ConnectionStringType {
     DOC_DB("DocDb"),
 
     /** Enum value RedisCache. */
-    REDIS_CACHE("RedisCache");
+    REDIS_CACHE("RedisCache"),
+
+    /** Enum value PostgreSQL. */
+    POSTGRE_SQL("PostgreSQL");
 
     /** The actual serialized value for a ConnectionStringType instance. */
     private String value;

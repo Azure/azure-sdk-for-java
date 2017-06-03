@@ -1482,7 +1482,7 @@ public final class Utils {
      * @param fileName the name of the file on server
      * @param file the local file
      */
-    public static void uploadFileToFtp(PublishingProfile profile, String fileName, InputStream file) {
+    public static void uploadFileToWebApp(PublishingProfile profile, String fileName, InputStream file) {
         FTPClient ftpClient = new FTPClient();
         String[] ftpUrlSegments = profile.ftpUrl().split("/", 2);
         String server = ftpUrlSegments[0];
@@ -1490,13 +1490,46 @@ public final class Utils {
         if (fileName.contains("/")) {
             int lastslash = fileName.lastIndexOf('/');
             path = path + "/" + fileName.substring(0, lastslash);
-            fileName = fileName.substring(lastslash);
+            fileName = fileName.substring(lastslash + 1);
         }
         try {
             ftpClient.connect(server);
             ftpClient.login(profile.ftpUsername(), profile.ftpPassword());
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
             ftpClient.changeWorkingDirectory(path);
+            ftpClient.storeFile(fileName, file);
+            ftpClient.disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Uploads a file to an Azure function app.
+     * @param profile the publishing profile for the web app.
+     * @param fileName the name of the file on server
+     * @param file the local file
+     */
+    public static void uploadFileToFunctionApp(PublishingProfile profile, String fileName, InputStream file) {
+        FTPClient ftpClient = new FTPClient();
+        String[] ftpUrlSegments = profile.ftpUrl().split("/", 2);
+        String server = ftpUrlSegments[0];
+        String path = "site/wwwroot";
+        if (fileName.contains("/")) {
+            int lastslash = fileName.lastIndexOf('/');
+            path = path + "/" + fileName.substring(0, lastslash);
+            fileName = fileName.substring(lastslash + 1);
+        }
+        try {
+            ftpClient.connect(server);
+            ftpClient.login(profile.ftpUsername(), profile.ftpPassword());
+            ftpClient.setFileType(FTP.ASCII_FILE_TYPE);
+            for (String segment : path.split("/")) {
+                if (!ftpClient.changeWorkingDirectory(segment)) {
+                    ftpClient.makeDirectory(segment);
+                    ftpClient.changeWorkingDirectory(segment);
+                }
+            }
             ftpClient.storeFile(fileName, file);
             ftpClient.disconnect();
         } catch (IOException e) {
