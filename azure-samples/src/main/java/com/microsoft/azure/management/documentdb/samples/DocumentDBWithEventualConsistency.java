@@ -129,7 +129,7 @@ public final class DocumentDBWithEventualConsistency {
             myCollection = documentClient.createCollection(
                     "dbs/" + DATABASE_ID, myCollection, requestOptions)
                     .getResource();
-        }catch(Exception ex) {
+        } catch(Exception ex) {
             throw ex;
         }
     }

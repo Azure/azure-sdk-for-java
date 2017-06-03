@@ -77,7 +77,6 @@ import com.microsoft.azure.management.redis.RedisAccessKeys;
 import com.microsoft.azure.management.redis.RedisCache;
 import com.microsoft.azure.management.redis.RedisCachePremium;
 import com.microsoft.azure.management.redis.ScheduleEntry;
-import com.microsoft.azure.management.resources.Location;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.servicebus.AccessRights;
 import com.microsoft.azure.management.servicebus.AuthorizationKeys;
@@ -1706,13 +1705,13 @@ public final class Utils {
                 .append("\n\tDefault consistency level: ").append(documentDBAccount.consistencyPolicy().defaultConsistencyLevel())
                 .append("\n\tIP range filter: ").append(documentDBAccount.ipRangeFilter());
 
-        for(com.microsoft.azure.management.documentdb.Location writeReplica : documentDBAccount.writableReplications()) {
+        for (com.microsoft.azure.management.documentdb.Location writeReplica : documentDBAccount.writableReplications()) {
             builder.append("\n\t\tWrite replication: ")
                     .append("\n\t\t\tName :").append(writeReplica.locationName());
         }
 
         builder.append("\n\tNumber of read replications: ").append(documentDBAccount.readableReplications().size());
-        for(com.microsoft.azure.management.documentdb.Location readReplica : documentDBAccount.readableReplications()) {
+        for (com.microsoft.azure.management.documentdb.Location readReplica : documentDBAccount.readableReplications()) {
             builder.append("\n\t\tRead replication: ")
                     .append("\n\t\t\tName :").append(readReplica.locationName());
         }

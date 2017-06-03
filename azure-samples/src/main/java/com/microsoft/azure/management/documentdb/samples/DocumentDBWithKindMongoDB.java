@@ -57,8 +57,8 @@ public final class DocumentDBWithKindMongoDB {
 
             System.out.println("Get the mongodb connection string");
             DatabaseAccountListConnectionStringsResult databaseAccountListConnectionStringsResult = documentDBAccount.listConnectionStrings();
-            System.out.println("MongoDB connection string: " +
-                    databaseAccountListConnectionStringsResult.connectionStrings().get(0).connectionString());
+            System.out.println("MongoDB connection string: "
+                    + databaseAccountListConnectionStringsResult.connectionStrings().get(0).connectionString());
 
             //============================================================
             // Delete documentdb
