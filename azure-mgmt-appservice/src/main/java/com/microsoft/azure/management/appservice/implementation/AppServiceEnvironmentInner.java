@@ -203,12 +203,6 @@ public class AppServiceEnvironmentInner {
     private String environmentStatus;
 
     /**
-     * Kind of the app service environment.
-     */
-    @JsonProperty(value = "kind")
-    private String kind;
-
-    /**
      * Resource group of the App Service Environment.
      */
     @JsonProperty(value = "resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
@@ -651,26 +645,6 @@ public class AppServiceEnvironmentInner {
      */
     public String environmentStatus() {
         return this.environmentStatus;
-    }
-
-    /**
-     * Get the kind value.
-     *
-     * @return the kind value
-     */
-    public String kind() {
-        return this.kind;
-    }
-
-    /**
-     * Set the kind value.
-     *
-     * @param kind the kind value to set
-     * @return the AppServiceEnvironmentInner object itself.
-     */
-    public AppServiceEnvironmentInner withKind(String kind) {
-        this.kind = kind;
-        return this;
     }
 
     /**

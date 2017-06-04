@@ -91,7 +91,7 @@ public final class ManageWebAppSourceControlAsync {
                                             @Override
                                             public PublishingProfile call(PublishingProfile publishingProfile) {
                                                 System.out.println("Deploying helloworld.war to " + app1Name + " through FTP...");
-                                                Utils.uploadFileToFtp(publishingProfile,
+                                                Utils.uploadFileToWebApp(publishingProfile,
                                                         "helloworld.war",
                                                         ManageWebAppSourceControlAsync.class.getResourceAsStream("/helloworld.war"));
 

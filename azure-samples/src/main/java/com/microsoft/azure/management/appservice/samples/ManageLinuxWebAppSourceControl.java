@@ -81,7 +81,7 @@ public final class ManageLinuxWebAppSourceControl {
 
             System.out.println("Deploying helloworld.war to " + app1Name + " through FTP...");
 
-            Utils.uploadFileToFtp(app1.getPublishingProfile(), "helloworld.war", ManageLinuxWebAppSourceControl.class.getResourceAsStream("/helloworld.war"));
+            Utils.uploadFileToWebApp(app1.getPublishingProfile(), "helloworld.war", ManageLinuxWebAppSourceControl.class.getResourceAsStream("/helloworld.war"));
 
             System.out.println("Deployment helloworld.war to web app " + app1.name() + " completed");
             Utils.print(app1);

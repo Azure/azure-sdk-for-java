@@ -22,11 +22,6 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class AppServicePlanInner extends Resource {
     /**
-     * Kind of resource.
-     */
-    private String kind;
-
-    /**
      * Name for the App Service plan.
      */
     @JsonProperty(value = "properties.name")
@@ -127,26 +122,6 @@ public class AppServicePlanInner extends Resource {
      */
     @JsonProperty(value = "sku")
     private SkuDescription sku;
-
-    /**
-     * Get the kind value.
-     *
-     * @return the kind value
-     */
-    public String kind() {
-        return kind;
-    }
-
-    /**
-     * Set the kind value.
-     *
-     * @param kind the kind value to set
-     * @return the SiteInner object itself
-     */
-    public AppServicePlanInner withKind(String kind) {
-        this.kind = kind;
-        return this;
-    }
 
     /**
      * Get the appServicePlanName value.

@@ -51,7 +51,7 @@ public class AppServiceCertificateInner {
      * Set the keyVaultId value.
      *
      * @param keyVaultId the keyVaultId value to set
-     * @return the AppServiceCertificateInner object itself.
+     * @return the AppServiceCertificate object itself.
      */
     public AppServiceCertificateInner withKeyVaultId(String keyVaultId) {
         this.keyVaultId = keyVaultId;
@@ -71,7 +71,7 @@ public class AppServiceCertificateInner {
      * Set the keyVaultSecretName value.
      *
      * @param keyVaultSecretName the keyVaultSecretName value to set
-     * @return the AppServiceCertificateInner object itself.
+     * @return the AppServiceCertificate object itself.
      */
     public AppServiceCertificateInner withKeyVaultSecretName(String keyVaultSecretName) {
         this.keyVaultSecretName = keyVaultSecretName;

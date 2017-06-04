@@ -15,6 +15,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.appservice.HostName;
 import com.microsoft.azure.management.appservice.DomainPurchaseConsent;
+import com.microsoft.azure.management.appservice.DnsType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -68,7 +69,7 @@ public class DomainInner extends Resource {
     /**
      * Name servers.
      */
-    @JsonProperty(value = "properties.nameServers")
+    @JsonProperty(value = "properties.nameServers", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> nameServers;
 
     /**
@@ -116,7 +117,7 @@ public class DomainInner extends Resource {
     /**
      * All hostnames derived from the domain and assigned to Azure resources.
      */
-    @JsonProperty(value = "properties.managedHostNames")
+    @JsonProperty(value = "properties.managedHostNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<HostName> managedHostNames;
 
     /**
@@ -128,8 +129,34 @@ public class DomainInner extends Resource {
     /**
      * Reasons why domain is not renewable.
      */
-    @JsonProperty(value = "properties.domainNotRenewableReasons")
+    @JsonProperty(value = "properties.domainNotRenewableReasons", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> domainNotRenewableReasons;
+
+    /**
+     * Current DNS type. Possible values include: 'AzureDns',
+     * 'DefaultDomainRegistrarDns'.
+     */
+    @JsonProperty(value = "properties.dnsType")
+    private DnsType dnsType;
+
+    /**
+     * Azure DNS Zone to use.
+     */
+    @JsonProperty(value = "properties.dnsZoneId")
+    private String dnsZoneId;
+
+    /**
+     * Target DNS type (would be used for migration). Possible values include:
+     * 'AzureDns', 'DefaultDomainRegistrarDns'.
+     */
+    @JsonProperty(value = "properties.targetDnsType")
+    private DnsType targetDnsType;
+
+    /**
+     * The authCode property.
+     */
+    @JsonProperty(value = "properties.authCode", access = JsonProperty.Access.WRITE_ONLY)
+    private String authCode;
 
     /**
      * Get the contactAdmin value.
@@ -239,17 +266,6 @@ public class DomainInner extends Resource {
     }
 
     /**
-     * Set the nameServers value.
-     *
-     * @param nameServers the nameServers value to set
-     * @return the DomainInner object itself.
-     */
-    public DomainInner withNameServers(List<String> nameServers) {
-        this.nameServers = nameServers;
-        return this;
-    }
-
-    /**
      * Get the privacy value.
      *
      * @return the privacy value
@@ -335,17 +351,6 @@ public class DomainInner extends Resource {
     }
 
     /**
-     * Set the managedHostNames value.
-     *
-     * @param managedHostNames the managedHostNames value to set
-     * @return the DomainInner object itself.
-     */
-    public DomainInner withManagedHostNames(List<HostName> managedHostNames) {
-        this.managedHostNames = managedHostNames;
-        return this;
-    }
-
-    /**
      * Get the consent value.
      *
      * @return the consent value
@@ -375,14 +380,72 @@ public class DomainInner extends Resource {
     }
 
     /**
-     * Set the domainNotRenewableReasons value.
+     * Get the dnsType value.
      *
-     * @param domainNotRenewableReasons the domainNotRenewableReasons value to set
+     * @return the dnsType value
+     */
+    public DnsType dnsType() {
+        return this.dnsType;
+    }
+
+    /**
+     * Set the dnsType value.
+     *
+     * @param dnsType the dnsType value to set
      * @return the DomainInner object itself.
      */
-    public DomainInner withDomainNotRenewableReasons(List<String> domainNotRenewableReasons) {
-        this.domainNotRenewableReasons = domainNotRenewableReasons;
+    public DomainInner withDnsType(DnsType dnsType) {
+        this.dnsType = dnsType;
         return this;
+    }
+
+    /**
+     * Get the dnsZoneId value.
+     *
+     * @return the dnsZoneId value
+     */
+    public String dnsZoneId() {
+        return this.dnsZoneId;
+    }
+
+    /**
+     * Set the dnsZoneId value.
+     *
+     * @param dnsZoneId the dnsZoneId value to set
+     * @return the DomainInner object itself.
+     */
+    public DomainInner withDnsZoneId(String dnsZoneId) {
+        this.dnsZoneId = dnsZoneId;
+        return this;
+    }
+
+    /**
+     * Get the targetDnsType value.
+     *
+     * @return the targetDnsType value
+     */
+    public DnsType targetDnsType() {
+        return this.targetDnsType;
+    }
+
+    /**
+     * Set the targetDnsType value.
+     *
+     * @param targetDnsType the targetDnsType value to set
+     * @return the DomainInner object itself.
+     */
+    public DomainInner withTargetDnsType(DnsType targetDnsType) {
+        this.targetDnsType = targetDnsType;
+        return this;
+    }
+
+    /**
+     * Get the authCode value.
+     *
+     * @return the authCode value
+     */
+    public String authCode() {
+        return this.authCode;
     }
 
 }

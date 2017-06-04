@@ -206,12 +206,6 @@ public class AppServiceEnvironmentResourceInner extends Resource {
     private String environmentStatus;
 
     /**
-     * Kind of the app service environment.
-     */
-    @JsonProperty(value = "properties.kind")
-    private String appServiceEnvironmentResourceKind;
-
-    /**
      * Resource group of the App Service Environment.
      */
     @JsonProperty(value = "properties.resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
@@ -654,26 +648,6 @@ public class AppServiceEnvironmentResourceInner extends Resource {
      */
     public String environmentStatus() {
         return this.environmentStatus;
-    }
-
-    /**
-     * Get the appServiceEnvironmentResourceKind value.
-     *
-     * @return the appServiceEnvironmentResourceKind value
-     */
-    public String appServiceEnvironmentResourceKind() {
-        return this.appServiceEnvironmentResourceKind;
-    }
-
-    /**
-     * Set the appServiceEnvironmentResourceKind value.
-     *
-     * @param appServiceEnvironmentResourceKind the appServiceEnvironmentResourceKind value to set
-     * @return the AppServiceEnvironmentResourceInner object itself.
-     */
-    public AppServiceEnvironmentResourceInner withAppServiceEnvironmentResourceKind(String appServiceEnvironmentResourceKind) {
-        this.appServiceEnvironmentResourceKind = appServiceEnvironmentResourceKind;
-        return this;
     }
 
     /**
