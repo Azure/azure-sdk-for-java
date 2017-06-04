@@ -16,7 +16,7 @@ import com.microsoft.azure.management.servicebus.NamespaceAuthorizationRule;
 import com.microsoft.azure.management.servicebus.NamespaceSku;
 import com.microsoft.azure.management.servicebus.Policykey;
 import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
-import com.microsoft.azure.management.servicebus.Subscription;
+import com.microsoft.azure.management.servicebus.ServiceBusSubscription;
 import com.microsoft.azure.management.servicebus.Topic;
 import com.microsoft.rest.LogLevel;
 import com.microsoft.windowsazure.Configuration;
@@ -100,12 +100,12 @@ public final class ServiceBusPublishSubscribeBasic {
 
             Utils.print(topic);
 
-            Subscription firstSubscription = topic.subscriptions().getByName(subscription1Name);
+            ServiceBusSubscription firstSubscription = topic.subscriptions().getByName(subscription1Name);
             Utils.print(firstSubscription);
             //============================================================
             // Create a subscription
             System.out.println("Adding second subscription" + subscription2Name + " to topic " + topicName + "...");
-            Subscription secondSubscription = topic.subscriptions().define(subscription2Name).withDeleteOnIdleDurationInMinutes(10).create();
+            ServiceBusSubscription secondSubscription = topic.subscriptions().define(subscription2Name).withDeleteOnIdleDurationInMinutes(10).create();
             System.out.println("Added second subscription" + subscription2Name + " to topic " + topicName + "...");
 
             Utils.print(secondSubscription);
@@ -123,10 +123,10 @@ public final class ServiceBusPublishSubscribeBasic {
             //=============================================================
             // List all subscriptions for topic in namespaces
 
-            PagedList<Subscription> subscriptions = topic.subscriptions().list();
+            PagedList<ServiceBusSubscription> subscriptions = topic.subscriptions().list();
             System.out.println("Number of subscriptions to topic: " + subscriptions.size());
 
-            for (Subscription subscription : subscriptions) {
+            for (ServiceBusSubscription subscription : subscriptions) {
                 Utils.print(subscription);
             }
 

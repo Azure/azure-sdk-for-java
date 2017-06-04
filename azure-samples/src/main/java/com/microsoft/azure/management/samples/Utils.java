@@ -45,6 +45,12 @@ import com.microsoft.azure.management.dns.SrvRecordSet;
 import com.microsoft.azure.management.dns.TxtRecord;
 import com.microsoft.azure.management.dns.TxtRecordSet;
 import com.microsoft.azure.management.documentdb.DocumentDBAccount;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroup;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryUser;
+import com.microsoft.azure.management.graphrbac.RoleAssignment;
+import com.microsoft.azure.management.graphrbac.RoleDefinition;
+import com.microsoft.azure.management.graphrbac.ServicePrincipal;
+import com.microsoft.azure.management.graphrbac.implementation.PermissionInner;
 import com.microsoft.azure.management.keyvault.AccessPolicy;
 import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.network.ApplicationGateway;
@@ -54,6 +60,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfi
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayIPConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayListener;
+import com.microsoft.azure.management.network.ApplicationGatewayProbe;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
 import com.microsoft.azure.management.network.LoadBalancer;
@@ -84,7 +91,7 @@ import com.microsoft.azure.management.servicebus.NamespaceAuthorizationRule;
 import com.microsoft.azure.management.servicebus.Queue;
 import com.microsoft.azure.management.servicebus.QueueAuthorizationRule;
 import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
-import com.microsoft.azure.management.servicebus.Subscription;
+import com.microsoft.azure.management.servicebus.ServiceBusSubscription;
 import com.microsoft.azure.management.servicebus.Topic;
 import com.microsoft.azure.management.servicebus.TopicAuthorizationRule;
 import com.microsoft.azure.management.sql.ElasticPoolActivity;
@@ -109,6 +116,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -1259,19 +1267,19 @@ public final class Utils {
                 .append("\n\tTags: ").append(resource.tags())
                 .append("\n\tSKU: ").append(resource.sku().toString())
                 .append("\n\tOperational state: ").append(resource.operationalState())
-                .append("\n\tSSL policy: ").append(resource.sslPolicy())
                 .append("\n\tInternet-facing? ").append(resource.isPublic())
                 .append("\n\tInternal? ").append(resource.isPrivate())
                 .append("\n\tDefault private IP address: ").append(resource.privateIPAddress())
-                .append("\n\tPrivate IP address allocation method: ").append(resource.privateIPAllocationMethod());
+                .append("\n\tPrivate IP address allocation method: ").append(resource.privateIPAllocationMethod())
+                .append("\n\tDisabled SSL protocols: ").append(resource.disabledSslProtocols().toString());
 
         // Show IP configs
         Map<String, ApplicationGatewayIPConfiguration> ipConfigs = resource.ipConfigurations();
         info.append("\n\tIP configurations: ").append(ipConfigs.size());
         for (ApplicationGatewayIPConfiguration ipConfig : ipConfigs.values()) {
             info.append("\n\t\tName: ").append(ipConfig.name())
-                    .append("\n\t\t\tNetwork id: ").append(ipConfig.networkId())
-                    .append("\n\t\t\tSubnet name: ").append(ipConfig.subnetName());
+                .append("\n\t\t\tNetwork id: ").append(ipConfig.networkId())
+                .append("\n\t\t\tSubnet name: ").append(ipConfig.subnetName());
         }
 
         // Show frontends
@@ -1279,7 +1287,7 @@ public final class Utils {
         info.append("\n\tFrontends: ").append(frontends.size());
         for (ApplicationGatewayFrontend frontend : frontends.values()) {
             info.append("\n\t\tName: ").append(frontend.name())
-                    .append("\n\t\t\tPublic? ").append(frontend.isPublic());
+                .append("\n\t\t\tPublic? ").append(frontend.isPublic());
 
             if (frontend.isPublic()) {
                 // Show public frontend info
@@ -1289,9 +1297,9 @@ public final class Utils {
             if (frontend.isPrivate()) {
                 // Show private frontend info
                 info.append("\n\t\t\tPrivate IP address: ").append(frontend.privateIPAddress())
-                        .append("\n\t\t\tPrivate IP allocation method: ").append(frontend.privateIPAllocationMethod())
-                        .append("\n\t\t\tSubnet name: ").append(frontend.subnetName())
-                        .append("\n\t\t\tVirtual network ID: ").append(frontend.networkId());
+                    .append("\n\t\t\tPrivate IP allocation method: ").append(frontend.privateIPAllocationMethod())
+                    .append("\n\t\t\tSubnet name: ").append(frontend.subnetName())
+                    .append("\n\t\t\tVirtual network ID: ").append(frontend.networkId());
             }
         }
 
@@ -1300,14 +1308,14 @@ public final class Utils {
         info.append("\n\tBackends: ").append(backends.size());
         for (ApplicationGatewayBackend backend : backends.values()) {
             info.append("\n\t\tName: ").append(backend.name())
-                    .append("\n\t\t\tAssociated NIC IP configuration IDs: ").append(backend.backendNicIPConfigurationNames().keySet());
+                .append("\n\t\t\tAssociated NIC IP configuration IDs: ").append(backend.backendNicIPConfigurationNames().keySet());
 
             // Show addresses
-            List<ApplicationGatewayBackendAddress> addresses = backend.addresses();
+            Collection<ApplicationGatewayBackendAddress> addresses = backend.addresses();
             info.append("\n\t\t\tAddresses: ").append(addresses.size());
             for (ApplicationGatewayBackendAddress address : addresses) {
                 info.append("\n\t\t\t\tFQDN: ").append(address.fqdn())
-                        .append("\n\t\t\t\tIP: ").append(address.ipAddress());
+                    .append("\n\t\t\t\tIP: ").append(address.ipAddress());
             }
         }
 
@@ -1316,10 +1324,15 @@ public final class Utils {
         info.append("\n\tHTTP Configurations: ").append(httpConfigs.size());
         for (ApplicationGatewayBackendHttpConfiguration httpConfig : httpConfigs.values()) {
             info.append("\n\t\tName: ").append(httpConfig.name())
-                    .append("\n\t\t\tCookie based affinity: ").append(httpConfig.cookieBasedAffinity())
-                    .append("\n\t\t\tPort: ").append(httpConfig.port())
-                    .append("\n\t\t\tRequest timeout in seconds: ").append(httpConfig.requestTimeout())
-                    .append("\n\t\t\tProtocol: ").append(httpConfig.protocol());
+                .append("\n\t\t\tCookie based affinity: ").append(httpConfig.cookieBasedAffinity())
+                .append("\n\t\t\tPort: ").append(httpConfig.port())
+                .append("\n\t\t\tRequest timeout in seconds: ").append(httpConfig.requestTimeout())
+                .append("\n\t\t\tProtocol: ").append(httpConfig.protocol());
+
+            ApplicationGatewayProbe probe = httpConfig.probe();
+            if (probe != null) {
+                info.append("\n\t\tProbe: " + probe.name());
+            }
         }
 
         // Show SSL certificates
@@ -1327,7 +1340,7 @@ public final class Utils {
         info.append("\n\tSSL certificates: ").append(sslCerts.size());
         for (ApplicationGatewaySslCertificate cert : sslCerts.values()) {
             info.append("\n\t\tName: ").append(cert.name())
-                    .append("\n\t\t\tCert data: ").append(cert.publicData());
+                .append("\n\t\t\tCert data: ").append(cert.publicData());
         }
 
         // Show HTTP listeners
@@ -1335,15 +1348,27 @@ public final class Utils {
         info.append("\n\tHTTP listeners: ").append(listeners.size());
         for (ApplicationGatewayListener listener : listeners.values()) {
             info.append("\n\t\tName: ").append(listener.name())
-                    .append("\n\t\t\tHost name: ").append(listener.hostName())
-                    .append("\n\t\t\tServer name indication required? ").append(listener.requiresServerNameIndication())
-                    .append("\n\t\t\tAssociated frontend name: ").append(listener.frontend().name())
-                    .append("\n\t\t\tFrontend port name: ").append(listener.frontendPortName())
-                    .append("\n\t\t\tFrontend port number: ").append(listener.frontendPortNumber())
-                    .append("\n\t\t\tProtocol: ").append(listener.protocol().toString());
-            if (listener.sslCertificate() != null) {
-                info.append("\n\t\t\tAssociated SSL certificate: ").append(listener.sslCertificate().name());
-            }
+                .append("\n\t\t\tHost name: ").append(listener.hostName())
+                .append("\n\t\t\tServer name indication required? ").append(listener.requiresServerNameIndication())
+                .append("\n\t\t\tAssociated frontend name: ").append(listener.frontend().name())
+                .append("\n\t\t\tFrontend port name: ").append(listener.frontendPortName())
+                .append("\n\t\t\tFrontend port number: ").append(listener.frontendPortNumber())
+                .append("\n\t\t\tProtocol: ").append(listener.protocol().toString());
+                if (listener.sslCertificate() != null) {
+                    info.append("\n\t\t\tAssociated SSL certificate: ").append(listener.sslCertificate().name());
+                }
+        }
+
+        // Show probes
+        Map<String, ApplicationGatewayProbe> probes = resource.probes();
+        info.append("\n\tProbes: ").append(probes.size());
+        for (ApplicationGatewayProbe probe : probes.values()) {
+            info.append("\n\t\tName: ").append(probe.name())
+                .append("\n\t\tProtocol:").append(probe.protocol().toString())
+                .append("\n\t\tInterval in seconds: ").append(probe.timeBetweenProbesInSeconds())
+                .append("\n\t\tRetries: ").append(probe.retriesBeforeUnhealthy())
+                .append("\n\t\tTimeout: ").append(probe.timeoutInSeconds())
+                .append("\n\t\tHost: ").append(probe.host());
         }
 
         // Show request routing rules
@@ -1351,22 +1376,22 @@ public final class Utils {
         info.append("\n\tRequest routing rules: ").append(rules.size());
         for (ApplicationGatewayRequestRoutingRule rule : rules.values()) {
             info.append("\n\t\tName: ").append(rule.name())
-                    .append("\n\t\t\tType: ").append(rule.ruleType())
-                    .append("\n\t\t\tPublic IP address ID: ").append(rule.publicIPAddressId())
-                    .append("\n\t\t\tHost name: ").append(rule.hostName())
-                    .append("\n\t\t\tServer name indication required? ").append(rule.requiresServerNameIndication())
-                    .append("\n\t\t\tFrontend port: ").append(rule.frontendPort())
-                    .append("\n\t\t\tFrontend protocol: ").append(rule.frontendProtocol().toString())
-                    .append("\n\t\t\tBackend port: ").append(rule.backendPort())
-                    .append("\n\t\t\tCookie based affinity enabled? ").append(rule.cookieBasedAffinity());
+                .append("\n\t\t\tType: ").append(rule.ruleType())
+                .append("\n\t\t\tPublic IP address ID: ").append(rule.publicIPAddressId())
+                .append("\n\t\t\tHost name: ").append(rule.hostName())
+                .append("\n\t\t\tServer name indication required? ").append(rule.requiresServerNameIndication())
+                .append("\n\t\t\tFrontend port: ").append(rule.frontendPort())
+                .append("\n\t\t\tFrontend protocol: ").append(rule.frontendProtocol().toString())
+                .append("\n\t\t\tBackend port: ").append(rule.backendPort())
+                .append("\n\t\t\tCookie based affinity enabled? ").append(rule.cookieBasedAffinity());
 
             // Show backend addresses
-            List<ApplicationGatewayBackendAddress> addresses = rule.backendAddresses();
+            Collection<ApplicationGatewayBackendAddress> addresses = rule.backendAddresses();
             info.append("\n\t\t\tBackend addresses: ").append(addresses.size());
             for (ApplicationGatewayBackendAddress address : addresses) {
                 info.append("\n\t\t\t\t")
-                        .append(address.fqdn())
-                        .append(" [").append(address.ipAddress()).append("]");
+                    .append(address.fqdn())
+                    .append(" [").append(address.ipAddress()).append("]");
             }
 
             // Show SSL cert
@@ -1464,7 +1489,7 @@ public final class Utils {
      * @param fileName the name of the file on server
      * @param file the local file
      */
-    public static void uploadFileToFtp(PublishingProfile profile, String fileName, InputStream file) {
+    public static void uploadFileToWebApp(PublishingProfile profile, String fileName, InputStream file) {
         FTPClient ftpClient = new FTPClient();
         String[] ftpUrlSegments = profile.ftpUrl().split("/", 2);
         String server = ftpUrlSegments[0];
@@ -1472,13 +1497,46 @@ public final class Utils {
         if (fileName.contains("/")) {
             int lastslash = fileName.lastIndexOf('/');
             path = path + "/" + fileName.substring(0, lastslash);
-            fileName = fileName.substring(lastslash);
+            fileName = fileName.substring(lastslash + 1);
         }
         try {
             ftpClient.connect(server);
             ftpClient.login(profile.ftpUsername(), profile.ftpPassword());
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
             ftpClient.changeWorkingDirectory(path);
+            ftpClient.storeFile(fileName, file);
+            ftpClient.disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Uploads a file to an Azure function app.
+     * @param profile the publishing profile for the web app.
+     * @param fileName the name of the file on server
+     * @param file the local file
+     */
+    public static void uploadFileToFunctionApp(PublishingProfile profile, String fileName, InputStream file) {
+        FTPClient ftpClient = new FTPClient();
+        String[] ftpUrlSegments = profile.ftpUrl().split("/", 2);
+        String server = ftpUrlSegments[0];
+        String path = "site/wwwroot";
+        if (fileName.contains("/")) {
+            int lastslash = fileName.lastIndexOf('/');
+            path = path + "/" + fileName.substring(0, lastslash);
+            fileName = fileName.substring(lastslash + 1);
+        }
+        try {
+            ftpClient.connect(server);
+            ftpClient.login(profile.ftpUsername(), profile.ftpPassword());
+            ftpClient.setFileType(FTP.ASCII_FILE_TYPE);
+            for (String segment : path.split("/")) {
+                if (!ftpClient.changeWorkingDirectory(segment)) {
+                    ftpClient.makeDirectory(segment);
+                    ftpClient.changeWorkingDirectory(segment);
+                }
+            }
             ftpClient.storeFile(fileName, file);
             ftpClient.disconnect();
         } catch (IOException e) {
@@ -1643,7 +1701,7 @@ public final class Utils {
      * Print service bus subscription info.
      * @param serviceBusSubscription a service bus subscription
      */
-    public static void print(Subscription serviceBusSubscription) {
+    public static void print(ServiceBusSubscription serviceBusSubscription) {
         StringBuilder builder = new StringBuilder()
                 .append("Service bus subscription: ").append(serviceBusSubscription.id())
                 .append("\n\tName: ").append(serviceBusSubscription.name())
@@ -1694,7 +1752,7 @@ public final class Utils {
 
     /**
      * Print DocumentDB info.
-     * @param documentDBAccount a documentdb
+     * @param documentDBAccount a DocumentDB
      */
     public static void print(DocumentDBAccount documentDBAccount) {
         StringBuilder builder = new StringBuilder()
@@ -1714,8 +1772,103 @@ public final class Utils {
         for (com.microsoft.azure.management.documentdb.Location readReplica : documentDBAccount.readableReplications()) {
             builder.append("\n\t\tRead replication: ")
                     .append("\n\t\t\tName :").append(readReplica.locationName());
+   
+    /**
+     * Print Active Directory User info.
+     * @param user active directory user
+     */
+    public static void print(ActiveDirectoryUser user) {
+        StringBuilder builder = new StringBuilder()
+                .append("Active Directory User: ").append(user.id())
+                .append("\n\tName: ").append(user.name())
+                .append("\n\tMail: ").append(user.mail())
+                .append("\n\tMail Nickname: ").append(user.mailNickname())
+                .append("\n\tSign In Name: ").append(user.signInName())
+                .append("\n\tUser Principal Name: ").append(user.userPrincipalName());
+
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print Active Directory User info.
+     * @param role role definition
+     */
+    public static void print(RoleDefinition role) {
+        StringBuilder builder = new StringBuilder()
+                .append("Role Definition: ").append(role.id())
+                .append("\n\tName: ").append(role.name())
+                .append("\n\tRole Name: ").append(role.roleName())
+                .append("\n\tType: ").append(role.type())
+                .append("\n\tDescription: ").append(role.description())
+                .append("\n\tType: ").append(role.type());
+
+        Set<PermissionInner> permissions = role.permissions();
+        builder.append("\n\tPermissions: ").append(permissions.size());
+        for (PermissionInner permission : permissions) {
+            builder.append("\n\t\tPermission Actions: " + permission.actions().size());
+            for (String action : permission.actions()) {
+                builder.append("\n\t\t\tName :").append(action);
+            }
+            builder.append("\n\t\tPermission Not Actions: " + permission.notActions().size());
+            for (String notAction : permission.notActions()) {
+                builder.append("\n\t\t\tName :").append(notAction);
+            }
         }
 
+        Set<String> assignableScopes = role.assignableScopes();
+        builder.append("\n\tAssignable scopes: ").append(assignableScopes.size());
+        for (String scope : assignableScopes) {
+            builder.append("\n\t\tAssignable Scope: ")
+                    .append("\n\t\t\tName :").append(scope);
+        }
+
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print Role Assignment info.
+     * @param roleAssignment role assignment
+     */
+    public static void print(RoleAssignment roleAssignment) {
+        StringBuilder builder = new StringBuilder()
+                .append("Role Assignment: ")
+                .append("\n\tScope: ").append(roleAssignment.scope())
+                .append("\n\tPrincipal Id: ").append(roleAssignment.principalId())
+                .append("\n\tRole Definition Id: ").append(roleAssignment.roleDefinitionId());
+
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print Active Directory Group info.
+     * @param group active directory group
+     */
+    public static void print(ActiveDirectoryGroup group) {
+        StringBuilder builder = new StringBuilder()
+                .append("Active Directory Group: ").append(group.id())
+                .append("\n\tName: ").append(group.name())
+                .append("\n\tMail: ").append(group.mail())
+                .append("\n\tSecurity Enabled: ").append(group.securityEnabled());
+
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print Service Principal info.
+     *
+     * @param servicePrincipal service principal
+     */
+    public static void print(ServicePrincipal servicePrincipal) {
+        StringBuilder builder = new StringBuilder()
+                .append("Service Principal: ").append(servicePrincipal.id())
+                .append("\n\tName: ").append(servicePrincipal.name())
+                .append("\n\tApplication Id: ").append(servicePrincipal.applicationId());
+
+        List<String> names = servicePrincipal.servicePrincipalNames();
+        builder.append("\n\tNames: ").append(names.size());
+        for (String name : names) {
+            builder.append("\n\t\tName: ").append(name);
+        }
         System.out.println(builder.toString());
     }
 }

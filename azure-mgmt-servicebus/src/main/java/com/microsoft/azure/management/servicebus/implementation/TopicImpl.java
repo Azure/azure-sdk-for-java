@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.servicebus.EntityStatus;
-import com.microsoft.azure.management.servicebus.Subscription;
+import com.microsoft.azure.management.servicebus.ServiceBusSubscription;
 import com.microsoft.azure.management.servicebus.Topic;
 import com.microsoft.azure.management.servicebus.TopicAuthorizationRule;
 import org.joda.time.DateTime;
@@ -34,7 +34,7 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, ServiceBusNamespaceI
         Topic,
         Topic.Definition,
         Topic.Update {
-    private List<Creatable<Subscription>> subscriptionsToCreate;
+    private List<Creatable<ServiceBusSubscription>> subscriptionsToCreate;
     private List<Creatable<TopicAuthorizationRule>> rulesToCreate;
     private List<String> subscriptionsToDelete;
     private List<String> rulesToDelete;
@@ -194,8 +194,8 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, ServiceBusNamespaceI
     }
 
     @Override
-    public SubscriptionsImpl subscriptions() {
-        return new SubscriptionsImpl(this.resourceGroupName(),
+    public ServiceBusSubscriptionsImpl subscriptions() {
+        return new ServiceBusSubscriptionsImpl(this.resourceGroupName(),
                 this.parentName,
                 this.name(),
                 this.region(),

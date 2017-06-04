@@ -242,6 +242,12 @@ public class AzureTests extends TestBase {
         }
         List<VirtualMachineImage> images = azure.virtualMachineImages().listByRegion(Region.US_WEST);
         Assert.assertTrue(images.size() > 0);
+        try {
+            // Seems to help avoid connection refused error on subsequent mock test
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -665,7 +671,7 @@ public class AzureTests extends TestBase {
 
     @Test
     public void testDnsZones() throws Exception {
-        addTextReplacementRule("https://management.azure.com:443/", MOCK_URI + "/");
+        addTextReplacementRule("https://management.azure.com:443/", this.mockUri() + "/");
         new TestDns()
                 .runTest(azure.dnsZones(), azure.resourceGroups());
     }

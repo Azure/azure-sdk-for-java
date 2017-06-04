@@ -37,21 +37,20 @@ import java.util.Map.Entry;
 import java.util.zip.GZIPInputStream;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
 public class MockIntegrationTestBase {
     public static Boolean IS_MOCKED = IsMocked();
     protected static Boolean IS_RECORD = !IS_MOCKED;
-    protected final static String MOCK_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
-    private final static String host = "localhost";
-    private final static String port = String.format("3%03d", (int) (Math.random() * Math.random() * 1000));
-
+    final static String MOCK_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
+    final static String MOCK_TENANT = "00000000-0000-0000-0000-000000000000";
+    private final static String HOST = "localhost";
     private final static String RECORD_FOLDER = "session-records/";
-    protected final String MOCK_URI = "http://" + host + ":" + port;
+
     protected WireMock wireMock;
 
     @ClassRule
-    public static WireMockRule wireMockRule = new WireMockRule(options().port(Integer.parseInt(port)));
+    public static WireMockRule wireMockRule = new WireMockRule(wireMockConfig().dynamicPort().dynamicHttpsPort());
     @Rule
     public WireMockRule instanceRule = wireMockRule;
 
@@ -63,7 +62,15 @@ public class MockIntegrationTestBase {
 
     @Rule
     public TestName name = new TestName();
-    public static Interceptor interceptor;
+    private Interceptor interceptor;
+
+    protected Interceptor interceptor() {
+        return this.interceptor;
+    }
+
+    protected String mockUri() {
+        return "http://" + HOST + ":" + this.instanceRule.port();
+    }
 
     protected void addTextReplacementRule(String regex, String replacement) {
         textReplacementRules.put(regex, replacement);
@@ -83,7 +90,7 @@ public class MockIntegrationTestBase {
         while (retries > 0) {
             retries--;
             try {
-                wireMock = new WireMock(host, wireMockRule.port());
+                wireMock = new WireMock(HOST, wireMockRule.port());
                 wireMock.resetMappings();
                 break;
             }
@@ -100,7 +107,7 @@ public class MockIntegrationTestBase {
             testRecord = new TestRecord();
         }
 
-        interceptor = new Interceptor() {
+        this.interceptor = new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 if (IS_MOCKED) {
@@ -179,7 +186,7 @@ public class MockIntegrationTestBase {
         if (!currentTestName.equals(testName)) {
             return;
         }
-        
+
         if (IS_RECORD) {
             // Write current context to file
             ObjectMapper mapper = new ObjectMapper();
@@ -193,7 +200,7 @@ public class MockIntegrationTestBase {
         testRecord = null;
         currentTestName = null;
     }
-    
+
     private void extractResponseData(Map<String, String> responseData, Response response) throws Exception {
         Map<String, List<String>> headers = response.headers().toMultimap();
         boolean addedRetryAfter = false;
@@ -232,11 +239,13 @@ public class MockIntegrationTestBase {
             responseData.put("Body", content);
         }
     }
-    
+
     private File getRecordFile() {
         URL folderUrl = MockIntegrationTestBase.class.getClassLoader().getResource(".");
         File folderFile = new File(folderUrl.getPath() + RECORD_FOLDER);
-        if (!folderFile.exists()) folderFile.mkdir();
+        if (!folderFile.exists()) {
+            folderFile.mkdir();
+        }
         String filePath = folderFile.getPath() + "/" + currentTestName + ".json";
         return new File(filePath);
     }
@@ -251,7 +260,7 @@ public class MockIntegrationTestBase {
     }
 
     private String removeHost(String url) {
-        url = url.replace("http://" + host + ":", "");
+        url = url.replace("http://" + HOST + ":", "");
         url = url.substring(url.indexOf("/"));
 
         return url;
@@ -307,7 +316,7 @@ public class MockIntegrationTestBase {
                 rBuilder.withHeader(header.getKey(), rawHeader);
             }
         }
-        
+
         String rawBody = networkCallRecord.Response.get("Body");
         if (rawBody != null) {
             for (Entry<String, String> rule : textReplacementRules.entrySet()) {

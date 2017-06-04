@@ -34,4 +34,16 @@ public class TestResourceNamer extends ResourceNamer {
 
         return randomName;
     }
+
+    @Override
+    public String randomUuid() {
+        if (MockIntegrationTestBase.IS_MOCKED) {
+            return mockIntegrationTestBase.popVariable();
+        }
+        String randomName = super.randomUuid();
+
+        mockIntegrationTestBase.pushVariable(randomName);
+
+        return randomName;
+    }
 }

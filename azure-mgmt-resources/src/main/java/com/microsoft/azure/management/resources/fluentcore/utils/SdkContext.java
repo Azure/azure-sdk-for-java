@@ -47,6 +47,16 @@ public class SdkContext {
     }
 
     /**
+     * Gets a random UUID.
+     *
+     * @return the random UUID.
+     */
+    public static String randomUuid() {
+        ResourceNamer resourceNamer = SdkContext.getResourceNamerFactory().createResourceNamer("");
+        return resourceNamer.randomUuid();
+    }
+
+    /**
      * Function to override the DelayProvider.
      *
      * @param delayProvider delayProvider to override.

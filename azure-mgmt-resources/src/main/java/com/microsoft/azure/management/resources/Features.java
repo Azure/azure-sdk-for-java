@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.rest.ServiceCallback;
@@ -24,7 +23,7 @@ public interface Features extends
      *
      * @param resourceProviderName the name of the resource provider
      * @param featureName the name of the feature
-     * @return the immutable client-side feature object created
+     * @return the registered feature
      */
     Feature register(String resourceProviderName, String featureName);
     /**
@@ -32,9 +31,8 @@ public interface Features extends
      *
      * @param resourceProviderName the name of the resource provider
      * @param featureName the name of the feature
-     * @return observable to the immutable client-side feature object created
+     * @return a representation of the deferred computation of this call returning the registered feature
      */
-    @Beta
     Observable<Feature> registerAsync(String resourceProviderName, String featureName);
 
     /**
@@ -45,6 +43,5 @@ public interface Features extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<Feature> registerAsync(String resourceProviderName, String featureName, ServiceCallback<Feature> callback);
 }

@@ -110,7 +110,7 @@ public interface Topic extends
     /**
      * @return entry point to manage subscriptions associated with the topic
      */
-    Subscriptions subscriptions();
+    ServiceBusSubscriptions subscriptions();
     /**
      * @return entry point to manage authorization rules for the Service Bus topic
      */

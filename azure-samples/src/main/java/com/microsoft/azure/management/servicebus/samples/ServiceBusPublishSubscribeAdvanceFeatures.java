@@ -15,7 +15,7 @@ import com.microsoft.azure.management.servicebus.AuthorizationKeys;
 import com.microsoft.azure.management.servicebus.NamespaceAuthorizationRule;
 import com.microsoft.azure.management.servicebus.NamespaceSku;
 import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
-import com.microsoft.azure.management.servicebus.Subscription;
+import com.microsoft.azure.management.servicebus.ServiceBusSubscription;
 import com.microsoft.azure.management.servicebus.Topic;
 import com.microsoft.azure.management.servicebus.TopicAuthorizationRule;
 import com.microsoft.rest.LogLevel;
@@ -85,7 +85,7 @@ public final class ServiceBusPublishSubscribeAdvanceFeatures {
             // Create a service bus subscription in the topic with session and dead-letter enabled.
 
             System.out.println("Creating subscription " + subscription1Name + " in topic " + topic1Name + "...");
-            Subscription firstSubscription = firstTopic.subscriptions().define(subscription1Name)
+            ServiceBusSubscription firstSubscription = firstTopic.subscriptions().define(subscription1Name)
                     .withSession()
                     .withDefaultMessageTTL(new Period().withMinutes(20))
                     .withMessageMovedToDeadLetterSubscriptionOnMaxDeliveryCount(20)
@@ -100,7 +100,7 @@ public final class ServiceBusPublishSubscribeAdvanceFeatures {
             // Create another subscription in the topic with auto deletion of idle entities.
             System.out.println("Creating another subscription " + subscription2Name + " in topic " + topic1Name + "...");
 
-            Subscription secondSubscription = firstTopic.subscriptions().define(subscription2Name)
+            ServiceBusSubscription secondSubscription = firstTopic.subscriptions().define(subscription2Name)
                     .withSession()
                     .withDeleteOnIdleDurationInMinutes(20)
                     .create();

@@ -14,18 +14,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Parameters supplied to the Update operation.
+ * Parameters for updating an Azure Batch account.
  */
 @JsonFlatten
 public class BatchAccountUpdateParametersInner {
     /**
-     * The user specified tags associated with the account.
+     * The user-specified tags associated with the account.
      */
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**
-     * The properties related to auto storage account.
+     * The properties related to the auto-storage account.
      */
     @JsonProperty(value = "properties.autoStorage")
     private AutoStorageBaseProperties autoStorage;

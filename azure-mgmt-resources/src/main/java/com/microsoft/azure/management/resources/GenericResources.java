@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
@@ -112,7 +111,6 @@ public interface GenericResources extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Beta
     Completable moveResourcesAsync(String sourceResourceGroupName, ResourceGroup targetResourceGroup, List<String> resources);
 
     /**
@@ -125,7 +123,6 @@ public interface GenericResources extends
      *
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<Void> moveResourcesAsync(String sourceResourceGroupName, ResourceGroup targetResourceGroup, List<String> resources, ServiceCallback<Void> callback);
 
     /**

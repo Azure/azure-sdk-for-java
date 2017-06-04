@@ -7,7 +7,6 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetInner;
@@ -63,7 +62,6 @@ public interface VirtualMachineScaleSet extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Beta
     Completable deallocateAsync();
 
     /**
@@ -72,7 +70,6 @@ public interface VirtualMachineScaleSet extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<Void> deallocateAsync(ServiceCallback<Void> callback);
 
     /**
@@ -84,7 +81,6 @@ public interface VirtualMachineScaleSet extends
      * Powers off (stops) the virtual machines in the scale set asynchronously.
      * @return a representation of the deferred computation of this call
      */
-    @Beta
     Completable powerOffAsync();
 
     /**
@@ -93,7 +89,6 @@ public interface VirtualMachineScaleSet extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<Void> powerOffAsync(ServiceCallback<Void> callback);
 
     /**
@@ -106,7 +101,6 @@ public interface VirtualMachineScaleSet extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Beta
     Completable restartAsync();
 
     /**
@@ -115,7 +109,6 @@ public interface VirtualMachineScaleSet extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<Void> restartAsync(ServiceCallback<Void> callback);
 
     /**
@@ -128,7 +121,6 @@ public interface VirtualMachineScaleSet extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Beta
     Completable startAsync();
 
     /**
@@ -137,7 +129,6 @@ public interface VirtualMachineScaleSet extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<Void> startAsync(ServiceCallback<Void> callback);
 
     /**
@@ -150,7 +141,6 @@ public interface VirtualMachineScaleSet extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Beta
     Completable reimageAsync();
 
     /**
@@ -159,7 +149,6 @@ public interface VirtualMachineScaleSet extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<Void> reimageAsync(ServiceCallback<Void> callback);
 
     // Getters
@@ -501,7 +490,7 @@ public interface VirtualMachineScaleSet extends
              * @param backendNames the names of existing backends in the selected load balancer
              * @return the next stage of the definition
              */
-            WithPrimaryInternetFacingLoadBalancerNatPool withPrimaryInternetFacingLoadBalancerBackends(String ...backendNames);
+            WithPrimaryInternetFacingLoadBalancerNatPool withPrimaryInternetFacingLoadBalancerBackends(String...backendNames);
         }
 
         /**
@@ -516,7 +505,7 @@ public interface VirtualMachineScaleSet extends
              * @param natPoolNames inbound NAT pools names existing on the selected load balancer
              * @return the next stage of the definition
              */
-            WithPrimaryInternalLoadBalancer withPrimaryInternetFacingLoadBalancerInboundNatPools(String ...natPoolNames);
+            WithPrimaryInternalLoadBalancer withPrimaryInternetFacingLoadBalancerInboundNatPools(String...natPoolNames);
         }
 
         /**
@@ -531,7 +520,7 @@ public interface VirtualMachineScaleSet extends
              * @param backendNames names of existing backends in the selected load balancer
              * @return the next stage of the definition
              */
-            WithInternalInternalLoadBalancerNatPool withPrimaryInternalLoadBalancerBackends(String ...backendNames);
+            WithInternalInternalLoadBalancerNatPool withPrimaryInternalLoadBalancerBackends(String...backendNames);
          }
 
         /**
@@ -547,7 +536,7 @@ public interface VirtualMachineScaleSet extends
              * @param natPoolNames inbound NAT pool names
              * @return the next stage of the definition
              */
-            WithOS withPrimaryInternalLoadBalancerInboundNatPools(String ...natPoolNames);
+            WithOS withPrimaryInternalLoadBalancerInboundNatPools(String...natPoolNames);
         }
 
         /**
@@ -591,7 +580,7 @@ public interface VirtualMachineScaleSet extends
             /**
              * Specifies the user (custom) Windows image to be used as the operating system for the virtual machines in the
              * scale set.
-             * 
+             *
              * @param imageUrl the URL of the VHD
              * @return the next stage of the definition
              */
@@ -1331,7 +1320,7 @@ public interface VirtualMachineScaleSet extends
              * @param backendNames the backend names
              * @return the next stage of the update
              */
-            WithPrimaryInternetFacingLoadBalancerNatPool withPrimaryInternetFacingLoadBalancerBackends(String ...backendNames);
+            WithPrimaryInternetFacingLoadBalancerNatPool withPrimaryInternetFacingLoadBalancerBackends(String...backendNames);
         }
 
         /**
@@ -1346,7 +1335,7 @@ public interface VirtualMachineScaleSet extends
              * @param natPoolNames the names of existing inbound NAT pools on the selected load balancer
              * @return the next stage of the update
              */
-            WithPrimaryInternalLoadBalancer withPrimaryInternetFacingLoadBalancerInboundNatPools(String ...natPoolNames);
+            WithPrimaryInternalLoadBalancer withPrimaryInternetFacingLoadBalancerInboundNatPools(String...natPoolNames);
         }
 
         /**
@@ -1381,7 +1370,7 @@ public interface VirtualMachineScaleSet extends
              * @param backendNames the names of existing backends on the selected load balancer
              * @return the next stage of the update
              */
-            WithPrimaryInternalLoadBalancerNatPool withPrimaryInternalLoadBalancerBackends(String ...backendNames);
+            WithPrimaryInternalLoadBalancerNatPool withPrimaryInternalLoadBalancerBackends(String...backendNames);
         }
 
         /**
@@ -1396,7 +1385,7 @@ public interface VirtualMachineScaleSet extends
              * @param natPoolNames the names of existing inbound NAT pools in the selected load balancer
              * @return the next stage of the update
              */
-            WithApply withPrimaryInternalLoadBalancerInboundNatPools(String ...natPoolNames);
+            WithApply withPrimaryInternalLoadBalancerInboundNatPools(String...natPoolNames);
         }
 
         /**
@@ -1504,7 +1493,7 @@ public interface VirtualMachineScaleSet extends
              * @param backendNames existing backend names
              * @return the next stage of the update
              */
-            WithApply withoutPrimaryInternetFacingLoadBalancerBackends(String ...backendNames);
+            WithApply withoutPrimaryInternetFacingLoadBalancerBackends(String...backendNames);
 
             /**
              * Removes the associations between the primary network interface configuration and the specified backends
@@ -1513,7 +1502,7 @@ public interface VirtualMachineScaleSet extends
              * @param backendNames existing backend names
              * @return the next stage of the update
              */
-            WithApply withoutPrimaryInternalLoadBalancerBackends(String ...backendNames);
+            WithApply withoutPrimaryInternalLoadBalancerBackends(String...backendNames);
         }
 
         /**
@@ -1528,7 +1517,7 @@ public interface VirtualMachineScaleSet extends
              * @param natPoolNames the names of existing inbound NAT pools
              * @return the next stage of the update
              */
-            WithApply withoutPrimaryInternetFacingLoadBalancerNatPools(String ...natPoolNames);
+            WithApply withoutPrimaryInternetFacingLoadBalancerNatPools(String...natPoolNames);
 
             /**
              * Removes the associations between the primary network interface configuration and the specified inbound NAT pools
@@ -1537,7 +1526,7 @@ public interface VirtualMachineScaleSet extends
              * @param natPoolNames the names of existing inbound NAT pools
              * @return the next stage of the update
              */
-            WithApply withoutPrimaryInternalLoadBalancerNatPools(String ...natPoolNames);
+            WithApply withoutPrimaryInternalLoadBalancerNatPools(String...natPoolNames);
         }
 
         /**

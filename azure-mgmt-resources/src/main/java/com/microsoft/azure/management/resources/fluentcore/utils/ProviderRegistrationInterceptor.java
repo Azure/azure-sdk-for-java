@@ -45,7 +45,7 @@ public final class ProviderRegistrationInterceptor implements Interceptor {
             String content = errorBody(response.body());
             AzureJacksonAdapter jacksonAdapter = new AzureJacksonAdapter();
             CloudError cloudError = jacksonAdapter.deserialize(content, CloudError.class);
-            if ("MissingSubscriptionRegistration".equals(cloudError.code())) {
+            if (cloudError != null && "MissingSubscriptionRegistration".equals(cloudError.code())) {
                 Pattern pattern = Pattern.compile("/subscriptions/([\\w-]+)/", Pattern.CASE_INSENSITIVE);
                 Matcher matcher = pattern.matcher(chain.request().url().toString());
                 matcher.find();
@@ -80,7 +80,7 @@ public final class ProviderRegistrationInterceptor implements Interceptor {
         BufferedSource source = responseBody.source();
         source.request(Long.MAX_VALUE); // Buffer the entire body.
         Buffer buffer = source.buffer();
-        return buffer.readUtf8();
+        return buffer.clone().readUtf8();
     }
 
     private Provider registerProvider(String namespace, ResourceManager resourceManager) {

@@ -9,6 +9,7 @@ package com.microsoft.azure.management.resources.core;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
+import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.LogLevel;
@@ -31,24 +32,25 @@ public abstract class TestBase extends MockIntegrationTestBase {
 
     @Before
     public void setup() throws Exception {
-        addTextReplacementRule("https://management.azure.com/", MOCK_URI + "/");
+        addTextReplacementRule("https://management.azure.com/", this.mockUri() + "/");
+        addTextReplacementRule("https://graph.windows.net/", this.mockUri() + "/");
         setupTest(name.getMethodName());
         ApplicationTokenCredentials credentials;
         RestClient restClient;
         String defaultSubscription;
 
         if (IS_MOCKED) {
-            credentials = new AzureTestCredentials();
+            credentials = new AzureTestCredentials(this.mockUri());
             restClient = buildRestClient(new RestClient.Builder()
-                    .withBaseUrl(MOCK_URI + "/")
+                    .withBaseUrl(this.mockUri() + "/")
                     .withSerializerAdapter(new AzureJacksonAdapter())
                     .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                     .withCredentials(credentials)
                     .withLogLevel(LogLevel.BODY_AND_HEADERS)
-                    .withNetworkInterceptor(interceptor), true);
+                    .withNetworkInterceptor(this.interceptor()), true);
 
             defaultSubscription = MOCK_SUBSCRIPTION;
-            System.out.println(MOCK_URI);
+            System.out.println(this.mockUri());
             out = System.out;
             System.setOut(new PrintStream(new OutputStream() {
                 public void write(int b) {
@@ -64,13 +66,15 @@ public abstract class TestBase extends MockIntegrationTestBase {
                     .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                     .withSerializerAdapter(new AzureJacksonAdapter())
                     .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
+                    .withInterceptor(new ProviderRegistrationInterceptor(credentials))
                     .withCredentials(credentials)
                     .withLogLevel(LogLevel.BODY_AND_HEADERS)
                     .withReadTimeout(3, TimeUnit.MINUTES)
-                    .withNetworkInterceptor(interceptor), false);
+                    .withNetworkInterceptor(this.interceptor()), false);
 
             defaultSubscription = credentials.defaultSubscriptionId();
             addTextReplacementRule(defaultSubscription, MOCK_SUBSCRIPTION);
+            addTextReplacementRule(credentials.domain(), MOCK_TENANT);
         }
         initializeClients(restClient, defaultSubscription, credentials.domain());
     }

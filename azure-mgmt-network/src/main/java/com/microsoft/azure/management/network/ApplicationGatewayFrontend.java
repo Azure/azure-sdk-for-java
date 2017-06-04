@@ -5,7 +5,6 @@
  */
 package com.microsoft.azure.management.network;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayFrontendIPConfigurationInner;
 import com.microsoft.azure.management.network.model.HasPrivateIPAddress;
@@ -17,10 +16,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
- * An immutable client-side representation of an application gateway frontend.
+ * A client-side representation of an application gateway frontend.
  */
 @Fluent()
-@Beta
 public interface ApplicationGatewayFrontend extends
     HasInner<ApplicationGatewayFrontendIPConfigurationInner>,
     ChildResource<ApplicationGateway>,
@@ -99,7 +97,8 @@ public interface ApplicationGatewayFrontend extends
         }
     }
 
-    /** The entirety of an application gateway frontend definition.
+    /**
+     * The entirety of an application gateway frontend definition.
      * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
      */
     interface Definition<ParentT> extends
@@ -133,7 +132,7 @@ public interface ApplicationGatewayFrontend extends
      */
     interface UpdateDefinitionStages {
         /**
-         * The first stage of an application gatewway frontend definition.
+         * The first stage of an application gateway frontend definition.
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithSubnet<ParentT> {

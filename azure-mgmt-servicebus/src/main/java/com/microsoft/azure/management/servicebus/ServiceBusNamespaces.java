@@ -53,9 +53,8 @@ public interface ServiceBusNamespaces extends
      * Checks if namespace name is valid and is not in use asynchronously.
      *
      * @param name the namespace name to check
-     * @return whether the name is available and other info if not
+     * @return a representation of the deferred computation of this call, returning whether the name is available or other info if not
      */
-    @Beta
     Observable<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name);
 
     /**
@@ -65,6 +64,5 @@ public interface ServiceBusNamespaces extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name, ServiceCallback<CheckNameAvailabilityResult> callback);
 }
