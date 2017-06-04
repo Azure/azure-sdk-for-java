@@ -47,23 +47,22 @@ public abstract class TestBase extends MockIntegrationTestBase {
         this.runCondition = runCondition;
     }
 
-    private void shouldCancelTest() {
+    private String shouldCancelTest() {
         // Determine whether to run the test based on the condition the test has been configured with
         switch (this.runCondition) {
         case MOCK_ONLY:
-            Assume.assumeTrue("Test configured to run only as mocked, not live.", IS_MOCKED);
-            break;
+            return (!IS_MOCKED) ? "Test configured to run only as mocked, not live." : null;
         case LIVE_ONLY:
-            Assume.assumeFalse("Test configured to run only as live, not mocked.", IS_MOCKED);
-            break;
+            return (IS_MOCKED) ? "Test configured to run only as live, not mocked." : null;
         default:
-            break;
+            return null;
         }
     }
 
     @Before
     public void setup() throws Exception {
-        shouldCancelTest();
+        final String skipMessage = shouldCancelTest();
+        Assume.assumeTrue(skipMessage, skipMessage == null);
         addTextReplacementRule("https://management.azure.com/", this.mockUri() + "/");
         addTextReplacementRule("https://graph.windows.net/", this.mockUri() + "/");
         setupTest(name.getMethodName());
@@ -113,7 +112,9 @@ public abstract class TestBase extends MockIntegrationTestBase {
 
     @After
     public void cleanup() throws Exception {
-        shouldCancelTest();
+        if(shouldCancelTest() != null) {
+            return;
+        }
         cleanUpResources();
         if (IS_MOCKED) {
             if (testRecord.networkCallRecords.size() > 0) {
