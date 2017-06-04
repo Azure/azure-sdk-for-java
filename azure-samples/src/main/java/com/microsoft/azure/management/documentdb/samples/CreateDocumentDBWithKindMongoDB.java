@@ -20,11 +20,11 @@ import java.io.File;
 
 /**
  * Azure DocumentDB sample for high availability -
- *  - Create a documentdb configured with MongoDB kind.
+ *  - Create a DocumentDB configured with MongoDB kind.
  *  - Get the mongodb connection string
- *  - Delete the documentdb.
+ *  - Delete the DocumentDB.
  */
-public final class DocumentDBWithKindMongoDB {
+public final class CreateDocumentDBWithKindMongoDB {
     static final String DATABASE_ID = "TestDB";
     static final String COLLECTION_ID = "TestCollection";
 
@@ -40,9 +40,9 @@ public final class DocumentDBWithKindMongoDB {
 
         try {
             //============================================================
-            // Create a documentdb
+            // Create a DocumentDB
 
-            System.out.println("Creating a documentdb...");
+            System.out.println("Creating a DocumentDB...");
             DocumentDBAccount documentDBAccount = azure.documentDBs().define(docDBName)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
@@ -52,28 +52,28 @@ public final class DocumentDBWithKindMongoDB {
                     .withReadReplication(Region.US_CENTRAL)
                     .create();
 
-            System.out.println("Created documentdb");
+            System.out.println("Created DocumentDB");
             Utils.print(documentDBAccount);
 
-            System.out.println("Get the mongodb connection string");
+            System.out.println("Get the MongoDB connection string");
             DatabaseAccountListConnectionStringsResult databaseAccountListConnectionStringsResult = documentDBAccount.listConnectionStrings();
             System.out.println("MongoDB connection string: "
                     + databaseAccountListConnectionStringsResult.connectionStrings().get(0).connectionString());
 
             //============================================================
-            // Delete documentdb
-            System.out.println("Deleting the docuemntdb");
+            // Delete DocumentDB
+            System.out.println("Deleting the DocumentDB");
             azure.documentDBs().deleteById(documentDBAccount.id());
-            System.out.println("Deleted the documentdb");
+            System.out.println("Deleted the DocumentDB");
 
             return true;
         } catch (Exception e) {
             System.err.println(e.getMessage());
         } finally {
             try {
-                System.out.println("Deleting Resource Group: " + rgName);
+                System.out.println("Deleting resource group: " + rgName);
                 azure.resourceGroups().deleteByName(rgName);
-                System.out.println("Deleted Resource Group: " + rgName);
+                System.out.println("Deleted resource group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             } catch (Exception g) {
@@ -111,6 +111,6 @@ public final class DocumentDBWithKindMongoDB {
         }
     }
 
-    private DocumentDBWithKindMongoDB() {
+    private CreateDocumentDBWithKindMongoDB() {
     }
 }

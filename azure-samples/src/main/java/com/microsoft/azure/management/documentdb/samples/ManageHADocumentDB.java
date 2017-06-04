@@ -27,13 +27,13 @@ import java.io.File;
 
 /**
  * Azure DocumentDB sample for high availability -
- *  - Create a documentdb configured with a single read location
- *  - Get the credentials for the documentdb
- *  - Update the documentdb with additional read locations
- *  - add collection to the docuemntdb with throughput 4000
- *  - Delete the document db.
+ *  - Create a DocumentDB configured with a single read location
+ *  - Get the credentials for the DocumentDB
+ *  - Update the DocumentDB with additional read locations
+ *  - add collection to the DocumentDB with throughput 4000
+ *  - Delete the DocumentDB
  */
-public final class HADocumentDB {
+public final class ManageHADocumentDB {
     static final String DATABASE_ID = "TestDB";
     static final String COLLECTION_ID = "TestCollection";
 
@@ -49,9 +49,9 @@ public final class HADocumentDB {
 
         try {
             //============================================================
-            // Create a documentdb
+            // Create a DocumentDB
 
-            System.out.println("Creating a documentdb...");
+            System.out.println("Creating a DocumentDB...");
             DocumentDBAccount documentDBAccount = azure.documentDBs().define(docDBName)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
@@ -61,50 +61,50 @@ public final class HADocumentDB {
                     .withReadReplication(Region.US_CENTRAL)
                     .create();
 
-            System.out.println("Created documentdb");
+            System.out.println("Created DocumentDB");
             Utils.print(documentDBAccount);
 
             //============================================================
             // Update document db with three additional read regions
 
-            System.out.println("Updating documentdb with three additional read replication regions");
+            System.out.println("Updating DocumentDB with three additional read replication regions");
             documentDBAccount = documentDBAccount.update()
                     .withReadReplication(Region.ASIA_EAST)
                     .withReadReplication(Region.AUSTRALIA_SOUTHEAST)
                     .withReadReplication(Region.UK_SOUTH)
                     .apply();
                     
-            System.out.println("Updated documentdb");
+            System.out.println("Updated DocumentDB");
             Utils.print(documentDBAccount);
 
             //============================================================
-            // Get credentials for the documentdb.
+            // Get credentials for the DocumentDB.
 
-            System.out.println("Get credentials for the documentdb");
+            System.out.println("Get credentials for the DocumentDB");
             DatabaseAccountListKeysResult databaseAccountListKeysResult = documentDBAccount.listKeys();
             String masterKey = databaseAccountListKeysResult.primaryMasterKey();
             String endPoint = documentDBAccount.documentEndpoint();
 
             //============================================================
-            // Connect to documentdb and add a collection
+            // Connect to DocumentDB and add a collection
 
             System.out.println("Connecting and adding collection");
             createDBAndAddCollection(masterKey, endPoint);
 
             //============================================================
-            // Delete documentdb.
+            // Delete DocumentDB.
             System.out.println("Deleting the docuemntdb");
             azure.documentDBs().deleteById(documentDBAccount.id());
-            System.out.println("Deleted the documentdb");
+            System.out.println("Deleted the DocumentDB");
 
             return true;
         } catch (Exception e) {
             System.err.println(e.getMessage());
         } finally {
             try {
-                System.out.println("Deleting Resource Group: " + rgName);
+                System.out.println("Deleting resource group: " + rgName);
                 azure.resourceGroups().deleteByName(rgName);
-                System.out.println("Deleted Resource Group: " + rgName);
+                System.out.println("Deleted resource group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             } catch (Exception g) {
@@ -175,6 +175,6 @@ public final class HADocumentDB {
         }
     }
 
-    private HADocumentDB() {
+    private ManageHADocumentDB() {
     }
 }

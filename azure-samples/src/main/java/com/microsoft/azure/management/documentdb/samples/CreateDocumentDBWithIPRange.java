@@ -19,13 +19,10 @@ import java.io.File;
 
 /**
  * Azure DocumentDB sample for high availability -
- *  - Create a documentdb configured with IP range filter
- *  - Delete the document db.
+ *  - Create a DocumentDB configured with IP range filter
+ *  - Delete the DocumentDB.
  */
-public final class DocumentDBWithIPRange {
-    static final String DATABASE_ID = "TestDB";
-    static final String COLLECTION_ID = "TestCollection";
-
+public final class CreateDocumentDBWithIPRange {
     /**
      * Main function which runs the actual sample.
      * @param azure instance of the azure client
@@ -38,9 +35,9 @@ public final class DocumentDBWithIPRange {
 
         try {
             //============================================================
-            // Create a documentdb
+            // Create a DocumentDB
 
-            System.out.println("Creating a documentdb...");
+            System.out.println("Creating a DocumentDB...");
             DocumentDBAccount documentDBAccount = azure.documentDBs().define(docDBName)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
@@ -51,23 +48,23 @@ public final class DocumentDBWithIPRange {
                     .withIpRangeFilter("13.91.6.132,13.91.6.1/24")
                     .create();
 
-            System.out.println("Created documentdb");
+            System.out.println("Created DocumentDB");
             Utils.print(documentDBAccount);
 
             //============================================================
-            // Delete documentdb
-            System.out.println("Deleting the docuemntdb");
+            // Delete DocumentDB
+            System.out.println("Deleting the DocumentDB");
             azure.documentDBs().deleteById(documentDBAccount.id());
-            System.out.println("Deleted the documentdb");
+            System.out.println("Deleted the DocumentDB");
 
             return true;
         } catch (Exception e) {
             System.err.println(e.getMessage());
         } finally {
             try {
-                System.out.println("Deleting Resource Group: " + rgName);
+                System.out.println("Deleting resource group: " + rgName);
                 azure.resourceGroups().deleteByName(rgName);
-                System.out.println("Deleted Resource Group: " + rgName);
+                System.out.println("Deleted resource group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             } catch (Exception g) {
@@ -105,6 +102,6 @@ public final class DocumentDBWithIPRange {
         }
     }
 
-    private DocumentDBWithIPRange() {
+    private CreateDocumentDBWithIPRange() {
     }
 }
