@@ -179,8 +179,7 @@ class CertificateCredentialImpl<T>
         return url.replace("://", "\\://");
     }
 
-    private String normalizeAuthFilePath(String path)
-    {
+    private String normalizeAuthFilePath(String path) {
         return path.replace("\\", "\\\\").replace(":", "\\:");
     }
 
