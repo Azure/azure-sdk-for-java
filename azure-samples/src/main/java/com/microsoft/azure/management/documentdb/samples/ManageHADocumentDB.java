@@ -26,7 +26,7 @@ import com.microsoft.rest.LogLevel;
 import java.io.File;
 
 /**
- * Azure DocumentDB sample for high availability -
+ * Azure DocumentDB sample for high availability.
  *  - Create a DocumentDB configured with a single read location
  *  - Get the credentials for the DocumentDB
  *  - Update the DocumentDB with additional read locations
