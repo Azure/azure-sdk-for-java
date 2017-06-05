@@ -57,6 +57,6 @@ class AppServiceDomainsImpl
             public DomainLegalAgreement typeConvert(TldLegalAgreementInner tldLegalAgreementInner) {
                 return new DomainLegalAgreementImpl(tldLegalAgreementInner);
             }
-        }.convert(this.manager().inner().topLevelDomains().listAgreements(topLevelExtension));
+        }.convert(this.manager().inner().topLevelDomains().listAgreements(topLevelExtension, new TopLevelDomainAgreementOptionInner()));
     }
 }

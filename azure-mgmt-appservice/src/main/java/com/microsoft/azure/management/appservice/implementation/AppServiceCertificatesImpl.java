@@ -33,7 +33,7 @@ class AppServiceCertificatesImpl
 
     @Override
     protected Observable<CertificateInner> getInnerAsync(String resourceGroupName, String name) {
-        return this.inner().getAsync(resourceGroupName, name);
+        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
     }
 
     @Override

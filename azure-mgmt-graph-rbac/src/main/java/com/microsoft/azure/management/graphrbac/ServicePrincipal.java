@@ -180,15 +180,18 @@ public interface ServicePrincipal extends
         }
     }
 
+    /**
+     * Grouping of all the service principal update stages.
+     */
     interface UpdateStages{
         /**
-         * A service principal definition allowing credentials to be specified.
+         * A service principal update allowing credentials to be specified.
          */
         interface WithCredential {
             /**
              * Starts the definition of a certificate credential.
              * @param name the descriptive name of the certificate credential
-             * @return the first stage in certificate credential definition
+             * @return the first stage in certificate credential update
              */
             @Beta(SinceVersion.V1_1_0)
             CertificateCredential.DefinitionStages.Blank<Update> defineCertificateCredential(String name);
@@ -196,21 +199,29 @@ public interface ServicePrincipal extends
             /**
              * Starts the definition of a password credential.
              * @param name the descriptive name of the password credential
-             * @return the first stage in password credential definition
+             * @return the first stage in password credential update
              */
             @Beta(SinceVersion.V1_1_0)
             PasswordCredential.DefinitionStages.Blank<Update> definePasswordCredential(String name);
+
+            /**
+             * Removes a credential.
+             * @param name the name of the credential
+             * @return the next stage of the service principal update
+             */
+            @Beta(SinceVersion.V1_1_0)
+            Update withoutCredential(String name);
         }
 
         /**
-         * A service principal definition allowing role assignments to be added.
+         * A service principal update allowing role assignments to be added.
          */
         interface WithRoleAssignment {
             /**
              * Assigns a new role to the service principal.
              * @param role the role to assign to the service principal
              * @param scope the scope the service principal can access
-             * @return the next stage of the service principal definition
+             * @return the next stage of the service principal update
              */
             @Beta(SinceVersion.V1_1_0)
             Update withNewRole(BuiltInRole role, String scope);
@@ -219,7 +230,7 @@ public interface ServicePrincipal extends
              * Assigns a new role to the service principal.
              * @param role the role to assign to the service principal
              * @param subscriptionId the subscription the service principal can access
-             * @return the next stage of the service principal definition
+             * @return the next stage of the service principal update
              */
             @Beta(SinceVersion.V1_1_0)
             Update withNewRoleInSubscription(BuiltInRole role, String subscriptionId);
@@ -228,13 +239,16 @@ public interface ServicePrincipal extends
              * Assigns a new role to the service principal.
              * @param role the role to assign to the service principal
              * @param resourceGroup the resource group the service principal can access
-             * @return the next stage of the service principal definition
+             * @return the next stage of the service principal update
              */
             @Beta(SinceVersion.V1_1_0)
             Update withNewRoleInResourceGroup(BuiltInRole role, ResourceGroup resourceGroup);
         }
     }
 
+    /**
+     * The template for a service principal update operation, containing all the settings that can be modified.
+     */
     interface Update extends
             Appliable<ServicePrincipal>,
             ServicePrincipal.UpdateStages.WithCredential,
