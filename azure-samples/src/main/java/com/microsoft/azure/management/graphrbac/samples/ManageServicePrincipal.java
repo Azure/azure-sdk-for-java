@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.graphrbac.samples;
 
 import com.microsoft.azure.management.Azure;
+import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryApplication;
 import com.microsoft.azure.management.graphrbac.BuiltInRole;
 import com.microsoft.azure.management.graphrbac.RoleAssignment;
@@ -14,14 +15,17 @@ import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.resources.Subscription;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
-import com.microsoft.azure.management.trafficmanager.samples.ManageTrafficManager;
 import com.microsoft.rest.LogLevel;
 import org.joda.time.Duration;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Azure Service Principal sample for managing storage accounts -
@@ -34,20 +38,44 @@ import java.nio.file.Paths;
 
 public final class ManageServicePrincipal {
     /**
+     * Main entry point.
+     * @param args the parameters
+     */
+    public static void main(String[] args) {
+        try {
+            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+
+            Azure.Authenticated authenticated = Azure.configure()
+                    .withLogLevel(LogLevel.BODY)
+                    .authenticate(credFile);
+
+            runSample(authenticated);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Main function which runs the actual sample.
      * @param authenticated instance of Authenticated
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure.Authenticated authenticated) {
-        String name = SdkContext.randomResourceName("javasdkapp", 20);
         ActiveDirectoryApplication activeDirectoryApplication = null;
         RoleAssignment roleAssignment = null;
 
         try {
-            activeDirectoryApplication = createActiveDirectoryApplication(authenticated);
-            ServicePrincipal servicePrincipal = createServicePrincipalForApplication(authenticated, activeDirectoryApplication);
+            String authFileName = "myAuthFile.azureauth";
+            String authFilePath = Paths.get(getBasePath(), authFileName).toString();
 
-            roleAssignment = assignRoleForServicePrincipal(authenticated, servicePrincipal);
+            activeDirectoryApplication =
+                    createActiveDirectoryApplication(authenticated);
+            ServicePrincipal servicePrincipal =
+                    createServicePrincipalForApplication(authenticated, activeDirectoryApplication, authFilePath);
+            roleAssignment =
+                    assignRoleForServicePrincipal(authenticated, servicePrincipal);
+            useAuthFile(authFilePath);
             manageApplication(authenticated, activeDirectoryApplication);
 
             return true;
@@ -70,41 +98,19 @@ public final class ManageServicePrincipal {
     private static RoleAssignment assignRoleForServicePrincipal(Azure.Authenticated authenticated, ServicePrincipal servicePrincipal) {
         Subscription subscription = authenticated.subscriptions().list().get(0);
         return authenticated.roleAssignments()
-                .define("myassignment")
+                .define(UUID.randomUUID().toString())
                     .forServicePrincipal("anotherapp12")
                     .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
                     .withSubscriptionScope(subscription.subscriptionId())
                     .create();
     }
 
-    private static void manageApplication(Azure.Authenticated authenticated, ActiveDirectoryApplication activeDirectoryApplication) {
-        activeDirectoryApplication.update()
-                // delete password credential
-                .withoutCredential("password")
-                // add another password credentials
-                .definePasswordCredential("password-1")
-                    .withPasswordValue("P@ssw0rd-1")
-                    .withDuration(Duration.standardDays(700))
-                    .attach()
-                // add reply url
-                .withReplyUrl("http://localhost:8080")
-                .apply();
-    }
-
-    private static void manageCertificatesForServicePrincipal(Azure.Authenticated authenticated, ServicePrincipal servicePrincipal) {
-
-    }
-
     private static ActiveDirectoryApplication createActiveDirectoryApplication(Azure.Authenticated authenticated) throws Exception {
-        String name = SdkContext.randomResourceName("ad-application-sample", 20);
-
+        String name = SdkContext.randomResourceName("adapp-sample", 20);
         //create a self-sighed certificate
         String domainName = name + ".com";
-        String pfxPath = ManageTrafficManager.class.getResource("/").getPath() + domainName + ".pfx";
-        String cerPath = ManageTrafficManager.class.getResource("/").getPath() + domainName + ".cer";
         String certPassword = "StrongPass!12";
-        System.out.println("Creating a self-signed certificate " + pfxPath + "...");
-        Utils.createCertificate(cerPath, pfxPath, domainName, certPassword, "*." + domainName);
+        Certificate certificate = Certificate.createSelfSigned(domainName, certPassword);
 
         // create Active Directory application
         ActiveDirectoryApplication activeDirectoryApplication = authenticated.activeDirectoryApplications()
@@ -118,7 +124,7 @@ public final class ManageServicePrincipal {
                     // certificate credentials definition
                     .defineCertificateCredential("cert")
                         .withAsymmetricX509Certificate()
-                        .withPublicKey(Files.readAllBytes(Paths.get(cerPath)))
+                        .withPublicKey(Files.readAllBytes(Paths.get(certificate.getCerPath())))
                         .withDuration(Duration.standardDays(100))
                         .attach()
                     .create();
@@ -126,18 +132,16 @@ public final class ManageServicePrincipal {
         return activeDirectoryApplication;
     }
 
-    private static ServicePrincipal createServicePrincipalForApplication(Azure.Authenticated authenticated, ActiveDirectoryApplication activeDirectoryApplication) throws Exception {
-        String name = SdkContext.randomResourceName("service-principal-sample", 20);
+    private static ServicePrincipal createServicePrincipalForApplication(
+            Azure.Authenticated authenticated,
+            ActiveDirectoryApplication activeDirectoryApplication,
+            String authFilePath) throws Exception {
 
+        String name = SdkContext.randomResourceName("sp-sample", 20);
         //create a self-sighed certificate
         String domainName = name + ".com";
-        String pfxPath = ManageTrafficManager.class.getResource("/").getPath() + domainName + ".pfx";
-        String cerPath = ManageTrafficManager.class.getResource("/").getPath() + domainName + ".cer";
         String certPassword = "StrongPass!12";
-        System.out.println("Creating a self-signed certificate " + pfxPath + "...");
-        Utils.createCertificate(cerPath, pfxPath, domainName, certPassword, "*." + domainName);
-
-        String authFile = "myCredFile.azureauth";
+        Certificate certificate = Certificate.createSelfSigned(domainName, certPassword);
 
         // create  a Service Principal and assign it to a subscription with the role Contributor
         return authenticated.servicePrincipals()
@@ -145,40 +149,78 @@ public final class ManageServicePrincipal {
                     .withExistingApplication(activeDirectoryApplication)
                     // password credentials definition
                     .definePasswordCredential("ServicePrincipalAzureSample")
-                    .withPasswordValue("StrongPass!12")
-                    .withAuthFileToExport(new FileOutputStream(authFile))
-                    .attach()
-                // certificate credentials definition
-                .defineCertificateCredential("spcert")
-                    .withAsymmetricX509Certificate()
-                    .withPublicKey(Files.readAllBytes(Paths.get(cerPath)))
-                    .withDuration(Duration.standardDays(7))
-                    .withAuthFileToExport(new FileOutputStream(authFile))
-                    .withPrivateKeyFile(pfxPath)
-                    .withPrivateKeyPassword("StrongPass!123")
-                    .attach()
+                        .withPasswordValue("StrongPass!12")
+                        .attach()
+                    // certificate credentials definition
+                    .defineCertificateCredential("spcert")
+                        .withAsymmetricX509Certificate()
+                        .withPublicKey(Files.readAllBytes(Paths.get(certificate.getCerPath())))
+                        .withDuration(Duration.standardDays(7))
+                        .withAuthFileToExport(new FileOutputStream(authFilePath))
+                        .withPrivateKeyFile(certificate.getPfxPath())
+                        .withPrivateKeyPassword("StrongPass!123")
+                        .attach()
                 .create();
     }
 
-    /**
-     * Main entry point.
-     * @param args the parameters
-     */
-    public static void main(String[] args) {
-        try {
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
-
-            Azure.Authenticated authenticated = Azure.configure()
-                    .withLogLevel(LogLevel.BODY)
-                    .authenticate(credFile);
-
-            runSample(authenticated);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+    private static void useAuthFile(String authFilePath) throws IOException {
+        // use just created auth file to sign in.
+        Azure azure = Azure.configure()
+                .withLogLevel(LogLevel.BODY)
+                .authenticate(new File(authFilePath))
+                .withDefaultSubscription();
+        // list virtualMachines, if any.
+        List<VirtualMachine> resourceGroups = azure.virtualMachines().list();
+        for (VirtualMachine vm : resourceGroups) {
+            Utils.print(vm);
         }
     }
 
+    private static void manageApplication(Azure.Authenticated authenticated, ActiveDirectoryApplication activeDirectoryApplication) {
+        activeDirectoryApplication.update()
+                // add another password credentials
+                .definePasswordCredential("password-1")
+                .withPasswordValue("P@ssw0rd-1")
+                .withDuration(Duration.standardDays(700))
+                .attach()
+                // add a reply url
+                .withReplyUrl("http://localhost:8080")
+                .apply();
+    }
+
     private ManageServicePrincipal() {
+    }
+
+    private static String basePath = null;
+    private static String getBasePath() throws URISyntaxException {
+        if (basePath == null) {
+            basePath = Paths.get(ManageServicePrincipal.class.getResource("/").toURI()).toString();
+        }
+        return basePath;
+    }
+
+    private static final class Certificate {
+        String pfxPath;
+        String cerPath;
+
+        public static Certificate createSelfSigned(String domainName, String password) throws Exception {
+           return new Certificate(domainName, password);
+        }
+
+        public String getPfxPath() {
+            return pfxPath;
+        }
+
+        public String getCerPath() {
+            return cerPath;
+        }
+
+        private Certificate(String domainName, String password) throws Exception {
+            pfxPath = Paths.get(getBasePath(), domainName + ".pfx").toString();
+            cerPath = Paths.get(getBasePath(), domainName + ".cer").toString();
+
+            System.out.println("Creating a self-signed certificate " + pfxPath + "...");
+            Utils.createCertificate(cerPath, pfxPath, domainName, password, "*." + domainName);
+        }
     }
 }
