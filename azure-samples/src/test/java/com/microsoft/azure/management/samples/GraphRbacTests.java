@@ -17,6 +17,10 @@ public class GraphRbacTests extends TestBase {
     private Azure.Authenticated authenticated;
     private String defaultSubscription;
 
+    public GraphRbacTests() {
+        super(TestBase.RunCondition.LIVE_ONLY);
+    }
+
     @Test
     public void testManageUsersGroupsAndRoles() {
         Assert.assertTrue(ManageUsersGroupsAndRoles.runSample(authenticated, defaultSubscription));
@@ -24,7 +28,7 @@ public class GraphRbacTests extends TestBase {
 
     @Test
     public void testManageServicePrincipal() {
-        Assert.assertTrue(ManageServicePrincipal.runSample(authenticated));
+        Assert.assertTrue(ManageServicePrincipal.runSample(authenticated, defaultSubscription));
     }
 
     @Override

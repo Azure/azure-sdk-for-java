@@ -12,7 +12,6 @@ import com.microsoft.azure.management.graphrbac.ActiveDirectoryApplication;
 import com.microsoft.azure.management.graphrbac.BuiltInRole;
 import com.microsoft.azure.management.graphrbac.RoleAssignment;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
-import com.microsoft.azure.management.resources.Subscription;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
@@ -25,7 +24,6 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Azure Service Principal sample for managing storage accounts -
@@ -48,8 +46,8 @@ public final class ManageServicePrincipal {
             Azure.Authenticated authenticated = Azure.configure()
                     .withLogLevel(LogLevel.BODY)
                     .authenticate(credFile);
-
-            runSample(authenticated);
+            String defaultSubscriptionId = authenticated.subscriptions().list().get(0).subscriptionId();
+            runSample(authenticated, defaultSubscriptionId);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
@@ -59,9 +57,10 @@ public final class ManageServicePrincipal {
     /**
      * Main function which runs the actual sample.
      * @param authenticated instance of Authenticated
+     * @param defaultSubscriptionId default subscription id
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure.Authenticated authenticated) {
+    public static boolean runSample(Azure.Authenticated authenticated, String defaultSubscriptionId) {
         ActiveDirectoryApplication activeDirectoryApplication = null;
         RoleAssignment roleAssignment = null;
 
@@ -71,11 +70,17 @@ public final class ManageServicePrincipal {
 
             activeDirectoryApplication =
                     createActiveDirectoryApplication(authenticated);
+
             ServicePrincipal servicePrincipal =
-                    createServicePrincipalForApplication(authenticated, activeDirectoryApplication, authFilePath);
-            roleAssignment =
-                    assignRoleForServicePrincipal(authenticated, servicePrincipal);
+                    createServicePrincipalWithRoleForApplicationAndExportToFile(
+                            authenticated,
+                            activeDirectoryApplication,
+                            BuiltInRole.CONTRIBUTOR,
+                            defaultSubscriptionId,
+                            authFilePath);
+
             useAuthFile(authFilePath);
+
             manageApplication(authenticated, activeDirectoryApplication);
 
             return true;
@@ -93,16 +98,6 @@ public final class ManageServicePrincipal {
         }
 
         return false;
-    }
-
-    private static RoleAssignment assignRoleForServicePrincipal(Azure.Authenticated authenticated, ServicePrincipal servicePrincipal) {
-        Subscription subscription = authenticated.subscriptions().list().get(0);
-        return authenticated.roleAssignments()
-                .define(UUID.randomUUID().toString())
-                    .forServicePrincipal("anotherapp12")
-                    .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
-                    .withSubscriptionScope(subscription.subscriptionId())
-                    .create();
     }
 
     private static ActiveDirectoryApplication createActiveDirectoryApplication(Azure.Authenticated authenticated) throws Exception {
@@ -132,9 +127,11 @@ public final class ManageServicePrincipal {
         return activeDirectoryApplication;
     }
 
-    private static ServicePrincipal createServicePrincipalForApplication(
+    private static ServicePrincipal createServicePrincipalWithRoleForApplicationAndExportToFile(
             Azure.Authenticated authenticated,
             ActiveDirectoryApplication activeDirectoryApplication,
+            BuiltInRole role,
+            String subscriptionId,
             String authFilePath) throws Exception {
 
         String name = SdkContext.randomResourceName("sp-sample", 20);
@@ -156,10 +153,12 @@ public final class ManageServicePrincipal {
                         .withAsymmetricX509Certificate()
                         .withPublicKey(Files.readAllBytes(Paths.get(certificate.getCerPath())))
                         .withDuration(Duration.standardDays(7))
+                        // export the credentials to the file
                         .withAuthFileToExport(new FileOutputStream(authFilePath))
                         .withPrivateKeyFile(certificate.getPfxPath())
-                        .withPrivateKeyPassword("StrongPass!123")
+                        .withPrivateKeyPassword(certPassword)
                         .attach()
+                .withNewRoleInSubscription(role, subscriptionId)
                 .create();
     }
 
