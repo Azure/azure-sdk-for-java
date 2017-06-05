@@ -1772,7 +1772,9 @@ public final class Utils {
         for (com.microsoft.azure.management.documentdb.Location readReplica : documentDBAccount.readableReplications()) {
             builder.append("\n\t\tRead replication: ")
                     .append("\n\t\t\tName :").append(readReplica.locationName());
-   
+        }
+    }
+    
     /**
      * Print Active Directory User info.
      * @param user active directory user
