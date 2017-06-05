@@ -5,24 +5,11 @@
  */
 package com.microsoft.azure.management;
 
-import com.microsoft.azure.management.compute.ContainerService;
-import com.microsoft.azure.management.compute.ContainerServiceMasterProfileCount;
-import com.microsoft.azure.management.compute.ContainerServiceVMSizeTypes;
-import com.microsoft.azure.management.compute.ContainerServices;
 import com.microsoft.azure.management.containerregistry.Registries;
 import com.microsoft.azure.management.containerregistry.Registry;
 import com.microsoft.azure.management.containerregistry.implementation.RegistryListCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.storage.StorageAccount;
-import com.microsoft.azure.management.storage.implementation.StorageManager;
-import org.apache.commons.codec.binary.Base64;
 import org.junit.Assert;
-
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.interfaces.RSAPublicKey;
 
 public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
 
