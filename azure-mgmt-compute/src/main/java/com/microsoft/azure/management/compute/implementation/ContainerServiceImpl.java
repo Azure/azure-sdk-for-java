@@ -251,7 +251,7 @@ public class ContainerServiceImpl
     }
 
     @Override
-    public ContainerServiceImpl withServicePrincipal(String clientId,String secret) {
+    public ContainerServiceImpl withServicePrincipal(String clientId, String secret) {
         ContainerServiceServicePrincipalProfile serviceProfile =
                 new ContainerServiceServicePrincipalProfile();
         serviceProfile.withClientId(clientId);
