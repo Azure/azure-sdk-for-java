@@ -19,7 +19,6 @@ import com.microsoft.azure.management.appservice.samples.ManageWebAppBasic;
 import com.microsoft.azure.management.appservice.samples.ManageWebAppSlots;
 import com.microsoft.azure.management.appservice.samples.ManageWebAppSourceControlAsync;
 import com.microsoft.azure.management.appservice.samples.ManageWebAppSqlConnection;
-import com.microsoft.azure.management.appservice.samples.ManageWebAppStorageAccountConnection;
 import com.microsoft.azure.management.appservice.samples.ManageWebAppWithDomainSsl;
 import com.microsoft.azure.management.appservice.samples.ManageWebAppWithTrafficManager;
 import org.junit.Assert;
@@ -62,12 +61,6 @@ public class AppServiceSampleTests extends SamplesTestBase {
     @Test
     public void testManageLinuxWebAppBasic() {
         Assert.assertTrue(ManageLinuxWebAppBasic.runSample(azure));
-    }
-
-    @Test
-    @Ignore("Failing in playback - dependent on git")
-    public void testManageLinuxWebAppSourceControl() {
-        Assert.assertTrue(ManageLinuxWebAppSourceControl.runSample(azure));
     }
 
     @Test

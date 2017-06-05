@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.samples;
 
+import com.microsoft.azure.management.appservice.samples.ManageLinuxWebAppSourceControl;
 import com.microsoft.azure.management.appservice.samples.ManageWebAppSourceControl;
 import com.microsoft.azure.management.appservice.samples.ManageWebAppStorageAccountConnection;
 import com.microsoft.azure.management.resources.core.TestBase;
@@ -26,5 +27,10 @@ public class AppServiceSampleTestsLiveOnly extends SamplesTestBase {
     @Test
     public void testManageWebAppStorageAccountConnection() {
         Assert.assertTrue(ManageWebAppStorageAccountConnection.runSample(azure));
+    }
+
+    @Test
+    public void testManageLinuxWebAppSourceControl() {
+        Assert.assertTrue(ManageLinuxWebAppSourceControl.runSample(azure));
     }
 }
