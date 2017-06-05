@@ -65,7 +65,7 @@ class AppServiceDomainImpl
         String[] domainParts = this.name().split("\\.");
         String topLevel = domainParts[domainParts.length - 1];
         final DomainsInner client = this.manager().inner().domains();
-        return this.manager().inner().topLevelDomains().listAgreementsAsync(topLevel)
+        return this.manager().inner().topLevelDomains().listAgreementsAsync(topLevel, new TopLevelDomainAgreementOptionInner())
                 // Step 1: Consent to agreements
                 .flatMap(new Func1<Page<TldLegalAgreementInner>, Observable<List<String>>>() {
                     @Override

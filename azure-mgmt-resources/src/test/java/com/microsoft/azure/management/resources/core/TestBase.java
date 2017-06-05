@@ -16,6 +16,7 @@ import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.RestClient;
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 
 import java.io.File;
@@ -30,8 +31,38 @@ public abstract class TestBase extends MockIntegrationTestBase {
         return SdkContext.randomResourceName(prefix, maxLen);
     }
 
+    protected enum RunCondition {
+        MOCK_ONLY,
+        LIVE_ONLY,
+        BOTH
+    }
+
+    private final RunCondition runCondition;
+
+    protected TestBase() {
+        this(RunCondition.BOTH);
+    }
+
+    protected TestBase(RunCondition runCondition) {
+        this.runCondition = runCondition;
+    }
+
+    private String shouldCancelTest() {
+        // Determine whether to run the test based on the condition the test has been configured with
+        switch (this.runCondition) {
+        case MOCK_ONLY:
+            return (!IS_MOCKED) ? "Test configured to run only as mocked, not live." : null;
+        case LIVE_ONLY:
+            return (IS_MOCKED) ? "Test configured to run only as live, not mocked." : null;
+        default:
+            return null;
+        }
+    }
+
     @Before
     public void setup() throws Exception {
+        final String skipMessage = shouldCancelTest();
+        Assume.assumeTrue(skipMessage, skipMessage == null);
         addTextReplacementRule("https://management.azure.com/", this.mockUri() + "/");
         addTextReplacementRule("https://graph.windows.net/", this.mockUri() + "/");
         setupTest(name.getMethodName());
@@ -81,6 +112,9 @@ public abstract class TestBase extends MockIntegrationTestBase {
 
     @After
     public void cleanup() throws Exception {
+        if(shouldCancelTest() != null) {
+            return;
+        }
         cleanUpResources();
         if (IS_MOCKED) {
             if (testRecord.networkCallRecords.size() > 0) {

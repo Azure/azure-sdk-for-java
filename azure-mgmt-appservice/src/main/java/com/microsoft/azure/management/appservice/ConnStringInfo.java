@@ -29,7 +29,7 @@ public class ConnStringInfo {
     /**
      * Type of database. Possible values include: 'MySql', 'SQLServer',
      * 'SQLAzure', 'Custom', 'NotificationHub', 'ServiceBus', 'EventHub',
-     * 'ApiHub', 'DocDb', 'RedisCache'.
+     * 'ApiHub', 'DocDb', 'RedisCache', 'PostgreSQL'.
      */
     @JsonProperty(value = "type")
     private ConnectionStringType type;

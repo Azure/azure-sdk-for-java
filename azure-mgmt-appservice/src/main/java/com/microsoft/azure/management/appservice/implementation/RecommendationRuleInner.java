@@ -77,6 +77,31 @@ public class RecommendationRuleInner {
     private List<String> tags;
 
     /**
+     * True if this is associated with a dynamically added rule.
+     */
+    @JsonProperty(value = "isDynamic")
+    private Boolean isDynamic;
+
+    /**
+     * Extension name of the portal if exists. Applicable to dynamic rule only.
+     */
+    @JsonProperty(value = "extensionName")
+    private String extensionName;
+
+    /**
+     * Deep link to a blade on the portal. Applicable to dynamic rule only.
+     */
+    @JsonProperty(value = "bladeName")
+    private String bladeName;
+
+    /**
+     * Forward link to an external document associated with the rule.
+     * Applicable to dynamic rule only.
+     */
+    @JsonProperty(value = "forwardLink")
+    private String forwardLink;
+
+    /**
      * Get the name value.
      *
      * @return the name value
@@ -253,6 +278,86 @@ public class RecommendationRuleInner {
      */
     public RecommendationRuleInner withTags(List<String> tags) {
         this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the isDynamic value.
+     *
+     * @return the isDynamic value
+     */
+    public Boolean isDynamic() {
+        return this.isDynamic;
+    }
+
+    /**
+     * Set the isDynamic value.
+     *
+     * @param isDynamic the isDynamic value to set
+     * @return the RecommendationRuleInner object itself.
+     */
+    public RecommendationRuleInner withIsDynamic(Boolean isDynamic) {
+        this.isDynamic = isDynamic;
+        return this;
+    }
+
+    /**
+     * Get the extensionName value.
+     *
+     * @return the extensionName value
+     */
+    public String extensionName() {
+        return this.extensionName;
+    }
+
+    /**
+     * Set the extensionName value.
+     *
+     * @param extensionName the extensionName value to set
+     * @return the RecommendationRuleInner object itself.
+     */
+    public RecommendationRuleInner withExtensionName(String extensionName) {
+        this.extensionName = extensionName;
+        return this;
+    }
+
+    /**
+     * Get the bladeName value.
+     *
+     * @return the bladeName value
+     */
+    public String bladeName() {
+        return this.bladeName;
+    }
+
+    /**
+     * Set the bladeName value.
+     *
+     * @param bladeName the bladeName value to set
+     * @return the RecommendationRuleInner object itself.
+     */
+    public RecommendationRuleInner withBladeName(String bladeName) {
+        this.bladeName = bladeName;
+        return this;
+    }
+
+    /**
+     * Get the forwardLink value.
+     *
+     * @return the forwardLink value
+     */
+    public String forwardLink() {
+        return this.forwardLink;
+    }
+
+    /**
+     * Set the forwardLink value.
+     *
+     * @param forwardLink the forwardLink value to set
+     * @return the RecommendationRuleInner object itself.
+     */
+    public RecommendationRuleInner withForwardLink(String forwardLink) {
+        this.forwardLink = forwardLink;
         return this;
     }
 
