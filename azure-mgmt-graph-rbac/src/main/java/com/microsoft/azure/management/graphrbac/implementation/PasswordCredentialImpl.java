@@ -104,7 +104,7 @@ class PasswordCredentialImpl<T>
 
     @Override
     public PasswordCredentialImpl<T> withDuration(Duration duration) {
-        inner().withEndDate(startDate().plusDays((int) duration.getStandardDays()));
+        inner().withEndDate(startDate().plus(duration.getMillis()));
         return this;
     }
 

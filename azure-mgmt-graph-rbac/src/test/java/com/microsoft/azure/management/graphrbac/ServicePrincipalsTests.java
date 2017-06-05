@@ -11,10 +11,7 @@ import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import org.joda.time.Duration;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -49,11 +46,10 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
     }
 
     @Test
-    @Ignore("Do not record - recorded JSON may contain auth info")
     public void canCRUDServicePrincipalWithRole() throws Exception {
         ServicePrincipal servicePrincipal = null;
-        String authFile = "someauth.azureauth";
-        String subscription = "somesubscription";
+        String authFile = "/Users/jianghlu/Downloads/graphtestapp.azureauth";
+        String subscription = "0b1f6471-1bf0-4dda-aec3-cb9272f09590";
         try {
             servicePrincipal = graphRbacManager.servicePrincipals().define("ansp44")
                     .withNewApplication("http://easycreate.azure.com/ansp/44")
@@ -62,10 +58,10 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
                         .attach()
                     .defineCertificateCredential("spcert")
                         .withAsymmetricX509Certificate()
-                        .withPublicKey(Files.readAllBytes(Paths.get("/Users/user/myserver.crt")))
+                        .withPublicKey(Files.readAllBytes(Paths.get("/Users/jianghlu/Documents/code/certs/myserver.crt")))
                         .withDuration(Duration.standardDays(7))
                         .withAuthFileToExport(new FileOutputStream(authFile))
-                        .withPrivateKeyFile("/Users/user/myserver.pfx")
+                        .withPrivateKeyFile("/Users/jianghlu/Documents/code/certs/myserver.pfx")
                         .withPrivateKeyPassword("StrongPass!123")
                         .attach()
                     .withNewRoleInSubscription(BuiltInRole.CONTRIBUTOR, subscription)

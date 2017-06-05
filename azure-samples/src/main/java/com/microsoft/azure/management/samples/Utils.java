@@ -44,6 +44,7 @@ import com.microsoft.azure.management.dns.SrvRecord;
 import com.microsoft.azure.management.dns.SrvRecordSet;
 import com.microsoft.azure.management.dns.TxtRecord;
 import com.microsoft.azure.management.dns.TxtRecordSet;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryApplication;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroup;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryUser;
 import com.microsoft.azure.management.graphrbac.RoleAssignment;
@@ -1825,6 +1826,23 @@ public final class Utils {
                 .append("\n\tName: ").append(group.name())
                 .append("\n\tMail: ").append(group.mail())
                 .append("\n\tSecurity Enabled: ").append(group.securityEnabled());
+
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print Active Directory Application info.
+     * @param application active directory application
+     */
+    public static void print(ActiveDirectoryApplication application) {
+        StringBuilder builder = new StringBuilder()
+                .append("Active Directory Application: ").append(application.id())
+                .append("\n\tName: ").append(application.name())
+                .append("\n\tSign on URL: ").append(application.signOnUrl())
+                .append("\n\tReply URLs:");
+        for (String replyUrl : application.replyUrls()) {
+            builder.append("\n\t\t").append(replyUrl);
+        }
 
         System.out.println(builder.toString());
     }
