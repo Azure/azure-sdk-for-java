@@ -1411,7 +1411,7 @@ public final class CloudFile implements ListFileItem {
                     // writeToOutputStream will update the currentRequestByteCount on this request in case a retry
                     // is needed and download should resume from that point
                     final StreamMd5AndLength descriptor = Utility.writeToOutputStream(streamRef, outStream, -1, false,
-                            validateMD5, context, options, true, this);
+                            validateMD5, context, options, true, this, this.getCurrentDescriptor());
 
                     // length was already checked by the NetworkInputStream, now check Md5
                     if (validateMD5 && !this.getContentMD5().equals(descriptor.getMd5())) {
