@@ -8,10 +8,10 @@ package com.microsoft.azure.management.documentdb;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
+import com.microsoft.azure.management.documentdb.implementation.DatabaseAccountListConnectionStringsResult;
+import com.microsoft.azure.management.documentdb.implementation.DatabaseAccountListKeysResult;
 import com.microsoft.azure.management.documentdb.implementation.DocumentDBManager;
 import com.microsoft.azure.management.documentdb.implementation.DatabaseAccountInner;
-import com.microsoft.azure.management.documentdb.implementation.DatabaseAccountListConnectionStringsResultInner;
-import com.microsoft.azure.management.documentdb.implementation.DatabaseAccountListKeysResultInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -76,22 +76,22 @@ public interface DocumentDBAccount extends
     /**
      * @return the access keys for the specified Azure DocumentDB database account
      */
-    DatabaseAccountListKeysResultInner listKeys();
+    DatabaseAccountListKeysResult listKeys();
 
     /**
      * @return the access keys for the specified Azure DocumentDB database account
      */
-    Observable<DatabaseAccountListKeysResultInner> listKeysAsync();
+    Observable<DatabaseAccountListKeysResult> listKeysAsync();
 
     /**
      * @return the connection strings for the specified Azure DocumentDB database account
      */
-    DatabaseAccountListConnectionStringsResultInner listConnectionStrings();
+    DatabaseAccountListConnectionStringsResult listConnectionStrings();
 
     /**
      * @return the connection strings for the specified Azure DocumentDB database account
      */
-    Observable<DatabaseAccountListConnectionStringsResultInner> listConnectionStringsAsync();
+    Observable<DatabaseAccountListConnectionStringsResult> listConnectionStringsAsync();
 
     /**
      * @param keyKind the key kind

@@ -7,8 +7,8 @@ package com.microsoft.azure.management.documentdb;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.documentdb.implementation.DatabaseAccountListConnectionStringsResultInner;
-import com.microsoft.azure.management.documentdb.implementation.DatabaseAccountListKeysResultInner;
+import com.microsoft.azure.management.documentdb.implementation.DatabaseAccountListConnectionStringsResult;
+import com.microsoft.azure.management.documentdb.implementation.DatabaseAccountListKeysResult;
 import com.microsoft.azure.management.documentdb.implementation.DatabaseAccountsInner;
 import com.microsoft.azure.management.documentdb.implementation.DocumentDBManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
@@ -59,7 +59,7 @@ public interface DocumentDBAccounts extends
      * @param accountName the account name
      * @return a list of keys
      */
-    DatabaseAccountListKeysResultInner listKeys(String groupName, String accountName);
+    DatabaseAccountListKeysResult listKeys(String groupName, String accountName);
 
     /**
      * Lists the connection strings for the specified Azure DocumentDB database account.
@@ -67,7 +67,7 @@ public interface DocumentDBAccounts extends
      * @param accountName the account name
      * @return a list of connection strings
      */
-    DatabaseAccountListConnectionStringsResultInner listConnectionStrings(String groupName, String accountName);
+    DatabaseAccountListConnectionStringsResult listConnectionStrings(String groupName, String accountName);
 
     /**
      * Regenerates an access key for the specified Azure DocumentDB database account.
@@ -94,7 +94,7 @@ public interface DocumentDBAccounts extends
      * @param accountName the account name
      * @return a list of keys
      */
-    Observable<DatabaseAccountListKeysResultInner> listKeysAsync(String groupName, String accountName);
+    Observable<DatabaseAccountListKeysResult> listKeysAsync(String groupName, String accountName);
 
     /**
      * Lists the connection strings for the specified Azure DocumentDB database account.
@@ -102,7 +102,7 @@ public interface DocumentDBAccounts extends
      * @param accountName the account name
      * @return a list of connection strings
      */
-    Observable<DatabaseAccountListConnectionStringsResultInner> listConnectionStringsAsync(String groupName, String accountName);
+    Observable<DatabaseAccountListConnectionStringsResult> listConnectionStringsAsync(String groupName, String accountName);
 
     /**
      * Regenerates an access key for the specified Azure DocumentDB database account.

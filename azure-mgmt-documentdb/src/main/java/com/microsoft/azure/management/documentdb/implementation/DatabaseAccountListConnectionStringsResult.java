@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The connection strings for the given database account.
  */
-public class DatabaseAccountListConnectionStringsResultInner {
+public class DatabaseAccountListConnectionStringsResult {
     /**
      * An array that contains the connection strings for the DocumentDB
      * account.
@@ -36,9 +36,9 @@ public class DatabaseAccountListConnectionStringsResultInner {
      * Set the connectionStrings value.
      *
      * @param connectionStrings the connectionStrings value to set
-     * @return the DatabaseAccountListConnectionStringsResultInner object itself.
+     * @return the DatabaseAccountListConnectionStringsResult object itself.
      */
-    public DatabaseAccountListConnectionStringsResultInner withConnectionStrings(List<DatabaseAccountConnectionString> connectionStrings) {
+    public DatabaseAccountListConnectionStringsResult withConnectionStrings(List<DatabaseAccountConnectionString> connectionStrings) {
         this.connectionStrings = connectionStrings;
         return this;
     }

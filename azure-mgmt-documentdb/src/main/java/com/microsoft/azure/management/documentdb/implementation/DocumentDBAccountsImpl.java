@@ -131,22 +131,22 @@ class DocumentDBAccountsImpl
     }
 
     @Override
-    public DatabaseAccountListKeysResultInner listKeys(String groupName, String accountName) {
+    public DatabaseAccountListKeysResult listKeys(String groupName, String accountName) {
         return this.listKeysAsync(groupName, accountName).toBlocking().last();
     }
 
     @Override
-    public Observable<DatabaseAccountListKeysResultInner> listKeysAsync(String groupName, String accountName) {
+    public Observable<DatabaseAccountListKeysResult> listKeysAsync(String groupName, String accountName) {
         return this.manager().inner().databaseAccounts().listKeysAsync(groupName, accountName);
     }
 
     @Override
-    public DatabaseAccountListConnectionStringsResultInner listConnectionStrings(String groupName, String accountName) {
+    public DatabaseAccountListConnectionStringsResult listConnectionStrings(String groupName, String accountName) {
         return this.listConnectionStringsAsync(groupName, accountName).toBlocking().last();
     }
 
     @Override
-    public Observable<DatabaseAccountListConnectionStringsResultInner> listConnectionStringsAsync(String groupName, String accountName) {
+    public Observable<DatabaseAccountListConnectionStringsResult> listConnectionStringsAsync(String groupName, String accountName) {
         return this.manager().inner().databaseAccounts().listConnectionStringsAsync(groupName, accountName);
     }
 

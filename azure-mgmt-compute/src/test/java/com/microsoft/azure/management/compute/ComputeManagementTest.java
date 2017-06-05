@@ -27,6 +27,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ComputeManagementTest extends TestBase {
+    public ComputeManagementTest() {
+        super(TestBase.RunCondition.BOTH);
+    }
+
+    public ComputeManagementTest(TestBase.RunCondition runCondition) {
+        super(runCondition);
+    }
+
     protected ResourceManager resourceManager;
     protected ComputeManager computeManager;
     protected NetworkManager networkManager;
