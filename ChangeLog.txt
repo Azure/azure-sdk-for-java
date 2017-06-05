@@ -1,3 +1,6 @@
+2017.XX.XX Version X.X.X
+ * Fixed a bug where the tranactional MD5 check would fail when downloading a range of blob or file and the recovery action is performed on a subsection of the range.
+
 2017.05.23 Version 5.2.0
  * Fixed Exists() calls on Shares and Directories to now populate metadata. This was already being done for Files.
  * Changed blob constants to support up to 256 MB on put blob for block blobs. The default value for put blob threshold has also been updated to half of the maximum, or 128 MB currently.

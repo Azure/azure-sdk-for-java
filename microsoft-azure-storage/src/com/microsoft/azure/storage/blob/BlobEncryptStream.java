@@ -145,7 +145,7 @@ final class BlobEncryptStream extends BlobOutputStream {
 
     @Override
     public void write(InputStream sourceStream, long writeLength) throws IOException, StorageException {
-        Utility.writeToOutputStream(sourceStream, this, writeLength, false, false, this.opContext, this.options, false);      
+        Utility.writeToOutputStream(sourceStream, this, writeLength, false, false, this.opContext, this.options, false, null /* descriptor */);
     }
 
     @Override
