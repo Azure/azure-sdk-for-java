@@ -157,7 +157,7 @@ class CertificateCredentialImpl<T>
 
         StringBuilder builder = new StringBuilder();
         builder.append(String.format("client=%s", servicePrincipal.applicationId())).append("\n");
-        builder.append(String.format("certificate=%s", privateKeyPath)).append("\n");
+        builder.append(String.format("certificate=%s", normalizeAuthFilePath(privateKeyPath))).append("\n");
         builder.append(String.format("certificatePassword=%s", privateKeyPassword)).append("\n");
         builder.append(String.format("tenant=%s", servicePrincipal.manager().tenantId())).append("\n");
         builder.append(String.format("subscription=%s", servicePrincipal.assignedSubscription)).append("\n");
@@ -177,6 +177,10 @@ class CertificateCredentialImpl<T>
             url = url + "/";
         }
         return url.replace("://", "\\://");
+    }
+
+    private String normalizeAuthFilePath(String path) {
+        return path.replace("\\", "\\\\").replace(":", "\\:");
     }
 
     @Override

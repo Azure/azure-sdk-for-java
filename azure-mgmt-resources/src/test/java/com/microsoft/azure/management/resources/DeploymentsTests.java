@@ -85,7 +85,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
     }
 
     @Test
-    @Ignore("Throws on deployment.cancel(): CloudException: 405 - Method not allowed")
+    @Ignore("deployment.cancel() doesn't throw but provisining state says Running not Cancelled...")
     public void canCancelVirtualNetworkDeployment() throws Exception {
         final String dp = "dpB" + testId;
 

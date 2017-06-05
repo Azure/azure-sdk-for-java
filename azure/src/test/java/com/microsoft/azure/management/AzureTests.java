@@ -688,14 +688,12 @@ public class AzureTests extends TestBase {
     }
 
     @Test
-    @Ignore("Runs locally find but fails for unknown reason on check in.")
     public void testContainerService() throws Exception {
         new TestContainerService()
                 .runTest(azure.containerServices(), azure.resourceGroups());
     }
 
     @Test
-    @Ignore("Runs locally find but fails for unknown reason on check in.")
     public void testContainerRegistry() throws Exception {
         new TestContainerRegistry()
                 .runTest(azure.containerRegistries(), azure.resourceGroups());

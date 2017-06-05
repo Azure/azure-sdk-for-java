@@ -12,6 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import org.joda.time.Duration;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -46,6 +47,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
     }
 
     @Test
+    @Ignore("Do not record - recorded JSON may contain auth info")
     public void canCRUDServicePrincipalWithRole() throws Exception {
         ServicePrincipal servicePrincipal = null;
         String authFile = "/Users/jianghlu/Downloads/graphtestapp.azureauth";
