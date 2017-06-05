@@ -50,12 +50,6 @@ public class AppServiceSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Ignore("Failing in Playback - Using storage data plan APIs")
-    public void testManageWebAppStorageAccountConnection() {
-        Assert.assertTrue(ManageWebAppStorageAccountConnection.runSample(azure));
-    }
-
-    @Test
     public void testManageWebAppWithDomainSsl() {
         Assert.assertTrue(ManageWebAppWithDomainSsl.runSample(azure));
     }
