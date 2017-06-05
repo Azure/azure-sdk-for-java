@@ -168,7 +168,7 @@ public interface ContainerService extends
              * @param secret The secret password associated with the service principal.
              * @return the next stage
              */
-            WithLinux withServicePrincipal(String clientId,String secret);
+            WithLinux withServicePrincipal(String clientId, String secret);
         }
 
         /**
