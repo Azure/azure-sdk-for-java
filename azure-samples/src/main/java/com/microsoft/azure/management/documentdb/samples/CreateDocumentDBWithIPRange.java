@@ -18,7 +18,7 @@ import com.microsoft.rest.LogLevel;
 import java.io.File;
 
 /**
- * Azure DocumentDB sample for high availability -
+ * Azure DocumentDB sample for high availability.
  *  - Create a DocumentDB configured with IP range filter
  *  - Delete the DocumentDB.
  */
