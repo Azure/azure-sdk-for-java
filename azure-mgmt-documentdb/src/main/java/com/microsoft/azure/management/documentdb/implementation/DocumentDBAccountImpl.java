@@ -40,6 +40,7 @@ class DocumentDBAccountImpl
         DocumentDBAccount.Update {
     private List<FailoverPolicyInner> failoverPolicies;
     private boolean hasFailoverPolicyChanges;
+    private final int maxDelayDueToMissingFailovers = 60 * 10;
 
     DocumentDBAccountImpl(String name, DatabaseAccountInner innerObject, DocumentDBManager manager) {
         super(fixDBName(name), innerObject, manager);
@@ -91,23 +92,23 @@ class DocumentDBAccountImpl
     }
 
     @Override
-    public DatabaseAccountListKeysResultInner listKeys() {
+    public DatabaseAccountListKeysResult listKeys() {
         return this.listKeysAsync().toBlocking().last();
     }
 
     @Override
-    public Observable<DatabaseAccountListKeysResultInner> listKeysAsync() {
+    public Observable<DatabaseAccountListKeysResult> listKeysAsync() {
         return this.manager().inner().databaseAccounts().listKeysAsync(this.resourceGroupName(),
                 this.name());
     }
 
     @Override
-    public DatabaseAccountListConnectionStringsResultInner listConnectionStrings() {
+    public DatabaseAccountListConnectionStringsResult listConnectionStrings() {
         return this.listConnectionStringsAsync().toBlocking().last();
     }
 
     @Override
-    public Observable<DatabaseAccountListConnectionStringsResultInner> listConnectionStringsAsync() {
+    public Observable<DatabaseAccountListConnectionStringsResult> listConnectionStringsAsync() {
         return this.manager().inner().databaseAccounts().listConnectionStringsAsync(this.resourceGroupName(),
                 this.name());
     }
@@ -165,9 +166,11 @@ class DocumentDBAccountImpl
     public DocumentDBAccountImpl withoutReadReplication(Region region) {
         this.ensureFailoverIsInitialized();
         for (int i = 1; i < this.failoverPolicies.size(); i++) {
-            if (this.failoverPolicies.get(i).id().endsWith(region.name())) {
-                this.failoverPolicies.remove(i);
-                break;
+            if (this.failoverPolicies.get(i).locationName() != null) {
+                String locName = this.failoverPolicies.get(i).locationName().replace(" ", "").toLowerCase();
+                if (locName.equals(region.name())) {
+                    this.failoverPolicies.remove(i);
+                }
             }
         }
 
@@ -275,7 +278,9 @@ class DocumentDBAccountImpl
 
     private Observable<DocumentDBAccount> doDatabaseUpdateCreate() {
         final DocumentDBAccountImpl self = this;
-        DatabaseAccountCreateUpdateParametersInner createUpdateParametersInner =
+        final List<Integer> data = new ArrayList<Integer>();
+        data.add(0);
+        final DatabaseAccountCreateUpdateParametersInner createUpdateParametersInner =
                 this.createUpdateParametersInner(this.inner());
         return this.manager().inner().databaseAccounts().createOrUpdateAsync(
                 resourceGroupName(),
@@ -292,14 +297,19 @@ class DocumentDBAccountImpl
                         ).repeatWhen(new Func1<Observable<? extends java.lang.Void>, Observable<?>>() {
                             @Override
                             public Observable<?> call(Observable<? extends Void> observable) {
+                                data.set(0, data.get(0) + 5);
                                 return observable.delay(5, TimeUnit.SECONDS);
                             }
                         })
                         .filter(new Func1<DocumentDBAccount, Boolean>() {
                             @Override
                             public Boolean call(DocumentDBAccount databaseAccount) {
-                                if (databaseAccount.id() == null
-                                        || databaseAccount.id().length() == 0) {
+                                if (maxDelayDueToMissingFailovers > data.get(0)
+                                        && (databaseAccount.id() == null
+                                        || databaseAccount.id().length() == 0
+                                        || createUpdateParametersInner.locations().size()
+                                        > databaseAccount.inner().failoverPolicies().size())) {
+                                    data.set(0, data.get(0) + 5);
                                     return false;
                                 }
 
@@ -314,6 +324,7 @@ class DocumentDBAccountImpl
                                     return false;
                                 }
 
+                                self.setInner(databaseAccount.inner());
                                 return true;
                             }
                         })
