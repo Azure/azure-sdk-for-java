@@ -20,6 +20,15 @@ public class SamplesTestBase extends TestBase {
     }
 
     protected Azure azure;
+
+    public SamplesTestBase() {
+        super(RunCondition.BOTH);
+    }
+
+    public SamplesTestBase(RunCondition runCondition) {
+        super(runCondition);
+    }
+
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
         azure = Azure

@@ -6,6 +6,9 @@
 
 package com.microsoft.azure.management.samples;
 
+import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.ChannelShell;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
@@ -17,7 +20,10 @@ import expect4j.matches.Match;
 import expect4j.matches.RegExpMatch;
 import org.apache.oro.text.regex.MalformedPatternException;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -103,6 +109,116 @@ public final class SSHShell {
             shellBuffer.setLength(0);
         }
         return output;
+    }
+
+    /**
+     * Executes a command on the remote host.
+     *
+     * @param command the command to be executed
+     * @param getExitStatus return the exit status captured in the stdout
+     * @param withErr capture the stderr as part of the output
+     * @return the content of the remote output from executing the command
+     * @throws Exception exception thrown
+     */
+    public String executeCommand(String command, Boolean getExitStatus, Boolean withErr) throws Exception {
+        String result = "";
+        String resultErr = "";
+
+        Channel channel = this.session.openChannel("exec");
+        ((ChannelExec) channel).setCommand(command);
+        InputStream commandOutput = channel.getInputStream();
+        InputStream commandErr = ((ChannelExec) channel).getErrStream();
+        channel.connect();
+        byte[] tmp  = new byte[4096];
+        while (true) {
+            while (commandOutput.available() > 0) {
+                int i = commandOutput.read(tmp, 0, 4096);
+                if (i < 0) {
+                    break;
+                }
+                result += new String(tmp, 0, i);
+            }
+            while (commandErr.available() > 0) {
+                int i = commandErr.read(tmp, 0, 4096);
+                if (i < 0) {
+                    break;
+                }
+                resultErr += new String(tmp, 0, i);
+            }
+            if (channel.isClosed()) {
+                if (commandOutput.available() > 0) {
+                    continue;
+                }
+                if (getExitStatus) {
+                    result += "exit-status: " + channel.getExitStatus();
+                    if (withErr) {
+                        result += "\n With error:\n" + resultErr;
+                    }
+                }
+                break;
+            }
+            try {
+                Thread.sleep(100);
+            } catch (Exception ee) { }
+        }
+        channel.disconnect();
+
+        return result;
+    }
+
+    /**
+     * Downloads the content of a file from the remote host as a String.
+     *
+     * @param fileName the name of the file for which the content will be downloaded
+     * @param fromPath the path of the file for which the content will be downloaded
+     * @param isUserHomeBased true if the path of the file is relative to the user's home directory
+     * @return the content of the file
+     * @throws Exception exception thrown
+     */
+    public String download(String fileName, String fromPath, boolean isUserHomeBased) throws Exception {
+        ChannelSftp channel = (ChannelSftp) this.session.openChannel("sftp");
+        channel.connect();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        BufferedOutputStream buff = new BufferedOutputStream(outputStream);
+        String absolutePath = isUserHomeBased ? channel.getHome() + "/" + fromPath : fromPath;
+        channel.cd(absolutePath);
+        channel.get(fileName, buff);
+
+        channel.disconnect();
+
+        return outputStream.toString();
+    }
+
+    /**
+     * Creates a new file on the remote host using the input content.
+     *
+     * @param from the byte array content to be uploaded
+     * @param fileName the name of the file for which the content will be saved into
+     * @param toPath the path of the file for which the content will be saved into
+     * @param isUserHomeBased true if the path of the file is relative to the user's home directory
+     * @param filePerm file permissions to be set
+     * @throws Exception exception thrown
+     */
+    public void upload(InputStream from, String fileName, String toPath, boolean isUserHomeBased, String filePerm) throws Exception {
+        ChannelSftp channel = (ChannelSftp) this.session.openChannel("sftp");
+        channel.connect();
+        String absolutePath = isUserHomeBased ? channel.getHome() + "/" + toPath : toPath;
+
+        String path = "";
+        for (String dir : absolutePath.split("/")) {
+            path = path + "/" + dir;
+            try {
+                channel.mkdir(path);
+            } catch (Exception ee) {
+            }
+        }
+        channel.cd(absolutePath);
+        channel.put(from, fileName);
+        if (filePerm != null) {
+            channel.chmod(Integer.parseInt(filePerm), absolutePath + "/" + fileName);
+        }
+
+        channel.disconnect();
     }
 
     /**
