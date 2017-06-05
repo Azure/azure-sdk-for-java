@@ -26,7 +26,7 @@ import com.microsoft.rest.LogLevel;
 import java.io.File;
 
 /**
- * Azure DocumentDB sample for high availability -
+ * Azure DocumentDB sample for high availability.
  *  - Create a DocumentDB configured with eventual consistency
  *  - Get the credentials for the DocumentDB
  *  - add collection to the DocumentDB
