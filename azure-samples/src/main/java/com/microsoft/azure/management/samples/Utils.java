@@ -46,6 +46,7 @@ import com.microsoft.azure.management.dns.SrvRecord;
 import com.microsoft.azure.management.dns.SrvRecordSet;
 import com.microsoft.azure.management.dns.TxtRecord;
 import com.microsoft.azure.management.dns.TxtRecordSet;
+import com.microsoft.azure.management.documentdb.DocumentDBAccount;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroup;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryUser;
 import com.microsoft.azure.management.graphrbac.RoleAssignment;
@@ -1788,6 +1789,31 @@ public final class Utils {
         System.out.println(builder.toString());
     }
 
+    /**
+     * Print DocumentDB info.
+     * @param documentDBAccount a DocumentDB
+     */
+    public static void print(DocumentDBAccount documentDBAccount) {
+        StringBuilder builder = new StringBuilder()
+                .append("DocumentDB: ").append(documentDBAccount.id())
+                .append("\n\tName: ").append(documentDBAccount.name())
+                .append("\n\tResourceGroupName: ").append(documentDBAccount.resourceGroupName())
+                .append("\n\tKind: ").append(documentDBAccount.kind().toString())
+                .append("\n\tDefault consistency level: ").append(documentDBAccount.consistencyPolicy().defaultConsistencyLevel())
+                .append("\n\tIP range filter: ").append(documentDBAccount.ipRangeFilter());
+
+        for (com.microsoft.azure.management.documentdb.Location writeReplica : documentDBAccount.writableReplications()) {
+            builder.append("\n\t\tWrite replication: ")
+                    .append("\n\t\t\tName :").append(writeReplica.locationName());
+        }
+
+        builder.append("\n\tNumber of read replications: ").append(documentDBAccount.readableReplications().size());
+        for (com.microsoft.azure.management.documentdb.Location readReplica : documentDBAccount.readableReplications()) {
+            builder.append("\n\t\tRead replication: ")
+                    .append("\n\t\t\tName :").append(readReplica.locationName());
+        }
+    }
+    
     /**
      * Print Active Directory User info.
      * @param user active directory user

@@ -37,7 +37,7 @@ public class TestDocumentDB extends TestTemplate<DocumentDBAccount, DocumentDBAc
         resource =  resource.update()
                 .withReadReplication(Region.ASIA_SOUTHEAST)
                 .withoutReadReplication(Region.US_EAST)
-                .withReadReplication(Region.US_CENTRAL)
+                .withoutReadReplication(Region.US_CENTRAL)
                 .apply();
 
         resource =  resource.update()

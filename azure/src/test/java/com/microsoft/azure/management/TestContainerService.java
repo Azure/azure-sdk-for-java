@@ -28,6 +28,7 @@ public class TestContainerService extends TestTemplate<ContainerService, Contain
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
                 .withDcosOrchestration()
+                .withDiagnostics()
                 .withLinux()
                 .withRootUsername("testUserName")
                 .withSshKey(sshKeyData)
@@ -38,7 +39,6 @@ public class TestContainerService extends TestTemplate<ContainerService, Contain
                     .withVMSize(ContainerServiceVMSizeTypes.STANDARD_A1)
                     .withLeafDomainLabel("ap0" + dnsPrefix)
                     .attach()
-                .withDiagnostics()
                 .withTag("tag1", "value1")
                 .create();
         Assert.assertNotNull("Container service not found.", resource.id());
@@ -58,10 +58,8 @@ public class TestContainerService extends TestTemplate<ContainerService, Contain
     @Override
     public ContainerService updateResource(ContainerService resource) throws Exception {
         // Modify existing container service
-        final String newName = "as" + this.testId;
         resource =  resource.update()
                 .withAgentVMCount(5)
-                .withoutDiagnostics()
                 .withTag("tag2", "value2")
                 .withTag("tag3", "value3")
                 .withoutTag("tag1")
@@ -70,7 +68,6 @@ public class TestContainerService extends TestTemplate<ContainerService, Contain
         Assert.assertTrue("Agent pool count was not updated.", resource.agentPoolCount() == 5);
         Assert.assertTrue(resource.tags().containsKey("tag2"));
         Assert.assertTrue(!resource.tags().containsKey("tag1"));
-        Assert.assertTrue(!resource.isDiagnosticsEnabled());
         return resource;
     }
 
