@@ -11,6 +11,14 @@ import com.microsoft.azure.management.resources.core.TestBase;
 import com.microsoft.rest.RestClient;
 
 public class SamplesTestBase extends TestBase {
+    public SamplesTestBase() {
+        super(RunCondition.BOTH);
+    }
+
+    public SamplesTestBase(TestBase.RunCondition runCondition) {
+        super(runCondition);
+    }
+
     protected Azure azure;
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
