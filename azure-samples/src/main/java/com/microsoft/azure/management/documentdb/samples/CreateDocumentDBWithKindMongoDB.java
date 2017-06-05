@@ -19,7 +19,7 @@ import com.microsoft.rest.LogLevel;
 import java.io.File;
 
 /**
- * Azure DocumentDB sample for high availability -
+ * Azure DocumentDB sample for high availability.
  *  - Create a DocumentDB configured with MongoDB kind.
  *  - Get the mongodb connection string
  *  - Delete the DocumentDB.
