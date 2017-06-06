@@ -228,6 +228,11 @@ public final class Azure {
      */
     public interface Authenticated {
         /**
+         * @return the currently selected tenant ID this client is authenticated to work with
+         */
+        String tenantId();
+
+        /**
          * Entry point to subscription management APIs.
          *
          * @return Subscriptions interface providing access to subscription management
@@ -331,6 +336,11 @@ public final class Azure {
         private AuthenticatedImpl withDefaultSubscription(String subscriptionId) {
             this.defaultSubscription = subscriptionId;
             return this;
+        }
+
+        @Override
+        public String tenantId() {
+            return tenantId;
         }
 
         @Override
