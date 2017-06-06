@@ -36,6 +36,7 @@ public final class ManageServicePrincipalCredentials {
      *
      * @param authenticated instance of Authenticated
      * @param defaultSubscription default subscription id
+     * @param environment the environment the sample is running in
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure.Authenticated authenticated, String defaultSubscription, AzureEnvironment environment) {
