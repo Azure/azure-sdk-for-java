@@ -299,6 +299,10 @@ public class ContainerServiceImpl
     @Override
     public Observable<ContainerService> createResourceAsync() {
         final ContainerServiceImpl self = this;
+        if (!this.isInCreateMode()) {
+            this.inner().withServicePrincipalProfile(null);
+        }
+
         return this.manager().inner().containerServices().createOrUpdateAsync(resourceGroupName(), name(), inner())
                 .map(new Func1<ContainerServiceInner, ContainerService>() {
                     @Override
