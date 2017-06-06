@@ -22,7 +22,7 @@ import java.io.File;
 
 /**
  * Azure service principal sample for managing its credentials.
- * - Create an application with 2 password and 1 certificate credentials
+ * - Create an application with 2 passwords and 1 certificate credentials
  * - Create an associated service principal with contributor role
  * - Verify all password credentials and certificate credentials are valid
  * - Revoke access of a password credential
