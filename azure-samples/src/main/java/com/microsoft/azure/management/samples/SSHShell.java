@@ -6,13 +6,7 @@
 
 package com.microsoft.azure.management.samples;
 
-import com.jcraft.jsch.Channel;
-import com.jcraft.jsch.ChannelExec;
-import com.jcraft.jsch.ChannelSftp;
-import com.jcraft.jsch.ChannelShell;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.Session;
+import com.jcraft.jsch.*;
 import expect4j.Closure;
 import expect4j.Expect4j;
 import expect4j.ExpectState;
@@ -245,5 +239,41 @@ public final class SSHShell {
                 expectState.exp_continue();
             }
         };
+    }
+
+    /**
+     * Automatically generate SSH keys.
+     * @param passPhrase the byte array content to be uploaded
+     * @param comment the name of the file for which the content will be saved into
+     * @return SSH public and private key
+     * @throws Exception exception thrown
+     */
+    public static SshPublicPrivateKey generateSSHKeys(String passPhrase, String comment) throws Exception {
+        SshPublicPrivateKey result = new SshPublicPrivateKey();
+        JSch jsch = new JSch();
+        KeyPair keyPair = KeyPair.genKeyPair(jsch, KeyPair.RSA);
+        ByteArrayOutputStream privateKeyBuff = new ByteArrayOutputStream(2048);
+        ByteArrayOutputStream publicKeyBuff = new ByteArrayOutputStream(2048);
+
+        keyPair.writePublicKey(publicKeyBuff, (comment != null) ? comment : "SSHCerts");
+
+        if (passPhrase == null  || passPhrase.isEmpty()) {
+            keyPair.writePrivateKey(privateKeyBuff);
+        } else {
+            keyPair.writePrivateKey(privateKeyBuff, passPhrase.getBytes());
+        }
+
+        result.sshPrivateKey = privateKeyBuff.toString();
+        result.sshPublicKey = publicKeyBuff.toString();
+
+        return result;
+    }
+
+    /**
+     * Internal class to retain the generate SSH keys.
+     */
+    public static class SshPublicPrivateKey {
+        public String sshPublicKey;
+        public String sshPrivateKey;
     }
 }

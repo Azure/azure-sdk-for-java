@@ -24,12 +24,7 @@ import com.microsoft.azure.management.batch.Application;
 import com.microsoft.azure.management.batch.ApplicationPackage;
 import com.microsoft.azure.management.batch.BatchAccount;
 import com.microsoft.azure.management.batch.BatchAccountKeys;
-import com.microsoft.azure.management.compute.AvailabilitySet;
-import com.microsoft.azure.management.compute.DataDisk;
-import com.microsoft.azure.management.compute.ImageDataDisk;
-import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.VirtualMachineCustomImage;
-import com.microsoft.azure.management.compute.VirtualMachineExtension;
+import com.microsoft.azure.management.compute.*;
 import com.microsoft.azure.management.containerregistry.Registry;
 import com.microsoft.azure.management.containerregistry.implementation.RegistryListCredentials;
 import com.microsoft.azure.management.dns.ARecordSet;
@@ -1033,8 +1028,8 @@ public final class Utils {
     }
 
     /**
-     * Print a Azure Container Registry zone.
-     * @param azureRegistry a dns zone
+     * Print an Azure Container Registry.
+     * @param azureRegistry an Azure Container Registry
      */
     public static void print(Registry azureRegistry) {
         StringBuilder info = new StringBuilder();
@@ -1046,6 +1041,33 @@ public final class Utils {
             .append("\n\tUser: ").append(acrCredentials.username())
             .append("\n\tFirst Password: ").append(acrCredentials.passwords().get(0).value())
             .append("\n\tSecond Password: ").append(acrCredentials.passwords().get(1).value());
+        System.out.println(info.toString());
+    }
+
+    /**
+     * Print an Azure Container Service.
+     * @param containerService an Azure Container Service
+     */
+    public static void print(ContainerService containerService) {
+        StringBuilder info = new StringBuilder();
+
+        info.append("Azure Container Service: ").append(containerService.id())
+            .append("\n\tName: ").append(containerService.name())
+            .append("\n\tWith orchestration: ").append(containerService.orchestratorType().toString())
+            .append("\n\tMaster FQDN: ").append(containerService.masterFqdn())
+            .append("\n\tMaster node count: ").append(containerService.masterNodeCount())
+            .append("\n\tMaster leaf domain label: ").append(containerService.masterLeafDomainLabel())
+            .append("\n\t\tWith Agent pool name: ").append(containerService.agentPoolName())
+            .append("\n\t\tAgent pool count: ").append(containerService.agentPoolCount())
+            .append("\n\t\tAgent pool count: ").append(containerService.agentPoolVMSize().toString())
+            .append("\n\t\tAgent pool FQDN: ").append(containerService.agentPoolFqdn())
+            .append("\n\t\tAgent pool leaf domain label: ").append(containerService.agentPoolLeafDomainLabel())
+            .append("\n\tLinux user name: ").append(containerService.linuxRootUsername())
+            .append("\n\tSSH key: ").append(containerService.sshKey());
+        if (containerService.orchestratorType() == ContainerServiceOchestratorTypes.KUBERNETES) {
+            info.append("\n\tName: ").append(containerService.servicePrincipalClientId());
+        }
+
         System.out.println(info.toString());
     }
 
