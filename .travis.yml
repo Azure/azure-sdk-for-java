@@ -13,7 +13,7 @@ script:
    mvn -pl !azure-keyvault,!azure-keyvault-extensions install -Dorg.slf4j.simpleLogger.defaultLogLevel=error || travis_terminate 1 ;
   else
    mvn install -DskipTests=true || travis_terminate 1 ;
-   mvn -pl !azure-keyvault,!azure-keyvault-extensions test -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dsurefire.rerunFailingTestsCount=5|| travis_terminate 1 ;
+   mvn -pl !azure-keyvault,!azure-keyvault-extensions test -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dsurefire.rerunFailingTestsCount=6|| travis_terminate 1 ;
    mvn -pl !azure-keyvault,!azure-keyvault-extensions,!azure-keyvault-core,!azure-keyvault-webkey,!azure-keyvault-cryptography checkstyle:check || travis_terminate 1 ;
    mvn -pl !azure-samples package javadoc:aggregate -DskipTests=true || travis_terminate 1 ;
   fi
