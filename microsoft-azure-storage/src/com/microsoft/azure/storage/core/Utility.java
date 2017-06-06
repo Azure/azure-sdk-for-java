@@ -657,9 +657,7 @@ public final class Utility {
      */
     public static JsonParser getJsonParser(final String jsonString) throws JsonParseException, IOException {
         JsonParser parser = jsonFactory.createParser(jsonString);
-
-        // allows handling of infinity, -infinity, and NaN for Doubles
-        return parser.enable(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS);
+        return setupJsonParser(parser);
     }
 
     /**
@@ -674,6 +672,20 @@ public final class Utility {
      */
     public static JsonParser getJsonParser(final InputStream inStream) throws JsonParseException, IOException {
         JsonParser parser = jsonFactory.createParser(inStream);
+        return setupJsonParser(parser);
+    }
+
+    /**
+     * Returns a <code>JsonParser</code> This JsonParser will allow non-numeric numbers.
+     * @param parser
+     *      A <code>JsonParser</code> to setup.
+     * @return
+     *      A <code>JsonParser</code> with settings configured.
+     */
+    private static JsonParser setupJsonParser(final JsonParser parser) {
+        // IMPORTANT: DO NOT REMOVE!
+        // don't close the stream and allow it to be drained completely in ExecutionEngine to improve socket reuse
+        parser.disable(JsonParser.Feature.AUTO_CLOSE_SOURCE);
 
         // allows handling of infinity, -infinity, and NaN for Doubles
         return parser.enable(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS);
