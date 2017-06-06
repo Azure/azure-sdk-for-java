@@ -73,7 +73,10 @@ class WebAppImpl
     public WebAppImpl withPublicDockerHubImage(String imageAndTag) {
         ensureLinuxPlan();
         cleanUpContainerSettings();
-        withBuiltInImage(RuntimeStack.NODEJS_6_6_0);
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
+        }
+        siteConfig.withLinuxFxVersion(String.format("DOCKER|%s", imageAndTag));
         withAppSetting(SETTING_DOCKER_IMAGE, imageAndTag);
         return this;
     }
@@ -87,7 +90,10 @@ class WebAppImpl
     public WebAppImpl withPrivateRegistryImage(String imageAndTag, String serverUrl) {
         ensureLinuxPlan();
         cleanUpContainerSettings();
-        withBuiltInImage(RuntimeStack.NODEJS_6_6_0);
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
+        }
+        siteConfig.withLinuxFxVersion(String.format("DOCKER|%s", imageAndTag));
         withAppSetting(SETTING_DOCKER_IMAGE, imageAndTag);
         withAppSetting(SETTING_REGISTRY_SERVER, serverUrl);
         return this;
