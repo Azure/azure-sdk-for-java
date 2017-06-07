@@ -16,6 +16,8 @@ import com.microsoft.azure.management.compute.samples.ListVirtualMachineExtensio
 import com.microsoft.azure.management.compute.samples.ListVirtualMachineImages;
 import com.microsoft.azure.management.compute.samples.ManageAvailabilitySet;
 import com.microsoft.azure.management.compute.samples.ManageManagedDisks;
+import com.microsoft.azure.management.compute.samples.ManageContainerServiceUsingDockerSwarm;
+import com.microsoft.azure.management.compute.samples.ManageContainerServiceUsingKubernetes;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachine;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineAsync;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineExtension;
@@ -129,5 +131,15 @@ public class ComputeSampleTests extends SamplesTestBase {
     @Test
     public void testManageManagedDisks() {
       Assert.assertTrue(ManageManagedDisks.runSample(azure));
+    }
+
+    @Test
+    public void testManageContainerServiceUsingKubernetes() {
+        Assert.assertTrue(ManageContainerServiceUsingKubernetes.runSample(azure));
+    }
+
+    @Test
+    public void testManageContainerServiceUsingDockerSwarm() {
+        Assert.assertTrue(ManageContainerServiceUsingDockerSwarm.runSample(azure));
     }
 }
