@@ -6,7 +6,14 @@
 
 package com.microsoft.azure.management.samples;
 
-import com.jcraft.jsch.*;
+import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.ChannelShell;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.KeyPair;
+import com.jcraft.jsch.Session;
 import expect4j.Closure;
 import expect4j.Expect4j;
 import expect4j.ExpectState;
@@ -296,6 +303,22 @@ public final class SSHShell {
          */
         public String getSshPrivateKey() {
             return sshPrivateKey;
+        }
+
+        /**
+         * Set SSH public key.
+         * @param sshPublicKey public key
+         */
+        public void setSshPublicKey(String sshPublicKey) {
+            this.sshPublicKey = sshPublicKey;
+        }
+
+        /**
+         * Set SSH private key.
+         * @param sshPrivateKey private key
+         */
+        public void setSshPrivateKey(String sshPrivateKey) {
+            this.sshPrivateKey = sshPrivateKey;
         }
     }
 }
