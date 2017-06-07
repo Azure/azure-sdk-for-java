@@ -249,7 +249,6 @@ public final class SSHShell {
      * @throws Exception exception thrown
      */
     public static SshPublicPrivateKey generateSSHKeys(String passPhrase, String comment) throws Exception {
-        SshPublicPrivateKey result = new SshPublicPrivateKey();
         JSch jsch = new JSch();
         KeyPair keyPair = KeyPair.genKeyPair(jsch, KeyPair.RSA);
         ByteArrayOutputStream privateKeyBuff = new ByteArrayOutputStream(2048);
@@ -263,17 +262,40 @@ public final class SSHShell {
             keyPair.writePrivateKey(privateKeyBuff, passPhrase.getBytes());
         }
 
-        result.sshPrivateKey = privateKeyBuff.toString();
-        result.sshPublicKey = publicKeyBuff.toString();
-
-        return result;
+        return new SshPublicPrivateKey(privateKeyBuff.toString(), publicKeyBuff.toString());
     }
 
     /**
      * Internal class to retain the generate SSH keys.
      */
     public static class SshPublicPrivateKey {
-        public String sshPublicKey;
-        public String sshPrivateKey;
+        private String sshPublicKey;
+        private String sshPrivateKey;
+
+        /**
+         * Constructor.
+         * @param sshPrivateKey SSH private key
+         * @param sshPublicKey SSH public key
+         */
+        public SshPublicPrivateKey(String sshPrivateKey, String sshPublicKey) {
+            this.sshPrivateKey = sshPrivateKey;
+            this.sshPublicKey = sshPublicKey;
+        }
+
+        /**
+         * Get SSH public key.
+         * @return public key
+         */
+        public String getSshPublicKey() {
+            return sshPublicKey;
+        }
+
+        /**
+         * Get SSH private key.
+         * @return private key
+         */
+        public String getSshPrivateKey() {
+            return sshPrivateKey;
+        }
     }
 }

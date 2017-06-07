@@ -7,7 +7,9 @@
 package com.microsoft.azure.management.compute.samples;
 
 import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.compute.*;
+import com.microsoft.azure.management.compute.ContainerService;
+import com.microsoft.azure.management.compute.ContainerServiceMasterProfileCount;
+import com.microsoft.azure.management.compute.ContainerServiceVMSizeTypes;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.SSHShell;
@@ -47,8 +49,8 @@ public class ManageContainerServiceUsingKubernetes {
       System.out.println("Creating an SSH private and public key pair");
 
       SSHShell.SshPublicPrivateKey sshKeys = SSHShell.generateSSHKeys("", "ACS");
-      System.out.println("SSH private key value: " + sshKeys.sshPrivateKey);
-      System.out.println("SSH public key value: " + sshKeys.sshPublicKey);
+      System.out.println("SSH private key value: " + sshKeys.getSshPrivateKey());
+      System.out.println("SSH public key value: " + sshKeys.getSshPublicKey());
 
 
       //=============================================================
@@ -65,7 +67,7 @@ public class ManageContainerServiceUsingKubernetes {
           .withServicePrincipal(servicePrincipalClientId, servicePrincipalSecret)
           .withLinux()
           .withRootUsername(rootUserName)
-          .withSshKey(sshKeys.sshPublicKey)
+          .withSshKey(sshKeys.getSshPublicKey())
           .withMasterNodeCount(ContainerServiceMasterProfileCount.MIN)
           .withMasterLeafDomainLabel("dns-" + acsName)
           .defineAgentPool("agentpool")
@@ -78,8 +80,6 @@ public class ManageContainerServiceUsingKubernetes {
       Date t2 = new Date();
       System.out.println("Created Azure Container Service: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + azureContainerService.id());
       Utils.print(azureContainerService);
-
-      azureContainerService.inner().withServicePrincipalProfile(null);
 
       //=============================================================
       // Update a Kubernetes Azure Container Service with two agents (virtual machines)
