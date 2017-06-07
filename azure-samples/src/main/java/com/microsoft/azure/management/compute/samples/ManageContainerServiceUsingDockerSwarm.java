@@ -137,9 +137,4 @@ public class ManageContainerServiceUsingDockerSwarm {
       e.printStackTrace();
     }
   }
-
-  private static class SshPublicPrivateKey {
-    public String sshPublicKey;
-    public String sshPrivateKey;
-  }
 }

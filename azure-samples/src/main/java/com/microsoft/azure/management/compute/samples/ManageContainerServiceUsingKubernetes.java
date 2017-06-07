@@ -140,9 +140,4 @@ public class ManageContainerServiceUsingKubernetes {
       e.printStackTrace();
     }
   }
-
-  private static class SshPublicPrivateKey {
-    public String sshPublicKey;
-    public String sshPrivateKey;
-  }
 }
