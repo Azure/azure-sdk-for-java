@@ -20,7 +20,7 @@ import java.io.File;
 import java.util.Date;
 
 /**
- * Azure Container Service sample for managing container service with Docker Swarm orchestration.
+ * An Azure Container Services sample for managing a container service with Docker Swarm orchestration.
  *    - Create an Azure Container Service with Docker Swarm orchestration
  *    - Create a SSH private/public key
  *    - Update the number of agent virtual machines in an Azure Container Service
