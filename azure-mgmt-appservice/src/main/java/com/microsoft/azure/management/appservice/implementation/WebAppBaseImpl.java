@@ -53,6 +53,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The implementation for WebAppBase.
@@ -760,6 +761,7 @@ abstract class WebAppBaseImpl<
                     return createOrUpdateSourceControl(sourceControl.inner());
                 }
             })
+            .delay(30, TimeUnit.SECONDS)
             .map(new Func1<SiteSourceControlInner, SiteInner>() {
                 @Override
                 public SiteInner call(SiteSourceControlInner siteSourceControlInner) {
