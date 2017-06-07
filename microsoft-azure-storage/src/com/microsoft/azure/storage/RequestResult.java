@@ -173,6 +173,13 @@ public final class RequestResult {
      * @return A <code>java.util.Date</code> object which contains the stop date.
      */
     public Date getStopDate() {
+        if (this.stopDate == null)
+        {
+            // stop date was not initialized, most likely due to a network exception
+            // if this is null, retries are immediate
+            this.stopDate = new Date();
+        }
+
         return this.stopDate;
     }
 
