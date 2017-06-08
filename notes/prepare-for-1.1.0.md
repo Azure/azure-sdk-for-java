@@ -28,21 +28,21 @@ Some of the APIs that were still in Beta in V1.0 are now GA in V1.1, in particul
   </tr>
   <tr>
       <td>Graph RBAC</td>
-      <td><code>Application</code></td>
-      <td><code>ActiveDirectoryApplication</code></td>
-      <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1699">#1699</a></td>
+      <td><code>User</code></td>
+      <td><code>ActiveDirectoryUser</code></td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1655">#1655</a></td>
   </tr>
   <tr>
       <td>Graph RBAC</td>
-      <td><code>Applications</code></td>
-      <td><code>ActiveDirectoryApplications</code></td>
-      <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1699">#1699</a></td>
+      <td><code>Users</code></td>
+      <td><code>ActiveDirectoryUsers</code></td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1655">#1655</a></td>
   </tr>
   <tr>
       <td>Graph RBAC</td>
-      <td><code>Azure.Authenticated.applications()</code></td>
-      <td><code>Azure.Authenticated.activeDirectoryApplications()</code></td>
-      <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1699">#1699</a></td>
+      <td><code>GraphRbacManager.users()</code></td>
+      <td><code>GraphRbacManager.activeDirectoryUsers()</code></td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1655">#1655</a></td>
   </tr>
 </table>
 
@@ -136,6 +136,13 @@ Some of the APIs that were still in Beta in V1.0 are now GA in V1.1, in particul
     <td><code>Set&lt;String&gt;</code></td>
     <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1634">#1634</a></td>
   </tr>
+  <tr>
+    <td>KeyVault</td>
+    <td><code>Vault.defineAccessPolicy().forUser()</code></td>
+    <td><code>User</code></td>
+    <td><code>ActiveDirectoryUser</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1655">#1655</a></td>
+  </tr>
 </table>
 
 
@@ -151,6 +158,41 @@ Some of the APIs that were still in Beta in V1.0 are now GA in V1.1, in particul
     <td><code>ApplicationGateway.sslPolicy()</code></td>
     <td><code>ApplicationGateway.disabledSslProtocols()</code></td>
     <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1703">#1703</a></td>
+  </tr>
+  <tr>
+    <td><code>RuntimeStack.NODEJS_6_9_3</code></td>
+    <td><code>RuntimeStack.NODEJS_6_9</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1739">#1739</a></td>
+  </tr>
+  <tr>
+    <td><code>RuntimeStack.NODEJS_6_6_0</code></td>
+    <td><code>RuntimeStack.NODEJS_6_6</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1739">#1739</a></td>
+  </tr>
+  <tr>
+    <td><code>RuntimeStack.NODEJS_6_2_2</code></td>
+    <td><code>RuntimeStack.NODEJS_6_2</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1739">#1739</a></td>
+  </tr>
+  <tr>
+    <td><code>RuntimeStack.NODEJS_4_5_0</code></td>
+    <td><code>RuntimeStack.NODEJS_4_5</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1739">#1739</a></td>
+  </tr>
+  <tr>
+    <td><code>RuntimeStack.NODEJS_4_4_7</code></td>
+    <td><code>RuntimeStack.NODEJS_4_4</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1739">#1739</a></td>
+  </tr>
+  <tr>
+    <td><code>RuntimeStack.PHP_5_6_23</code></td>
+    <td><code>RuntimeStack.PHP_5_6</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1739">#1739</a></td>
+  </tr>
+  <tr>
+    <td><code>RuntimeStack.PHP_7_0_6</code></td>
+    <td><code>RuntimeStack.PHP_7_0</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1739">#1739</a></td>
   </tr>
 </table>
 

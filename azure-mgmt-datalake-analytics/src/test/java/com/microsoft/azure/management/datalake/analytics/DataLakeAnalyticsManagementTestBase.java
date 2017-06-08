@@ -62,7 +62,7 @@ public class DataLakeAnalyticsManagementTestBase extends TestBase {
         addTextReplacementRule("https://(.*)." + adlaSuffix, this.mockUri());
 
         // Generate creds and a set of rest clients for catalog and job
-        ApplicationTokenCredentials credentials = new AzureTestCredentials();
+        ApplicationTokenCredentials credentials = new AzureTestCredentials(this.mockUri());
         if (IS_RECORD) {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
             try {

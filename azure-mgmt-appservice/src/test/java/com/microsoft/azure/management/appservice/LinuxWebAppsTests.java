@@ -12,6 +12,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -41,6 +42,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
     }
 
     @Test
+    @Ignore("Pending ICM 39157077 & https://github.com/Azure-App-Service/kudu/issues/30")
     public void canCRUDLinuxWebApp() throws Exception {
         // Create with new app service plan
         WebApp webApp1 = appServiceManager.webApps().define(WEBAPP_NAME_1)
@@ -84,7 +86,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
         Assert.assertEquals(OperatingSystem.LINUX, plan2.operatingSystem());
 
         webApp1.update()
-                .withBuiltInImage(RuntimeStack.NODEJS_6_6_0)
+                .withBuiltInImage(RuntimeStack.NODEJS_6_6)
                 .defineSourceControl()
                     .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test")
                     .withBranch("master")

@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
@@ -42,7 +43,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Certificates.
  */
-public class CertificatesInner implements InnerSupportsDelete<Void>, InnerSupportsListing<CertificateInner> {
+public class CertificatesInner implements InnerSupportsGet<CertificateInner>, InnerSupportsDelete<Void>, InnerSupportsListing<CertificateInner> {
     /** The Retrofit service to perform REST calls. */
     private CertificatesService service;
     /** The service client containing this operation class. */
@@ -72,9 +73,9 @@ public class CertificatesInner implements InnerSupportsDelete<Void>, InnerSuppor
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Certificates get" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Certificates getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Certificates createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}")
@@ -88,26 +89,6 @@ public class CertificatesInner implements InnerSupportsDelete<Void>, InnerSuppor
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}")
         Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CertificateInner certificateEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Certificates listSigningRequestByResourceGroup" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/csrs")
-        Observable<Response<ResponseBody>> listSigningRequestByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Certificates getSigningRequest" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/csrs/{name}")
-        Observable<Response<ResponseBody>> getSigningRequest(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Certificates createOrUpdateSigningRequest" })
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/csrs/{name}")
-        Observable<Response<ResponseBody>> createOrUpdateSigningRequest(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsrInner csrEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Certificates deleteSigningRequest" })
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/csrs/{name}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteSigningRequest(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Certificates updateSigningRequest" })
-        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/csrs/{name}")
-        Observable<Response<ResponseBody>> updateSigningRequest(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsrInner csrEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Certificates listNext" })
         @GET
         Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -115,10 +96,6 @@ public class CertificatesInner implements InnerSupportsDelete<Void>, InnerSuppor
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Certificates listByResourceGroupNext" })
         @GET
         Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.Certificates listSigningRequestByResourceGroupNext" })
-        @GET
-        Observable<Response<ResponseBody>> listSigningRequestByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -361,8 +338,8 @@ public class CertificatesInner implements InnerSupportsDelete<Void>, InnerSuppor
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CertificateInner object if successful.
      */
-    public CertificateInner get(String resourceGroupName, String name) {
-        return getWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    public CertificateInner getByResourceGroup(String resourceGroupName, String name) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -375,8 +352,8 @@ public class CertificatesInner implements InnerSupportsDelete<Void>, InnerSuppor
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<CertificateInner> getAsync(String resourceGroupName, String name, final ServiceCallback<CertificateInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<CertificateInner> getByResourceGroupAsync(String resourceGroupName, String name, final ServiceCallback<CertificateInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -388,8 +365,8 @@ public class CertificatesInner implements InnerSupportsDelete<Void>, InnerSuppor
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CertificateInner object
      */
-    public Observable<CertificateInner> getAsync(String resourceGroupName, String name) {
-        return getWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<CertificateInner>, CertificateInner>() {
+    public Observable<CertificateInner> getByResourceGroupAsync(String resourceGroupName, String name) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<CertificateInner>, CertificateInner>() {
             @Override
             public CertificateInner call(ServiceResponse<CertificateInner> response) {
                 return response.body();
@@ -406,7 +383,7 @@ public class CertificatesInner implements InnerSupportsDelete<Void>, InnerSuppor
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CertificateInner object
      */
-    public Observable<ServiceResponse<CertificateInner>> getWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<CertificateInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -417,12 +394,12 @@ public class CertificatesInner implements InnerSupportsDelete<Void>, InnerSuppor
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-03-01";
-        return service.get(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CertificateInner>>>() {
                 @Override
                 public Observable<ServiceResponse<CertificateInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<CertificateInner> clientResponse = getDelegate(response);
+                        ServiceResponse<CertificateInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -431,7 +408,7 @@ public class CertificatesInner implements InnerSupportsDelete<Void>, InnerSuppor
             });
     }
 
-    private ServiceResponse<CertificateInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<CertificateInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<CertificateInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CertificateInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -719,492 +696,6 @@ public class CertificatesInner implements InnerSupportsDelete<Void>, InnerSuppor
     }
 
     /**
-     * Get all certificate signing requests in a resource group.
-     * Get all certificate signing requests in a resource group.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;CsrInner&gt; object if successful.
-     */
-    public PagedList<CsrInner> listSigningRequestByResourceGroup(final String resourceGroupName) {
-        ServiceResponse<Page<CsrInner>> response = listSigningRequestByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<CsrInner>(response.body()) {
-            @Override
-            public Page<CsrInner> nextPage(String nextPageLink) {
-                return listSigningRequestByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
-    }
-
-    /**
-     * Get all certificate signing requests in a resource group.
-     * Get all certificate signing requests in a resource group.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<CsrInner>> listSigningRequestByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<CsrInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listSigningRequestByResourceGroupSinglePageAsync(resourceGroupName),
-            new Func1<String, Observable<ServiceResponse<Page<CsrInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<CsrInner>>> call(String nextPageLink) {
-                    return listSigningRequestByResourceGroupNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Get all certificate signing requests in a resource group.
-     * Get all certificate signing requests in a resource group.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;CsrInner&gt; object
-     */
-    public Observable<Page<CsrInner>> listSigningRequestByResourceGroupAsync(final String resourceGroupName) {
-        return listSigningRequestByResourceGroupWithServiceResponseAsync(resourceGroupName)
-            .map(new Func1<ServiceResponse<Page<CsrInner>>, Page<CsrInner>>() {
-                @Override
-                public Page<CsrInner> call(ServiceResponse<Page<CsrInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Get all certificate signing requests in a resource group.
-     * Get all certificate signing requests in a resource group.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;CsrInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<CsrInner>>> listSigningRequestByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
-        return listSigningRequestByResourceGroupSinglePageAsync(resourceGroupName)
-            .concatMap(new Func1<ServiceResponse<Page<CsrInner>>, Observable<ServiceResponse<Page<CsrInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<CsrInner>>> call(ServiceResponse<Page<CsrInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listSigningRequestByResourceGroupNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Get all certificate signing requests in a resource group.
-     * Get all certificate signing requests in a resource group.
-     *
-    ServiceResponse<PageImpl<CsrInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;CsrInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<Page<CsrInner>>> listSigningRequestByResourceGroupSinglePageAsync(final String resourceGroupName) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        final String apiVersion = "2016-03-01";
-        return service.listSigningRequestByResourceGroup(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CsrInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<CsrInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<CsrInner>> result = listSigningRequestByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CsrInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl<CsrInner>> listSigningRequestByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<CsrInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<CsrInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Get a certificate signing request.
-     * Get a certificate signing request.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate signing request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the CsrInner object if successful.
-     */
-    public CsrInner getSigningRequest(String resourceGroupName, String name) {
-        return getSigningRequestWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
-    }
-
-    /**
-     * Get a certificate signing request.
-     * Get a certificate signing request.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate signing request.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<CsrInner> getSigningRequestAsync(String resourceGroupName, String name, final ServiceCallback<CsrInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getSigningRequestWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
-    }
-
-    /**
-     * Get a certificate signing request.
-     * Get a certificate signing request.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate signing request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the CsrInner object
-     */
-    public Observable<CsrInner> getSigningRequestAsync(String resourceGroupName, String name) {
-        return getSigningRequestWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<CsrInner>, CsrInner>() {
-            @Override
-            public CsrInner call(ServiceResponse<CsrInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Get a certificate signing request.
-     * Get a certificate signing request.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate signing request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the CsrInner object
-     */
-    public Observable<ServiceResponse<CsrInner>> getSigningRequestWithServiceResponseAsync(String resourceGroupName, String name) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        final String apiVersion = "2016-03-01";
-        return service.getSigningRequest(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CsrInner>>>() {
-                @Override
-                public Observable<ServiceResponse<CsrInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<CsrInner> clientResponse = getSigningRequestDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<CsrInner> getSigningRequestDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<CsrInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<CsrInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Create or update a certificate signing request.
-     * Create or update a certificate signing request.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate signing request.
-     * @param csrEnvelope Details of certificate signing request, if it exists already.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the CsrInner object if successful.
-     */
-    public CsrInner createOrUpdateSigningRequest(String resourceGroupName, String name, CsrInner csrEnvelope) {
-        return createOrUpdateSigningRequestWithServiceResponseAsync(resourceGroupName, name, csrEnvelope).toBlocking().single().body();
-    }
-
-    /**
-     * Create or update a certificate signing request.
-     * Create or update a certificate signing request.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate signing request.
-     * @param csrEnvelope Details of certificate signing request, if it exists already.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<CsrInner> createOrUpdateSigningRequestAsync(String resourceGroupName, String name, CsrInner csrEnvelope, final ServiceCallback<CsrInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createOrUpdateSigningRequestWithServiceResponseAsync(resourceGroupName, name, csrEnvelope), serviceCallback);
-    }
-
-    /**
-     * Create or update a certificate signing request.
-     * Create or update a certificate signing request.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate signing request.
-     * @param csrEnvelope Details of certificate signing request, if it exists already.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the CsrInner object
-     */
-    public Observable<CsrInner> createOrUpdateSigningRequestAsync(String resourceGroupName, String name, CsrInner csrEnvelope) {
-        return createOrUpdateSigningRequestWithServiceResponseAsync(resourceGroupName, name, csrEnvelope).map(new Func1<ServiceResponse<CsrInner>, CsrInner>() {
-            @Override
-            public CsrInner call(ServiceResponse<CsrInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Create or update a certificate signing request.
-     * Create or update a certificate signing request.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate signing request.
-     * @param csrEnvelope Details of certificate signing request, if it exists already.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the CsrInner object
-     */
-    public Observable<ServiceResponse<CsrInner>> createOrUpdateSigningRequestWithServiceResponseAsync(String resourceGroupName, String name, CsrInner csrEnvelope) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (csrEnvelope == null) {
-            throw new IllegalArgumentException("Parameter csrEnvelope is required and cannot be null.");
-        }
-        Validator.validate(csrEnvelope);
-        final String apiVersion = "2016-03-01";
-        return service.createOrUpdateSigningRequest(resourceGroupName, name, this.client.subscriptionId(), csrEnvelope, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CsrInner>>>() {
-                @Override
-                public Observable<ServiceResponse<CsrInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<CsrInner> clientResponse = createOrUpdateSigningRequestDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<CsrInner> createOrUpdateSigningRequestDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<CsrInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<CsrInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Delete a certificate signing request.
-     * Delete a certificate signing request.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate signing request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void deleteSigningRequest(String resourceGroupName, String name) {
-        deleteSigningRequestWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
-    }
-
-    /**
-     * Delete a certificate signing request.
-     * Delete a certificate signing request.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate signing request.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Void> deleteSigningRequestAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteSigningRequestWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
-    }
-
-    /**
-     * Delete a certificate signing request.
-     * Delete a certificate signing request.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate signing request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> deleteSigningRequestAsync(String resourceGroupName, String name) {
-        return deleteSigningRequestWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Delete a certificate signing request.
-     * Delete a certificate signing request.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate signing request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> deleteSigningRequestWithServiceResponseAsync(String resourceGroupName, String name) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        final String apiVersion = "2016-03-01";
-        return service.deleteSigningRequest(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = deleteSigningRequestDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> deleteSigningRequestDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Create or update a certificate signing request.
-     * Create or update a certificate signing request.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate signing request.
-     * @param csrEnvelope Details of certificate signing request, if it exists already.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the CsrInner object if successful.
-     */
-    public CsrInner updateSigningRequest(String resourceGroupName, String name, CsrInner csrEnvelope) {
-        return updateSigningRequestWithServiceResponseAsync(resourceGroupName, name, csrEnvelope).toBlocking().single().body();
-    }
-
-    /**
-     * Create or update a certificate signing request.
-     * Create or update a certificate signing request.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate signing request.
-     * @param csrEnvelope Details of certificate signing request, if it exists already.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<CsrInner> updateSigningRequestAsync(String resourceGroupName, String name, CsrInner csrEnvelope, final ServiceCallback<CsrInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateSigningRequestWithServiceResponseAsync(resourceGroupName, name, csrEnvelope), serviceCallback);
-    }
-
-    /**
-     * Create or update a certificate signing request.
-     * Create or update a certificate signing request.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate signing request.
-     * @param csrEnvelope Details of certificate signing request, if it exists already.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the CsrInner object
-     */
-    public Observable<CsrInner> updateSigningRequestAsync(String resourceGroupName, String name, CsrInner csrEnvelope) {
-        return updateSigningRequestWithServiceResponseAsync(resourceGroupName, name, csrEnvelope).map(new Func1<ServiceResponse<CsrInner>, CsrInner>() {
-            @Override
-            public CsrInner call(ServiceResponse<CsrInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Create or update a certificate signing request.
-     * Create or update a certificate signing request.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate signing request.
-     * @param csrEnvelope Details of certificate signing request, if it exists already.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the CsrInner object
-     */
-    public Observable<ServiceResponse<CsrInner>> updateSigningRequestWithServiceResponseAsync(String resourceGroupName, String name, CsrInner csrEnvelope) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (csrEnvelope == null) {
-            throw new IllegalArgumentException("Parameter csrEnvelope is required and cannot be null.");
-        }
-        Validator.validate(csrEnvelope);
-        final String apiVersion = "2016-03-01";
-        return service.updateSigningRequest(resourceGroupName, name, this.client.subscriptionId(), csrEnvelope, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CsrInner>>>() {
-                @Override
-                public Observable<ServiceResponse<CsrInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<CsrInner> clientResponse = updateSigningRequestDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<CsrInner> updateSigningRequestDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<CsrInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<CsrInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
      * Get all certificates for a subscription.
      * Get all certificates for a subscription.
      *
@@ -1432,122 +923,6 @@ public class CertificatesInner implements InnerSupportsDelete<Void>, InnerSuppor
     private ServiceResponse<PageImpl<CertificateInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<CertificateInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<CertificateInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Get all certificate signing requests in a resource group.
-     * Get all certificate signing requests in a resource group.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;CsrInner&gt; object if successful.
-     */
-    public PagedList<CsrInner> listSigningRequestByResourceGroupNext(final String nextPageLink) {
-        ServiceResponse<Page<CsrInner>> response = listSigningRequestByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<CsrInner>(response.body()) {
-            @Override
-            public Page<CsrInner> nextPage(String nextPageLink) {
-                return listSigningRequestByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
-    }
-
-    /**
-     * Get all certificate signing requests in a resource group.
-     * Get all certificate signing requests in a resource group.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<CsrInner>> listSigningRequestByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<CsrInner>> serviceFuture, final ListOperationCallback<CsrInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listSigningRequestByResourceGroupNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<CsrInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<CsrInner>>> call(String nextPageLink) {
-                    return listSigningRequestByResourceGroupNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Get all certificate signing requests in a resource group.
-     * Get all certificate signing requests in a resource group.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;CsrInner&gt; object
-     */
-    public Observable<Page<CsrInner>> listSigningRequestByResourceGroupNextAsync(final String nextPageLink) {
-        return listSigningRequestByResourceGroupNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<CsrInner>>, Page<CsrInner>>() {
-                @Override
-                public Page<CsrInner> call(ServiceResponse<Page<CsrInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Get all certificate signing requests in a resource group.
-     * Get all certificate signing requests in a resource group.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;CsrInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<CsrInner>>> listSigningRequestByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
-        return listSigningRequestByResourceGroupNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<CsrInner>>, Observable<ServiceResponse<Page<CsrInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<CsrInner>>> call(ServiceResponse<Page<CsrInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listSigningRequestByResourceGroupNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Get all certificate signing requests in a resource group.
-     * Get all certificate signing requests in a resource group.
-     *
-    ServiceResponse<PageImpl<CsrInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;CsrInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<Page<CsrInner>>> listSigningRequestByResourceGroupNextSinglePageAsync(final String nextPageLink) {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        String nextUrl = String.format("%s", nextPageLink);
-        return service.listSigningRequestByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CsrInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<CsrInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<CsrInner>> result = listSigningRequestByResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CsrInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl<CsrInner>> listSigningRequestByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<CsrInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<CsrInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

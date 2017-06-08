@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.AppServicePlan;
 import com.microsoft.azure.management.appservice.FunctionApp;
@@ -23,6 +24,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Action0;
 import rx.functions.Func1;
@@ -180,6 +182,26 @@ class FunctionAppImpl
                     @Override
                     public String call(Map<String, String> stringStringMap) {
                         return stringStringMap.get("masterKey");
+                    }
+                });
+    }
+
+    @Override
+    public void syncTriggers() {
+        syncTriggersAsync().toObservable().toBlocking().subscribe();
+    }
+
+    @Override
+    public Completable syncTriggersAsync() {
+        return manager().inner().webApps().syncFunctionTriggersAsync(resourceGroupName(), name()).toCompletable()
+                .onErrorResumeNext(new Func1<Throwable, Completable>() {
+                    @Override
+                    public Completable call(Throwable throwable) {
+                        if (throwable instanceof CloudException && ((CloudException) throwable).response().code() == 200) {
+                            return Completable.complete();
+                        } else {
+                            return Completable.error(throwable);
+                        }
                     }
                 });
     }

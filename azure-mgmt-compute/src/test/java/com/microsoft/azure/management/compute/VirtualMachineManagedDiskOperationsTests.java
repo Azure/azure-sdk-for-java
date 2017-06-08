@@ -429,8 +429,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withData()
                 .withSizeInGB(150);
 
-        VirtualMachine virtualMachine1 = computeManager.virtualMachines()
-                .define(vmName1)
+        VirtualMachine virtualMachine1 = computeManager.virtualMachines().define(vmName1)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withNewPrimaryNetwork("10.0.0.0/28")

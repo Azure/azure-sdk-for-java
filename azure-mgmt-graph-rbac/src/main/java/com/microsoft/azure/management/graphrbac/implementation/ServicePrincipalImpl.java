@@ -16,6 +16,7 @@ import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import rx.Observable;
 import rx.exceptions.Exceptions;
 import rx.functions.Func1;
@@ -26,7 +27,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -96,8 +96,10 @@ class ServicePrincipalImpl
 
     @Override
     public Observable<ServicePrincipal> createResourceAsync() {
-        ActiveDirectoryApplication application = (ActiveDirectoryApplication) ((Object) super.createdModel(applicationCreatable.key()));
-        createParameters.withAppId(application.applicationId());
+        if (applicationCreatable != null) {
+            ActiveDirectoryApplication application = (ActiveDirectoryApplication) ((Object) super.createdModel(applicationCreatable.key()));
+            createParameters.withAppId(application.applicationId());
+        }
         Observable<ServicePrincipal> sp = manager.inner().servicePrincipals().createAsync(createParameters)
                 .map(innerToFluentMap(this))
                 .flatMap(new Func1<ServicePrincipal, Observable<ServicePrincipal>>() {
@@ -116,7 +118,7 @@ class ServicePrincipalImpl
                         .flatMap(new Func1<Map.Entry<String, BuiltInRole>, Observable<?>>() {
                             @Override
                             public Observable<?> call(Map.Entry<String, BuiltInRole> role) {
-                                return manager().roleAssignments().define(UUID.randomUUID().toString())
+                                return manager().roleAssignments().define(SdkContext.randomUuid())
                                         .forServicePrincipal(servicePrincipal)
                                         .withBuiltInRole(role.getValue())
                                         .withScope(role.getKey())

@@ -290,28 +290,24 @@ class ActiveDirectoryApplicationImpl
     public ActiveDirectoryApplicationImpl withoutCredential(final String name) {
         if (cachedPasswordCredentials.containsKey(name)) {
             cachedPasswordCredentials.remove(name);
-            if (updateParameters.passwordCredentials() == null) {
-                updateParameters.withPasswordCredentials(Lists.transform(
-                        new ArrayList<>(cachedPasswordCredentials.values()),
-                        new Function<PasswordCredential, PasswordCredentialInner>() {
-                            @Override
-                            public PasswordCredentialInner apply(PasswordCredential input) {
-                                return input.inner();
-                            }
-                        }));
-            }
+            updateParameters.withPasswordCredentials(Lists.transform(
+                    new ArrayList<>(cachedPasswordCredentials.values()),
+                    new Function<PasswordCredential, PasswordCredentialInner>() {
+                        @Override
+                        public PasswordCredentialInner apply(PasswordCredential input) {
+                            return input.inner();
+                        }
+                    }));
         } else if (cachedCertificateCredentials.containsKey(name)) {
             cachedCertificateCredentials.remove(name);
-            if (updateParameters.keyCredentials() == null) {
-                updateParameters.withKeyCredentials(Lists.transform(
-                        new ArrayList<>(cachedCertificateCredentials.values()),
-                        new Function<CertificateCredential, KeyCredentialInner>() {
-                            @Override
-                            public KeyCredentialInner apply(CertificateCredential input) {
-                                return input.inner();
-                            }
-                        }));
-            }
+            updateParameters.withKeyCredentials(Lists.transform(
+                    new ArrayList<>(cachedCertificateCredentials.values()),
+                    new Function<CertificateCredential, KeyCredentialInner>() {
+                        @Override
+                        public KeyCredentialInner apply(CertificateCredential input) {
+                            return input.inner();
+                        }
+                    }));
         }
         return this;
     }

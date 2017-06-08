@@ -6,24 +6,13 @@
 
 package com.microsoft.azure.management.graphrbac;
 
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class UsersTests extends GraphRbacManagementTestBase {
+public class UsersTests extends GraphRbacManagementTest {
     private static final String RG_NAME = "javacsmrg350";
     private static final String APP_NAME = "app-javacsm350";
-
-    @BeforeClass
-    public static void setup() throws Exception {
-        createClients();
-    }
-
-    @AfterClass
-    public static void cleanup() throws Exception {
-    }
 
     @Test
     @Ignore("Need a specific domain")
