@@ -1,12 +1,12 @@
-[![Build Status](https://travis-ci.org/Azure/azure-sdk-for-java.svg?style=flat-square&label=build)](https://travis-ci.org/Azure/azure-sdk-for-java)
+[![Build Status](https://travis-ci.org/Azure/azure-sd1-for-java.svg?style=flat-square&label=build)](https://travis-ci.org/Azure/azure-sdk-for-java)
 
 # Azure Management Libraries for Java
 
-This README is based on the released stable version (1.0.0). If you are looking for other releases, see [More Information](#more-information)
+This README is based on the released stable version (1.1.0). If you are looking for other releases, see [More Information](#more-information)
 
 The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources.
 
-## Feature Availability and Road Map as of Version 1.0.0 ##
+## Feature Availability and Road Map as of Version 1.1.0 ##
 
 <table>
   <tr>
@@ -18,8 +18,8 @@ The Azure Management Libraries for Java is a higher-level, object-oriented API f
   <tr>
     <td>Compute</td>
     <td>Virtual machines and VM extensions<br>Virtual machine scale sets<br>Managed disks</td>
-    <td></td>
-    <td valign="top">Azure container services<br>Azure container registry</td>
+    <td>Azure container services<br>Azure container registry</td>
+    <td valign="top"></td>
   </tr>
   <tr>
     <td>Storage</td>
@@ -42,8 +42,8 @@ The Azure Management Libraries for Java is a higher-level, object-oriented API f
   <tr>
     <td>More services</td>
     <td>Resource Manager<br>Key Vault<br>Redis<br>CDN<br>Batch</td>
-    <td valign="top">App service - Web apps<br>Functions<br>Service bus</td>
-    <td valign="top">Monitor<br>Graph RBAC<br>DocumentDB<br>Scheduler</td>
+    <td valign="top">App service - Web apps<br>Functions<br>Service bus<br>Graph RBAC<br>DocumentDB</td>
+    <td valign="top">Monitor<br>Scheduler</td>
   </tr>
   <tr>
     <td>Fundamentals</td>
@@ -392,15 +392,15 @@ You can find plenty of sample code that illustrates management scenarios (69+ en
 # Download
 
 
-**1.0.0**
+**1.1.0**
 
-If you are using released builds from 1.0.0, add the following to your POM file:
+If you are using released builds from 1.1.0, add the following to your POM file:
 
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
@@ -413,7 +413,7 @@ If you are using released builds from 1.0.0, add the following to your POM file:
 
 ## Help
 
-If you are migrating your code to 1.0.0, you can use these notes for [preparing your code for 1.0 from 1.0 beta 5](./notes/prepare-for-1.0.0.md).
+If you are migrating your code to 1.1.0, you can use these notes for [preparing your code for 1.0 from 1.1.0](./notes/prepare-for-1.1.0.md).
 
 If you encounter any bugs with these libraries, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues) or checkout [StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
 
@@ -436,6 +436,7 @@ If you would like to become an active contributor to this project please follow 
 
 | Version           | SHA1                                                                                      | Remarks                                               |
 |-------------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------|
+| 1.0.0       | [1.0.0](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0)               | Tagged release for 1.0.0 version of Azure management libraries |
 | 1.0.0-beta5       | [1.0.0-beta5](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta5)               | Tagged release for 1.0.0-beta5 version of Azure management libraries |
 | 1.0.0-beta4.1       | [1.0.0-beta4.1](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta4.1)               | Tagged release for 1.0.0-beta4.1 version of Azure management libraries |
 | 1.0.0-beta3       | [1.0.0-beta3](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta3)               | Tagged release for 1.0.0-beta3 version of Azure management libraries |
