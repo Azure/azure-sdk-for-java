@@ -152,5 +152,40 @@ Some of the APIs that were still in Beta in V1.0 are now GA in V1.1, in particul
     <td><code>ApplicationGateway.disabledSslProtocols()</code></td>
     <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1703">#1703</a></td>
   </tr>
+  <tr>
+    <td><code>RuntimeStack.NODEJS_6_9_3</code></td>
+    <td><code>RuntimeStack.NODEJS_6_9</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1739">#1739</a></td>
+  </tr>
+  <tr>
+    <td><code>RuntimeStack.NODEJS_6_6_0</code></td>
+    <td><code>RuntimeStack.NODEJS_6_6</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1739">#1739</a></td>
+  </tr>
+  <tr>
+    <td><code>RuntimeStack.NODEJS_6_2_2</code></td>
+    <td><code>RuntimeStack.NODEJS_6_2</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1739">#1739</a></td>
+  </tr>
+  <tr>
+    <td><code>RuntimeStack.NODEJS_4_5_0</code></td>
+    <td><code>RuntimeStack.NODEJS_4_5</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1739">#1739</a></td>
+  </tr>
+  <tr>
+    <td><code>RuntimeStack.NODEJS_4_4_7</code></td>
+    <td><code>RuntimeStack.NODEJS_4_4</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1739">#1739</a></td>
+  </tr>
+  <tr>
+    <td><code>RuntimeStack.PHP_5_6_23</code></td>
+    <td><code>RuntimeStack.PHP_5_6</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1739">#1739</a></td>
+  </tr>
+  <tr>
+    <td><code>RuntimeStack.PHP_7_0_6</code></td>
+    <td><code>RuntimeStack.PHP_7_0</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1739">#1739</a></td>
+  </tr>
 </table>
 
