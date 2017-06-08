@@ -150,7 +150,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-mgmt-monitor</artifactId>
-      <version>1.0.1-SNAPSHOT</version>
+      <version>1.1.1-SNAPSHOT</version>
     </dependency>
     -->
     <dependency>
