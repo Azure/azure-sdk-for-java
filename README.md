@@ -250,6 +250,14 @@ You can find plenty of sample code that illustrates management scenarios (69+ en
 </ul></td>
   </tr>
 <tr>
+    <td>Active Directory</td>
+    <td><ul style="list-style-type:circle">
+<li><a href="https://github.com/Azure-Samples/aad-java-manage-service-principals">Manage service principals using Java</a></li>
+<li><a href="https://github.com/Azure-Samples/aad-java-browse-graph-and-manage-roles">Browse graph (users, groups and members) and managing roles</a></li>
+<li><a href="https://github.com/Azure-Samples/aad-java-manage-passwords">Manage passwords</li>
+</ul></td>
+  </tr>
+<tr>
     <td>Container Service and Container Registry</td>
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/acr-java-manage-azure-container-registry">Manage container registry</a></li>
@@ -352,6 +360,17 @@ You can find plenty of sample code that illustrates management scenarios (69+ en
 <li><a href="https://github.com/Azure-Samples/app-service-java-manage-authentication-for-functions">Manage authentication for functions</a></li>
 </ul></td>
   </tr>
+
+<tr>
+    <td>Cosmos DB</td>
+    <td><ul style="list-style-type:circle">
+<li><a href="https://github.com/Azure-Samples/cosmosdb-java-create-documentdb-and-configure-for-high-availability">Create a DocumentDB and configure it for high availability</a></li>
+<li><a href="https://github.com/Azure-Samples/cosmosdb-java-create-documentdb-and-configure-for-eventual-consistency">Create a DocumentDB and configure it with eventual consistency</a></li>
+<li><a href="https://github.com/Azure-Samples/cosmosdb-java-create-documentdb-and-configure-firewall">Create a DocumentDB, configure it for high availability and create a firewall to limit access from an approved set of IP addresses</li>
+<li><a href="https://github.com/Azure-Samples/cosmosdb-java-create-documentdb-and-get-mongodb-connection-string">Create a DocumentDB and get MongoDB connection string</li>
+</ul></td>
+  </tr>
+
 
   <tr>
     <td>Service Bus</td>
