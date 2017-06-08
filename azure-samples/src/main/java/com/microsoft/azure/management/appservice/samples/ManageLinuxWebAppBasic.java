@@ -57,7 +57,7 @@ public final class ManageLinuxWebAppBasic {
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rg1Name)
                     .withNewLinuxPlan(PricingTier.STANDARD_S1)
-                    .withBuiltInImage(RuntimeStack.NODEJS_6_9_3)
+                    .withBuiltInImage(RuntimeStack.NODEJS_6_9)
                     .create();
 
             System.out.println("Created web app " + app1.name());
@@ -72,7 +72,7 @@ public final class ManageLinuxWebAppBasic {
                     .define(app2Name)
                     .withExistingLinuxPlan(plan)
                     .withExistingResourceGroup(rg1Name)
-                    .withBuiltInImage(RuntimeStack.NODEJS_6_9_3)
+                    .withBuiltInImage(RuntimeStack.NODEJS_6_9)
                     .create();
 
             System.out.println("Created web app " + app2.name());
@@ -87,7 +87,7 @@ public final class ManageLinuxWebAppBasic {
                     .define(app3Name)
                     .withExistingLinuxPlan(plan)
                     .withNewResourceGroup(rg2Name)
-                    .withBuiltInImage(RuntimeStack.NODEJS_6_9_3)
+                    .withBuiltInImage(RuntimeStack.NODEJS_6_9)
                     .create();
 
             System.out.println("Created web app " + app3.name());
