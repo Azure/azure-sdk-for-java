@@ -16,8 +16,8 @@ import com.microsoft.azure.management.resources.core.TestBase;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class AppServiceSampleTestsLiveOnly extends SamplesTestBase {
-    public AppServiceSampleTestsLiveOnly() {
+public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
+    public AppServiceSampleLiveOnlyTests() {
         super(TestBase.RunCondition.LIVE_ONLY);
     }
 
