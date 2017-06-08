@@ -8,7 +8,9 @@ package com.microsoft.azure;
 
 import com.microsoft.rest.protocol.Environment;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -119,6 +121,14 @@ public final class AzureEnvironment implements Environment {
      */
     public Map<String, String> endpoints() {
         return endpoints;
+    }
+
+    /**
+     * @return the array of known environments to Azure SDK.
+     */
+    public static AzureEnvironment[] knownEnvironments() {
+        List<AzureEnvironment> environments = Arrays.asList(AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT);
+        return environments.toArray(new AzureEnvironment[environments.size()]);
     }
 
     /**
