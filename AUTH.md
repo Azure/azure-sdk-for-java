@@ -44,14 +44,16 @@ This approach enables unattended authentication for your application (i.e. no in
 Similarly to the [file-based approach](#using-an-authentication-file), this method requires a [service principal registration](#creating-a-service-principal-in-azure), but instead of storing the credentials in a local file, the required inputs can be supplied directly via an instance of the `ApplicationTokenCredentials` class:
 
 ```
-ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(client, tenant, key, AzureEnvironment.AZURE);
+ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
+        client, tenant, key, AzureEnvironment.AZURE);
 Azure azure = Azure.authenticate(credentials).withSubscription(subscriptionId);
 ```
 
 or
 
 ```
-ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(client, tenant, pfxCertificatePath, password, AzureEnvironment.AZURE);
+ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
+        client, tenant, pfxCertificatePath, password, AzureEnvironment.AZURE);
 Azure azure = Azure.authenticate(credentials).withSubscription(subscriptionId);
 ```
 
@@ -64,13 +66,12 @@ If you have [Azure CLI](https://github.com/Azure/azure-cli) (>=2.0) installed an
 Run `az login` to authenticate to Azure CLI and `az account set --subscription <subscription Id>` in your terminal to select the subscription to use. Initialize the Azure client as following:
 
 ```
-Azure azure = Azure.authenticate(AzureCliCredentials.create())
-		.withDefaultSubscription();
+Azure azure = Azure.authenticate(AzureCliCredentials.create()).withDefaultSubscription();
 ```
 
 And you are good to go.
 
-If Azure CLI is authenticated as a user, tokens acquired in Azure CLI expires after 90 days. You will be prompted to re-authenticate. If Azure CLI is authenticated with a service principal, it will never expire until the service principal credential expires.
+If Azure CLI is authenticated as a user, tokens acquired in Azure CLI expire after 90 days. You will be prompted to re-authenticate. If Azure CLI is authenticated with a service principal, it will never expire until the service principal credential expires.
 
 ## Creating a Service Principal in Azure
 
