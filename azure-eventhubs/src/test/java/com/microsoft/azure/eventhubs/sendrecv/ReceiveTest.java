@@ -4,8 +4,10 @@
  */
 package com.microsoft.azure.eventhubs.sendrecv;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
@@ -116,8 +118,14 @@ public class ReceiveTest extends ApiTestBase
 	@Test()
 	public void testReceivedBodyAndProperties() throws ServiceBusException
 	{
-		datetimeReceiver = ehClient.createReceiverSync(cgName, partitionId, Instant.now());
-		
+		datetimeReceiver = ehClient.createReceiverSync(cgName, partitionId, PartitionReceiver.END_OF_STREAM);
+		datetimeReceiver.setReceiveTimeout(Duration.ofSeconds(5));
+
+	 	Iterable<EventData> drainedEvents =	datetimeReceiver.receiveSync(100);
+		while(drainedEvents != null && drainedEvents.iterator().hasNext()) {
+			drainedEvents = datetimeReceiver.receiveSync(100);
+		}
+
 		final String payload = "TestMessage1";
 		final String property1 =  "property1";
 		final String propertyValue1 = "something1";
@@ -129,7 +137,7 @@ public class ReceiveTest extends ApiTestBase
 			@Override
 			public void accept(EventData event)
 			{
-				Assert.assertTrue(new String(event.getBytes()).equals(payload));
+				Assert.assertEquals(new String(event.getBytes()), payload);
 				Assert.assertTrue(event.getProperties().containsKey(property1) && event.getProperties().get(property1).equals(propertyValue1));
 				Assert.assertTrue(event.getProperties().containsKey(property2) && event.getProperties().get(property2).equals(propertyValue2));
 				Assert.assertTrue(event.getSystemProperties().getOffset() != null);
