@@ -10,7 +10,6 @@ import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryApplication;
 import com.microsoft.azure.management.graphrbac.BuiltInRole;
-import com.microsoft.azure.management.graphrbac.RoleAssignment;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
@@ -26,12 +25,13 @@ import java.nio.file.Paths;
 import java.util.List;
 
 /**
- * Azure Service Principal sample for managing storage accounts -
- *  - Create a storage account
- *  - Get | regenerate storage account access keys
- *  - Create another storage account
- *  - List storage accounts
- *  - Delete a storage account.
+ * Azure Service Principal sample for managing Service Principal -
+ *  - Create an Active Directory application
+ *  - Create a Service Principal for the application and assign a role
+ *  - Export the Service Principal to an authentication file
+ *  - Use the file to list subcription virtual machines
+ *  - Update the application
+ *  - Delete the application and Service Principal.
  */
 
 public final class ManageServicePrincipal {
@@ -62,7 +62,6 @@ public final class ManageServicePrincipal {
      */
     public static boolean runSample(Azure.Authenticated authenticated, String defaultSubscriptionId) {
         ActiveDirectoryApplication activeDirectoryApplication = null;
-        RoleAssignment roleAssignment = null;
 
         try {
             String authFileName = "myAuthFile.azureauth";
@@ -79,6 +78,8 @@ public final class ManageServicePrincipal {
                             defaultSubscriptionId,
                             authFilePath);
 
+            SdkContext.sleep(15000);
+
             useAuthFile(authFilePath);
 
             manageApplication(authenticated, activeDirectoryApplication);
@@ -88,9 +89,6 @@ public final class ManageServicePrincipal {
             System.out.println(e.getMessage());
             e.printStackTrace();
         } finally {
-            if (roleAssignment != null) {
-                authenticated.roleAssignments().deleteById(roleAssignment.id());
-            }
             if (activeDirectoryApplication != null) {
                 // this will delete Service Principal as well
                 authenticated.activeDirectoryApplications().deleteById(activeDirectoryApplication.id());
