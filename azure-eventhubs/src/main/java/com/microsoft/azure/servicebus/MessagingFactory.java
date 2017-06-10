@@ -226,24 +226,30 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 
     @Override
     public void onConnectionError(ErrorCondition error) {
+
         if (!this.open.isDone()) {
             this.onOpenComplete(ExceptionUtil.toException(error));
         } else {
             final Connection currentConnection = this.connection;
             final List<Link> registeredLinksCopy = new LinkedList<>(this.registeredLinks);
+            final List<Link> closedLinks = new LinkedList<>();
             for (Link link : registeredLinksCopy) {
                 if (link.getLocalState() != EndpointState.CLOSED && link.getRemoteState() != EndpointState.CLOSED) {
                     link.close();
+                    closedLinks.add(link);
                 }
             }
 
             // if proton-j detects transport error - onConnectionError is invoked, but, the connection state is not set to closed
             // in connection recreation we depend on currentConnection state to evaluate need for recreation
-            if (currentConnection.getLocalState() != EndpointState.CLOSED && currentConnection.getRemoteState() != EndpointState.CLOSED) {
+            if (currentConnection.getLocalState() != EndpointState.CLOSED) {
+                // this should ideally be done in Connectionhandler
+                // - but, since proton doesn't automatically emit close events
+                // for all child objects (links & sessions) we are doing it here
                 currentConnection.close();
             }
 
-            for (Link link : registeredLinksCopy) {
+            for (Link link : closedLinks) {
                 final Handler handler = BaseHandler.getHandler(link);
                 if (handler != null && handler instanceof BaseLinkHandler) {
                     final BaseLinkHandler linkHandler = (BaseLinkHandler) handler;
