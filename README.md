@@ -18,7 +18,7 @@ The Azure Management Libraries for Java is a higher-level, object-oriented API f
   <tr>
     <td>Compute</td>
     <td>Virtual machines and VM extensions<br>Virtual machine scale sets<br>Managed disks</td>
-    <td>Azure container services<br>Azure container registry</td>
+    <td valign="top">Azure container services<br>Azure container registry</td>
     <td valign="top"></td>
   </tr>
   <tr>
@@ -35,9 +35,9 @@ The Azure Management Libraries for Java is a higher-level, object-oriented API f
   </tr>
   <tr>
     <td>Networking</td>
-    <td>Virtual networks<br>Network interfaces<br>IP addresses<br>Routing table<br>Network security groups<br>DNS<br>Traffic managers</td>
-    <td valign="top">Load balancers<br>Application gateways</td>
-    <td valign="top">VPN<br>Network watchers</td>
+    <td>Virtual networks<br>Network interfaces<br>IP addresses<br>Routing table<br>Network security groups<br>Application gateways<br>DNS<br>Traffic managers</td>
+    <td valign="top">Load balancers</td>
+    <td valign="top">VPN<br>Network watchers<br>More application gateway features</td>
   </tr>
   <tr>
     <td>More services</td>
@@ -47,8 +47,8 @@ The Azure Management Libraries for Java is a higher-level, object-oriented API f
   </tr>
   <tr>
     <td>Fundamentals</td>
-    <td>Authentication - core</td>
-    <td>Async methods</td>
+    <td>Authentication - core<br>Async methods</td>
+    <td></td>
     <td valign="top"></td>
   </tr>
 </table>
@@ -209,7 +209,7 @@ SqlDatabase database = sqlServer.databases().define("myNewDatabase")
 
 # Sample Code
 
-You can find plenty of sample code that illustrates management scenarios (69+ end-to-end scenarios) for Azure Virtual Machines, Virtual Machine Scale Sets, Managed Disks, Storage, Networking, Resource Manager, SQL Database, App Service (Web Apps on Windows and Linux), Functions, Service Bus, Key Vault, Redis, CDN and Batch … 
+You can find plenty of sample code that illustrates management scenarios (80+ end-to-end scenarios) for Azure Virtual Machines, Virtual Machine Scale Sets, Managed Disks, Active Directory Azure Container Service and Registry, Storage, Networking, Resource Manager, SQL Database, Cosmos DB, App Service (Web Apps on Windows and Linux), Functions, Service Bus, Key Vault, Redis, CDN and Batch … 
 
 <table>
   <tr>
