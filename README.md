@@ -63,6 +63,21 @@ The `Azure` class is the simplest entry point for creating and interacting with 
 
 `Azure azure = Azure.authenticate(credFile).withDefaultSubscription();` 
 
+#### Create a Cosmos DB with DocumentDB Programming Model
+
+You can create a Cosmos DB account by using a `define() … create()` method chain.
+
+```java
+DocumentDBAccount documentDBAccount = azure.documentDBs().define(docDBName)
+	.withRegion(Region.US_EAST)
+	.withNewResourceGroup(rgName)
+	.withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
+	.withSessionConsistency()
+	.withWriteReplication(Region.US_WEST)
+	.withReadReplication(Region.US_CENTRAL)
+	.create()
+```
+
 #### Create a Virtual Machine
 
 You can create a virtual machine instance by using a `define() … create()` method chain.
