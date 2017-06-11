@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/Azure/azure-sd1-for-java.svg?style=flat-square&label=build)](https://travis-ci.org/Azure/azure-sdk-for-java)
+[![Build Status](https://travis-ci.org/Azure/azure-sdk-for-java.svg?style=flat-square&label=build)](https://travis-ci.org/Azure/azure-sdk-for-java)
 
 # Azure Management Libraries for Java
 
@@ -459,7 +459,7 @@ If you are using released builds from 1.1.0, add the following to your POM file:
 
 ## Help
 
-If you are migrating your code to 1.1.0, you can use these notes for [preparing your code for 1.0 from 1.1.0](./notes/prepare-for-1.1.0.md).
+If you are migrating your code to 1.1.0, you can use these notes for [preparing your code for 1.1.0 from 1.0.0](./notes/prepare-for-1.1.0.md).
 
 If you encounter any bugs with these libraries, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues) or checkout [StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
 
