@@ -1290,44 +1290,6 @@ public final class Utility {
     /**
      * Reads data from an input stream and writes it to an output stream, calculates the length of the data written, and
      * optionally calculates the MD5 hash for the data.
-     *
-     * @param sourceStream
-     *            An <code>InputStream</code> object that represents the input stream to use as the source.
-     * @param outStream
-     *            An <code>OutputStream</code> object that represents the output stream to use as the destination.
-     * @param writeLength
-     *            The number of bytes to read from the stream.
-     * @param rewindSourceStream
-     *            <code>true</code> if the input stream should be rewound <strong>before</strong> it is read; otherwise,
-     *            <code>false</code>
-     * @param calculateMD5
-     *            <code>true</code> if an MD5 hash will be calculated; otherwise, <code>false</code>.
-     * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
-     * @param options
-     *            A {@link RequestOptions} object that specifies any additional options for the request. Namely, the
-     *            maximum execution time.
-     * @param request
-     *            Used by download resume to set currentRequestByteCount on the request. Otherwise, null is always used.
-     * @return A {@link StreamMd5AndLength} object that contains the output stream length, and optionally the MD5 hash.
-     *
-     * @throws IOException
-     *             If an I/O error occurs.
-     * @throws StorageException
-     *             If a storage service error occurred.
-     */
-    public static StreamMd5AndLength writeToOutputStream(final InputStream sourceStream, final OutputStream outStream,
-                                                         long writeLength, final boolean rewindSourceStream, final boolean calculateMD5, OperationContext opContext,
-                                                         final RequestOptions options, final Boolean shouldFlush, StorageRequest<?, ?, Integer> request)
-            throws IOException, StorageException {
-        return writeToOutputStream(sourceStream, outStream, writeLength, rewindSourceStream, calculateMD5, opContext, options, shouldFlush, request, null /* descriptor */);
-    }
-
-    /**
-     * Reads data from an input stream and writes it to an output stream, calculates the length of the data written, and
-     * optionally calculates the MD5 hash for the data.
      * 
      * @param sourceStream
      *            An <code>InputStream</code> object that represents the input stream to use as the source.

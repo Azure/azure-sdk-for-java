@@ -404,7 +404,7 @@ public class FileOutputStream extends OutputStream {
      */
     @DoesServiceRequest
     public void write(final InputStream sourceStream, final long writeLength) throws IOException, StorageException {
-        Utility.writeToOutputStream(sourceStream, this, writeLength, false, false, this.opContext, this.options, false, null /* descriptor */);
+        Utility.writeToOutputStream(sourceStream, this, writeLength, false, false, this.opContext, this.options, false, null /* request */, null /* descriptor */);
     }
 
     /**
