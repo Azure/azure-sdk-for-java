@@ -1,4 +1,4 @@
-2017.XX.XX Version X.X.X
+2017.06.13 Version 5.3.0
  * Fixed a bug where the tranactional MD5 check would fail when downloading a range of blob or file and the recovery action is performed on a subsection of the range.
  * Fixed leaking connections for table requests.
  * Fixed a bug where retries happened immediately when experiencing a network exception uploading data or getting the response.
