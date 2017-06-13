@@ -8,12 +8,9 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.FlowLogInformation;
 import com.microsoft.azure.management.network.NetworkWatcher;
-import com.microsoft.azure.management.network.PacketCapture;
 import com.microsoft.azure.management.network.SecurityGroupViewResult;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import rx.Observable;
-
-import java.util.List;
 
 /**
  * Implementation for Network Watcher and its create and update interfaces.
@@ -39,6 +36,10 @@ class NetworkWatcherImpl
         this.packetCaptures = new PacketCapturesImpl(networkManager.inner().packetCaptures(), this);
     }
 
+    public PacketCapturesImpl packetCaptures() {
+        return packetCaptures;
+    }
+
     // Verbs
 
     @Override
@@ -59,16 +60,6 @@ class NetworkWatcherImpl
         FlowLogInformationInner flowLogInformationInner = this.manager().inner().networkWatchers()
                 .getFlowLogStatus(this.resourceGroupName(), this.name(), nsgId);
         return new FlowLogInformationImpl(this, flowLogInformationInner);
-    }
-
-    @Override
-    public Observable<PacketCapture> listPacketCapturesAsync() {
-        return this.packetCaptures.listAsync();
-    }
-
-    @Override
-    public List<PacketCapture> listPacketCaptures() {
-        return this.packetCaptures.list();
     }
 
     public NextHopImpl nextHop() {

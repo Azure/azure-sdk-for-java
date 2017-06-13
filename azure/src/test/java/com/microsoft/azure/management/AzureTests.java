@@ -572,7 +572,8 @@ public class AzureTests extends TestBase {
         Assert.assertEquals(NextHopType.INTERNET, nextHop.nextHopType());
         Assert.assertNull(nextHop.nextHopIpAddress());
 
-        VerificationIPFlow verificationIPFlow = nw.verifyIPFlow().withTargetResourceId(virtualMachines[0].id())
+        VerificationIPFlow verificationIPFlow = nw.verifyIPFlow()
+                .withTargetResourceId(virtualMachines[0].id())
                 .withDirection(Direction.OUTBOUND)
                 .withProtocol(Protocol.TCP)
                 .withLocalIPAddress("10.0.0.4")
@@ -583,8 +584,17 @@ public class AzureTests extends TestBase {
         Assert.assertEquals(Access.ALLOW, verificationIPFlow.access());
         Assert.assertEquals("defaultSecurityRules/AllowInternetOutBound", verificationIPFlow.ruleName());
 
-        List<PacketCapture> packetCaptures = nw.listPacketCaptures();
+        List<PacketCapture> packetCaptures = nw.packetCaptures().list();
         Assert.assertEquals(0, packetCaptures.size());
+        PacketCapture packetCapture = nw.packetCaptures()
+                .define("NewPacketCapture")
+                .withTarget(virtualMachines[0].id())
+                .withStorageAccount(storageAccount)
+                .create();
+        packetCaptures = nw.packetCaptures().list();
+        Assert.assertEquals(1, packetCaptures.size());
+        Assert.assertEquals("NewPacketCapture", packetCaptures.get(0).name());
+
 
         azure.virtualMachines().deleteById(virtualMachines[1].id());
         topology.refresh();

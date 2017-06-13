@@ -15,9 +15,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import rx.Observable;
-
-import java.util.List;
 
 /**
  * Entry point for Network Watcher API in Azure.
@@ -29,9 +26,10 @@ public interface NetworkWatcher extends
         Refreshable<NetworkWatcher>,
         Updatable<NetworkWatcher.Update> {
 
-    /***********************************************************
-     * Getters
-     ***********************************************************/
+    /**
+     * @return entry point to manage packet captures associated with network watcher
+     */
+    PacketCaptures packetCaptures();
 
     /**
      * @param targetResourceGroup the name of the target resource group to perform getTopology on
@@ -50,16 +48,6 @@ public interface NetworkWatcher extends
      * @return information on the configuration of flow log
      */
     FlowLogInformation getFlowLogStatus(String nsgId);
-
-    /**
-     * @return a representation of the deferred computation of this call, returning packet captures associated with this network watcher
-     */
-    Observable<PacketCapture> listPacketCapturesAsync();
-
-    /**
-     * @return packet captures associated with the network watcher
-     */
-    List<PacketCapture> listPacketCaptures();
 
     /**
      * First step specifying the parameters to get next hop for the VM.
@@ -109,11 +97,10 @@ public interface NetworkWatcher extends
     }
 
     /**
-     * The template for a domain update operation, containing all the settings that can be modified.
+     * The template for update operation, containing all the settings that can be modified.
      */
     interface Update extends
             Appliable<NetworkWatcher>,
             Resource.UpdateWithTags<Update> {
     }
-
 }
