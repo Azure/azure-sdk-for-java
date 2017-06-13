@@ -15,7 +15,13 @@ class AzureBlobLease extends Lease
 	private transient CloudBlockBlob blob; // do not serialize
 	private String offset = null; // null means checkpoint is uninitialized
 	private long sequenceNumber = 0;
-	
+
+	// not intended to be used; built for GSon
+	private AzureBlobLease()
+	{
+		super();
+	}
+
 	AzureBlobLease(String partitionId, CloudBlockBlob blob)
 	{
 		super(partitionId);

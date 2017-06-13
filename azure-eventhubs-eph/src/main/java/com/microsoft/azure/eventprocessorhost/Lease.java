@@ -29,6 +29,14 @@ public class Lease
     private String token;
 
     /**
+     * Do not use; added only for GSon deserializer
+     */
+    protected Lease()
+    {
+        partitionId = "-1";
+    }
+
+    /**
      * Create a Lease for the given partition.
      * 
      * @param partitionId
