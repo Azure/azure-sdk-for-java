@@ -7,9 +7,11 @@ package com.microsoft.azure.management.compute.implementation;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.AvailabilitySetSkuTypes;
@@ -61,6 +63,7 @@ import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.resources.implementation.PageImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
+import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Completable;
@@ -1468,6 +1471,25 @@ class VirtualMachineImpl
         this.unmanagedDataDisks
                 .add(dataDisk);
         return this;
+    }
+
+    AzureEnvironment environment() {
+        RestClient restClient = this.manager().inner().restClient();
+        AzureEnvironment environment = null;
+        if (restClient.credentials() instanceof AzureTokenCredentials) {
+            environment = ((AzureTokenCredentials) restClient.credentials()).environment();
+        }
+        String baseUrl = restClient.retrofit().baseUrl().toString();
+        for (AzureEnvironment env : AzureEnvironment.knownEnvironments()) {
+            if (env.resourceManagerEndpoint().toLowerCase().contains(baseUrl.toLowerCase())) {
+                environment = env;
+                break;
+            }
+        }
+        if (environment != null) {
+            return environment;
+        }
+        throw new IllegalArgumentException("Unknown environment");
     }
 
     private void setOSDiskDefaults() {
