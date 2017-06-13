@@ -100,6 +100,11 @@ public abstract class StorageRequest<C, P, R> {
     private String contentMD5 = null;
 
     /**
+     * Holds the descriptor which contains the stream length and MD5 hash.
+     */
+    private StreamMd5AndLength currentDescriptor = null;
+
+    /**
      * Denotes the StorageUri of the request
      */
     private StorageUri storageUri;
@@ -211,6 +216,11 @@ public abstract class StorageRequest<C, P, R> {
     public final String getContentMD5() {
         return this.contentMD5;
     }
+
+    /**
+     * @return the current descriptor which contains the stream length and MD5 hash.
+     */
+    protected StreamMd5AndLength getCurrentDescriptor() { return this.currentDescriptor; }
 
     /**
      * @return the location mode used to decide which location the request should be sent to.
@@ -455,6 +465,14 @@ public abstract class StorageRequest<C, P, R> {
      */
     public void setContentMD5(String contentMD5) {
         this.contentMD5 = contentMD5;
+    }
+
+    /**
+     * @param currentDescriptor
+     *              the descriptor value
+     */
+    protected void setCurrentDescriptor(StreamMd5AndLength currentDescriptor) {
+        this.currentDescriptor = currentDescriptor;
     }
 
     /**
