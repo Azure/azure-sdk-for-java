@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.dns.implementation;
 
+import com.google.common.base.Splitter;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.ARecord;
 import com.microsoft.azure.management.dns.AaaaRecord;
@@ -31,7 +32,7 @@ import java.util.Map;
  * Implementation of DnsRecordSet.
  */
 @LangDefinition
-abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
+class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
             RecordSetInner,
             DnsZoneImpl,
             DnsZone>
@@ -80,6 +81,11 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
         return Collections.unmodifiableMap(this.inner().metadata());
     }
 
+    @Override
+    public String eTag() {
+        return this.inner().etag();
+    }
+
     // Setters
 
     @Override
@@ -111,6 +117,14 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
         this.recordSetRemoveInfo
                 .aaaaRecords()
                 .add(new AaaaRecord().withIpv6Address(ipv6Address));
+        return this;
+    }
+
+    @Override
+    public DnsRecordSetImpl withAlias(String alias) {
+        this.inner()
+                .cnameRecord()
+                .withCname(alias);
         return this;
     }
 
@@ -185,18 +199,31 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
 
     @Override
     public DnsRecordSetImpl withText(String text) {
-        List<String> value = new ArrayList<>();
-        value.add(text);
-        this.inner().txtRecords().add(new TxtRecord().withValue(value));
+        if (text == null) {
+            return this;
+        }
+        List<String> chunks = new ArrayList<>();
+        for (String chunk : Splitter.fixedLength(255).split(text)) {
+            chunks.add(chunk);
+        }
+        this.inner().txtRecords().add(new TxtRecord().withValue(chunks));
         return this;
     }
 
     @Override
     public DnsRecordSetImpl withoutText(String text) {
-        List<String> value = new ArrayList<>();
-        value.add(text);
+        if (text == null) {
+            return this;
+        }
+        List<String> chunks = new ArrayList<>();
+        chunks.add(text);
+        return withoutText(chunks);
+    }
+
+    @Override
+    public DnsRecordSetImpl withoutText(List<String> textChunks) {
         this.recordSetRemoveInfo
-                .txtRecords().add(new TxtRecord().withValue(value));
+                .txtRecords().add(new TxtRecord().withValue(textChunks));
         return this;
     }
 
@@ -348,5 +375,7 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
         return prepareForUpdate(resource);
     }
 
-    protected abstract RecordSetInner prepareForUpdate(RecordSetInner resource);
+    protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
+        return resource;
+    }
 }

@@ -10,7 +10,6 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.CNameRecordSet;
 import com.microsoft.azure.management.dns.CNameRecordSets;
 import com.microsoft.azure.management.dns.RecordType;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import rx.Observable;
 
 /**
@@ -18,7 +17,7 @@ import rx.Observable;
  */
 @LangDefinition
 class CNameRecordSetsImpl
-        extends ReadableWrappersImpl<CNameRecordSet, CNameRecordSetImpl, RecordSetInner>
+        extends DnsRecordSetsBaseImpl<CNameRecordSet, CNameRecordSetImpl>
         implements CNameRecordSets {
 
     private final DnsZoneImpl dnsZone;
@@ -38,18 +37,20 @@ class CNameRecordSetsImpl
     }
 
     @Override
-    public PagedList<CNameRecordSet> list() {
+    protected PagedList<CNameRecordSet> listIntern(String recordSetNameSuffix, Integer pageSize) {
         return super.wrapList(this.parent().manager().inner().recordSets().listByType(
                 this.parent().resourceGroupName(),
                 this.parent().name(),
-                RecordType.CNAME));
+                RecordType.CNAME,
+                pageSize,
+                recordSetNameSuffix));
     }
 
     @Override
-    public Observable<CNameRecordSet> listAsync() {
+    protected Observable<CNameRecordSet> listInternAsync(String recordSetNameSuffix, Integer pageSize) {
         return wrapPageAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
+                this.dnsZone.resourceGroupName(),
+                this.dnsZone.name(),
                 RecordType.CNAME));
     }
 

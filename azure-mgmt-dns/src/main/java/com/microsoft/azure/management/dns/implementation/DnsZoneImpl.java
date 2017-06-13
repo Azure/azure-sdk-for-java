@@ -5,10 +5,12 @@
  */
 package com.microsoft.azure.management.dns.implementation;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.ARecordSets;
 import com.microsoft.azure.management.dns.AaaaRecordSets;
 import com.microsoft.azure.management.dns.CNameRecordSets;
+import com.microsoft.azure.management.dns.DnsRecordSet;
 import com.microsoft.azure.management.dns.DnsZone;
 import com.microsoft.azure.management.dns.MXRecordSets;
 import com.microsoft.azure.management.dns.NSRecordSets;
@@ -18,6 +20,7 @@ import com.microsoft.azure.management.dns.SoaRecordSet;
 import com.microsoft.azure.management.dns.SrvRecordSets;
 import com.microsoft.azure.management.dns.TxtRecordSets;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -62,6 +65,31 @@ public class DnsZoneImpl
     @Override
     public long numberOfRecordSets() {
         return this.inner().numberOfRecordSets();
+    }
+
+    @Override
+    public String eTag() {
+        return this.inner().etag();
+    }
+
+    @Override
+    public PagedList<DnsRecordSet> listRecordSets() {
+        return this.listRecordSetsIntern(null, null);
+    }
+
+    @Override
+    public PagedList<DnsRecordSet> listRecordSets(String recordSetNameSuffix) {
+        return this.listRecordSetsIntern(recordSetNameSuffix, null);
+    }
+
+    @Override
+    public PagedList<DnsRecordSet> listRecordSets(int pageSize) {
+        return this.listRecordSetsIntern(null, pageSize);
+    }
+
+    @Override
+    public PagedList<DnsRecordSet> listRecordSets(String recordSetNameSuffix, int pageSize) {
+        return this.listRecordSetsIntern(recordSetNameSuffix, pageSize);
     }
 
     @Override
@@ -134,6 +162,12 @@ public class DnsZoneImpl
     }
 
     @Override
+    public DnsRecordSetImpl defineCNameRecordSet(String name) {
+        return recordSetsImpl.defineCNameRecordSet(name);
+    }
+
+
+    @Override
     public DnsRecordSetImpl defineMXRecordSet(String name) {
         return recordSetsImpl.defineMXRecordSet(name);
     }
@@ -171,6 +205,11 @@ public class DnsZoneImpl
     @Override
     public DnsRecordSetImpl updateMXRecordSet(String name) {
         return recordSetsImpl.updateMXRecordSet(name);
+    }
+
+    @Override
+    public DnsRecordSetImpl updateCNameRecordSet(String name) {
+        return recordSetsImpl.updateCNameRecordSet(name);
     }
 
     @Override
@@ -293,4 +332,38 @@ public class DnsZoneImpl
         this.txtRecordSets = new TxtRecordSetsImpl(this);
         this.recordSetsImpl.clearPendingOperations();
     }
+
+    private PagedList<DnsRecordSet> listRecordSetsIntern(String recordSetSuffix, Integer pageSize) {
+        final DnsZoneImpl self = this;
+        PagedListConverter<RecordSetInner, DnsRecordSet> converter = new PagedListConverter<RecordSetInner, DnsRecordSet>() {
+            @Override
+            public DnsRecordSet typeConvert(RecordSetInner inner) {
+                DnsRecordSet recordSet = new DnsRecordSetImpl(self, inner);
+                switch (recordSet.recordType()) {
+                    case A:
+                        return new ARecordSetImpl(self, inner);
+                    case AAAA:
+                        return new AaaaRecordSetImpl(self, inner);
+                    case CNAME:
+                        return new CNameRecordSetImpl(self, inner);
+                    case MX:
+                        return new MXRecordSetImpl(self, inner);
+                    case NS:
+                        return new NSRecordSetImpl(self, inner);
+                    case PTR:
+                        return new PtrRecordSetImpl(self, inner);
+                    case SOA:
+                        return new SoaRecordSetImpl(self, inner);
+                    case SRV:
+                        return new SrvRecordSetImpl(self, inner);
+                    case TXT:
+                        return new TxtRecordSetImpl(self, inner);
+                    default:
+                        return recordSet;
+                }
+            }
+        };
+        return converter.convert(manager().inner().recordSets().listByDnsZone(this.resourceGroupName(), this.name()));
+    }
+
 }

@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.dns;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.dns.implementation.DnsZoneManager;
@@ -35,6 +36,43 @@ public interface DnsZone extends
      * @return the current number of record sets in this zone.
      */
     long numberOfRecordSets();
+
+    /**
+     * @return the etag associated with this zone.
+     */
+    String eTag();
+
+    /**
+     * @return the record sets in this zone.
+     */
+    PagedList<DnsRecordSet> listRecordSets();
+
+    /**
+     * Lists all the record sets in this zone with the given suffix.
+     *
+     * @param recordSetNameSuffix the record set name suffix
+     * @return the record sets
+     */
+    PagedList<DnsRecordSet> listRecordSets(String recordSetNameSuffix);
+
+    /**
+     * Lists all the record sets in this zone with each entries in each page
+     * limited to the given size.
+     *
+     * @param pageSize the maximum number of record sets in a page
+     * @return the record sets
+     */
+    PagedList<DnsRecordSet> listRecordSets(int pageSize);
+
+    /**
+     * Lists all the record sets in this zone with the given suffix, also limits
+     * the number of entries per page to the given page size.
+     *
+     * @param recordSetNameSuffix the record set name suffix
+     * @param pageSize the maximum number of record sets in a page
+     * @return the record sets
+     */
+    PagedList<DnsRecordSet> listRecordSets(String recordSetNameSuffix, int pageSize);
 
     /**
      * @return name servers assigned for this zone.
@@ -134,6 +172,14 @@ public interface DnsZone extends
             WithCreate withCNameRecordSet(String name, String alias);
 
             /**
+             * Specifies definition of a CNAME record set.
+             *
+             * @param name name of the CNAME record set
+             * @return the next stage of DNS zone definition
+             */
+            DnsRecordSet.DefinitionStages.CNameRecordSetBlank<WithCreate> defineCNameRecordSet(String name);
+
+            /**
              * Specifies definition of a MX record set.
              *
              * @param name name of the MX record set
@@ -219,6 +265,14 @@ public interface DnsZone extends
             Update withCNameRecordSet(String name, String alias);
 
             /**
+             * Specifies definition of a CNAME record set.
+             *
+             * @param name name of the CNAME record set
+             * @return the next stage of DNS zone definition
+             */
+            DnsRecordSet.UpdateDefinitionStages.CNameRecordSetBlank<Update> defineCNameRecordSet(String name);
+
+            /**
              * Specifies definition of a MX record set to be attached to the DNS zone.
              *
              * @param name name of the MX record set
@@ -273,6 +327,14 @@ public interface DnsZone extends
              * @return the stage representing configuration for the AAAA record set
              */
             DnsRecordSet.UpdateAaaaRecordSet updateAaaaRecordSet(String name);
+
+            /**
+             * Specifies definition of a CNAME record set.
+             *
+             * @param name name of the CNAME record set
+             * @return the stage representing configuration for the CNAME record set
+             */
+            DnsRecordSet.UpdateCNameRecordSet updateCNameRecordSet(String name);
 
             /**
              * Begins the description of an update of an existing MX record set in this DNS zone.

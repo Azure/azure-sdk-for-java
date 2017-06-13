@@ -12,6 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,6 +39,11 @@ public interface DnsRecordSet extends
     Map<String, String> metadata();
 
     /**
+     * @return the etag associated with the record set.
+     */
+    String eTag();
+
+    /**
      * The entirety of a DNS zone record set definition as a part of parent definition.
      *
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
@@ -49,6 +55,9 @@ public interface DnsRecordSet extends
             DefinitionStages.AaaaRecordSetBlank<ParentT>,
             DefinitionStages.WithAaaaRecordIPv6Address<ParentT>,
             DefinitionStages.WithAaaaRecordIPv6AddressOrAttachable<ParentT>,
+            DefinitionStages.CNameRecordSetBlank<ParentT>,
+            DefinitionStages.WithCNameRecordAlias<ParentT>,
+            DefinitionStages.WithCNameRecordSetAttachable<ParentT>,
             DefinitionStages.MXRecordSetBlank<ParentT>,
             DefinitionStages.WithMXRecordMailExchange<ParentT>,
             DefinitionStages.WithMXRecordMailExchangeOrAttachable<ParentT>,
@@ -135,6 +144,37 @@ public interface DnsRecordSet extends
          */
         interface WithAaaaRecordIPv6AddressOrAttachable<ParentT>
                 extends WithAaaaRecordIPv6Address<ParentT>, WithAttach<ParentT> {
+        }
+
+        /**
+         * The first stage of a CNAME record set definition.
+         *
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
+        interface CNameRecordSetBlank<ParentT> extends WithCNameRecordAlias<ParentT> {
+        }
+
+        /**
+         * The stage of a CNAME record definition allowing to add alias.
+         *
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
+        interface WithCNameRecordAlias<ParentT> {
+            /**
+             * Creates a CNAME record with the provided alias.
+             *
+             * @param alias the alias
+             * @return the next stage of the definition
+             */
+            WithCNameRecordSetAttachable<ParentT> withAlias(String alias);
+        }
+
+        /**
+         * The stage of the CNAME record set definition allowing attach the record set to the parent.
+         *
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
+        interface WithCNameRecordSetAttachable<ParentT> extends WithAttach<ParentT> {
         }
 
         /**
@@ -362,6 +402,9 @@ public interface DnsRecordSet extends
             UpdateDefinitionStages.AaaaRecordSetBlank<ParentT>,
             UpdateDefinitionStages.WithAaaaRecordIPv6Address<ParentT>,
             UpdateDefinitionStages.WithAaaaRecordIPv6AddressOrAttachable<ParentT>,
+            UpdateDefinitionStages.CNameRecordSetBlank<ParentT>,
+            UpdateDefinitionStages.WithCNameRecordAlias<ParentT>,
+            UpdateDefinitionStages.WithCNameRecordSetAttachable<ParentT>,
             UpdateDefinitionStages.MXRecordSetBlank<ParentT>,
             UpdateDefinitionStages.WithMXRecordMailExchange<ParentT>,
             UpdateDefinitionStages.WithMXRecordMailExchangeOrAttachable<ParentT>,
@@ -448,6 +491,37 @@ public interface DnsRecordSet extends
          */
         interface WithAaaaRecordIPv6AddressOrAttachable<ParentT>
                 extends WithAaaaRecordIPv6Address<ParentT>, WithAttach<ParentT> {
+        }
+
+        /**
+         * The first stage of a CNAME record set definition.
+         *
+         * @param <ParentT> the return type of {@link DefinitionStages.WithAttach#attach()}
+         */
+        interface CNameRecordSetBlank<ParentT> extends WithCNameRecordAlias<ParentT> {
+        }
+
+        /**
+         * The stage of a CNAME record definition allowing to add alias.
+         *
+         * @param <ParentT> the return type of {@link DefinitionStages.WithAttach#attach()}
+         */
+        interface WithCNameRecordAlias<ParentT> {
+            /**
+             * Creates a CNAME record with the provided alias.
+             *
+             * @param alias the alias
+             * @return the next stage of the definition
+             */
+            WithCNameRecordSetAttachable<ParentT> withAlias(String alias);
+        }
+
+        /**
+         * The stage of the CNAME record set definition allowing attach the record set to the parent.
+         *
+         * @param <ParentT> the return type of {@link UpdateDefinitionStages.WithAttach#attach()}
+         */
+        interface WithCNameRecordSetAttachable<ParentT> extends WithAttach<ParentT> {
         }
 
         /**
@@ -670,8 +744,9 @@ public interface DnsRecordSet extends
     interface UpdateCombined extends
             UpdateARecordSet,
             UpdateAaaaRecordSet,
-            UpdatePtrRecordSet,
+            UpdateCNameRecordSet,
             UpdateMXRecordSet,
+            UpdatePtrRecordSet,
             UpdateNSRecordSet,
             UpdateSrvRecordSet,
             UpdateTxtRecordSet,
@@ -692,6 +767,14 @@ public interface DnsRecordSet extends
      */
     interface UpdateAaaaRecordSet extends
             UpdateStages.WithAaaaRecordIPv6Address,
+            Update {
+    }
+
+    /**
+     * The entirety of CNAME record set update as part of parent DNS zone update.
+     */
+    interface UpdateCNameRecordSet extends
+            UpdateStages.WithCNameRecordAlias,
             Update {
     }
 
@@ -796,6 +879,19 @@ public interface DnsRecordSet extends
              * @return the next stage of the record set update
              */
             UpdateAaaaRecordSet withoutIPv6Address(String ipv6Address);
+        }
+
+        /**
+         * The stage of the CNAME record set update allowing to update the CNAME record.
+         */
+        interface WithCNameRecordAlias {
+            /**
+             * The new alias for the CNAME record set.
+             *
+             * @param alias the alias
+             * @return the next stage of the record set update
+             */
+            UpdateCNameRecordSet withAlias(String alias);
         }
 
         /**
@@ -909,6 +1005,14 @@ public interface DnsRecordSet extends
              * @return the next stage of the record set update
              */
             UpdateTxtRecordSet withoutText(String text);
+
+            /**
+             * Removes a Txt record with the given text (split into 255 char chunks) from this record set.
+             *
+             * @param textChunks the text value as list
+             * @return the next stage of the record set update
+             */
+            UpdateTxtRecordSet withoutText(List<String> textChunks);
         }
 
         /**

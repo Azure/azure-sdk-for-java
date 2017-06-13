@@ -10,7 +10,6 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.PtrRecordSet;
 import com.microsoft.azure.management.dns.PtrRecordSets;
 import com.microsoft.azure.management.dns.RecordType;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import rx.Observable;
 
 /**
@@ -18,7 +17,7 @@ import rx.Observable;
  */
 @LangDefinition
 class PtrRecordSetsImpl
-        extends ReadableWrappersImpl<PtrRecordSet, PtrRecordSetImpl, RecordSetInner>
+        extends DnsRecordSetsBaseImpl<PtrRecordSet, PtrRecordSetImpl>
         implements PtrRecordSets {
 
     private final DnsZoneImpl dnsZone;
@@ -38,9 +37,21 @@ class PtrRecordSetsImpl
     }
 
     @Override
-    public PagedList<PtrRecordSet> list() {
+    protected PagedList<PtrRecordSet> listIntern(String recordSetNameSuffix, Integer pageSize) {
         return super.wrapList(this.parent().manager().inner().recordSets().listByType(
-                this.parent().resourceGroupName(), this.parent().name(), RecordType.PTR));
+                this.parent().resourceGroupName(),
+                this.parent().name(),
+                RecordType.PTR,
+                pageSize,
+                recordSetNameSuffix));
+    }
+
+    @Override
+    protected Observable<PtrRecordSet> listInternAsync(String recordSetNameSuffix, Integer pageSize) {
+        return wrapPageAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
+                this.dnsZone.resourceGroupName(),
+                this.dnsZone.name(),
+                RecordType.PTR));
     }
 
     @Override
@@ -51,11 +62,5 @@ class PtrRecordSetsImpl
     @Override
     public DnsZoneImpl parent() {
         return this.dnsZone;
-    }
-
-    @Override
-    public Observable<PtrRecordSet> listAsync() {
-        return super.wrapPageAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
-                this.parent().resourceGroupName(), this.parent().name(), RecordType.PTR));
     }
 }

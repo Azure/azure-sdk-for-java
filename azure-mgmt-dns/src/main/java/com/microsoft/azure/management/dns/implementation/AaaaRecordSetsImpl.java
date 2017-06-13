@@ -10,7 +10,6 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.AaaaRecordSet;
 import com.microsoft.azure.management.dns.AaaaRecordSets;
 import com.microsoft.azure.management.dns.RecordType;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import rx.Observable;
 
 /**
@@ -18,7 +17,7 @@ import rx.Observable;
  */
 @LangDefinition
 class AaaaRecordSetsImpl
-        extends ReadableWrappersImpl<AaaaRecordSet, AaaaRecordSetImpl, RecordSetInner>
+        extends DnsRecordSetsBaseImpl<AaaaRecordSet, AaaaRecordSetImpl>
         implements AaaaRecordSets {
 
     private final DnsZoneImpl dnsZone;
@@ -37,8 +36,19 @@ class AaaaRecordSetsImpl
     }
 
     @Override
-    public PagedList<AaaaRecordSet> list() {
-        return super.wrapList(this.parent().manager().inner().recordSets().listByType(this.dnsZone.resourceGroupName(),
+    protected PagedList<AaaaRecordSet> listIntern(String recordSetNameSuffix, Integer pageSize) {
+        return super.wrapList(this.parent().manager().inner().recordSets().listByType(
+                this.parent().resourceGroupName(),
+                this.parent().name(),
+                RecordType.AAAA,
+                pageSize,
+                recordSetNameSuffix));
+    }
+
+    @Override
+    protected Observable<AaaaRecordSet> listInternAsync(String recordSetNameSuffix, Integer pageSize) {
+        return wrapPageAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
+                this.dnsZone.resourceGroupName(),
                 this.dnsZone.name(),
                 RecordType.AAAA));
     }
@@ -51,13 +61,5 @@ class AaaaRecordSetsImpl
     @Override
     public DnsZoneImpl parent() {
         return this.dnsZone;
-    }
-
-    @Override
-    public Observable<AaaaRecordSet> listAsync() {
-        return wrapPageAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
-                this.dnsZone.resourceGroupName(),
-                this.dnsZone.name(),
-                RecordType.AAAA));
     }
 }

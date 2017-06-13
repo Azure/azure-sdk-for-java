@@ -10,7 +10,6 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.ARecordSet;
 import com.microsoft.azure.management.dns.ARecordSets;
 import com.microsoft.azure.management.dns.RecordType;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import rx.Observable;
 
 /**
@@ -18,7 +17,7 @@ import rx.Observable;
  */
 @LangDefinition
 class ARecordSetsImpl
-        extends ReadableWrappersImpl<ARecordSet, ARecordSetImpl, RecordSetInner>
+        extends DnsRecordSetsBaseImpl<ARecordSet, ARecordSetImpl>
         implements ARecordSets {
 
     private final DnsZoneImpl dnsZone;
@@ -38,9 +37,20 @@ class ARecordSetsImpl
     }
 
     @Override
-    public PagedList<ARecordSet> list() {
-        return super.wrapList(this.parent().manager().inner().recordSets().listByType(this.parent().resourceGroupName(),
+    protected PagedList<ARecordSet> listIntern(String recordSetNameSuffix, Integer pageSize) {
+        return super.wrapList(this.parent().manager().inner().recordSets().listByType(
+                this.parent().resourceGroupName(),
                 this.parent().name(),
+                RecordType.A,
+                pageSize,
+                recordSetNameSuffix));
+    }
+
+    @Override
+    protected Observable<ARecordSet> listInternAsync(String recordSetNameSuffix, Integer pageSize) {
+        return wrapPageAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
+                this.dnsZone.resourceGroupName(),
+                this.dnsZone.name(),
                 RecordType.A));
     }
 
@@ -52,13 +62,5 @@ class ARecordSetsImpl
     @Override
     public DnsZoneImpl parent() {
         return this.dnsZone;
-    }
-
-    @Override
-    public Observable<ARecordSet> listAsync() {
-        return super.wrapPageAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
-                RecordType.A));
     }
 }

@@ -48,6 +48,10 @@ class DnsRecordSetsImpl extends
         setDefaults(prepareDefine(recordSet.withTimeToLive(defaultTtlInSeconds)));
     }
 
+    DnsRecordSetImpl defineCNameRecordSet(String name) {
+        return setDefaults(prepareDefine(CNameRecordSetImpl.newRecordSet(name, this.parent())));
+    }
+
     DnsRecordSetImpl defineMXRecordSet(String name) {
         return setDefaults(prepareDefine(MXRecordSetImpl.newRecordSet(name, this.parent())));
     }
@@ -78,6 +82,10 @@ class DnsRecordSetsImpl extends
 
     DnsRecordSetImpl updateMXRecordSet(String name) {
         return prepareUpdate(MXRecordSetImpl.newRecordSet(name, this.parent()));
+    }
+
+    DnsRecordSetImpl updateCNameRecordSet(String name) {
+        return prepareUpdate(CNameRecordSetImpl.newRecordSet(name, this.parent()));
     }
 
     DnsRecordSetImpl updateNSRecordSet(String name) {

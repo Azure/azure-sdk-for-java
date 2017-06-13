@@ -10,7 +10,6 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.dns.TxtRecordSet;
 import com.microsoft.azure.management.dns.TxtRecordSets;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import rx.Observable;
 
 /**
@@ -18,7 +17,7 @@ import rx.Observable;
  */
 @LangDefinition
 class TxtRecordSetsImpl
-        extends ReadableWrappersImpl<TxtRecordSet, TxtRecordSetImpl, RecordSetInner>
+        extends DnsRecordSetsBaseImpl<TxtRecordSet, TxtRecordSetImpl>
         implements TxtRecordSets {
 
     private final DnsZoneImpl dnsZone;
@@ -38,9 +37,21 @@ class TxtRecordSetsImpl
     }
 
     @Override
-    public PagedList<TxtRecordSet> list() {
+    protected PagedList<TxtRecordSet> listIntern(String recordSetNameSuffix, Integer pageSize) {
         return super.wrapList(this.parent().manager().inner().recordSets().listByType(
-                this.parent().resourceGroupName(), this.parent().name(), RecordType.TXT));
+                this.parent().resourceGroupName(),
+                this.parent().name(),
+                RecordType.TXT,
+                pageSize,
+                recordSetNameSuffix));
+    }
+
+    @Override
+    protected Observable<TxtRecordSet> listInternAsync(String recordSetNameSuffix, Integer pageSize) {
+        return wrapPageAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
+                this.dnsZone.resourceGroupName(),
+                this.dnsZone.name(),
+                RecordType.TXT));
     }
 
     @Override
@@ -51,11 +62,5 @@ class TxtRecordSetsImpl
     @Override
     public DnsZoneImpl parent() {
         return this.dnsZone;
-    }
-
-    @Override
-    public Observable<TxtRecordSet> listAsync() {
-        return super.wrapPageAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
-                this.parent().resourceGroupName(), this.parent().name(), RecordType.TXT));
     }
 }
