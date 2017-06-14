@@ -58,7 +58,7 @@ public class ManageContainerServiceUsingKubernetes {
             if (servicePrincipalClientId.isEmpty() || servicePrincipalSecret.isEmpty()) {
                 String envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION_2");
 
-                if (envSecondaryServicePrincipal == null || !envSecondaryServicePrincipal.isEmpty() || Files.exists(Paths.get(envSecondaryServicePrincipal))) {
+                if (envSecondaryServicePrincipal == null || !envSecondaryServicePrincipal.isEmpty() || !Files.exists(Paths.get(envSecondaryServicePrincipal))) {
                   envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION");
                 }
 
