@@ -6,8 +6,6 @@
 
 package com.microsoft.azure.management.compute.samples;
 
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.compute.ContainerService;
 import com.microsoft.azure.management.compute.ContainerServiceMasterProfileCount;
@@ -19,11 +17,9 @@ import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
-import java.util.Properties;
 
 /**
  * Azure Container Service sample for managing container service with Kubernetes orchestration.
@@ -37,6 +33,8 @@ public class ManageContainerServiceUsingKubernetes {
      * Main function which runs the actual sample.
      *
      * @param azure instance of the azure client
+     * @param clientId secondary service principal client ID
+     * @param secret secondary service principal secret
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure, String clientId, String secret) {
