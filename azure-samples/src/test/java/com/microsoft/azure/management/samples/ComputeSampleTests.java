@@ -135,7 +135,11 @@ public class ComputeSampleTests extends SamplesTestBase {
 
     @Test
     public void testManageContainerServiceUsingKubernetes() {
-        Assert.assertTrue(ManageContainerServiceUsingKubernetes.runSample(azure));
+        if (IS_MOCKED) {
+            Assert.assertTrue(ManageContainerServiceUsingKubernetes.runSample(azure, "client id", "secret"));
+        } else {
+            Assert.assertTrue(ManageContainerServiceUsingKubernetes.runSample(azure, "", ""));
+        }
     }
 
     @Test
