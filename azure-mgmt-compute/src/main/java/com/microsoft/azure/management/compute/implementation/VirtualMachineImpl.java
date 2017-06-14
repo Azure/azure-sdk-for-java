@@ -15,6 +15,7 @@ import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.AvailabilitySetSkuTypes;
+import com.microsoft.azure.management.compute.BootDiagnostics;
 import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.DataDisk;
 import com.microsoft.azure.management.compute.DiagnosticsProfile;
@@ -104,7 +105,7 @@ class VirtualMachineImpl
     // used to generate unique name for any dependency resources
     private final ResourceNamer namer;
     // unique key of a creatable storage account to be used for virtual machine child resources that
-    // requires storage [OS disk, data disk etc..]
+    // requires storage [OS disk, data disk, boot diagnostics etc..]
     private String creatableStorageAccountKey;
     // unique key of a creatable availability set that this virtual machine to put
     private String creatableAvailabilitySetKey;
@@ -113,7 +114,7 @@ class VirtualMachineImpl
     // unique key of a creatable network interfaces that needs to be used as virtual machine's secondary network interface
     private List<String> creatableSecondaryNetworkInterfaceKeys;
     // reference to an existing storage account to be used for virtual machine child resources that
-    // requires storage [OS disk, data disk etc..]
+    // requires storage [OS disk, data disk, boot diagnostics etc..]
     private StorageAccount existingStorageAccountToAssociate;
     // reference to an existing availability set that this virtual machine to put
     private AvailabilitySet existingAvailabilitySetToAssociate;
@@ -140,6 +141,8 @@ class VirtualMachineImpl
     private List<VirtualMachineUnmanagedDataDisk> unmanagedDataDisks;
     // To track the managed data disks
     private final ManagedDataDiskCollection managedDataDisks;
+    // unique key of a creatable storage account to be used for boot diagnostics
+    private String creatableDiagnosticsStorageAccountKey;
 
     VirtualMachineImpl(String name,
                        VirtualMachineInner innerModel,
@@ -1185,6 +1188,46 @@ class VirtualMachineImpl
         return this;
     }
 
+
+    @Override
+    public VirtualMachineImpl withBootDiagnostics() {
+        // Diagnostics storage uri will be set later by this.handleBootDiagnosticsStorageSettings(..)
+        //
+        this.enableDisableBootDiagnostics(true);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withBootDiagnostics(Creatable<StorageAccount> creatable) {
+        // Diagnostics storage uri will be set later by this.handleBootDiagnosticsStorageSettings(..)
+        //
+        enableDisableBootDiagnostics(true);
+        this.creatableDiagnosticsStorageAccountKey = creatable.key();
+        this.addCreatableDependency(creatable);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withBootDiagnostics(String storageAccountBlobEndpointUri) {
+        this.enableDisableBootDiagnostics(true);
+        this.inner()
+                .diagnosticsProfile()
+                .bootDiagnostics()
+                .withStorageUri(storageAccountBlobEndpointUri);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withBootDiagnostics(StorageAccount storageAccount) {
+        return this.withBootDiagnostics(storageAccount.endPoints().primary().blob());
+    }
+
+    @Override
+    public VirtualMachineImpl withoutBootDiagnostics() {
+        this.enableDisableBootDiagnostics(false);
+        return this;
+    }
+
     // GETTERS
 
     @Override
@@ -1410,6 +1453,26 @@ class VirtualMachineImpl
         return PowerState.fromInstanceView(this.instanceView());
     }
 
+    @Override
+    public boolean isBootDiagnosticsEnabled() {
+        if (this.inner().diagnosticsProfile() != null
+                && this.inner().diagnosticsProfile().bootDiagnostics() != null
+                && this.inner().diagnosticsProfile().bootDiagnostics().enabled() != null) {
+            return this.inner().diagnosticsProfile().bootDiagnostics().enabled();
+        }
+        return false;
+    }
+
+    @Override
+    public String bootDiagnosticsStorageUri() {
+        // Even though diagnostics can disabled azure still keep the storage uri
+        if (this.inner().diagnosticsProfile() != null
+                && this.inner().diagnosticsProfile().bootDiagnostics() != null) {
+            return this.inner().diagnosticsProfile().bootDiagnostics().storageUri();
+        }
+        return null;
+    }
+
     // CreateUpdateTaskGroup.ResourceCreator.createResourceAsync implementation
     //
     @Override
@@ -1427,6 +1490,12 @@ class VirtualMachineImpl
         final VirtualMachineImpl self = this;
         final VirtualMachinesInner client = this.manager().inner().virtualMachines();
         return handleStorageSettingsAsync()
+                .flatMap(new Func1<StorageAccount, Observable<StorageAccount>>() {
+                    @Override
+                    public Observable<StorageAccount> call(StorageAccount storageAccount) {
+                        return handleBootDiagnosticsStorageSettings(storageAccount);
+                    }
+                })
                 .flatMap(new Func1<StorageAccount, Observable<? extends VirtualMachine>>() {
                     @Override
                     public Observable<? extends VirtualMachine> call(StorageAccount storageAccount) {
@@ -1656,6 +1725,49 @@ class VirtualMachineImpl
         return Observable.just(null);
     }
 
+    private Observable<StorageAccount> handleBootDiagnosticsStorageSettings(StorageAccount diskStorageAccount) {
+        final Observable<StorageAccount> stgObservable = Observable.just(diskStorageAccount);
+        if (this.inner().diagnosticsProfile() == null
+                || this.inner().diagnosticsProfile().bootDiagnostics() == null) {
+            return stgObservable;
+        }
+        if (this.inner().diagnosticsProfile().bootDiagnostics().storageUri() != null) {
+            return stgObservable;
+        }
+        if (this.inner().diagnosticsProfile().bootDiagnostics().enabled()) {
+            String diagnosticsStorageUri = null;
+            if (this.creatableDiagnosticsStorageAccountKey != null) {
+                StorageAccount createdStorageAccount = (StorageAccount) this.createdResource(this.creatableDiagnosticsStorageAccountKey);
+                diagnosticsStorageUri = createdStorageAccount.endPoints().primary().blob();
+            } else if (diskStorageAccount != null) {
+                diagnosticsStorageUri = diskStorageAccount.endPoints().primary().blob();
+            }
+            if (diagnosticsStorageUri != null) {
+                this.inner()
+                        .diagnosticsProfile()
+                        .bootDiagnostics()
+                        .withStorageUri(diagnosticsStorageUri);
+                return stgObservable;
+            }
+            return Utils.<StorageAccount>rootResource(this.storageManager.storageAccounts()
+                    .define(this.namer.randomName("stg", 24).replace("-", ""))
+                    .withRegion(this.regionName())
+                    .withExistingResourceGroup(this.resourceGroupName())
+                    .createAsync())
+                    .flatMap(new Func1<StorageAccount, Observable<StorageAccount>>() {
+                        @Override
+                        public Observable<StorageAccount> call(StorageAccount storageAccount) {
+                            inner()
+                                .diagnosticsProfile()
+                                .bootDiagnostics()
+                                .withStorageUri(storageAccount.endPoints().primary().blob());
+                            return stgObservable;
+                        }
+                    });
+        }
+        return stgObservable;
+    }
+
     private void handleNetworkSettings() {
         if (isInCreateMode()) {
             NetworkInterface primaryNetworkInterface = null;
@@ -1757,6 +1869,21 @@ class VirtualMachineImpl
             return true;
         }
         return false;
+    }
+
+    private void enableDisableBootDiagnostics(boolean enable) {
+        if (this.inner().diagnosticsProfile() == null) {
+            this.inner().withDiagnosticsProfile(new DiagnosticsProfile());
+        }
+        if (this.inner().diagnosticsProfile().bootDiagnostics() == null) {
+            this.inner().diagnosticsProfile().withBootDiagnostics(new BootDiagnostics());
+        }
+        if (enable) {
+            this.inner().diagnosticsProfile().bootDiagnostics().withEnabled(true);
+        } else {
+            this.inner().diagnosticsProfile().bootDiagnostics().withEnabled(false);
+            this.inner().diagnosticsProfile().bootDiagnostics().withStorageUri(null);
+        }
     }
 
     /**

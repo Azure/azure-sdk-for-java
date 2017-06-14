@@ -343,6 +343,16 @@ public interface VirtualMachine extends
      */
     VirtualMachineInstanceView instanceView();
 
+    /**
+     * @return true if boot diagnostics is enabled for the virtual machine
+     */
+    boolean isBootDiagnosticsEnabled();
+
+    /**
+     * @return the storage blob endpoint uri if boot diagnostics is enabled for the virtual machine
+     */
+    String bootDiagnosticsStorageUri();
+
     // Setters
     //
 
@@ -1380,6 +1390,42 @@ public interface VirtualMachine extends
         }
 
         /**
+         * The stage of the virtual machine definition allowing to enable boot diagnostics.
+         */
+        interface WithBootDiagnostics {
+            /**
+             * Specifies that boot diagnostics needs to be enabled in the virtual machine.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withBootDiagnostics();
+
+            /**
+             * Specifies that boot diagnostics needs to be enabled in the virtual machine.
+             *
+             * @param creatable the storage account to be created and used for store the boot diagnostics
+             * @return the next stage of the definition
+             */
+            WithCreate withBootDiagnostics(Creatable<StorageAccount> creatable);
+
+            /**
+             * Specifies that boot diagnostics needs to be enabled in the virtual machine.
+             *
+             * @param storageAccount an existing storage account to be uses to store the boot diagnostics
+             * @return the next stage of the definition
+             */
+            WithCreate withBootDiagnostics(StorageAccount storageAccount);
+
+            /**
+             * Specifies that boot diagnostics needs to be enabled in the virtual machine.
+             *
+             * @param storageAccountBlobEndpointUri a storage account blob endpoint to store the boot diagnostics
+             * @return the next stage of the definition
+             */
+            WithCreate withBootDiagnostics(String storageAccountBlobEndpointUri);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the VM to be created and optionally allow managed data disks specific settings to
          * be specified.
@@ -1444,7 +1490,8 @@ public interface VirtualMachine extends
                 DefinitionStages.WithAvailabilitySet,
                 DefinitionStages.WithSecondaryNetworkInterface,
                 DefinitionStages.WithExtension,
-                DefinitionStages.WithPlan {
+                DefinitionStages.WithPlan,
+                DefinitionStages.WithBootDiagnostics {
         }
     }
 
@@ -1706,6 +1753,49 @@ public interface VirtualMachine extends
              */
             Update withoutExtension(String name);
         }
+
+        /**
+         * The stage of the virtual machine definition allowing to enable boot diagnostics.
+         */
+        interface WithBootDiagnostics {
+            /**
+             * Specifies that boot diagnostics needs to be enabled in the virtual machine.
+             *
+             * @return the next stage of the update
+             */
+            Update withBootDiagnostics();
+
+            /**
+             * Specifies that boot diagnostics needs to be enabled in the virtual machine.
+             *
+             * @param creatable the storage account to be created and used for store the boot diagnostics
+             * @return the next stage of the update
+             */
+            Update withBootDiagnostics(Creatable<StorageAccount> creatable);
+
+            /**
+             * Specifies that boot diagnostics needs to be enabled in the virtual machine.
+             *
+             * @param storageAccount an existing storage account to be uses to store the boot diagnostics
+             * @return the next stage of the update
+             */
+            Update withBootDiagnostics(StorageAccount storageAccount);
+
+            /**
+             * Specifies that boot diagnostics needs to be enabled in the virtual machine.
+             *
+             * @param storageAccountBlobEndpointUri a storage account blob endpoint to store the boot diagnostics
+             * @return the next stage of the update
+             */
+            Update withBootDiagnostics(String storageAccountBlobEndpointUri);
+
+            /**
+             * Specifies that boot diagnostics needs to be disabled in the virtual machine.
+             *
+             * @return the next stage of the update
+             */
+            Update withoutBootDiagnostics();
+        }
     }
 
     /**
@@ -1717,7 +1807,8 @@ public interface VirtualMachine extends
             UpdateStages.WithUnmanagedDataDisk,
             UpdateStages.WithManagedDataDisk,
             UpdateStages.WithSecondaryNetworkInterface,
-            UpdateStages.WithExtension {
+            UpdateStages.WithExtension,
+            UpdateStages.WithBootDiagnostics {
         /**
          * Specifies the encryption settings for the OS Disk.
          *
