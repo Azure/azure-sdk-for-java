@@ -13,29 +13,35 @@ import com.microsoft.azure.management.apigeneration.Fluent;
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public class RuntimeStack {
-    /** Node.JS 6.9.3. */
-    public static final RuntimeStack NODEJS_6_9_3 = new RuntimeStack("NODE", "6.9.3");
+    /** Node.JS 6.10. */
+    public static final RuntimeStack NODEJS_6_10 = new RuntimeStack("NODE", "6.10");
 
-    /** Node.JS 6.6.0. */
-    public static final RuntimeStack NODEJS_6_6_0 = new RuntimeStack("NODE", "6.6.0");
+    /** Node.JS 6.9. */
+    public static final RuntimeStack NODEJS_6_9 = new RuntimeStack("NODE", "6.9");
 
-    /** Node.JS 6.2.2. */
-    public static final RuntimeStack NODEJS_6_2_2 = new RuntimeStack("NODE", "6.2.2");
+    /** Node.JS 6.6. */
+    public static final RuntimeStack NODEJS_6_6 = new RuntimeStack("NODE", "6.6");
 
-    /** Node.JS 4.5.0. */
-    public static final RuntimeStack NODEJS_4_5_0 = new RuntimeStack("NODE", "4.5.0");
+    /** Node.JS 6.2. */
+    public static final RuntimeStack NODEJS_6_2 = new RuntimeStack("NODE", "6.2");
 
-    /** Node.JS 4.4.7. */
-    public static final RuntimeStack NODEJS_4_4_7 = new RuntimeStack("NODE", "4.4.7");
+    /** Node.JS 4.5. */
+    public static final RuntimeStack NODEJS_4_5 = new RuntimeStack("NODE", "4.5");
 
-    /** PHP 5.6.23. */
-    public static final RuntimeStack PHP_5_6_23 = new RuntimeStack("PHP", "5.6.23");
+    /** Node.JS 4.4. */
+    public static final RuntimeStack NODEJS_4_4 = new RuntimeStack("NODE", "4.4");
 
-    /** PHP 7.0.6. */
-    public static final RuntimeStack PHP_7_0_6 = new RuntimeStack("PHP", "7.0.6");
+    /** PHP 5.6. */
+    public static final RuntimeStack PHP_5_6 = new RuntimeStack("PHP", "5.6");
+
+    /** PHP 7.0. */
+    public static final RuntimeStack PHP_7_0 = new RuntimeStack("PHP", "7.0");
 
     /** .NET Core v1.0. */
-    public static final RuntimeStack NETCORE_V1_0 = new RuntimeStack("DOTNETCORE", "v1.0");
+    public static final RuntimeStack NETCORE_V1_0 = new RuntimeStack("DOTNETCORE", "1.0");
+
+    /** .NET Core v1.1. */
+    public static final RuntimeStack NETCORE_V1_1 = new RuntimeStack("DOTNETCORE", "1.1");
 
     /** Ruby 2.3. */
     public static final RuntimeStack RUBY_2_3 = new RuntimeStack("RUBY", "2.3");

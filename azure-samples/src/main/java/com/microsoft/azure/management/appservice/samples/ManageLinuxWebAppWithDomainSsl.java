@@ -61,7 +61,7 @@ public final class ManageLinuxWebAppWithDomainSsl {
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
                     .withNewLinuxPlan(PricingTier.STANDARD_S1)
-                    .withBuiltInImage(RuntimeStack.NODEJS_6_9_3)
+                    .withBuiltInImage(RuntimeStack.NODEJS_6_9)
                     .create();
 
             System.out.println("Created web app " + app1.name());
@@ -75,7 +75,7 @@ public final class ManageLinuxWebAppWithDomainSsl {
             WebApp app2 = azure.webApps().define(app2Name)
                     .withExistingLinuxPlan(plan)
                     .withExistingResourceGroup(rgName)
-                    .withBuiltInImage(RuntimeStack.NODEJS_6_9_3)
+                    .withBuiltInImage(RuntimeStack.NODEJS_6_9)
                     .create();
 
             System.out.println("Created web app " + app2.name());
