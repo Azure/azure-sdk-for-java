@@ -70,6 +70,20 @@ import com.microsoft.azure.storage.StorageExtendedErrorInformation;
  * RESERVED FOR INTERNAL USE. A class which provides utility methods.
  */
 public final class Utility {
+
+    /**
+     * Thread local for storing GMT date format.
+     */
+    private static ThreadLocal<DateFormat>
+        RFC1123_GMT_DATE_TIME_FORMATTER = new ThreadLocal<DateFormat>() {
+        @Override
+        protected DateFormat initialValue() {
+            final DateFormat formatter = new SimpleDateFormat(RFC1123_PATTERN, LOCALE_US);
+            formatter.setTimeZone(GMT_ZONE);
+            return formatter;
+        }
+    };
+
     /**
      * Stores a reference to the GMT time zone.
      */
@@ -116,13 +130,22 @@ public final class Utility {
      * Used to create Json parsers and generators.
      */
     private static final JsonFactory jsonFactory = new JsonFactory();
-    
+
     /**
-     * A factory to create SAXParser instances.
+     * Thread local for SAXParser.
      */
-    private static final ThreadLocal<SAXParserFactory> saxParserFactory = new ThreadLocal<SAXParserFactory>() {
-        @Override public SAXParserFactory initialValue() {
-            return SAXParserFactory.newInstance();
+    private static final ThreadLocal<SAXParser> saxParserThreadLocal = new ThreadLocal<SAXParser>() {
+        SAXParserFactory factory;
+        @Override public SAXParser initialValue() {
+            factory = SAXParserFactory.newInstance();
+            factory.setNamespaceAware(true);
+            try {
+                return factory.newSAXParser();
+            } catch (SAXException e) {
+                throw new RuntimeException("Unable to create SAXParser", e);
+            } catch (ParserConfigurationException e) {
+                throw new RuntimeException("Check parser configuration", e);
+            }
         }
     };
 
@@ -567,21 +590,18 @@ public final class Utility {
 
     /**
      * Returns the GTM date/time String for the specified value using the RFC1123 pattern.
-     * 
+     *
      * @param date
      *            A <code>Date</code> object that represents the date to convert to GMT date/time in the RFC1123
      *            pattern.
-     * 
+     *
      * @return A <code>String</code> that represents the GMT date/time for the specified value using the RFC1123
      *         pattern.
      */
     public static String getGMTTime(final Date date) {
-        final DateFormat formatter = new SimpleDateFormat(RFC1123_PATTERN, LOCALE_US);
-        formatter.setTimeZone(GMT_ZONE);
-        return formatter.format(date);
+        return RFC1123_GMT_DATE_TIME_FORMATTER.get().format(date);
     }
 
-    
     /**
      * Returns the UTC date/time String for the specified value using Java's version of the ISO8601 pattern,
      * which is limited to millisecond precision.
@@ -637,9 +657,7 @@ public final class Utility {
      */
     public static JsonParser getJsonParser(final String jsonString) throws JsonParseException, IOException {
         JsonParser parser = jsonFactory.createParser(jsonString);
-
-        // allows handling of infinity, -infinity, and NaN for Doubles
-        return parser.enable(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS);
+        return setupJsonParser(parser);
     }
 
     /**
@@ -654,6 +672,20 @@ public final class Utility {
      */
     public static JsonParser getJsonParser(final InputStream inStream) throws JsonParseException, IOException {
         JsonParser parser = jsonFactory.createParser(inStream);
+        return setupJsonParser(parser);
+    }
+
+    /**
+     * Returns a <code>JsonParser</code> This JsonParser will allow non-numeric numbers.
+     * @param parser
+     *      A <code>JsonParser</code> to setup.
+     * @return
+     *      A <code>JsonParser</code> with settings configured.
+     */
+    private static JsonParser setupJsonParser(final JsonParser parser) {
+        // IMPORTANT: DO NOT REMOVE!
+        // don't close the stream and allow it to be drained completely in ExecutionEngine to improve socket reuse
+        parser.disable(JsonParser.Feature.AUTO_CLOSE_SOURCE);
 
         // allows handling of infinity, -infinity, and NaN for Doubles
         return parser.enable(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS);
@@ -668,8 +700,9 @@ public final class Utility {
      * @throws SAXException
      */
     public static SAXParser getSAXParser() throws ParserConfigurationException, SAXException {
-        saxParserFactory.get().setNamespaceAware(true);
-        return saxParserFactory.get().newSAXParser();
+        SAXParser parser = saxParserThreadLocal.get();
+        parser.reset(); //reset to original config
+        return parser;
     }
     
     /**
@@ -811,9 +844,7 @@ public final class Utility {
      *             If the specified string is invalid.
      */
     public static Date parseRFC1123DateFromStringInGMT(final String value) throws ParseException {
-        final DateFormat format = new SimpleDateFormat(RFC1123_PATTERN, Utility.LOCALE_US);
-        format.setTimeZone(GMT_ZONE);
-        return format.parse(value);
+        return RFC1123_GMT_DATE_TIME_FORMATTER.get().parse(value);
     }
 
     /**
@@ -1253,7 +1284,7 @@ public final class Utility {
             long writeLength, final boolean rewindSourceStream, final boolean calculateMD5, OperationContext opContext,
             final RequestOptions options, final Boolean shouldFlush) throws IOException, StorageException {
         return writeToOutputStream(sourceStream, outStream, writeLength, rewindSourceStream, calculateMD5, opContext,
-                options, shouldFlush, null /*StorageRequest*/);
+                options, shouldFlush, null /*StorageRequest*/, null /* descriptor */);
     }
 
     /**
@@ -1280,6 +1311,11 @@ public final class Utility {
      *            maximum execution time.
      * @param request
      *            Used by download resume to set currentRequestByteCount on the request. Otherwise, null is always used.
+     * @param descriptor
+     *                A {@Link StreamMd5AndLength} object to append to in the case of recovery action or null if this is not called
+     *                from a recovery. This value needs to be passed for recovery in case part of the body has already been read,
+     *                the recovery will attempt to download the remaining bytes but will do MD5 validation on the originally
+     *                requested range size.
      * @return A {@link StreamMd5AndLength} object that contains the output stream length, and optionally the MD5 hash.
      * 
      * @throws IOException
@@ -1289,23 +1325,27 @@ public final class Utility {
      */
     public static StreamMd5AndLength writeToOutputStream(final InputStream sourceStream, final OutputStream outStream,
             long writeLength, final boolean rewindSourceStream, final boolean calculateMD5, OperationContext opContext,
-            final RequestOptions options, final Boolean shouldFlush, StorageRequest<?, ?, Integer> request)
+            final RequestOptions options, final Boolean shouldFlush, StorageRequest<?, ?, Integer> request, StreamMd5AndLength descriptor)
             throws IOException, StorageException {
         if (rewindSourceStream && sourceStream.markSupported()) {
             sourceStream.reset();
             sourceStream.mark(Constants.MAX_MARK_LENGTH);
         }
 
-        final StreamMd5AndLength retVal = new StreamMd5AndLength();
-
-        if (calculateMD5) {
-            try {
-                retVal.setDigest(MessageDigest.getInstance("MD5"));
+        if (descriptor == null) {
+            descriptor = new StreamMd5AndLength();
+            if (calculateMD5) {
+                try {
+                    descriptor.setDigest(MessageDigest.getInstance("MD5"));
+                }
+                catch (final NoSuchAlgorithmException e) {
+                    // This wont happen, throw fatal.
+                    throw Utility.generateNewUnexpectedStorageException(e);
+                }
             }
-            catch (final NoSuchAlgorithmException e) {
-                // This wont happen, throw fatal.
-                throw Utility.generateNewUnexpectedStorageException(e);
-            }
+        }
+        else {
+            descriptor.setMd5(null);
         }
 
         if (writeLength < 0) {
@@ -1330,17 +1370,18 @@ public final class Utility {
             }
 
             if (calculateMD5) {
-                retVal.getDigest().update(retrievedBuff, 0, count);
+                descriptor.getDigest().update(retrievedBuff, 0, count);
             }
 
-            retVal.setLength(retVal.getLength() + count);
-            retVal.setCurrentOperationByteCount(retVal.getCurrentOperationByteCount() + count);
+            descriptor.setLength(descriptor.getLength() + count);
+            descriptor.setCurrentOperationByteCount(descriptor.getCurrentOperationByteCount() + count);
 
             if (request != null) {
                 request.setCurrentRequestByteCount(request.getCurrentRequestByteCount() + count);
+                request.setCurrentDescriptor(descriptor);
             }
 
-            nextCopy = (int) Math.min(retrievedBuff.length, writeLength - retVal.getLength());
+            nextCopy = (int) Math.min(retrievedBuff.length, writeLength - descriptor.getLength());
             count = sourceStream.read(retrievedBuff, 0, nextCopy);
         }
 
@@ -1348,7 +1389,7 @@ public final class Utility {
             outStream.flush();
         }
 
-        return retVal;
+        return descriptor;
     }
 
     /**

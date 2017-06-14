@@ -115,13 +115,10 @@ public final class ExecutionEngine {
                 currResult.setStartDate(new Date());
 
                 Logger.info(opContext, LogConstants.GET_RESPONSE);
-                try {
-                    currResult.setStatusCode(request.getResponseCode());
-                    currResult.setStatusMessage(request.getResponseMessage());
-                }
-                finally {
-                    currResult.setStopDate(new Date());
-                }
+
+                currResult.setStatusCode(request.getResponseCode());
+                currResult.setStatusMessage(request.getResponseMessage());
+                currResult.setStopDate(new Date());
 
                 currResult.setServiceRequestID(BaseResponse.getRequestId(request));
                 currResult.setEtag(BaseResponse.getEtag(request));
@@ -168,6 +165,7 @@ public final class ExecutionEngine {
                             }
                         }
                     }
+
                     Logger.info(opContext, LogConstants.COMPLETE);
 
                     return result;
