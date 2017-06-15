@@ -7,14 +7,12 @@
 package com.microsoft.azure.management.graphrbac;
 
 import com.google.common.base.Joiner;
+import com.google.common.io.ByteStreams;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import org.joda.time.Duration;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -26,9 +24,10 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
 
     @Test
     public void canCRUDServicePrincipal() throws Exception {
-        String name = SdkContext.randomResourceName("sp", 20);
+        String name = SdkContext.randomResourceName("ssp", 21);
         ServicePrincipal servicePrincipal = null;
         try {
+            // Create
             servicePrincipal = graphRbacManager.servicePrincipals().define(name)
                     .withNewApplication("http://easycreate.azure.com/" + name)
                     .definePasswordCredential("sppass")
@@ -40,6 +39,30 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
             Assert.assertNotNull(servicePrincipal.applicationId());
             Assert.assertEquals(2, servicePrincipal.servicePrincipalNames().size());
             Assert.assertEquals(1, servicePrincipal.passwordCredentials().size());
+            Assert.assertEquals(0, servicePrincipal.certificateCredentials().size());
+
+            // Get
+            servicePrincipal = graphRbacManager.servicePrincipals().getByName(name);
+            Assert.assertNotNull(servicePrincipal);
+            Assert.assertNotNull(servicePrincipal.applicationId());
+            Assert.assertEquals(2, servicePrincipal.servicePrincipalNames().size());
+            Assert.assertEquals(1, servicePrincipal.passwordCredentials().size());
+            Assert.assertEquals(0, servicePrincipal.certificateCredentials().size());
+
+            // Update
+            servicePrincipal.update()
+                    .withoutCredential("sppass")
+                    .defineCertificateCredential("spcert")
+                        .withAsymmetricX509Certificate()
+                        .withPublicKey(ByteStreams.toByteArray(ServicePrincipalsTests.class.getResourceAsStream("/myTest.cer")))
+                        .withDuration(Duration.standardDays(1))
+                        .attach()
+                    .apply();
+            Assert.assertNotNull(servicePrincipal);
+            Assert.assertNotNull(servicePrincipal.applicationId());
+            Assert.assertEquals(2, servicePrincipal.servicePrincipalNames().size());
+            Assert.assertEquals(0, servicePrincipal.passwordCredentials().size());
+            Assert.assertEquals(1, servicePrincipal.certificateCredentials().size());
         } finally {
             if (servicePrincipal != null) {
                 graphRbacManager.servicePrincipals().deleteById(servicePrincipal.id());
@@ -49,7 +72,6 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
     }
 
     @Test
-    @Ignore("Do not record - recorded JSON may contain auth info")
     public void canCRUDServicePrincipalWithRole() throws Exception {
         ServicePrincipal servicePrincipal = null;
         String authFile = "someauth.azureauth";

@@ -19,6 +19,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
+import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
 import java.util.List;
 import java.util.Map;
@@ -33,7 +34,8 @@ public interface ServicePrincipal extends
         HasInner<ServicePrincipalInner>,
         HasId,
         HasName,
-        HasManager<GraphRbacManager> {
+        HasManager<GraphRbacManager>,
+        Updatable<ServicePrincipal.Update> {
     /**
      * @return app id.
      */
@@ -183,7 +185,7 @@ public interface ServicePrincipal extends
     /**
      * Grouping of all the service principal update stages.
      */
-    interface UpdateStages{
+    interface UpdateStages {
         /**
          * A service principal update allowing credentials to be specified.
          */

@@ -148,6 +148,7 @@ class CertificateCredentialImpl<T>
             for (AzureEnvironment env : AzureEnvironment.knownEnvironments()) {
                 if (env.resourceManagerEndpoint().toLowerCase().contains(baseUrl.toLowerCase())) {
                     environment = env;
+                    break;
                 }
             }
             if (environment == null) {

@@ -6,12 +6,15 @@
 
 package com.microsoft.azure.management.graphrbac.implementation;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryApplication;
 import com.microsoft.azure.management.graphrbac.BuiltInRole;
 import com.microsoft.azure.management.graphrbac.CertificateCredential;
 import com.microsoft.azure.management.graphrbac.PasswordCredential;
+import com.microsoft.azure.management.graphrbac.RoleAssignment;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -19,6 +22,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import rx.Observable;
 import rx.exceptions.Exceptions;
+import rx.functions.Action0;
 import rx.functions.Func1;
 import rx.functions.Func2;
 
@@ -27,6 +31,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -38,24 +43,28 @@ class ServicePrincipalImpl
         implements
             ServicePrincipal,
             ServicePrincipal.Definition,
+            ServicePrincipal.Update,
             HasCredential<ServicePrincipalImpl> {
     private GraphRbacManager manager;
-    private ServicePrincipalCreateParametersInner createParameters;
+
     private Map<String, PasswordCredential> cachedPasswordCredentials;
     private Map<String, CertificateCredential> cachedCertificateCredentials;
+    private Map<String, RoleAssignment> cachedRoleAssignments;
+
+    private ServicePrincipalCreateParametersInner createParameters;
     private Creatable<ActiveDirectoryApplication> applicationCreatable;
-    private Map<String, BuiltInRole> roles;
+    private Map<String, BuiltInRole> rolesToCreate;
+    private Set<String> rolesToDelete;
+
     String assignedSubscription;
-    private List<CertificateCredentialImpl<?>> certificateCredentials;
-    private List<PasswordCredentialImpl<?>> passwordCredentials;
+    private List<CertificateCredentialImpl<?>> certificateCredentialsToCreate;
+    private List<PasswordCredentialImpl<?>> passwordCredentialsToCreate;
 
     ServicePrincipalImpl(ServicePrincipalInner innerObject, GraphRbacManager manager) {
         super(innerObject.displayName(), innerObject);
         this.manager = manager;
         this.createParameters = new ServicePrincipalCreateParametersInner().withAccountEnabled(true);
-        this.roles = new HashMap<>();
-        this.certificateCredentials = new ArrayList<>();
-        this.passwordCredentials = new ArrayList<>();
+        this.rolesToCreate = new HashMap<>();
     }
 
     @Override
@@ -76,7 +85,7 @@ class ServicePrincipalImpl
     @Override
     public Map<String, PasswordCredential> passwordCredentials() {
         if (cachedPasswordCredentials == null) {
-            return null;
+            return Collections.emptyMap();
         }
         return Collections.unmodifiableMap(cachedPasswordCredentials);
     }
@@ -84,7 +93,7 @@ class ServicePrincipalImpl
     @Override
     public Map<String, CertificateCredential> certificateCredentials() {
         if (cachedCertificateCredentials == null) {
-            return null;
+            return Collections.emptyMap();
         }
         return Collections.unmodifiableMap(cachedCertificateCredentials);
     }
@@ -96,76 +105,139 @@ class ServicePrincipalImpl
 
     @Override
     public Observable<ServicePrincipal> createResourceAsync() {
-        if (applicationCreatable != null) {
-            ActiveDirectoryApplication application = (ActiveDirectoryApplication) ((Object) super.createdModel(applicationCreatable.key()));
-            createParameters.withAppId(application.applicationId());
-        }
-        Observable<ServicePrincipal> sp = manager.inner().servicePrincipals().createAsync(createParameters)
-                .map(innerToFluentMap(this))
-                .flatMap(new Func1<ServicePrincipal, Observable<ServicePrincipal>>() {
-                    @Override
-                    public Observable<ServicePrincipal> call(ServicePrincipal servicePrincipal) {
-                        return refreshCredentialsAsync();
-                    }
-                });
-        if (roles == null || roles.isEmpty()) {
-            return sp;
+        Observable<ServicePrincipal> sp = Observable.just((ServicePrincipal) this);
+        if (isInCreateMode()) {
+            if (applicationCreatable != null) {
+                ActiveDirectoryApplication application = (ActiveDirectoryApplication) ((Object) super.createdModel(applicationCreatable.key()));
+                createParameters.withAppId(application.applicationId());
+            }
+            sp = manager.inner().servicePrincipals().createAsync(createParameters)
+                    .map(innerToFluentMap(this));
         }
         return sp.flatMap(new Func1<ServicePrincipal, Observable<ServicePrincipal>>() {
             @Override
-            public Observable<ServicePrincipal> call(final ServicePrincipal servicePrincipal) {
-                return Observable.from(roles.entrySet())
-                        .flatMap(new Func1<Map.Entry<String, BuiltInRole>, Observable<?>>() {
-                            @Override
-                            public Observable<?> call(Map.Entry<String, BuiltInRole> role) {
-                                return manager().roleAssignments().define(SdkContext.randomUuid())
-                                        .forServicePrincipal(servicePrincipal)
-                                        .withBuiltInRole(role.getValue())
-                                        .withScope(role.getKey())
-                                        .createAsync()
-                                        .retryWhen(new Func1<Observable<? extends Throwable>, Observable<?>>() {
-                                            @Override
-                                            public Observable<?> call(Observable<? extends Throwable> observable) {
-                                                return observable.zipWith(Observable.range(1, 30), new Func2<Throwable, Integer, Integer>() {
-                                                    @Override
-                                                    public Integer call(Throwable throwable, Integer integer) {
-                                                        if (throwable instanceof CloudException
-                                                                && ((CloudException) throwable).body().code().equalsIgnoreCase("PrincipalNotFound")) {
-                                                            return integer;
-                                                        } else {
-                                                            throw Exceptions.propagate(throwable);
-                                                        }
-                                                    }
-                                                }).flatMap(new Func1<Integer, Observable<?>>() {
-                                                    @Override
-                                                    public Observable<?> call(Integer i) {
-                                                        return Observable.timer(i, TimeUnit.SECONDS);
-                                                    }
-                                                });
-                                            }
-                                        });
-                            }
-                        })
-                        .last()
-                        .map(new Func1<Object, ServicePrincipal>() {
-                            @Override
-                            public ServicePrincipal call(Object o) {
-                                return servicePrincipal;
-                            }
-                        });
+            public Observable<ServicePrincipal> call(ServicePrincipal servicePrincipal) {
+                return submitCredentialsAsync(servicePrincipal).mergeWith(submitRolesAsync(servicePrincipal));
             }
         }).map(new Func1<ServicePrincipal, ServicePrincipal>() {
             @Override
             public ServicePrincipal call(ServicePrincipal servicePrincipal) {
-                for (PasswordCredentialImpl<?> passwordCredential : passwordCredentials) {
-                    passwordCredential.exportAuthFile((ServicePrincipalImpl) servicePrincipal);
+                if (passwordCredentialsToCreate != null) {
+                    for (PasswordCredentialImpl<?> passwordCredential : passwordCredentialsToCreate) {
+                        passwordCredential.exportAuthFile((ServicePrincipalImpl) servicePrincipal);
+                    }
                 }
-                for (CertificateCredentialImpl<?> certificateCredential : certificateCredentials) {
-                    certificateCredential.exportAuthFile((ServicePrincipalImpl) servicePrincipal);
+                if (certificateCredentialsToCreate != null) {
+                    for (CertificateCredentialImpl<?> certificateCredential : certificateCredentialsToCreate) {
+                        certificateCredential.exportAuthFile((ServicePrincipalImpl) servicePrincipal);
+                    }
                 }
+                passwordCredentialsToCreate = null;
+                certificateCredentialsToCreate = null;
                 return servicePrincipal;
             }
         });
+    }
+
+    private Observable<ServicePrincipal> submitCredentialsAsync(final ServicePrincipal sp) {
+        Observable<Void> observable = Observable.just(null);
+        if (cachedCertificateCredentials != null && !cachedCertificateCredentials.isEmpty()) {
+            observable = observable.mergeWith(manager().inner().servicePrincipals().updateKeyCredentialsAsync(sp.id(),
+                    Lists.transform(new ArrayList<>(cachedCertificateCredentials.values()), new Function<CertificateCredential, KeyCredentialInner>() {
+                        @Override
+                        public KeyCredentialInner apply(CertificateCredential input) {
+                            return input.inner();
+                        }
+                    })));
+        }
+        if (cachedPasswordCredentials != null && !cachedPasswordCredentials.isEmpty()) {
+            observable = observable.mergeWith(manager().inner().servicePrincipals().updatePasswordCredentialsAsync(sp.id(),
+                    Lists.transform(new ArrayList<>(cachedPasswordCredentials.values()), new Function<PasswordCredential, PasswordCredentialInner>() {
+                        @Override
+                        public PasswordCredentialInner apply(PasswordCredential input) {
+                            return input.inner();
+                        }
+                    })));
+        }
+        return observable.last().flatMap(new Func1<Void, Observable<ServicePrincipal>>() {
+            @Override
+            public Observable<ServicePrincipal> call(Void aVoid) {
+                return refreshCredentialsAsync();
+            }
+        });
+    }
+
+    private Observable<ServicePrincipal> submitRolesAsync(final ServicePrincipal servicePrincipal) {
+        Observable<ServicePrincipal> create;
+        if (rolesToCreate == null || rolesToCreate.isEmpty()) {
+            create = Observable.just(servicePrincipal);
+        } else {
+            create = Observable.from(rolesToCreate.entrySet())
+                    .flatMap(new Func1<Map.Entry<String, BuiltInRole>, Observable<?>>() {
+                        @Override
+                        public Observable<?> call(Map.Entry<String, BuiltInRole> role) {
+                            return manager().roleAssignments().define(SdkContext.randomUuid())
+                                    .forServicePrincipal(servicePrincipal)
+                                    .withBuiltInRole(role.getValue())
+                                    .withScope(role.getKey())
+                                    .createAsync()
+                                    .retryWhen(new Func1<Observable<? extends Throwable>, Observable<?>>() {
+                                        @Override
+                                        public Observable<?> call(Observable<? extends Throwable> observable) {
+                                            return observable.zipWith(Observable.range(1, 30), new Func2<Throwable, Integer, Integer>() {
+                                                @Override
+                                                public Integer call(Throwable throwable, Integer integer) {
+                                                    if (throwable instanceof CloudException
+                                                            && ((CloudException) throwable).body().code().equalsIgnoreCase("PrincipalNotFound")) {
+                                                        return integer;
+                                                    } else {
+                                                        throw Exceptions.propagate(throwable);
+                                                    }
+                                                }
+                                            }).flatMap(new Func1<Integer, Observable<?>>() {
+                                                @Override
+                                                public Observable<?> call(Integer i) {
+                                                    return Observable.timer(i, TimeUnit.SECONDS);
+                                                }
+                                            });
+                                        }
+                                    });
+                        }
+                    })
+                    .last()
+                    .map(new Func1<Object, ServicePrincipal>() {
+                        @Override
+                        public ServicePrincipal call(Object o) {
+                            return servicePrincipal;
+                        }
+                    });
+        }
+        Observable<ServicePrincipal> delete;
+        if (rolesToDelete == null || rolesToDelete.isEmpty()) {
+            delete =  Observable.just(servicePrincipal);
+        } else {
+            delete = Observable.from(rolesToDelete)
+                    .flatMap(new Func1<String, Observable<?>>() {
+                        @Override
+                        public Observable<?> call(final String s) {
+                            return manager().roleAssignments().deleteByIdAsync(cachedRoleAssignments.get(s).id()).toObservable()
+                                    .doOnCompleted(new Action0() {
+                                        @Override
+                                        public void call() {
+                                            cachedRoleAssignments.remove(s);
+                                        }
+                                    });
+                        }
+                    })
+                    .last()
+                    .map(new Func1<Object, ServicePrincipal>() {
+                        @Override
+                        public ServicePrincipal call(Object o) {
+                            return servicePrincipal;
+                        }
+                    });
+        }
+        return create.mergeWith(delete).last();
     }
 
     @Override
@@ -233,32 +305,50 @@ class ServicePrincipalImpl
     }
 
     @Override
-    public CertificateCredentialImpl<DefinitionStages.WithCreate> defineCertificateCredential(String name) {
+    @SuppressWarnings("unchecked")
+    public CertificateCredentialImpl defineCertificateCredential(String name) {
         return new CertificateCredentialImpl<>(name, this);
     }
 
     @Override
-    public PasswordCredentialImpl<DefinitionStages.WithCreate> definePasswordCredential(String name) {
+    @SuppressWarnings("unchecked")
+    public PasswordCredentialImpl definePasswordCredential(String name) {
         return new PasswordCredentialImpl<>(name, this);
     }
 
     @Override
-    public ServicePrincipalImpl withCertificateCredential(CertificateCredentialImpl<?> credential) {
-        if (createParameters.keyCredentials() == null) {
-            createParameters.withKeyCredentials(new ArrayList<KeyCredentialInner>());
+    public ServicePrincipalImpl withoutCredential(String name) {
+        if (cachedPasswordCredentials.containsKey(name)) {
+            cachedPasswordCredentials.remove(name);
+        } else if (cachedCertificateCredentials.containsKey(name)) {
+            cachedCertificateCredentials.remove(name);
         }
-        createParameters.keyCredentials().add(credential.inner());
-        this.certificateCredentials.add(credential);
+        return this;
+    }
+
+    @Override
+    public ServicePrincipalImpl withCertificateCredential(CertificateCredentialImpl<?> credential) {
+        if (certificateCredentialsToCreate == null) {
+            certificateCredentialsToCreate = new ArrayList<>();
+        }
+        this.certificateCredentialsToCreate.add(credential);
+        if (cachedCertificateCredentials == null) {
+            cachedCertificateCredentials = new HashMap<>();
+        }
+        this.cachedCertificateCredentials.put(credential.name(), credential);
         return this;
     }
 
     @Override
     public ServicePrincipalImpl withPasswordCredential(PasswordCredentialImpl<?> credential) {
-        if (createParameters.passwordCredentials() == null) {
-            createParameters.withPasswordCredentials(new ArrayList<PasswordCredentialInner>());
+        if (passwordCredentialsToCreate == null) {
+            passwordCredentialsToCreate = new ArrayList<>();
         }
-        createParameters.passwordCredentials().add(credential.inner());
-        this.passwordCredentials.add(credential);
+        this.passwordCredentialsToCreate.add(credential);
+        if (cachedPasswordCredentials == null) {
+            cachedPasswordCredentials = new HashMap<>();
+        }
+        this.cachedPasswordCredentials.put(credential.name(), credential);
         return this;
     }
 
@@ -295,7 +385,7 @@ class ServicePrincipalImpl
 
     @Override
     public ServicePrincipalImpl withNewRole(BuiltInRole role, String scope) {
-        this.roles.put(scope, role);
+        this.rolesToCreate.put(scope, role);
         return this;
     }
 
