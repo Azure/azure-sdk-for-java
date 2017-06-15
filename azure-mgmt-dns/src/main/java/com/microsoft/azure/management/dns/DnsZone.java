@@ -221,12 +221,25 @@ public interface DnsZone extends
         }
 
         /**
+         * The stage of the DNS zone definition allowing to enable ETag validation.
+         */
+        interface WithETagCheck {
+            /**
+             * Specifies that If-None-Match header needs to set to * to prevent updating an existing DNS zone.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withETagCheck();
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created
          * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
         interface WithCreate extends
                 Creatable<DnsZone>,
                 DefinitionStages.WithRecordSet,
+                DefinitionStages.WithETagCheck,
                 Resource.DefinitionWithTags<WithCreate> {
         }
     }
@@ -393,12 +406,30 @@ public interface DnsZone extends
             Update withoutARecordSet(String name);
 
             /**
+             * Removes a A record set in the DNS zone.
+             *
+             * @param name name of the A record set
+             * @param eTagValue the etag to use for concurrent protection
+             * @return the next stage of DNS zone update
+             */
+            Update withoutARecordSet(String name, String eTagValue);
+
+            /**
              * Removes a AAAA record set in the DNS zone.
              *
              * @param name name of the AAAA record set
              * @return the next stage of DNS zone update
              */
             Update withoutAaaaRecordSet(String name);
+
+            /**
+             * Removes a AAAA record set in the DNS zone.
+             *
+             * @param name name of the AAAA record set
+             * @param eTagValue the etag to use for concurrent protection
+             * @return the next stage of DNS zone update
+             */
+            Update withoutAaaaRecordSet(String name, String eTagValue);
 
             /**
              * Removes a CNAME record set in the DNS zone.
@@ -409,12 +440,30 @@ public interface DnsZone extends
             Update withoutCNameRecordSet(String name);
 
             /**
+             * Removes a CNAME record set in the DNS zone.
+             *
+             * @param name name of the CNAME record set
+             * @param eTagValue the etag to use for concurrent protection
+             * @return the next stage of DNS zone update
+             */
+            Update withoutCNameRecordSet(String name, String eTagValue);
+
+            /**
              * Removes a MX record set in the DNS zone.
              *
              * @param name name of the MX record set
              * @return the next stage of DNS zone update
              */
             Update withoutMXRecordSet(String name);
+
+            /**
+             * Removes a MX record set in the DNS zone.
+             *
+             * @param name name of the MX record set
+             * @param eTagValue the etag to use for concurrent protection
+             * @return the next stage of DNS zone update
+             */
+            Update withoutMXRecordSet(String name, String eTagValue);
 
             /**
              * Removes a NS record set in the DNS zone.
@@ -425,12 +474,30 @@ public interface DnsZone extends
             Update withoutNSRecordSet(String name);
 
             /**
+             * Removes a NS record set in the DNS zone.
+             *
+             * @param name name of the NS record set
+             * @param eTagValue the etag to use for concurrent protection
+             * @return the next stage of DNS zone update
+             */
+            Update withoutNSRecordSet(String name, String eTagValue);
+
+            /**
              * Removes a PTR record set in the DNS zone.
              *
              * @param name name of the PTR record set
              * @return the next stage of DNS zone update
              */
             Update withoutPtrRecordSet(String name);
+
+            /**
+             * Removes a PTR record set in the DNS zone.
+             *
+             * @param name name of the PTR record set
+             * @param eTagValue the etag to use for concurrent protection
+             * @return the next stage of DNS zone update
+             */
+            Update withoutPtrRecordSet(String name, String eTagValue);
 
             /**
              * Removes a SRV record set in the DNS zone.
@@ -441,12 +508,51 @@ public interface DnsZone extends
             Update withoutSrvRecordSet(String name);
 
             /**
+             * Removes a SRV record set in the DNS zone.
+             *
+             * @param name name of the SRV record set
+             * @param eTagValue the etag to use for concurrent protection
+             * @return the next stage of DNS zone update
+             */
+            Update withoutSrvRecordSet(String name, String eTagValue);
+
+            /**
              * Removes a TXT record set in the DNS zone.
              *
              * @param name name of the TXT record set
              * @return the next stage of DNS zone update
              */
             Update withoutTxtRecordSet(String name);
+
+            /**
+             * Removes a TXT record set in the DNS zone.
+             *
+             * @param name name of the TXT record set
+             * @param eTagValue the etag to use for concurrent protection
+             * @return the next stage of DNS zone update
+             */
+            Update withoutTxtRecordSet(String name, String eTagValue);
+        }
+
+        /**
+         * The stage of the DNS zone update allowing to enable ETag validation.
+         */
+        interface WithETagCheck {
+            /**
+             * Specifies that If-Match header needs to set to the current eTag value associated
+             * with the DNS Zone.
+             *
+             * @return the next stage of the update
+             */
+            Update withETagCheck();
+
+            /**
+             * Specifies that if-Match header needs to set to the given eTag value.
+             *
+             * @param eTagValue the eTag value
+             * @return the next stage of the update
+             */
+            Update withETagCheck(String eTagValue);
         }
     }
 
@@ -458,6 +564,7 @@ public interface DnsZone extends
     interface Update extends
             Appliable<DnsZone>,
             UpdateStages.WithRecordSet,
+            UpdateStages.WithETagCheck,
             Resource.UpdateWithTags<Update> {
     }
 }

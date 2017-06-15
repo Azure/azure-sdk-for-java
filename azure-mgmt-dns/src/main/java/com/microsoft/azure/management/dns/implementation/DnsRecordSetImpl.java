@@ -41,6 +41,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
             DnsRecordSet.UpdateDefinition<DnsZone.Update>,
             DnsRecordSet.UpdateCombined {
     protected final RecordSetInner recordSetRemoveInfo;
+    private final ETagState eTagState = new ETagState();
 
     protected DnsRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel) {
         super(innerModel.name(), parent, innerModel);
@@ -65,7 +66,9 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
 
     @Override
     public RecordType recordType() {
-        return RecordType.fromString(this.inner().type());
+        String fullyQualifiedType = this.inner().type();
+        String[] parts = fullyQualifiedType.split("/");
+        return RecordType.fromString(parts[parts.length - 1]);
     }
 
     @Override
@@ -285,6 +288,19 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
         return this;
     }
 
+    @Override
+    public DnsRecordSetImpl withETagCheck() {
+        this.eTagState.withImplicitETagCheckOnCreate();
+        this.eTagState.withImplicitETagCheckOnUpdate();
+        return this;
+    }
+
+    @Override
+    public DnsRecordSetImpl withETagCheck(String eTagValue) {
+        this.eTagState.withExplicitETagCheckOnUpdate(eTagValue);
+        return this;
+    }
+
     //
 
     @Override
@@ -311,7 +327,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
     @Override
     public Observable<Void> deleteAsync() {
         return this.parent().manager().inner().recordSets().deleteAsync(this.parent().resourceGroupName(),
-                this.parent().name(), this.name(), this.recordType());
+                this.parent().name(), this.name(), this.recordType(), this.eTagState.ifMatchValueOnDelete());
     }
 
     @Override
@@ -335,14 +351,12 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
     private Observable<DnsRecordSet> createOrUpdateAsync(RecordSetInner resource) {
         final DnsRecordSetImpl self = this;
         return this.parent().manager().inner().recordSets().createOrUpdateAsync(this.parent().resourceGroupName(),
-                this.parent().name(),
-                this.name(),
-                this.recordType(),
-                resource)
+                this.parent().name(), this.name(), this.recordType(), resource, eTagState.ifMatchValueOnUpdate(resource.etag()), eTagState.ifNonMatchValueOnCreate())
                 .map(new Func1<RecordSetInner, DnsRecordSet>() {
                     @Override
                     public DnsRecordSet call(RecordSetInner inner) {
                         setInner(inner);
+                        self.eTagState.clear();
                         return self;
                     }
                 });
@@ -377,5 +391,69 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
 
     protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
         return resource;
+    }
+
+    DnsRecordSetImpl withETagOnDelete(String eTagValue) {
+        this.eTagState.withExplicitETagCheckOnDelete(eTagValue);
+        return this;
+    }
+
+    @LangDefinition
+    private class ETagState {
+        private boolean doImplicitETagCheckOnCreate;
+        private boolean doImplicitETagCheckOnUpdate;
+        private String eTagOnUpdate;
+        private String eTagOnDelete;
+
+        public ETagState withImplicitETagCheckOnCreate() {
+            this.doImplicitETagCheckOnCreate = true;
+            return this;
+        }
+
+        public ETagState withImplicitETagCheckOnUpdate() {
+            this.doImplicitETagCheckOnUpdate = true;
+            return this;
+        }
+
+        public ETagState withExplicitETagCheckOnUpdate(String eTagValue) {
+            this.eTagOnUpdate = eTagValue;
+            return this;
+        }
+
+        public ETagState withExplicitETagCheckOnDelete(String eTagValue) {
+            this.eTagOnDelete = eTagValue;
+            return this;
+        }
+
+
+        public ETagState clear() {
+            this.doImplicitETagCheckOnCreate = false;
+            this.doImplicitETagCheckOnUpdate = false;
+            this.eTagOnUpdate = null;
+            this.eTagOnDelete = null;
+            return this;
+        }
+
+        public String ifMatchValueOnUpdate(String currentETagValue) {
+            String eTagValue = null;
+            if (this.doImplicitETagCheckOnUpdate) {
+                eTagValue = currentETagValue;
+            }
+            if (this.eTagOnUpdate != null) {
+                eTagValue = this.eTagOnUpdate;
+            }
+            return eTagValue;
+        }
+
+        public String ifMatchValueOnDelete() {
+            return this.eTagOnDelete;
+        }
+
+        public String ifNonMatchValueOnCreate() {
+            if (this.doImplicitETagCheckOnCreate) {
+                return "*";
+            }
+            return null;
+        }
     }
 }

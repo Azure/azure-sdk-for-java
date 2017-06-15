@@ -5,7 +5,6 @@
  */
 package com.microsoft.azure.management.dns.implementation;
 
-import com.google.common.base.Splitter;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.DnsRecordSets;
@@ -62,6 +61,6 @@ abstract class DnsRecordSetsBaseImpl<RecordSetT, RecordSetImplT extends RecordSe
         return listInternAsync(recordSetNameSuffix, pageSize);
     }
 
-    abstract protected PagedList<RecordSetT> listIntern(String recordSetNameSuffix, Integer pageSize);
-    abstract protected Observable<RecordSetT> listInternAsync(String recordSetNameSuffix, Integer pageSize);
+    protected abstract PagedList<RecordSetT> listIntern(String recordSetNameSuffix, Integer pageSize);
+    protected abstract Observable<RecordSetT> listInternAsync(String recordSetNameSuffix, Integer pageSize);
 }

@@ -15,6 +15,8 @@ import rx.Observable;
 
 /**
  * Base interface for all record sets.
+ *
+ * @param <RecordSetT> the record set type
  */
 @Fluent
 public interface DnsRecordSets<RecordSetT> extends

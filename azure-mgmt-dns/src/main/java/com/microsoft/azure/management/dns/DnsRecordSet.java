@@ -377,6 +377,20 @@ public interface DnsRecordSet extends
             WithAttach<ParentT> withMetadata(String key, String value);
         }
 
+        /**
+         * The stage of the record set definition allowing to enable ETag validation.
+         *
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
+        interface WithETagCheck<ParentT> {
+            /**
+             * Specifies that If-None-Match header needs to set to * to prevent updating an existing record set.
+             *
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withETagCheck();
+        }
+
         /** The final stage of the DNS zone record set definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the DNS zone record set
@@ -385,8 +399,9 @@ public interface DnsRecordSet extends
          */
         interface WithAttach<ParentT> extends
                 Attachable.InDefinition<ParentT>,
-                WithMetadata<ParentT>,
-                DefinitionStages.WithTtl<ParentT> {
+                DefinitionStages.WithTtl<ParentT>,
+                DefinitionStages.WithMetadata<ParentT>,
+                DefinitionStages.WithETagCheck<ParentT> {
         }
     }
 
@@ -724,6 +739,20 @@ public interface DnsRecordSet extends
             WithAttach<ParentT> withMetadata(String key, String value);
         }
 
+        /**
+         * The stage of the record set definition allowing to enable ETag validation.
+         *
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
+        interface WithETagCheck<ParentT> {
+            /**
+             * Specifies that If-None-Match header needs to set to * to prevent updating an existing record set.
+             *
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withETagCheck();
+        }
+
         /** The final stage of the DNS zone record set definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the DNS zone record set
@@ -733,8 +762,9 @@ public interface DnsRecordSet extends
          */
         interface WithAttach<ParentT> extends
                 Attachable.InUpdate<ParentT>,
+                UpdateDefinitionStages.WithTtl<ParentT>,
                 UpdateDefinitionStages.WithMetadata<ParentT>,
-                UpdateDefinitionStages.WithTtl<ParentT> {
+                UpdateDefinitionStages.WithETagCheck<ParentT> {
         }
     }
 
@@ -831,8 +861,9 @@ public interface DnsRecordSet extends
      */
     interface Update extends
             Settable<DnsZone.Update>,
+            UpdateStages.WithTtl,
             UpdateStages.WithMetadata,
-            UpdateStages.WithTtl {
+            UpdateStages.WithETagCheck {
     }
 
     /**
@@ -1104,6 +1135,27 @@ public interface DnsRecordSet extends
              * @return the next stage of the record set update
              */
             Update withoutMetadata(String key);
+        }
+
+        /**
+         * The stage of the record set update allowing to enable ETag validation.
+         */
+        interface WithETagCheck {
+            /**
+             * Specifies that If-Match header needs to set to the current eTag value associated
+             * with the record set.
+             *
+             * @return the next stage of the update
+             */
+            Update withETagCheck();
+
+            /**
+             * Specifies that if-Match header needs to set to the given eTag value.
+             *
+             * @param eTagValue the eTag value
+             * @return the next stage of the update
+             */
+            Update withETagCheck(String eTagValue);
         }
     }
 }
