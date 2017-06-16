@@ -35,7 +35,7 @@ public final class EncryptionStatus extends ExpandableStringEnum<EncryptionStatu
     /**
      * Creates of finds an encryption status based on its name.
      * @param name a name to look for
-     * @return an StorageAccountEncryptionStatus
+     * @return an EncryptionStatus
      */
     public static EncryptionStatus fromString(String name) {
         return fromString(name, EncryptionStatus.class);
