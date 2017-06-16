@@ -34,7 +34,7 @@ If your service principal uses certificate authentication, your authentication f
 
 ```
 certificate=<path to pfx file>
-certifcatePassword=XXXXXXXXXXXXXXXX
+certificatePassword=XXXXXXXXXXXXXXXX
 ```
 
 This approach enables unattended authentication for your application (i.e. no interactive user login, no token management needed).  The `subscription` represents the subscription ID you want to use as the default subscription. The remaining URIs and URLs represent the end points for the needed Azure services, and the example above assumes you are using the Azure worldwide cloud.
