@@ -19,5 +19,11 @@ public class SettleModePair {
 
 	public ReceiverSettleMode getReceiverSettleMode() {
 		return receiverSettleMode;
-	}	
+	}
+	
+	@Override
+	public String toString()
+	{
+	    return String.format("sender settle mode: %s, receiver settle mode: %s", this.senderSettleMode, this.receiverSettleMode);
+	}
 }

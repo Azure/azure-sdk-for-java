@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.CoreMessageSender;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
@@ -13,6 +16,7 @@ import com.microsoft.azure.servicebus.primitives.StringUtil;
 
 final class MessageSender extends InitializableEntity implements IMessageSender
 {
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(MessageSender.class);
 	private boolean ownsMessagingFactory;
 	private ConnectionStringBuilder amqpConnectionStringBuilder = null;
 	private String entityPath = null;
@@ -60,7 +64,18 @@ final class MessageSender extends InitializableEntity implements IMessageSender
 			CompletableFuture<Void> factoryFuture;
 			if(this.messagingFactory == null)
 			{
-				factoryFuture = MessagingFactory.createFromConnectionStringBuilderAsync(amqpConnectionStringBuilder).thenAcceptAsync((f) -> {this.messagingFactory = f;});
+			    if(TRACE_LOGGER.isInfoEnabled())
+                {
+                    TRACE_LOGGER.info("Creating MessagingFactory from connection string '{}'", this.amqpConnectionStringBuilder.toLoggableString());
+                }
+				factoryFuture = MessagingFactory.createFromConnectionStringBuilderAsync(this.amqpConnectionStringBuilder).thenAcceptAsync((f) ->
+				    {
+    				    this.messagingFactory = f;
+    				    if(TRACE_LOGGER.isInfoEnabled())
+    				    {
+    				        TRACE_LOGGER.info("Created MessagingFactory from connection string '{}'", this.amqpConnectionStringBuilder.toLoggableString());
+    				    }
+				    });
 			}
 			else
 			{
@@ -69,11 +84,13 @@ final class MessageSender extends InitializableEntity implements IMessageSender
 			
 			return factoryFuture.thenComposeAsync((v) ->
 			{
+			    TRACE_LOGGER.info("Creating MessageSender to entity '{}'", this.entityPath);
 				CompletableFuture<CoreMessageSender> senderFuture = CoreMessageSender.create(this.messagingFactory, StringUtil.getShortRandomString(), this.entityPath);
 				return senderFuture.thenAcceptAsync((s) -> 
 				{
 					this.internalSender = s;
 					this.isInitialized = true;
+					TRACE_LOGGER.info("Created MessageSender to entity '{}'", this.entityPath);
 				});
 			});
 		}
@@ -115,10 +132,17 @@ final class MessageSender extends InitializableEntity implements IMessageSender
 	protected CompletableFuture<Void> onClose() {
 		if(this.isInitialized)
 		{
+		    TRACE_LOGGER.info("Closing message sender to entity '{}'", this.entityPath);
 			return this.internalSender.closeAsync().thenComposeAsync((v) -> 
 			{
+			    TRACE_LOGGER.info("Closed message sender to entity '{}'", this.entityPath);
 				if(MessageSender.this.ownsMessagingFactory)
 				{
+				    if(TRACE_LOGGER.isInfoEnabled())
+				    {
+				        TRACE_LOGGER.info("Closing MessagingFactory associated with connection string '{}'", this.amqpConnectionStringBuilder.toLoggableString());
+				    }
+				    
 					return MessageSender.this.messagingFactory.closeAsync();
 				}
 				else

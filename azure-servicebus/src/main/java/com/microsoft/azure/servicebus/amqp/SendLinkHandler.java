@@ -4,16 +4,17 @@
  */
 package com.microsoft.azure.servicebus.amqp;
 
-import java.util.Locale;
-import java.util.logging.Level;
-
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Sender;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SendLinkHandler extends BaseLinkHandler
 {
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(SendLinkHandler.class);
+    
 	private final IAmqpSender msgSender;
 	private final Object firstFlow;
 	private boolean isFirstFlow;
@@ -35,11 +36,8 @@ public class SendLinkHandler extends BaseLinkHandler
 		{
 			Sender sender = (Sender) link;
 			if (link.getRemoteTarget() != null)
-			{
-				if(TRACE_LOGGER.isLoggable(Level.FINE))
-				{
-					TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "linkName[%s], remoteTarget[%s]", sender.getName(), link.getRemoteTarget()));
-				}
+			{				
+				TRACE_LOGGER.debug("onLinkRemoteOpen: linkName:{}, remoteTarge:{}", sender.getName(), link.getRemoteTarget());
 
 				synchronized (this.firstFlow)
 				{
@@ -48,12 +46,8 @@ public class SendLinkHandler extends BaseLinkHandler
 				}
 			}
 			else
-			{
-				if(TRACE_LOGGER.isLoggable(Level.FINE))
-				{
-					TRACE_LOGGER.log(Level.FINE,
-							String.format(Locale.US, "linkName[%s], remoteTarget[null], remoteSource[null], action[waitingForError]", sender.getName()));
-				}
+			{				
+				TRACE_LOGGER.debug("onLinkRemoteOpen: linkName:{}, remoteTarget:{}, remoteSource:{}, action:{}", sender.getName(), null, null, "waitingForError");
 			}
 		}
 	}
@@ -65,16 +59,11 @@ public class SendLinkHandler extends BaseLinkHandler
 		
 		while (delivery != null)
 		{
-			Sender sender = (Sender) delivery.getLink();
+			Sender sender = (Sender) delivery.getLink();			
 			
-			if(TRACE_LOGGER.isLoggable(Level.FINEST))
-			{
-				TRACE_LOGGER.log(Level.FINEST, 
-						"linkName[" + sender.getName() + 
-						"], unsettled[" + sender.getUnsettled() + "], credit[" + sender.getRemoteCredit()+ "], deliveryState[" + delivery.getRemoteState() + 
-						"], delivery.isBuffered[" + delivery.isBuffered() +"], delivery.id[" + new String(delivery.getTag()) + "]");
-			}
-	
+			TRACE_LOGGER.debug("onDelivery: linkName:{}, unsettled:{}, credit:{}, deliveryState:{}, delivery.isBuffered:{}, delivery.tag:{}",
+			        sender.getName(), sender.getUnsettled(), sender.getRemoteCredit(), delivery.getRemoteState(), delivery.isBuffered(), delivery.getTag());
+			
 			msgSender.onSendComplete(delivery);
 			delivery.settle();
 			
@@ -100,9 +89,6 @@ public class SendLinkHandler extends BaseLinkHandler
 		Sender sender = event.getSender();
 		this.msgSender.onFlow(sender.getRemoteCredit());
 
-		if(TRACE_LOGGER.isLoggable(Level.FINEST))
-		{
-			TRACE_LOGGER.log(Level.FINEST, "linkName[" + sender.getName() + "], unsettled[" + sender.getUnsettled() + "], credit[" + sender.getCredit()+ "]");
-		}
+		TRACE_LOGGER.debug("onLinkFlow: linkName:{}, unsettled:{}, credit:{}", sender.getName(), sender.getUnsettled(), sender.getCredit());
 	}
 }

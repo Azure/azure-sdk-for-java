@@ -15,6 +15,7 @@ public final class ClientConstants
 {
 	private ClientConstants() { }
 	
+	public static final String FATAL_MARKER = "FATAL";
 	public final static String PRODUCT_NAME = "MSJavaClient";
     public final static String CURRENT_JAVACLIENT_VERSION = "0.13.1";
     public static final String PLATFORM_INFO = getPlatformInfo();
@@ -65,9 +66,7 @@ public final class ClientConstants
 	public final static Duration DEFAULT_RERTRY_MIN_BACKOFF = Duration.ofSeconds(0);
 	public final static Duration DEFAULT_RERTRY_MAX_BACKOFF = Duration.ofSeconds(30);
 
-	public final static int DEFAULT_MAX_RETRY_COUNT = 10;
-
-	public final static String SERVICEBUS_CLIENT_TRACE = "servicebus.trace";
+	public final static int DEFAULT_MAX_RETRY_COUNT = 10;	
 
 	public final static boolean DEFAULT_IS_TRANSIENT = true;
 

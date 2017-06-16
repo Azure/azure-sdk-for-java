@@ -4,6 +4,9 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
@@ -11,6 +14,7 @@ import com.microsoft.azure.servicebus.primitives.StringUtil;
 
 public final class TopicClient extends InitializableEntity implements ITopicClient
 {
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(TopicClient.class);
 	private IMessageSender sender;
 	private MessageBrowser browser;
 	
@@ -24,6 +28,10 @@ public final class TopicClient extends InitializableEntity implements ITopicClie
 		this();
 		this.sender = ClientFactory.createMessageSenderFromConnectionStringBuilder(amqpConnectionStringBuilder);
 		this.browser = new MessageBrowser((MessageSender)sender);
+		if(TRACE_LOGGER.isInfoEnabled())
+        {
+            TRACE_LOGGER.info("Created topic client to connection string '{}'", amqpConnectionStringBuilder.toLoggableString());
+        }
 	}
 	
 	TopicClient(MessagingFactory factory, String topicPath) throws InterruptedException, ServiceBusException
@@ -31,6 +39,7 @@ public final class TopicClient extends InitializableEntity implements ITopicClie
 		this();
 		this.sender = ClientFactory.createMessageSenderFromEntityPath(factory, topicPath);
 		this.browser = new MessageBrowser((MessageSender)sender);
+		TRACE_LOGGER.info("Created topic client to topic '{}'", topicPath);
 	}
 	
 	@Override

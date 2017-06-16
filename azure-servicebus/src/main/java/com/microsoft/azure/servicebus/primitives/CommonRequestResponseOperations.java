@@ -11,10 +11,14 @@ import java.util.concurrent.CompletableFuture;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.message.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 final class CommonRequestResponseOperations {
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(CommonRequestResponseOperations.class);
 	static CompletableFuture<Collection<Message>> peekMessagesAsync(RequestResponseLink requestResponseLink, Duration operationTimeout, long fromSequenceNumber, int messageCount, String sessionId)
 	{
+	    TRACE_LOGGER.debug("Peeking '{}' messages from sequence number '{}' in entity '{}', sessionId '{}'", messageCount, fromSequenceNumber, requestResponseLink.getLinkPath(), sessionId);
 		HashMap requestBodyMap = new HashMap();
 		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_FROM_SEQUENCE_NUMER, fromSequenceNumber);
 		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_MESSAGE_COUNT, messageCount);		
@@ -47,18 +51,22 @@ final class CommonRequestResponseOperations {
 							}
 						}
 					}
-				}				
+				}
+				TRACE_LOGGER.debug("Peeked '{}' messages from sequence number '{}' in entity '{}', sessionId '{}'", peekedMessages.size(), fromSequenceNumber, requestResponseLink.getLinkPath(), sessionId);
 				returningFuture.complete(peekedMessages);
 			}
 			else if(statusCode == ClientConstants.REQUEST_RESPONSE_NOCONTENT_STATUS_CODE ||
 					(statusCode == ClientConstants.REQUEST_RESPONSE_NOTFOUND_STATUS_CODE && ClientConstants.MESSAGE_NOT_FOUND_ERROR.equals(RequestResponseUtils.getResponseErrorCondition(responseMessage))))
 			{
+			    TRACE_LOGGER.debug("Peek from sequence number '{}' in entity '{}', sessionId '{}' didnot find any messages", fromSequenceNumber, requestResponseLink.getLinkPath(), sessionId);
 				returningFuture.complete(new ArrayList<Message>());
 			}
 			else
 			{
 				// error response
-				returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
+			    Exception failureException = RequestResponseUtils.genereateExceptionFromResponse(responseMessage);
+			    TRACE_LOGGER.error("Peeking messages from sequence number '{}' in entity '{}', sessionId '{}' failed", fromSequenceNumber, requestResponseLink.getLinkPath(), sessionId, failureException);
+				returningFuture.completeExceptionally(failureException);
 			}
 			return returningFuture;
 		});
@@ -66,6 +74,7 @@ final class CommonRequestResponseOperations {
 	
 	static CompletableFuture<Void> sendCBSTokenAsync(RequestResponseLink requestResponseLink, Duration operationTimeout, String token, String tokenType, String tokenAudience)
 	{
+	    TRACE_LOGGER.debug("Sending CBS Token of type '{}' to '{}'", tokenType, tokenAudience);
         Message requestMessage = RequestResponseUtils.createRequestMessageFromValueBody(ClientConstants.REQUEST_RESPONSE_PUT_TOKEN_OPERATION, token, Util.adjustServerTimeout(operationTimeout));
         requestMessage.getApplicationProperties().getValue().put(ClientConstants.REQUEST_RESPONSE_PUT_TOKEN_TYPE, tokenType);
         requestMessage.getApplicationProperties().getValue().put(ClientConstants.REQUEST_RESPONSE_PUT_TOKEN_AUDIENCE, tokenAudience);
@@ -75,12 +84,15 @@ final class CommonRequestResponseOperations {
             int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
             if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE || statusCode == ClientConstants.REQUEST_RESPONSE_ACCEPTED_STATUS_CODE)
             {
+                TRACE_LOGGER.debug("CBS Token of type '{}' sent to '{}'", tokenType, tokenAudience);
                 returningFuture.complete(null);
             }
             else
             {
                 // error response
-                returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
+                Exception failureException = RequestResponseUtils.genereateExceptionFromResponse(responseMessage);
+                TRACE_LOGGER.error("Sending CBS Token to '{}' failed", tokenAudience);
+                returningFuture.completeExceptionally(failureException);
             }
             return returningFuture;
         });

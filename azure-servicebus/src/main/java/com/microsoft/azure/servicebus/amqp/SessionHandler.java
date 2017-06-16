@@ -4,20 +4,16 @@
  */
 package com.microsoft.azure.servicebus.amqp;
 
-import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Session;
-
-import com.microsoft.azure.servicebus.primitives.ClientConstants;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 public class SessionHandler extends BaseHandler
 {
-	protected static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
+	protected static final Logger TRACE_LOGGER = LoggerFactory.getLogger(SessionHandler.class);
 
 	private final String name;
 
@@ -28,12 +24,8 @@ public class SessionHandler extends BaseHandler
 
 	@Override
 	public void onSessionRemoteOpen(Event e) 
-	{
-		if(TRACE_LOGGER.isLoggable(Level.FINE))
-		{
-			TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s], sessionIncCapacity[%s], sessionOutgoingWindow[%s]",
-					this.name, e.getSession().getIncomingCapacity(), e.getSession().getOutgoingWindow()));
-		}
+	{		
+		TRACE_LOGGER.debug("onSessionRemoteOpen - entityName: {}, sessionIncCapacity: {}, sessionOutgoingWindow: {}", this.name, e.getSession().getIncomingCapacity(), e.getSession().getOutgoingWindow());
 
 		Session session = e.getSession();
 		if (session != null && session.getLocalState() == EndpointState.UNINITIALIZED)
@@ -45,22 +37,14 @@ public class SessionHandler extends BaseHandler
 
 	@Override 
 	public void onSessionLocalClose(Event e)
-	{
-		if(TRACE_LOGGER.isLoggable(Level.FINE))
-		{
-			TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s], condition[%s]", this.name, 
-					e.getSession().getCondition() == null ? "none" : e.getSession().getCondition().toString()));
-		}
+	{		
+		TRACE_LOGGER.debug("onSessionLocalClose - entityName: {}, condition: {}", this.name, e.getSession().getCondition() == null ? "none" : e.getSession().getCondition().toString());
 	}
 
 	@Override
 	public void onSessionRemoteClose(Event e)
-	{ 
-		if(TRACE_LOGGER.isLoggable(Level.FINE))
-		{
-			TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s], condition[%s]", this.name,
-					e.getSession().getRemoteCondition() == null ? "none" : e.getSession().getRemoteCondition().toString()));
-		}
+	{		
+		TRACE_LOGGER.debug("onSessionRemoteClose - entityName: {}, condition: {}", this.name, e.getSession().getCondition() == null ? "none" : e.getSession().getCondition().toString());
 
 		Session session = e.getSession();
 		if (session != null && session.getLocalState() != EndpointState.CLOSED)
@@ -72,10 +56,6 @@ public class SessionHandler extends BaseHandler
 	@Override
 	public void onSessionFinal(Event e)
 	{ 
-		if(TRACE_LOGGER.isLoggable(Level.FINE))
-		{
-			TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s]", this.name));
-		}
+	    TRACE_LOGGER.debug("onSessionFinal - entityName: {}", this.name);
 	}
-
 }

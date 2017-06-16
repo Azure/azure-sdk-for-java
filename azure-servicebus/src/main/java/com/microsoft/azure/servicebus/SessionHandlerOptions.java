@@ -1,6 +1,7 @@
 package com.microsoft.azure.servicebus;
 
 import java.time.Duration;
+import java.util.Locale;
 
 public final class SessionHandlerOptions {
 	private static final boolean DEFAULT_AUTO_COMPLETE = true;
@@ -62,4 +63,10 @@ public final class SessionHandlerOptions {
 	public Duration getMaxAutoRenewDuration() {
 		return this.maxAutoRenewDuration;
 	}
+	
+	@Override
+    public String toString()
+    {
+        return String.format(Locale.US, "SessionHandlerOptions - AutoComplete:%s, MaxConcurrentSessions:%s, MaxConcurretnCallsPerSession:%s, MaxAutoRenewDuration:%s", this.autoComplete, this.maxConcurrentSessions, this.maxConcurrentCallsPerSession, this.maxAutoRenewDuration);
+    }
 }

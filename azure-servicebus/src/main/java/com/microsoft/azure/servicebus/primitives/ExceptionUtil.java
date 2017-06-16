@@ -110,7 +110,7 @@ public final class ExceptionUtil
 			return new MessagingEntityAlreadyExistsException(errorCondition.getDescription());
 		}
 
-		return new ServiceBusException(ClientConstants.DEFAULT_IS_TRANSIENT, errorCondition.getDescription());
+		return new ServiceBusException(ClientConstants.DEFAULT_IS_TRANSIENT, errorCondition.toString());
 	}	
 
 	static <T> void completeExceptionally(CompletableFuture<T> future, Exception exception, IErrorContextProvider contextProvider, boolean completeAsynchronously)

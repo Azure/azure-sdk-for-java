@@ -484,6 +484,25 @@ public class ConnectionStringBuilder
 				throw new IllegalConnectionStringFormatException(
 						String.format(Locale.US, "Illegal connection string parameter name: %s", key));
 			}
-		}
+		}		
 	}
+	
+	// Generates a string that is logged in traces. Excludes secrets
+    public String toLoggableString()
+    {
+        StringBuilder connectionStringBuilder = new StringBuilder();
+        if (this.endpoint != null)
+        {
+            connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", ENDPOINT_CONFIG_NAME, KEY_VALUE_SEPARATOR,
+                    this.endpoint.toString(), KEY_VALUE_PAIR_DELIMITER));
+        }
+
+        if (!StringUtil.isNullOrWhiteSpace(this.entityPath))
+        {
+            connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", ENTITY_PATH_CONFIG_NAME,
+                    KEY_VALUE_SEPARATOR, this.entityPath, KEY_VALUE_PAIR_DELIMITER));
+        }
+        
+        return connectionStringBuilder.toString();
+    }
 }

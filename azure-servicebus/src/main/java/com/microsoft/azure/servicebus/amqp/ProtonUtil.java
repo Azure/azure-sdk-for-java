@@ -18,6 +18,7 @@ public final class ProtonUtil
 	{
 		Reactor reactor = Proton.reactor(reactorHandler);
 		reactor.setGlobalHandler(new CustomIOHandler());
+		reactor.getGlobalHandler().add(new LoggingHandler());
 		return reactor;
 	}
 }

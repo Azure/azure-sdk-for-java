@@ -1,6 +1,7 @@
 package com.microsoft.azure.servicebus;
 
 import java.time.Duration;
+import java.util.Locale;
 
 public final class MessageHandlerOptions
 {
@@ -40,5 +41,11 @@ public final class MessageHandlerOptions
 
 	public Duration getMaxAutoRenewDuration() {
 		return this.maxAutoRenewDuration;
+	}
+	
+	@Override
+	public String toString()
+	{
+	    return String.format(Locale.US, "MessageHandlerOptions - AutoComplete:%s, MaxConcurrentCalls:%s, MaxAutoRenewDuration:%s", this.autoComplete, this.maxConcurrentCalls, this.maxAutoRenewDuration);
 	}
 }

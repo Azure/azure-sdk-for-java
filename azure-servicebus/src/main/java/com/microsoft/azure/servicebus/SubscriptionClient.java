@@ -8,6 +8,9 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.MiscRequestResponseOperationHandler;
@@ -18,6 +21,7 @@ import com.microsoft.azure.servicebus.rules.RuleDescription;
 
 public final class SubscriptionClient extends InitializableEntity implements ISubscriptionClient
 {
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(SubscriptionClient.class);
     private static final String SUBSCRIPTIONS_DELIMITER = "/subscriptions/";
 	private final ReceiveMode receiveMode;
 	private String subscriptionPath;
@@ -38,6 +42,10 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
 		this.subscriptionPath = amqpConnectionStringBuilder.getEntityPath();
 		CompletableFuture<MessagingFactory> factoryFuture = MessagingFactory.createFromConnectionStringBuilderAsync(amqpConnectionStringBuilder);
 		Utils.completeFuture(factoryFuture.thenComposeAsync((f) -> this.createPumpAndBrowserAsync(f)));
+		if(TRACE_LOGGER.isInfoEnabled())
+        {
+            TRACE_LOGGER.info("Created subscription client to connection string '{}'", amqpConnectionStringBuilder.toLoggableString());
+        }
 	}
 	
 	SubscriptionClient(MessagingFactory factory, String subscriptionPath, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
@@ -45,6 +53,7 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
 		this(receiveMode);
 		this.subscriptionPath = subscriptionPath;
 		Utils.completeFuture(this.createPumpAndBrowserAsync(factory));
+		TRACE_LOGGER.info("Created subscription client to subscripton '{}'", subscriptionPath);
 	}
 	
 	private CompletableFuture<Void> createPumpAndBrowserAsync(MessagingFactory factory)
