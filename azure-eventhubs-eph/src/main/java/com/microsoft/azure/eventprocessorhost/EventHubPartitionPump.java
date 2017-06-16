@@ -141,26 +141,59 @@ class EventHubPartitionPump extends PartitionPump
     {
         if (this.partitionReceiver != null)
         {
-    		// Taking the lock means that there is no onEvents call in progress.
-        	synchronized (this.processingSynchronizer)
-        	{
-        		// Disconnect the processor from the receiver we're about to close.
-        		// Fortunately this is idempotent -- setting the handler to null when it's already been
-        		// nulled by code elsewhere is harmless!
-        		this.partitionReceiver.setReceiveHandler(null);
-        	}
-        	
-        	this.host.logWithHostAndPartition(Level.FINER, this.partitionContext, "Closing EH receiver");
-        	this.partitionReceiver.close();
-        	this.partitionReceiver = null;
+			// Disconnect the processor from the receiver we're about to close.
+			// Fortunately this is idempotent -- setting the handler to null when it's already been
+			// nulled by code elsewhere is harmless!
+			// Setting to null also waits for the in-progress calls to complete
+			try
+			{
+				this.partitionReceiver.setReceiveHandler(null).get();
+			}
+			catch (InterruptedException | ExecutionException exception)
+			{
+				if (exception instanceof InterruptedException)
+				{
+					// Re-assert the thread's interrupted status
+					Thread.currentThread().interrupt();
+				}
+
+				final Throwable throwable = exception.getCause();
+				if (throwable != null)
+				{
+					this.host.logWithHostAndPartition(Level.FINE, this.partitionContext,
+							"Got exception from onEvents when ReceiveHandler is set to null.", throwable);
+				}
+			}
+
+			this.host.logWithHostAndPartition(Level.FINER, this.partitionContext, "Closing EH receiver");
+        	final PartitionReceiver partitionReceiverTemp = this.partitionReceiver;
+			this.partitionReceiver = null;
+
+			try
+			{
+				partitionReceiverTemp.closeSync();
+			}
+			catch (ServiceBusException exception)
+			{
+				this.host.logWithHostAndPartition(Level.FINE, this.partitionContext,"Closing EH receiver failed.", exception);
+			}
         }
-        
+
         if (this.eventHubClient != null)
-        {
-        	this.host.logWithHostAndPartition(Level.FINER, this.partitionContext, "Closing EH client");
-        	this.eventHubClient.close();
-        	this.eventHubClient = null;
-        }
+		{
+			this.host.logWithHostAndPartition(Level.FINER, this.partitionContext, "Closing EH client");
+			final EventHubClient eventHubClientTemp = this.eventHubClient;
+			this.eventHubClient = null;
+
+			try
+			{
+				eventHubClientTemp.closeSync();
+			}
+			catch (ServiceBusException exception)
+			{
+				this.host.logWithHostAndPartition(Level.FINE, this.partitionContext, "Closing EH client failed.", exception);
+			}
+		}
     }
 
     @Override
@@ -175,11 +208,7 @@ class EventHubPartitionPump extends PartitionPump
     	
     	if (this.partitionReceiver != null)
     	{
-    		// Disconnect any processor from the receiver so the processor won't get
-    		// any more calls. But a call could be in progress right now. 
-    		this.partitionReceiver.setReceiveHandler(null);
-    		
-            // Close the EH clients. Errors are swallowed, nothing we could do about them anyway.
+    		// Close the EH clients. Errors are swallowed, nothing we could do about them anyway.
             cleanUpClients();
     	}
     }
