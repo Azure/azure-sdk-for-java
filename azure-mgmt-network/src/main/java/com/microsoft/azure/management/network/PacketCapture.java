@@ -7,15 +7,15 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.network.implementation.PacketCaptureResultInner;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
-import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.storage.StorageAccount;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * Client-side representation of Packet capture object, associated with Network Watcher.
@@ -24,13 +24,58 @@ import java.util.Map;
 @Beta
 public interface PacketCapture extends
         HasInner<PacketCaptureResultInner>,
-        IndependentChildResource<NetworkManager, PacketCaptureResultInner> {
+        HasName,
+        HasId,
+        Indexable {
     /**
-     * Get packet capture filters.
+     * Get the target value.
      *
-     * @return the PacketCaptureFilters
+     * @return the target value
      */
-    Map<String, PacketCaptureFilter> filters();
+    String targetId();
+
+    /**
+     * Get the number of bytes captured per packet, the remaining bytes are truncated.
+     *
+     * @return the bytesToCapturePerPacket value
+     */
+    Integer bytesToCapturePerPacket();
+
+    /**
+     * Get the maximum size of the capture output.
+     *
+     * @return the totalBytesPerSession value
+     */
+    Integer totalBytesPerSession();
+
+    /**
+     * Get the maximum duration of the capture session in seconds.
+     *
+     * @return the timeLimitInSeconds value
+     */
+    Integer timeLimitInSeconds();
+
+    /**
+     * Get the storageLocation value.
+     *
+     * @return the storageLocation value
+     */
+    PacketCaptureStorageLocation storageLocation();
+
+    /**
+     * Get the filters value.
+     *
+     * @return the filters value
+     */
+    List<PacketCaptureFilter> filters();
+
+    /**
+     * Get the provisioning state of the packet capture session. Possible values
+     * include: 'Succeeded', 'Updating', 'Deleting', 'Failed'.
+     *
+     * @return the provisioningState value
+     */
+    ProvisioningState provisioningState();
 
     /**
      * Stops a specified packet capture session.
@@ -143,105 +188,4 @@ public interface PacketCapture extends
             WithCreate withStoragePath(String storagePath);
         }
     }
-
-    /**
-     * The template for a packet capture update operation, containing all the settings that
-     * can be modified.
-     * <p>
-     * Call {@link Update#apply()} to apply the changes to the resource in Azure.
-     */
-    interface Update extends
-            Appliable<PacketCapture>,
-            PacketCapture.UpdateStages.WithTarget /*required*/,
-            PacketCapture.UpdateStages.WithBytesToCapturePerPacket,
-            PacketCapture.UpdateStages.WithTotalBytesPerSession,
-            PacketCapture.UpdateStages.WithTimeLimitInSeconds,
-            PacketCapture.UpdateStages.WithStorageLocation /*required*/,
-            PacketCapture.UpdateStages.DefineFilters {
-    }
-
-    /**
-     * Grouping of packet capture update stages.
-     */
-    interface UpdateStages {
-
-        interface WithTarget {
-            /**
-             * Set the ID of the targeted resource, only VM is currently supported.
-             *
-             * @param targetId The ID of the targeted resource.
-             * @return the next stage
-             */
-            Update withTarget(String targetId);
-        }
-
-        interface WithBytesToCapturePerPacket {
-            /**
-             * Set the number of bytes captured per packet, the remaining bytes are truncated.
-             *
-             * @param bytesToCapturePerPacket Number of bytes
-             * @return the next stage
-             */
-            Update withBytesToCapturePerPacket(int bytesToCapturePerPacket);
-        }
-
-        interface WithTotalBytesPerSession {
-            /**
-             * Set maximum size of the capture output.
-             *
-             * @param totalBytesPerSession Maximum size of the capture output
-             * @return the next stage
-             */
-            Update withTotalBytesPerSession(int totalBytesPerSession);
-        }
-
-        interface WithTimeLimitInSeconds {
-            /**
-             * Set maximum duration of the capture session in seconds.
-             *
-             * @param timeLimitInSeconds Maximum duration of the capture session in seconds.
-             * @return the next stage
-             */
-            Update withTimeLimitInSeconds(int timeLimitInSeconds);
-        }
-
-        interface WithStorageLocation {
-            /**
-             * The ID of the storage account to save the packet capture session.
-             * Required if no local file path is provided.
-             *
-             * @param storageId The ID of the storage account to save the packet capture session
-             */
-            Update withStorageAccountId(String storageId);
-
-            /**
-             * Specify storage account to save the packet capture session.
-             * Required if no local file path is provided.
-             *
-             * @param storageAccount The storage account to save the packet capture session
-             */
-            Update withStorageAccount(StorageAccount storageAccount);
-
-            /**
-             * A valid local path on the targeting VM. Must include the name of the
-             * capture file (*.cap). For linux virtual machine it must start with
-             * /var/captures. Required if no storage ID is provided, otherwise
-             * optional.
-             *
-             * @param filePath A valid local path on the targeting VM
-             * @return the next stage
-             */
-            Update withFilePath(String filePath);
-        }
-
-        interface DefineFilters {
-            /**
-             * the description
-             * @param param the param
-             * @return the next stage
-             */
-//            PCFilter.Update<Update> updatePacketCaptureFilter(String param);
-        }
-    }
-
 }

@@ -7,10 +7,10 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.network.NetworkWatcher;
 import com.microsoft.azure.management.network.PacketCapture;
 import com.microsoft.azure.management.network.PacketCaptures;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.rest.ServiceCallback;
@@ -26,23 +26,21 @@ import java.util.List;
  */
 @LangDefinition
 class PacketCapturesImpl extends
-        IndependentChildResourcesImpl<PacketCapture,
+        CreatableResourcesImpl<PacketCapture,
                         PacketCaptureImpl,
-                        PacketCaptureResultInner,
-                        PacketCapturesInner,
-                        NetworkManager,
-                        NetworkWatcher>
+                        PacketCaptureResultInner>
         implements PacketCaptures {
     private final NetworkWatcherImpl parent;
+    protected final PacketCapturesInner innerCollection;
 
     /**
      * Creates a new PacketCapturesImpl.
      *
      * @param parent the Network Watcher associated with Packet Captures
      */
-    protected PacketCapturesImpl(PacketCapturesInner client, NetworkWatcherImpl parent) {
-        super(client, parent.manager());
+    PacketCapturesImpl(PacketCapturesInner innerCollection, NetworkWatcherImpl parent) {
         this.parent = parent;
+        this.innerCollection = innerCollection;
     }
 
     @Override
@@ -71,20 +69,14 @@ class PacketCapturesImpl extends
 
     @Override
     protected PacketCaptureImpl wrapModel(String name) {
-        return null;
+        return new PacketCaptureImpl(name, parent, new PacketCaptureResultInner(), inner());
     }
 
-    @Override
     protected PacketCaptureImpl wrapModel(PacketCaptureResultInner inner) {
         return (inner == null) ? null : new PacketCaptureImpl(inner.name(), parent, inner, inner());
     }
 
-    /**
-     * Starts an extension definition chain.
-     *
-     * @param name the reference name of the extension to be added
-     * @return the extension
-     */
+    @Override
     public PacketCaptureImpl define(String name) {
         return new PacketCaptureImpl(name, parent, new PacketCaptureResultInner(), inner());
     }
@@ -106,30 +98,6 @@ class PacketCapturesImpl extends
     }
 
     @Override
-    public PagedList listByParent(String resourceGroupName, String parentName) {
-        // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
-        // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
-        //
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Completable deleteByParentAsync(String groupName, String parentName, String name) {
-        // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
-        // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
-        //
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Observable getByParentAsync(String resourceGroup, String parentName, String name) {
-        // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
-        // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
-        //
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public void deleteByName(String name) {
         deleteByNameAsync(name).await();
     }
@@ -147,5 +115,16 @@ class PacketCapturesImpl extends
         return this.inner().deleteAsync(parent.resourceGroupName(),
                 parent.name(),
                 name).toCompletable();
+    }
+
+    @Override
+    public PacketCapturesInner inner() {
+        return innerCollection;
+    }
+
+    @Override
+    public Completable deleteByIdAsync(String id) {
+        ResourceId resourceId = ResourceId.fromString(id);
+        return this.inner().deleteAsync(resourceId.resourceGroupName(), resourceId.parent().name(), resourceId.name()).toCompletable();
     }
 }

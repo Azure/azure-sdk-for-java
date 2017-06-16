@@ -584,24 +584,29 @@ public class AzureTests extends TestBase {
         Assert.assertEquals(Access.ALLOW, verificationIPFlow.access());
         Assert.assertEquals("defaultSecurityRules/AllowInternetOutBound", verificationIPFlow.ruleName());
 
+        // test packet capture
         List<PacketCapture> packetCaptures = nw.packetCaptures().list();
         Assert.assertEquals(0, packetCaptures.size());
         PacketCapture packetCapture = nw.packetCaptures()
                 .define("NewPacketCapture")
                 .withTarget(virtualMachines[0].id())
                 .withStorageAccount(storageAccount)
+                .withTimeLimitInSeconds(1500)
                 .create();
         packetCaptures = nw.packetCaptures().list();
         Assert.assertEquals(1, packetCaptures.size());
-        Assert.assertEquals("NewPacketCapture", packetCaptures.get(0).name());
-
+        Assert.assertEquals("NewPacketCapture", packetCapture.name());
+        Assert.assertEquals(1500, packetCapture.timeLimitInSeconds().intValue());
+//        Assert.assertEquals("Running", packetCapture.getStatus().packetCaptureStatus().toString());
+        packetCapture.stop();
+//        Assert.assertEquals("Stopped", packetCapture.getStatus().packetCaptureStatus().toString());
 
         azure.virtualMachines().deleteById(virtualMachines[1].id());
         topology.refresh();
         Assert.assertEquals(10, topology.resources().size());
 
-        azure.resourceGroups().beginDeleteByName(nw.resourceGroupName());
-        azure.resourceGroups().beginDeleteByName(tnw.groupName());
+        azure.resourceGroups().deleteByName(nw.resourceGroupName());
+        azure.resourceGroups().deleteByName(tnw.groupName());
     }
 
     /**

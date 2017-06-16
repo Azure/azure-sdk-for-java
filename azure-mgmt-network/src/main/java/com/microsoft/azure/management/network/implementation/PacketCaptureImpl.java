@@ -11,12 +11,12 @@ import com.microsoft.azure.management.network.PacketCapture;
 import com.microsoft.azure.management.network.PacketCaptureFilter;
 import com.microsoft.azure.management.network.PacketCaptureStatus;
 import com.microsoft.azure.management.network.PacketCaptureStorageLocation;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.network.ProvisioningState;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
 import rx.Observable;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * Implementation for Packet Capture and its create and update interfaces.
@@ -40,32 +40,22 @@ public class PacketCaptureImpl extends
     }
 
     @Override
-    public String id() {
-        return null;
-    }
-
-    @Override
-    protected Observable getInnerAsync() {
-        return null;
-    }
-
-    @Override
-    public Map<String, PacketCaptureFilter> filters() {
-        return null;
+    protected Observable<PacketCaptureResultInner> getInnerAsync() {
+        return this.client.getAsync(parent.resourceGroupName(), parent.name(), name());
     }
 
     @Override
     public void stop() {
-
+        this.client.stopAsync(parent.resourceGroupName(), parent.name(), name()).toBlocking().last();
     }
 
     @Override
     public PacketCaptureStatus getStatus() {
-        return null;
+        return new PacketCaptureStatusImpl(this.client.getStatus(parent.resourceGroupName(), parent.name(), name()));
     }
 
     @Override
-    public PacketCapture.DefinitionStages.WithStorageLocation withTarget(String target) {
+    public PacketCaptureImpl withTarget(String target) {
         createParameters.withTarget(target);
         return this;
     }
@@ -102,19 +92,19 @@ public class PacketCaptureImpl extends
     }
 
     @Override
-    public PacketCapture.DefinitionStages.WithCreate withBytesToCapturePerPacket(int bytesToCapturePerPacket) {
+    public PacketCaptureImpl withBytesToCapturePerPacket(int bytesToCapturePerPacket) {
         createParameters.withBytesToCapturePerPacket(bytesToCapturePerPacket);
         return this;
     }
 
     @Override
-    public PacketCapture.DefinitionStages.WithCreate withTotalBytesPerSession(int totalBytesPerSession) {
+    public PacketCaptureImpl withTotalBytesPerSession(int totalBytesPerSession) {
         createParameters.withTotalBytesPerSession(totalBytesPerSession);
         return this;
     }
 
     @Override
-    public PacketCapture.DefinitionStages.WithCreate withTimeLimitInSeconds(int timeLimitInSeconds) {
+    public PacketCaptureImpl withTimeLimitInSeconds(int timeLimitInSeconds) {
         createParameters.withTimeLimitInSeconds(timeLimitInSeconds);
         return this;
     }
@@ -131,32 +121,42 @@ public class PacketCaptureImpl extends
     }
 
     @Override
-    public String resourceGroupName() {
-        return null;
+    public String id() {
+        return inner().id();
     }
 
     @Override
-    public NetworkManager manager() {
-        return null;
+    public String targetId() {
+        return inner().target();
     }
 
     @Override
-    public String type() {
-        return null;
+    public Integer bytesToCapturePerPacket() {
+        return inner().bytesToCapturePerPacket();
     }
 
     @Override
-    public String regionName() {
-        return null;
+    public Integer totalBytesPerSession() {
+        return inner().totalBytesPerSession();
     }
 
     @Override
-    public Region region() {
-        return null;
+    public Integer timeLimitInSeconds() {
+        return inner().timeLimitInSeconds();
     }
 
     @Override
-    public Map<String, String> tags() {
-        return null;
+    public PacketCaptureStorageLocation storageLocation() {
+        return inner().storageLocation();
+    }
+
+    @Override
+    public List<PacketCaptureFilter> filters() {
+        return inner().filters();
+    }
+
+    @Override
+    public ProvisioningState provisioningState() {
+        return inner().provisioningState();
     }
 }

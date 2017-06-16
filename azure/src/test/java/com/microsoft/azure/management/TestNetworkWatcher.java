@@ -26,21 +26,22 @@ import java.util.List;
  * Tests Network Watcher.
  */
 public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatchers> {
-    static String TEST_ID = "";
-    static Region REGION = Region.US_NORTH_CENTRAL;
-    private String groupName = "";
+    private static String TEST_ID = "";
+    private static Region REGION = Region.US_NORTH_CENTRAL;
+    private String groupName;
+    private String nwName;
 
     private void initializeResourceNames() {
         TEST_ID = SdkContext.randomResourceName("", 8);
         groupName = "rg" + TEST_ID;
+        nwName = "nw" + TEST_ID;
     }
 
     @Override
     public NetworkWatcher createResource(NetworkWatchers networkWatchers) throws Exception {
         // Network Watcher should be in the same region as monitored resources
         initializeResourceNames();
-        final String newNWName = SdkContext.randomResourceName("nw", 13);
-        NetworkWatcher nw = networkWatchers.define(newNWName)
+        NetworkWatcher nw = networkWatchers.define(nwName)
                 .withRegion(REGION)
                 .withNewResourceGroup()
                 .withTag("tag1", "value1")
@@ -102,7 +103,6 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
                 .withRootUsername(userName)
                 .withRootPassword("Abcdef.123456")
                 .withSize(VirtualMachineSizeTypes.STANDARD_A1)
-                .withNewStorageAccount("sa" + TEST_ID)
                 .defineNewExtension("packetCapture")
                     .withPublisher("Microsoft.Azure.NetworkWatcher")
                     .withType("NetworkWatcherAgentLinux")
