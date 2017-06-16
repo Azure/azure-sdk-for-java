@@ -23,6 +23,7 @@ import org.joda.time.DateTime;
 import rx.Observable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * An immutable client-side representation of an Azure storage account.
@@ -86,10 +87,24 @@ public interface StorageAccount extends
     PublicEndpoints endPoints();
 
     /**
-     * @return the encryption settings on the account. If unspecified the account
-     * is unencrypted.
+     * @return the encryption settings on the account.
+     * TODO: This getter should be deprecated and removed eventually
      */
     Encryption encryption();
+
+    /**
+     * @return the source of the key used for encryption.
+     * TODO: Add SinceVersion_1_2_0 once it is available in the api-generation namespace
+     */
+    @Beta
+    StorageAccountEncryptionKeySource encryptionKeySource();
+
+    /**
+     * @return the encryption statuses indexed by storage service type.
+     * TODO: Add SinceVersion_1_2_0 once it is available in the api-generation namespace
+     */
+    @Beta
+    Map<StorageService, StorageAccountEncryptionStatus> encryptionStatuses();
 
     /**
      * @return access tier used for billing. Access tier cannot be changed more
@@ -219,12 +234,22 @@ public interface StorageAccount extends
             /**
              * Specifies the encryption settings on the account. The default
              * setting is unencrypted.
+             * TODO: This overload should be deprecated and removed eventually
              *
              * @param encryption the encryption setting
-             * @return the nest stage of storage account definition
+             * @return the next stage of storage account definition
              */
             @Beta
             WithCreate withEncryption(Encryption encryption);
+
+            /**
+             * Enables encryption for all storage services in the account that supports encryption.
+             * TODO: Add SinceVersion_1_2_0 once it is available in the api-generation namespace
+             *
+             * @return the next stage of storage account definition
+             */
+            @Beta
+            WithCreate withEncryption();
         }
 
         /**
@@ -345,12 +370,31 @@ public interface StorageAccount extends
              * Specifies the encryption setting on the account.
              * <p>
              * The default setting is unencrypted.
+             * TODO: This overload should be deprecated and removed eventually
              *
              * @param encryption the encryption setting
              * @return the nest stage of storage account update
              */
             @Beta
             Update withEncryption(Encryption encryption);
+
+            /**
+             * Enables encryption for all storage services in the account that supports encryption.
+             * TODO: Add SinceVersion_1_2_0 once it is available in the api-generation namespace
+             *
+             * @return the next stage of storage account update
+             */
+            @Beta
+            Update withEncryption();
+
+            /**
+             * Disables encryption for all storage services in the account that supports encryption.
+             * TODO: Add SinceVersion_1_2_0 once it is available in the api-generation namespace
+             *
+             * @return the next stage of storage account update
+             */
+            @Beta
+            Update withoutEncryption();
         }
 
         /**
