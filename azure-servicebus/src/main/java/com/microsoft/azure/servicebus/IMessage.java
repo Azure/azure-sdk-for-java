@@ -38,7 +38,7 @@ public interface IMessage {
 	
 	public byte[] getBody();
 	
-	public void setContent(byte[] content);
+	public void setBody(byte[] body);
 	
 	public Map<String, String> getProperties();	
 

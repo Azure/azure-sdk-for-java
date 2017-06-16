@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-servicebus</artifactId>
-    <version>1.0.0-PREVIEW-1</version>
+    <version>1.0.0-PREVIEW-3</version>
     <licenses>
         <license>
             <name>The MIT License (MIT)</name>
@@ -64,5 +64,15 @@
 	 	    <version>4.12</version>
 	 	    <scope>test</scope>
 		</dependency>
+		<dependency>
+	 	    <groupId>org.slf4j</groupId> 
+	 	    <artifactId>slf4j-api</artifactId> 
+	 	    <version>1.8.0-alpha2</version>
+	  	</dependency>		
+	   <dependency>
+	 	    <groupId>org.slf4j</groupId> 
+	 	    <artifactId>slf4j-log4j12</artifactId> 
+	 	    <version>1.8.0-alpha2</version>
+	  	</dependency>
 	</dependencies>	 
 </project>

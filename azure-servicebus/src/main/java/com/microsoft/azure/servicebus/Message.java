@@ -188,7 +188,7 @@ final public class Message implements Serializable, IMessage {
 	}
 
 	@Override
-	public void setContent(byte[] content) {
+	public void setBody(byte[] content) {
 		this.content = content;
 	}
 	
