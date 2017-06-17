@@ -5,18 +5,10 @@
 package com.microsoft.azure.eventprocessorhost;
 
 import java.time.Instant;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import com.microsoft.azure.eventhubs.EventData;
-import com.microsoft.azure.eventhubs.EventHubClient;
-import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
-import com.microsoft.azure.eventhubs.PartitionReceiver;
 
 public class SmokeTest extends TestBase
 {
