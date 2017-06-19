@@ -8,12 +8,14 @@
 
 package com.microsoft.azure.management.trafficmanager.implementation;
 
+import com.microsoft.azure.Resource;
+import com.microsoft.azure.management.trafficmanager.ProfileStatus;
+import com.microsoft.azure.management.trafficmanager.TrafficRoutingMethod;
 import com.microsoft.azure.management.trafficmanager.DnsConfig;
 import com.microsoft.azure.management.trafficmanager.MonitorConfig;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.Resource;
 
 /**
  * Class representing a Traffic Manager profile.
@@ -21,34 +23,33 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class ProfileInner extends Resource {
     /**
-     * Gets or sets the status of the Traffic Manager profile.  Possible values
-     * are 'Enabled' and 'Disabled'.
+     * The status of the Traffic Manager profile. Possible values include:
+     * 'Enabled', 'Disabled'.
      */
     @JsonProperty(value = "properties.profileStatus")
-    private String profileStatus;
+    private ProfileStatus profileStatus;
 
     /**
-     * Gets or sets the traffic routing method of the Traffic Manager profile.
-     * Possible values are 'Performance', 'Weighted', or 'Priority'.
+     * The traffic routing method of the Traffic Manager profile. Possible
+     * values include: 'Performance', 'Priority', 'Weighted', 'Geographic'.
      */
     @JsonProperty(value = "properties.trafficRoutingMethod")
-    private String trafficRoutingMethod;
+    private TrafficRoutingMethod trafficRoutingMethod;
 
     /**
-     * Gets or sets the DNS settings of the Traffic Manager profile.
+     * The DNS settings of the Traffic Manager profile.
      */
     @JsonProperty(value = "properties.dnsConfig")
     private DnsConfig dnsConfig;
 
     /**
-     * Gets or sets the endpoint monitoring settings of the Traffic Manager
-     * profile.
+     * The endpoint monitoring settings of the Traffic Manager profile.
      */
     @JsonProperty(value = "properties.monitorConfig")
     private MonitorConfig monitorConfig;
 
     /**
-     * Gets or sets the list of endpoints in the Traffic Manager profile.
+     * The list of endpoints in the Traffic Manager profile.
      */
     @JsonProperty(value = "properties.endpoints")
     private List<EndpointInner> endpoints;
@@ -58,7 +59,7 @@ public class ProfileInner extends Resource {
      *
      * @return the profileStatus value
      */
-    public String profileStatus() {
+    public ProfileStatus profileStatus() {
         return this.profileStatus;
     }
 
@@ -68,7 +69,7 @@ public class ProfileInner extends Resource {
      * @param profileStatus the profileStatus value to set
      * @return the ProfileInner object itself.
      */
-    public ProfileInner withProfileStatus(String profileStatus) {
+    public ProfileInner withProfileStatus(ProfileStatus profileStatus) {
         this.profileStatus = profileStatus;
         return this;
     }
@@ -78,7 +79,7 @@ public class ProfileInner extends Resource {
      *
      * @return the trafficRoutingMethod value
      */
-    public String trafficRoutingMethod() {
+    public TrafficRoutingMethod trafficRoutingMethod() {
         return this.trafficRoutingMethod;
     }
 
@@ -88,7 +89,7 @@ public class ProfileInner extends Resource {
      * @param trafficRoutingMethod the trafficRoutingMethod value to set
      * @return the ProfileInner object itself.
      */
-    public ProfileInner withTrafficRoutingMethod(String trafficRoutingMethod) {
+    public ProfileInner withTrafficRoutingMethod(TrafficRoutingMethod trafficRoutingMethod) {
         this.trafficRoutingMethod = trafficRoutingMethod;
         return this;
     }

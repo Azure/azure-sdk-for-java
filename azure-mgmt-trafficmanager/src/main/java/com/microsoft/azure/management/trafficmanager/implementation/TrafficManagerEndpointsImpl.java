@@ -211,7 +211,7 @@ class TrafficManagerEndpointsImpl extends
     protected TrafficManagerEndpointImpl newChildResource(String name) {
         TrafficManagerEndpointImpl endpoint = new TrafficManagerEndpointImpl(name,
                 this.parent(),
-                new EndpointInner().withName(name),
+                new EndpointInner(),
                 this.client);
         return endpoint
                 .withRoutingWeight(1)

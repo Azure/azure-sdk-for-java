@@ -9,6 +9,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import com.microsoft.azure.management.trafficmanager.EndpointStatus;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerEndpoint;
 import com.microsoft.azure.management.trafficmanager.EndpointMonitorStatus;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
@@ -31,8 +32,6 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
         TrafficManagerEndpoint.UpdateExternalEndpoint,
         TrafficManagerEndpoint.UpdateNestedProfileEndpoint {
     private final EndpointsInner client;
-    private final String endpointStatusDisabled = "Disabled";
-    private final String endpointStatusEnabled = "Enabled";
 
     TrafficManagerEndpointImpl(String name,
                                TrafficManagerProfileImpl parent,
@@ -54,12 +53,12 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
 
     @Override
     public EndpointMonitorStatus monitorStatus() {
-        return new EndpointMonitorStatus(this.inner().endpointMonitorStatus());
+        return this.inner().endpointMonitorStatus();
     }
 
     @Override
     public boolean isEnabled() {
-        return this.inner().endpointStatus().equalsIgnoreCase(this.endpointStatusEnabled);
+        return this.inner().endpointStatus().equals(EndpointStatus.ENABLED);
     }
 
     @Override
@@ -110,13 +109,13 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
 
     @Override
     public TrafficManagerEndpointImpl withTrafficDisabled() {
-        this.inner().withEndpointStatus(this.endpointStatusDisabled);
+        this.inner().withEndpointStatus(EndpointStatus.DISABLED);
         return this;
     }
 
     @Override
     public TrafficManagerEndpointImpl withTrafficEnabled() {
-        this.inner().withEndpointStatus(this.endpointStatusEnabled);
+        this.inner().withEndpointStatus(EndpointStatus.ENABLED);
         return this;
     }
 
@@ -153,7 +152,12 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
         return this.client.deleteAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.endpointType().localName(),
-                this.name());
+                this.name()).map(new Func1<DeleteOperationResultInner, Void>() {
+            @Override
+            public Void call(DeleteOperationResultInner deleteOperationResultInner) {
+                return null;
+            }
+        });
     }
 
     @Override

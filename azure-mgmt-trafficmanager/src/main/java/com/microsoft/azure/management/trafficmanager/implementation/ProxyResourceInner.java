@@ -11,20 +11,47 @@ package com.microsoft.azure.management.trafficmanager.implementation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters supplied to check Traffic Manager name operation.
+ * The resource model definition for a ARM proxy resource. It will have
+ * everything other than required location and tags.
  */
-public class CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner {
+public class ProxyResourceInner {
     /**
-     * The name of the resource.
+     * Gets or sets the ID.
+     */
+    @JsonProperty(value = "id")
+    private String id;
+
+    /**
+     * Gets or sets the name.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /**
-     * The type of the resource.
+     * Gets or sets the type.
      */
     @JsonProperty(value = "type")
     private String type;
+
+    /**
+     * Get the id value.
+     *
+     * @return the id value
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Set the id value.
+     *
+     * @param id the id value to set
+     * @return the ProxyResourceInner object itself.
+     */
+    public ProxyResourceInner withId(String id) {
+        this.id = id;
+        return this;
+    }
 
     /**
      * Get the name value.
@@ -39,9 +66,9 @@ public class CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner {
      * Set the name value.
      *
      * @param name the name value to set
-     * @return the CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner object itself.
+     * @return the ProxyResourceInner object itself.
      */
-    public CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner withName(String name) {
+    public ProxyResourceInner withName(String name) {
         this.name = name;
         return this;
     }
@@ -59,11 +86,10 @@ public class CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner {
      * Set the type value.
      *
      * @param type the type value to set
-     * @return the CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner object itself.
+     * @return the ProxyResourceInner object itself.
      */
-    public CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner withType(String type) {
+    public ProxyResourceInner withType(String type) {
         this.type = type;
         return this;
     }
-
 }
