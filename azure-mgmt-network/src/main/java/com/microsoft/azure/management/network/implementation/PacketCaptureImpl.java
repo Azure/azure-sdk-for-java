@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.NetworkWatcher;
+import com.microsoft.azure.management.network.PCFilter;
 import com.microsoft.azure.management.network.PacketCapture;
 import com.microsoft.azure.management.network.PacketCaptureFilter;
 import com.microsoft.azure.management.network.PacketCaptureStatus;
@@ -16,6 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 import com.microsoft.azure.management.storage.StorageAccount;
 import rx.Observable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -107,6 +109,18 @@ public class PacketCaptureImpl extends
     public PacketCaptureImpl withTimeLimitInSeconds(int timeLimitInSeconds) {
         createParameters.withTimeLimitInSeconds(timeLimitInSeconds);
         return this;
+    }
+
+    @Override
+    public PCFilter.Definition<DefinitionStages.WithCreate> definePacketCaptureFilter() {
+        return new PCFilterImpl(new PacketCaptureFilter(),  this);
+    }
+
+    void attachPCFilter(PCFilterImpl pcFilter) {
+        if (createParameters.filters() == null) {
+            createParameters.withFilters(new ArrayList<PacketCaptureFilter>());
+        }
+        createParameters.filters().add(pcFilter.inner());
     }
 
     @Override

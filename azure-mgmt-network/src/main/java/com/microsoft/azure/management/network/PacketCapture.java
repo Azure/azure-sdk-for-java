@@ -170,11 +170,10 @@ public interface PacketCapture extends
             WithCreate withTimeLimitInSeconds(int timeLimitInSeconds);
 
             /**
-             * the description
-             * @param param the param
+             * Begin the definition of packet capture filter.
              * @return the next stage
              */
-//            PCFilter.DefinitionStages.Blank<Definition> definePacketCaptureFilter(String param);
+            PCFilter.DefinitionStages.Blank<WithCreate> definePacketCaptureFilter();
         }
 
         interface WithCreateAndStoragePath extends WithCreate {

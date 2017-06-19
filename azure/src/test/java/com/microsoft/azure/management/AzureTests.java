@@ -26,6 +26,7 @@ import com.microsoft.azure.management.network.NetworkWatcher;
 import com.microsoft.azure.management.network.NextHop;
 import com.microsoft.azure.management.network.NextHopType;
 import com.microsoft.azure.management.network.PacketCapture;
+import com.microsoft.azure.management.network.PcProtocol;
 import com.microsoft.azure.management.network.Protocol;
 import com.microsoft.azure.management.network.SecurityGroupViewResult;
 import com.microsoft.azure.management.network.Topology;
@@ -592,14 +593,19 @@ public class AzureTests extends TestBase {
                 .withTarget(virtualMachines[0].id())
                 .withStorageAccount(storageAccount)
                 .withTimeLimitInSeconds(1500)
+                .definePacketCaptureFilter()
+                    .withProtocol(PcProtocol.TCP)
+                    .attach()
                 .create();
         packetCaptures = nw.packetCaptures().list();
         Assert.assertEquals(1, packetCaptures.size());
         Assert.assertEquals("NewPacketCapture", packetCapture.name());
         Assert.assertEquals(1500, packetCapture.timeLimitInSeconds().intValue());
+        Assert.assertEquals(PcProtocol.TCP, packetCapture.filters().get(0).protocol());
 //        Assert.assertEquals("Running", packetCapture.getStatus().packetCaptureStatus().toString());
         packetCapture.stop();
-//        Assert.assertEquals("Stopped", packetCapture.getStatus().packetCaptureStatus().toString());
+        Assert.assertEquals("Stopped", packetCapture.getStatus().packetCaptureStatus().toString());
+        nw.packetCaptures().deleteByName(packetCapture.name());
 
         azure.virtualMachines().deleteById(virtualMachines[1].id());
         topology.refresh();
