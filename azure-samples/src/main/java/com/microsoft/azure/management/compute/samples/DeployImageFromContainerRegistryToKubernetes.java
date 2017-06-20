@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.azure.management.containerregistry.samples;
+package com.microsoft.azure.management.compute.samples;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
@@ -412,12 +412,12 @@ public class DeployImageFromContainerRegistryToKubernetes {
       // Wait until the external IP becomes available
 
       int timeout = 30 * 60 * 1000; // 30 minutes
-      String IPV4_PATTERN = "^(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}$";
+      String matchIPV4 = "^(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}$";
 
       while (timeout > 0) {
         try {
           List<LoadBalancerIngress> lbIngressList = kubernetesClient.services().inNamespace(acsNamespace).withName(acsLbIngressName).get().getStatus().getLoadBalancer().getIngress();
-          if (lbIngressList != null && !lbIngressList.isEmpty() && lbIngressList.get(0) != null && lbIngressList.get(0).getIp().matches(IPV4_PATTERN)) {
+          if (lbIngressList != null && !lbIngressList.isEmpty() && lbIngressList.get(0) != null && lbIngressList.get(0).getIp().matches(matchIPV4)) {
             System.out.println("\tFound ingress IP: " + lbIngressList.get(0).getIp());
             timeout = 0;
           }

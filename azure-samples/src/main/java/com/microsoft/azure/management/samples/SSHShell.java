@@ -96,7 +96,7 @@ public final class SSHShell {
             }
         }
         JSch jsch = new JSch();
-        jsch.setKnownHosts(System.getProperty("user.home")+"/.ssh/known_hosts");
+        jsch.setKnownHosts(System.getProperty("user.home") + "/.ssh/known_hosts");
         jsch.addIdentity(host, sshPrivateKey, (byte[]) null, (byte[]) null);
         this.session = jsch.getSession(userName, host, port);
         this.session.setConfig("StrictHostKeyChecking", "no");
