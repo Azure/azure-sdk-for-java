@@ -5,7 +5,6 @@
  */
 package com.microsoft.azure.management.network;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.FlowLogInformationInner;
