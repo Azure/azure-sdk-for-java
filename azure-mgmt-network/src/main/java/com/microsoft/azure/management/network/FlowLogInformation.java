@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.FlowLogInformationInner;
@@ -25,6 +26,34 @@ public interface FlowLogInformation extends
         Updatable<FlowLogInformation.Update>,
         Refreshable<FlowLogInformation> {
     /**
+     * Get the ID of the resource to configure for flow logging.
+     *
+     * @return the targetResourceId value
+     */
+    String targetResourceId();
+
+    /**
+     * Get the ID of the storage account which is used to store the flow log.
+     *
+     * @return the storageId value
+     */
+    String storageId();
+
+    /**
+     * Get the flag to enable/disable flow logging.
+     *
+     * @return the enabled value
+     */
+    boolean enabled();
+
+    /**
+     * Get the retentionPolicy value.
+     *
+     * @return the retentionPolicy value
+     */
+    RetentionPolicyParameters retentionPolicy();
+
+    /**
      * Grouping of flow log information update stages.
      */
     interface UpdateStages {
@@ -39,7 +68,7 @@ public interface FlowLogInformation extends
             Update withEnabled(boolean enabled);
         }
         /**
-         * The stage of the flow log information update allowing to set enable/disable property.
+         * The stage of the flow log information update allowing to specify storage account.
          */
         interface WithStorageAccount {
             /**
@@ -47,6 +76,21 @@ public interface FlowLogInformation extends
              * @return the next stage of the flow log information update
              */
             Update withStorageAccount(String storageId);
+        }
+        /**
+         * The stage of the flow log information update allowing to specify storage account.
+         */
+        interface WithRetentionPolicy {
+            /**
+             * @param enabled the enabled value to set for retention policy
+             * @return the next stage of the flow log information update
+             */
+            Update withRetentionPolicyEnabled(boolean enabled);
+            /**
+             * @param days the number of days to store flow log
+             * @return the next stage of the flow log information update
+             */
+            Update withRetentionPolicyDays(Integer days);
         }
     }
 
@@ -59,6 +103,7 @@ public interface FlowLogInformation extends
     interface Update extends
             Appliable<FlowLogInformation>,
             UpdateStages.WithEnabled,
-            UpdateStages.WithStorageAccount {
+            UpdateStages.WithStorageAccount,
+            UpdateStages.WithRetentionPolicy {
     }
 }

@@ -51,6 +51,11 @@ class SecurityGroupViewResultImpl extends RefreshableWrapperImpl<SecurityGroupVi
     }
 
     @Override
+    public String vmId() {
+        return vmId;
+    }
+
+    @Override
     public NetworkWatcher parent() {
         return parent;
     }

@@ -561,7 +561,15 @@ public class AzureTests extends TestBase {
 
         FlowLogInformation flowLogInformation = nw.getFlowLogStatus(virtualMachines[0].getPrimaryNetworkInterface().networkSecurityGroupId());
         StorageAccount storageAccount = tnw.ensureStorageAccount(azure.storageAccounts());
-        flowLogInformation.update().withEnabled(true).withStorageAccount(storageAccount.id()).apply();
+        flowLogInformation.update()
+                .withEnabled(true)
+                .withStorageAccount(storageAccount.id())
+                .withRetentionPolicyDays(5)
+                .withRetentionPolicyEnabled(true)
+                .apply();
+        Assert.assertEquals(true, flowLogInformation.enabled());
+        Assert.assertEquals(Integer.valueOf(5), flowLogInformation.retentionPolicy().days());
+        Assert.assertEquals(storageAccount.id(), flowLogInformation.storageId());
 
 //        Troubleshooting troubleshooting = nw.troubleshoot(<virtual_network_gateway_id> or <virtual_network_gateway_connaction_id>,
 //                storageAccount.id(), "");

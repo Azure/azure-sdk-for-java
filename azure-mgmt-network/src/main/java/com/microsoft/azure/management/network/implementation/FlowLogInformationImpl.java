@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.FlowLogInformation;
+import com.microsoft.azure.management.network.RetentionPolicyParameters;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
@@ -64,6 +65,18 @@ class FlowLogInformationImpl extends RefreshableWrapperImpl<FlowLogInformationIn
     }
 
     @Override
+    public Update withRetentionPolicyEnabled(boolean enabled) {
+        this.inner().retentionPolicy().withEnabled(enabled);
+        return this;
+    }
+
+    @Override
+    public Update withRetentionPolicyDays(Integer days) {
+        this.inner().retentionPolicy().withDays(days);
+        return this;
+    }
+
+    @Override
     public Update update() {
         return this;
     }
@@ -82,5 +95,25 @@ class FlowLogInformationImpl extends RefreshableWrapperImpl<FlowLogInformationIn
     @Override
     public String key() {
         return null;
+    }
+
+    @Override
+    public String targetResourceId() {
+        return inner().targetResourceId();
+    }
+
+    @Override
+    public String storageId() {
+        return inner().storageId();
+    }
+
+    @Override
+    public boolean enabled() {
+        return inner().enabled();
+    }
+
+    @Override
+    public RetentionPolicyParameters retentionPolicy() {
+        return inner().retentionPolicy();
     }
 }

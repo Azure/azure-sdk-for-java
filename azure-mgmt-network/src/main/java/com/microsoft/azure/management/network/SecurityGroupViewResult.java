@@ -26,4 +26,9 @@ public interface SecurityGroupViewResult extends HasInner<SecurityGroupViewResul
      * @return network interfaces on the specified VM
      */
     Map<String, SecurityGroupNetworkInterface> networkInterfaces();
+
+    /**
+     * @return virtual machine id
+     */
+    String vmId();
 }
