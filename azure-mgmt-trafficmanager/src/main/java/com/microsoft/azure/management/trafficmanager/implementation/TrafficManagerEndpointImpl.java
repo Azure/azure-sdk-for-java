@@ -17,6 +17,9 @@ import com.microsoft.azure.management.trafficmanager.EndpointType;
 import rx.Observable;
 import rx.functions.Func1;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Implementation for {@link TrafficManagerEndpoint}.
  */
@@ -122,6 +125,50 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
     @Override
     public TrafficManagerEndpointImpl withRoutingWeight(int weight) {
         this.inner().withWeight(new Long(weight));
+        return this;
+    }
+
+    @Override
+    public TrafficManagerEndpointImpl withGeographicLocation(String geographicLocation) {
+        if (this.inner().geoMapping() == null) {
+            this.inner().withGeoMapping(new ArrayList<String>());
+        }
+        boolean notFound = true;
+        for(String location : this.inner().geoMapping()) {
+            if (location.toLowerCase().equalsIgnoreCase(geographicLocation.toLowerCase())) {
+                notFound = false;
+                break;
+            }
+        }
+        if (notFound) {
+            this.inner().geoMapping().add(geographicLocation);
+        }
+        return this;
+    }
+
+    @Override
+    public TrafficManagerEndpointImpl withoutGeographicLocation(String geographicLocation) {
+        if (this.inner().geoMapping() == null) {
+            return this;
+        }
+        int itemIndex = -1;
+        int i = 0;
+        for(String location : this.inner().geoMapping()) {
+            if (location.toLowerCase().equalsIgnoreCase(geographicLocation.toLowerCase())) {
+                itemIndex = i;
+                break;
+            }
+            i++;
+        }
+        if (itemIndex != -1) {
+            this.inner().geoMapping().remove(itemIndex);
+        }
+        return this;
+    }
+
+    @Override
+    public TrafficManagerEndpointImpl withGeographicLocations(List<String> geographicLocations) {
+        this.inner().withGeoMapping(geographicLocations);
         return this;
     }
 

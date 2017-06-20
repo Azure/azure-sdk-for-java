@@ -126,20 +126,22 @@ class TrafficManagerProfileImpl
 
     @Override
     public TrafficManagerProfileImpl withPriorityBasedRouting() {
-        this.withTrafficRoutingMethod(TrafficRoutingMethod.PRIORITY);
-        return this;
+        return this.withTrafficRoutingMethod(TrafficRoutingMethod.PRIORITY);
     }
 
     @Override
     public TrafficManagerProfileImpl withWeightBasedRouting() {
-        this.withTrafficRoutingMethod(TrafficRoutingMethod.WEIGHTED);
-        return this;
+        return this.withTrafficRoutingMethod(TrafficRoutingMethod.WEIGHTED);
     }
 
     @Override
     public TrafficManagerProfileImpl withPerformanceBasedRouting() {
-        this.withTrafficRoutingMethod(TrafficRoutingMethod.PERFORMANCE);
-        return this;
+        return this.withTrafficRoutingMethod(TrafficRoutingMethod.PERFORMANCE);
+    }
+
+    @Override
+    public TrafficManagerProfileImpl withGeographicBasedRouting() {
+        return this.withTrafficRoutingMethod(TrafficRoutingMethod.GEOGRAPHIC);
     }
 
     @Override
