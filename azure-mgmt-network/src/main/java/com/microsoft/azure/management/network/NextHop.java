@@ -18,6 +18,36 @@ import com.microsoft.azure.management.resources.fluentcore.model.Executable;
 public interface NextHop extends Executable<NextHop>,
         HasParent<NetworkWatcher> {
     /**
+     * Get the resource identifier of the target resource against which the action
+     * is to be performed.
+     *
+     * @return the targetResourceId value
+     */
+    String targetResourceId();
+
+    /**
+     * Get the source IP address.
+     *
+     * @return the sourceIPAddress value
+     */
+    String sourceIPAddress();
+
+    /**
+     * Get the destination IP address.
+     *
+     * @return the destinationIPAddress value
+     */
+    String destinationIPAddress();
+
+    /**
+     * Get the NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any
+     * of the nics, then this parameter must be specified. Otherwise optional).
+     *
+     * @return the targetNicResourceId value
+     */
+    String targetNicResourceId();
+
+    /**
      * Next hop type. Possible values include: 'Internet', 'VirtualAppliance',
      * 'VirtualNetworkGateway', 'VnetLocal', 'HyperNetGateway', 'None'.
      * @return the nextHopType value

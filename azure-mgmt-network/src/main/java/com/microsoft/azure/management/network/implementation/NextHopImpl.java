@@ -56,6 +56,26 @@ public class NextHopImpl extends ExecutableImpl<NextHop>
     }
 
     @Override
+    public String targetResourceId() {
+        return parameters.targetResourceId();
+    }
+
+    @Override
+    public String sourceIPAddress() {
+        return parameters.sourceIPAddress();
+    }
+
+    @Override
+    public String destinationIPAddress() {
+        return parameters.destinationIPAddress();
+    }
+
+    @Override
+    public String targetNicResourceId() {
+        return parameters.destinationIPAddress();
+    }
+
+    @Override
     public NextHopType nextHopType() {
         return result.nextHopType();
     }
