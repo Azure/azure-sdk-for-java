@@ -1057,8 +1057,9 @@ public class CloudBlockBlobTests {
             srcStream = BlobTestHelper.getRandomDataStream(length);
             blockBlobRef.upload(srcStream, length, accessCondition, options, null);
         }
-        catch (StorageException ex)
+        catch (IOException e)
         {
+            StorageException ex = (StorageException)e.getCause();
             assertEquals(412, ex.getHttpStatusCode());
             assertEquals(StorageErrorCodeStrings.CONDITION_NOT_MET, ex.getErrorCode());
         }
