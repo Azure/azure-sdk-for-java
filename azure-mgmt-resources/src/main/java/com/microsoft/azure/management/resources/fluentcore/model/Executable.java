@@ -17,8 +17,8 @@ import rx.Observable;
  *
  * @param <T> the type of the resource returned from the execution.
  */
-@LangDefinition
-public interface Executable<T> {
+@LangDefinition(ContainerName = "ResourceActions", CreateAsyncMultiThreadMethodParam = true)
+public interface Executable<T> extends Indexable {
     /**
      * Execute the request.
      *
