@@ -733,6 +733,11 @@ public final class CloudBlockBlob extends CloudBlob {
                                    || options.getStoreBlobContentMD5()
                                    || descriptor.getLength() == -1;
 
+            // there are two known issues with the uploadFromMultiStream logic
+            // 1. The same block ids are being used for each batch of uploads.
+            // 2. When using a bufferedInputStream and the size of the stream being uploaded exceeds Integer.MAX_VALUE,
+            //    a NegativeArraySizeException is thrown when attempting to skip past the 1 GB mark.
+            useOpenWrite = true;
             if (useOpenWrite) {
                 final BlobOutputStream writeStream = this.openOutputStream(accessCondition, options, opContext);
                 try {
