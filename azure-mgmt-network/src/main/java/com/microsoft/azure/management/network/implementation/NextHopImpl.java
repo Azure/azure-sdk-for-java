@@ -8,8 +8,7 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.NextHop;
 import com.microsoft.azure.management.network.NextHopType;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.ExecutableImpl;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -17,7 +16,8 @@ import rx.functions.Func1;
  * Implementation of NextHop.
  */
 @LangDefinition
-public class NextHopImpl implements NextHop, NextHop.Definition {
+public class NextHopImpl extends ExecutableImpl<NextHop>
+        implements NextHop, NextHop.Definition {
     private final NetworkWatcherImpl parent;
     private NextHopParametersInner parameters = new NextHopParametersInner();
     private NextHopResultInner result;
@@ -71,12 +71,7 @@ public class NextHopImpl implements NextHop, NextHop.Definition {
     }
 
     @Override
-    public NextHop execute() {
-        return executeAsync().toBlocking().last();
-    }
-
-    @Override
-    public Observable<NextHop> executeAsync() {
+    public Observable<NextHop> executeWorkAsync() {
         return this.parent().manager().inner().networkWatchers()
                 .getNextHopAsync(parent.resourceGroupName(), parent.name(), parameters)
                 .map(new Func1<NextHopResultInner, NextHop>() {
@@ -86,10 +81,5 @@ public class NextHopImpl implements NextHop, NextHop.Definition {
                         return NextHopImpl.this;
                     }
                 });
-    }
-
-    @Override
-    public ServiceFuture<NextHop> executeAsync(ServiceCallback<NextHop> callback) {
-        return ServiceFuture.fromBody(executeAsync(), callback);
     }
 }

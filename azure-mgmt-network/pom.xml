@@ -56,6 +56,11 @@
       <version>1.1.1-SNAPSHOT</version>
     </dependency>
     <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-storage</artifactId>
+      <version>1.1.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
@@ -81,11 +86,6 @@
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-mgmt-storage</artifactId>
-      <version>1.0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <build>

@@ -10,8 +10,7 @@ import com.microsoft.azure.management.network.Access;
 import com.microsoft.azure.management.network.Direction;
 import com.microsoft.azure.management.network.Protocol;
 import com.microsoft.azure.management.network.VerificationIPFlow;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.ExecutableImpl;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -19,7 +18,8 @@ import rx.functions.Func1;
  * Implementation of VerificationIPFlow.
  */
 @LangDefinition
-public class VerificationIPFlowImpl implements VerificationIPFlow, VerificationIPFlow.Definition {
+public class VerificationIPFlowImpl extends ExecutableImpl<VerificationIPFlow>
+        implements VerificationIPFlow, VerificationIPFlow.Definition {
     private final NetworkWatcherImpl parent;
     private VerificationIPFlowParametersInner parameters = new VerificationIPFlowParametersInner();
     private VerificationIPFlowResultInner result;
@@ -112,12 +112,7 @@ public class VerificationIPFlowImpl implements VerificationIPFlow, VerificationI
     }
 
     @Override
-    public VerificationIPFlow execute() {
-        return executeAsync().toBlocking().last();
-    }
-
-    @Override
-    public Observable<VerificationIPFlow> executeAsync() {
+    public Observable<VerificationIPFlow> executeWorkAsync() {
         return this.parent().manager().inner().networkWatchers()
                 .verifyIPFlowAsync(parent.resourceGroupName(), parent.name(), parameters)
                 .map(new Func1<VerificationIPFlowResultInner, VerificationIPFlow>() {
@@ -127,10 +122,5 @@ public class VerificationIPFlowImpl implements VerificationIPFlow, VerificationI
                         return VerificationIPFlowImpl.this;
                     }
                 });
-    }
-
-    @Override
-    public ServiceFuture<VerificationIPFlow> executeAsync(ServiceCallback<VerificationIPFlow> callback) {
-        return ServiceFuture.fromBody(executeAsync(), callback);
     }
 }
