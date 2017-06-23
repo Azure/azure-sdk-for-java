@@ -9,6 +9,7 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.LoadBalancerInboundNatPool;
+import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -16,7 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 
 /**
- *  Implementation for {@link LoadBalancerInboundNatRule}.
+ *  Implementation for LoadBalancerInboundNatRule.
  */
 @LangDefinition
 class LoadBalancerInboundNatPoolImpl
@@ -99,5 +100,26 @@ class LoadBalancerInboundNatPoolImpl
     @Override
     public LoadBalancerImpl attach() {
         return this.parent().withInboundNatPool(this);
+    }
+
+    @Override
+    public LoadBalancerInboundNatPoolImpl withExistingPublicIPAddress(PublicIPAddress publicIPAddress) {
+        return (publicIPAddress != null) ? this.withExistingPublicIPAddress(publicIPAddress.id()) : this;
+    }
+
+    @Override
+    public LoadBalancerInboundNatPoolImpl withExistingPublicIPAddress(String resourceId) {
+        if (null == resourceId) {
+            return this;
+        } else {
+            LoadBalancerFrontendImpl frontend = this.parent().ensureDefaultFrontend()
+                .withExistingPublicIPAddress(resourceId);
+            return this.withFrontend(frontend.name());
+        }
+    }
+
+    @Override
+    public LoadBalancerInboundNatPoolImpl withDefaultFrontend() {
+        return this.withFrontend(this.parent().ensureDefaultFrontend().name());
     }
 }

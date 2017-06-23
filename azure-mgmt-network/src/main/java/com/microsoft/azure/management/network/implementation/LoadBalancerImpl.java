@@ -28,6 +28,7 @@ import com.microsoft.azure.management.network.model.HasNetworkInterfaces;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 
 import rx.Observable;
 import rx.exceptions.CompositeException;
@@ -66,6 +67,7 @@ class LoadBalancerImpl
     private Map<String, LoadBalancerFrontend> frontends;
     private Map<String, LoadBalancerInboundNatRule> inboundNatRules;
     private Map<String, LoadBalancerInboundNatPool> inboundNatPools;
+    private LoadBalancerFrontendImpl defaultFrontend;
 
     protected static final String DEFAULT = "default";
 
@@ -104,6 +106,20 @@ class LoadBalancerImpl
         initializeLoadBalancingRulesFromInner();
         initializeInboundNatRulesFromInner();
         initializeInboundNatPoolsFromInner();
+        this.defaultFrontend = null;
+    }
+
+    protected LoadBalancerFrontendImpl ensureDefaultFrontend() {
+        LoadBalancerFrontendImpl frontend = defaultFrontend();
+        if (frontend != null) {
+            return frontend;
+        } else {
+            String name = SdkContext.randomResourceName("frontend", 20);
+            frontend = this.defineFrontend(name);
+            frontend.attach();
+            this.defaultFrontend = frontend;
+            return frontend;
+        }
     }
 
     @Override
@@ -374,12 +390,12 @@ class LoadBalancerImpl
 
     @Override
     public LoadBalancerImpl withExistingPublicIPAddress(String resourceId) {
-        return withExistingPublicIPAddress(resourceId, DEFAULT);
+        return withExistingPublicIPAddress(resourceId, null);
     }
 
     @Override
     public LoadBalancerImpl withExistingPublicIPAddress(PublicIPAddress pip) {
-        return withExistingPublicIPAddress(pip.id(), DEFAULT);
+        return withExistingPublicIPAddress(pip.id(), null);
     }
 
     @Override
@@ -415,17 +431,19 @@ class LoadBalancerImpl
 
     protected LoadBalancerImpl withExistingPublicIPAddress(String resourceId, String frontendName) {
         if (frontendName == null) {
-            frontendName = DEFAULT;
-        }
-
-        return this.definePublicFrontend(frontendName)
+            return ensureDefaultFrontend()
+                    .withExistingPublicIPAddress(resourceId)
+                    .parent();
+        } else {
+            return this.definePublicFrontend(frontendName)
                 .withExistingPublicIPAddress(resourceId)
                 .attach();
+        }
     }
 
     @Override
     public LoadBalancerImpl withFrontendSubnet(Network network, String subnetName) {
-        return this.definePrivateFrontend(DEFAULT)
+        return ensureDefaultFrontend()
                 .withExistingSubnet(network, subnetName)
                 .attach();
     }
@@ -457,7 +475,7 @@ class LoadBalancerImpl
     public LoadBalancerImpl withLoadBalancingRule(int frontendPort, TransportProtocol protocol, int backendPort) {
         this.defineLoadBalancingRule(DEFAULT)
             .withFrontendPort(frontendPort)
-            .withFrontend(DEFAULT)
+            .withDefaultFrontend()
             .withBackendPort(backendPort)
             .withBackend(DEFAULT)
             .withProtocol(protocol)
@@ -659,6 +677,9 @@ class LoadBalancerImpl
     @Override
     public LoadBalancerImpl withoutFrontend(String name) {
         this.frontends.remove(name);
+        if (this.defaultFrontend != null && name.equalsIgnoreCase(this.defaultFrontend.name())) {
+            this.defaultFrontend = null;
+        }
         return this;
     }
 
@@ -733,5 +754,17 @@ class LoadBalancerImpl
             }
         }
         return Collections.unmodifiableList(publicIPAddressIds);
+    }
+
+    LoadBalancerFrontendImpl defaultFrontend() {
+        // Default means the only frontend or the one tracked as the default, if more than one present
+        Map<String, LoadBalancerFrontend> frontends = this.frontends();
+        if (frontends.size() == 1) {
+            this.defaultFrontend = (LoadBalancerFrontendImpl) frontends.values().iterator().next();
+        } else if (frontends.size() == 0) {
+            this.defaultFrontend = null;
+        }
+
+        return this.defaultFrontend;
     }
 }

@@ -17,7 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
- * An immutable client-side representation of an inbound NAT rule.
+ * An immutable client-side representation of an inbound NAT pool.
  */
 @Fluent()
 @Beta

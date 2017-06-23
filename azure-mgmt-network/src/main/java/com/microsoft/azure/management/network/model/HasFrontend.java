@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.network.model;
 
+import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
 
@@ -26,13 +28,20 @@ public interface HasFrontend  {
          * The stage of a definition allowing to specify a load balancer frontend.
          * @param <ReturnT> the next stage of the definition
          */
-        interface WithFrontend<ReturnT> {
+        interface WithFrontend<ReturnT> extends HasPublicIPAddress.DefinitionStages.WithExistingPublicIPAddress<ReturnT> {
             /**
              * Specifies the frontend to associate.
              * @param frontendName an existing frontend name on this load balancer
              * @return the next stage of the definition
              */
             ReturnT withFrontend(String frontendName);
+
+            /**
+             * Associates with the default frontend.
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_2_0)
+            ReturnT withDefaultFrontend();
         }
     }
 
@@ -51,6 +60,13 @@ public interface HasFrontend  {
              * @return the next stage of the update
              */
             ReturnT withFrontend(String frontendName);
+
+            /**
+             * Associates with the default frontend.
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_2_0)
+            ReturnT withDefaultFrontend();
         }
     }
 
@@ -62,13 +78,20 @@ public interface HasFrontend  {
          * The stage of a definition allowing to specify a frontend from to associate.
          * @param <ReturnT> the next stage of the definition
          */
-        interface WithFrontend<ReturnT> {
+        interface WithFrontend<ReturnT> extends HasPublicIPAddress.UpdateDefinitionStages.WithExistingPublicIPAddress<ReturnT> {
             /**
              * Specifies the frontend to associate.
              * @param frontendName an existing frontend name
              * @return the next stage of the definition
              */
             ReturnT withFrontend(String frontendName);
+
+            /**
+             * Associates with the default frontend.
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_2_0)
+            ReturnT withDefaultFrontend();
         }
     }
 }

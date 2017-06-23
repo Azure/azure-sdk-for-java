@@ -12,6 +12,7 @@ import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.LoadDistribution;
+import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.LoadBalancerProbe;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -19,7 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 
 /**
- *  Implementation for {@link LoadBalancingRule}.
+ *  Implementation for LoadBalancingRule.
  */
 @LangDefinition
 class LoadBalancingRuleImpl
@@ -110,8 +111,28 @@ class LoadBalancingRuleImpl
         }
     }
 
+    // Fluent withers
 
-    // Fluent setters
+    @Override
+    public LoadBalancingRuleImpl withExistingPublicIPAddress(PublicIPAddress publicIPAddress) {
+        return (publicIPAddress != null) ? this.withExistingPublicIPAddress(publicIPAddress.id()) : this;
+    }
+
+    @Override
+    public LoadBalancingRuleImpl withExistingPublicIPAddress(String resourceId) {
+        if (null == resourceId) {
+            return this;
+        } else {
+            LoadBalancerFrontendImpl frontend = this.parent().ensureDefaultFrontend()
+                .withExistingPublicIPAddress(resourceId);
+            return this.withFrontend(frontend.name());
+        }
+    }
+
+    @Override
+    public LoadBalancingRuleImpl withDefaultFrontend() {
+        return this.withFrontend(this.parent().ensureDefaultFrontend().name());
+    }
 
     @Override
     public LoadBalancingRuleImpl withIdleTimeoutInMinutes(int minutes) {

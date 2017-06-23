@@ -9,6 +9,7 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
+import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -148,5 +149,26 @@ class LoadBalancerInboundNatRuleImpl
     @Override
     public LoadBalancerImpl attach() {
         return this.parent().withInboundNatRule(this);
+    }
+
+    @Override
+    public LoadBalancerInboundNatRuleImpl withExistingPublicIPAddress(PublicIPAddress publicIPAddress) {
+        return (publicIPAddress != null) ? this.withExistingPublicIPAddress(publicIPAddress.id()) : this;
+    }
+
+    @Override
+    public LoadBalancerInboundNatRuleImpl withExistingPublicIPAddress(String resourceId) {
+        if (null == resourceId) {
+            return this;
+        } else {
+            LoadBalancerFrontendImpl frontend = this.parent().ensureDefaultFrontend()
+                .withExistingPublicIPAddress(resourceId);
+            return this.withFrontend(frontend.name());
+        }
+    }
+
+    @Override
+    public LoadBalancerInboundNatRuleImpl withDefaultFrontend() {
+        return this.withFrontend(this.parent().ensureDefaultFrontend().name());
     }
 }
