@@ -52,6 +52,7 @@ public final class ConnectionHandler extends BaseHandler {
         connectionProperties.put(AmqpConstants.PRODUCT, ClientConstants.PRODUCT_NAME);
         connectionProperties.put(AmqpConstants.VERSION, ClientConstants.CURRENT_JAVACLIENT_VERSION);
         connectionProperties.put(AmqpConstants.PLATFORM, ClientConstants.PLATFORM_INFO);
+        connectionProperties.put(AmqpConstants.FRAMEWORK, ClientConstants.FRAMEWORK_INFO);
         connection.setProperties(connectionProperties);
 
         connection.open();

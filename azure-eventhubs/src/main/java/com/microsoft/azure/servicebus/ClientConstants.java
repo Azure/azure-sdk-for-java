@@ -55,6 +55,7 @@ public final class ClientConstants {
     public final static String CURRENT_JAVACLIENT_VERSION = "0.14.1-SNAPSHOT";
 
     public static final String PLATFORM_INFO = getPlatformInfo();
+    public static final String FRAMEWORK_INFO = getFrameworkInfo();
 
     public static final String CBS_ADDRESS = "$cbs";
     public static final String PUT_TOKEN_OPERATION = "operation";
@@ -94,21 +95,27 @@ public final class ClientConstants {
     public static final String TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
 
     private static String getPlatformInfo() {
-        final Package javaRuntimeClassPkg = Runtime.class.getPackage();
-        final StringBuilder patformInfo = new StringBuilder();
-        patformInfo.append("jre:");
-        patformInfo.append(javaRuntimeClassPkg.getImplementationVersion());
-        patformInfo.append(";vendor:");
-        patformInfo.append(javaRuntimeClassPkg.getImplementationVendor());
-        patformInfo.append(";jvm:");
-        patformInfo.append(System.getProperty("java.vm.version"));
-        patformInfo.append(";arch:");
-        patformInfo.append(System.getProperty("os.arch"));
-        patformInfo.append(";os:");
-        patformInfo.append(System.getProperty("os.name"));
-        patformInfo.append(";os version:");
-        patformInfo.append(System.getProperty("os.version"));
+        final StringBuilder platformInfo = new StringBuilder();
+        platformInfo.append("arch:");
+        platformInfo.append(System.getProperty("os.arch"));
+        platformInfo.append(";os:");
+        platformInfo.append(System.getProperty("os.name"));
+        platformInfo.append(";os version:");
+        platformInfo.append(System.getProperty("os.version"));
 
-        return patformInfo.toString();
+        return platformInfo.toString();
+    }
+
+    private static String getFrameworkInfo() {
+        final Package javaRuntimeClassPkg = Runtime.class.getPackage();
+        final StringBuilder frameworkInfo = new StringBuilder();
+        frameworkInfo.append("jre:");
+        frameworkInfo.append(javaRuntimeClassPkg.getImplementationVersion());
+        frameworkInfo.append(";vendor:");
+        frameworkInfo.append(javaRuntimeClassPkg.getImplementationVendor());
+        frameworkInfo.append(";jvm");
+        frameworkInfo.append(System.getProperty("java.vm.version"));
+
+        return frameworkInfo.toString();
     }
 }

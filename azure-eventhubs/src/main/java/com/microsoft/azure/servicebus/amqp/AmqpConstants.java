@@ -53,6 +53,7 @@ public final class AmqpConstants {
     public static final Symbol PRODUCT = Symbol.valueOf("product");
     public static final Symbol VERSION = Symbol.valueOf("version");
     public static final Symbol PLATFORM = Symbol.valueOf("platform");
+    public static final Symbol FRAMEWORK = Symbol.valueOf("framework");
 
     public static final int AMQP_BATCH_MESSAGE_FORMAT = 0x80013700; // 2147563264L;
 
