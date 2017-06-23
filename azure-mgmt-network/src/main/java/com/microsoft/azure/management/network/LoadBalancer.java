@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.network.implementation.LoadBalancerInner;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.network.model.HasLoadBalancingRules;
@@ -63,6 +64,18 @@ public interface LoadBalancer extends
      * @return frontends for this load balancer, for the incoming traffic to come from.
      */
     Map<String, LoadBalancerFrontend> frontends();
+
+    /**
+     * @return private (internal) frontends
+     */
+    @Beta(SinceVersion.V1_2_0)
+    Map<String, LoadBalancerPrivateFrontend> privateFrontends();
+
+    /**
+     * @return public (Internet-facing) frontends
+     */
+    @Beta(SinceVersion.V1_2_0)
+    Map<String, LoadBalancerPublicFrontend> publicFrontends();
 
     /**
      * @return inbound NAT pools, indexed by name

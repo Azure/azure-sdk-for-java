@@ -146,8 +146,9 @@ public class TestLoadBalancer {
                     .create();
 
             // Verify frontends
-            Assert.assertTrue(lb.frontends().size() == 2);
-
+            Assert.assertEquals(2, lb.frontends().size());
+            Assert.assertEquals(2, lb.publicFrontends().size());
+            Assert.assertEquals(0, lb.privateFrontends().size());
             LoadBalancerFrontend frontend = lb.frontends().get("frontend1");
             Assert.assertTrue(frontend.isPublic());
             LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
@@ -210,6 +211,8 @@ public class TestLoadBalancer {
             // Verify frontends
             Assert.assertFalse(resource.frontends().containsKey("default"));
             Assert.assertEquals(1, resource.frontends().size());
+            Assert.assertEquals(1,  resource.publicFrontends().size());
+            Assert.assertEquals(0,  resource.privateFrontends().size());
 
             // Verify probes
             Assert.assertFalse(resource.httpProbes().containsKey("httpProbe1"));
@@ -331,7 +334,9 @@ public class TestLoadBalancer {
                     .equalsIgnoreCase("backend1"));
 
             // Verify frontends
-            Assert.assertTrue(lb.frontends().size() == 1);
+            Assert.assertEquals(1, lb.frontends().size());
+            Assert.assertEquals(1, lb.publicFrontends().size());
+            Assert.assertEquals(0, lb.privateFrontends().size());
             LoadBalancerFrontend frontend = lb.frontends().get("frontend1");
             Assert.assertNotNull(frontend);
             Assert.assertTrue(frontend.isPublic());
@@ -413,6 +418,8 @@ public class TestLoadBalancer {
 
             // Verify frontends
             LoadBalancerFrontend frontend = resource.frontends().get("frontend1");
+            Assert.assertEquals(1,  resource.publicFrontends().size());
+            Assert.assertEquals(0,  resource.privateFrontends().size());
             Assert.assertNotNull(frontend);
             Assert.assertTrue(frontend.isPublic());
             LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
@@ -473,6 +480,8 @@ public class TestLoadBalancer {
             // Verify frontends
             Assert.assertTrue(lb.frontends().containsKey("default"));
             LoadBalancerFrontend frontend = lb.frontends().get("default");
+            Assert.assertEquals(1, lb.publicFrontends().size());
+            Assert.assertEquals(0,  lb.privateFrontends().size());
             Assert.assertEquals(0, frontend.loadBalancingRules().size());
             Assert.assertTrue(frontend.isPublic());
             LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
@@ -523,6 +532,8 @@ public class TestLoadBalancer {
 
             // Verify frontends
             Assert.assertEquals(1, resource.frontends().size());
+            Assert.assertEquals(1, resource.publicFrontends().size());
+            Assert.assertEquals(0,  resource.privateFrontends().size());
             LoadBalancerFrontend frontend = resource.frontends().get("default");
             Assert.assertTrue(frontend.isPublic());
             LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
@@ -598,6 +609,8 @@ public class TestLoadBalancer {
             Assert.assertEquals(1, frontend.loadBalancingRules().size());
             Assert.assertTrue("default".equalsIgnoreCase(frontend.loadBalancingRules().values().iterator().next().name()));
             Assert.assertTrue(frontend.isPublic());
+            Assert.assertEquals(1, lb.publicFrontends().size());
+            Assert.assertEquals(0, lb.privateFrontends().size());
             LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
             Assert.assertTrue(pip.id().equalsIgnoreCase(publicFrontend.publicIPAddressId()));
 
@@ -673,6 +686,8 @@ public class TestLoadBalancer {
 
             // Verify frontends
             Assert.assertEquals(1, resource.frontends().size());
+            Assert.assertEquals(1, resource.publicFrontends().size());
+            Assert.assertEquals(0, resource.privateFrontends().size());
             LoadBalancerFrontend frontend = resource.frontends().get("default");
             Assert.assertTrue(frontend.isPublic());
             LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
@@ -771,6 +786,8 @@ public class TestLoadBalancer {
             Assert.assertEquals(1, frontend.loadBalancingRules().size());
             Assert.assertTrue("default".equalsIgnoreCase(frontend.loadBalancingRules().values().iterator().next().name()));
             Assert.assertFalse(frontend.isPublic());
+            Assert.assertEquals(1, lb.privateFrontends().size());
+            Assert.assertEquals(0, lb.publicFrontends().size());
             LoadBalancerPrivateFrontend privateFrontend = (LoadBalancerPrivateFrontend) frontend;
             Assert.assertTrue(network.id().equalsIgnoreCase(privateFrontend.networkId()));
             Assert.assertNotNull(privateFrontend.privateIPAddress());
@@ -855,6 +872,8 @@ public class TestLoadBalancer {
 
             // Verify frontends
             Assert.assertEquals(1, resource.frontends().size());
+            Assert.assertEquals(1,  resource.privateFrontends().size());
+            Assert.assertEquals(0, resource.publicFrontends().size());
             LoadBalancerFrontend frontend = resource.frontends().get("default");
             Assert.assertFalse(frontend.isPublic());
             LoadBalancerPrivateFrontend privateFrontend = (LoadBalancerPrivateFrontend) frontend;

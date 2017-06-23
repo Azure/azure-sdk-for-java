@@ -11,6 +11,7 @@ import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.LoadBalancerHttpProbe;
 import com.microsoft.azure.management.network.LoadBalancerInboundNatPool;
 import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
+import com.microsoft.azure.management.network.LoadBalancerPrivateFrontend;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
@@ -681,6 +682,30 @@ class LoadBalancerImpl
     @Override
     public Map<String, LoadBalancerFrontend> frontends() {
         return Collections.unmodifiableMap(this.frontends);
+    }
+
+    @Override
+    public Map<String, LoadBalancerPrivateFrontend> privateFrontends() {
+        Map<String, LoadBalancerPrivateFrontend> privateFrontends = new HashMap<>();
+        for (LoadBalancerFrontend frontend : this.frontends().values()) {
+            if (!frontend.isPublic()) {
+                privateFrontends.put(frontend.name(), (LoadBalancerPrivateFrontend) frontend);
+            }
+        }
+
+        return Collections.unmodifiableMap(privateFrontends);
+    }
+
+    @Override
+    public Map<String, LoadBalancerPublicFrontend> publicFrontends() {
+        Map<String, LoadBalancerPublicFrontend> publicFrontends = new HashMap<>();
+        for (LoadBalancerFrontend frontend : this.frontends().values()) {
+            if (frontend.isPublic()) {
+                publicFrontends.put(frontend.name(), (LoadBalancerPublicFrontend) frontend);
+            }
+        }
+
+        return Collections.unmodifiableMap(publicFrontends);
     }
 
     @Override
