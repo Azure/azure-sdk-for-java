@@ -57,6 +57,21 @@ public class DataLakeStoreAccountUpdateParameters {
     private TierType newTier;
 
     /**
+     * The current state of allowing or disallowing IPs originating within
+     * Azure through the firewall. If the firewall is disabled, this is not
+     * enforced. Possible values include: 'Enabled', 'Disabled'.
+     */
+    @JsonProperty(value = "properties.firewallAllowAzureIps")
+    private FirewallAllowAzureIpsState firewallAllowAzureIps;
+
+    /**
+     * Used for rotation of user managed Key Vault keys. Can only be used to
+     * rotate a user managed encryption Key Vault key.
+     */
+    @JsonProperty(value = "properties.encryptionConfig")
+    private UpdateEncryptionConfig encryptionConfig;
+
+    /**
      * Get the tags value.
      *
      * @return the tags value
@@ -153,6 +168,46 @@ public class DataLakeStoreAccountUpdateParameters {
      */
     public DataLakeStoreAccountUpdateParameters withNewTier(TierType newTier) {
         this.newTier = newTier;
+        return this;
+    }
+
+    /**
+     * Get the firewallAllowAzureIps value.
+     *
+     * @return the firewallAllowAzureIps value
+     */
+    public FirewallAllowAzureIpsState firewallAllowAzureIps() {
+        return this.firewallAllowAzureIps;
+    }
+
+    /**
+     * Set the firewallAllowAzureIps value.
+     *
+     * @param firewallAllowAzureIps the firewallAllowAzureIps value to set
+     * @return the DataLakeStoreAccountUpdateParameters object itself.
+     */
+    public DataLakeStoreAccountUpdateParameters withFirewallAllowAzureIps(FirewallAllowAzureIpsState firewallAllowAzureIps) {
+        this.firewallAllowAzureIps = firewallAllowAzureIps;
+        return this;
+    }
+
+    /**
+     * Get the encryptionConfig value.
+     *
+     * @return the encryptionConfig value
+     */
+    public UpdateEncryptionConfig encryptionConfig() {
+        return this.encryptionConfig;
+    }
+
+    /**
+     * Set the encryptionConfig value.
+     *
+     * @param encryptionConfig the encryptionConfig value to set
+     * @return the DataLakeStoreAccountUpdateParameters object itself.
+     */
+    public DataLakeStoreAccountUpdateParameters withEncryptionConfig(UpdateEncryptionConfig encryptionConfig) {
+        this.encryptionConfig = encryptionConfig;
         return this;
     }
 

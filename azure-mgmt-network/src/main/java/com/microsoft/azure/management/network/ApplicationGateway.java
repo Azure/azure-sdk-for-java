@@ -5,10 +5,11 @@
  */
 package com.microsoft.azure.management.network;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayInner;
@@ -29,7 +30,6 @@ import rx.Completable;
  * Entry point for application gateway management API in Azure.
  */
 @Fluent
-@Beta
 public interface ApplicationGateway extends
         GroupableResource<NetworkManager, ApplicationGatewayInner>,
         Refreshable<ApplicationGateway>,
@@ -55,7 +55,6 @@ public interface ApplicationGateway extends
      * @return a representation of the deferred computation of this call
      */
     @Method
-    @Beta
     Completable startAsync();
 
     /**
@@ -63,7 +62,6 @@ public interface ApplicationGateway extends
      * @return a representation of the deferred computation of this call
      */
     @Method
-    @Beta
     Completable stopAsync();
 
     // Getters
@@ -71,8 +69,8 @@ public interface ApplicationGateway extends
     /**
      * @return disabled SSL protocols
      */
-    @Beta //v1.0.0
-    List<ApplicationGatewaySslProtocol> disabledSslProtocols();
+    @Beta(SinceVersion.V1_1_0)
+    Collection<ApplicationGatewaySslProtocol> disabledSslProtocols();
 
     /**
      * @return true if the application gateway has at least one internally load balanced frontend accessible within the virtual network
@@ -120,11 +118,6 @@ public interface ApplicationGateway extends
     ApplicationGatewayOperationalState operationalState();
 
     /**
-     * @return the SSL policy for the application gateway
-     */
-    ApplicationGatewaySslPolicy sslPolicy();
-
-    /**
      * @return IP configurations of this application gateway, indexed by name
      */
     Map<String, ApplicationGatewayIPConfiguration> ipConfigurations();
@@ -140,7 +133,7 @@ public interface ApplicationGateway extends
     Map<String, ApplicationGatewayProbe> probes();
 
     /**
-     * @return the IP configuration named "default" if it exists, or the one existing IP configuration if only one exists, else null
+     * @return the existing IP configurations if only one exists, else null
      */
     ApplicationGatewayIPConfiguration defaultIPConfiguration();
 
@@ -155,7 +148,7 @@ public interface ApplicationGateway extends
     Map<String, ApplicationGatewayFrontend> publicFrontends();
 
     /**
-     * @return frontend IP configurations with a private IP address on a subnet, indexed by name
+     * @return frontend IP configurations with a private IP address within a subnet, indexed by name
      */
     Map<String, ApplicationGatewayFrontend> privateFrontends();
 
@@ -175,7 +168,7 @@ public interface ApplicationGateway extends
     Map<String, ApplicationGatewaySslCertificate> sslCertificates();
 
     /**
-     * @return Frontend listeners, indexed by name
+     * @return frontend listeners, indexed by name
      */
     Map<String, ApplicationGatewayListener> listeners();
 
@@ -192,9 +185,9 @@ public interface ApplicationGateway extends
     String frontendPortNameFromNumber(int portNumber);
 
     /**
-     * Finds a frontend listener associated with the specified frontend port number, if any.
+     * Finds a front end listener associated with the specified front end port number, if any.
      * @param portNumber a used port number
-     * @return a frontend listener, or null if none found
+     * @return a front end listener, or null if none found
      */
     ApplicationGatewayListener listenerByPortNumber(int portNumber);
 
@@ -251,9 +244,9 @@ public interface ApplicationGateway extends
          */
         interface WithPrivateFrontend {
             /**
-             * Enables a private (internal) default frontend in the subnet containing the application gateway.
+             * Enables a private (internal) default frontend within the subnet containing the application gateway.
              * <p>
-             * A frontend with the name "default" will be created if needed.
+             * A frontend with an automatically generated name will be created if none exists.
              * @return the next stage of the definition
              */
             @Method
@@ -392,7 +385,7 @@ public interface ApplicationGateway extends
              * Specifies the capacity (number of instances) for the application gateway.
              * <p>
              * By default, 1 instance is used.
-             * @param instanceCount the capacity as a number between 1 and 10 but also based on the limits imposed by the selected applicatiob gateway size
+             * @param instanceCount the capacity as a number between 1 and 10 but also based on the limits imposed by the selected application gateway size
              * @return the next stage of the definition
              */
             /*
@@ -432,7 +425,7 @@ public interface ApplicationGateway extends
 
         /**
          * The stage of an application gateway definition allowing to specify the default IP address the app gateway will be internally available at,
-         * if the default private frontend has been enabled.
+         * if a default private frontend has been enabled.
          */
         interface WithPrivateIPAddress extends HasPrivateIPAddress.DefinitionStages.WithPrivateIPAddress<WithCreate> {
         }
@@ -446,7 +439,7 @@ public interface ApplicationGateway extends
              * @param protocol an SSL protocol
              * @return the next stage of the definition
              */
-            @Beta //v1.0.0
+            @Beta(SinceVersion.V1_1_0)
             WithCreate withDisabledSslProtocol(ApplicationGatewaySslProtocol protocol);
 
             /**
@@ -454,13 +447,13 @@ public interface ApplicationGateway extends
              * @param protocols SSL protocols
              * @return the next stage of the definition
              */
-            @Beta //v1.0.0
+            @Beta(SinceVersion.V1_1_0)
             WithCreate withDisabledSslProtocols(ApplicationGatewaySslProtocol...protocols);
         }
 
         /**
          * The stage of an application gateway definition containing all the required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allowing
+         * the resource to be created, but also allowing
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
@@ -493,16 +486,16 @@ public interface ApplicationGateway extends
          */
         interface WithPrivateFrontend {
             /**
-             * Enables a private (internal) default frontend in the subnet containing the application gateway.
+             * Enables a private (internal) default front end in the subnet containing the application gateway.
              * <p>
-             * A frontend with the name "default" will be created if needed.
+             * A front end with an automatically generated name will be created if none exists.
              * @return the next stage of the update
              */
             @Method
             Update withPrivateFrontend();
 
             /**
-             * Specifies that no private, or internal, frontend should be enabled.
+             * Specifies that no private, or internal, front end should be enabled.
              * @return the next stage of the definition
              */
             @Method
@@ -530,7 +523,7 @@ public interface ApplicationGateway extends
              * <p>
              * This will create a new IP configuration, if it does not already exist.
              * <p>
-             * Private (internal) frontends, if any have been enabled, will be configured to use this subnet as well.
+             * Private (internal) front ends, if any have been enabled, will be configured to use this subnet as well.
              * @param network the virtual network the subnet is part of
              * @param subnetName the name of a subnet within the selected network
              * @return the next stage of the update
@@ -577,18 +570,18 @@ public interface ApplicationGateway extends
         }
 
         /**
-         * The stage of an application gateway update allowing to modify frontend ports.
+         * The stage of an application gateway update allowing to modify front end ports.
          */
         interface WithFrontendPort {
             /**
-             * Creates a frontend port with an auto-generated name and the specified port number, unless one already exists.
+             * Creates a front end port with an auto-generated name and the specified port number, unless one already exists.
              * @param portNumber a port number
              * @return the next stage of the definition
              */
             Update withFrontendPort(int portNumber);
 
             /**
-             * Creates a frontend port with the specified name and port number, unless a port matching this name and/or number already exists.
+             * Creates a front end port with the specified name and port number, unless a port matching this name and/or number already exists.
              * @param portNumber a port number
              * @param name the name to assign to the port
              * @return the next stage of the definition, or null if a port matching either the name or the number, but not both, already exists.
@@ -625,50 +618,50 @@ public interface ApplicationGateway extends
          */
         interface WithFrontend {
             /**
-             * Removes the specified frontend IP configuration.
+             * Removes the specified front end IP configuration.
              * <p>
-             * Note that removing a frontend referenced by other settings may break the application gateway.
-             * @param frontendName the name of the frontend IP configuration to remove
+             * Note that removing a front end referenced by other settings may break the application gateway.
+             * @param frontendName the name of the front end IP configuration to remove
              * @return the next stage of the update
              */
             Update withoutFrontend(String frontendName);
 
             /**
-             * Begins the update of an existing frontend IP configuration.
-             * @param frontendName the name of an existing frontend IP configuration
-             * @return the first stage of the frontend IP configuration update
+             * Begins the update of an existing front end IP configuration.
+             * @param frontendName the name of an existing front end IP configuration
+             * @return the first stage of the front end IP configuration update
              */
             ApplicationGatewayFrontend.Update updateFrontend(String frontendName);
 
             /**
              * Specifies that the application gateway should not be Internet-facing.
              * <p>
-             * Note that if there are any other settings referencing the public frontend, removing it may break the application gateway.
+             * Note that if there are any other settings referencing the public front end, removing it may break the application gateway.
              * @return the next stage of the update
              */
             @Method
             Update withoutPublicFrontend();
 
             /**
-             * Specifies that the application gateway should not be private, i.e. its endponts should not be internally accessible
+             * Specifies that the application gateway should not be private, i.e. its endpoints should not be internally accessible
              * from within the virtual network.
              * <p>
-             * Note that if there are any other settings referencing the private frontend, removing it may break the application gateway.
+             * Note that if there are any other settings referencing the private front end, removing it may break the application gateway.
              * @return the next stage of the update
              */
             @Method
             Update withoutPrivateFrontend();
 
             /**
-             * Begins the update of the public frontend IP configuration, if it exists.
-             * @return the first stage of a frontend update or null if no public frontend exists
+             * Begins the update of the public front end IP configuration, if it exists.
+             * @return the first stage of a front end update or null if no public front end exists
              */
             @Method
             ApplicationGatewayFrontend.Update updatePublicFrontend();
 
             /**
-             * Begins the update of the private frontend IP configuration, if it exists.
-             * @return the first stage of a frontend update or null if no private frontend exists
+             * Begins the update of the private front end IP configuration, if it exists.
+             * @return the first stage of a front end update or null if no private front end exists
              */
             /* TODO: Nothing to update in the private frontend today - changing Subnet and/or private IP not supported
              * @Method
@@ -676,15 +669,15 @@ public interface ApplicationGateway extends
              */
 
             /**
-             * Begins the definition of the default public frontend IP configuration, creating one if it does not already exist.
-             * @return the first stage of a frontend definition
+             * Begins the definition of the default public front end IP configuration, creating one if it does not already exist.
+             * @return the first stage of a front end definition
              */
             @Method
             ApplicationGatewayFrontend.UpdateDefinitionStages.Blank<Update> definePublicFrontend();
 
             /**
-             * Begins the definition of the default private frontend IP configuration, creating one if it does not already exist.
-             * @return the first stage of a frontend definition
+             * Begins the definition of the default private front end IP configuration, creating one if it does not already exist.
+             * @return the first stage of a front end definition
              */
             @Method
             ApplicationGatewayFrontend.UpdateDefinitionStages.Blank<Update> definePrivateFrontend();
@@ -752,6 +745,8 @@ public interface ApplicationGateway extends
 
             /**
              * Removes a probe from the application gateway.
+             * <p>
+             * Any references to this probe from backend HTTP configurations will be automatically removed.
              * @param name the name of an existing probe
              * @return the next stage of the update
              */
@@ -895,7 +890,7 @@ public interface ApplicationGateway extends
              * @param protocol an SSL protocol
              * @return the next stage of the update
              */
-            @Beta //v1.0.0
+            @Beta(SinceVersion.V1_1_0)
             Update withDisabledSslProtocol(ApplicationGatewaySslProtocol protocol);
 
             /**
@@ -903,7 +898,7 @@ public interface ApplicationGateway extends
              * @param protocols SSL protocols
              * @return the next stage of the update
              */
-            @Beta //v1.0.0
+            @Beta(SinceVersion.V1_1_0)
             Update withDisabledSslProtocols(ApplicationGatewaySslProtocol...protocols);
 
             /**
@@ -911,7 +906,7 @@ public interface ApplicationGateway extends
              * @param protocol an SSL protocol
              * @return the next stage of the update
              */
-            @Beta //v1.0.0
+            @Beta(SinceVersion.V1_1_0)
             Update withoutDisabledSslProtocol(ApplicationGatewaySslProtocol protocol);
 
             /**
@@ -919,24 +914,22 @@ public interface ApplicationGateway extends
              * @param protocols SSL protocols
              * @return the next stage of the update
              */
-            @Beta //v1.0.0
+            @Beta(SinceVersion.V1_1_0)
             Update withoutDisabledSslProtocols(ApplicationGatewaySslProtocol...protocols);
 
             /**
              * Enables all SSL protocols, if previously disabled.
              * @return the next stage of the update
              */
-            @Beta //v1.0.0
+            @Beta(SinceVersion.V1_1_0)
             @Method
-            Update withoutAnyDisabledProtocols();
+            Update withoutAnyDisabledSslProtocols();
         }
     }
 
     /**
      * The template for an application gateway update operation, containing all the settings that
      * can be modified.
-     * <p>
-     * Call {@code apply()} to apply the changes to the resource in Azure.
      */
     interface Update extends
         Appliable<ApplicationGateway>,

@@ -5,7 +5,6 @@
  */
 package com.microsoft.azure.management.network;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayHttpListenerInner;
@@ -21,10 +20,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
- * An immutable client-side representation of an application gateway's HTTP listener.
+ * A client-side representation of an application gateway's HTTP listener.
  */
 @Fluent()
-@Beta
 public interface ApplicationGatewayListener extends
     HasInner<ApplicationGatewayHttpListenerInner>,
     ChildResource<ApplicationGateway>,
@@ -65,7 +63,7 @@ public interface ApplicationGatewayListener extends
          * The final stage of an application gateway HTTP listener.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the definition
-         * can be attached to the parent application gateway definition using {@link WithAttach#attach()}.
+         * can be attached to the parent application gateway definition.
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends
@@ -398,7 +396,7 @@ public interface ApplicationGatewayListener extends
         /** The final stage of an application gateway HTTP listener definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the definition
-         * can be attached to the parent application gateway definition using {@link WithAttach#attach()}.
+         * can be attached to the parent application gateway definition.
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends

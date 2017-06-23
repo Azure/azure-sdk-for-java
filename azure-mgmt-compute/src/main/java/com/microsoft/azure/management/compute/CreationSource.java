@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 /**
  * The source from which managed disk or snapshot is created.
  */
-@LangDefinition
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.Compute.Fluent.Models")
 public class CreationSource {
     private final CreationData creationData;
 

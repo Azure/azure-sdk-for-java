@@ -40,6 +40,15 @@ public class UserUpdateParametersInner {
     private String mailNickname;
 
     /**
+     * A two letter country code (ISO standard 3166). Required for users that
+     * will be assigned licenses due to legal requirement to check for
+     * availability of services in countries. Examples include: "US", "JP", and
+     * "GB".
+     */
+    @JsonProperty(value = "usageLocation")
+    private String usageLocation;
+
+    /**
      * Get the accountEnabled value.
      *
      * @return the accountEnabled value
@@ -116,6 +125,26 @@ public class UserUpdateParametersInner {
      */
     public UserUpdateParametersInner withMailNickname(String mailNickname) {
         this.mailNickname = mailNickname;
+        return this;
+    }
+
+    /**
+     * Get the usageLocation value.
+     *
+     * @return the usageLocation value
+     */
+    public String usageLocation() {
+        return this.usageLocation;
+    }
+
+    /**
+     * Set the usageLocation value.
+     *
+     * @param usageLocation the usageLocation value to set
+     * @return the UserUpdateParametersInner object itself.
+     */
+    public UserUpdateParametersInner withUsageLocation(String usageLocation) {
+        this.usageLocation = usageLocation;
         return this;
     }
 

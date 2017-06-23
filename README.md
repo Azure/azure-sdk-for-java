@@ -2,11 +2,11 @@
 
 # Azure Management Libraries for Java
 
-This README is based on the released stable version (1.0.0). If you are looking for other releases, see [More Information](#more-information)
+This README is based on the released stable version (1.1.0). If you are looking for other releases, see [More Information](#more-information)
 
 The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources.
 
-## Feature Availability and Road Map as of Version 1.0.0 ##
+## Feature Availability and Road Map as of Version 1.1.0 ##
 
 <table>
   <tr>
@@ -18,8 +18,8 @@ The Azure Management Libraries for Java is a higher-level, object-oriented API f
   <tr>
     <td>Compute</td>
     <td>Virtual machines and VM extensions<br>Virtual machine scale sets<br>Managed disks</td>
-    <td></td>
     <td valign="top">Azure container services<br>Azure container registry</td>
+    <td valign="top"></td>
   </tr>
   <tr>
     <td>Storage</td>
@@ -31,24 +31,24 @@ The Azure Management Libraries for Java is a higher-level, object-oriented API f
     <td>SQL Database</td>
     <td>Databases<br>Firewalls<br>Elastic pools</td>
     <td></td>
-    <td valign="top"></td>
+    <td valign="top">More features</td>
   </tr>
   <tr>
     <td>Networking</td>
-    <td>Virtual networks<br>Network interfaces<br>IP addresses<br>Routing table<br>Network security groups<br>DNS<br>Traffic managers</td>
-    <td valign="top">Load balancers<br>Application gateways</td>
-    <td valign="top"></td>
+    <td>Virtual networks<br>Network interfaces<br>IP addresses<br>Routing table<br>Network security groups<br>Application gateways<br>DNS<br>Traffic managers</td>
+    <td valign="top">Load balancers</td>
+    <td valign="top">VPN<br>Network watchers<br>More application gateway features</td>
   </tr>
   <tr>
     <td>More services</td>
     <td>Resource Manager<br>Key Vault<br>Redis<br>CDN<br>Batch</td>
-    <td valign="top">App service - Web apps<br>Functions<br>Service bus</td>
-    <td valign="top">Monitor<br>Graph RBAC<br>DocumentDB<br>Scheduler</td>
+    <td valign="top">Web apps<br>Function Apps<br>Service bus<br>Graph RBAC<br>DocumentDB</td>
+    <td valign="top">Monitor<br>Scheduler<br>Functions management<br>Search<br>More Graph RBAC features</td>
   </tr>
   <tr>
     <td>Fundamentals</td>
-    <td>Authentication - core</td>
-    <td>Async methods</td>
+    <td>Authentication - core<br>Async methods</td>
+    <td></td>
     <td valign="top"></td>
   </tr>
 </table>
@@ -63,6 +63,21 @@ The `Azure` class is the simplest entry point for creating and interacting with 
 
 `Azure azure = Azure.authenticate(credFile).withDefaultSubscription();` 
 
+#### Create a Cosmos DB with DocumentDB Programming Model
+
+You can create a Cosmos DB account by using a `define() … create()` method chain.
+
+```java
+DocumentDBAccount documentDBAccount = azure.documentDBs().define(docDBName)
+	.withRegion(Region.US_EAST)
+	.withNewResourceGroup(rgName)
+	.withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
+	.withSessionConsistency()
+	.withWriteReplication(Region.US_WEST)
+	.withReadReplication(Region.US_CENTRAL)
+	.create()
+```
+
 #### Create a Virtual Machine
 
 You can create a virtual machine instance by using a `define() … create()` method chain.
@@ -74,8 +89,8 @@ VirtualMachine linuxVM = azure.virtualMachines().define("myLinuxVM")
 	.withRegion(Region.US_EAST)
 	.withNewResourceGroup(rgName)
 	.withNewPrimaryNetwork("10.0.0.0/28")
-	.withPrimaryPrivateIpAddressDynamic()
-	.withNewPrimaryPublicIpAddress("mylinuxvmdns")
+	.withPrimaryPrivateIPAddressDynamic()
+	.withNewPrimaryPublicIPAddress("mylinuxvmdns")
 	.withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
 	.withRootUsername("tirekicker")
 	.withSsh(sshKey)
@@ -209,7 +224,7 @@ SqlDatabase database = sqlServer.databases().define("myNewDatabase")
 
 # Sample Code
 
-You can find plenty of sample code that illustrates management scenarios (69+ end-to-end scenarios) for Azure Virtual Machines, Virtual Machine Scale Sets, Managed Disks, Storage, Networking, Resource Manager, SQL Database, App Service (Web Apps on Windows and Linux), Functions, Service Bus, Key Vault, Redis, CDN and Batch … 
+You can find plenty of sample code that illustrates management scenarios (80+ end-to-end scenarios) for Azure Virtual Machines, Virtual Machine Scale Sets, Managed Disks, Active Directory Azure Container Service and Registry, Storage, Networking, Resource Manager, SQL Database, Cosmos DB, App Service (Web Apps on Windows and Linux), Functions, Service Bus, Key Vault, Redis, CDN and Batch … 
 
 <table>
   <tr>
@@ -247,6 +262,27 @@ You can find plenty of sample code that illustrates management scenarios (69+ en
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-scale-sets">Manage virtual machine scale sets (behind an Internet facing load balancer)</a></li>
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-scale-sets-async">Manage virtual machine scale sets (behind an Internet facing load balancer) asynchronously</a></li>
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-scale-set-with-unmanaged-disks">Manage virtual machine scale sets with unmanaged disks</li>
+</ul></td>
+  </tr>
+<tr>
+    <td>Active Directory</td>
+    <td><ul style="list-style-type:circle">
+<li><a href="https://github.com/Azure-Samples/aad-java-manage-service-principals">Manage service principals using Java</a></li>
+<li><a href="https://github.com/Azure-Samples/aad-java-browse-graph-and-manage-roles">Browse graph (users, groups and members) and managing roles</a></li>
+<li><a href="https://github.com/Azure-Samples/aad-java-manage-passwords">Manage passwords</li>
+</ul></td>
+  </tr>
+<tr>
+    <td>Container Service and Container Registry</td>
+    <td><ul style="list-style-type:circle">
+<li><a href="https://github.com/Azure-Samples/acr-java-manage-azure-container-registry">Manage container registry</a></li>
+<li><a href="https://github.com/Azure-Samples/acs-java-deploy-image-from-acr-to-kubernetes">Deploy an image from container registry to Kubernetes cluster</a></li>
+<!--
+<li><a href="https://github.com/Azure-Samples/acs-java-deploy-image-from-acr-to-swarm">Deploy an image from container registry to Swarm cluster</li>
+<li><a href="https://github.com/Azure-Samples/acs-java-deploy-image-from-docker-hub-to-kubernetes">Deploy an image from Docker hub to Kubernetes cluster</a></li>
+<li><a href="https://github.com/Azure-Samples/acs-java-deploy-image-from-docker-hub-to-swarm">Deploy an image from Docker hub to Swarm cluster</li>
+-->
+<li><a href="https://github.com/Azure-Samples/acs-java-manage-azure-container-service">Manage container service</li>
 </ul></td>
   </tr>
   <tr>
@@ -323,6 +359,7 @@ You can find plenty of sample code that illustrates management scenarios (69+ en
     <td>App Service - Web Apps on <b>Linux</b></td>
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/app-service-java-manage-web-apps-on-linux">Manage Web apps</a></li>
+<li><a href="https://github.com/Azure-Samples/app-service-java-deploy-image-from-acr-to-linux">Deploy a container image from Azure Container Registry to Linux containers</a></li>
 <li><a href="https://github.com/Azure-Samples/app-service-java-manage-web-apps-on-linux-with-custom-domains">Manage Web apps with custom domains</a></li>
 <li><a href="https://github.com/Azure-Samples/app-service-java-configure-deployment-sources-for-web-apps-on-linux">Configure deployment sources for Web apps</a></li>
 <li><a href="https://github.com/Azure-Samples/app-service-java-scale-web-apps-on-linux">Scale Web apps</a></li>
@@ -340,6 +377,17 @@ You can find plenty of sample code that illustrates management scenarios (69+ en
 <li><a href="https://github.com/Azure-Samples/app-service-java-manage-authentication-for-functions">Manage authentication for functions</a></li>
 </ul></td>
   </tr>
+
+<tr>
+    <td>Cosmos DB</td>
+    <td><ul style="list-style-type:circle">
+<li><a href="https://github.com/Azure-Samples/cosmosdb-java-create-documentdb-and-configure-for-high-availability">Create a DocumentDB and configure it for high availability</a></li>
+<li><a href="https://github.com/Azure-Samples/cosmosdb-java-create-documentdb-and-configure-for-eventual-consistency">Create a DocumentDB and configure it with eventual consistency</a></li>
+<li><a href="https://github.com/Azure-Samples/cosmosdb-java-create-documentdb-and-configure-firewall">Create a DocumentDB, configure it for high availability and create a firewall to limit access from an approved set of IP addresses</li>
+<li><a href="https://github.com/Azure-Samples/cosmosdb-java-create-documentdb-and-get-mongodb-connection-string">Create a DocumentDB and get MongoDB connection string</li>
+</ul></td>
+  </tr>
+
 
   <tr>
     <td>Service Bus</td>
@@ -392,15 +440,15 @@ You can find plenty of sample code that illustrates management scenarios (69+ en
 # Download
 
 
-**1.0.0**
+**1.1.0**
 
-If you are using released builds from 1.0.0, add the following to your POM file:
+If you are using released builds from 1.1.0, add the following to your POM file:
 
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
@@ -413,7 +461,7 @@ If you are using released builds from 1.0.0, add the following to your POM file:
 
 ## Help
 
-If you are migrating your code to 1.0.0, you can use these notes for [preparing your code for 1.0 from 1.0 beta 5](./notes/prepare-for-1.0.0.md).
+If you are migrating your code to 1.1.0, you can use these notes for [preparing your code for 1.1.0 from 1.0.0](./notes/prepare-for-1.1.0.md).
 
 If you encounter any bugs with these libraries, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues) or checkout [StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
 
@@ -436,6 +484,7 @@ If you would like to become an active contributor to this project please follow 
 
 | Version           | SHA1                                                                                      | Remarks                                               |
 |-------------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------|
+| 1.0.0       | [1.0.0](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0)               | Tagged release for 1.0.0 version of Azure management libraries |
 | 1.0.0-beta5       | [1.0.0-beta5](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta5)               | Tagged release for 1.0.0-beta5 version of Azure management libraries |
 | 1.0.0-beta4.1       | [1.0.0-beta4.1](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta4.1)               | Tagged release for 1.0.0-beta4.1 version of Azure management libraries |
 | 1.0.0-beta3       | [1.0.0-beta3](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta3)               | Tagged release for 1.0.0-beta3 version of Azure management libraries |

@@ -78,9 +78,12 @@ public final class ManageFunctionAppSourceControl {
 
             System.out.println("Deploying a function app to " + app1Name + " through FTP...");
 
-            Utils.uploadFileToFtp(app1.getPublishingProfile(), "host.json", ManageFunctionAppSourceControl.class.getResourceAsStream("/square-function-app/host.json"));
-            Utils.uploadFileToFtp(app1.getPublishingProfile(), "square/function.json", ManageFunctionAppSourceControl.class.getResourceAsStream("/square-function-app/square/function.json"));
-            Utils.uploadFileToFtp(app1.getPublishingProfile(), "square/index.js", ManageFunctionAppSourceControl.class.getResourceAsStream("/square-function-app/square/index.js"));
+            Utils.uploadFileToFunctionApp(app1.getPublishingProfile(), "host.json", ManageFunctionAppSourceControl.class.getResourceAsStream("/square-function-app/host.json"));
+            Utils.uploadFileToFunctionApp(app1.getPublishingProfile(), "square/function.json", ManageFunctionAppSourceControl.class.getResourceAsStream("/square-function-app/square/function.json"));
+            Utils.uploadFileToFunctionApp(app1.getPublishingProfile(), "square/index.js", ManageFunctionAppSourceControl.class.getResourceAsStream("/square-function-app/square/index.js"));
+
+            // sync triggers
+            app1.syncTriggers();
 
             System.out.println("Deployment square app to function app " + app1.name() + " completed");
             Utils.print(app1);

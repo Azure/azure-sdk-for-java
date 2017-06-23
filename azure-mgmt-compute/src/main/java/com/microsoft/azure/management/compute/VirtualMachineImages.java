@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingByRegion;
@@ -26,6 +28,19 @@ public interface VirtualMachineImages extends
      * @return the virtual machine image
      */
     VirtualMachineImage getImage(Region region, String publisherName, String offerName, String skuName, String version);
+
+    /**
+     * Gets a virtual machine image.
+     *
+     * @param region the region
+     * @param publisherName publisher name
+     * @param offerName offer name
+     * @param skuName SKU name
+     * @param version version name
+     * @return the virtual machine image
+     */
+    @Beta(SinceVersion.V1_1_0)
+    VirtualMachineImage getImage(String region, String publisherName, String offerName, String skuName, String version);
 
     /**
      * @return entry point to virtual machine image publishers

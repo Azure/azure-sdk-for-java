@@ -205,17 +205,17 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.getByResourceGroup(this.client.subscriptionId(), resourceGroupName, accountName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DatabaseAccountInner>>>() {
-                @Override
-                public Observable<ServiceResponse<DatabaseAccountInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<DatabaseAccountInner> clientResponse = getByResourceGroupDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
+                .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DatabaseAccountInner>>>() {
+                    @Override
+                    public Observable<ServiceResponse<DatabaseAccountInner>> call(Response<ResponseBody> response) {
+                        try {
+                            ServiceResponse<DatabaseAccountInner> clientResponse = getByResourceGroupDelegate(response);
+                            return Observable.just(clientResponse);
+                        } catch (Throwable t) {
+                            return Observable.error(t);
+                        }
                     }
-                }
-            });
+                });
     }
 
     private ServiceResponse<DatabaseAccountInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -380,17 +380,17 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         DatabaseAccountPatchParameters updateParameters = new DatabaseAccountPatchParameters();
         updateParameters.withTags(tags);
         return service.beginPatch(this.client.subscriptionId(), resourceGroupName, accountName, this.client.apiVersion(), this.client.acceptLanguage(), updateParameters, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DatabaseAccountInner>>>() {
-                @Override
-                public Observable<ServiceResponse<DatabaseAccountInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<DatabaseAccountInner> clientResponse = beginPatchDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
+                .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DatabaseAccountInner>>>() {
+                    @Override
+                    public Observable<ServiceResponse<DatabaseAccountInner>> call(Response<ResponseBody> response) {
+                        try {
+                            ServiceResponse<DatabaseAccountInner> clientResponse = beginPatchDelegate(response);
+                            return Observable.just(clientResponse);
+                        } catch (Throwable t) {
+                            return Observable.error(t);
+                        }
                     }
-                }
-            });
+                });
     }
 
     private ServiceResponse<DatabaseAccountInner> beginPatchDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -551,17 +551,17 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         }
         Validator.validate(createUpdateParameters);
         return service.beginCreateOrUpdate(this.client.subscriptionId(), resourceGroupName, accountName, this.client.apiVersion(), createUpdateParameters, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DatabaseAccountInner>>>() {
-                @Override
-                public Observable<ServiceResponse<DatabaseAccountInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<DatabaseAccountInner> clientResponse = beginCreateOrUpdateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
+                .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DatabaseAccountInner>>>() {
+                    @Override
+                    public Observable<ServiceResponse<DatabaseAccountInner>> call(Response<ResponseBody> response) {
+                        try {
+                            ServiceResponse<DatabaseAccountInner> clientResponse = beginCreateOrUpdateDelegate(response);
+                            return Observable.just(clientResponse);
+                        } catch (Throwable t) {
+                            return Observable.error(t);
+                        }
                     }
-                }
-            });
+                });
     }
 
     private ServiceResponse<DatabaseAccountInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -704,17 +704,17 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.beginDelete(this.client.subscriptionId(), resourceGroupName, accountName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = beginDeleteDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
+                .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                    @Override
+                    public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                        try {
+                            ServiceResponse<Void> clientResponse = beginDeleteDelegate(response);
+                            return Observable.just(clientResponse);
+                        } catch (Throwable t) {
+                            return Observable.error(t);
+                        }
                     }
-                }
-            });
+                });
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -938,17 +938,17 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         FailoverPolicies failoverParameters = new FailoverPolicies();
         failoverParameters.withFailoverPolicies(null);
         return service.beginFailoverPriorityChange(this.client.subscriptionId(), resourceGroupName, accountName, this.client.apiVersion(), this.client.acceptLanguage(), failoverParameters, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = beginFailoverPriorityChangeDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
+                .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                    @Override
+                    public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                        try {
+                            ServiceResponse<Void> clientResponse = beginFailoverPriorityChangeDelegate(response);
+                            return Observable.just(clientResponse);
+                        } catch (Throwable t) {
+                            return Observable.error(t);
+                        }
                     }
-                }
-            });
+                });
     }
 
     /**
@@ -1023,17 +1023,17 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         FailoverPolicies failoverParameters = new FailoverPolicies();
         failoverParameters.withFailoverPolicies(failoverPolicies);
         return service.beginFailoverPriorityChange(this.client.subscriptionId(), resourceGroupName, accountName, this.client.apiVersion(), this.client.acceptLanguage(), failoverParameters, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = beginFailoverPriorityChangeDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
+                .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                    @Override
+                    public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                        try {
+                            ServiceResponse<Void> clientResponse = beginFailoverPriorityChangeDelegate(response);
+                            return Observable.just(clientResponse);
+                        } catch (Throwable t) {
+                            return Observable.error(t);
+                        }
                     }
-                }
-            });
+                });
     }
 
     private ServiceResponse<Void> beginFailoverPriorityChangeDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -1100,18 +1100,18 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<DatabaseAccountInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<DatabaseAccountInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<DatabaseAccountInner>> result = listDelegate(response);
-                        ServiceResponse<List<DatabaseAccountInner>> clientResponse = new ServiceResponse<List<DatabaseAccountInner>>(result.body().items(), result.response());
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
+                .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<DatabaseAccountInner>>>>() {
+                    @Override
+                    public Observable<ServiceResponse<List<DatabaseAccountInner>>> call(Response<ResponseBody> response) {
+                        try {
+                            ServiceResponse<PageImpl<DatabaseAccountInner>> result = listDelegate(response);
+                            ServiceResponse<List<DatabaseAccountInner>> clientResponse = new ServiceResponse<List<DatabaseAccountInner>>(result.body().items(), result.response());
+                            return Observable.just(clientResponse);
+                        } catch (Throwable t) {
+                            return Observable.error(t);
+                        }
                     }
-                }
-            });
+                });
     }
 
     private ServiceResponse<PageImpl<DatabaseAccountInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -1184,18 +1184,18 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<DatabaseAccountInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<DatabaseAccountInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<DatabaseAccountInner>> result = listByResourceGroupDelegate(response);
-                        ServiceResponse<List<DatabaseAccountInner>> clientResponse = new ServiceResponse<List<DatabaseAccountInner>>(result.body().items(), result.response());
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
+                .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<DatabaseAccountInner>>>>() {
+                    @Override
+                    public Observable<ServiceResponse<List<DatabaseAccountInner>>> call(Response<ResponseBody> response) {
+                        try {
+                            ServiceResponse<PageImpl<DatabaseAccountInner>> result = listByResourceGroupDelegate(response);
+                            ServiceResponse<List<DatabaseAccountInner>> clientResponse = new ServiceResponse<List<DatabaseAccountInner>>(result.body().items(), result.response());
+                            return Observable.just(clientResponse);
+                        } catch (Throwable t) {
+                            return Observable.error(t);
+                        }
                     }
-                }
-            });
+                });
     }
 
     private ServiceResponse<PageImpl<DatabaseAccountInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -1213,9 +1213,9 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the DatabaseAccountListKeysResultInner object if successful.
+     * @return the DatabaseAccountListKeysResult object if successful.
      */
-    public DatabaseAccountListKeysResultInner listKeys(String resourceGroupName, String accountName) {
+    public DatabaseAccountListKeysResult listKeys(String resourceGroupName, String accountName) {
         return listKeysWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
     }
 
@@ -1228,7 +1228,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<DatabaseAccountListKeysResultInner> listKeysAsync(String resourceGroupName, String accountName, final ServiceCallback<DatabaseAccountListKeysResultInner> serviceCallback) {
+    public ServiceFuture<DatabaseAccountListKeysResult> listKeysAsync(String resourceGroupName, String accountName, final ServiceCallback<DatabaseAccountListKeysResult> serviceCallback) {
         return ServiceFuture.fromResponse(listKeysWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
@@ -1238,12 +1238,12 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName DocumentDB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DatabaseAccountListKeysResultInner object
+     * @return the observable to the DatabaseAccountListKeysResult object
      */
-    public Observable<DatabaseAccountListKeysResultInner> listKeysAsync(String resourceGroupName, String accountName) {
-        return listKeysWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<DatabaseAccountListKeysResultInner>, DatabaseAccountListKeysResultInner>() {
+    public Observable<DatabaseAccountListKeysResult> listKeysAsync(String resourceGroupName, String accountName) {
+        return listKeysWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<DatabaseAccountListKeysResult>, DatabaseAccountListKeysResult>() {
             @Override
-            public DatabaseAccountListKeysResultInner call(ServiceResponse<DatabaseAccountListKeysResultInner> response) {
+            public DatabaseAccountListKeysResult call(ServiceResponse<DatabaseAccountListKeysResult> response) {
                 return response.body();
             }
         });
@@ -1255,9 +1255,9 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName DocumentDB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DatabaseAccountListKeysResultInner object
+     * @return the observable to the DatabaseAccountListKeysResult object
      */
-    public Observable<ServiceResponse<DatabaseAccountListKeysResultInner>> listKeysWithServiceResponseAsync(String resourceGroupName, String accountName) {
+    public Observable<ServiceResponse<DatabaseAccountListKeysResult>> listKeysWithServiceResponseAsync(String resourceGroupName, String accountName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -1271,22 +1271,22 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.listKeys(this.client.subscriptionId(), resourceGroupName, accountName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DatabaseAccountListKeysResultInner>>>() {
-                @Override
-                public Observable<ServiceResponse<DatabaseAccountListKeysResultInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<DatabaseAccountListKeysResultInner> clientResponse = listKeysDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
+                .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DatabaseAccountListKeysResult>>>() {
+                    @Override
+                    public Observable<ServiceResponse<DatabaseAccountListKeysResult>> call(Response<ResponseBody> response) {
+                        try {
+                            ServiceResponse<DatabaseAccountListKeysResult> clientResponse = listKeysDelegate(response);
+                            return Observable.just(clientResponse);
+                        } catch (Throwable t) {
+                            return Observable.error(t);
+                        }
                     }
-                }
-            });
+                });
     }
 
-    private ServiceResponse<DatabaseAccountListKeysResultInner> listKeysDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<DatabaseAccountListKeysResultInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<DatabaseAccountListKeysResultInner>() { }.getType())
+    private ServiceResponse<DatabaseAccountListKeysResult> listKeysDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<DatabaseAccountListKeysResult, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<DatabaseAccountListKeysResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1299,9 +1299,9 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the DatabaseAccountListConnectionStringsResultInner object if successful.
+     * @return the DatabaseAccountListConnectionStringsResult object if successful.
      */
-    public DatabaseAccountListConnectionStringsResultInner listConnectionStrings(String resourceGroupName, String accountName) {
+    public DatabaseAccountListConnectionStringsResult listConnectionStrings(String resourceGroupName, String accountName) {
         return listConnectionStringsWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
     }
 
@@ -1314,7 +1314,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<DatabaseAccountListConnectionStringsResultInner> listConnectionStringsAsync(String resourceGroupName, String accountName, final ServiceCallback<DatabaseAccountListConnectionStringsResultInner> serviceCallback) {
+    public ServiceFuture<DatabaseAccountListConnectionStringsResult> listConnectionStringsAsync(String resourceGroupName, String accountName, final ServiceCallback<DatabaseAccountListConnectionStringsResult> serviceCallback) {
         return ServiceFuture.fromResponse(listConnectionStringsWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
@@ -1324,12 +1324,12 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName DocumentDB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DatabaseAccountListConnectionStringsResultInner object
+     * @return the observable to the DatabaseAccountListConnectionStringsResult object
      */
-    public Observable<DatabaseAccountListConnectionStringsResultInner> listConnectionStringsAsync(String resourceGroupName, String accountName) {
-        return listConnectionStringsWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<DatabaseAccountListConnectionStringsResultInner>, DatabaseAccountListConnectionStringsResultInner>() {
+    public Observable<DatabaseAccountListConnectionStringsResult> listConnectionStringsAsync(String resourceGroupName, String accountName) {
+        return listConnectionStringsWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<DatabaseAccountListConnectionStringsResult>, DatabaseAccountListConnectionStringsResult>() {
             @Override
-            public DatabaseAccountListConnectionStringsResultInner call(ServiceResponse<DatabaseAccountListConnectionStringsResultInner> response) {
+            public DatabaseAccountListConnectionStringsResult call(ServiceResponse<DatabaseAccountListConnectionStringsResult> response) {
                 return response.body();
             }
         });
@@ -1341,9 +1341,9 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName DocumentDB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DatabaseAccountListConnectionStringsResultInner object
+     * @return the observable to the DatabaseAccountListConnectionStringsResult object
      */
-    public Observable<ServiceResponse<DatabaseAccountListConnectionStringsResultInner>> listConnectionStringsWithServiceResponseAsync(String resourceGroupName, String accountName) {
+    public Observable<ServiceResponse<DatabaseAccountListConnectionStringsResult>> listConnectionStringsWithServiceResponseAsync(String resourceGroupName, String accountName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -1357,22 +1357,22 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.listConnectionStrings(this.client.subscriptionId(), resourceGroupName, accountName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DatabaseAccountListConnectionStringsResultInner>>>() {
-                @Override
-                public Observable<ServiceResponse<DatabaseAccountListConnectionStringsResultInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<DatabaseAccountListConnectionStringsResultInner> clientResponse = listConnectionStringsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
+                .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DatabaseAccountListConnectionStringsResult>>>() {
+                    @Override
+                    public Observable<ServiceResponse<DatabaseAccountListConnectionStringsResult>> call(Response<ResponseBody> response) {
+                        try {
+                            ServiceResponse<DatabaseAccountListConnectionStringsResult> clientResponse = listConnectionStringsDelegate(response);
+                            return Observable.just(clientResponse);
+                        } catch (Throwable t) {
+                            return Observable.error(t);
+                        }
                     }
-                }
-            });
+                });
     }
 
-    private ServiceResponse<DatabaseAccountListConnectionStringsResultInner> listConnectionStringsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<DatabaseAccountListConnectionStringsResultInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<DatabaseAccountListConnectionStringsResultInner>() { }.getType())
+    private ServiceResponse<DatabaseAccountListConnectionStringsResult> listConnectionStringsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<DatabaseAccountListConnectionStringsResult, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<DatabaseAccountListConnectionStringsResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1443,17 +1443,17 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.listReadOnlyKeys(this.client.subscriptionId(), resourceGroupName, accountName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DatabaseAccountListReadOnlyKeysResultInner>>>() {
-                @Override
-                public Observable<ServiceResponse<DatabaseAccountListReadOnlyKeysResultInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<DatabaseAccountListReadOnlyKeysResultInner> clientResponse = listReadOnlyKeysDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
+                .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DatabaseAccountListReadOnlyKeysResultInner>>>() {
+                    @Override
+                    public Observable<ServiceResponse<DatabaseAccountListReadOnlyKeysResultInner>> call(Response<ResponseBody> response) {
+                        try {
+                            ServiceResponse<DatabaseAccountListReadOnlyKeysResultInner> clientResponse = listReadOnlyKeysDelegate(response);
+                            return Observable.just(clientResponse);
+                        } catch (Throwable t) {
+                            return Observable.error(t);
+                        }
                     }
-                }
-            });
+                });
     }
 
     private ServiceResponse<DatabaseAccountListReadOnlyKeysResultInner> listReadOnlyKeysDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -1614,17 +1614,17 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         DatabaseAccountRegenerateKeyParameters keyToRegenerate = new DatabaseAccountRegenerateKeyParameters();
         keyToRegenerate.withKeyKind(keyKind);
         return service.beginRegenerateKey(this.client.subscriptionId(), resourceGroupName, accountName, this.client.apiVersion(), this.client.acceptLanguage(), keyToRegenerate, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = beginRegenerateKeyDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
+                .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                    @Override
+                    public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                        try {
+                            ServiceResponse<Void> clientResponse = beginRegenerateKeyDelegate(response);
+                            return Observable.just(clientResponse);
+                        } catch (Throwable t) {
+                            return Observable.error(t);
+                        }
                     }
-                }
-            });
+                });
     }
 
     private ServiceResponse<Void> beginRegenerateKeyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -1691,17 +1691,17 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.checkNameExists(accountName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<Void>, Observable<ServiceResponse<Boolean>>>() {
-                @Override
-                public Observable<ServiceResponse<Boolean>> call(Response<Void> response) {
-                    try {
-                        ServiceResponse<Boolean> clientResponse = checkNameExistsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
+                .flatMap(new Func1<Response<Void>, Observable<ServiceResponse<Boolean>>>() {
+                    @Override
+                    public Observable<ServiceResponse<Boolean>> call(Response<Void> response) {
+                        try {
+                            ServiceResponse<Boolean> clientResponse = checkNameExistsDelegate(response);
+                            return Observable.just(clientResponse);
+                        } catch (Throwable t) {
+                            return Observable.error(t);
+                        }
                     }
-                }
-            });
+                });
     }
 
     private ServiceResponse<Boolean> checkNameExistsDelegate(Response<Void> response) throws CloudException, IOException, IllegalArgumentException {
@@ -1713,3 +1713,4 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
 }
+

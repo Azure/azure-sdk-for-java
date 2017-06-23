@@ -13,12 +13,12 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
-import com.microsoft.azure.management.appservice.TopLevelDomainAgreementOption;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
+import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
@@ -70,7 +70,7 @@ public class TopLevelDomainsInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.TopLevelDomains listAgreements" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains/{name}/listAgreements")
-        Observable<Response<ResponseBody>> listAgreements(@Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body TopLevelDomainAgreementOption agreementOption, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listAgreements(@Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body TopLevelDomainAgreementOptionInner agreementOption, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.TopLevelDomains listNext" })
         @GET
@@ -278,13 +278,14 @@ public class TopLevelDomainsInner {
      * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param name Name of the top-level domain.
+     * @param agreementOption Domain agreement options.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;TldLegalAgreementInner&gt; object if successful.
      */
-    public PagedList<TldLegalAgreementInner> listAgreements(final String name) {
-        ServiceResponse<Page<TldLegalAgreementInner>> response = listAgreementsSinglePageAsync(name).toBlocking().single();
+    public PagedList<TldLegalAgreementInner> listAgreements(final String name, final TopLevelDomainAgreementOptionInner agreementOption) {
+        ServiceResponse<Page<TldLegalAgreementInner>> response = listAgreementsSinglePageAsync(name, agreementOption).toBlocking().single();
         return new PagedList<TldLegalAgreementInner>(response.body()) {
             @Override
             public Page<TldLegalAgreementInner> nextPage(String nextPageLink) {
@@ -298,13 +299,14 @@ public class TopLevelDomainsInner {
      * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param name Name of the top-level domain.
+     * @param agreementOption Domain agreement options.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<TldLegalAgreementInner>> listAgreementsAsync(final String name, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
+    public ServiceFuture<List<TldLegalAgreementInner>> listAgreementsAsync(final String name, final TopLevelDomainAgreementOptionInner agreementOption, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listAgreementsSinglePageAsync(name),
+            listAgreementsSinglePageAsync(name, agreementOption),
             new Func1<String, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> call(String nextPageLink) {
@@ -319,11 +321,12 @@ public class TopLevelDomainsInner {
      * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param name Name of the top-level domain.
+     * @param agreementOption Domain agreement options.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;TldLegalAgreementInner&gt; object
      */
-    public Observable<Page<TldLegalAgreementInner>> listAgreementsAsync(final String name) {
-        return listAgreementsWithServiceResponseAsync(name)
+    public Observable<Page<TldLegalAgreementInner>> listAgreementsAsync(final String name, final TopLevelDomainAgreementOptionInner agreementOption) {
+        return listAgreementsWithServiceResponseAsync(name, agreementOption)
             .map(new Func1<ServiceResponse<Page<TldLegalAgreementInner>>, Page<TldLegalAgreementInner>>() {
                 @Override
                 public Page<TldLegalAgreementInner> call(ServiceResponse<Page<TldLegalAgreementInner>> response) {
@@ -337,129 +340,12 @@ public class TopLevelDomainsInner {
      * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param name Name of the top-level domain.
+     * @param agreementOption Domain agreement options.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;TldLegalAgreementInner&gt; object
      */
-    public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listAgreementsWithServiceResponseAsync(final String name) {
-        return listAgreementsSinglePageAsync(name)
-            .concatMap(new Func1<ServiceResponse<Page<TldLegalAgreementInner>>, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> call(ServiceResponse<Page<TldLegalAgreementInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listAgreementsNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Gets all legal agreements that user needs to accept before purchasing a domain.
-     * Gets all legal agreements that user needs to accept before purchasing a domain.
-     *
-     * @param name Name of the top-level domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;TldLegalAgreementInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listAgreementsSinglePageAsync(final String name) {
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        final String apiVersion = "2015-04-01";
-        final Boolean includePrivacy = null;
-        TopLevelDomainAgreementOption agreementOption = new TopLevelDomainAgreementOption();
-        agreementOption.withIncludePrivacy(null);
-        return service.listAgreements(name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), agreementOption, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<TldLegalAgreementInner>> result = listAgreementsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<TldLegalAgreementInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Gets all legal agreements that user needs to accept before purchasing a domain.
-     * Gets all legal agreements that user needs to accept before purchasing a domain.
-     *
-     * @param name Name of the top-level domain.
-     * @param includePrivacy If &lt;code&gt;true&lt;/code&gt;, then the list of agreements will include agreements for domain privacy as well; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;TldLegalAgreementInner&gt; object if successful.
-     */
-    public PagedList<TldLegalAgreementInner> listAgreements(final String name, final Boolean includePrivacy) {
-        ServiceResponse<Page<TldLegalAgreementInner>> response = listAgreementsSinglePageAsync(name, includePrivacy).toBlocking().single();
-        return new PagedList<TldLegalAgreementInner>(response.body()) {
-            @Override
-            public Page<TldLegalAgreementInner> nextPage(String nextPageLink) {
-                return listAgreementsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
-    }
-
-    /**
-     * Gets all legal agreements that user needs to accept before purchasing a domain.
-     * Gets all legal agreements that user needs to accept before purchasing a domain.
-     *
-     * @param name Name of the top-level domain.
-     * @param includePrivacy If &lt;code&gt;true&lt;/code&gt;, then the list of agreements will include agreements for domain privacy as well; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<TldLegalAgreementInner>> listAgreementsAsync(final String name, final Boolean includePrivacy, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listAgreementsSinglePageAsync(name, includePrivacy),
-            new Func1<String, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> call(String nextPageLink) {
-                    return listAgreementsNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Gets all legal agreements that user needs to accept before purchasing a domain.
-     * Gets all legal agreements that user needs to accept before purchasing a domain.
-     *
-     * @param name Name of the top-level domain.
-     * @param includePrivacy If &lt;code&gt;true&lt;/code&gt;, then the list of agreements will include agreements for domain privacy as well; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;TldLegalAgreementInner&gt; object
-     */
-    public Observable<Page<TldLegalAgreementInner>> listAgreementsAsync(final String name, final Boolean includePrivacy) {
-        return listAgreementsWithServiceResponseAsync(name, includePrivacy)
-            .map(new Func1<ServiceResponse<Page<TldLegalAgreementInner>>, Page<TldLegalAgreementInner>>() {
-                @Override
-                public Page<TldLegalAgreementInner> call(ServiceResponse<Page<TldLegalAgreementInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets all legal agreements that user needs to accept before purchasing a domain.
-     * Gets all legal agreements that user needs to accept before purchasing a domain.
-     *
-     * @param name Name of the top-level domain.
-     * @param includePrivacy If &lt;code&gt;true&lt;/code&gt;, then the list of agreements will include agreements for domain privacy as well; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;TldLegalAgreementInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listAgreementsWithServiceResponseAsync(final String name, final Boolean includePrivacy) {
-        return listAgreementsSinglePageAsync(name, includePrivacy)
+    public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listAgreementsWithServiceResponseAsync(final String name, final TopLevelDomainAgreementOptionInner agreementOption) {
+        return listAgreementsSinglePageAsync(name, agreementOption)
             .concatMap(new Func1<ServiceResponse<Page<TldLegalAgreementInner>>, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> call(ServiceResponse<Page<TldLegalAgreementInner>> page) {
@@ -477,21 +363,23 @@ public class TopLevelDomainsInner {
      * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
     ServiceResponse<PageImpl<TldLegalAgreementInner>> * @param name Name of the top-level domain.
-    ServiceResponse<PageImpl<TldLegalAgreementInner>> * @param includePrivacy If &lt;code&gt;true&lt;/code&gt;, then the list of agreements will include agreements for domain privacy as well; otherwise, &lt;code&gt;false&lt;/code&gt;.
+    ServiceResponse<PageImpl<TldLegalAgreementInner>> * @param agreementOption Domain agreement options.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;TldLegalAgreementInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listAgreementsSinglePageAsync(final String name, final Boolean includePrivacy) {
+    public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listAgreementsSinglePageAsync(final String name, final TopLevelDomainAgreementOptionInner agreementOption) {
         if (name == null) {
             throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
+        if (agreementOption == null) {
+            throw new IllegalArgumentException("Parameter agreementOption is required and cannot be null.");
+        }
+        Validator.validate(agreementOption);
         final String apiVersion = "2015-04-01";
-        TopLevelDomainAgreementOption agreementOption = new TopLevelDomainAgreementOption();
-        agreementOption.withIncludePrivacy(includePrivacy);
-        return service.listAgreements(name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), agreementOption, this.client.userAgent())
+        return service.listAgreements(name, this.client.subscriptionId(), agreementOption, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> call(Response<ResponseBody> response) {

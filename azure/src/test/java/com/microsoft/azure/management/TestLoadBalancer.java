@@ -21,6 +21,7 @@ import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachines;
+import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.LoadBalancerHttpProbe;
@@ -422,6 +423,131 @@ public class TestLoadBalancer {
     }
 
     /**
+     * Internet-facing minimalistic LB test without LB rules, only a NAT rule.
+     */
+    public static class InternetNatOnly extends TestTemplate<LoadBalancer, LoadBalancers> {
+        private final ComputeManager computeManager;
+
+        /**
+         * Tests an Internet-facing load balancer with a NAT rule only.
+         * @param computeManager compute manager
+         */
+        public InternetNatOnly(ComputeManager computeManager) {
+            initializeResourceNames();
+            this.computeManager = computeManager;
+        }
+
+        @Override
+        public void print(LoadBalancer resource) {
+            TestLoadBalancer.printLB(resource);
+        }
+
+        @Override
+        public LoadBalancer createResource(LoadBalancers resources) throws Exception {
+            VirtualMachine[] existingVMs = ensureVMs(
+                    resources.manager().networks(),
+                    computeManager.virtualMachines(),
+                    computeManager.availabilitySets(),
+                    2);
+            ensurePIPs(resources.manager().publicIPAddresses());
+            PublicIPAddress pip = resources.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[0]);
+
+            // Create a load balancer
+            LoadBalancer lb = resources.define(TestLoadBalancer.LB_NAME)
+                    .withRegion(TestLoadBalancer.REGION)
+                    .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
+                    // Frontend (default)
+                    .withExistingPublicIPAddress(pip)
+                    // Backend (default)
+                    .withExistingVirtualMachines(existingVMs)
+                    // Inbound NAT rule
+                    .defineInboundNatRule("natrule1")
+                        .withProtocol(TransportProtocol.TCP)
+                        .withFrontend("default")
+                        .withFrontendPort(88)
+                        .withBackendPort(80)
+                        .attach()
+
+                    .create();
+
+            // Verify frontends
+            Assert.assertTrue(lb.frontends().containsKey("default"));
+            LoadBalancerFrontend frontend = lb.frontends().get("default");
+            Assert.assertEquals(0, frontend.loadBalancingRules().size());
+            Assert.assertTrue(frontend.isPublic());
+            LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
+            Assert.assertTrue(pip.id().equalsIgnoreCase(publicFrontend.publicIPAddressId()));
+
+            // Verify probes
+            Assert.assertTrue(lb.tcpProbes().isEmpty());
+            Assert.assertTrue(lb.httpProbes().isEmpty());
+
+            // Verify LB rules
+            Assert.assertEquals(0, lb.loadBalancingRules().size());
+
+            // Verify NAT rules
+            Assert.assertEquals(1, lb.inboundNatRules().size());
+            LoadBalancerInboundNatRule natRule = lb.inboundNatRules().get("natrule1");
+            Assert.assertNotNull(natRule);
+            Assert.assertEquals(TransportProtocol.TCP, natRule.protocol());
+            Assert.assertNotNull(natRule.frontend());
+            Assert.assertEquals("default", natRule.frontend().name());
+            Assert.assertEquals(88, natRule.frontendPort());
+
+            // Verify backends
+            Assert.assertEquals(1, lb.backends().size());
+            LoadBalancerBackend backend = lb.backends().get("default");
+            Assert.assertNotNull(backend);
+            Assert.assertEquals(2, backend.backendNicIPConfigurationNames().size());
+            for (VirtualMachine vm : existingVMs) {
+                Assert.assertTrue(backend.backendNicIPConfigurationNames().containsKey(vm.primaryNetworkInterfaceId()));
+            }
+
+            return lb;
+        }
+
+        @Override
+        public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
+            ensurePIPs(resource.manager().publicIPAddresses());
+            PublicIPAddress pip = resource.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[1]);
+            resource =  resource.update()
+                    .withExistingPublicIPAddress(pip)
+                    .defineBackend("backend2")
+                        .attach()
+                    .withoutBackend("default")
+                    .withoutInboundNatRule("natrule1")
+                    .withTag("tag1", "value1")
+                    .withTag("tag2", "value2")
+                    .apply();
+            Assert.assertTrue(resource.tags().containsKey("tag1"));
+
+            // Verify frontends
+            Assert.assertEquals(1, resource.frontends().size());
+            LoadBalancerFrontend frontend = resource.frontends().get("default");
+            Assert.assertTrue(frontend.isPublic());
+            LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
+            Assert.assertTrue(pip.id().equalsIgnoreCase(publicFrontend.publicIPAddressId()));
+            Assert.assertEquals(0, publicFrontend.loadBalancingRules().size());
+
+            // Verify probes
+            Assert.assertTrue(resource.tcpProbes().isEmpty());
+            Assert.assertTrue(resource.httpProbes().isEmpty());
+
+            // Verify backends
+            Assert.assertTrue(resource.backends().containsKey("backend2"));
+            Assert.assertTrue(!resource.backends().containsKey("default"));
+
+            // Verify NAT rules
+            Assert.assertTrue(resource.inboundNatRules().isEmpty());
+
+            // Verify load balancing rules
+            Assert.assertEquals(0, resource.loadBalancingRules().size());
+
+            return resource;
+        }
+    }
+
+    /**
      * Internet-facing minimalistic LB test.
      */
     public static class InternetMinimal extends TestTemplate<LoadBalancer, LoadBalancers> {
@@ -601,7 +727,6 @@ public class TestLoadBalancer {
         /**
          * Tests an internal load balancer with minimum inputs.
          * @param vms virtual machines
-         * @param networks virtual networks
          * @param availabilitySets availability sets
          */
         public InternalMinimal(

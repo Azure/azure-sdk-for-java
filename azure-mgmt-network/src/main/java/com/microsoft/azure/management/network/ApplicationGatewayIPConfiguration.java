@@ -5,7 +5,6 @@
  */
 package com.microsoft.azure.management.network;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayIPConfigurationInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
@@ -15,10 +14,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
- * An immutable client-side representation of an application gateway IP configuration.
+ * A client-side representation of an application gateway IP configuration.
  */
 @Fluent()
-@Beta
 public interface ApplicationGatewayIPConfiguration extends
     HasInner<ApplicationGatewayIPConfigurationInner>,
     ChildResource<ApplicationGateway> {
@@ -75,8 +73,8 @@ public interface ApplicationGatewayIPConfiguration extends
         /** The final stage of the application gateway IP configuration definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the definition
-         * can be attached to the parent application gateway definition using {@link WithAttach#attach()}.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * can be attached to the parent application gateway definition.
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends
             Attachable.InDefinition<ParentT> {
@@ -84,7 +82,7 @@ public interface ApplicationGatewayIPConfiguration extends
     }
 
     /** The entirety of an application gateway IP configuration definition.
-     * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
+     * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
      */
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
@@ -160,8 +158,8 @@ public interface ApplicationGatewayIPConfiguration extends
         /** The final stage of an application gateway IP configuration definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the definition
-         * can be attached to the parent application gateway definition using {@link WithAttach#attach()}.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * can be attached to the parent application gateway definition.
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends
             Attachable.InUpdate<ParentT> {

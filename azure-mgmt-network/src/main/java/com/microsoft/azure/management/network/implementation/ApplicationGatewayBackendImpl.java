@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -69,14 +70,14 @@ class ApplicationGatewayBackendImpl
     }
 
     @Override
-    public List<ApplicationGatewayBackendAddress> addresses() {
-        List<ApplicationGatewayBackendAddress> addresses = new ArrayList<>();
+    public Collection<ApplicationGatewayBackendAddress> addresses() {
+        Collection<ApplicationGatewayBackendAddress> addresses = new ArrayList<>();
         if (this.inner().backendAddresses() != null) {
             for (ApplicationGatewayBackendAddress address : this.inner().backendAddresses()) {
                 addresses.add(address);
             }
         }
-        return Collections.unmodifiableList(addresses);
+        return Collections.unmodifiableCollection(addresses);
     }
 
     // Verbs

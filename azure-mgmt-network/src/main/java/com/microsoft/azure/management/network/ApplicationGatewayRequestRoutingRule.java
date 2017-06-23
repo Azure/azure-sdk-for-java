@@ -5,9 +5,8 @@
  */
 package com.microsoft.azure.management.network;
 
-import java.util.List;
+import java.util.Collection;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayRequestRoutingRuleInner;
@@ -24,10 +23,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
- * An immutable client-side representation of an application gateway request routing rule.
+ * A client-side representation of an application gateway request routing rule.
  */
 @Fluent()
-@Beta()
 public interface ApplicationGatewayRequestRoutingRule extends
     HasInner<ApplicationGatewayRequestRoutingRuleInner>,
     ChildResource<ApplicationGateway>,
@@ -67,7 +65,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
     /**
      * @return the addresses assigned to the associated backend
      */
-    List<ApplicationGatewayBackendAddress> backendAddresses();
+    Collection<ApplicationGatewayBackendAddress> backendAddresses();
 
     // TODO urlPathMap()
 
@@ -103,9 +101,8 @@ public interface ApplicationGatewayRequestRoutingRule extends
             /**
              * Associates the request routing rule with a frontend listener.
              * <p>
-             * If the listener with the specified name does not yet exist, it must be defined separately in the optional part
-             * of the application gateway definition, using {@code defineListener(...)}.
-             * This only adds a reference to the listener by its name.
+             * If the listener with the specified name does not yet exist, it must be defined separately in the optional stages
+             * of the application gateway definition. This only adds a reference to the listener by its name.
              * <p>
              * Also, note that a given listener can be used by no more than one request routing rule at a time.
              * @param name the name of a listener to reference
@@ -135,8 +132,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * If the public frontend IP configuration does not yet exist, it will be created under an auto-generated name.
              * <p>
              * If the application gateway does not have a public IP address specified for its public frontend, one will be created
-             * automatically, unless a specific public IP address is specified in the application gateway definition's optional settings using
-             * {@code withExistingPublicIPAddress(...)} or {@code withNewPublicIPAddress(...)}.
+             * automatically, unless a specific public IP address is specified in the application gateway definition's optional settings.
              * @return the next stage of the definition
              */
             @Method
@@ -148,8 +144,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * If the private frontend IP configuration does not yet exist, it will be created under an auto-generated name.
              * <p>
              * If the application gateway does not have a subnet specified for its private frontend, one will be created automatically,
-             * unless a specific subnet is specified in the application gateway definition's optional settings using
-             * {@code withExistingSubnet(...)}.
+             * unless a specific subnet is specified in the application gateway definition's optional settings.
              * @return the next stage of the definition
              */
             @Method
@@ -179,7 +174,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
 
         /**
          * The stage of an application gateway request routing rule allowing to specify an SSL certificate.
-         * @param <ParentT> the next stage of the definition
+         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
         interface WithSslCertificate<ParentT> extends
             HasSslCertificate.DefinitionStages.WithSslCertificate<WithBackendHttpConfigurationOrSni<ParentT>> {
@@ -187,14 +182,14 @@ public interface ApplicationGatewayRequestRoutingRule extends
 
         /**
          * The stage of an application gateway request routing rule allowing to specify an SSL certificate.
-         * @param <ParentT> the next stage of the definition
+         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
         interface WithSslPassword<ParentT> extends HasSslCertificate.DefinitionStages.WithSslPassword<ParentT> {
         }
 
         /**
          * The stage of an application gateway request routing rule allowing to enable cookie based affinity.
-         * @param <ParentT> the next stage of the definition
+         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
         interface WithCookieBasedAffinity<ParentT> extends HasCookieBasedAffinity.DefinitionStages.WithCookieBasedAffinity<WithAttach<ParentT>> {
         }
@@ -207,8 +202,8 @@ public interface ApplicationGatewayRequestRoutingRule extends
             /**
              * Associates the request routing rule with a backend on this application gateway.
              * <p>
-             * If the backend does not yet exist, it must be defined in the optional part of the application gateway definition,
-             * using {@code defineBackend(...)}. The request routing rule references it only by name.
+             * If the backend does not yet exist, it must be defined in the optional part of the application gateway definition.
+             * The request routing rule references it only by name.
              * @param name the name of an existing backend
              * @return the next stage of the definition
              */
@@ -281,7 +276,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * Associates the specified backend HTTP settings configuration with this request routing rule.
              * <p>
              * If the backend configuration does not exist yet, it must be defined in the optional part of the application gateway
-             * definition, using {@code defineBackendHttpConfiguration(...)}. The request routing rule references it only by name.
+             * definition. The request routing rule references it only by name.
              * @param name the name of a backend HTTP settings configuration
              * @return the next stage of the definition
              */
@@ -316,7 +311,8 @@ public interface ApplicationGatewayRequestRoutingRule extends
         }
     }
 
-    /** The entirety of an application gateway request routing rule definition.
+    /**
+     * The entirety of an application gateway request routing rule definition.
      * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
      */
     interface Definition<ParentT> extends
@@ -405,7 +401,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
         /** The final stage of an application gateway request routing rule definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the definition
-         * can be attached to the parent application gateway definition using {@link WithAttach#attach()}.
+         * can be attached to the parent application gateway definition.
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends
@@ -424,8 +420,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * Associates the request routing rule with a frontend listener.
              * <p>
              * If the listener with the specified name does not yet exist, it must be defined separately in the optional part
-             * of the application gateway definition, using {@code defineListener(...)}.
-             * This only adds a reference to the listener by its name.
+             * of the application gateway definition. This only adds a reference to the listener by its name.
              * <p>
              * Also, note that a given listener can be used by no more than one request routing rule at a time.
              * @param name the name of a listener to reference
@@ -455,8 +450,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * If the public frontend IP configuration does not yet exist, it will be created under an auto-generated name.
              * <p>
              * If the application gateway does not have a public IP address specified for its public frontend, one will be created
-             * automatically, unless a specific public IP address is specified in the application gateway definition's optional settings using
-             * {@code withExistingPublicIPAddress(...)} or {@code withNewPublicIPAddress(...)}.
+             * automatically, unless a specific public IP address is specified in the application gateway definition's optional settings.
              * @return the next stage of the definition
              */
             @Method
@@ -468,8 +462,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * If the private frontend IP configuration does not yet exist, it will be created under an auto-generated name.
              * <p>
              * If the application gateway does not have a subnet specified for its private frontend, one will be created automatically,
-             * unless a specific subnet is specified in the application gateway definition's optional settings using
-             * {@code withExistingSubnet(...)}.
+             * unless a specific subnet is specified in the application gateway definition's optional settings.
              * @return the next stage of the definition
              */
             @Method
@@ -527,8 +520,8 @@ public interface ApplicationGatewayRequestRoutingRule extends
             /**
              * Associates the request routing rule with a backend on this application gateway.
              * <p>
-             * If the backend does not yet exist, it must be defined in the optional part of the application gateway definition,
-             * using {@code defineBackend(...)}. The request routing rule references it only by name.
+             * If the backend does not yet exist, it must be defined in the optional part of the application gateway definition.
+             * The request routing rule references it only by name.
              * @param name the name of an existing backend
              * @return the next stage of the definition
              */
@@ -601,7 +594,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * Associates the specified backend HTTP settings configuration with this request routing rule.
              * <p>
              * If the backend configuration does not exist yet, it must be defined in the optional part of the application gateway
-             * definition, using {@code defineBackendHttpConfiguration(...)}. The request routing rule references it only by name.
+             * definition. The request routing rule references it only by name.
              * @param name the name of a backend HTTP settings configuration
              * @return the next stage of the definition
              */

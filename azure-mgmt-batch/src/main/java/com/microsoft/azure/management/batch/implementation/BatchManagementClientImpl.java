@@ -28,11 +28,11 @@ public class BatchManagementClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** A unique identifier of a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. */
+    /** The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000). */
     private String subscriptionId;
 
     /**
-     * Gets A unique identifier of a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     * Gets The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
      *
      * @return the subscriptionId value.
      */
@@ -41,7 +41,7 @@ public class BatchManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets A unique identifier of a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     * Sets The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
      *
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself
@@ -185,6 +185,19 @@ public class BatchManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The OperationsInner object to access its operations.
+     */
+    private OperationsInner operations;
+
+    /**
+     * Gets the OperationsInner object to access its operations.
+     * @return the OperationsInner object.
+     */
+    public OperationsInner operations() {
+        return this.operations;
+    }
+
+    /**
      * Initializes an instance of BatchManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -215,7 +228,7 @@ public class BatchManagementClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2015-12-01";
+        this.apiVersion = "2017-05-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -223,6 +236,7 @@ public class BatchManagementClientImpl extends AzureServiceClient {
         this.applicationPackages = new ApplicationPackagesInner(restClient().retrofit(), this);
         this.applications = new ApplicationsInner(restClient().retrofit(), this);
         this.locations = new LocationsInner(restClient().retrofit(), this);
+        this.operations = new OperationsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
@@ -233,6 +247,6 @@ public class BatchManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "BatchManagementClient", "2015-12-01");
+        return String.format("%s (%s, %s)", super.userAgent(), "BatchManagementClient", "2017-05-01");
     }
 }

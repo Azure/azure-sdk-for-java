@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.datalake.analytics;
 
-import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.datalake.analytics.models.*;
 import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
@@ -18,24 +17,16 @@ import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.RestClient;
-import com.microsoft.azure.credentials.UserTokenCredentials;
 import com.microsoft.azure.management.datalake.analytics.implementation.DataLakeAnalyticsAccountManagementClientImpl;
 import com.microsoft.azure.management.datalake.analytics.implementation.DataLakeAnalyticsCatalogManagementClientImpl;
 import com.microsoft.azure.management.datalake.analytics.implementation.DataLakeAnalyticsJobManagementClientImpl;
 import com.microsoft.azure.management.datalake.store.implementation.DataLakeStoreAccountManagementClientImpl;
-import com.microsoft.azure.management.resources.implementation.ResourceManagementClientImpl;
-import com.microsoft.azure.management.storage.implementation.StorageManagementClientImpl;
-import okhttp3.OkHttpClient;
 import org.junit.Assert;
-import retrofit2.Retrofit;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -68,10 +59,10 @@ public class DataLakeAnalyticsManagementTestBase extends TestBase {
         // the tests are running in.
         String adlaSuffix = "azuredatalakeanalytics.net";
 
-        addTextReplacementRule("https://(.*)." + adlaSuffix, MOCK_URI);
+        addTextReplacementRule("https://(.*)." + adlaSuffix, this.mockUri());
 
         // Generate creds and a set of rest clients for catalog and job
-        ApplicationTokenCredentials credentials = new AzureTestCredentials();
+        ApplicationTokenCredentials credentials = new AzureTestCredentials(this.mockUri());
         if (IS_RECORD) {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
             try {
@@ -87,7 +78,7 @@ public class DataLakeAnalyticsManagementTestBase extends TestBase {
                     .withBaseUrl("https://{accountName}.{adlaJobDnsSuffix}")
                     .withCredentials(credentials)
                     .withLogLevel(LogLevel.BODY_AND_HEADERS)
-                    .withNetworkInterceptor(interceptor), IS_MOCKED);
+                    .withNetworkInterceptor(this.interceptor()), IS_MOCKED);
 
 
             dataLakeAnalyticsJobManagementClient = new DataLakeAnalyticsJobManagementClientImpl(restClientWithTimeout)
@@ -98,7 +89,7 @@ public class DataLakeAnalyticsManagementTestBase extends TestBase {
                     .withBaseUrl("https://{accountName}.{adlaCatalogDnsSuffix}")
                     .withCredentials(credentials)
                     .withLogLevel(LogLevel.BODY_AND_HEADERS)
-                    .withNetworkInterceptor(interceptor), IS_MOCKED);
+                    .withNetworkInterceptor(this.interceptor()), IS_MOCKED);
 
             dataLakeAnalyticsCatalogManagementClient = new DataLakeAnalyticsCatalogManagementClientImpl(catalogRestClient)
                     .withAdlaCatalogDnsSuffix(adlaSuffix);

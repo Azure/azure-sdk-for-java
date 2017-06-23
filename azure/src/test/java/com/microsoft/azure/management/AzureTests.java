@@ -181,7 +181,7 @@ public class AzureTests extends TestBase {
             .create();
         System.out.println("Created deployment: " + deployment.correlationId());
 
-        azure.resourceGroups().deleteByName("rg" + testId);
+        azure.resourceGroups().beginDeleteByName("rg" + testId);
     }
 
     /**
@@ -242,6 +242,12 @@ public class AzureTests extends TestBase {
         }
         List<VirtualMachineImage> images = azure.virtualMachineImages().listByRegion(Region.US_WEST);
         Assert.assertTrue(images.size() > 0);
+        try {
+            // Seems to help avoid connection refused error on subsequent mock test
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -278,7 +284,7 @@ public class AzureTests extends TestBase {
     }
 
     /**
-     * Tests the minimum Internet-facing load balancer.
+     * Tests the minimum Internet-facing load balancer with a load balancing rule only
      * @throws Exception
      */
     @Test
@@ -286,6 +292,16 @@ public class AzureTests extends TestBase {
         new TestLoadBalancer.InternetMinimal(
                 azure.virtualMachines(),
                 azure.availabilitySets())
+            .runTest(azure.loadBalancers(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests the minimum Internet-facing load balancer with a NAT rule only
+     * @throws Exception
+     */
+    @Test
+    public void testLoadBalancersNatOnly() throws Exception {
+        new TestLoadBalancer.InternetNatOnly(azure.virtualMachines().manager())
             .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
@@ -534,9 +550,7 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testVirtualMachineNics() throws Exception {
-        new TestVirtualMachineNics(
-                azure.networks(),
-                azure.networkInterfaces())
+        new TestVirtualMachineNics(azure.networks().manager())
             .runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
@@ -662,7 +676,7 @@ public class AzureTests extends TestBase {
 
     @Test
     public void testDnsZones() throws Exception {
-        addTextReplacementRule("https://management.azure.com:443/", MOCK_URI + "/");
+        addTextReplacementRule("https://management.azure.com:443/", this.mockUri() + "/");
         new TestDns()
                 .runTest(azure.dnsZones(), azure.resourceGroups());
     }
@@ -679,14 +693,12 @@ public class AzureTests extends TestBase {
     }
 
     @Test
-    @Ignore("Runs locally find but fails for unknown reason on check in.")
     public void testContainerService() throws Exception {
         new TestContainerService()
                 .runTest(azure.containerServices(), azure.resourceGroups());
     }
 
     @Test
-    @Ignore("Runs locally find but fails for unknown reason on check in.")
     public void testContainerRegistry() throws Exception {
         new TestContainerRegistry()
                 .runTest(azure.containerRegistries(), azure.resourceGroups());

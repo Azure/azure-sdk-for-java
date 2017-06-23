@@ -61,7 +61,7 @@ public final class ManageLinuxWebAppWithDomainSsl {
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
                     .withNewLinuxPlan(PricingTier.STANDARD_S1)
-                    .withBuiltInImage(RuntimeStack.NODEJS_6_9_3)
+                    .withBuiltInImage(RuntimeStack.NODEJS_6_9)
                     .create();
 
             System.out.println("Created web app " + app1.name());
@@ -75,7 +75,7 @@ public final class ManageLinuxWebAppWithDomainSsl {
             WebApp app2 = azure.webApps().define(app2Name)
                     .withExistingLinuxPlan(plan)
                     .withExistingResourceGroup(rgName)
-                    .withBuiltInImage(RuntimeStack.NODEJS_6_9_3)
+                    .withBuiltInImage(RuntimeStack.NODEJS_6_9)
                     .create();
 
             System.out.println("Created web app " + app2.name());
@@ -157,7 +157,7 @@ public final class ManageLinuxWebAppWithDomainSsl {
                     .withManagedHostnameBindings(domain, app2Name)
                     .defineSslBinding()
                         .forHostname(app2Name + "." + domainName)
-                        .withPfxCertificateToUpload(new File(pfxPath), certPassword)
+                        .withExistingCertificate(app1.hostNameSslStates().get(app1Name + "." + domainName).thumbprint())
                         .withSniBasedSsl()
                         .attach()
                     .apply();
@@ -198,7 +198,7 @@ public final class ManageLinuxWebAppWithDomainSsl {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                    .withLogLevel(LogLevel.BODY)
+                    .withLogLevel(LogLevel.BODY_AND_HEADERS)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

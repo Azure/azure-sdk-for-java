@@ -15,7 +15,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class USqlAssemblyFileInfo {
     /**
-     * the assembly file type. Possible values include: 'Assembly', 'Resource'.
+     * the assembly file type. Possible values include: 'Assembly', 'Resource',
+     * 'Nodeploy'.
      */
     @JsonProperty(value = "type")
     private FileType type;

@@ -18,6 +18,7 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
@@ -78,6 +79,12 @@ public class OperationsInner {
         return new PagedList<OperationInner>(response.body()) {
             @Override
             public Page<OperationInner> nextPage(String nextPageLink) {
+                // Temporary work-around for https://github.com/Azure/azure-sdk-for-java/issues/1641
+                if (nextPageLink == "") {
+                    PageImpl<OperationInner> emptyPage = new PageImpl<>();
+                    emptyPage.setItems(new ArrayList<OperationInner>());
+                    return emptyPage;
+                }
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };

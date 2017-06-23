@@ -32,6 +32,9 @@ public final class SkuName {
     /** Static value Dynamic for SkuName. */
     public static final SkuName DYNAMIC = new SkuName("Dynamic");
 
+    /** Static value Isolated for SkuName. */
+    public static final SkuName ISOLATED = new SkuName("Isolated");
+
     private String value;
 
     /**

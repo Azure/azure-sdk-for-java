@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
@@ -51,9 +50,8 @@ public interface ResourceGroup extends
      * Captures the specified resource group as a template asynchronously.
      *
      * @param options the export options
-     * @return observable to the exported template result
+     * @return a representation of the deferred computation of this call returning the result of the template export
      */
-    @Beta
     Observable<ResourceGroupExportResult> exportTemplateAsync(ResourceGroupExportTemplateOptions options);
 
     /**
@@ -64,12 +62,7 @@ public interface ResourceGroup extends
      *
      * @return a handle to cancel the request
      */
-    @Beta
     ServiceFuture<ResourceGroupExportResult> exportTemplateAsync(ResourceGroupExportTemplateOptions options, ServiceCallback<ResourceGroupExportResult> callback);
-
-    /**************************************************************
-     * Fluent interfaces to provision a ResourceGroup
-     **************************************************************/
 
     /**
      * Container interface for all the definitions that need to be implemented.

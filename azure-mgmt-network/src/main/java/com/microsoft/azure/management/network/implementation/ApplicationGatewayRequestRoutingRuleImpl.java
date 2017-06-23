@@ -8,8 +8,8 @@ package com.microsoft.azure.management.network.implementation;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
@@ -48,13 +48,13 @@ class ApplicationGatewayRequestRoutingRuleImpl
     // Getters
 
     @Override
-    public List<ApplicationGatewayBackendAddress> backendAddresses() {
-        List<ApplicationGatewayBackendAddress> addresses = new ArrayList<>();
+    public Collection<ApplicationGatewayBackendAddress> backendAddresses() {
+        Collection<ApplicationGatewayBackendAddress> addresses = new ArrayList<>();
         ApplicationGatewayBackend backend = this.backend();
         if (backend != null && backend.addresses() != null) {
             addresses = backend.addresses();
         }
-        return Collections.unmodifiableList(addresses);
+        return Collections.unmodifiableCollection(addresses);
     }
 
     @Override

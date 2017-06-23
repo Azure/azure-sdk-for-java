@@ -88,6 +88,13 @@ public interface HostNameSslBinding extends
             WithSslType<ParentT> withPfxCertificateToUpload(File pfxFile, String password);
 
             /**
+             * Use an existing certificate in the resource group.
+             * @param certificateName the name of the certificate
+             * @return the next stage of the definition
+             */
+            WithSslType<ParentT> withExistingCertificate(String certificateName);
+
+            /**
              * Places a new App Service certificate order to use for the hostname.
              * @param certificateOrderName the name of the certificate order
              * @return the next stage of the definition
@@ -201,6 +208,13 @@ public interface HostNameSslBinding extends
              * @return the next stage of the definition
              */
             WithSslType<ParentT> withPfxCertificateToUpload(File pfxFile, String password);
+
+            /**
+             * Use an existing certificate in the resource group.
+             * @param certificateNameOrThumbprint the name or the thumbprint of the certificate
+             * @return the next stage of the definition
+             */
+            WithSslType<ParentT> withExistingCertificate(String certificateNameOrThumbprint);
 
             /**
              * Places a new App Service certificate order to use for the hostname.

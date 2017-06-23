@@ -7,9 +7,10 @@ package com.microsoft.azure.management.containerregistry;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.containerregistry.implementation.ContainerRegistryManager;
 import com.microsoft.azure.management.containerregistry.implementation.RegistriesInner;
-import com.microsoft.azure.management.containerregistry.implementation.RegistryListCredentialsResultInner;
+import com.microsoft.azure.management.containerregistry.implementation.RegistryListCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
@@ -26,7 +27,7 @@ import rx.Observable;
  * Entry point to the registry management API.
  */
 @Fluent()
-@Beta()
+@Beta(SinceVersion.V1_1_0)
 public interface Registries extends
     SupportsCreating<Registry.DefinitionStages.Blank>,
     HasManager<ContainerRegistryManager>,
@@ -45,7 +46,7 @@ public interface Registries extends
      * @param registryName the registry name
      * @return the list of credentials
      */
-    RegistryListCredentialsResultInner listCredentials(String groupName, String registryName);
+    RegistryListCredentials listCredentials(String groupName, String registryName);
 
     /**
      * Lists the login credentials for the specified container registry.
@@ -53,7 +54,7 @@ public interface Registries extends
      * @param registryName the registry name
      * @return the list of credentials
      */
-    Observable<RegistryListCredentialsResultInner> listCredentialsAsync(String groupName, String registryName);
+    Observable<RegistryListCredentials> listCredentialsAsync(String groupName, String registryName);
 
     /**
      * Regenerates one of the login credentials for the specified container registry.
@@ -62,7 +63,7 @@ public interface Registries extends
      * @param passwordName the password name to regenerate login credentials for
      * @return the list of credentials
      */
-    RegistryListCredentialsResultInner regenerateCredential(String groupName, String registryName, PasswordName passwordName);
+    RegistryListCredentials regenerateCredential(String groupName, String registryName, PasswordName passwordName);
 
     /**
      * Regenerates one of the login credentials for the specified container registry.
@@ -71,5 +72,5 @@ public interface Registries extends
      * @param passwordName the password name to regenerate login credentials for
      * @return the list of credentials
      */
-    Observable<RegistryListCredentialsResultInner> regenerateCredentialAsync(String groupName, String registryName, PasswordName passwordName);
+    Observable<RegistryListCredentials> regenerateCredentialAsync(String groupName, String registryName, PasswordName passwordName);
 }

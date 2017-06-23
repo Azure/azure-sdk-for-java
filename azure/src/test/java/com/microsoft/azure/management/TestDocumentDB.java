@@ -5,44 +5,56 @@
  */
 package com.microsoft.azure.management;
 
-import com.microsoft.azure.management.documentdb.DatabaseAccount;
-import com.microsoft.azure.management.documentdb.DatabaseAccountKind;
-import com.microsoft.azure.management.documentdb.DatabaseAccounts;
-import com.microsoft.azure.management.documentdb.DefaultConsistencyLevel;
+import com.microsoft.azure.management.documentdb.*;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import org.junit.Assert;
 
-public class TestDocumentDB extends TestTemplate<DatabaseAccount, DatabaseAccounts> {
+public class TestDocumentDB extends TestTemplate<DocumentDBAccount, DocumentDBAccounts> {
 
     @Override
-    public DatabaseAccount createResource(DatabaseAccounts registries) throws Exception {
+    public DocumentDBAccount createResource(DocumentDBAccounts resources) throws Exception {
         final String newName = "docDB" + this.testId;
-        return registries.define(newName)
+        DocumentDBAccount databaseAccount = resources.define(newName)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup()
                 .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
-                .defineLocation(Region.US_WEST)
-                    .withFailoverPriority(0)
-                    .attach()
+                .withSessionConsistency()
+                .withWriteReplication(Region.US_EAST)
+                .withReadReplication(Region.US_CENTRAL)
+                .withIpRangeFilter("")
                 .create();
+        Assert.assertEquals(databaseAccount.name(), newName.toLowerCase());
+        Assert.assertEquals(databaseAccount.kind(), DatabaseAccountKind.GLOBAL_DOCUMENT_DB);
+        Assert.assertEquals(databaseAccount.writableReplications().size(), 1);
+        Assert.assertEquals(databaseAccount.readableReplications().size(), 2);
+        Assert.assertEquals(databaseAccount.defaultConsistencyLevel(), DefaultConsistencyLevel.SESSION);
+        return databaseAccount;
     }
 
     @Override
-    public DatabaseAccount updateResource(DatabaseAccount resource) throws Exception {
+    public DocumentDBAccount updateResource(DocumentDBAccount resource) throws Exception {
         // Modify existing container service
         resource =  resource.update()
-                .withConsistencyPolicy(DefaultConsistencyLevel.SESSION, 1, 1)
+                .withReadReplication(Region.ASIA_SOUTHEAST)
+                .withoutReadReplication(Region.US_EAST)
+                .withoutReadReplication(Region.US_CENTRAL)
+                .apply();
+
+        resource =  resource.update()
+                .withEventualConsistency()
                 .withTag("tag2", "value2")
                 .withTag("tag3", "value3")
                 .withoutTag("tag1")
                 .apply();
+        Assert.assertEquals(resource.defaultConsistencyLevel(), DefaultConsistencyLevel.EVENTUAL);
         Assert.assertTrue(resource.tags().containsKey("tag2"));
         Assert.assertTrue(!resource.tags().containsKey("tag1"));
+
         return resource;
     }
 
     @Override
-    public void print(DatabaseAccount resource) {
+    public void print(DocumentDBAccount resource) {
         System.out.println(new StringBuilder().append("Regsitry: ").append(resource.id())
                 .append("Name: ").append(resource.name())
                 .append("\n\tResource group: ").append(resource.resourceGroupName())

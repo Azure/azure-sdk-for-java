@@ -23,7 +23,7 @@ public class BatchAccountDeleteHeadersInner {
 
     /**
      * Suggested delay to check the status of the asynchronous operation. The
-     * value is an integer that represents the seconds.
+     * value is an integer that specifies the delay in seconds.
      */
     @JsonProperty(value = "Retry-After")
     private Integer retryAfter;

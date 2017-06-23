@@ -10,6 +10,7 @@ import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.ComputeUsages;
 import com.microsoft.azure.management.compute.Disks;
@@ -24,6 +25,7 @@ import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
+import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
@@ -69,6 +71,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
                 .withCredentials(credentials)
                 .withSerializerAdapter(new AzureJacksonAdapter())
                 .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
+                .withInterceptor(new ProviderRegistrationInterceptor(credentials))
                 .build(), subscriptionId);
     }
 
@@ -129,7 +132,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
     /**
      * @return the availability set resource management API entry point
      */
-    @Beta
+    @Beta(SinceVersion.V1_1_0)
     public ContainerServices containerServices() {
         if (containerServices == null) {
             containerServices = new ContainerServicesImpl(this);

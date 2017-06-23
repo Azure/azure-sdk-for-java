@@ -12,9 +12,8 @@ import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
-import com.microsoft.azure.management.network.NetworkInterfaces;
-import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIPAddress;
+import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -22,14 +21,10 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import org.junit.Assert;
 
 public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, VirtualMachines> {
-    private final NetworkInterfaces networkInterfaces;
-    private final Networks networks;
+    private final NetworkManager networkManager;
 
-    public TestVirtualMachineNics(
-            Networks networks,
-            NetworkInterfaces networkInterfaces) {
-        this.networks = networks;
-        this.networkInterfaces = networkInterfaces;
+    public TestVirtualMachineNics(NetworkManager networkManager) {
+        this.networkManager = networkManager;
     }
 
     @Override
@@ -42,7 +37,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
 
         // Prepare the virtual network definition [shared by primary and secondary network interfaces]
         final String vnetName = "vnet" + this.testId;
-        Creatable<Network> networkCreatable = this.networks
+        Creatable<Network> networkCreatable = this.networkManager.networks()
                 .define(vnetName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(resourceGroupCreatable)
@@ -50,7 +45,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
 
         // Prepare the secondary network interface definition
         final String secondaryNicName = "nic" + this.testId;
-        Creatable<NetworkInterface> secondaryNetworkInterfaceCreatable = this.networkInterfaces
+        Creatable<NetworkInterface> secondaryNetworkInterfaceCreatable = this.networkManager.networkInterfaces()
                 .define(secondaryNicName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(resourceGroupCreatable)
@@ -61,7 +56,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
 
         // Prepare the secondary network interface definition
         final String secondaryNicName2 = "nic2" + this.testId;
-        Creatable<NetworkInterface> secondaryNetworkInterfaceCreatable2 = this.networkInterfaces
+        Creatable<NetworkInterface> secondaryNetworkInterfaceCreatable2 = this.networkManager.networkInterfaces()
                 .define(secondaryNicName2)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(resourceGroupCreatable)

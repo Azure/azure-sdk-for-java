@@ -10,6 +10,8 @@ package com.microsoft.azure.management.batch.implementation;
 
 import java.util.Map;
 import com.microsoft.azure.management.batch.AutoStorageBaseProperties;
+import com.microsoft.azure.management.batch.PoolAllocationMode;
+import com.microsoft.azure.management.batch.KeyVaultReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
@@ -25,16 +27,34 @@ public class BatchAccountCreateParametersInner {
     private String location;
 
     /**
-     * The user specified tags associated with the account.
+     * The user-specified tags associated with the account.
      */
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**
-     * The properties related to auto storage account.
+     * The properties related to the auto-storage account.
      */
     @JsonProperty(value = "properties.autoStorage")
     private AutoStorageBaseProperties autoStorage;
+
+    /**
+     * The allocation mode to use for creating pools in the Batch account.
+     * The pool allocation mode also affects how clients may authenticate to
+     * the Batch Service API. If the mode is BatchService, clients may
+     * authenticate using access keys or Azure Active Directory. If the mode is
+     * UserSubscription, clients must use Azure Active Directory. The default
+     * is BatchService. Possible values include: 'BatchService',
+     * 'UserSubscription'.
+     */
+    @JsonProperty(value = "properties.poolAllocationMode")
+    private PoolAllocationMode poolAllocationMode;
+
+    /**
+     * A reference to the Azure key vault associated with the Batch account.
+     */
+    @JsonProperty(value = "properties.keyVaultReference")
+    private KeyVaultReference keyVaultReference;
 
     /**
      * Get the location value.
@@ -93,6 +113,46 @@ public class BatchAccountCreateParametersInner {
      */
     public BatchAccountCreateParametersInner withAutoStorage(AutoStorageBaseProperties autoStorage) {
         this.autoStorage = autoStorage;
+        return this;
+    }
+
+    /**
+     * Get the poolAllocationMode value.
+     *
+     * @return the poolAllocationMode value
+     */
+    public PoolAllocationMode poolAllocationMode() {
+        return this.poolAllocationMode;
+    }
+
+    /**
+     * Set the poolAllocationMode value.
+     *
+     * @param poolAllocationMode the poolAllocationMode value to set
+     * @return the BatchAccountCreateParametersInner object itself.
+     */
+    public BatchAccountCreateParametersInner withPoolAllocationMode(PoolAllocationMode poolAllocationMode) {
+        this.poolAllocationMode = poolAllocationMode;
+        return this;
+    }
+
+    /**
+     * Get the keyVaultReference value.
+     *
+     * @return the keyVaultReference value
+     */
+    public KeyVaultReference keyVaultReference() {
+        return this.keyVaultReference;
+    }
+
+    /**
+     * Set the keyVaultReference value.
+     *
+     * @param keyVaultReference the keyVaultReference value to set
+     * @return the BatchAccountCreateParametersInner object itself.
+     */
+    public BatchAccountCreateParametersInner withKeyVaultReference(KeyVaultReference keyVaultReference) {
+        this.keyVaultReference = keyVaultReference;
         return this;
     }
 

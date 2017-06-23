@@ -7,6 +7,7 @@ package com.microsoft.azure.management.trafficmanager.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.AzureResponseBuilder;
+import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
@@ -45,6 +46,7 @@ public final class TrafficManager extends Manager<TrafficManager, TrafficManager
                 .withCredentials(credentials)
                 .withSerializerAdapter(new AzureJacksonAdapter())
                 .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
+                .withInterceptor(new ProviderRegistrationInterceptor(credentials))
                 .build(), subscriptionId);
     }
 

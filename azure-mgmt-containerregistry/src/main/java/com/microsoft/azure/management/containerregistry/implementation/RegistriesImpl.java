@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.containerregistry.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.containerregistry.PasswordName;
 import com.microsoft.azure.management.containerregistry.Registries;
@@ -13,6 +14,7 @@ import com.microsoft.azure.management.containerregistry.Registry;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
+import com.microsoft.azure.management.storage.implementation.StorageManager;
 import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
@@ -22,6 +24,7 @@ import java.util.List;
 /**
  * Implementation for Registries.
  */
+@LangDefinition
 public class RegistriesImpl
         extends
         GroupableResourcesImpl<
@@ -32,8 +35,11 @@ public class RegistriesImpl
                 ContainerRegistryManager>
         implements Registries {
 
-    protected RegistriesImpl(final ContainerRegistryManager manager) {
+    private final StorageManager storageManager;
+    protected RegistriesImpl(final ContainerRegistryManager manager,
+                             final StorageManager storageManager) {
         super(manager.inner().registries(), manager);
+        this.storageManager = storageManager;
     }
 
     @Override
@@ -93,7 +99,8 @@ public class RegistriesImpl
     protected RegistryImpl wrapModel(String name) {
         return new RegistryImpl(name,
                 new RegistryInner(),
-                this.manager());
+                this.manager(),
+                this.storageManager);
     }
 
     @Override
@@ -104,26 +111,27 @@ public class RegistriesImpl
 
         return new RegistryImpl(containerServiceInner.name(),
                 containerServiceInner,
-                this.manager());
+                this.manager(),
+                this.storageManager);
     }
 
     @Override
-    public RegistryListCredentialsResultInner listCredentials(String resourceGroupName, String registryName) {
+    public RegistryListCredentials listCredentials(String resourceGroupName, String registryName) {
         return this.listCredentialsAsync(resourceGroupName, registryName).toBlocking().last();
     }
 
     @Override
-    public Observable<RegistryListCredentialsResultInner> listCredentialsAsync(String resourceGroupName, String registryName) {
+    public Observable<RegistryListCredentials> listCredentialsAsync(String resourceGroupName, String registryName) {
         return this.inner().listCredentialsAsync(resourceGroupName, registryName);
     }
 
     @Override
-    public RegistryListCredentialsResultInner regenerateCredential(String resourceGroupName, String registryName, PasswordName passwordName) {
+    public RegistryListCredentials regenerateCredential(String resourceGroupName, String registryName, PasswordName passwordName) {
         return this.regenerateCredentialAsync(resourceGroupName, registryName, passwordName).toBlocking().last();
     }
 
     @Override
-    public Observable<RegistryListCredentialsResultInner> regenerateCredentialAsync(String resourceGroupName, String registryName, PasswordName passwordName) {
+    public Observable<RegistryListCredentials> regenerateCredentialAsync(String resourceGroupName, String registryName, PasswordName passwordName) {
         return this.inner().regenerateCredentialAsync(resourceGroupName, registryName, passwordName);
     }
 

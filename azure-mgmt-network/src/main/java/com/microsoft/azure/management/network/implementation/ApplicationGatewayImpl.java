@@ -31,6 +31,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -232,6 +233,15 @@ class ApplicationGatewayImpl
 
         // Reset and update backend HTTP settings configs
         this.inner().withBackendHttpSettingsCollection(innersFromWrappers(this.backendHttpConfigs.values()));
+        for (ApplicationGatewayBackendHttpConfiguration config : this.backendHttpConfigs.values()) {
+            SubResource ref;
+
+            // Clear deleted probe references
+            ref = config.inner().probe();
+            if (ref != null && !this.probes().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
+                config.inner().withProbe(null);
+            }
+        }
 
         // Reset and update HTTP listeners
         this.inner().withHttpListeners(innersFromWrappers(this.listeners.values()));
@@ -476,25 +486,21 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayImpl withDisabledSslProtocol(ApplicationGatewaySslProtocol protocol) {
-        if (protocol == null) {
-            return this;
-        }
-
-        ApplicationGatewaySslPolicy policy = ensureSslPolicy();
-        if (!policy.disabledSslProtocols().contains(protocol)) {
-            policy.disabledSslProtocols().add(protocol);
+        if (protocol != null) {
+            ApplicationGatewaySslPolicy policy = ensureSslPolicy();
+            if (!policy.disabledSslProtocols().contains(protocol)) {
+                policy.disabledSslProtocols().add(protocol);
+            }
         }
         return this;
     }
 
     @Override
     public ApplicationGatewayImpl withDisabledSslProtocols(ApplicationGatewaySslProtocol... protocols) {
-        if (protocols == null) {
-            return null;
-        }
-
-        for (ApplicationGatewaySslProtocol protocol : protocols) {
-            withDisabledSslProtocol(protocol);
+        if (protocols != null) {
+            for (ApplicationGatewaySslProtocol protocol : protocols) {
+                withDisabledSslProtocol(protocol);
+            }
         }
 
         return this;
@@ -502,19 +508,18 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayImpl withoutDisabledSslProtocol(ApplicationGatewaySslProtocol protocol) {
-        if (this.inner().sslPolicy() == null || this.inner().sslPolicy().disabledSslProtocols() == null) {
-            return this;
-        } else {
+        if (this.inner().sslPolicy() != null && this.inner().sslPolicy().disabledSslProtocols() != null) {
             this.inner().sslPolicy().disabledSslProtocols().remove(protocol);
+            if (this.inner().sslPolicy().disabledSslProtocols().isEmpty()) {
+                this.withoutAnyDisabledSslProtocols();
+            }
         }
         return this;
     }
 
     @Override
     public ApplicationGatewayImpl withoutDisabledSslProtocols(ApplicationGatewaySslProtocol...protocols) {
-        if (protocols == null) {
-            return null;
-        } else {
+        if (protocols != null) {
             for (ApplicationGatewaySslProtocol protocol : protocols) {
                 this.withoutDisabledSslProtocol(protocol);
             }
@@ -523,7 +528,7 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayImpl withoutAnyDisabledProtocols() {
+    public ApplicationGatewayImpl withoutAnyDisabledSslProtocols() {
         this.inner().withSslPolicy(null);
         return this;
     }
@@ -1025,11 +1030,11 @@ class ApplicationGatewayImpl
     // Getters
 
     @Override
-    public List<ApplicationGatewaySslProtocol> disabledSslProtocols() {
+    public Collection<ApplicationGatewaySslProtocol> disabledSslProtocols() {
         if (this.inner().sslPolicy() == null || this.inner().sslPolicy().disabledSslProtocols() == null) {
             return new ArrayList<>();
         } else {
-            return Collections.unmodifiableList(this.inner().sslPolicy().disabledSslProtocols());
+            return Collections.unmodifiableCollection(this.inner().sslPolicy().disabledSslProtocols());
         }
     }
 
@@ -1132,11 +1137,6 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewaySslPolicy sslPolicy() {
-        return this.inner().sslPolicy();
-    }
-
-    @Override
     public Map<String, Integer> frontendPorts() {
         Map<String, Integer> ports = new TreeMap<>();
         if (this.inner().frontendPorts() != null) {
@@ -1186,11 +1186,6 @@ class ApplicationGatewayImpl
         } else {
             return ResourceUtils.nameFromResourceId(subnetRef.id());
         }
-    }
-
-    @Override
-    public NetworkManager manager() {
-        return super.myManager;
     }
 
     @Override
