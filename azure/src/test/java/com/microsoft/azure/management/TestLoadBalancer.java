@@ -166,7 +166,6 @@ public class TestLoadBalancer {
             Assert.assertTrue(pip0.id().equalsIgnoreCase(publicFrontend.publicIPAddressId()));
 
             // Verify backends
-            Assert.assertTrue(lb.backends().containsKey("default"));
             Assert.assertTrue(lb.backends().containsKey("backend1"));
             Assert.assertTrue(lb.backends().size() == 2);
 
@@ -200,8 +199,8 @@ public class TestLoadBalancer {
         @Override
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
             LoadBalancerFrontend frontend = null;
+            // Find the implicitly created frontend
             for (LoadBalancerFrontend f : resource.frontends().values()) {
-                // Find the implicitly created frontend
                 if (!"frontend1".equalsIgnoreCase(f.name())) {
                     frontend = f;
                     break;
@@ -209,9 +208,19 @@ public class TestLoadBalancer {
             }
             Assert.assertNotNull(frontend);
 
+            // Find the implicitly created backend
+            LoadBalancerBackend backend = null;
+            for (LoadBalancerBackend b : resource.backends().values()) {
+                if (!"backend1".equalsIgnoreCase(b.name())) {
+                    backend = b;
+                    break;
+                }
+            }
+            Assert.assertNotNull(backend);
+
             resource =  resource.update()
                     .withoutFrontend(frontend.name())
-                    .withoutBackend("default")
+                    .withoutBackend(backend.name())
                     .withoutBackend("backend1")
                     .withoutLoadBalancingRule("rule1")
                     .withoutInboundNatPool("natpool1")
@@ -237,7 +246,7 @@ public class TestLoadBalancer {
             Assert.assertEquals(0, resource.tcpProbes().size());
 
             // Verify backends
-            Assert.assertFalse(resource.backends().containsKey("default"));
+            Assert.assertFalse(resource.backends().containsKey(backend.name()));
             Assert.assertFalse(resource.backends().containsKey("backend1"));
             Assert.assertEquals(0, resource.backends().size());
 
@@ -517,7 +526,7 @@ public class TestLoadBalancer {
 
             // Verify backends
             Assert.assertEquals(1, lb.backends().size());
-            LoadBalancerBackend backend = lb.backends().get("default");
+            LoadBalancerBackend backend = lb.backends().values().iterator().next();
             Assert.assertNotNull(backend);
             Assert.assertEquals(2, backend.backendNicIPConfigurationNames().size());
             for (VirtualMachine vm : existingVMs) {
@@ -531,6 +540,10 @@ public class TestLoadBalancer {
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
             ensurePIPs(resource.manager().publicIPAddresses());
             LoadBalancerFrontend frontend = resource.frontends().values().iterator().next();
+            Assert.assertNotNull(frontend);
+            LoadBalancerBackend backend = resource.backends().values().iterator().next();
+            Assert.assertNotNull(backend);
+
             PublicIPAddress pip = resource.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[1]);
             resource =  resource.update()
                     .updateInternetFrontend(frontend.name())
@@ -538,7 +551,7 @@ public class TestLoadBalancer {
                         .parent()
                     .defineBackend("backend2")
                         .attach()
-                    .withoutBackend("default")
+                    .withoutBackend(backend.name())
                     .withoutInboundNatRule("natrule1")
                     .withTag("tag1", "value1")
                     .withTag("tag2", "value2")
@@ -561,7 +574,7 @@ public class TestLoadBalancer {
 
             // Verify backends
             Assert.assertTrue(resource.backends().containsKey("backend2"));
-            Assert.assertTrue(!resource.backends().containsKey("default"));
+            Assert.assertTrue(!resource.backends().containsKey(backend.name()));
 
             // Verify NAT rules
             Assert.assertTrue(resource.inboundNatRules().isEmpty());
@@ -647,14 +660,12 @@ public class TestLoadBalancer {
             Assert.assertEquals(80, lbrule.backendPort());
             Assert.assertEquals(80, lbrule.frontendPort());
             Assert.assertNotNull(lbrule.probe());
-            Assert.assertTrue("default".equalsIgnoreCase(lbrule.probe().name()));
             Assert.assertEquals(TransportProtocol.TCP, lbrule.protocol());
             Assert.assertNotNull(lbrule.backend());
-            Assert.assertTrue("default".equalsIgnoreCase(lbrule.backend().name()));
 
             // Verify backends
             Assert.assertEquals(1, lb.backends().size());
-            LoadBalancerBackend backend = lb.backends().get("default");
+            LoadBalancerBackend backend = lb.backends().values().iterator().next();
             Assert.assertNotNull(backend);
             Assert.assertEquals(2, backend.backendNicIPConfigurationNames().size());
             for (VirtualMachine vm : existingVMs) {
@@ -666,6 +677,9 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
+            LoadBalancerBackend backend = resource.backends().values().iterator().next();
+            Assert.assertNotNull(backend);
+
             ensurePIPs(resource.manager().publicIPAddresses());
             PublicIPAddress pip = resource.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[1]);
             resource =  resource.update()
@@ -691,7 +705,7 @@ public class TestLoadBalancer {
                         .attach()
                     .defineBackend("backend2")
                         .attach()
-                    .withoutBackend("default")
+                    .withoutBackend(backend.name())
                     .withTag("tag1", "value1")
                     .withTag("tag2", "value2")
                     .apply();
@@ -720,7 +734,7 @@ public class TestLoadBalancer {
 
             // Verify backends
             Assert.assertTrue(resource.backends().containsKey("backend2"));
-            Assert.assertTrue(!resource.backends().containsKey("default"));
+            Assert.assertTrue(!resource.backends().containsKey(backend.name()));
 
             // Verify load balancing rules
             LoadBalancingRule lbRule = resource.loadBalancingRules().get("default");
@@ -824,12 +838,11 @@ public class TestLoadBalancer {
             Assert.assertNotNull(lbrule.probe());
             Assert.assertEquals(TransportProtocol.TCP, lbrule.protocol());
             Assert.assertNotNull(lbrule.backend());
-            Assert.assertTrue("default".equalsIgnoreCase(lbrule.backend().name()));
 
             // Verify backends
             Assert.assertEquals(1, lb.backends().size());
 
-            LoadBalancerBackend backend = lb.backends().get("default");
+            LoadBalancerBackend backend = lb.backends().values().iterator().next();
             Assert.assertNotNull(backend);
             Assert.assertEquals(2, backend.backendNicIPConfigurationNames().size());
             for (VirtualMachine vm : existingVMs) {
@@ -843,6 +856,8 @@ public class TestLoadBalancer {
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
             LoadBalancerFrontend frontend = resource.frontends().values().iterator().next();
             Assert.assertNotNull(frontend);
+            LoadBalancerBackend backend = resource.backends().values().iterator().next();
+            Assert.assertNotNull(backend);
 
             resource =  resource.update()
                     .updateInternalFrontend(frontend.name())
@@ -870,7 +885,7 @@ public class TestLoadBalancer {
                         .attach()
                     .defineBackend("backend2")
                         .attach()
-                    .withoutBackend("default")
+                    .withoutBackend(backend.name())
                     .withTag("tag1", "value1")
                     .withTag("tag2", "value2")
                     .apply();
@@ -901,7 +916,7 @@ public class TestLoadBalancer {
 
             // Verify backends
             Assert.assertTrue(resource.backends().containsKey("backend2"));
-            Assert.assertTrue(!resource.backends().containsKey("default"));
+            Assert.assertTrue(!resource.backends().containsKey(backend.name()));
 
             // Verify load balancing rules
             LoadBalancingRule lbRule = resource.loadBalancingRules().get("default");

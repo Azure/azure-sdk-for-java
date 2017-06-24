@@ -130,11 +130,6 @@ class LoadBalancingRuleImpl
     }
 
     @Override
-    public LoadBalancingRuleImpl withDefaultFrontend() {
-        return this.withFrontend(this.parent().ensureDefaultFrontend().name());
-    }
-
-    @Override
     public LoadBalancingRuleImpl withIdleTimeoutInMinutes(int minutes) {
         this.inner().withIdleTimeoutInMinutes(minutes);
         return this;
@@ -187,7 +182,21 @@ class LoadBalancingRuleImpl
     }
 
     @Override
+    public LoadBalancingRuleImpl withDefaultFrontend() {
+        return this.withFrontend(null);
+    }
+
+    @Override
     public LoadBalancingRuleImpl withFrontend(String frontendName) {
+        // Ensure existence of frontend, creating one if needed
+        if (frontendName == null) {
+            frontendName = this.parent().ensureDefaultFrontend().name();
+        } else {
+            LoadBalancerFrontendImpl frontend = this.parent().defineFrontend(frontendName);
+            frontendName = frontend.name();
+            frontend.attach();
+        }
+
         SubResource frontendRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/frontendIPConfigurations/" + frontendName);
         this.inner().withFrontendIPConfiguration(frontendRef);
@@ -195,10 +204,19 @@ class LoadBalancingRuleImpl
     }
 
     @Override
+    public LoadBalancingRuleImpl withDefaultBackend() {
+        return this.withBackend(null);
+    }
+
+    @Override
     public LoadBalancingRuleImpl withBackend(String backendName) {
         // Ensure existence of backend, creating one if needed
-        LoadBalancerBackendImpl backend = this.parent().defineBackend(backendName);
-        backend.attach();
+        if (backendName == null) {
+            backendName = this.parent().ensureDefaultBackend().name();
+        } else {
+            this.parent().defineBackend(backendName).attach();
+        }
+
         SubResource backendRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/backendAddressPools/" + backendName);
         this.inner().withBackendAddressPool(backendRef);

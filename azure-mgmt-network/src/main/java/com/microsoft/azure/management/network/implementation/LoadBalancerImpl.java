@@ -68,6 +68,7 @@ class LoadBalancerImpl
     private Map<String, LoadBalancerInboundNatRule> inboundNatRules;
     private Map<String, LoadBalancerInboundNatPool> inboundNatPools;
     private LoadBalancerFrontendImpl defaultFrontend;
+    private LoadBalancerBackendImpl defaultBackend;
 
     protected static final String DEFAULT = "default";
 
@@ -107,10 +108,24 @@ class LoadBalancerImpl
         initializeInboundNatRulesFromInner();
         initializeInboundNatPoolsFromInner();
         this.defaultFrontend = null;
+        this.defaultBackend = null;
+    }
+
+    protected LoadBalancerBackendImpl ensureDefaultBackend() {
+        LoadBalancerBackendImpl backend = this.defaultBackend();
+        if (backend != null) {
+            return backend;
+        } else {
+            String name = SdkContext.randomResourceName("backend", 20);
+            backend = this.defineBackend(name);
+            backend.attach();
+            this.defaultBackend = backend;
+            return backend;
+        }
     }
 
     protected LoadBalancerFrontendImpl ensureDefaultFrontend() {
-        LoadBalancerFrontendImpl frontend = defaultFrontend();
+        LoadBalancerFrontendImpl frontend = this.defaultFrontend();
         if (frontend != null) {
             return frontend;
         } else {
@@ -450,10 +465,11 @@ class LoadBalancerImpl
 
     private LoadBalancerImpl withExistingVirtualMachine(HasNetworkInterfaces vm, String backendName) {
         if (backendName == null) {
-            backendName = DEFAULT;
+            backendName = this.ensureDefaultBackend().name();
+        } else {
+            this.defineBackend(backendName).attach();
         }
 
-        this.defineBackend(backendName).attach();
         if (vm.primaryNetworkInterfaceId() != null) {
             this.nicsInBackends.put(vm.primaryNetworkInterfaceId(), backendName.toLowerCase());
         }
@@ -477,7 +493,7 @@ class LoadBalancerImpl
             .withFrontendPort(frontendPort)
             .withDefaultFrontend()
             .withBackendPort(backendPort)
-            .withBackend(DEFAULT)
+            .withDefaultBackend()
             .withProtocol(protocol)
             .withProbe(DEFAULT)
             .attach();
@@ -577,11 +593,12 @@ class LoadBalancerImpl
         return defineFrontend(name);
     }
 
-    private LoadBalancerFrontendImpl defineFrontend(String name) {
+    LoadBalancerFrontendImpl defineFrontend(String name) {
         LoadBalancerFrontend frontend = this.frontends.get(name);
+
+        // Create if non-existent
         if (frontend == null) {
-            FrontendIPConfigurationInner inner = new FrontendIPConfigurationInner()
-                    .withName(name);
+            FrontendIPConfigurationInner inner = new FrontendIPConfigurationInner().withName(name);
             return new LoadBalancerFrontendImpl(inner, this);
         } else {
             return (LoadBalancerFrontendImpl) frontend;
@@ -591,6 +608,8 @@ class LoadBalancerImpl
     @Override
     public LoadBalancerBackendImpl defineBackend(String name) {
         LoadBalancerBackend backend = this.backends.get(name);
+
+        // Create if non-existent
         if (backend == null) {
             BackendAddressPoolInner inner = new BackendAddressPoolInner()
                     .withName(name);
@@ -665,6 +684,9 @@ class LoadBalancerImpl
     @Override
     public LoadBalancerImpl withoutBackend(String name) {
         this.backends.remove(name);
+        if (this.defaultBackend != null && name.equalsIgnoreCase(this.defaultBackend.name())) {
+            this.defaultBackend = null;
+        }
         return this;
     }
 
@@ -754,6 +776,18 @@ class LoadBalancerImpl
             }
         }
         return Collections.unmodifiableList(publicIPAddressIds);
+    }
+
+    LoadBalancerBackendImpl defaultBackend() {
+        // Default means the only backend or the one tracked as the default, if more than one present
+        Map<String, LoadBalancerBackend> backends = this.backends();
+        if (backends.size() == 1) {
+            this.defaultBackend = (LoadBalancerBackendImpl) backends.values().iterator().next();
+        } else if (backends.size() == 0) {
+            this.defaultBackend = null;
+        }
+
+        return this.defaultBackend;
     }
 
     LoadBalancerFrontendImpl defaultFrontend() {
