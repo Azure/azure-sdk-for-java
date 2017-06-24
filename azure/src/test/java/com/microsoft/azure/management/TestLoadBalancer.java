@@ -300,9 +300,7 @@ public class TestLoadBalancer {
                     .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
 
                     // Frontends
-                    .definePublicFrontend("frontend1")
-                        .withExistingPublicIPAddress(pip)
-                        .attach()
+                    .withExistingPublicIPAddress(pip)
 
                     // Probes
                     .defineTcpProbe("tcpProbe1")
@@ -319,10 +317,10 @@ public class TestLoadBalancer {
                     // Load balancing rules
                     .defineLoadBalancingRule("rule1")
                         .withProtocol(TransportProtocol.TCP)    // Required
-                        .withFrontend("frontend1")
+                        .withDefaultFrontend()
                         .withFrontendPort(81)
                         .withProbe("tcpProbe1")
-                        .withBackend("backend1")
+                        .withDefaultBackend()
                         .withBackendPort(82)                    // Optionals
                         .withIdleTimeoutInMinutes(10)
                         .withLoadDistribution(LoadDistribution.SOURCE_IP)
@@ -331,46 +329,49 @@ public class TestLoadBalancer {
                     // Inbound NAT rules
                     .defineInboundNatRule("natrule1")
                         .withProtocol(TransportProtocol.TCP)
-                        .withFrontend("frontend1")
+                        .withDefaultFrontend()
                         .withFrontendPort(88)
                         .attach()
 
                     .create();
 
+            String backendName = lb.backends().values().iterator().next().name();
+            String frontendName = lb.frontends().values().iterator().next().name();
+
             // Connect NICs explicitly
             nic1.update()
-                .withExistingLoadBalancerBackend(lb, "backend1")
+                .withExistingLoadBalancerBackend(lb, backendName)
                 .withExistingLoadBalancerInboundNatRule(lb,  "natrule1")
                 .apply();
             TestNetworkInterface.printNic(nic1);
             Assert.assertTrue(nic1.primaryIPConfiguration().listAssociatedLoadBalancerBackends().get(0).name()
-                    .equalsIgnoreCase("backend1"));
+                    .equalsIgnoreCase(backendName));
             Assert.assertTrue(nic1.primaryIPConfiguration().listAssociatedLoadBalancerInboundNatRules().get(0).name()
                     .equalsIgnoreCase("natrule1"));
 
             nic2.update()
-                .withExistingLoadBalancerBackend(lb, "backend1")
+                .withExistingLoadBalancerBackend(lb, backendName)
                 .apply();
             TestNetworkInterface.printNic(nic2);
             Assert.assertTrue(nic2.primaryIPConfiguration().listAssociatedLoadBalancerBackends().get(0).name()
-                    .equalsIgnoreCase("backend1"));
+                    .equalsIgnoreCase(backendName));
 
             // Verify frontends
             Assert.assertEquals(1, lb.frontends().size());
             Assert.assertEquals(1, lb.publicFrontends().size());
             Assert.assertEquals(0, lb.privateFrontends().size());
-            LoadBalancerFrontend frontend = lb.frontends().get("frontend1");
+            LoadBalancerFrontend frontend = lb.frontends().get(frontendName);
             Assert.assertNotNull(frontend);
             Assert.assertTrue(frontend.isPublic());
             LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
             Assert.assertTrue(pip.id().equalsIgnoreCase(publicFrontend.publicIPAddressId()));
 
             pip.refresh();
-            Assert.assertTrue(pip.getAssignedLoadBalancerFrontend().name().equalsIgnoreCase("frontend1"));
+            Assert.assertTrue(pip.getAssignedLoadBalancerFrontend().name().equalsIgnoreCase(frontendName));
             TestPublicIPAddress.printPIP(pip.refresh());
 
             // Verify backends
-            Assert.assertTrue(lb.backends().containsKey("backend1"));
+            Assert.assertTrue(lb.backends().containsKey(backendName));
             Assert.assertTrue(lb.backends().size() == 1);
 
             // Verify probes
@@ -384,15 +385,15 @@ public class TestLoadBalancer {
             Assert.assertTrue(!lb.loadBalancingRules().containsKey("default"));
             Assert.assertTrue(lb.loadBalancingRules().values().size() == 1);
             LoadBalancingRule rule = lb.loadBalancingRules().get("rule1");
-            Assert.assertTrue(rule.backend().name().equalsIgnoreCase("backend1"));
-            Assert.assertTrue(rule.frontend().name().equalsIgnoreCase("frontend1"));
+            Assert.assertTrue(rule.backend().name().equalsIgnoreCase(backendName));
+            Assert.assertTrue(rule.frontend().name().equalsIgnoreCase(frontendName));
             Assert.assertTrue(rule.probe().name().equalsIgnoreCase("tcpProbe1"));
 
             // Verify inbound NAT rules
             Assert.assertTrue(lb.inboundNatRules().containsKey("natrule1"));
             Assert.assertTrue(lb.inboundNatRules().size() == 1);
             LoadBalancerInboundNatRule inboundNatRule = lb.inboundNatRules().get("natrule1");
-            Assert.assertTrue(inboundNatRule.frontend().name().equalsIgnoreCase("frontend1"));
+            Assert.assertTrue(inboundNatRule.frontend().name().equalsIgnoreCase(frontendName));
             Assert.assertTrue(inboundNatRule.frontendPort() == 88);
             Assert.assertTrue(inboundNatRule.backendPort() == 88);
 
@@ -401,8 +402,11 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
+            String backendName = resource.backends().values().iterator().next().name();
+            String frontendName = resource.frontends().values().iterator().next().name();
+
             List<NetworkInterface> nics = new ArrayList<>();
-            for (String nicId : resource.backends().get("backend1").backendNicIPConfigurationNames().keySet()) {
+            for (String nicId : resource.backends().get(backendName).backendNicIPConfigurationNames().keySet()) {
                 nics.add(resource.manager().networkInterfaces().getById(nicId));
             }
             NetworkInterface nic1 = nics.get(0);
@@ -425,11 +429,9 @@ public class TestLoadBalancer {
             ensurePIPs(resource.manager().publicIPAddresses());
             PublicIPAddress pip = resource.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[1]);
             resource =  resource.update()
-                    .updateInternetFrontend("frontend1")
+                    .updateInternetFrontend(frontendName)
                         .withExistingPublicIPAddress(pip)
                         .parent()
-                    .withoutFrontend("default")
-                    .withoutBackend("default")
                     .withoutLoadBalancingRule("rule1")
                     .withoutInboundNatRule("natrule1")
                     .withTag("tag1", "value1")
@@ -439,7 +441,7 @@ public class TestLoadBalancer {
             Assert.assertEquals(0, resource.inboundNatRules().size());
 
             // Verify frontends
-            LoadBalancerFrontend frontend = resource.frontends().get("frontend1");
+            LoadBalancerFrontend frontend = resource.frontends().get(frontendName);
             Assert.assertEquals(1,  resource.publicFrontends().size());
             Assert.assertEquals(0,  resource.privateFrontends().size());
             Assert.assertNotNull(frontend);
