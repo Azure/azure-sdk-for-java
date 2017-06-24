@@ -156,10 +156,6 @@ public final class ManageInternalLoadBalancer {
                         .withPrivateIPAddressStatic("172.16.3.5")
                         .attach()
 
-                    // Add one backend - one per rule
-                    .defineBackend(backendPoolName3)
-                        .attach()
-
                     // Add one probes - one per rule
                     .defineHttpProbe("httpProbe")
                         .withRequestPath("/")
@@ -336,10 +332,6 @@ public final class ManageInternalLoadBalancer {
                     .definePrivateFrontend(privateFrontEndName)
                         .withExistingSubnet(network, "Back-end")
                         .withPrivateIPAddressStatic("172.16.3.15")
-                        .attach()
-
-                    // Add one backend - one per rule
-                    .defineBackend(backendPoolName3)
                         .attach()
 
                     // Add one probes - one per rule

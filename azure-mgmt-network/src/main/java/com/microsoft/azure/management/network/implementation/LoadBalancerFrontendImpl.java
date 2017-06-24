@@ -26,7 +26,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /**
- *  Implementation for {@link LoadBalancerPublicFrontend}.
+ *  Implementation for LoadBalancerPublicFrontend.
  */
 @LangDefinition
 class LoadBalancerFrontendImpl
@@ -34,11 +34,11 @@ class LoadBalancerFrontendImpl
     implements
         LoadBalancerFrontend,
         LoadBalancerPrivateFrontend,
-        LoadBalancerPrivateFrontend.Definition<LoadBalancer.DefinitionStages.WithPrivateFrontendOrBackend>,
+        LoadBalancerPrivateFrontend.Definition<LoadBalancer.DefinitionStages.WithPrivateFrontendOrProbe>,
         LoadBalancerPrivateFrontend.UpdateDefinition<LoadBalancer.Update>,
         LoadBalancerPrivateFrontend.Update,
         LoadBalancerPublicFrontend,
-        LoadBalancerPublicFrontend.Definition<LoadBalancer.DefinitionStages.WithPublicFrontendOrBackend>,
+        LoadBalancerPublicFrontend.Definition<LoadBalancer.DefinitionStages.WithPublicFrontendOrProbe>,
         LoadBalancerPublicFrontend.UpdateDefinition<LoadBalancer.Update>,
         LoadBalancerPublicFrontend.Update {
 

@@ -138,8 +138,6 @@ public abstract class ComputeManagementTest extends TestBase {
                 .definePublicFrontend(frontendName)
                     .withExistingPublicIPAddress(publicIPAddress)
                     .attach()
-                .defineBackend(backendPoolName)
-                    .attach()
                 .defineHttpProbe("httpProbe")
                     .withRequestPath("/")
                     .attach()
@@ -183,12 +181,6 @@ public abstract class ComputeManagementTest extends TestBase {
                 .withExistingResourceGroup(resourceGroup)
                 .definePublicFrontend(frontendName)
                     .withExistingPublicIPAddress(publicIPAddress)
-                    .attach()
-
-                // Add two backend one per rule
-                .defineBackend(backendPoolName1)
-                    .attach()
-                .defineBackend(backendPoolName2)
                     .attach()
 
                 // Add two probes one per rule
@@ -247,12 +239,6 @@ public abstract class ComputeManagementTest extends TestBase {
                 .withExistingResourceGroup(resourceGroup)
                 .definePrivateFrontend(privateFrontEndName)
                     .withExistingSubnet(network, subnetName)
-                    .attach()
-
-                // Add two backend one per rule
-                .defineBackend(backendPoolName1)
-                    .attach()
-                .defineBackend(backendPoolName2)
                     .attach()
 
                 // Add two probes one per rule

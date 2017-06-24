@@ -172,13 +172,6 @@ public final class ManageInternetFacingLoadBalancer {
                         .withExistingPublicIPAddress(publicIPAddress)
                         .attach()
 
-                    // Add two backend one per rule
-                    .defineBackend(backendPoolName1)
-                        .attach()
-
-                    .defineBackend(backendPoolName2)
-                        .attach()
-
                     // Add two probes one per rule
                     .defineHttpProbe(httpProbe)
                         .withRequestPath("/")
@@ -387,13 +380,6 @@ public final class ManageInternetFacingLoadBalancer {
                     .withExistingResourceGroup(rgName)
                     .definePublicFrontend(frontendName)
                         .withExistingPublicIPAddress(publicIPAddress2)
-                        .attach()
-
-                    // Add two backend one per rule
-                    .defineBackend(backendPoolName1)
-                        .attach()
-
-                    .defineBackend(backendPoolName2)
                         .attach()
 
                     // Add two probes one per rule

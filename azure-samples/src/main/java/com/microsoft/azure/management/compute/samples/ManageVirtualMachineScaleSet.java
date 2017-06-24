@@ -139,11 +139,7 @@ public final class ManageVirtualMachineScaleSet {
                     .definePublicFrontend(frontendName)
                         .withExistingPublicIPAddress(publicIPAddress)
                         .attach()
-                    // Add two backend one per rule
-                    .defineBackend(backendPoolName1)
-                        .attach()
-                    .defineBackend(backendPoolName2)
-                        .attach()
+
                     // Add two probes one per rule
                     .defineHttpProbe(httpProbe)
                         .withRequestPath("/")

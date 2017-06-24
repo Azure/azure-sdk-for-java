@@ -90,11 +90,10 @@ public interface LoadBalancer extends
         DefinitionStages.WithGroup,
         DefinitionStages.WithFrontend,
         DefinitionStages.WithCreate,
-        DefinitionStages.WithPublicFrontendOrBackend,
-        DefinitionStages.WithPrivateFrontendOrBackend,
+        DefinitionStages.WithPublicFrontendOrProbe,
+        DefinitionStages.WithPrivateFrontendOrProbe,
         DefinitionStages.WithNetworkSubnet,
         DefinitionStages.WithBackend,
-        DefinitionStages.WithBackendOrProbe,
         DefinitionStages.WithProbe,
         DefinitionStages.WithProbeOrLoadBalancingRule,
         DefinitionStages.WithProbeOrNat,
@@ -127,7 +126,7 @@ public interface LoadBalancer extends
          * The stage of a load balancer definition describing the nature of the frontend of the load balancer: internal or Internet-facing.
          */
         interface WithFrontend extends
-            WithPublicIPAddress<WithPublicFrontendOrBackend>,
+            WithPublicIPAddress<WithPublicFrontendOrProbe>,
             WithPublicFrontend,
             WithPrivateFrontend {
         }
@@ -136,13 +135,13 @@ public interface LoadBalancer extends
          * The stage of an internal load balancer definition allowing to define one or more private frontends.
          */
         interface WithPrivateFrontend extends WithNetworkSubnet {
-            LoadBalancerPrivateFrontend.DefinitionStages.Blank<WithPrivateFrontendOrBackend> definePrivateFrontend(String name);
+            LoadBalancerPrivateFrontend.DefinitionStages.Blank<WithPrivateFrontendOrProbe> definePrivateFrontend(String name);
         }
 
         /**
-         * The stage of an internal load balancer definition allowing to specify another private frontend or start specifying a backend.
+         * The stage of an internal load balancer definition allowing to specify another private frontend or start specifying probes, NAT rules or NAT pools.
          */
-        interface WithPrivateFrontendOrBackend extends WithPrivateFrontend, WithBackend {
+        interface WithPrivateFrontendOrProbe extends WithPrivateFrontend, WithProbeOrNat {
         }
 
         /**
@@ -151,31 +150,29 @@ public interface LoadBalancer extends
         interface WithPublicFrontend {
             /**
              * Begins the definition of a new load public balancer frontend.
-             * <p>
-             * The definition must be completed with a call to {@link LoadBalancerPublicFrontend.DefinitionStages.WithAttach#attach()}
              * @param name the name for the frontend
              * @return the first stage of the new frontend definition
              */
-            LoadBalancerPublicFrontend.DefinitionStages.Blank<WithPublicFrontendOrBackend> definePublicFrontend(String name);
+            LoadBalancerPublicFrontend.DefinitionStages.Blank<WithPublicFrontendOrProbe> definePublicFrontend(String name);
         }
 
         /**
          * The stage of an Internet-facing load balancer definition allowing to add additional public frontends
-         * or add the first backend pool.
+         * or start adding probes, NAT rules or NAT pools.
          */
-        interface WithPublicFrontendOrBackend extends WithPublicFrontend, WithBackend {
+        interface WithPublicFrontendOrProbe extends WithPublicFrontend, WithProbeOrNat {
         }
 
         /**
          * The stage of a load balancer definition allowing to add a backend.
          */
-        interface WithBackend extends WithVirtualMachine<WithBackendOrProbe> {
+        interface WithBackend extends WithVirtualMachine<WithCreate> {
             /**
              * Starts the definition of a backend.
              * @param name the name to assign to the backend
              * @return the next stage of the update
              */
-            LoadBalancerBackend.DefinitionStages.Blank<WithBackendOrProbe> defineBackend(String name);
+            LoadBalancerBackend.DefinitionStages.Blank<WithCreate> defineBackend(String name);
         }
 
         /**
@@ -283,7 +280,7 @@ public interface LoadBalancer extends
              * @param subnetName the name of an existing subnet on the specified network
              * @return the next stage of the definition
              */
-            WithPrivateFrontendOrBackend withFrontendSubnet(Network network, String subnetName);
+            WithPrivateFrontendOrProbe withFrontendSubnet(Network network, String subnetName);
         }
 
         /**
@@ -329,12 +326,13 @@ public interface LoadBalancer extends
 
         /**
          * The stage of a load balancer definition containing all the required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allowing
+         * the resource to be created, but also allowing
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
             Creatable<LoadBalancer>,
-            Resource.DefinitionWithTags<WithCreate> {
+            Resource.DefinitionWithTags<WithCreate>,
+            WithBackend {
         }
 
         /**

@@ -106,11 +106,6 @@ public class TestLoadBalancer {
                         .withExistingPublicIPAddress(pip1)
                         .attach()
 
-                    // Backends
-                    .withExistingVirtualMachines(existingVMs)
-                    .defineBackend("backend1")
-                        .attach()
-
                     // Probes
                     .defineTcpProbe("tcpProbe1")
                         .withPort(25)               // Required
@@ -142,6 +137,9 @@ public class TestLoadBalancer {
                         .withFrontendPortRange(2000, 2001)
                         .withBackendPort(8080)
                         .attach()
+
+                    // Backends (OPTIONAL)
+                    .withExistingVirtualMachines(existingVMs)
 
                     .create();
 
@@ -297,10 +295,6 @@ public class TestLoadBalancer {
                         .withExistingPublicIPAddress(pip)
                         .attach()
 
-                    // Backends
-                    .defineBackend("backend1")
-                        .attach()
-
                     // Probes
                     .defineTcpProbe("tcpProbe1")
                         .withPort(25)               // Required
@@ -331,6 +325,7 @@ public class TestLoadBalancer {
                         .withFrontend("frontend1")
                         .withFrontendPort(88)
                         .attach()
+
                     .create();
 
             // Connect NICs explicitly
@@ -481,25 +476,23 @@ public class TestLoadBalancer {
             LoadBalancer lb = resources.define(TestLoadBalancer.LB_NAME)
                     .withRegion(TestLoadBalancer.REGION)
                     .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
-                    // Frontend
-                    .definePublicFrontend("frontend1")
-                        .withExistingPublicIPAddress(pip)
-                        .attach()
-                    // Backend (default)
-                    .withExistingVirtualMachines(existingVMs)
+                    // Frontend (default)
+                    .withExistingPublicIPAddress(pip)
                     // Inbound NAT rule
                     .defineInboundNatRule("natrule1")
                         .withProtocol(TransportProtocol.TCP)
-                        .withFrontend("frontend1")
+                        .withDefaultFrontend()
                         .withFrontendPort(88)
                         .withBackendPort(80)
                         .attach()
+                    // Backend (default)
+                    .withExistingVirtualMachines(existingVMs)
 
                     .create();
 
             // Verify frontends
-            Assert.assertTrue(lb.frontends().containsKey("frontend1"));
-            LoadBalancerFrontend frontend = lb.frontends().get("frontend1");
+            Assert.assertEquals(1, lb.frontends().size());
+            LoadBalancerFrontend frontend = lb.frontends().values().iterator().next();
             Assert.assertEquals(1, lb.publicFrontends().size());
             Assert.assertEquals(0,  lb.privateFrontends().size());
             Assert.assertEquals(0, frontend.loadBalancingRules().size());
@@ -520,7 +513,6 @@ public class TestLoadBalancer {
             Assert.assertNotNull(natRule);
             Assert.assertEquals(TransportProtocol.TCP, natRule.protocol());
             Assert.assertNotNull(natRule.frontend());
-            Assert.assertEquals("frontend1", natRule.frontend().name());
             Assert.assertEquals(88, natRule.frontendPort());
 
             // Verify backends
@@ -538,9 +530,10 @@ public class TestLoadBalancer {
         @Override
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
             ensurePIPs(resource.manager().publicIPAddresses());
+            LoadBalancerFrontend frontend = resource.frontends().values().iterator().next();
             PublicIPAddress pip = resource.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[1]);
             resource =  resource.update()
-                    .updateInternetFrontend("frontend1")
+                    .updateInternetFrontend(frontend.name())
                         .withExistingPublicIPAddress(pip)
                         .parent()
                     .defineBackend("backend2")
@@ -556,7 +549,7 @@ public class TestLoadBalancer {
             Assert.assertEquals(1, resource.frontends().size());
             Assert.assertEquals(1, resource.publicFrontends().size());
             Assert.assertEquals(0,  resource.privateFrontends().size());
-            LoadBalancerFrontend frontend = resource.frontends().get("frontend1");
+            frontend = resource.frontends().get(frontend.name());
             Assert.assertTrue(frontend.isPublic());
             LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
             Assert.assertTrue(pip.id().equalsIgnoreCase(publicFrontend.publicIPAddressId()));
@@ -617,12 +610,12 @@ public class TestLoadBalancer {
                     .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
                     // Frontend (default)
                     .withExistingPublicIPAddress(pip)
-                    // Backend (default)
-                    .withExistingVirtualMachines(existingVMs)
                     // Probe (default)
                     .withTcpProbe(22)
                     // LB rule (default)
                     .withLoadBalancingRule(80, TransportProtocol.TCP)
+                    // Backend (default)
+                    .withExistingVirtualMachines(existingVMs)
                     .create();
 
             // Verify frontends
@@ -789,14 +782,12 @@ public class TestLoadBalancer {
                     .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
                     // Frontend (default)
                     .withFrontendSubnet(network, "subnet1")
-                    // Backend (default)
-                    .withExistingVirtualMachines(existingVMs)
-                    .defineBackend("foo")
-                        .attach()
                     // Probe (default)
                     .withTcpProbe(22)
                     // LB rule (default)
                     .withLoadBalancingRule(80, TransportProtocol.TCP)
+                    // Backends
+                    .withExistingVirtualMachines(existingVMs)
                     .create();
 
             // Verify frontends
@@ -836,13 +827,9 @@ public class TestLoadBalancer {
             Assert.assertTrue("default".equalsIgnoreCase(lbrule.backend().name()));
 
             // Verify backends
-            Assert.assertEquals(2, lb.backends().size());
+            Assert.assertEquals(1, lb.backends().size());
 
-            LoadBalancerBackend backend = lb.backends().get("foo");
-            Assert.assertNotNull(backend);
-            Assert.assertTrue(backend.backendNicIPConfigurationNames().isEmpty());
-
-            backend = lb.backends().get("default");
+            LoadBalancerBackend backend = lb.backends().get("default");
             Assert.assertNotNull(backend);
             Assert.assertEquals(2, backend.backendNicIPConfigurationNames().size());
             for (VirtualMachine vm : existingVMs) {
