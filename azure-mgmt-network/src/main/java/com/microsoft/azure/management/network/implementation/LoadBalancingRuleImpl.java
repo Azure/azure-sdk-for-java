@@ -196,6 +196,9 @@ class LoadBalancingRuleImpl
 
     @Override
     public LoadBalancingRuleImpl withBackend(String backendName) {
+        // Ensure existence of backend, creating one if needed
+        LoadBalancerBackendImpl backend = this.parent().defineBackend(backendName);
+        backend.attach();
         SubResource backendRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/backendAddressPools/" + backendName);
         this.inner().withBackendAddressPool(backendRef);

@@ -106,8 +106,8 @@ public interface LoadBalancingRule extends
             /**
              * Associates the load balancing rule with the specified backend of this load balancer.
              * <p>
-             * A backedn with the specified name must already exist on this load balancer.
-             * @param backendName the name of an existing backend
+             * If a backend with the specified name does not yet exist on this load balancer, it will be created automatically.
+             * @param backendName the name of a backend
              * @return the next stage of the definition
              */
             WithBackendPort<ParentT> withBackend(String backendName);
@@ -314,7 +314,7 @@ public interface LoadBalancingRule extends
             /**
              * Associates the load balancing rule with the specified backend of this load balancer.
              * <p>
-             * A backedn with the specified name must already exist on this load balancer.
+             * If a backend with the specified name does not yet exist on this load balancer, it will be created automatically.
              * @param backendName the name of an existing backend
              * @return the next stage of the definition
              */
