@@ -101,8 +101,19 @@ abstract class WebAppBaseImpl<
 
     WebAppBaseImpl(String name, SiteInner innerObject, SiteConfigResourceInner configObject, AppServiceManager manager) {
         super(name, innerObject, manager);
+        if (innerObject != null && innerObject.kind() != null) {
+            innerObject.withKind(innerObject.kind().replace(";", ","));
+        }
         this.siteConfig = configObject;
         normalizeProperties();
+    }
+
+    @Override
+    public void setInner(SiteInner innerObject) {
+        if (innerObject.kind() != null) {
+            innerObject.withKind(innerObject.kind().replace(";", ","));
+        }
+        super.setInner(innerObject);
     }
 
     @SuppressWarnings("unchecked")
