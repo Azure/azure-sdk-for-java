@@ -392,6 +392,14 @@ abstract class WebAppBaseImpl<
     }
 
     @Override
+    public String linuxFxVersion() {
+        if (siteConfig == null) {
+            return null;
+        }
+        return siteConfig.linuxFxVersion();
+    }
+
+    @Override
     public String autoSwapSlotName() {
         if (siteConfig == null) {
             return null;
