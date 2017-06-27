@@ -8,18 +8,24 @@
 
 package com.microsoft.azure.management.monitor.implementation;
 
+import java.util.Map;
 import java.util.List;
 import com.microsoft.azure.management.monitor.AutoscaleProfile;
 import com.microsoft.azure.management.monitor.AutoscaleNotification;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.Resource;
 
 /**
- * The autoscale setting resource.
+ * The autoscale setting object for patch operations.
  */
 @JsonFlatten
-public class AutoscaleSettingResourceInner extends Resource {
+public class AutoscaleSettingResourcePatchInner {
+    /**
+     * Resource tags.
+     */
+    @JsonProperty(value = "tags")
+    private Map<String, String> tags;
+
     /**
      * the collection of automatic scaling profiles that specify different
      * scaling parameters for different time periods. A maximum of 20 profiles
@@ -45,7 +51,7 @@ public class AutoscaleSettingResourceInner extends Resource {
      * the name of the autoscale setting.
      */
     @JsonProperty(value = "properties.name")
-    private String autoscaleSettingResourceName;
+    private String name;
 
     /**
      * the resource identifier of the resource that the autoscale setting
@@ -53,6 +59,26 @@ public class AutoscaleSettingResourceInner extends Resource {
      */
     @JsonProperty(value = "properties.targetResourceUri")
     private String targetResourceUri;
+
+    /**
+     * Get the tags value.
+     *
+     * @return the tags value
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags value.
+     *
+     * @param tags the tags value to set
+     * @return the AutoscaleSettingResourcePatchInner object itself.
+     */
+    public AutoscaleSettingResourcePatchInner withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
 
     /**
      * Get the profiles value.
@@ -67,9 +93,9 @@ public class AutoscaleSettingResourceInner extends Resource {
      * Set the profiles value.
      *
      * @param profiles the profiles value to set
-     * @return the AutoscaleSettingResourceInner object itself.
+     * @return the AutoscaleSettingResourcePatchInner object itself.
      */
-    public AutoscaleSettingResourceInner withProfiles(List<AutoscaleProfile> profiles) {
+    public AutoscaleSettingResourcePatchInner withProfiles(List<AutoscaleProfile> profiles) {
         this.profiles = profiles;
         return this;
     }
@@ -87,9 +113,9 @@ public class AutoscaleSettingResourceInner extends Resource {
      * Set the notifications value.
      *
      * @param notifications the notifications value to set
-     * @return the AutoscaleSettingResourceInner object itself.
+     * @return the AutoscaleSettingResourcePatchInner object itself.
      */
-    public AutoscaleSettingResourceInner withNotifications(List<AutoscaleNotification> notifications) {
+    public AutoscaleSettingResourcePatchInner withNotifications(List<AutoscaleNotification> notifications) {
         this.notifications = notifications;
         return this;
     }
@@ -107,30 +133,30 @@ public class AutoscaleSettingResourceInner extends Resource {
      * Set the enabled value.
      *
      * @param enabled the enabled value to set
-     * @return the AutoscaleSettingResourceInner object itself.
+     * @return the AutoscaleSettingResourcePatchInner object itself.
      */
-    public AutoscaleSettingResourceInner withEnabled(Boolean enabled) {
+    public AutoscaleSettingResourcePatchInner withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
 
     /**
-     * Get the autoscaleSettingResourceName value.
+     * Get the name value.
      *
-     * @return the autoscaleSettingResourceName value
+     * @return the name value
      */
-    public String autoscaleSettingResourceName() {
-        return this.autoscaleSettingResourceName;
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Set the autoscaleSettingResourceName value.
+     * Set the name value.
      *
-     * @param autoscaleSettingResourceName the autoscaleSettingResourceName value to set
-     * @return the AutoscaleSettingResourceInner object itself.
+     * @param name the name value to set
+     * @return the AutoscaleSettingResourcePatchInner object itself.
      */
-    public AutoscaleSettingResourceInner withAutoscaleSettingResourceName(String autoscaleSettingResourceName) {
-        this.autoscaleSettingResourceName = autoscaleSettingResourceName;
+    public AutoscaleSettingResourcePatchInner withName(String name) {
+        this.name = name;
         return this;
     }
 
@@ -147,9 +173,9 @@ public class AutoscaleSettingResourceInner extends Resource {
      * Set the targetResourceUri value.
      *
      * @param targetResourceUri the targetResourceUri value to set
-     * @return the AutoscaleSettingResourceInner object itself.
+     * @return the AutoscaleSettingResourcePatchInner object itself.
      */
-    public AutoscaleSettingResourceInner withTargetResourceUri(String targetResourceUri) {
+    public AutoscaleSettingResourcePatchInner withTargetResourceUri(String targetResourceUri) {
         this.targetResourceUri = targetResourceUri;
         return this;
     }

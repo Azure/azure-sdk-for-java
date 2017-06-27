@@ -8,17 +8,23 @@
 
 package com.microsoft.azure.management.monitor.implementation;
 
+import java.util.Map;
 import java.util.List;
 import com.microsoft.azure.management.monitor.RetentionPolicy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.Resource;
 
 /**
- * The log profile resource.
+ * The log profile resource for patch operations.
  */
 @JsonFlatten
-public class LogProfileResourceInner extends Resource {
+public class LogProfileResourcePatchInner {
+    /**
+     * Resource tags.
+     */
+    @JsonProperty(value = "tags")
+    private Map<String, String> tags;
+
     /**
      * the resource id of the storage account to which you would like to send
      * the Activity Log.
@@ -58,6 +64,26 @@ public class LogProfileResourceInner extends Resource {
     private RetentionPolicy retentionPolicy;
 
     /**
+     * Get the tags value.
+     *
+     * @return the tags value
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags value.
+     *
+     * @param tags the tags value to set
+     * @return the LogProfileResourcePatchInner object itself.
+     */
+    public LogProfileResourcePatchInner withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
      * Get the storageAccountId value.
      *
      * @return the storageAccountId value
@@ -70,9 +96,9 @@ public class LogProfileResourceInner extends Resource {
      * Set the storageAccountId value.
      *
      * @param storageAccountId the storageAccountId value to set
-     * @return the LogProfileResourceInner object itself.
+     * @return the LogProfileResourcePatchInner object itself.
      */
-    public LogProfileResourceInner withStorageAccountId(String storageAccountId) {
+    public LogProfileResourcePatchInner withStorageAccountId(String storageAccountId) {
         this.storageAccountId = storageAccountId;
         return this;
     }
@@ -90,9 +116,9 @@ public class LogProfileResourceInner extends Resource {
      * Set the serviceBusRuleId value.
      *
      * @param serviceBusRuleId the serviceBusRuleId value to set
-     * @return the LogProfileResourceInner object itself.
+     * @return the LogProfileResourcePatchInner object itself.
      */
-    public LogProfileResourceInner withServiceBusRuleId(String serviceBusRuleId) {
+    public LogProfileResourcePatchInner withServiceBusRuleId(String serviceBusRuleId) {
         this.serviceBusRuleId = serviceBusRuleId;
         return this;
     }
@@ -110,9 +136,9 @@ public class LogProfileResourceInner extends Resource {
      * Set the locations value.
      *
      * @param locations the locations value to set
-     * @return the LogProfileResourceInner object itself.
+     * @return the LogProfileResourcePatchInner object itself.
      */
-    public LogProfileResourceInner withLocations(List<String> locations) {
+    public LogProfileResourcePatchInner withLocations(List<String> locations) {
         this.locations = locations;
         return this;
     }
@@ -130,9 +156,9 @@ public class LogProfileResourceInner extends Resource {
      * Set the categories value.
      *
      * @param categories the categories value to set
-     * @return the LogProfileResourceInner object itself.
+     * @return the LogProfileResourcePatchInner object itself.
      */
-    public LogProfileResourceInner withCategories(List<String> categories) {
+    public LogProfileResourcePatchInner withCategories(List<String> categories) {
         this.categories = categories;
         return this;
     }
@@ -150,9 +176,9 @@ public class LogProfileResourceInner extends Resource {
      * Set the retentionPolicy value.
      *
      * @param retentionPolicy the retentionPolicy value to set
-     * @return the LogProfileResourceInner object itself.
+     * @return the LogProfileResourcePatchInner object itself.
      */
-    public LogProfileResourceInner withRetentionPolicy(RetentionPolicy retentionPolicy) {
+    public LogProfileResourcePatchInner withRetentionPolicy(RetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
         return this;
     }

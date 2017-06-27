@@ -8,18 +8,24 @@
 
 package com.microsoft.azure.management.monitor.implementation;
 
+import java.util.Map;
 import java.util.List;
 import com.microsoft.azure.management.monitor.MetricSettings;
 import com.microsoft.azure.management.monitor.LogSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.Resource;
 
 /**
- * Description of a service diagnostic setting.
+ * Service diagnostic setting resource for patch operations.
  */
 @JsonFlatten
-public class ServiceDiagnosticSettingsResourceInner extends Resource {
+public class ServiceDiagnosticSettingsResourcePatchInner {
+    /**
+     * Resource tags.
+     */
+    @JsonProperty(value = "tags")
+    private Map<String, String> tags;
+
     /**
      * The resource ID of the storage account to which you would like to send
      * Diagnostic Logs.
@@ -64,6 +70,26 @@ public class ServiceDiagnosticSettingsResourceInner extends Resource {
     private String workspaceId;
 
     /**
+     * Get the tags value.
+     *
+     * @return the tags value
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags value.
+     *
+     * @param tags the tags value to set
+     * @return the ServiceDiagnosticSettingsResourcePatchInner object itself.
+     */
+    public ServiceDiagnosticSettingsResourcePatchInner withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
      * Get the storageAccountId value.
      *
      * @return the storageAccountId value
@@ -76,9 +102,9 @@ public class ServiceDiagnosticSettingsResourceInner extends Resource {
      * Set the storageAccountId value.
      *
      * @param storageAccountId the storageAccountId value to set
-     * @return the ServiceDiagnosticSettingsResourceInner object itself.
+     * @return the ServiceDiagnosticSettingsResourcePatchInner object itself.
      */
-    public ServiceDiagnosticSettingsResourceInner withStorageAccountId(String storageAccountId) {
+    public ServiceDiagnosticSettingsResourcePatchInner withStorageAccountId(String storageAccountId) {
         this.storageAccountId = storageAccountId;
         return this;
     }
@@ -96,9 +122,9 @@ public class ServiceDiagnosticSettingsResourceInner extends Resource {
      * Set the serviceBusRuleId value.
      *
      * @param serviceBusRuleId the serviceBusRuleId value to set
-     * @return the ServiceDiagnosticSettingsResourceInner object itself.
+     * @return the ServiceDiagnosticSettingsResourcePatchInner object itself.
      */
-    public ServiceDiagnosticSettingsResourceInner withServiceBusRuleId(String serviceBusRuleId) {
+    public ServiceDiagnosticSettingsResourcePatchInner withServiceBusRuleId(String serviceBusRuleId) {
         this.serviceBusRuleId = serviceBusRuleId;
         return this;
     }
@@ -116,9 +142,9 @@ public class ServiceDiagnosticSettingsResourceInner extends Resource {
      * Set the eventHubAuthorizationRuleId value.
      *
      * @param eventHubAuthorizationRuleId the eventHubAuthorizationRuleId value to set
-     * @return the ServiceDiagnosticSettingsResourceInner object itself.
+     * @return the ServiceDiagnosticSettingsResourcePatchInner object itself.
      */
-    public ServiceDiagnosticSettingsResourceInner withEventHubAuthorizationRuleId(String eventHubAuthorizationRuleId) {
+    public ServiceDiagnosticSettingsResourcePatchInner withEventHubAuthorizationRuleId(String eventHubAuthorizationRuleId) {
         this.eventHubAuthorizationRuleId = eventHubAuthorizationRuleId;
         return this;
     }
@@ -136,9 +162,9 @@ public class ServiceDiagnosticSettingsResourceInner extends Resource {
      * Set the metrics value.
      *
      * @param metrics the metrics value to set
-     * @return the ServiceDiagnosticSettingsResourceInner object itself.
+     * @return the ServiceDiagnosticSettingsResourcePatchInner object itself.
      */
-    public ServiceDiagnosticSettingsResourceInner withMetrics(List<MetricSettings> metrics) {
+    public ServiceDiagnosticSettingsResourcePatchInner withMetrics(List<MetricSettings> metrics) {
         this.metrics = metrics;
         return this;
     }
@@ -156,9 +182,9 @@ public class ServiceDiagnosticSettingsResourceInner extends Resource {
      * Set the logs value.
      *
      * @param logs the logs value to set
-     * @return the ServiceDiagnosticSettingsResourceInner object itself.
+     * @return the ServiceDiagnosticSettingsResourcePatchInner object itself.
      */
-    public ServiceDiagnosticSettingsResourceInner withLogs(List<LogSettings> logs) {
+    public ServiceDiagnosticSettingsResourcePatchInner withLogs(List<LogSettings> logs) {
         this.logs = logs;
         return this;
     }
@@ -176,9 +202,9 @@ public class ServiceDiagnosticSettingsResourceInner extends Resource {
      * Set the workspaceId value.
      *
      * @param workspaceId the workspaceId value to set
-     * @return the ServiceDiagnosticSettingsResourceInner object itself.
+     * @return the ServiceDiagnosticSettingsResourcePatchInner object itself.
      */
-    public ServiceDiagnosticSettingsResourceInner withWorkspaceId(String workspaceId) {
+    public ServiceDiagnosticSettingsResourcePatchInner withWorkspaceId(String workspaceId) {
         this.workspaceId = workspaceId;
         return this;
     }

@@ -20,36 +20,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource")
 public class RuleMetricDataSource extends RuleDataSource {
     /**
-     * the resource identifier of the resource the rule monitors.
-     */
-    @JsonProperty(value = "resourceUri")
-    private String resourceUri;
-
-    /**
      * the name of the metric that defines what the rule monitors.
      */
     @JsonProperty(value = "metricName")
     private String metricName;
-
-    /**
-     * Get the resourceUri value.
-     *
-     * @return the resourceUri value
-     */
-    public String resourceUri() {
-        return this.resourceUri;
-    }
-
-    /**
-     * Set the resourceUri value.
-     *
-     * @param resourceUri the resourceUri value to set
-     * @return the RuleMetricDataSource object itself.
-     */
-    public RuleMetricDataSource withResourceUri(String resourceUri) {
-        this.resourceUri = resourceUri;
-        return this;
-    }
 
     /**
      * Get the metricName value.
