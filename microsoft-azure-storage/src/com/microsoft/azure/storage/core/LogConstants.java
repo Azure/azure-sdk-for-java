@@ -22,6 +22,7 @@ public class LogConstants {
     public static final String COMPLETE = "Operation completed.";
     public static final String DO_NOT_RETRY_POLICY = "Retry policy did not allow for a retry. Failing. Error Message = '%s'.";
     public static final String DO_NOT_RETRY_TIMEOUT = "Operation cannot be retried because maximum execution timeout has been reached. Failing. Inner error Message = '%s'.";
+    public static final String ERROR_RECEIVING_RESPONSE = "A network error occurred before the HTTP response status and headers were received.";
     public static final String GET_RESPONSE = "Waiting for response.";
     public static final String INIT_LOCATION = "Starting operation with location '%s' per location mode '%s'.";
     public static final String NEXT_LOCATION = "The next location has been set to '%s', per location mode '%s'.";
