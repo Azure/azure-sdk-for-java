@@ -12,6 +12,8 @@ import com.microsoft.azure.management.network.PacketCaptureFilter;
 import com.microsoft.azure.management.network.PcProtocol;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 
+import java.util.List;
+
 /**
  * Represents Packet Capture filter.
  */
@@ -20,7 +22,10 @@ class PCFilterImpl extends IndexableWrapperImpl<PacketCaptureFilter>
         implements
         PCFilter,
         PCFilter.Definition<PacketCapture.DefinitionStages.WithCreate> {
+    private static final String DELIMITER = ";";
+    private static final String RANGE_DELIMITER = "-";
     private PacketCaptureImpl parent;
+
     PCFilterImpl(PacketCaptureFilter inner, PacketCaptureImpl parent) {
         super(inner);
         this.parent = parent;
@@ -64,20 +69,40 @@ class PCFilterImpl extends IndexableWrapperImpl<PacketCaptureFilter>
     }
 
     @Override
+    public Definition<PacketCapture.DefinitionStages.WithCreate> withLocalIPAddressesRange(String startIPAddress, String endIPAddress) {
+        this.inner().withLocalIPAddress(startIPAddress + RANGE_DELIMITER + endIPAddress);
+        return this;
+    }
+
+    @Override
+    public Definition<PacketCapture.DefinitionStages.WithCreate> withLocalIPAddresses(List<String> ipAddresses) {
+        StringBuilder ipAddressesString = new StringBuilder();
+        for (String ipAddress : ipAddresses) {
+            ipAddressesString.append(ipAddress).append(DELIMITER);
+        }
+        this.inner().withLocalIPAddress(ipAddressesString.substring(0, ipAddressesString.length() - 1));
+        return this;
+    }
+
+    @Override
     public PCFilterImpl withRemoteIPAddress(String ipAddress) {
         this.inner().withRemoteIPAddress(ipAddress);
         return this;
     }
 
     @Override
-    public PCFilterImpl withLocalPort(String localPort) {
-        this.inner().withLocalPort(localPort);
+    public Definition<PacketCapture.DefinitionStages.WithCreate> withRemoteIPAddressesRange(String startIPAddress, String endIPAddress) {
+        this.inner().withRemoteIPAddress(startIPAddress + RANGE_DELIMITER + endIPAddress);
         return this;
     }
 
     @Override
-    public PCFilterImpl withRemotePort(String remotePort) {
-        this.inner().withRemotePort(remotePort);
+    public Definition<PacketCapture.DefinitionStages.WithCreate> withRemoteIPAddresses(List<String> ipAddresses) {
+        StringBuilder ipAddressesString = new StringBuilder();
+        for (String ipAddress : ipAddresses) {
+            ipAddressesString.append(ipAddress).append(DELIMITER);
+        }
+        this.inner().withRemoteIPAddress(ipAddressesString.substring(0, ipAddressesString.length() - 1));
         return this;
     }
 
@@ -90,5 +115,49 @@ class PCFilterImpl extends IndexableWrapperImpl<PacketCaptureFilter>
     public PacketCaptureImpl attach() {
         this.parent.attachPCFilter(this);
         return parent;
+    }
+
+    @Override
+    public Definition<PacketCapture.DefinitionStages.WithCreate> withLocalPort(int port) {
+        this.inner().withLocalPort(String.valueOf(port));
+        return this;
+    }
+
+    @Override
+    public Definition<PacketCapture.DefinitionStages.WithCreate> withLocalPortRange(int startPort, int endPort) {
+        this.inner().withLocalPort(startPort + RANGE_DELIMITER + endPort);
+        return this;
+    }
+
+    @Override
+    public Definition<PacketCapture.DefinitionStages.WithCreate> withLocalPorts(List<Integer> ports) {
+        StringBuilder portsString = new StringBuilder();
+        for (int port : ports) {
+            portsString.append(port).append(DELIMITER);
+        }
+        this.inner().withLocalPort(portsString.substring(0, portsString.length() - 1));
+        return this;
+    }
+
+    @Override
+    public Definition<PacketCapture.DefinitionStages.WithCreate> withRemotePort(int port) {
+        this.inner().withRemotePort(String.valueOf(port));
+        return this;
+    }
+
+    @Override
+    public Definition<PacketCapture.DefinitionStages.WithCreate> withRemotePortRange(int startPort, int endPort) {
+        this.inner().withRemotePort(startPort + RANGE_DELIMITER + endPort);
+        return this;
+    }
+
+    @Override
+    public Definition<PacketCapture.DefinitionStages.WithCreate> withRemotePorts(List<Integer> ports) {
+        StringBuilder portsString = new StringBuilder();
+        for (int port : ports) {
+            portsString.append(port).append(DELIMITER);
+        }
+        this.inner().withRemotePort(portsString.substring(0, portsString.length() - 1));
+        return this;
     }
 }

@@ -52,6 +52,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -603,6 +604,7 @@ public class AzureTests extends TestBase {
                 .withTimeLimitInSeconds(1500)
                 .definePacketCaptureFilter()
                     .withProtocol(PcProtocol.TCP)
+                    .withLocalIPAddresses(Arrays.asList("127.0.0.1", "127.0.0.5"))
                     .attach()
                 .create();
         packetCaptures = nw.packetCaptures().list();
@@ -610,6 +612,7 @@ public class AzureTests extends TestBase {
         Assert.assertEquals("NewPacketCapture", packetCapture.name());
         Assert.assertEquals(1500, packetCapture.timeLimitInSeconds());
         Assert.assertEquals(PcProtocol.TCP, packetCapture.filters().get(0).protocol());
+        Assert.assertEquals("127.0.0.1;127.0.0.5", packetCapture.filters().get(0).localIPAddress());
 //        Assert.assertEquals("Running", packetCapture.getStatus().packetCaptureStatus().toString());
         packetCapture.stop();
         Assert.assertEquals("Stopped", packetCapture.getStatus().packetCaptureStatus().toString());

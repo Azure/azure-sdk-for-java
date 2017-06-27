@@ -13,6 +13,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 
+import java.util.List;
+
 /**
  * Client-side representation of packet capture filter.
  */
@@ -67,56 +69,136 @@ public interface PCFilter extends Indexable,
 
         interface Blank<ParentT> extends
                 HasProtocol.DefinitionStages.WithProtocol<WithAttach<PacketCapture.DefinitionStages.WithCreate>, PcProtocol>,
-                WithLocalIPAddress<ParentT>,
+                WithLocalIP<ParentT>,
                 WithRemoteIPAddress<ParentT>,
                 WithLocalPort<ParentT>,
                 WithRemotePort<ParentT> {
         }
 
-        interface WithLocalIPAddress<ParentT> {
+        /**
+         * Set local IP Address to be filtered on.
+         * Notation: "127.0.0.1" for single address entry. "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5" for multiple entries.
+         * Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
+         */
+        interface WithLocalIP<ParentT> {
             /**
-             * Set local IP Address to be filtered on.
-             * Notation: "127.0.0.1" for single address entry. "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5"? for multiple entries.
-             * Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
+             * Set local IP address to be filtered on.
              *
-             * @param ipAddress local ip address to set
+             * @param ipAddress local IP address
              * @return the next stage
              */
             Definition<ParentT> withLocalIPAddress(String ipAddress);
+
+            /**
+             * Set local IP addresses range to be filtered on.
+             *
+             * @param startIPAddress range start IP address
+             * @param endIPAddress   range end IP address
+             * @return the next stage
+             */
+            Definition<ParentT> withLocalIPAddressesRange(String startIPAddress, String endIPAddress);
+
+            /**
+             * Set list of local IP addresses range to be filtered on.
+             *
+             * @param ipAddresses list of IP address
+             * @return the next stage
+             */
+            Definition<ParentT> withLocalIPAddresses(List<String> ipAddresses);
         }
 
+        /**
+         * Set remote IP Address to be filtered on.
+         * Notation: "127.0.0.1" for single address entry. "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5" for multiple entries.
+         * Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
+         */
         interface WithRemoteIPAddress<ParentT> {
             /**
-             * Set remote IP Address to be filtered on.
-             * Notation: "127.0.0.1" for single address entry. "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5"? for multiple entries.
-             * Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
+             * Set remote IP address to be filtered on.
              *
-             * @param ipAddress remote ip addess to set
+             * @param ipAddress remote IP address
              * @return the next stage
              */
             Definition<ParentT> withRemoteIPAddress(String ipAddress);
+
+            /**
+             * Set remote IP addresses range to be filtered on.
+             *
+             * @param startIPAddress range start IP address
+             * @param endIPAddress   range end IP address
+             * @return the next stage
+             */
+            Definition<ParentT> withRemoteIPAddressesRange(String startIPAddress, String endIPAddress);
+
+            /**
+             * Set list of remote IP addresses range to be filtered on.
+             *
+             * @param ipAddresses list of IP addresses
+             * @return the next stage
+             */
+            Definition<ParentT> withRemoteIPAddresses(List<String> ipAddresses);
         }
 
+        /**
+         * Set local port to be filtered on. Notation: "80" for single port entry."80-85" for range. "80;443;" for multiple entries.
+         * Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
+         */
         interface WithLocalPort<ParentT> {
             /**
-             * Set local port to be filtered on. Notation: "80" for single port entry."80-85" for range. "80;443;" for multiple entries.
-             * Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
+             * Set the local port to be filtered on
              *
-             * @param localPort the local port to set
+             * @param port port number
              * @return the next stage
              */
-            Definition<ParentT> withLocalPort(String localPort);
+            Definition<ParentT> withLocalPort(int port);
+
+            /**
+             * Set the local port range to be filtered on
+             *
+             * @param startPort range start port number
+             * @param endPort   range end port number
+             * @return the next stage
+             */
+            Definition<ParentT> withLocalPortRange(int startPort, int endPort);
+
+            /**
+             * Set the list of local ports to be filtered on
+             *
+             * @param ports list of local ports
+             * @return the next stage
+             */
+            Definition<ParentT> withLocalPorts(List<Integer> ports);
         }
 
+        /**
+         * Set local port to be filtered on. Notation: "80" for single port entry."80-85" for range. "80;443;" for multiple entries.
+         * Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
+         */
         interface WithRemotePort<ParentT> {
             /**
-             * Set the remote port to be filtered on. Notation: "80" for single port entry."80-85" for range. "80;443;" for multiple entries.
-             * Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
+             * Set the remote port to be filtered on
              *
-             * @param remotePort the remote port to set
+             * @param port port number
              * @return the next stage
              */
-            Definition<ParentT> withRemotePort(String remotePort);
+            Definition<ParentT> withRemotePort(int port);
+
+            /**
+             * Set the remote port range to be filtered on
+             *
+             * @param startPort range start port number
+             * @param endPort   range end port number
+             * @return the next stage
+             */
+            Definition<ParentT> withRemotePortRange(int startPort, int endPort);
+
+            /**
+             * Set the list of remote ports to be filtered on
+             *
+             * @param ports list of remote ports
+             * @return the next stage
+             */
+            Definition<ParentT> withRemotePorts(List<Integer> ports);
         }
     }
 }

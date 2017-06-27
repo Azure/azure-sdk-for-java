@@ -87,7 +87,7 @@ public interface FlowLogSettings extends
          */
         interface WithStorageAccount {
             /**
-             * Specifies the storage account to use for storing log
+             * Specifies the storage account to use for storing log.
              * @param storageId id of the storage account
              * @return the next stage of the flow log information update
              */
@@ -99,22 +99,23 @@ public interface FlowLogSettings extends
          */
         interface WithRetentionPolicy {
             /**
-             * Enable retention policy
+             * Enable retention policy.
              * @return the next stage of the flow log information update
              */
             Update withRetentionPolicyEnabled();
 
             /**
-             * Disable retention policy
+             * Disable retention policy.
              * @return the next stage of the flow log information update
              */
             Update withRetentionPolicyDisabled();
 
             /**
-             * @param days the number of days to store flow log
+             * Set the number of days to store flow log.
+             * @param days the number of days
              * @return the next stage of the flow log information update
              */
-            Update withRetentionPolicyDays(Integer days);
+            Update withRetentionPolicyDays(int days);
         }
     }
 

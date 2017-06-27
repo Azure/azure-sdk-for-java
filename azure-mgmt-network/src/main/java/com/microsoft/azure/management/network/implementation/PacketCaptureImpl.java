@@ -65,7 +65,7 @@ public class PacketCaptureImpl extends
     @Override
     public Observable<PacketCaptureStatus> getStatusAsync() {
         return this.client.getStatusAsync(parent.resourceGroupName(), parent.name(), name())
-                .map(new Func1<PacketCaptureQueryStatusResultInner, PacketCaptureStatus>(){
+                .map(new Func1<PacketCaptureQueryStatusResultInner, PacketCaptureStatus>() {
                     @Override
                     public PacketCaptureStatus call(PacketCaptureQueryStatusResultInner inner) {
                         return new PacketCaptureStatusImpl(inner);

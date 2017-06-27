@@ -85,6 +85,7 @@ public interface PacketCapture extends
 
     /**
      * Stops a specified packet capture session asynchronously.
+     * @return the handle to the REST call
      */
     Observable<Void> stopAsync();
 

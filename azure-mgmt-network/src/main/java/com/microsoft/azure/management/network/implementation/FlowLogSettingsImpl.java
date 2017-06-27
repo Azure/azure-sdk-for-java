@@ -82,7 +82,7 @@ class FlowLogSettingsImpl extends RefreshableWrapperImpl<FlowLogInformationInner
     }
 
     @Override
-    public Update withRetentionPolicyDays(Integer days) {
+    public Update withRetentionPolicyDays(int days) {
         this.inner().retentionPolicy().withDays(days);
         return this;
     }
