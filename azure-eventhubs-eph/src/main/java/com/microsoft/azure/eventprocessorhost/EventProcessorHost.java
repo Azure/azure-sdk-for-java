@@ -420,8 +420,25 @@ public final class EventProcessorHost
     String getConsumerGroupName() { return this.consumerGroupName; }
     EventProcessorOptions getEventProcessorOptions() { return this.processorOptions; }
     
+    /**
+     * Returns the existing partition manager options object. Unless you are providing implementations of
+     * ILeaseManager and ICheckpointMananger, to change partition manager options, call this method to get
+     * the existing object and call setters on it to adjust the values.
+     *
+     * @return the internally-created PartitionManangerObjects object or any replacement object set with setPartitionManangerOptions
+     */
     public PartitionManagerOptions getPartitionManagerOptions() { return this.partitionManagerOptions; }
     
+    /**
+     * Set the partition manager options all at once. Normally this method is used only when providing user
+     * implementations of ILeaseManager and ICheckpointManager, because it allows passing an object of a class
+     * derived from PartitionManagerOptions, which could contain options specific to the user-implemented ILeaseManager
+     * or ICheckpointMananger. When using the default, Azure Storage-based implementation, the recommendation is to
+     * call getPartitionManangerOptions to return the existing options object, then call setters on that object to
+     * adjust the values.
+     *
+     * @param options - a PartitionManangerOptions object (or derived object) representing the desired options
+     */
     public void setPartitionManagerOptions(PartitionManagerOptions options) { this.partitionManagerOptions = options; }
     
     /**
