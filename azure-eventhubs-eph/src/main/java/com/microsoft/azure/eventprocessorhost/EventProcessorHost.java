@@ -30,6 +30,7 @@ public final class EventProcessorHost
     private PartitionManager partitionManager;
     private IEventProcessorFactory<?> processorFactory = null;
     private EventProcessorOptions processorOptions;
+    private PartitionManagerOptions partitionManagerOptions = null;
 
     // Thread pool is shared among all instances of EventProcessorHost
     // weOwnExecutor exists to support user-supplied thread pools if we add that feature later.
@@ -205,6 +206,7 @@ public final class EventProcessorHost
         this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString,
                 new AzureStorageCheckpointLeaseManager(storageConnectionString, storageContainerName, storageBlobPrefix), executorService);
         this.initializeLeaseManager = true;
+        this.partitionManagerOptions = new AzureStoragePartitionManagerOptions();
     }
     
     // Because Java won't let you do ANYTHING before calling another constructor. In particular, you can't
@@ -333,6 +335,14 @@ public final class EventProcessorHost
     	}
     	// executorService argument is allowed to be null, that is the indication to use an internal threadpool.
     	
+    	if (this.partitionManagerOptions == null)
+    	{
+    		// Normally will not be null because we're using the AzureStorage implementation.
+    		// If it is null, we're using user-supplied implementation. Establish generic defaults
+    		// in case the user doesn't provide an options object.
+    		this.partitionManagerOptions = new PartitionManagerOptions();
+    	}
+    	
         this.hostName = hostName;
         this.consumerGroupName = consumerGroupName;
         this.checkpointManager = checkpointManager;
@@ -409,6 +419,10 @@ public final class EventProcessorHost
     String getEventHubPath() { return this.eventHubPath; }
     String getConsumerGroupName() { return this.consumerGroupName; }
     EventProcessorOptions getEventProcessorOptions() { return this.processorOptions; }
+    
+    public PartitionManagerOptions getPartitionManagerOptions() { return this.partitionManagerOptions; }
+    
+    public void setPartitionManagerOptions(PartitionManagerOptions options) { this.partitionManagerOptions = options; }
     
     /**
      * Register class for event processor and start processing.

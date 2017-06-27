@@ -7,19 +7,22 @@ package com.microsoft.azure.eventprocessorhost;
 
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.BlobProperties;
+import com.microsoft.azure.storage.blob.BlobRequestOptions;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
 import com.microsoft.azure.storage.blob.LeaseState;
 
 class AzureBlobLease extends Lease
 {
 	private transient CloudBlockBlob blob; // do not serialize
+	private transient BlobRequestOptions options; // do not serialize
 	private String offset = null; // null means checkpoint is uninitialized
 	private long sequenceNumber = 0;
 	
-	AzureBlobLease(String partitionId, CloudBlockBlob blob)
+	AzureBlobLease(String partitionId, CloudBlockBlob blob, BlobRequestOptions options)
 	{
 		super(partitionId);
 		this.blob = blob;
+		this.options = options;
 	}
 	
 	AzureBlobLease(AzureBlobLease source)
@@ -28,20 +31,23 @@ class AzureBlobLease extends Lease
 		this.offset = source.offset;
 		this.sequenceNumber = source.sequenceNumber;
 		this.blob = source.blob;
+		this.options = source.options;
 	}
-	
-	AzureBlobLease(AzureBlobLease source, CloudBlockBlob blob)
+
+	AzureBlobLease(AzureBlobLease source, CloudBlockBlob blob, BlobRequestOptions options)
 	{
 		super(source);
 		this.offset = source.offset;
 		this.sequenceNumber = source.sequenceNumber;
 		this.blob = blob;
+		this.options = options;
 	}
 	
-	AzureBlobLease(Lease source, CloudBlockBlob blob)
+	AzureBlobLease(Lease source, CloudBlockBlob blob, BlobRequestOptions options)
 	{
 		super(source);
 		this.blob = blob;
+		this.options = options;
 	}
 	
 	CloudBlockBlob getBlob() { return this.blob; }
@@ -62,7 +68,7 @@ class AzureBlobLease extends Lease
 	@Override
 	public boolean isExpired() throws Exception
 	{
-		this.blob.downloadAttributes(); // Get the latest metadata
+		this.blob.downloadAttributes(null, options, null); // Get the latest metadata
 		LeaseState currentState = this.blob.getProperties().getLeaseState();
 		return (currentState != LeaseState.LEASED); 
 	}
