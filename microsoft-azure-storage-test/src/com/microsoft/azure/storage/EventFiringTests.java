@@ -14,18 +14,20 @@
  */
 package com.microsoft.azure.storage;
 
-import com.microsoft.azure.storage.blob.BlobRequestOptions;
-import com.microsoft.azure.storage.blob.CloudBlobClient;
-import com.microsoft.azure.storage.blob.CloudBlobContainer;
+import com.microsoft.azure.storage.blob.*;
 import com.microsoft.azure.storage.core.SR;
 import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.TestRunners.DevFabricTests;
 import com.microsoft.azure.storage.TestRunners.DevStoreTests;
 
+import org.apache.http.protocol.HTTP;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.SocketException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
@@ -111,6 +113,22 @@ public class EventFiringTests {
             }
         });
 
+        eventContext.getErrorReceivingResponseEventHandler().addListener(new StorageEvent<ErrorReceivingResponseEvent>() {
+
+            @Override
+            public void eventOccurred(ErrorReceivingResponseEvent eventArg) {
+                fail("This event should not trigger");
+            }
+        });
+
+        OperationContext.getGlobalErrorReceivingResponseEventHandler().addListener(new StorageEvent<ErrorReceivingResponseEvent>() {
+
+            @Override
+            public void eventOccurred(ErrorReceivingResponseEvent eventArg) {
+                fail("This event should not trigger");
+            }
+        });
+
         assertEquals(0, callList.size());
         assertEquals(0, globalCallList.size());
 
@@ -136,6 +154,85 @@ public class EventFiringTests {
         container.exists(null, null, eventContext);
         assertEquals(1, callList.size());
         assertEquals(2, globalCallList.size());
+    }
+
+    @Test
+    public void testErrorReceivingResponseEvent() throws URISyntaxException, StorageException {
+        final ArrayList<Boolean> callList = new ArrayList<Boolean>();
+        final ArrayList<Boolean> globalCallList = new ArrayList<Boolean>();
+
+        OperationContext eventContext = new OperationContext();
+        BlobRequestOptions options = new BlobRequestOptions();
+        options.setRetryPolicyFactory(new RetryNoRetry());
+
+        // setting the sending request event handler to trigger an exception.
+        // this is a retryable exception
+        eventContext.getSendingRequestEventHandler().addListener(new StorageEvent<SendingRequestEvent>() {
+            @Override
+            public void eventOccurred(SendingRequestEvent eventArg) {
+                HttpURLConnection connection = (HttpURLConnection) eventArg.getConnectionObject();
+                connection.setFixedLengthStreamingMode(0);
+            }
+        });
+
+        eventContext.getErrorReceivingResponseEventHandler().addListener(new StorageEvent<ErrorReceivingResponseEvent>() {
+            @Override
+            public void eventOccurred(ErrorReceivingResponseEvent eventArg) {
+                assertEquals(eventArg.getRequestResult(), eventArg.getOpContext().getLastResult());
+                callList.add(true);
+            }
+        });
+
+        OperationContext.getGlobalErrorReceivingResponseEventHandler().addListener(new StorageEvent<ErrorReceivingResponseEvent>() {
+            @Override
+            public void eventOccurred(ErrorReceivingResponseEvent eventArg) {
+                assertEquals(eventArg.getRequestResult(), eventArg.getOpContext().getLastResult());
+                globalCallList.add(true);
+            }
+        });
+
+        CloudBlobClient blobClient = TestHelper.createCloudBlobClient();
+        CloudBlobContainer container = blobClient.getContainerReference("container1");
+        container.createIfNotExists();
+
+        try {
+            CloudBlockBlob blob1 = container.getBlockBlobReference("blob1");
+            try {
+                String blockID = String.format("%08d", 1);
+                blob1.uploadBlock(blockID, BlobTestHelper.getRandomDataStream(10), 10, null, options, eventContext);
+            } catch (Exception e) { }
+
+            // make sure both the local and globab context update
+            assertEquals(1, callList.size());
+            assertEquals(1, globalCallList.size());
+
+            // make sure only global updates by replacing the local with a no-op event
+            eventContext
+                    .setErrorReceivingResponseEventHandler(new StorageEventMultiCaster<ErrorReceivingResponseEvent, StorageEvent<ErrorReceivingResponseEvent>>());
+            try {
+                String blockID2 = String.format("%08d", 2);
+                blob1.uploadBlock(blockID2, BlobTestHelper.getRandomDataStream(10), 10, null, options, eventContext);
+            } catch (Exception e) { }
+
+            assertEquals(1, callList.size());
+            assertEquals(2, globalCallList.size());
+
+            // make sure global does not update by replacing the global with a no-op
+            OperationContext
+                    .setGlobalErrorReceivingResponseEventHandler(new StorageEventMultiCaster<ErrorReceivingResponseEvent, StorageEvent<ErrorReceivingResponseEvent>>());
+
+            // make sure neither update
+            try {
+                String blockID3 = String.format("%08d", 3);
+                blob1.uploadBlock(blockID3, BlobTestHelper.getRandomDataStream(10), 10, null, options, eventContext);
+            } catch (Exception e) { }
+
+            assertEquals(1, callList.size());
+            assertEquals(2, globalCallList.size());
+        }
+        finally {
+            container.deleteIfExists();
+        }
     }
 
     @Test

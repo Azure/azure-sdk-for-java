@@ -83,7 +83,8 @@ public final class OperationContext {
     private HashMap<String, String> userHeaders;
 
     /**
-     * Represents an event that is triggered before sending a request.
+     * Represents an event that is triggered before sending a
+     * request.
      * 
      * @see StorageEvent
      * @see StorageEventMultiCaster
@@ -92,14 +93,22 @@ public final class OperationContext {
     private static StorageEventMultiCaster<SendingRequestEvent, StorageEvent<SendingRequestEvent>> globalSendingRequestEventHandler = new StorageEventMultiCaster<SendingRequestEvent, StorageEvent<SendingRequestEvent>>();
 
     /**
-     * Represents an event that is triggered when a response is received from the storage service while processing a
-     * request.
-     * 
+     * Represents an event that is triggered when a response is received from the storage service while processing a request
+     *
      * @see StorageEvent
      * @see StorageEventMultiCaster
      * @see ResponseReceivedEvent
      */
     private static StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>> globalResponseReceivedEventHandler = new StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>>();
+
+    /**
+     * Represents an event that is triggered when a network error occurs before the HTTP response status and headers are received.
+     *
+     * @see StorageEvent
+     * @see StorageEventMultiCaster
+     * @see ErrorReceivingResponseEvent
+     */
+    private static StorageEventMultiCaster<ErrorReceivingResponseEvent, StorageEvent<ErrorReceivingResponseEvent>> globalErrorReceivingResponseEventHandler = new StorageEventMultiCaster<ErrorReceivingResponseEvent, StorageEvent<ErrorReceivingResponseEvent>>();
 
     /**
      * Represents an event that is triggered when a response received from the service is fully processed.
@@ -137,6 +146,15 @@ public final class OperationContext {
      * @see ResponseReceivedEvent
      */
     private StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>> responseReceivedEventHandler = new StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>>();
+
+    /**
+     * Represents an event that is triggered when a network error occurs before the HTTP response status and headers are received.
+     *
+     * @see StorageEvent
+     * @see StorageEventMultiCaster
+     * @see ErrorReceivingResponseEvent
+     */
+    private StorageEventMultiCaster<ErrorReceivingResponseEvent, StorageEvent<ErrorReceivingResponseEvent>> errorReceivingResponseEventHandler = new StorageEventMultiCaster<ErrorReceivingResponseEvent, StorageEvent<ErrorReceivingResponseEvent>>();
 
     /**
      * Represents an event that is triggered when a response received from the service is fully processed.
@@ -286,6 +304,16 @@ public final class OperationContext {
     }
 
     /**
+     * Gets a global event multi-caster that is triggered when a network error occurs before the HTTP response status and headers are received.
+     * It allows event listeners to be dynamically added and removed.
+     *
+     * @return A {@link StorageEventMultiCaster} object for the <code>globabErrorReceivingResponseEventHandler</code>.
+     */
+    public static StorageEventMultiCaster<ErrorReceivingResponseEvent, StorageEvent<ErrorReceivingResponseEvent>> getGlobalErrorReceivingResponseEventHandler() {
+        return OperationContext.globalErrorReceivingResponseEventHandler;
+    }
+
+    /**
      * Gets a global event multi-caster that is triggered when a request is completed. It allows event listeners to be
      * dynamically added and removed.
      * 
@@ -323,6 +351,16 @@ public final class OperationContext {
      */
     public StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>> getResponseReceivedEventHandler() {
         return this.responseReceivedEventHandler;
+    }
+
+    /**
+     * Gets an event multi-caster that is triggered when a network error occurs before the HTTP response status and headers are received.
+     * It allows event listeners to be dynamically added and removed.
+     *
+     * @return A {@link StorageEventMultiCaster} object for the <code>errorReceivingResponseEventHandler</code>.
+     */
+    public StorageEventMultiCaster<ErrorReceivingResponseEvent, StorageEvent<ErrorReceivingResponseEvent>> getErrorReceivingResponseEventHandler() {
+        return this.errorReceivingResponseEventHandler;
     }
 
     /**
@@ -451,6 +489,17 @@ public final class OperationContext {
     }
 
     /**
+     * Sets a global event multi-caster that is triggered when a network error occurs before the HTTP response status and headers are received.
+     *
+     * @param globalErrorReceivingResponseEventHandler
+     *        The {@link StorageEventMultiCaster} object to set for the <code>globalErrorReceivingResponseEventHandler</code>.
+     */
+    public static void setGlobalErrorReceivingResponseEventHandler(
+            final StorageEventMultiCaster<ErrorReceivingResponseEvent, StorageEvent<ErrorReceivingResponseEvent>> globalErrorReceivingResponseEventHandler) {
+        OperationContext.globalErrorReceivingResponseEventHandler = globalErrorReceivingResponseEventHandler;
+    }
+
+    /**
      * Sets a global event multi-caster that is triggered when a request is completed.
      * 
      * @param globalRequestCompletedEventHandler
@@ -492,6 +541,17 @@ public final class OperationContext {
     public void setResponseReceivedEventHandler(
             final StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>> responseReceivedEventHandler) {
         this.responseReceivedEventHandler = responseReceivedEventHandler;
+    }
+
+    /**
+     * Sets an event multi-caster that is triggered when a network error occurs before the HTTP response status and headers are received.
+     *
+     * @param errorReceivingResponseEventHandler
+     *        The {@link StorageEventMultiCaster} object to set for the <code>errorReceivingResponseEventHandler</code>.
+     */
+    public void setErrorReceivingResponseEventHandler(
+            final StorageEventMultiCaster<ErrorReceivingResponseEvent, StorageEvent<ErrorReceivingResponseEvent>> errorReceivingResponseEventHandler) {
+        this.errorReceivingResponseEventHandler = errorReceivingResponseEventHandler;
     }
 
     /**
