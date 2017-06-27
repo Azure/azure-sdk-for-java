@@ -148,7 +148,7 @@ the required version of Apache Qpid Proton-J, and the crytography library BCPKIX
    	<dependency> 
    		<groupId>com.microsoft.azure</groupId> 
    		<artifactId>azure-eventhubs</artifactId> 
-   		<version>0.14.0</version> 
+   		<version>0.14.2</version> 
    	</dependency>   
  ```
  

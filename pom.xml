@@ -6,7 +6,7 @@
 	
 	<groupId>com.microsoft.azure</groupId>
 	<artifactId>azure-eventhubs-clients</artifactId>
-	<version>0.14.0</version>
+	<version>0.14.2</version>
 	<packaging>pom</packaging>
 	
 	<url>https://github.com/Azure/azure-event-hubs</url>
