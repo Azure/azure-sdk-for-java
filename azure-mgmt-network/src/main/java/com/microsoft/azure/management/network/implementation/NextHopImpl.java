@@ -45,8 +45,8 @@ public class NextHopImpl extends ExecutableImpl<NextHop>
     }
 
     @Override
-    public NextHopImpl withTargetNicResourceId(String targetNicResourceId) {
-        this.parameters.withTargetNicResourceId(targetNicResourceId);
+    public NextHopImpl withTargetNetworkInterfaceId(String targetNetworkInterfaceId) {
+        this.parameters.withTargetNicResourceId(targetNetworkInterfaceId);
         return this;
     }
 
@@ -71,7 +71,7 @@ public class NextHopImpl extends ExecutableImpl<NextHop>
     }
 
     @Override
-    public String targetNicResourceId() {
+    public String targetNetworkInterfaceId() {
         return parameters.destinationIPAddress();
     }
 

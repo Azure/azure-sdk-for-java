@@ -40,22 +40,22 @@ public interface NextHop extends Executable<NextHop>,
     String destinationIPAddress();
 
     /**
-     * Get the NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any
-     * of the nics, then this parameter must be specified. Otherwise optional).
+     * Get the NIC ID.
      *
-     * @return the targetNicResourceId value
+     * @return the targetNetworkInterfaceId value
      */
-    String targetNicResourceId();
+    String targetNetworkInterfaceId();
 
     /**
-     * Next hop type. Possible values include: 'Internet', 'VirtualAppliance',
-     * 'VirtualNetworkGateway', 'VnetLocal', 'HyperNetGateway', 'None'.
+     * Get next hop type.
+     *
      * @return the nextHopType value
      */
     NextHopType nextHopType();
 
     /**
      * Get the Next hop IP Address.
+     *
      * @return the nextHopIpAddress value
      */
     String nextHopIpAddress();
@@ -64,6 +64,7 @@ public interface NextHop extends Executable<NextHop>,
      * Get the resource identifier for the route table associated with the route
      * being returned. If the route being returned does not correspond to any
      * user created routes then this field will be the string 'System Route'.
+     *
      * @return the routeTableId value
      */
     String routeTableId();
@@ -128,12 +129,12 @@ public interface NextHop extends Executable<NextHop>,
          */
         interface WithNetworkInterface {
             /**
-             * Set the targetNicResourceId value.
+             * Set the targetNetworkInterfaceId value.
              *
-             * @param targetNicResourceId the targetNicResourceId value to set
+             * @param targetNetworkInterfaceId the targetNetworkInterfaceId value to set
              * @return the VerificationIPFlow object itself.
              */
-            WithExecute withTargetNicResourceId(String targetNicResourceId);
+            WithExecute withTargetNetworkInterfaceId(String targetNetworkInterfaceId);
         }
 
         /**

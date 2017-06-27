@@ -32,22 +32,25 @@ public interface NetworkWatcher extends
     PacketCaptures packetCaptures();
 
     /**
+     * Gets network topology of a given resource group.
      * @param targetResourceGroup the name of the target resource group to perform getTopology on
      * @return current network topology by resource group
      */
     Topology getTopology(String targetResourceGroup);
 
     /**
+     * Gets the configured and effective security group rules on the specified VM.
      * @param vmId ID of the target VM
      * @return the configured and effective security group rules on the specified VM
      */
-    SecurityGroupViewResult getSecurityGroupViewResult(String vmId);
+    SecurityGroupView getSecurityGroupViewResult(String vmId);
 
     /**
+     * Gets the information on the configuration of flow log.
      * @param nsgId the name of the target resource group to get flow log status for
      * @return information on the configuration of flow log
      */
-    FlowLogInformation getFlowLogStatus(String nsgId);
+    FlowLogSettings getFlowLogSettings(String nsgId);
 
     /**
      * First step specifying the parameters to get next hop for the VM.

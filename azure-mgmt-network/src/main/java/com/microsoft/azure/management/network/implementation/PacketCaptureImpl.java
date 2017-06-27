@@ -16,6 +16,7 @@ import com.microsoft.azure.management.network.ProvisioningState;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,12 +49,28 @@ public class PacketCaptureImpl extends
 
     @Override
     public void stop() {
-        this.client.stopAsync(parent.resourceGroupName(), parent.name(), name()).toBlocking().last();
+        stopAsync().toBlocking().last();
+    }
+
+    @Override
+    public Observable<Void> stopAsync() {
+        return this.client.stopAsync(parent.resourceGroupName(), parent.name(), name());
     }
 
     @Override
     public PacketCaptureStatus getStatus() {
         return new PacketCaptureStatusImpl(this.client.getStatus(parent.resourceGroupName(), parent.name(), name()));
+    }
+
+    @Override
+    public Observable<PacketCaptureStatus> getStatusAsync() {
+        return this.client.getStatusAsync(parent.resourceGroupName(), parent.name(), name())
+                .map(new Func1<PacketCaptureQueryStatusResultInner, PacketCaptureStatus>(){
+                    @Override
+                    public PacketCaptureStatus call(PacketCaptureQueryStatusResultInner inner) {
+                        return new PacketCaptureStatusImpl(inner);
+                    }
+                });
     }
 
     @Override
@@ -63,7 +80,7 @@ public class PacketCaptureImpl extends
     }
 
     @Override
-    public PacketCaptureImpl withStorageAccount(StorageAccount storageAccount) {
+    public PacketCaptureImpl withExistingStorageAccount(StorageAccount storageAccount) {
         return this.withStorageAccountId(storageAccount.id());
     }
 
@@ -145,17 +162,17 @@ public class PacketCaptureImpl extends
     }
 
     @Override
-    public Integer bytesToCapturePerPacket() {
+    public int bytesToCapturePerPacket() {
         return inner().bytesToCapturePerPacket();
     }
 
     @Override
-    public Integer totalBytesPerSession() {
+    public int totalBytesPerSession() {
         return inner().totalBytesPerSession();
     }
 
     @Override
-    public Integer timeLimitInSeconds() {
+    public int timeLimitInSeconds() {
         return inner().timeLimitInSeconds();
     }
 

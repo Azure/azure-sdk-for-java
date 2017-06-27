@@ -8,7 +8,7 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.NetworkWatcher;
 import com.microsoft.azure.management.network.SecurityGroupNetworkInterface;
-import com.microsoft.azure.management.network.SecurityGroupViewResult;
+import com.microsoft.azure.management.network.SecurityGroupView;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
 import rx.Observable;
 import rx.functions.Func1;
@@ -19,16 +19,16 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * The implementation of SecurityGroupViewResult.
+ * The implementation of SecurityGroupView.
  */
 @LangDefinition
-class SecurityGroupViewResultImpl extends RefreshableWrapperImpl<SecurityGroupViewResultInner, SecurityGroupViewResult>
-        implements SecurityGroupViewResult {
+class SecurityGroupViewImpl extends RefreshableWrapperImpl<SecurityGroupViewResultInner, SecurityGroupView>
+        implements SecurityGroupView {
     private Map<String, SecurityGroupNetworkInterface> networkInterfaces;
     private final NetworkWatcherImpl parent;
     private final String vmId;
 
-    SecurityGroupViewResultImpl(NetworkWatcherImpl parent, SecurityGroupViewResultInner innerObject, String vmId) {
+    SecurityGroupViewImpl(NetworkWatcherImpl parent, SecurityGroupViewResultInner innerObject, String vmId) {
         super(innerObject);
         this.parent = parent;
         this.vmId = vmId;
@@ -61,11 +61,11 @@ class SecurityGroupViewResultImpl extends RefreshableWrapperImpl<SecurityGroupVi
     }
 
     @Override
-    public Observable<SecurityGroupViewResult> refreshAsync() {
-        return super.refreshAsync().map(new Func1<SecurityGroupViewResult, SecurityGroupViewResult>() {
+    public Observable<SecurityGroupView> refreshAsync() {
+        return super.refreshAsync().map(new Func1<SecurityGroupView, SecurityGroupView>() {
             @Override
-            public SecurityGroupViewResult call(SecurityGroupViewResult securityGroupViewResult) {
-                SecurityGroupViewResultImpl impl = (SecurityGroupViewResultImpl) securityGroupViewResult;
+            public SecurityGroupView call(SecurityGroupView securityGroupView) {
+                SecurityGroupViewImpl impl = (SecurityGroupViewImpl) securityGroupView;
                 impl.initializeFromInner();
                 return impl;
             }

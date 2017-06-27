@@ -176,12 +176,12 @@ public interface VerificationIPFlow extends Executable<VerificationIPFlow>,
          */
         interface WithNetworkInterface {
             /**
-             * Set the targetNicResourceId value.
+             * Set the targetNetworkInterfaceId value.
              *
-             * @param targetNicResourceId the targetNicResourceId value to set
+             * @param targetNetworkInterfaceId the targetNetworkInterfaceId value to set
              * @return the next stage of the definition.
              */
-            VerificationIPFlow withTargetNicResourceId(String targetNicResourceId);
+            VerificationIPFlow withTargetNetworkInterfaceId(String targetNetworkInterfaceId);
         }
 
         /**

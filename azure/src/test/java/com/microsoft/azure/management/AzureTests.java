@@ -20,7 +20,7 @@ import com.microsoft.azure.management.network.Access;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
 import com.microsoft.azure.management.network.Direction;
-import com.microsoft.azure.management.network.FlowLogInformation;
+import com.microsoft.azure.management.network.FlowLogSettings;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkWatcher;
 import com.microsoft.azure.management.network.NextHop;
@@ -28,7 +28,7 @@ import com.microsoft.azure.management.network.NextHopType;
 import com.microsoft.azure.management.network.PacketCapture;
 import com.microsoft.azure.management.network.PcProtocol;
 import com.microsoft.azure.management.network.Protocol;
-import com.microsoft.azure.management.network.SecurityGroupViewResult;
+import com.microsoft.azure.management.network.SecurityGroupView;
 import com.microsoft.azure.management.network.Topology;
 import com.microsoft.azure.management.network.VerificationIPFlow;
 import com.microsoft.azure.management.resources.Deployment;
@@ -555,21 +555,21 @@ public class AzureTests extends TestBase {
         Assert.assertTrue(topology.resources().containsKey(virtualMachines[0].getPrimaryNetworkInterface().networkSecurityGroupId()));
         Assert.assertEquals(4, topology.resources().get(virtualMachines[0].primaryNetworkInterfaceId()).associations().size());
 
-        SecurityGroupViewResult sgViewResult = nw.getSecurityGroupViewResult(virtualMachines[0].id());
+        SecurityGroupView sgViewResult = nw.getSecurityGroupViewResult(virtualMachines[0].id());
         Assert.assertEquals(1, sgViewResult.networkInterfaces().size());
         Assert.assertEquals(virtualMachines[0].primaryNetworkInterfaceId(), sgViewResult.networkInterfaces().keySet().iterator().next());
 
-        FlowLogInformation flowLogInformation = nw.getFlowLogStatus(virtualMachines[0].getPrimaryNetworkInterface().networkSecurityGroupId());
+        FlowLogSettings flowLogSettings = nw.getFlowLogSettings(virtualMachines[0].getPrimaryNetworkInterface().networkSecurityGroupId());
         StorageAccount storageAccount = tnw.ensureStorageAccount(azure.storageAccounts());
-        flowLogInformation.update()
-                .withEnabled(true)
+        flowLogSettings.update()
+                .withLoggingEnabled()
                 .withStorageAccount(storageAccount.id())
                 .withRetentionPolicyDays(5)
-                .withRetentionPolicyEnabled(true)
+                .withRetentionPolicyEnabled()
                 .apply();
-        Assert.assertEquals(true, flowLogInformation.enabled());
-        Assert.assertEquals(Integer.valueOf(5), flowLogInformation.retentionPolicy().days());
-        Assert.assertEquals(storageAccount.id(), flowLogInformation.storageId());
+        Assert.assertEquals(true, flowLogSettings.enabled());
+        Assert.assertEquals(5, flowLogSettings.retentionDays());
+        Assert.assertEquals(storageAccount.id(), flowLogSettings.storageId());
 
 //        Troubleshooting troubleshooting = nw.troubleshoot(<virtual_network_gateway_id> or <virtual_network_gateway_connaction_id>,
 //                storageAccount.id(), "");
@@ -599,7 +599,7 @@ public class AzureTests extends TestBase {
         PacketCapture packetCapture = nw.packetCaptures()
                 .define("NewPacketCapture")
                 .withTarget(virtualMachines[0].id())
-                .withStorageAccount(storageAccount)
+                .withExistingStorageAccount(storageAccount)
                 .withTimeLimitInSeconds(1500)
                 .definePacketCaptureFilter()
                     .withProtocol(PcProtocol.TCP)
@@ -608,7 +608,7 @@ public class AzureTests extends TestBase {
         packetCaptures = nw.packetCaptures().list();
         Assert.assertEquals(1, packetCaptures.size());
         Assert.assertEquals("NewPacketCapture", packetCapture.name());
-        Assert.assertEquals(1500, packetCapture.timeLimitInSeconds().intValue());
+        Assert.assertEquals(1500, packetCapture.timeLimitInSeconds());
         Assert.assertEquals(PcProtocol.TCP, packetCapture.filters().get(0).protocol());
 //        Assert.assertEquals("Running", packetCapture.getStatus().packetCaptureStatus().toString());
         packetCapture.stop();

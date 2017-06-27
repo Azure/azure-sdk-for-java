@@ -19,11 +19,11 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
  */
 @Fluent
 @Beta
-public interface FlowLogInformation extends
+public interface FlowLogSettings extends
         HasParent<NetworkWatcher>,
         HasInner<FlowLogInformationInner>,
-        Updatable<FlowLogInformation.Update>,
-        Refreshable<FlowLogInformation> {
+        Updatable<FlowLogSettings.Update>,
+        Refreshable<FlowLogSettings> {
     /**
      * Get the ID of the resource to configure for flow logging.
      *
@@ -46,11 +46,18 @@ public interface FlowLogInformation extends
     boolean enabled();
 
     /**
-     * Get the retentionPolicy value.
+     * Get the flag if retention is enabled/disabled.
      *
-     * @return the retentionPolicy value
+     * @return the enabled value
      */
-    RetentionPolicyParameters retentionPolicy();
+    boolean isRetentionEnabled();
+
+    /**
+     * Get the number of days to retain flow log records.
+     *
+     * @return number of days
+     */
+    int retentionDays();
 
     /**
      * Grouping of flow log information update stages.
@@ -61,30 +68,48 @@ public interface FlowLogInformation extends
          */
         interface WithEnabled {
             /**
-             * @param enabled the enabled value to set
+             * Enable flow logging.
+             *
              * @return the next stage of the flow log information update
              */
-            Update withEnabled(boolean enabled);
+            Update withLoggingEnabled();
+
+            /**
+             * Disable flow logging.
+             *
+             * @return the next stage of the flow log information update
+             */
+            Update withLoggingDisabled();
         }
+
         /**
          * The stage of the flow log information update allowing to specify storage account.
          */
         interface WithStorageAccount {
             /**
-             * @param storageId id of the storage account to store flow log
+             * Specifies the storage account to use for storing log
+             * @param storageId id of the storage account
              * @return the next stage of the flow log information update
              */
             Update withStorageAccount(String storageId);
         }
+
         /**
-         * The stage of the flow log information update allowing to specify storage account.
+         * The stage of the flow log information update allowing to configure retention policy.
          */
         interface WithRetentionPolicy {
             /**
-             * @param enabled the enabled value to set for retention policy
+             * Enable retention policy
              * @return the next stage of the flow log information update
              */
-            Update withRetentionPolicyEnabled(boolean enabled);
+            Update withRetentionPolicyEnabled();
+
+            /**
+             * Disable retention policy
+             * @return the next stage of the flow log information update
+             */
+            Update withRetentionPolicyDisabled();
+
             /**
              * @param days the number of days to store flow log
              * @return the next stage of the flow log information update
@@ -100,7 +125,7 @@ public interface FlowLogInformation extends
      * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
     interface Update extends
-            Appliable<FlowLogInformation>,
+            Appliable<FlowLogSettings>,
             UpdateStages.WithEnabled,
             UpdateStages.WithStorageAccount,
             UpdateStages.WithRetentionPolicy {

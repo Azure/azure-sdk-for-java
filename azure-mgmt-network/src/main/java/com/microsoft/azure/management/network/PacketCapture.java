@@ -14,6 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.storage.StorageAccount;
+import rx.Observable;
 
 import java.util.List;
 
@@ -39,21 +40,21 @@ public interface PacketCapture extends
      *
      * @return the bytesToCapturePerPacket value
      */
-    Integer bytesToCapturePerPacket();
+    int bytesToCapturePerPacket();
 
     /**
      * Get the maximum size of the capture output.
      *
      * @return the totalBytesPerSession value
      */
-    Integer totalBytesPerSession();
+    int totalBytesPerSession();
 
     /**
      * Get the maximum duration of the capture session in seconds.
      *
      * @return the timeLimitInSeconds value
      */
-    Integer timeLimitInSeconds();
+    int timeLimitInSeconds();
 
     /**
      * Get the storageLocation value.
@@ -83,12 +84,23 @@ public interface PacketCapture extends
     void stop();
 
     /**
+     * Stops a specified packet capture session asynchronously.
+     */
+    Observable<Void> stopAsync();
+
+    /**
      * Query the status of a running packet capture session.
      *
      * @return packet capture status
      */
     PacketCaptureStatus getStatus();
 
+    /**
+     * Query the status of a running packet capture session asynchronously.
+     *
+     * @return packet capture status
+     */
+    Observable<PacketCaptureStatus> getStatusAsync();
 
     /**
      * The entirety of the packet capture definition.
@@ -129,7 +141,7 @@ public interface PacketCapture extends
              *
              * @param storageAccount The storage account to save the packet capture session
              */
-            WithCreateAndStoragePath withStorageAccount(StorageAccount storageAccount);
+            WithCreateAndStoragePath withExistingStorageAccount(StorageAccount storageAccount);
 
             /**
              * A valid local path on the targeting VM. Must include the name of the

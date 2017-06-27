@@ -91,8 +91,8 @@ public class VerificationIPFlowImpl extends ExecutableImpl<VerificationIPFlow>
     }
 
     @Override
-    public VerificationIPFlow withTargetNicResourceId(String targetNicResourceId) {
-        parameters.withTargetNicResourceId(targetNicResourceId);
+    public VerificationIPFlow withTargetNetworkInterfaceId(String targetNetworkInterfaceId) {
+        parameters.withTargetNicResourceId(targetNetworkInterfaceId);
         return this;
     }
 

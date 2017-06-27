@@ -19,9 +19,9 @@ import java.util.Map;
  */
 @Fluent
 @Beta
-public interface SecurityGroupViewResult extends HasInner<SecurityGroupViewResultInner>,
+public interface SecurityGroupView extends HasInner<SecurityGroupViewResultInner>,
         HasParent<NetworkWatcher>,
-        Refreshable<SecurityGroupViewResult> {
+        Refreshable<SecurityGroupView> {
     /**
      * @return network interfaces on the specified VM
      */

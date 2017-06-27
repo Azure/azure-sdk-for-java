@@ -6,8 +6,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.network.FlowLogInformation;
-import com.microsoft.azure.management.network.RetentionPolicyParameters;
+import com.microsoft.azure.management.network.FlowLogSettings;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
@@ -15,46 +14,52 @@ import rx.Observable;
 import rx.functions.Func1;
 
 /**
- * Implementation for {@link FlowLogInformation} and its create and update interfaces.
+ * Implementation for {@link FlowLogSettings} and its create and update interfaces.
  */
 @LangDefinition
-class FlowLogInformationImpl extends RefreshableWrapperImpl<FlowLogInformationInner,
-        FlowLogInformation>
+class FlowLogSettingsImpl extends RefreshableWrapperImpl<FlowLogInformationInner,
+        FlowLogSettings>
         implements
-        FlowLogInformation,
-        FlowLogInformation.Update {
+        FlowLogSettings,
+        FlowLogSettings.Update {
     private final NetworkWatcherImpl parent;
 
-    FlowLogInformationImpl(NetworkWatcherImpl parent, FlowLogInformationInner inner) {
+    FlowLogSettingsImpl(NetworkWatcherImpl parent, FlowLogInformationInner inner) {
         super(inner);
         this.parent = parent;
     }
 
     @Override
-    public FlowLogInformation apply() {
+    public FlowLogSettings apply() {
         return applyAsync().toBlocking().last();
     }
 
     @Override
-    public Observable<FlowLogInformation> applyAsync() {
+    public Observable<FlowLogSettings> applyAsync() {
         return this.parent().manager().inner().networkWatchers()
                 .setFlowLogConfigurationAsync(parent().resourceGroupName(), parent().name(), this.inner())
-                .map(new Func1<FlowLogInformationInner, FlowLogInformation>() {
+                .map(new Func1<FlowLogInformationInner, FlowLogSettings>() {
             @Override
-            public FlowLogInformation call(FlowLogInformationInner flowLogInformationInner) {
-                return new FlowLogInformationImpl(FlowLogInformationImpl.this.parent, flowLogInformationInner);
+            public FlowLogSettings call(FlowLogInformationInner flowLogInformationInner) {
+                return new FlowLogSettingsImpl(FlowLogSettingsImpl.this.parent, flowLogInformationInner);
             }
         });
     }
 
     @Override
-    public ServiceFuture<FlowLogInformation> applyAsync(ServiceCallback<FlowLogInformation> callback) {
+    public ServiceFuture<FlowLogSettings> applyAsync(ServiceCallback<FlowLogSettings> callback) {
         return ServiceFuture.fromBody(applyAsync(), callback);
     }
 
     @Override
-    public Update withEnabled(boolean enabled) {
-        this.inner().withEnabled(enabled);
+    public Update withLoggingEnabled() {
+        this.inner().withEnabled(true);
+        return this;
+    }
+
+    @Override
+    public Update withLoggingDisabled() {
+        this.inner().withEnabled(false);
         return this;
     }
 
@@ -65,8 +70,14 @@ class FlowLogInformationImpl extends RefreshableWrapperImpl<FlowLogInformationIn
     }
 
     @Override
-    public Update withRetentionPolicyEnabled(boolean enabled) {
-        this.inner().retentionPolicy().withEnabled(enabled);
+    public Update withRetentionPolicyEnabled() {
+        this.inner().retentionPolicy().withEnabled(true);
+        return this;
+    }
+
+    @Override
+    public Update withRetentionPolicyDisabled() {
+        this.inner().retentionPolicy().withEnabled(false);
         return this;
     }
 
@@ -113,7 +124,12 @@ class FlowLogInformationImpl extends RefreshableWrapperImpl<FlowLogInformationIn
     }
 
     @Override
-    public RetentionPolicyParameters retentionPolicy() {
-        return inner().retentionPolicy();
+    public boolean isRetentionEnabled() {
+        return inner().retentionPolicy().enabled();
+    }
+
+    @Override
+    public int retentionDays() {
+        return inner().retentionPolicy().days();
     }
 }
