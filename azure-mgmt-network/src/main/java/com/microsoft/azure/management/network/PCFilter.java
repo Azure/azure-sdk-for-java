@@ -145,7 +145,7 @@ public interface PCFilter extends Indexable,
          */
         interface WithLocalPort<ParentT> {
             /**
-             * Set the local port to be filtered on
+             * Set the local port to be filtered on.
              *
              * @param port port number
              * @return the next stage
@@ -153,7 +153,7 @@ public interface PCFilter extends Indexable,
             Definition<ParentT> withLocalPort(int port);
 
             /**
-             * Set the local port range to be filtered on
+             * Set the local port range to be filtered on.
              *
              * @param startPort range start port number
              * @param endPort   range end port number
@@ -162,7 +162,7 @@ public interface PCFilter extends Indexable,
             Definition<ParentT> withLocalPortRange(int startPort, int endPort);
 
             /**
-             * Set the list of local ports to be filtered on
+             * Set the list of local ports to be filtered on.
              *
              * @param ports list of local ports
              * @return the next stage
@@ -176,7 +176,7 @@ public interface PCFilter extends Indexable,
          */
         interface WithRemotePort<ParentT> {
             /**
-             * Set the remote port to be filtered on
+             * Set the remote port to be filtered on.
              *
              * @param port port number
              * @return the next stage
@@ -184,7 +184,7 @@ public interface PCFilter extends Indexable,
             Definition<ParentT> withRemotePort(int port);
 
             /**
-             * Set the remote port range to be filtered on
+             * Set the remote port range to be filtered on.
              *
              * @param startPort range start port number
              * @param endPort   range end port number
@@ -193,7 +193,7 @@ public interface PCFilter extends Indexable,
             Definition<ParentT> withRemotePortRange(int startPort, int endPort);
 
             /**
-             * Set the list of remote ports to be filtered on
+             * Set the list of remote ports to be filtered on.
              *
              * @param ports list of remote ports
              * @return the next stage
