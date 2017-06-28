@@ -16,9 +16,21 @@ import com.microsoft.azure.management.compute.VirtualMachineOffer;
 import com.microsoft.azure.management.compute.VirtualMachinePublisher;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachineSku;
+import com.microsoft.azure.management.network.Access;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
+import com.microsoft.azure.management.network.Direction;
+import com.microsoft.azure.management.network.FlowLogSettings;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
+import com.microsoft.azure.management.network.NetworkWatcher;
+import com.microsoft.azure.management.network.NextHop;
+import com.microsoft.azure.management.network.NextHopType;
+import com.microsoft.azure.management.network.PacketCapture;
+import com.microsoft.azure.management.network.PcProtocol;
+import com.microsoft.azure.management.network.Protocol;
+import com.microsoft.azure.management.network.SecurityGroupView;
+import com.microsoft.azure.management.network.Topology;
+import com.microsoft.azure.management.network.VerificationIPFlow;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.DeploymentMode;
 import com.microsoft.azure.management.resources.GenericResource;
@@ -40,6 +52,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -517,6 +530,100 @@ public class AzureTests extends TestBase {
     @Test
     public void testNetworkInterfaces() throws Exception {
         new TestNetworkInterface().runTest(azure.networkInterfaces(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests the network watcher implementation.
+     * @throws Exception
+     */
+    @Test
+    public void testNetworkWatchers() throws Exception {
+        new TestNetworkWatcher().runTest(azure.networkWatchers(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testNetworkWatcherFunctions() throws Exception {
+        TestNetworkWatcher tnw = new TestNetworkWatcher();
+
+        NetworkWatcher nw = tnw.createResource(azure.networkWatchers());
+
+        // pre-create VMs to show topology on
+        VirtualMachine[] virtualMachines = tnw.ensureNetwork(azure.networkWatchers().manager().networks(),
+                azure.virtualMachines(), azure.networkInterfaces());
+
+        Topology topology = nw.getTopology(virtualMachines[0].resourceGroupName());
+        Assert.assertEquals(11, topology.resources().size());
+        Assert.assertTrue(topology.resources().containsKey(virtualMachines[0].getPrimaryNetworkInterface().networkSecurityGroupId()));
+        Assert.assertEquals(4, topology.resources().get(virtualMachines[0].primaryNetworkInterfaceId()).associations().size());
+
+        SecurityGroupView sgViewResult = nw.getSecurityGroupView(virtualMachines[0].id());
+        Assert.assertEquals(1, sgViewResult.networkInterfaces().size());
+        Assert.assertEquals(virtualMachines[0].primaryNetworkInterfaceId(), sgViewResult.networkInterfaces().keySet().iterator().next());
+
+        FlowLogSettings flowLogSettings = nw.getFlowLogSettings(virtualMachines[0].getPrimaryNetworkInterface().networkSecurityGroupId());
+        StorageAccount storageAccount = tnw.ensureStorageAccount(azure.storageAccounts());
+        flowLogSettings.update()
+                .withLogging()
+                .withStorageAccount(storageAccount.id())
+                .withRetentionPolicyDays(5)
+                .withRetentionPolicyEnabled()
+                .apply();
+        Assert.assertEquals(true, flowLogSettings.enabled());
+        Assert.assertEquals(5, flowLogSettings.retentionDays());
+        Assert.assertEquals(storageAccount.id(), flowLogSettings.storageId());
+
+//        Troubleshooting troubleshooting = nw.troubleshoot(<virtual_network_gateway_id> or <virtual_network_gateway_connaction_id>,
+//                storageAccount.id(), "");
+        NextHop nextHop = nw.nextHop().withTargetResourceId(virtualMachines[0].id())
+            .withSourceIPAddress("10.0.0.4")
+            .withDestinationIPAddress("8.8.8.8")
+            .execute();
+        Assert.assertEquals("System Route", nextHop.routeTableId());
+        Assert.assertEquals(NextHopType.INTERNET, nextHop.nextHopType());
+        Assert.assertNull(nextHop.nextHopIpAddress());
+
+        VerificationIPFlow verificationIPFlow = nw.verifyIPFlow()
+                .withTargetResourceId(virtualMachines[0].id())
+                .withDirection(Direction.OUTBOUND)
+                .withProtocol(Protocol.TCP)
+                .withLocalIPAddress("10.0.0.4")
+                .withRemoteIPAddress("8.8.8.8")
+                .withLocalPort("443")
+                .withRemotePort("443")
+                .execute();
+        Assert.assertEquals(Access.ALLOW, verificationIPFlow.access());
+        Assert.assertEquals("defaultSecurityRules/AllowInternetOutBound", verificationIPFlow.ruleName());
+
+        // test packet capture
+        List<PacketCapture> packetCaptures = nw.packetCaptures().list();
+        Assert.assertEquals(0, packetCaptures.size());
+        PacketCapture packetCapture = nw.packetCaptures()
+                .define("NewPacketCapture")
+                .withTarget(virtualMachines[0].id())
+                .withExistingStorageAccount(storageAccount)
+                .withTimeLimitInSeconds(1500)
+                .definePacketCaptureFilter()
+                    .withProtocol(PcProtocol.TCP)
+                    .withLocalIPAddresses(Arrays.asList("127.0.0.1", "127.0.0.5"))
+                    .attach()
+                .create();
+        packetCaptures = nw.packetCaptures().list();
+        Assert.assertEquals(1, packetCaptures.size());
+        Assert.assertEquals("NewPacketCapture", packetCapture.name());
+        Assert.assertEquals(1500, packetCapture.timeLimitInSeconds());
+        Assert.assertEquals(PcProtocol.TCP, packetCapture.filters().get(0).protocol());
+        Assert.assertEquals("127.0.0.1;127.0.0.5", packetCapture.filters().get(0).localIPAddress());
+//        Assert.assertEquals("Running", packetCapture.getStatus().packetCaptureStatus().toString());
+        packetCapture.stop();
+        Assert.assertEquals("Stopped", packetCapture.getStatus().packetCaptureStatus().toString());
+        nw.packetCaptures().deleteByName(packetCapture.name());
+
+        azure.virtualMachines().deleteById(virtualMachines[1].id());
+        topology.refresh();
+        Assert.assertEquals(10, topology.resources().size());
+
+        azure.resourceGroups().deleteByName(nw.resourceGroupName());
+        azure.resourceGroups().deleteByName(tnw.groupName());
     }
 
     /**
