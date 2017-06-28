@@ -49,6 +49,8 @@ public class TestSearchService {
 
         @Override
         public SearchService updateResource(SearchService resource) throws Exception {
+            resource.createQueryKey("testKey1");
+
             resource = resource.update()
                 .withTag("tag2", "value2")
                 .withTag("tag3", "value3")
@@ -60,33 +62,24 @@ public class TestSearchService {
             Assert.assertTrue(!resource.tags().containsKey("tag1"));
             Assert.assertEquals(2, resource.replicaCount());
             Assert.assertEquals(2, resource.partitionCount());
+            Assert.assertEquals(2, resource.listQueryKeys().size());
+
+            String adminKeyPrimary = resource.getAdminKeys().primaryKey();
+            String adminKeySecondary = resource.getAdminKeys().secondaryKey();
+
+            resource.deleteQueryKey(resource.listQueryKeys().get(1).key());
+            resource.regenerateAdminKeys(AdminKeyKind.PRIMARY);
+            resource.regenerateAdminKeys(AdminKeyKind.SECONDARY);
+            Assert.assertEquals(1, resource.listQueryKeys().size());
+            Assert.assertNotEquals(adminKeyPrimary, resource.getAdminKeys().primaryKey());
+            Assert.assertNotEquals(adminKeySecondary, resource.getAdminKeys().secondaryKey());
 
             return resource;
         }
 
         @Override
         public void print(SearchService resource) {
-            AdminKeys adminKeys = resource.getAdminKeys();
-            List<QueryKey> queryKeys = resource.listQueryKeys();
-
-            StringBuilder stringBuilder = new StringBuilder().append("Search Service with standard SKU: ").append(resource.id())
-                .append("Name: ").append(resource.name())
-                .append("\n\tResource group: ").append(resource.resourceGroupName())
-                .append("\n\tRegion: ").append(resource.region())
-                .append("\n\tTags: ").append(resource.tags())
-                .append("\n\tSku: ").append(resource.sku().name())
-                .append("\n\tReplicas: ").append(resource.replicaCount())
-                .append("\n\tPartitions: ").append(resource.partitionCount())
-                .append("\n\tPrimary Admin Key: ").append(adminKeys.primaryKey())
-                .append("\n\tSecondary Admin Key: ").append(adminKeys.secondaryKey())
-                .append("\n\tQuery keys:");
-
-            for (QueryKey queryKey : queryKeys) {
-                stringBuilder.append("\n\t  Key name: ").append(queryKey.name());
-                stringBuilder.append("\n\t  Key value: ").append(queryKey.key());
-            }
-
-            System.out.println(stringBuilder);
+            TestSearchService.print(resource, "Search Service with standard SKU: ");
         }
     }
 
@@ -126,12 +119,7 @@ public class TestSearchService {
 
         @Override
         public void print(SearchService resource) {
-            System.out.println(new StringBuilder().append("Search Service with free SKU: ").append(resource.id())
-                .append("Name: ").append(resource.name())
-                .append("\n\tResource group: ").append(resource.resourceGroupName())
-                .append("\n\tRegion: ").append(resource.region())
-                .append("\n\tTags: ").append(resource.tags())
-                .toString());
+            TestSearchService.print(resource, "Search Service with free SKU: ");
         }
     }
 
@@ -148,10 +136,11 @@ public class TestSearchService {
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup()
                 .withBasicSku()
+                .withReplicas(2)
                 .create();
 
             Assert.assertEquals(SkuName.BASIC, searchService.sku().name());
-            Assert.assertEquals(1, searchService.replicaCount());
+            Assert.assertEquals(2, searchService.replicaCount());
             Assert.assertEquals(1, searchService.partitionCount());
 
             return searchService;
@@ -171,12 +160,7 @@ public class TestSearchService {
 
         @Override
         public void print(SearchService resource) {
-            System.out.println(new StringBuilder().append("Search Service with basic SKU: ").append(resource.id())
-                .append("Name: ").append(resource.name())
-                .append("\n\tResource group: ").append(resource.resourceGroupName())
-                .append("\n\tRegion: ").append(resource.region())
-                .append("\n\tTags: ").append(resource.tags())
-                .toString());
+            TestSearchService.print(resource, "Search Service with basic SKU: ");
         }
     }
 
@@ -193,33 +177,60 @@ public class TestSearchService {
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup()
                 .withStandardSku()
-                .withPartitions(1)
-                .withReplicas(1)
+                .withPartitions(2)
+                .withReplicas(2)
                 .create();
+
+            Assert.assertEquals(SkuName.STANDARD, searchService.sku().name());
+            Assert.assertEquals(2, searchService.replicaCount());
+            Assert.assertEquals(2, searchService.partitionCount());
 
             return searchService;
         }
 
         @Override
         public SearchService updateResource(SearchService resource) throws Exception {
-            resource = resource.update()
-                .withTag("tag2", "value2")
-                .withTag("tag3", "value3")
-                .withoutTag("tag1")
-                .apply();
-            Assert.assertTrue(resource.tags().containsKey("tag2"));
-            Assert.assertTrue(!resource.tags().containsKey("tag1"));
             return resource;
         }
 
         @Override
         public void print(SearchService resource) {
-            System.out.println(new StringBuilder().append("Search Service with standard SKU: ").append(resource.id())
-                .append("Name: ").append(resource.name())
-                .append("\n\tResource group: ").append(resource.resourceGroupName())
-                .append("\n\tRegion: ").append(resource.region())
-                .append("\n\tTags: ").append(resource.tags())
-                .toString());
+            TestSearchService.print(resource, "Search Service with standard SKU: ");
         }
     }
+
+    /**
+     * Common print method.
+     *
+     * @param resource Search service resource
+     * @param header String to be printed first
+     */
+    public static void print(SearchService resource, String header) {
+        AdminKeys adminKeys = resource.getAdminKeys();
+        List<QueryKey> queryKeys = resource.listQueryKeys();
+
+        StringBuilder stringBuilder = new StringBuilder().append(header).append(resource.id())
+            .append("Name: ").append(resource.name())
+            .append("\n\tResource group: ").append(resource.resourceGroupName())
+            .append("\n\tRegion: ").append(resource.region())
+            .append("\n\tTags: ").append(resource.tags())
+            .append("\n\tSku: ").append(resource.sku().name())
+            .append("\n\tStatus: ").append(resource.status())
+            .append("\n\tStatus Details: ").append(resource.statusDetails())
+            .append("\n\tProvisioning State: ").append(resource.provisioningState())
+            .append("\n\tHosting Mode: ").append(resource.hostingMode())
+            .append("\n\tReplicas: ").append(resource.replicaCount())
+            .append("\n\tPartitions: ").append(resource.partitionCount())
+            .append("\n\tPrimary Admin Key: ").append(adminKeys.primaryKey())
+            .append("\n\tSecondary Admin Key: ").append(adminKeys.secondaryKey())
+            .append("\n\tQuery keys:");
+
+        for (QueryKey queryKey : queryKeys) {
+            stringBuilder.append("\n\t  Key name: ").append(queryKey.name());
+            stringBuilder.append("\n\t  Key value: ").append(queryKey.key());
+        }
+
+        System.out.println(stringBuilder);
+    }
+
 }

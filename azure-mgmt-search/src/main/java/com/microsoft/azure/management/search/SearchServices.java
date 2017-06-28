@@ -115,7 +115,7 @@ public interface SearchServices extends
    * @throws IllegalArgumentException thrown if parameters fail the validation
    * @return the observable to the List&lt;QueryKeyInner&gt; object
    */
-  Observable<List<QueryKey>> listQueryKeysAsync(String resourceGroupName, String searchServiceName);
+  Observable<QueryKey> listQueryKeysAsync(String resourceGroupName, String searchServiceName);
 
 
   /***********************************************************

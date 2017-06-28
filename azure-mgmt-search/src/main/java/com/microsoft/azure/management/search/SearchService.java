@@ -36,19 +36,51 @@ public interface SearchService extends
    ***********************************************************/
 
   /**
-   * @return the SKU of the Search service.
+   * Get the hostingMode value.
+   *
+   * @return the hostingMode value
    */
-  Sku sku();
+  HostingMode hostingMode();
 
   /**
+   * Get the partitionCount value.
+   *
+   * @return the partitions count of the Search service.
+   */
+  int partitionCount();
+
+  /**
+   * Get the provisioningState value.
+   *
+   * @return the provisioningState value
+   */
+  ProvisioningState provisioningState();
+
+  /**
+   * Get the replicaCount value.
+   *
    * @return the replicas count of the Search service.
    */
   int replicaCount();
 
   /**
-   * @return the partitions count of the Search service.
+   * @return the SKU of the Search service.
    */
-  int partitionCount();
+  Sku sku();
+
+  /**
+   * Get the status value.
+   *
+   * @return the status value
+   */
+  SearchServiceStatus status();
+
+  /**
+   * Get the statusDetails value.
+   *
+   * @return the statusDetails value
+   */
+  String statusDetails();
 
   /**
    * Gets the primary and secondary admin API keys for the specified Azure Search service.
@@ -84,7 +116,7 @@ public interface SearchService extends
    * @throws IllegalArgumentException thrown if parameters fail the validation
    * @return the observable to the List&lt;QueryKeyInner&gt; object
    */
-  Observable<List<QueryKey>> listQueryKeysAsync();
+  Observable<QueryKey> listQueryKeysAsync();
 
 
   /***********************************************************
@@ -210,6 +242,8 @@ public interface SearchService extends
 
       /**
        * Specifies to use a standard sku type for the Search service.
+       *
+       * @param
        * @return the next stage of the definition
        */
       WithPartitionsAndCreate withStandardSku();

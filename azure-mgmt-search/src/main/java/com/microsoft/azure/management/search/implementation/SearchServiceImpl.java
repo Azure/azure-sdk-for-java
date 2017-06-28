@@ -7,16 +7,20 @@ package com.microsoft.azure.management.search.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
-import com.microsoft.azure.management.search.AdminKeyKind;
 import com.microsoft.azure.management.search.AdminKeys;
+import com.microsoft.azure.management.search.AdminKeyKind;
+import com.microsoft.azure.management.search.HostingMode;
+import com.microsoft.azure.management.search.ProvisioningState;
 import com.microsoft.azure.management.search.QueryKey;
 import com.microsoft.azure.management.search.SearchService;
+import com.microsoft.azure.management.search.SearchServiceStatus;
 import com.microsoft.azure.management.search.Sku;
 import com.microsoft.azure.management.search.SkuName;
 import rx.Observable;
 import rx.functions.Func1;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -88,6 +92,26 @@ class SearchServiceImpl
   // Getters
 
   @Override
+  public SearchServiceStatus status() {
+    return this.inner().status();
+  }
+
+  @Override
+  public String statusDetails() {
+    return this.inner().statusDetails();
+  }
+
+  @Override
+  public ProvisioningState provisioningState() {
+    return this.inner().provisioningState();
+  }
+
+  @Override
+  public HostingMode hostingMode() {
+    return this.inner().hostingMode();
+  }
+
+  @Override
   public Sku sku() {
     return this.inner().sku();
   }
@@ -109,7 +133,13 @@ class SearchServiceImpl
 
   @Override
   public Observable<AdminKeys> getAdminKeysAsync() {
-    return null;
+    return this.manager().inner().adminKeys().getAsync(this.resourceGroupName(), this.name())
+        .map(new Func1<AdminKeyResultInner, AdminKeys>() {
+          @Override
+          public AdminKeys call(AdminKeyResultInner adminKeyResultInner) {
+            return new AdminKeysImpl(adminKeyResultInner);
+          }
+        });
   }
 
   @Override
@@ -122,44 +152,70 @@ class SearchServiceImpl
         queryKeys.add(new QueryKeyImpl(queryKeyInner));
       }
     }
-    return queryKeys;
+
+    return Collections.unmodifiableList(queryKeys);
   }
 
   @Override
-  public Observable<List<QueryKey>> listQueryKeysAsync() {
-    return null;
+  public Observable<QueryKey> listQueryKeysAsync() {
+    Observable<List<QueryKeyInner>> queryKeysList = this.manager().inner().queryKeys()
+        .listBySearchServiceAsync(this.resourceGroupName(), this.name());
+
+    return queryKeysList.flatMap(new Func1<List< QueryKeyInner>, Observable<QueryKeyInner>>() {
+      @Override
+      public Observable<QueryKeyInner> call(List<QueryKeyInner> queryKeyInners) {
+        return Observable.from(queryKeyInners);
+      }
+    }).map(new Func1<QueryKeyInner, QueryKey>() {
+      @Override
+      public QueryKey call(QueryKeyInner queryKeyInner) {
+        return new QueryKeyImpl(queryKeyInner);
+      }
+    });
   }
 
   // Actions
 
   @Override
   public AdminKeys regenerateAdminKeys(AdminKeyKind keyKind) {
-    return null;
+    return new AdminKeysImpl(this.manager().inner().adminKeys().regenerate(this.resourceGroupName(), this.name(), keyKind));
   }
 
   @Override
   public Observable<AdminKeys> regenerateAdminKeysAsync(AdminKeyKind keyKind) {
-    return null;
+    return this.manager().inner().adminKeys().regenerateAsync(this.resourceGroupName(), this.name(), keyKind)
+        .map(new Func1<AdminKeyResultInner, AdminKeys>() {
+          @Override
+          public AdminKeys call(AdminKeyResultInner adminKeyResultInner) {
+            return new AdminKeysImpl(adminKeyResultInner);
+          }
+        });
   }
 
   @Override
   public QueryKey createQueryKey(String name) {
-    return null;
+    return new QueryKeyImpl(this.manager().inner().queryKeys().create(this.resourceGroupName(), this.name(), name));
   }
 
   @Override
   public Observable<QueryKey> createQueryKeyAsync(String name) {
-    return null;
+    return this.manager().inner().queryKeys().createAsync(this.resourceGroupName(), this.name(), name)
+        .map(new Func1<QueryKeyInner, QueryKey>() {
+          @Override
+          public QueryKey call(QueryKeyInner queryKeyInner) {
+            return new QueryKeyImpl(queryKeyInner);
+          }
+        });
   }
 
   @Override
   public void deleteQueryKey(String key) {
-
+    this.manager().inner().queryKeys().delete(this.resourceGroupName(), this.name(), key);
   }
 
   @Override
   public Observable<Void> deleteQueryKeyAsync(String key) {
-    return null;
+    return this.manager().inner().queryKeys().deleteAsync(this.resourceGroupName(), this.name(), key);
   }
 
   // Setters (fluent)
@@ -184,7 +240,7 @@ class SearchServiceImpl
 
   @Override
   public SearchServiceImpl withStandardSku() {
-    this.inner().withSku(new Sku().withName(SkuName.BASIC));
+    this.inner().withSku(new Sku().withName(SkuName.STANDARD));
     return this;
   }
 
