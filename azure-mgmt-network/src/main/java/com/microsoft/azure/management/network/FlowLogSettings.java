@@ -47,11 +47,14 @@ public interface FlowLogSettings extends
     boolean isRetentionEnabled();
 
     /**
-     * Get the number of days to retain flow log records.
-     *
-     * @return number of days
+     * @return the number of days to retain flow log records
      */
     int retentionDays();
+
+    /**
+     * @return network security group id these flow log settings apply to
+     */
+    String networkSecurityGroupId();
 
     /**
      * Grouping of flow log information update stages.

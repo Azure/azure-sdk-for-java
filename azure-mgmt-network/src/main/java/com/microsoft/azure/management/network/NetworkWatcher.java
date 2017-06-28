@@ -15,6 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
+import rx.Observable;
 
 /**
  * Entry point for Network Watcher API in Azure.
@@ -39,6 +40,13 @@ public interface NetworkWatcher extends
     Topology getTopology(String targetResourceGroup);
 
     /**
+     * Gets network topology of a given resource group asynchronously.
+     * @param targetResourceGroup the name of the target resource group to perform getTopology on
+     * @return current network topology by resource group
+     */
+    Observable<Topology> getTopologyAsync(String targetResourceGroup);
+
+    /**
      * Gets the configured and effective security group rules on the specified VM.
      * @param vmId ID of the target VM
      * @return the configured and effective security group rules on the specified VM
@@ -46,11 +54,25 @@ public interface NetworkWatcher extends
     SecurityGroupView getSecurityGroupView(String vmId);
 
     /**
+     * Gets the configured and effective security group rules on the specified VM asynchronously.
+     * @param vmId ID of the target VM
+     * @return the configured and effective security group rules on the specified VM
+     */
+    Observable<SecurityGroupView> getSecurityGroupViewAsync(String vmId);
+
+    /**
      * Gets the information on the configuration of flow log.
      * @param nsgId the name of the target resource group to get flow log status for
      * @return information on the configuration of flow log
      */
     FlowLogSettings getFlowLogSettings(String nsgId);
+
+    /**
+     * Gets the information on the configuration of flow log asynchronously.
+     * @param nsgId the name of the target resource group to get flow log status for
+     * @return information on the configuration of flow log
+     */
+    Observable<FlowLogSettings> getFlowLogSettingsAsync(String nsgId);
 
     /**
      * First step specifying the parameters to get next hop for the VM.

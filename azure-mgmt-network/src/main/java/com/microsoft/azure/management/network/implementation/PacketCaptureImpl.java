@@ -15,6 +15,7 @@ import com.microsoft.azure.management.network.PacketCaptureStorageLocation;
 import com.microsoft.azure.management.network.ProvisioningState;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -49,12 +50,12 @@ public class PacketCaptureImpl extends
 
     @Override
     public void stop() {
-        stopAsync().toBlocking().last();
+        stopAsync().toObservable().toBlocking().subscribe();
     }
 
     @Override
-    public Observable<Void> stopAsync() {
-        return this.client.stopAsync(parent.resourceGroupName(), parent.name(), name());
+    public Completable stopAsync() {
+        return this.client.stopAsync(parent.resourceGroupName(), parent.name(), name()).toCompletable();
     }
 
     @Override

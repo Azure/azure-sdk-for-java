@@ -37,12 +37,12 @@ public interface Topology extends HasParent<NetworkWatcher>,
      * @return the datetime when the topology was initially created for the resource
      * group.
      */
-    DateTime createdDateTime();
+    DateTime createdTime();
 
     /**
      * @return the datetime when the topology was last modified
      */
-    DateTime lastModified();
+    DateTime lastModifiedTime();
 
     /**
      * @return The resources in this topology

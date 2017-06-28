@@ -14,6 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.storage.StorageAccount;
+import rx.Completable;
 import rx.Observable;
 
 import java.util.List;
@@ -75,7 +76,7 @@ public interface PacketCapture extends
      * Stops a specified packet capture session asynchronously.
      * @return the handle to the REST call
      */
-    Observable<Void> stopAsync();
+    Completable stopAsync();
 
     /**
      * Query the status of a running packet capture session.

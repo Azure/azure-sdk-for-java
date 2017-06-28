@@ -47,12 +47,12 @@ class TopologyImpl extends RefreshableWrapperImpl<TopologyInner, Topology>
     }
 
     @Override
-    public DateTime createdDateTime() {
+    public DateTime createdTime() {
         return inner().createdDateTime();
     }
 
     @Override
-    public DateTime lastModified() {
+    public DateTime lastModifiedTime() {
         return inner().lastModified();
     }
 

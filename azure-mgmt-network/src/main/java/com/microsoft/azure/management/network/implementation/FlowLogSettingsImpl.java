@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.FlowLogSettings;
+import com.microsoft.azure.management.network.RetentionPolicyParameters;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
@@ -23,10 +24,12 @@ class FlowLogSettingsImpl extends RefreshableWrapperImpl<FlowLogInformationInner
         FlowLogSettings,
         FlowLogSettings.Update {
     private final NetworkWatcherImpl parent;
+    private final String nsgId;
 
-    FlowLogSettingsImpl(NetworkWatcherImpl parent, FlowLogInformationInner inner) {
+    FlowLogSettingsImpl(NetworkWatcherImpl parent, FlowLogInformationInner inner, String nsgId) {
         super(inner);
         this.parent = parent;
+        this.nsgId = nsgId;
     }
 
     @Override
@@ -41,7 +44,7 @@ class FlowLogSettingsImpl extends RefreshableWrapperImpl<FlowLogInformationInner
                 .map(new Func1<FlowLogInformationInner, FlowLogSettings>() {
             @Override
             public FlowLogSettings call(FlowLogInformationInner flowLogInformationInner) {
-                return new FlowLogSettingsImpl(FlowLogSettingsImpl.this.parent, flowLogInformationInner);
+                return new FlowLogSettingsImpl(FlowLogSettingsImpl.this.parent, flowLogInformationInner, nsgId);
             }
         });
     }
@@ -71,20 +74,29 @@ class FlowLogSettingsImpl extends RefreshableWrapperImpl<FlowLogInformationInner
 
     @Override
     public Update withRetentionPolicyEnabled() {
+        ensureRetentionPolicy();
         this.inner().retentionPolicy().withEnabled(true);
         return this;
     }
 
     @Override
     public Update withRetentionPolicyDisabled() {
+        ensureRetentionPolicy();
         this.inner().retentionPolicy().withEnabled(false);
         return this;
     }
 
     @Override
     public Update withRetentionPolicyDays(int days) {
+        ensureRetentionPolicy();
         this.inner().retentionPolicy().withDays(days);
         return this;
+    }
+
+    private void ensureRetentionPolicy() {
+        if (this.inner().retentionPolicy() == null) {
+            this.inner().withRetentionPolicy(new RetentionPolicyParameters());
+        }
     }
 
     @Override
@@ -125,11 +137,20 @@ class FlowLogSettingsImpl extends RefreshableWrapperImpl<FlowLogInformationInner
 
     @Override
     public boolean isRetentionEnabled() {
+        // will return default values if server response for retention policy was empty
+        ensureRetentionPolicy();
         return inner().retentionPolicy().enabled();
     }
 
     @Override
     public int retentionDays() {
+        // will return default values if server response for retention policy was empty
+        ensureRetentionPolicy();
         return inner().retentionPolicy().days();
+    }
+
+    @Override
+    public String networkSecurityGroupId() {
+        return nsgId;
     }
 }
