@@ -260,7 +260,7 @@ final class PollingState<T> {
      *
      * @param error the cloud error.
      */
-    private PollingState<T> withErrorBody(CloudError error) {
+    PollingState<T> withErrorBody(CloudError error) {
         this.error = error;
         return this;
     }

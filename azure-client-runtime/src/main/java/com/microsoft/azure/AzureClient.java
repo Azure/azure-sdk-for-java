@@ -181,7 +181,14 @@ public final class AzureClient extends AzureServiceClient {
                                     }
                                     for (String failedStatus : AzureAsyncOperation.failedStatuses()) {
                                         if (failedStatus.equalsIgnoreCase(pollingState.status())) {
-                                            return Observable.error(new CloudException("Async operation failed with provisioning state: " + pollingState.status(), pollingState.response()));
+                                            if (pollingState.errorBody() != null) {
+                                                return Observable.error(new CloudException("Async operation failed with provisioning state: " + pollingState.status(),
+                                                        pollingState.response(),
+                                                        pollingState.errorBody()));
+                                            } else {
+                                                return Observable.error(new CloudException("Async operation failed with provisioning state: " + pollingState.status(),
+                                                        pollingState.response()));
+                                            }
                                         }
                                     }
                                     return Observable.just(pollingState);
@@ -243,7 +250,7 @@ public final class AzureClient extends AzureServiceClient {
      * @throws IOException thrown by deserialization
      */
     private <T> ServiceResponse<T> getPostOrDeleteResult(Observable<Response<ResponseBody>> observable, Type resourceType) throws CloudException, InterruptedException, IOException {
-        Observable<ServiceResponse<T>> asyncObservable = getPutOrPatchResultAsync(observable, resourceType);
+        Observable<ServiceResponse<T>> asyncObservable = getPostOrDeleteResultAsync(observable, resourceType);
         return asyncObservable.toBlocking().last();
     }
 
@@ -331,8 +338,14 @@ public final class AzureClient extends AzureServiceClient {
                                 public Observable<ServiceResponse<T>> call(PollingState<T> pollingState) {
                                     for (String failedStatus : AzureAsyncOperation.failedStatuses()) {
                                         if (failedStatus.equalsIgnoreCase(pollingState.status())) {
-                                            return Observable.error(new CloudException("Async operation failed with provisioning state: " + pollingState.status(), pollingState.response()));
-                                        }
+                                            if (pollingState.errorBody() != null) {
+                                                return Observable.error(new CloudException("Async operation failed with provisioning state: " + pollingState.status(),
+                                                        pollingState.response(),
+                                                        pollingState.errorBody()));
+                                            } else {
+                                                return Observable.error(new CloudException("Async operation failed with provisioning state: " + pollingState.status(),
+                                                        pollingState.response()));
+                                            }                                        }
                                     }
                                     return Observable.just(new ServiceResponse<>(pollingState.resource(), pollingState.response()));
                                 }
@@ -482,8 +495,8 @@ public final class AzureClient extends AzureServiceClient {
                         CloudException exception = new CloudException("polling response does not contain a valid body: " + bodyString, response);
                         return Observable.error(exception);
                     }
-
                     pollingState.withStatus(body.status());
+                    pollingState.withErrorBody(body.getError()); // If async response contains CloudError then set it
                     pollingState.withResponse(response);
                     pollingState.withResource(null);
                     return Observable.just(pollingState);
@@ -522,6 +535,7 @@ public final class AzureClient extends AzureServiceClient {
                     }
 
                     pollingState.withStatus(body.status());
+                    pollingState.withErrorBody(body.getError()); // If async response contains CloudError then set it
                     pollingState.withResponse(response);
                     T resource = null;
                     try {

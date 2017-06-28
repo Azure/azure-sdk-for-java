@@ -8,7 +8,6 @@ package com.microsoft.azure.serializer;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -48,14 +47,13 @@ final class CloudErrorDeserializer extends JsonDeserializer<CloudError> {
     }
 
     @Override
-    public CloudError deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-        JsonNode topNode = p.readValueAsTree();
-        if (topNode == null) {
-            return null;
-        }
-        JsonNode errorNode = topNode.get("error");
+    public CloudError deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        JsonNode errorNode = p.readValueAsTree();
         if (errorNode == null) {
             return null;
+        }
+        if (errorNode.get("error") != null) {
+            errorNode = errorNode.get("error");
         }
         JsonParser parser = new JsonFactory().createParser(errorNode.toString());
         parser.setCodec(mapper);
