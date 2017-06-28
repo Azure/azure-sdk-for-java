@@ -99,7 +99,7 @@ public interface PCFilter extends Indexable,
             Definition<ParentT> withLocalIPAddressesRange(String startIPAddress, String endIPAddress);
 
             /**
-             * Set list of local IP addresses range to be filtered on.
+             * Set list of local IP addresses to be filtered on.
              *
              * @param ipAddresses list of IP address
              * @return the next stage
@@ -131,7 +131,7 @@ public interface PCFilter extends Indexable,
             Definition<ParentT> withRemoteIPAddressesRange(String startIPAddress, String endIPAddress);
 
             /**
-             * Set list of remote IP addresses range to be filtered on.
+             * Set list of remote IP addresses to be filtered on.
              *
              * @param ipAddresses list of IP addresses
              * @return the next stage

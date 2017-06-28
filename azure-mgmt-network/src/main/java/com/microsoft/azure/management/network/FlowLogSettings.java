@@ -32,23 +32,17 @@ public interface FlowLogSettings extends
     String targetResourceId();
 
     /**
-     * Get the ID of the storage account which is used to store the flow log.
-     *
-     * @return the storageId value
+     * @return the id of the storage account used to store the flow log
      */
     String storageId();
 
     /**
-     * Get the flag to enable/disable flow logging.
-     *
-     * @return the enabled value
+     * @return true if logging is enabled, false otherwise
      */
     boolean enabled();
 
     /**
-     * Get the flag if retention is enabled/disabled.
-     *
-     * @return the enabled value
+     * @return true if retention policy enabled, false otherwise
      */
     boolean isRetentionEnabled();
 
@@ -72,14 +66,14 @@ public interface FlowLogSettings extends
              *
              * @return the next stage of the flow log information update
              */
-            Update withLoggingEnabled();
+            Update withLogging();
 
             /**
              * Disable flow logging.
              *
              * @return the next stage of the flow log information update
              */
-            Update withLoggingDisabled();
+            Update withoutLogging();
         }
 
         /**

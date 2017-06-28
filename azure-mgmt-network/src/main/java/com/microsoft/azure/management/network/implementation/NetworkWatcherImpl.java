@@ -50,7 +50,7 @@ class NetworkWatcherImpl
     }
 
     @Override
-    public SecurityGroupView getSecurityGroupViewResult(String vmId) {
+    public SecurityGroupView getSecurityGroupView(String vmId) {
         SecurityGroupViewResultInner securityGroupViewResultInner = this.manager().inner().networkWatchers()
                 .getVMSecurityRules(this.resourceGroupName(), this.name(), vmId);
         return new SecurityGroupViewImpl(this, securityGroupViewResultInner, vmId);

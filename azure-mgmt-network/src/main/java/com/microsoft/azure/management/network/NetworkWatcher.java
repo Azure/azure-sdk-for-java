@@ -43,7 +43,7 @@ public interface NetworkWatcher extends
      * @param vmId ID of the target VM
      * @return the configured and effective security group rules on the specified VM
      */
-    SecurityGroupView getSecurityGroupViewResult(String vmId);
+    SecurityGroupView getSecurityGroupView(String vmId);
 
     /**
      * Gets the information on the configuration of flow log.

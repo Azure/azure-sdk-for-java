@@ -29,43 +29,31 @@ public interface PacketCapture extends
         HasId,
         Indexable {
     /**
-     * Get the target value.
-     *
-     * @return the target value
+     * @return the target id value
      */
     String targetId();
 
     /**
-     * Get the number of bytes captured per packet, the remaining bytes are truncated.
-     *
-     * @return the bytesToCapturePerPacket value
+     * @return the number of bytes captured per packet, the remaining bytes are truncated.
      */
     int bytesToCapturePerPacket();
 
     /**
-     * Get the maximum size of the capture output.
-     *
-     * @return the totalBytesPerSession value
+     * @return the maximum size of the capture output
      */
     int totalBytesPerSession();
 
     /**
-     * Get the maximum duration of the capture session in seconds.
-     *
-     * @return the timeLimitInSeconds value
+     * @return the maximum duration of the capture session in seconds
      */
     int timeLimitInSeconds();
 
     /**
-     * Get the storageLocation value.
-     *
      * @return the storageLocation value
      */
     PacketCaptureStorageLocation storageLocation();
 
     /**
-     * Get the filters value.
-     *
      * @return the filters value
      */
     List<PacketCaptureFilter> filters();

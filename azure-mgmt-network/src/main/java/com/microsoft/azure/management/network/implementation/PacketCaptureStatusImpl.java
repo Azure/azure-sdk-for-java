@@ -48,7 +48,7 @@ public class PacketCaptureStatusImpl extends WrapperImpl<PacketCaptureQueryStatu
     }
 
     @Override
-    public List<PcError> packetCaptureError() {
+    public List<PcError> packetCaptureErrors() {
         return inner().packetCaptureError();
     }
 }

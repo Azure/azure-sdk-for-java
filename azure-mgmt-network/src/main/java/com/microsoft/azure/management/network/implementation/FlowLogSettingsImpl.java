@@ -52,13 +52,13 @@ class FlowLogSettingsImpl extends RefreshableWrapperImpl<FlowLogInformationInner
     }
 
     @Override
-    public Update withLoggingEnabled() {
+    public Update withLogging() {
         this.inner().withEnabled(true);
         return this;
     }
 
     @Override
-    public Update withLoggingDisabled() {
+    public Update withoutLogging() {
         this.inner().withEnabled(false);
         return this;
     }

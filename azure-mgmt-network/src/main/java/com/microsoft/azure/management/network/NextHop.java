@@ -26,37 +26,27 @@ public interface NextHop extends Executable<NextHop>,
     String targetResourceId();
 
     /**
-     * Get the source IP address.
-     *
-     * @return the sourceIPAddress value
+     * @return the source IP address
      */
     String sourceIPAddress();
 
     /**
-     * Get the destination IP address.
-     *
-     * @return the destinationIPAddress value
+     * @return the destination IP address
      */
     String destinationIPAddress();
 
     /**
-     * Get the NIC ID.
-     *
-     * @return the targetNetworkInterfaceId value
+     * @return the network interface id
      */
     String targetNetworkInterfaceId();
 
     /**
-     * Get next hop type.
-     *
-     * @return the nextHopType value
+     * @return the next hop type
      */
     NextHopType nextHopType();
 
     /**
-     * Get the Next hop IP Address.
-     *
-     * @return the nextHopIpAddress value
+     * @return the next hop IP Address
      */
     String nextHopIpAddress();
 

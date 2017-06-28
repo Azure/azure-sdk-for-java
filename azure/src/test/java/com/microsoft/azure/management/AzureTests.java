@@ -556,14 +556,14 @@ public class AzureTests extends TestBase {
         Assert.assertTrue(topology.resources().containsKey(virtualMachines[0].getPrimaryNetworkInterface().networkSecurityGroupId()));
         Assert.assertEquals(4, topology.resources().get(virtualMachines[0].primaryNetworkInterfaceId()).associations().size());
 
-        SecurityGroupView sgViewResult = nw.getSecurityGroupViewResult(virtualMachines[0].id());
+        SecurityGroupView sgViewResult = nw.getSecurityGroupView(virtualMachines[0].id());
         Assert.assertEquals(1, sgViewResult.networkInterfaces().size());
         Assert.assertEquals(virtualMachines[0].primaryNetworkInterfaceId(), sgViewResult.networkInterfaces().keySet().iterator().next());
 
         FlowLogSettings flowLogSettings = nw.getFlowLogSettings(virtualMachines[0].getPrimaryNetworkInterface().networkSecurityGroupId());
         StorageAccount storageAccount = tnw.ensureStorageAccount(azure.storageAccounts());
         flowLogSettings.update()
-                .withLoggingEnabled()
+                .withLogging()
                 .withStorageAccount(storageAccount.id())
                 .withRetentionPolicyDays(5)
                 .withRetentionPolicyEnabled()

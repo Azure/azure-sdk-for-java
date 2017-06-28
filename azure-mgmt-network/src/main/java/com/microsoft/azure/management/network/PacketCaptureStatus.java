@@ -20,23 +20,17 @@ import java.util.List;
 @Beta
 public interface PacketCaptureStatus extends HasInner<PacketCaptureQueryStatusResultInner> {
     /**
-     * Get the name of the packet capture resource.
-     *
-     * @return the name value
+     * @return the name of the packet capture resource
      */
     String name();
 
     /**
-     * Get the ID of the packet capture resource.
-     *
-     * @return the id value
+     * @return the ID of the packet capture resource
      */
     String id();
 
     /**
-     * Get the start time of the packet capture session..
-     *
-     * @return the captureStartTime value
+     * @return the start time of the packet capture session
      */
     DateTime captureStartTime();
 
@@ -49,16 +43,12 @@ public interface PacketCaptureStatus extends HasInner<PacketCaptureQueryStatusRe
     PcStatus packetCaptureStatus();
 
     /**
-     * Get the reason the current packet capture session was stopped.
-     *
-     * @return the stopReason value
+     * @return the reason the current packet capture session was stopped
      */
     String stopReason();
 
     /**
-     * Get the list of errors of packet capture session.
-     *
-     * @return the packetCaptureError value
+     * @return the list of errors of packet capture session
      */
-    List<PcError> packetCaptureError();
+    List<PcError> packetCaptureErrors();
 }
