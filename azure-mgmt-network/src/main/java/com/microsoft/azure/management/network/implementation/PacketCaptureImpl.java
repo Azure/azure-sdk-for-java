@@ -60,7 +60,7 @@ public class PacketCaptureImpl extends
 
     @Override
     public PacketCaptureStatus getStatus() {
-        return new PacketCaptureStatusImpl(this.client.getStatus(parent.resourceGroupName(), parent.name(), name()));
+        return getStatusAsync().toBlocking().last();
     }
 
     @Override
