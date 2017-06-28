@@ -3,14 +3,13 @@
   <parent>
 	<groupId>com.microsoft.azure</groupId>
 	<artifactId>azure-eventhubs-clients</artifactId>
-	<version>0.14.0</version>
+	<version>0.14.2</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>azure-eventhubs-eph</artifactId>
   <name>azure-eventhubs-eph</name>
-  <version>0.14.1</version> <!-- temporary override -->
   
   <scm> 
      <url>scm:git:https://github.com/Azure/azure-event-hubs</url> 
