@@ -705,4 +705,10 @@ public class AzureTests extends TestBase {
         new TestDocumentDB()
                 .runTest(azure.documentDBs(), azure.resourceGroups());
     }
+    @Test
+    public void testSearchServiceAnySku() throws Exception {
+        new TestSearchService.SearchServiceAnySku()
+            .runTest(azure.searchServices(), azure.resourceGroups());
+    }
+
 }
