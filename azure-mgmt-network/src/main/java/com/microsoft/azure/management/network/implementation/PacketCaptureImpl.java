@@ -50,7 +50,7 @@ public class PacketCaptureImpl extends
 
     @Override
     public void stop() {
-        stopAsync().toObservable().toBlocking().subscribe();
+        stopAsync().await();
     }
 
     @Override
