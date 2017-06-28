@@ -518,186 +518,186 @@ public class AzureTests extends TestBase {
 //    public void testNetworkInterfaces() throws Exception {
 //        new TestNetworkInterface().runTest(azure.networkInterfaces(), azure.resourceGroups());
 //    }
-//
-//    /**
-//     * Tests virtual machines.
-//     * @throws Exception
-//     */
-//    @Test
-//    public void testVirtualMachines() throws Exception {
-//        // Future: This method needs to have a better specific name since we are going to include unit test for
-//        // different vm scenarios.
-//        new TestVirtualMachine().runTest(azure.virtualMachines(), azure.resourceGroups());
-//    }
-//
-//    /**
-//     * Tests the virtual machine data disk implementation.
-//     * @throws Exception
-//     */
-//    @Test
-//    public void testVirtualMachineDataDisk() throws Exception {
-//        new TestVirtualMachineDataDisk().runTest(azure.virtualMachines(), azure.resourceGroups());
-//    }
-//
-//    /**
-//     * Tests the virtual machine network interface implementation.
-//     * @throws Exception
-//     */
-//    @Test
-//    public void testVirtualMachineNics() throws Exception {
-//        new TestVirtualMachineNics(azure.networks().manager())
-//            .runTest(azure.virtualMachines(), azure.resourceGroups());
-//    }
-//
-//    /**
-//     * Tests virtual machine support for SSH.
-//     * @throws Exception
-//     */
-//    @Test
-//    public void testVirtualMachineSSh() throws Exception {
-//        new TestVirtualMachineSsh(azure.publicIPAddresses())
-//                .runTest(azure.virtualMachines(), azure.resourceGroups());
-//    }
-//
-//    /**
-//     * Tests virtual machine sizes.
-//     * @throws Exception
-//     */
-//    @Test
-//    public void testVirtualMachineSizes() throws Exception {
-//        new TestVirtualMachineSizes()
-//                .runTest(azure.virtualMachines(), azure.resourceGroups());
-//    }
-//
-//    @Test
-//    public void testVirtualMachineCustomData() throws Exception {
-//        new TestVirtualMachineCustomData(azure.publicIPAddresses())
-//                .runTest(azure.virtualMachines(), azure.resourceGroups());
-//    }
-//
-//    @Test
-//    public void testVirtualMachineInAvailabilitySet() throws Exception {
-//        new TestVirtualMachineInAvailabilitySet().runTest(azure.virtualMachines(), azure.resourceGroups());
-//    }
-//
-//    /**
-//     * Tests subscription listing.
-//     * @throws Exception
-//     */
-//    @Test
-//    public void listSubscriptions() throws Exception {
-//        Assert.assertTrue(0 < azure.subscriptions().list().size());
-//        Subscription subscription = azure.getCurrentSubscription();
-//        Assert.assertNotNull(subscription);
-//        Assert.assertTrue(azure.subscriptionId().equalsIgnoreCase(subscription.subscriptionId()));
-//    }
-//
-//    /**
-//     * Tests location listing.
-//     * @throws Exception
-//     */
-//    @Test
-//    public void listLocations() throws Exception {
-//        Subscription subscription = azure.getCurrentSubscription();
-//        Assert.assertNotNull(subscription);
-//        for (Location location : subscription.listLocations()) {
-//            Region region = Region.findByLabelOrName(location.name());
-//            Assert.assertNotNull(region);
-//            Assert.assertEquals(region, location.region());
-//            Assert.assertEquals(region.name().toLowerCase(), location.name().toLowerCase());
-//        }
-//
-//        Location location = subscription.getLocationByRegion(Region.US_WEST);
-//        Assert.assertNotNull(location);
-//        Assert.assertTrue(Region.US_WEST.name().equalsIgnoreCase(location.name()));
-//    }
-//
-//    /**
-//     * Tests resource group listing.
-//     * @throws Exception
-//     */
-//    @Test
-//    public void listResourceGroups() throws Exception {
-//        int groupCount = azure.resourceGroups().list().size();
-//        System.out.println(String.format("Group count: %s", groupCount));
-//        Assert.assertTrue(0 < groupCount);
-//    }
-//
-//    /**
-//     * Tests storage account listing.
-//     * @throws Exception
-//     */
-//    @Test
-//    public void listStorageAccounts() throws Exception {
-//        Assert.assertTrue(0 < azure.storageAccounts().list().size());
-//    }
-//
-//    @Test
-//    public void createStorageAccount() throws Exception {
-//        String storageAccountName = generateRandomResourceName("testsa", 12);
-//        StorageAccount storageAccount = azure.storageAccounts().define(storageAccountName)
-//                .withRegion(Region.ASIA_EAST)
-//                .withNewResourceGroup()
-//                .withSku(SkuName.PREMIUM_LRS)
-//                .create();
-//
-//        Assert.assertEquals(storageAccount.name(), storageAccountName);
-//
-//        azure.resourceGroups().beginDeleteByName(storageAccount.resourceGroupName());
-//    }
-//
-//    @Test
-//    public void testBatchAccount() throws Exception {
-//        new TestBatch().runTest(azure.batchAccounts(), azure.resourceGroups());
-//    }
-//
-//    @Test
-//    public void testTrafficManager() throws Exception {
-//        new TestTrafficManager(azure.publicIPAddresses())
-//                .runTest(azure.trafficManagerProfiles(), azure.resourceGroups());
-//    }
-//
-//    @Test
-//    public void testRedis() throws Exception {
-//        new TestRedis()
-//                .runTest(azure.redisCaches(), azure.resourceGroups());
-//    }
-//
-//    @Test
-//    public void testCdnManager() throws Exception {
-//        new TestCdn()
-//                .runTest(azure.cdnProfiles(), azure.resourceGroups());
-//    }
-//
-//    @Test
-//    public void testDnsZones() throws Exception {
-//        addTextReplacementRule("https://management.azure.com:443/", this.mockUri() + "/");
-//        new TestDns()
-//                .runTest(azure.dnsZones(), azure.resourceGroups());
-//    }
-//
-//
-//    @Test
-//    public void testSqlServer() throws Exception {
-//        new TestSql().runTest(azure.sqlServers(), azure.resourceGroups());
-//    }
-//
-//    @Test
-//    public void testResourceStreaming() throws Exception {
-//        new TestResourceStreaming(azure.storageAccounts()).runTest(azure.virtualMachines(), azure.resourceGroups());
-//    }
-//
-//    @Test
-//    public void testContainerService() throws Exception {
-//        new TestContainerService()
-//                .runTest(azure.containerServices(), azure.resourceGroups());
-//    }
-//
-//    @Test
-//    public void testContainerRegistry() throws Exception {
-//        new TestContainerRegistry()
-//                .runTest(azure.containerRegistries(), azure.resourceGroups());
-//    }
+
+    /**
+     * Tests virtual machines.
+     * @throws Exception
+     */
+    @Test
+    public void testVirtualMachines() throws Exception {
+        // Future: This method needs to have a better specific name since we are going to include unit test for
+        // different vm scenarios.
+        new TestVirtualMachine().runTest(azure.virtualMachines(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests the virtual machine data disk implementation.
+     * @throws Exception
+     */
+    @Test
+    public void testVirtualMachineDataDisk() throws Exception {
+        new TestVirtualMachineDataDisk().runTest(azure.virtualMachines(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests the virtual machine network interface implementation.
+     * @throws Exception
+     */
+    @Test
+    public void testVirtualMachineNics() throws Exception {
+        new TestVirtualMachineNics(azure.networks().manager())
+            .runTest(azure.virtualMachines(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests virtual machine support for SSH.
+     * @throws Exception
+     */
+    @Test
+    public void testVirtualMachineSSh() throws Exception {
+        new TestVirtualMachineSsh(azure.publicIPAddresses())
+                .runTest(azure.virtualMachines(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests virtual machine sizes.
+     * @throws Exception
+     */
+    @Test
+    public void testVirtualMachineSizes() throws Exception {
+        new TestVirtualMachineSizes()
+                .runTest(azure.virtualMachines(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testVirtualMachineCustomData() throws Exception {
+        new TestVirtualMachineCustomData(azure.publicIPAddresses())
+                .runTest(azure.virtualMachines(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testVirtualMachineInAvailabilitySet() throws Exception {
+        new TestVirtualMachineInAvailabilitySet().runTest(azure.virtualMachines(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests subscription listing.
+     * @throws Exception
+     */
+    @Test
+    public void listSubscriptions() throws Exception {
+        Assert.assertTrue(0 < azure.subscriptions().list().size());
+        Subscription subscription = azure.getCurrentSubscription();
+        Assert.assertNotNull(subscription);
+        Assert.assertTrue(azure.subscriptionId().equalsIgnoreCase(subscription.subscriptionId()));
+    }
+
+    /**
+     * Tests location listing.
+     * @throws Exception
+     */
+    @Test
+    public void listLocations() throws Exception {
+        Subscription subscription = azure.getCurrentSubscription();
+        Assert.assertNotNull(subscription);
+        for (Location location : subscription.listLocations()) {
+            Region region = Region.findByLabelOrName(location.name());
+            Assert.assertNotNull(region);
+            Assert.assertEquals(region, location.region());
+            Assert.assertEquals(region.name().toLowerCase(), location.name().toLowerCase());
+        }
+
+        Location location = subscription.getLocationByRegion(Region.US_WEST);
+        Assert.assertNotNull(location);
+        Assert.assertTrue(Region.US_WEST.name().equalsIgnoreCase(location.name()));
+    }
+
+    /**
+     * Tests resource group listing.
+     * @throws Exception
+     */
+    @Test
+    public void listResourceGroups() throws Exception {
+        int groupCount = azure.resourceGroups().list().size();
+        System.out.println(String.format("Group count: %s", groupCount));
+        Assert.assertTrue(0 < groupCount);
+    }
+
+    /**
+     * Tests storage account listing.
+     * @throws Exception
+     */
+    @Test
+    public void listStorageAccounts() throws Exception {
+        Assert.assertTrue(0 < azure.storageAccounts().list().size());
+    }
+
+    @Test
+    public void createStorageAccount() throws Exception {
+        String storageAccountName = generateRandomResourceName("testsa", 12);
+        StorageAccount storageAccount = azure.storageAccounts().define(storageAccountName)
+                .withRegion(Region.ASIA_EAST)
+                .withNewResourceGroup()
+                .withSku(SkuName.PREMIUM_LRS)
+                .create();
+
+        Assert.assertEquals(storageAccount.name(), storageAccountName);
+
+        azure.resourceGroups().beginDeleteByName(storageAccount.resourceGroupName());
+    }
+
+    @Test
+    public void testBatchAccount() throws Exception {
+        new TestBatch().runTest(azure.batchAccounts(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testTrafficManager() throws Exception {
+        new TestTrafficManager(azure.publicIPAddresses())
+                .runTest(azure.trafficManagerProfiles(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testRedis() throws Exception {
+        new TestRedis()
+                .runTest(azure.redisCaches(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testCdnManager() throws Exception {
+        new TestCdn()
+                .runTest(azure.cdnProfiles(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testDnsZones() throws Exception {
+        addTextReplacementRule("https://management.azure.com:443/", this.mockUri() + "/");
+        new TestDns()
+                .runTest(azure.dnsZones(), azure.resourceGroups());
+    }
+
+
+    @Test
+    public void testSqlServer() throws Exception {
+        new TestSql().runTest(azure.sqlServers(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testResourceStreaming() throws Exception {
+        new TestResourceStreaming(azure.storageAccounts()).runTest(azure.virtualMachines(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testContainerService() throws Exception {
+        new TestContainerService()
+                .runTest(azure.containerServices(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testContainerRegistry() throws Exception {
+        new TestContainerRegistry()
+                .runTest(azure.containerRegistries(), azure.resourceGroups());
+    }
 
     @Test
     @Ignore("Runs locally find but fails for unknown reason on check in.")
