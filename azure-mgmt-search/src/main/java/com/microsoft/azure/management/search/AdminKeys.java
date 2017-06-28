@@ -7,7 +7,6 @@ package com.microsoft.azure.management.search;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.search.implementation.AdminKeyResultInner;
 
 /**
  * Response containing the primary and secondary admin API keys for a given Azure Search service.

@@ -9,13 +9,12 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 import com.microsoft.azure.management.search.AdminKeys;
 
 /**
- * Response containing the primary and secondary admin API keys for a given
- * Azure Search service.
+ * Response containing the primary and secondary admin API keys for a given Azure Search service.
  */
 class AdminKeysImpl extends WrapperImpl<AdminKeyResultInner> implements AdminKeys {
 
   /**
-   * Create AdminKeysImpl
+   * Create AdminKeysImpl.
    */
   protected AdminKeysImpl(AdminKeyResultInner innerObject) {
     super(innerObject);

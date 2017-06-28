@@ -16,7 +16,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.search.implementation.SearchServiceInner;
 import com.microsoft.azure.management.search.implementation.SearchServiceManager;
-import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 
 import java.util.List;

@@ -21,7 +21,7 @@ import com.microsoft.rest.RestClient;
  * Entry point to Azure Search service management.
  */
 @Beta(Beta.SinceVersion.V1_1_0)
-public class SearchServiceManager extends Manager<SearchServiceManager, SearchManagementClientImpl> {
+public final class SearchServiceManager extends Manager<SearchServiceManager, SearchManagementClientImpl> {
 
   // Collections
   private SearchServicesImpl searchServices;

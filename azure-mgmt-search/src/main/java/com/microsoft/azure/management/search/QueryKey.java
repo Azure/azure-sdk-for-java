@@ -7,8 +7,6 @@ package com.microsoft.azure.management.search;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-import com.microsoft.azure.management.search.implementation.QueryKeyInner;
 
 /**
  * Describes an API key for a given Azure Search service that has permissions
