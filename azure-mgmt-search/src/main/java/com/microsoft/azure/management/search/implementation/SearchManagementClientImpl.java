@@ -16,7 +16,7 @@ import com.microsoft.rest.RestClient;
 /**
  * Initializes a new instance of the SearchManagementClientImpl class.
  */
-public final class SearchManagementClientImpl extends AzureServiceClient {
+public class SearchManagementClientImpl extends AzureServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -28,11 +28,11 @@ public final class SearchManagementClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. */
+    /** The unique identifier for a Microsoft Azure subscription. You can obtain this value from the Azure Resource Manager API or the portal. */
     private String subscriptionId;
 
     /**
-     * Gets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     * Gets The unique identifier for a Microsoft Azure subscription. You can obtain this value from the Azure Resource Manager API or the portal.
      *
      * @return the subscriptionId value.
      */
@@ -41,7 +41,7 @@ public final class SearchManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     * Sets The unique identifier for a Microsoft Azure subscription. You can obtain this value from the Azure Resource Manager API or the portal.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself
@@ -51,11 +51,11 @@ public final class SearchManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** Client Api Version. */
+    /** The API version to use for each request. The current version is 2015-08-19. */
     private String apiVersion;
 
     /**
-     * Gets Client Api Version.
+     * Gets The API version to use for each request. The current version is 2015-08-19.
      *
      * @return the apiVersion value.
      */
@@ -202,7 +202,7 @@ public final class SearchManagementClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2015-02-28";
+        this.apiVersion = "2015-08-19";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -219,8 +219,6 @@ public final class SearchManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("Azure-SDK-For-Java/%s (%s)",
-                getClass().getPackage().getImplementationVersion(),
-                "SearchManagementClient, 2015-02-28");
+        return String.format("%s (%s, %s)", super.userAgent(), "SearchManagementClient", "2015-08-19");
     }
 }
