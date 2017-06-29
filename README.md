@@ -4,7 +4,9 @@
 
 This README is based on the released stable version (1.1.0). If you are looking for other releases, see [More Information](#more-information).
 
-The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources. If you are looking for Java SDKs for specific services, see [Java libraries for specific services](#java-libraries-for-specific-services).
+The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources. If you are looking for Java client libraries for Azure services, see [Azure libraries for Java](#azure-libraries-for-java).
+
+Note: This page will be maintained regularly to ensure that it is up to date.
 
 ## Feature Availability and Road Map as of Version 1.1.0 ##
 
@@ -494,8 +496,8 @@ If you would like to become an active contributor to this project please follow 
 | 0.9.x-SNAPSHOTS   | [0.9](https://github.com/Azure/azure-sdk-for-java/tree/0.9)                               | Maintenance branch for service management libraries   |
 | 0.9.3             | [0.9.3](https://github.com/Azure/azure-sdk-for-java/tree/v0.9.3)                         | Latest release for service management libraries       |
 
-### Java libraries for specific services
-This repo contains libraries for managing resources in Azure. In order to access, control, run specific resources for specific services, please refer to the following repositories:
+### Azure libraries for Java
+This repo contains libraries for managing resources in Azure. In order to access, control, run specific resources for Azure services, please refer to the following repositories:
 
 | Service | Repo |
 |---------|------|
