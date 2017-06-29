@@ -22,6 +22,7 @@ import com.microsoft.azure.management.search.implementation.SearchServiceManager
 import com.microsoft.azure.management.search.implementation.ServicesInner;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
+import rx.Completable;
 import rx.Observable;
 
 import java.util.List;
@@ -31,7 +32,7 @@ import java.util.List;
  * Entry point to Search service management API in Azure.
  */
 @Fluent()
-@Beta(Beta.SinceVersion.V1_1_0) // TODO: change to Beta.SinceVersion.V1_2_0
+@Beta(Beta.SinceVersion.V1_2_0)
 public interface SearchServices extends
     SupportsCreating<SearchService.DefinitionStages.Blank>,
     SupportsListing<SearchService>,
@@ -192,8 +193,8 @@ public interface SearchServices extends
    * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
    * @param key The query key to be deleted. Query keys are identified by value, not by name.
    * @throws IllegalArgumentException thrown if parameters fail the validation
-   * @return the Observable to {@link Void} object if successful.
+   * @return the Observable to {@link Completable} object if successful.
    */
-  Observable<Void> deleteQueryKeyAsync(String resourceGroupName, String searchServiceName, String key);
+  Completable deleteQueryKeyAsync(String resourceGroupName, String searchServiceName, String key);
 
 }

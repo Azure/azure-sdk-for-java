@@ -14,7 +14,7 @@ import com.microsoft.azure.management.search.implementation.CheckNameAvailabilit
  * The result of checking for Search service name availability.
  */
 @Fluent
-@Beta(Beta.SinceVersion.V1_1_0) // TODO: change to Beta.SinceVersion.V1_2_0
+@Beta(Beta.SinceVersion.V1_2_0)
 public interface CheckNameAvailabilityResult extends HasInner<CheckNameAvailabilityOutputInner> {
   /**
    * @return a boolean value that indicates whether the name is available for

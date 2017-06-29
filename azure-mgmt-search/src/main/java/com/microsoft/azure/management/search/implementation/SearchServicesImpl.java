@@ -212,7 +212,7 @@ class SearchServicesImpl
   }
 
   @Override
-  public Observable<Void> deleteQueryKeyAsync(String resourceGroupName, String searchServiceName, String key) {
-    return this.manager().inner().queryKeys().deleteAsync(resourceGroupName, searchServiceName, key);
+  public Completable deleteQueryKeyAsync(String resourceGroupName, String searchServiceName, String key) {
+    return this.manager().inner().queryKeys().deleteAsync(resourceGroupName, searchServiceName, key).toCompletable();
   }
 }

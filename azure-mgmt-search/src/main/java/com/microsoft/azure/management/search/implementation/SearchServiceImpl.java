@@ -16,6 +16,7 @@ import com.microsoft.azure.management.search.SearchService;
 import com.microsoft.azure.management.search.SearchServiceStatus;
 import com.microsoft.azure.management.search.Sku;
 import com.microsoft.azure.management.search.SkuName;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -214,8 +215,8 @@ class SearchServiceImpl
   }
 
   @Override
-  public Observable<Void> deleteQueryKeyAsync(String key) {
-    return this.manager().inner().queryKeys().deleteAsync(this.resourceGroupName(), this.name(), key);
+  public Completable deleteQueryKeyAsync(String key) {
+    return this.manager().inner().queryKeys().deleteAsync(this.resourceGroupName(), this.name(), key).toCompletable();
   }
 
   // Setters (fluent)

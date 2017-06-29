@@ -12,7 +12,7 @@ import com.microsoft.azure.management.apigeneration.Fluent;
  * Response containing the primary and secondary admin API keys for a given Azure Search service.
  */
 @Fluent
-@Beta(Beta.SinceVersion.V1_1_0) // TODO: change to Beta.SinceVersion.V1_2_0
+@Beta(Beta.SinceVersion.V1_2_0)
 public interface AdminKeys {
   /**
    * Get the primaryKey value.

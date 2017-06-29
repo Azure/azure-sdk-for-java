@@ -16,6 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.search.implementation.SearchServiceInner;
 import com.microsoft.azure.management.search.implementation.SearchServiceManager;
+import rx.Completable;
 import rx.Observable;
 
 import java.util.List;
@@ -24,7 +25,7 @@ import java.util.List;
  * An immutable client-side representation of an Azure registry.
  */
 @Fluent
-@Beta(Beta.SinceVersion.V1_1_0) // TODO: change to Beta.SinceVersion.V1_2_0
+@Beta(Beta.SinceVersion.V1_2_0)
 public interface SearchService extends
     GroupableResource<SearchServiceManager, SearchServiceInner>,
     Refreshable<SearchService>,
@@ -181,9 +182,9 @@ public interface SearchService extends
    *
    * @param key The query key to be deleted. Query keys are identified by value, not by name.
    * @throws IllegalArgumentException thrown if parameters fail the validation
-   * @return the Observable to {@link Void} object if successful.
+   * @return the Observable to {@link Completable} object if successful.
    */
-  Observable<Void> deleteQueryKeyAsync(String key);
+  Completable deleteQueryKeyAsync(String key);
 
 
   /**

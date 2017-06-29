@@ -13,7 +13,7 @@ import com.microsoft.azure.management.apigeneration.Fluent;
  * for query operations only.
  */
 @Fluent
-@Beta(Beta.SinceVersion.V1_1_0) // TODO: change to Beta.SinceVersion.V1_2_0
+@Beta(Beta.SinceVersion.V1_2_0)
 public interface QueryKey {
   /**
    * Get the name value.
