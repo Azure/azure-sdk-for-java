@@ -212,7 +212,11 @@ public final class Azure {
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         @Override
         public Authenticated authenticate(AzureTokenCredentials credentials) {
-            return Azure.authenticate(buildRestClient(credentials), credentials.domain());
+            if (credentials.defaultSubscriptionId() != null) {
+                return Azure.authenticate(buildRestClient(credentials), credentials.domain(), credentials.defaultSubscriptionId());
+            } else {
+                return Azure.authenticate(buildRestClient(credentials), credentials.domain());
+            }
         }
 
         @Override
@@ -686,7 +690,7 @@ public final class Azure {
      * @return entry point to managing Container Regsitries.
      */
     @Beta(SinceVersion.V1_1_0)
-    public DocumentDBAccounts documentDBs() {
+    public DocumentDBAccounts documentDBAccounts() {
         return documentDBManager.databaseAccounts();
     }
 
