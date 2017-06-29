@@ -2,9 +2,9 @@
 
 # Azure Management Libraries for Java
 
-This README is based on the released stable version (1.1.0). If you are looking for other releases, see [More Information](#more-information)
+This README is based on the released stable version (1.1.0). If you are looking for other releases, see [More Information](#more-information).
 
-The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources.
+The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources. If you are looking for Java SDKs for specific services, see [Java libraries for specific services](#java-libraries-for-specific-services).
 
 ## Feature Availability and Road Map as of Version 1.1.0 ##
 
@@ -480,7 +480,7 @@ If you would like to become an active contributor to this project please follow 
 * [http://azure.com/java](http://azure.com/java)
 * If you don't have a Microsoft Azure subscription you can get a FREE trial account [here](http://go.microsoft.com/fwlink/?LinkId=330212)
 
-**Previous Releases and Corresponding Repo Branches**
+### Previous Releases and Corresponding Repo Branches
 
 | Version           | SHA1                                                                                      | Remarks                                               |
 |-------------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------|
@@ -493,6 +493,18 @@ If you would like to become an active contributor to this project please follow 
 | 1.0.0-beta1+fixes | [1.0.0-beta1+fixes](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta1+fixes) | Stable build for AutoRest generated raw clients       |
 | 0.9.x-SNAPSHOTS   | [0.9](https://github.com/Azure/azure-sdk-for-java/tree/0.9)                               | Maintenance branch for service management libraries   |
 | 0.9.3             | [0.9.3](https://github.com/Azure/azure-sdk-for-java/tree/v0.9.3)                         | Latest release for service management libraries       |
+
+### Java libraries for specific services
+This repo contains libraries for managing resources in Azure. In order to access, control, run specific resources for specific services, please refer to the following repositories:
+
+| Service | Repo |
+|---------|------|
+| Storage | https://github.com/Azure/azure-storage-java|
+| Key Vault | https://github.com/Azure/azure-keyvault-java|
+| Batch | https://github.com/Azure/azure-batch-sdk-for-java|
+| CosmosDB | https://github.com/Azure/azure-documentdb-java|
+| IoT | https://github.com/Azure/azure-iot-sdk-java|
+| Service Bus | https://github.com/Azure/azure-service-bus-java|
 
 ---
 
