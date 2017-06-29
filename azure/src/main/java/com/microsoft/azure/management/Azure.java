@@ -209,7 +209,11 @@ public final class Azure {
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         @Override
         public Authenticated authenticate(AzureTokenCredentials credentials) {
-            return Azure.authenticate(buildRestClient(credentials), credentials.domain());
+            if (credentials.defaultSubscriptionId() != null) {
+                return Azure.authenticate(buildRestClient(credentials), credentials.domain(), credentials.defaultSubscriptionId());
+            } else {
+                return Azure.authenticate(buildRestClient(credentials), credentials.domain());
+            }
         }
 
         @Override
