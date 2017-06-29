@@ -258,266 +258,266 @@ public class AzureTests extends TestBase {
 //    public void testNetworkSecurityGroups() throws Exception {
 //        new TestNSG().runTest(azure.networkSecurityGroups(), azure.resourceGroups());
 //    }
-//
-//    /**
-//     * Tests the inbound NAT rule support in load balancers.
-//     * @throws Exception
-//     */
-//    @Test
-//    public void testLoadBalancersNatRules() throws Exception {
-//        new TestLoadBalancer.InternetWithNatRule(
-//                azure.virtualMachines(),
-//                azure.availabilitySets())
-//            .runTest(azure.loadBalancers(), azure.resourceGroups());
-//    }
-//
-//    /**
-//     * Tests the inbound NAT pool support in load balancers.
-//     * @throws Exception
-//     */
-//    @Test
-//    public void testLoadBalancersNatPools() throws Exception {
-//        new TestLoadBalancer.InternetWithNatPool(
-//                azure.virtualMachines(),
-//                azure.availabilitySets())
-//        .runTest(azure.loadBalancers(), azure.resourceGroups());
-//    }
-//
-//    /**
-//     * Tests the minimum Internet-facing load balancer with a load balancing rule only
-//     * @throws Exception
-//     */
-//    @Test
-//    public void testLoadBalancersInternetMinimum() throws Exception {
-//        new TestLoadBalancer.InternetMinimal(
-//                azure.virtualMachines(),
-//                azure.availabilitySets())
-//            .runTest(azure.loadBalancers(), azure.resourceGroups());
-//    }
-//
-//    /**
-//     * Tests the minimum Internet-facing load balancer with a NAT rule only
-//     * @throws Exception
-//     */
-//    @Test
-//    public void testLoadBalancersNatOnly() throws Exception {
-//        new TestLoadBalancer.InternetNatOnly(azure.virtualMachines().manager())
-//            .runTest(azure.loadBalancers(), azure.resourceGroups());
-//    }
-//
-//    /**
-//     * Tests the minimum internal load balancer.
-//     * @throws Exception
-//     */
-//    @Test
-//    public void testLoadBalancersInternalMinimum() throws Exception {
-//        new TestLoadBalancer.InternalMinimal(
-//                azure.virtualMachines(),
-//                azure.availabilitySets())
-//        .runTest(azure.loadBalancers(), azure.resourceGroups());
-//    }
-//
-//    /**
-//     * Tests a complex internal application gateway
-//     * @throws Exception
-//     */
-//    @Test
-//    public void testAppGatewaysInternalComplex() throws Exception {
-//        new TestApplicationGateway.PrivateComplex()
-//            .runTest(azure.applicationGateways(),  azure.resourceGroups());
-//    }
-//
-//    @Test
-//    public void testManagedDiskVMUpdate() throws Exception {
-//        final String rgName = SdkContext.randomResourceName("rg", 13);
-//        final String linuxVM2Name = SdkContext.randomResourceName("vm" + "-", 10);
-//        final String linuxVM2Pip = SdkContext.randomResourceName("pip" + "-", 18);
-//        VirtualMachine linuxVM2 = azure.virtualMachines().define(linuxVM2Name)
-//                .withRegion(Region.US_EAST)
-//                .withNewResourceGroup(rgName)
-//                .withNewPrimaryNetwork("10.0.0.0/28")
-//                .withPrimaryPrivateIPAddressDynamic()
-//                .withNewPrimaryPublicIPAddress(linuxVM2Pip)
-//                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-//                .withRootUsername("tester")
-//                .withRootPassword("Abcdef.123456!")
-//                // Begin: Managed data disks
-//                .withNewDataDisk(100)
-//                .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)
-//                // End: Managed data disks
-//                .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
-//                .create();
-//
-//        linuxVM2.deallocate();
-//        linuxVM2.update()
-//                .withoutDataDisk(2)
-//                .withNewDataDisk(200)
-//                .apply();
-//        azure.resourceGroups().beginDeleteByName(rgName);
-//    }
-//
-//    /**
-//     * Tests a minimal internal application gateway
-//     * @throws Exception
-//     */
-//    @Test
-//    public void testAppGatewaysInternalMinimal() throws Exception {
-//        new TestApplicationGateway.PrivateMinimal()
-//            .runTest(azure.applicationGateways(),  azure.resourceGroups());
-//    }
-//
-//    @Test
-//    public void testApplicationGatewaysInParallel() throws Exception {
-//        String rgName = SdkContext.randomResourceName("rg", 13);
-//        Region region = Region.US_EAST;
-//        Creatable<ResourceGroup> resourceGroup = azure.resourceGroups().define(rgName)
-//                .withRegion(region);
-//        List<Creatable<ApplicationGateway>> agCreatables = new ArrayList<>();
-//
-//        agCreatables.add(azure.applicationGateways().define(SdkContext.randomResourceName("ag", 13))
-//                .withRegion(Region.US_EAST)
-//                .withNewResourceGroup(resourceGroup)
-//                .defineRequestRoutingRule("rule1")
-//                    .fromPrivateFrontend()
-//                    .fromFrontendHttpPort(80)
-//                    .toBackendHttpPort(8080)
-//                    .toBackendIPAddress("10.0.0.1")
-//                    .toBackendIPAddress("10.0.0.2")
-//                    .attach());
-//
-//        agCreatables.add(azure.applicationGateways().define(SdkContext.randomResourceName("ag", 13))
-//                .withRegion(Region.US_EAST)
-//                .withNewResourceGroup(resourceGroup)
-//                .defineRequestRoutingRule("rule1")
-//                    .fromPrivateFrontend()
-//                    .fromFrontendHttpPort(80)
-//                    .toBackendHttpPort(8080)
-//                    .toBackendIPAddress("10.0.0.3")
-//                    .toBackendIPAddress("10.0.0.4")
-//                    .attach());
-//
-//        CreatedResources<ApplicationGateway> created = azure.applicationGateways().create(agCreatables);
-//        List<ApplicationGateway> ags = new ArrayList<>();
-//        List<String> agIds = new ArrayList<>();
-//        for (Creatable<ApplicationGateway> creatable : agCreatables) {
-//            ApplicationGateway ag = created.get(creatable.key());
-//            Assert.assertNotNull(ag);
-//            ags.add(ag);
-//            agIds.add(ag.id());
-//        }
-//
-//        azure.applicationGateways().stop(agIds);
-//
-//        for (ApplicationGateway ag : ags) {
-//            Assert.assertEquals(ApplicationGatewayOperationalState.STOPPED, ag.refresh().operationalState());
-//        }
-//
-//        azure.applicationGateways().start(agIds);
-//
-//        for (ApplicationGateway ag : ags) {
-//            Assert.assertEquals(ApplicationGatewayOperationalState.RUNNING, ag.refresh().operationalState());
-//        }
-//
-//        azure.applicationGateways().deleteByIds(agIds);
-//        for (String id : agIds) {
-//            Assert.assertNull(azure.applicationGateways().getById(id));
-//        }
-//
-//        azure.resourceGroups().beginDeleteByName(rgName);
-//    }
-//
-//    /**
-//     * Tests a minimal Internet-facing application gateway.
-//     * @throws Exception
-//     */
-//    @Test
-//    public void testAppGatewaysInternetFacingMinimal() throws Exception {
-//        new TestApplicationGateway.PublicMinimal()
-//            .runTest(azure.applicationGateways(),  azure.resourceGroups());
-//    }
-//
-//    /**
-//     * Tests a complex Internet-facing application gateway.
-//     * @throws Exception
-//     */
-//    @Test
-//    public void testAppGatewaysInternetFacingComplex() throws Exception {
-//        new TestApplicationGateway.PublicComplex()
-//            .runTest(azure.applicationGateways(),  azure.resourceGroups());
-//    }
-//
-//    /**
-//     * Tests the public IP address implementation.
-//     * @throws Exception
-//     */
-//    @Test
-//    public void testPublicIPAddresses() throws Exception {
-//        new TestPublicIPAddress().runTest(azure.publicIPAddresses(), azure.resourceGroups());
-//    }
-//
-//    /**
-//     * Tests the availability set implementation.
-//     * @throws Exception
-//     */
-//    @Test
-//    public void testAvailabilitySets() throws Exception {
-//        new TestAvailabilitySet().runTest(azure.availabilitySets(), azure.resourceGroups());
-//    }
-//
-//    /**
-//     * Tests the virtual network implementation.
-//     * @throws Exception
-//     */
-//    @Test
-//    public void testNetworks() throws Exception {
-//        new TestNetwork.WithSubnets()
-//            .runTest(azure.networks(), azure.resourceGroups());
-//    }
-//
-//    /**
-//     * Tests route tables.
-//     * @throws Exception
-//     */
-//    @Test
-//    public void testRouteTables() throws Exception {
-//        new TestRouteTables.Minimal()
-//            .runTest(azure.routeTables(), azure.resourceGroups());
-//    }
-//
-//    /**
-//     * Tests the regions enum.
-//     */
-//    @Test
-//    public void testRegions() {
-//        // Show built-in regions
-//        System.out.println("Built-in regions list:");
-//        int regionsCount = Region.values().length;
-//
-//        for (Region region : Region.values()) {
-//            System.out.println("Name: " + region.name() + ", Label: " + region.label());
-//        }
-//
-//        // Look up built-in region
-//        Region region = Region.fromName("westus");
-//        Assert.assertTrue(region == Region.US_WEST);
-//
-//        // Add a region
-//        Region region2 = Region.fromName("madeUpRegion");
-//        Assert.assertNotNull(region2);
-//        Assert.assertTrue(region2.name().equalsIgnoreCase("madeUpRegion"));
-//        Region region3 = Region.fromName("madeupregion");
-//        Assert.assertEquals(region3, region2);
-//        Assert.assertEquals(Region.values().length, regionsCount + 1);
-//    }
-//
-//    /**
-//     * Tests the network interface implementation.
-//     * @throws Exception
-//     */
-//    @Test
-//    public void testNetworkInterfaces() throws Exception {
-//        new TestNetworkInterface().runTest(azure.networkInterfaces(), azure.resourceGroups());
-//    }
+
+    /**
+     * Tests the inbound NAT rule support in load balancers.
+     * @throws Exception
+     */
+    @Test
+    public void testLoadBalancersNatRules() throws Exception {
+        new TestLoadBalancer.InternetWithNatRule(
+                azure.virtualMachines(),
+                azure.availabilitySets())
+            .runTest(azure.loadBalancers(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests the inbound NAT pool support in load balancers.
+     * @throws Exception
+     */
+    @Test
+    public void testLoadBalancersNatPools() throws Exception {
+        new TestLoadBalancer.InternetWithNatPool(
+                azure.virtualMachines(),
+                azure.availabilitySets())
+        .runTest(azure.loadBalancers(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests the minimum Internet-facing load balancer with a load balancing rule only
+     * @throws Exception
+     */
+    @Test
+    public void testLoadBalancersInternetMinimum() throws Exception {
+        new TestLoadBalancer.InternetMinimal(
+                azure.virtualMachines(),
+                azure.availabilitySets())
+            .runTest(azure.loadBalancers(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests the minimum Internet-facing load balancer with a NAT rule only
+     * @throws Exception
+     */
+    @Test
+    public void testLoadBalancersNatOnly() throws Exception {
+        new TestLoadBalancer.InternetNatOnly(azure.virtualMachines().manager())
+            .runTest(azure.loadBalancers(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests the minimum internal load balancer.
+     * @throws Exception
+     */
+    @Test
+    public void testLoadBalancersInternalMinimum() throws Exception {
+        new TestLoadBalancer.InternalMinimal(
+                azure.virtualMachines(),
+                azure.availabilitySets())
+        .runTest(azure.loadBalancers(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests a complex internal application gateway
+     * @throws Exception
+     */
+    @Test
+    public void testAppGatewaysInternalComplex() throws Exception {
+        new TestApplicationGateway.PrivateComplex()
+            .runTest(azure.applicationGateways(),  azure.resourceGroups());
+    }
+
+    @Test
+    public void testManagedDiskVMUpdate() throws Exception {
+        final String rgName = SdkContext.randomResourceName("rg", 13);
+        final String linuxVM2Name = SdkContext.randomResourceName("vm" + "-", 10);
+        final String linuxVM2Pip = SdkContext.randomResourceName("pip" + "-", 18);
+        VirtualMachine linuxVM2 = azure.virtualMachines().define(linuxVM2Name)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withNewPrimaryPublicIPAddress(linuxVM2Pip)
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername("tester")
+                .withRootPassword("Abcdef.123456!")
+                // Begin: Managed data disks
+                .withNewDataDisk(100)
+                .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)
+                // End: Managed data disks
+                .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                .create();
+
+        linuxVM2.deallocate();
+        linuxVM2.update()
+                .withoutDataDisk(2)
+                .withNewDataDisk(200)
+                .apply();
+        azure.resourceGroups().beginDeleteByName(rgName);
+    }
+
+    /**
+     * Tests a minimal internal application gateway
+     * @throws Exception
+     */
+    @Test
+    public void testAppGatewaysInternalMinimal() throws Exception {
+        new TestApplicationGateway.PrivateMinimal()
+            .runTest(azure.applicationGateways(),  azure.resourceGroups());
+    }
+
+    @Test
+    public void testApplicationGatewaysInParallel() throws Exception {
+        String rgName = SdkContext.randomResourceName("rg", 13);
+        Region region = Region.US_EAST;
+        Creatable<ResourceGroup> resourceGroup = azure.resourceGroups().define(rgName)
+                .withRegion(region);
+        List<Creatable<ApplicationGateway>> agCreatables = new ArrayList<>();
+
+        agCreatables.add(azure.applicationGateways().define(SdkContext.randomResourceName("ag", 13))
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(resourceGroup)
+                .defineRequestRoutingRule("rule1")
+                    .fromPrivateFrontend()
+                    .fromFrontendHttpPort(80)
+                    .toBackendHttpPort(8080)
+                    .toBackendIPAddress("10.0.0.1")
+                    .toBackendIPAddress("10.0.0.2")
+                    .attach());
+
+        agCreatables.add(azure.applicationGateways().define(SdkContext.randomResourceName("ag", 13))
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(resourceGroup)
+                .defineRequestRoutingRule("rule1")
+                    .fromPrivateFrontend()
+                    .fromFrontendHttpPort(80)
+                    .toBackendHttpPort(8080)
+                    .toBackendIPAddress("10.0.0.3")
+                    .toBackendIPAddress("10.0.0.4")
+                    .attach());
+
+        CreatedResources<ApplicationGateway> created = azure.applicationGateways().create(agCreatables);
+        List<ApplicationGateway> ags = new ArrayList<>();
+        List<String> agIds = new ArrayList<>();
+        for (Creatable<ApplicationGateway> creatable : agCreatables) {
+            ApplicationGateway ag = created.get(creatable.key());
+            Assert.assertNotNull(ag);
+            ags.add(ag);
+            agIds.add(ag.id());
+        }
+
+        azure.applicationGateways().stop(agIds);
+
+        for (ApplicationGateway ag : ags) {
+            Assert.assertEquals(ApplicationGatewayOperationalState.STOPPED, ag.refresh().operationalState());
+        }
+
+        azure.applicationGateways().start(agIds);
+
+        for (ApplicationGateway ag : ags) {
+            Assert.assertEquals(ApplicationGatewayOperationalState.RUNNING, ag.refresh().operationalState());
+        }
+
+        azure.applicationGateways().deleteByIds(agIds);
+        for (String id : agIds) {
+            Assert.assertNull(azure.applicationGateways().getById(id));
+        }
+
+        azure.resourceGroups().beginDeleteByName(rgName);
+    }
+
+    /**
+     * Tests a minimal Internet-facing application gateway.
+     * @throws Exception
+     */
+    @Test
+    public void testAppGatewaysInternetFacingMinimal() throws Exception {
+        new TestApplicationGateway.PublicMinimal()
+            .runTest(azure.applicationGateways(),  azure.resourceGroups());
+    }
+
+    /**
+     * Tests a complex Internet-facing application gateway.
+     * @throws Exception
+     */
+    @Test
+    public void testAppGatewaysInternetFacingComplex() throws Exception {
+        new TestApplicationGateway.PublicComplex()
+            .runTest(azure.applicationGateways(),  azure.resourceGroups());
+    }
+
+    /**
+     * Tests the public IP address implementation.
+     * @throws Exception
+     */
+    @Test
+    public void testPublicIPAddresses() throws Exception {
+        new TestPublicIPAddress().runTest(azure.publicIPAddresses(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests the availability set implementation.
+     * @throws Exception
+     */
+    @Test
+    public void testAvailabilitySets() throws Exception {
+        new TestAvailabilitySet().runTest(azure.availabilitySets(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests the virtual network implementation.
+     * @throws Exception
+     */
+    @Test
+    public void testNetworks() throws Exception {
+        new TestNetwork.WithSubnets()
+            .runTest(azure.networks(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests route tables.
+     * @throws Exception
+     */
+    @Test
+    public void testRouteTables() throws Exception {
+        new TestRouteTables.Minimal()
+            .runTest(azure.routeTables(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests the regions enum.
+     */
+    @Test
+    public void testRegions() {
+        // Show built-in regions
+        System.out.println("Built-in regions list:");
+        int regionsCount = Region.values().length;
+
+        for (Region region : Region.values()) {
+            System.out.println("Name: " + region.name() + ", Label: " + region.label());
+        }
+
+        // Look up built-in region
+        Region region = Region.fromName("westus");
+        Assert.assertTrue(region == Region.US_WEST);
+
+        // Add a region
+        Region region2 = Region.fromName("madeUpRegion");
+        Assert.assertNotNull(region2);
+        Assert.assertTrue(region2.name().equalsIgnoreCase("madeUpRegion"));
+        Region region3 = Region.fromName("madeupregion");
+        Assert.assertEquals(region3, region2);
+        Assert.assertEquals(Region.values().length, regionsCount + 1);
+    }
+
+    /**
+     * Tests the network interface implementation.
+     * @throws Exception
+     */
+    @Test
+    public void testNetworkInterfaces() throws Exception {
+        new TestNetworkInterface().runTest(azure.networkInterfaces(), azure.resourceGroups());
+    }
 
     /**
      * Tests virtual machines.
