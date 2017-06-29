@@ -9,6 +9,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.FlowLogSettings;
 import com.microsoft.azure.management.network.RetentionPolicyParameters;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Observable;
@@ -132,21 +133,21 @@ class FlowLogSettingsImpl extends RefreshableWrapperImpl<FlowLogInformationInner
 
     @Override
     public boolean enabled() {
-        return inner().enabled();
+        return Utils.toPrimitiveBoolean(inner().enabled());
     }
 
     @Override
     public boolean isRetentionEnabled() {
         // will return default values if server response for retention policy was empty
         ensureRetentionPolicy();
-        return inner().retentionPolicy().enabled();
+        return Utils.toPrimitiveBoolean(inner().retentionPolicy().enabled());
     }
 
     @Override
     public int retentionDays() {
         // will return default values if server response for retention policy was empty
         ensureRetentionPolicy();
-        return inner().retentionPolicy().days();
+        return Utils.toPrimitiveInt(inner().retentionPolicy().days());
     }
 
     @Override

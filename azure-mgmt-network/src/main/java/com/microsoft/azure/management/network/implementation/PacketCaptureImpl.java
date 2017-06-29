@@ -14,6 +14,7 @@ import com.microsoft.azure.management.network.PacketCaptureStatus;
 import com.microsoft.azure.management.network.PacketCaptureStorageLocation;
 import com.microsoft.azure.management.network.ProvisioningState;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.storage.StorageAccount;
 import rx.Completable;
 import rx.Observable;
@@ -164,17 +165,17 @@ public class PacketCaptureImpl extends
 
     @Override
     public int bytesToCapturePerPacket() {
-        return inner().bytesToCapturePerPacket();
+        return Utils.toPrimitiveInt(inner().bytesToCapturePerPacket());
     }
 
     @Override
     public int totalBytesPerSession() {
-        return inner().totalBytesPerSession();
+        return Utils.toPrimitiveInt(inner().totalBytesPerSession());
     }
 
     @Override
     public int timeLimitInSeconds() {
-        return inner().timeLimitInSeconds();
+        return Utils.toPrimitiveInt(inner().timeLimitInSeconds());
     }
 
     @Override
