@@ -21,6 +21,7 @@ import java.net.Proxy;
 public abstract class AzureTokenCredentials extends TokenCredentials {
     private final AzureEnvironment environment;
     private final String domain;
+    private String defaultSubscription;
 
     private Proxy proxy;
 
@@ -73,6 +74,24 @@ public abstract class AzureTokenCredentials extends TokenCredentials {
      */
     public AzureEnvironment environment() {
         return environment;
+    }
+
+    /**
+     * @return The default subscription ID, if any
+     */
+    public String defaultSubscriptionId() {
+        return defaultSubscription;
+    }
+
+    /**
+     * Set default subscription ID.
+     *
+     * @param subscriptionId the default subscription ID.
+     * @return the credentials object itself.
+     */
+    public AzureTokenCredentials withDefaultSubscriptionId(String subscriptionId) {
+        this.defaultSubscription = subscriptionId;
+        return this;
     }
 
     /**

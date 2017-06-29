@@ -30,7 +30,6 @@ public final class AzureCliCredentials extends AzureTokenCredentials {
     private static final ObjectMapper MAPPER = new JacksonAdapter().serializer().setDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ssssss"));
     /** A mapping from resource endpoint to its cached access token. */
     private Map<String, AzureCliSubscription> subscriptions;
-    private String defaultSubscriptionId;
     private File azureProfile;
     private File accessTokens;
     private Lock lock = new ReentrantLock();
@@ -58,7 +57,7 @@ public final class AzureCliCredentials extends AzureTokenCredentials {
                             && subscription.tenant().equalsIgnoreCase(token.tenant())) {
                         subscriptions.put(subscription.id(), subscription.withToken(token));
                         if (subscription.isDefault()) {
-                            defaultSubscriptionId = subscription.id();
+                            withDefaultSubscriptionId(subscription.id());
                         }
                     }
                 }
@@ -101,7 +100,7 @@ public final class AzureCliCredentials extends AzureTokenCredentials {
      * @return the active directory application client id
      */
     public String clientId() {
-        return subscriptions.get(defaultSubscriptionId).clientId();
+        return subscriptions.get(defaultSubscriptionId()).clientId();
     }
 
     /**
@@ -109,42 +108,24 @@ public final class AzureCliCredentials extends AzureTokenCredentials {
      */
     @Override
     public String domain() {
-        return subscriptions.get(defaultSubscriptionId).tenant();
+        return subscriptions.get(defaultSubscriptionId()).tenant();
     }
 
     /**
      * @return the Azure environment to authenticate with
      */
     public AzureEnvironment environment() {
-        return subscriptions.get(defaultSubscriptionId).environment();
-    }
-
-    /**
-     * @return the default subscription ID logged in in Azure CLI
-     */
-    public String defaultSubscriptionId() {
-        return defaultSubscriptionId;
-    }
-
-    /**
-     * Set default subscription ID.
-     *
-     * @param subscriptionId the default subscription ID.
-     * @return the credentials object itself.
-     */
-    public AzureCliCredentials withDefaultSubscriptionId(String subscriptionId) {
-        this.defaultSubscriptionId = subscriptionId;
-        return this;
+        return subscriptions.get(defaultSubscriptionId()).environment();
     }
 
     @Override
     public synchronized String getToken(String resource) throws IOException {
-        String token = subscriptions.get(defaultSubscriptionId).credentialInstance().getToken(resource);
+        String token = subscriptions.get(defaultSubscriptionId()).credentialInstance().getToken(resource);
         if (token == null) {
             System.err.println("Please login in Azure CLI and press any key to continue after you've successfully logged in.");
             System.in.read();
             loadAccessTokens();
-            token = subscriptions.get(defaultSubscriptionId).credentialInstance().getToken(resource);
+            token = subscriptions.get(defaultSubscriptionId()).credentialInstance().getToken(resource);
         }
         return token;
     }

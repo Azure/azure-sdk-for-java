@@ -40,8 +40,6 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
     private byte[] certificate;
     /** The certificate password. */
     private String certPassword;
-    /** The default subscription to use, if any. */
-    private String defaultSubscription;
 
     /**
      * Initializes a new instance of the ApplicationTokenCredentials.
@@ -118,24 +116,6 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
     }
 
     /**
-     * @return The default subscription ID, if any
-     */
-    public String defaultSubscriptionId() {
-        return defaultSubscription;
-    }
-
-    /**
-     * Set default subscription ID.
-     *
-     * @param subscriptionId the default subscription ID.
-     * @return the credentials object itself.
-     */
-    public ApplicationTokenCredentials withDefaultSubscriptionId(String subscriptionId) {
-        this.defaultSubscription = subscriptionId;
-        return this;
-    }
-
-    /**
      * Initializes the credentials based on the provided credentials file.
      *
      * @param credentialsFile A  file with credentials, using the standard Java properties format.
@@ -178,7 +158,7 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
         final String defaultSubscriptionId = authSettings.getProperty(CredentialSettings.SUBSCRIPTION_ID.toString());
 
         if (clientKey != null) {
-            return new ApplicationTokenCredentials(
+            return (ApplicationTokenCredentials) new ApplicationTokenCredentials(
                     clientId,
                     tenantId,
                     clientKey,
@@ -197,7 +177,7 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
             } else {
                 certs = Files.readAllBytes(Paths.get(credentialsFile.getParent(), certificate));
             }
-            return new ApplicationTokenCredentials(
+            return (ApplicationTokenCredentials) new ApplicationTokenCredentials(
                     clientId,
                     tenantId,
                     certs,
