@@ -703,6 +703,6 @@ public class AzureTests extends TestBase {
     @Ignore("Runs locally find but fails for unknown reason on check in.")
     public void testDocumentDB() throws Exception {
         new TestDocumentDB()
-                .runTest(azure.documentDBs(), azure.resourceGroups());
+                .runTest(azure.documentDBAccounts(), azure.resourceGroups());
     }
 }
