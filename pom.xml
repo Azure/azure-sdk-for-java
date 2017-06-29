@@ -349,12 +349,6 @@
   </profiles>
   <modules>
     <module>./azure</module>
-    <!--<module>./azure-batch</module>
-    <module>./azure-keyvault</module>
-    <module>./azure-keyvault-core</module>
-    <module>./azure-keyvault-cryptography</module>
-    <module>./azure-keyvault-extensions</module>
-    <module>./azure-keyvault-webkey</module>-->
     <module>./azure-mgmt-documentdb</module>
     <module>./azure-mgmt-compute</module>
     <module>./azure-mgmt-containerregistry</module>
