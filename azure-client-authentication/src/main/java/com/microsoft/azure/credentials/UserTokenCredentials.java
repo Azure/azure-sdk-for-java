@@ -49,7 +49,7 @@ public class UserTokenCredentials extends AzureTokenCredentials {
         this.username = username;
         this.password = password;
         this.tokens = new ConcurrentHashMap<>();
-        this.refreshTokenClient = new RefreshTokenClient(environment.activeDirectoryEndpoint());
+        this.refreshTokenClient = new RefreshTokenClient(environment.activeDirectoryEndpoint(), proxy());
     }
 
     /**
@@ -101,6 +101,9 @@ public class UserTokenCredentials extends AzureTokenCredentials {
         String authorityUrl = this.environment().activeDirectoryEndpoint() + this.domain();
         ExecutorService executor = Executors.newSingleThreadExecutor();
         AuthenticationContext context = new AuthenticationContext(authorityUrl, false, executor);
+        if (proxy() != null) {
+            context.setProxy(proxy());
+        }
         try {
             return context.acquireToken(
                     resource,

@@ -21,6 +21,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import rx.Observable;
 
+import java.net.Proxy;
 import java.util.Date;
 
 /**
@@ -30,12 +31,16 @@ import java.util.Date;
 final class RefreshTokenClient {
     private final RefreshTokenService service;
 
-    RefreshTokenClient(String baseUrl) {
+    RefreshTokenClient(String baseUrl, Proxy proxy) {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder().addInterceptor(new LoggingInterceptor(LogLevel.BODY_AND_HEADERS));
+        if (proxy != null) {
+            builder = builder.proxy(proxy);
+        }
         service = new Retrofit.Builder()
-            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-            .addConverterFactory(new JacksonAdapter().converterFactory())
-            .baseUrl(baseUrl)
-            .client(new OkHttpClient.Builder().addInterceptor(new LoggingInterceptor(LogLevel.BODY_AND_HEADERS)).build())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(new JacksonAdapter().converterFactory())
+                .baseUrl(baseUrl)
+                .client(builder.build())
             .build().create(RefreshTokenService.class);
     }
 

@@ -237,6 +237,9 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
         String authorityUrl = this.environment().activeDirectoryEndpoint() + this.domain();
         ExecutorService executor = Executors.newSingleThreadExecutor();
         AuthenticationContext context = new AuthenticationContext(authorityUrl, false, executor);
+        if (proxy() != null) {
+            context.setProxy(proxy());
+        }
         try {
             if (secret != null) {
                 return context.acquireToken(
