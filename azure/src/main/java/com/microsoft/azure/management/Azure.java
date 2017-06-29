@@ -153,8 +153,8 @@ public final class Azure {
     }
 
     /**
-     * Authenticates API access using a {@link RestClient} instance.
-     * @param restClient the {@link RestClient} configured with Azure authentication credentials
+     * Authenticates API access using a RestClient instance.
+     * @param restClient the RestClient configured with Azure authentication credentials
      * @param tenantId the tenantId in Active Directory
      * @return authenticated Azure client
      */
@@ -163,8 +163,8 @@ public final class Azure {
     }
 
     /**
-     * Authenticates API access using a {@link RestClient} instance.
-     * @param restClient the {@link RestClient} configured with Azure authentication credentials
+     * Authenticates API access using a RestClient instance.
+     * @param restClient the RestClient configured with Azure authentication credentials
      * @param tenantId the tenantId in Active Directory
      * @param subscriptionId the ID of the subscription
      * @return authenticated Azure client
@@ -223,11 +223,10 @@ public final class Azure {
      * Provides authenticated access to a subset of Azure APIs that do not require a specific subscription.
      * <p>
      * To access the subscription-specific APIs, use {@link Authenticated#withSubscription(String)},
-     * or {@link Authenticated#withDefaultSubscription()} if a default subscription has already been previously specified
+     * or withDefaultSubscription() if a default subscription has already been previously specified
      * (for example, in a previously specified authentication file).
-     * @see Azure#authenticate(File)
      */
-    public interface Authenticated {
+    public interface Authenticated extends AccessManagement {
         /**
          * @return the currently selected tenant ID this client is authenticated to work with
          */
@@ -246,54 +245,6 @@ public final class Azure {
          * @return Tenants interface providing access to tenant management
          */
         Tenants tenants();
-
-        /**
-         * Entry point to AD user management APIs.
-         *
-         * @return ActiveDirectoryUsers interface providing access to tenant management
-         */
-        @Beta(SinceVersion.V1_1_0)
-        ActiveDirectoryUsers activeDirectoryUsers();
-
-        /**
-         * Entry point to AD group management APIs.
-         *
-         * @return ActiveDirectoryGroups interface providing access to tenant management
-         */
-        @Beta(SinceVersion.V1_1_0)
-        ActiveDirectoryGroups activeDirectoryGroups();
-
-        /**
-         * Entry point to AD service principal management APIs.
-         *
-         * @return ServicePrincipals interface providing access to tenant management
-         */
-        @Beta(SinceVersion.V1_1_0)
-        ServicePrincipals servicePrincipals();
-
-        /**
-         * Entry point to AD application management APIs.
-         *
-         * @return Applications interface providing access to tenant management
-         */
-        @Beta(SinceVersion.V1_1_0)
-        ActiveDirectoryApplications activeDirectoryApplications();
-
-        /**
-         * Entry point to role definition management APIs.
-         *
-         * @return RoleDefinitions interface providing access to tenant management
-         */
-        @Beta(SinceVersion.V1_1_0)
-        RoleDefinitions roleDefinitions();
-
-        /**
-         * Entry point to role assignment management APIs.
-         *
-         * @return RoleAssignments interface providing access to tenant management
-         */
-        @Beta(SinceVersion.V1_1_0)
-        RoleAssignments roleAssignments();
 
         /**
          * Selects a specific subscription for the APIs to work with.
@@ -318,7 +269,7 @@ public final class Azure {
     }
 
     /**
-     * The implementation for {@link Authenticated}.
+     * The implementation for the Authenticated interface.
      */
     private static final class AuthenticatedImpl implements Authenticated {
         private final RestClient restClient;
@@ -733,5 +684,13 @@ public final class Azure {
     @Beta(SinceVersion.V1_1_0)
     public DocumentDBAccounts documentDBs() {
         return documentDBManager.databaseAccounts();
+    }
+
+    /**
+     * @return entry point to authentication and authorization management in Azure
+     */
+    @Beta(SinceVersion.V1_2_0)
+    public AccessManagement accessManagement() {
+        return this.authenticated;
     }
 }
