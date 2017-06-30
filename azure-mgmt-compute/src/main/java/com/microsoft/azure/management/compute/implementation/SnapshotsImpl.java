@@ -34,10 +34,7 @@ class SnapshotsImpl
                               String snapshotName,
                               AccessLevel accessLevel,
                               int accessDuration) {
-        GrantAccessDataInner grantAccessDataInner = new GrantAccessDataInner();
-        grantAccessDataInner.withAccess(accessLevel)
-                .withDurationInSeconds(accessDuration);
-        AccessUriInner accessUriInner = this.inner().grantAccess(resourceGroupName, snapshotName, grantAccessDataInner);
+        AccessUriInner accessUriInner = this.inner().grantAccess(resourceGroupName, snapshotName, accessLevel, accessDuration);
         return accessUriInner.accessSAS();
     }
 

@@ -15,6 +15,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.PollingState;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -32,6 +33,7 @@ import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
+import rx.Single;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -245,13 +247,22 @@ public class VirtualMachineScaleSetVMsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
-    public Observable<OperationStatusResponseInner> beginReimageAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        return beginReimageWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).map(new Func1<ServiceResponse<OperationStatusResponseInner>, OperationStatusResponseInner>() {
-            @Override
-            public OperationStatusResponseInner call(ServiceResponse<OperationStatusResponseInner> response) {
-                return response.body();
-            }
-        });
+    public Single<PollingState<OperationStatusResponseInner>> beginReimageAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (vmScaleSetName == null) {
+            throw new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null.");
+        }
+        if (instanceId == null) {
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.beginReimage(resourceGroupName, vmScaleSetName, instanceId, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().beginPostOrDeleteAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -411,13 +422,22 @@ public class VirtualMachineScaleSetVMsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
-    public Observable<OperationStatusResponseInner> beginReimageAllAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        return beginReimageAllWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).map(new Func1<ServiceResponse<OperationStatusResponseInner>, OperationStatusResponseInner>() {
-            @Override
-            public OperationStatusResponseInner call(ServiceResponse<OperationStatusResponseInner> response) {
-                return response.body();
-            }
-        });
+    public Single<PollingState<OperationStatusResponseInner>> beginReimageAllAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (vmScaleSetName == null) {
+            throw new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null.");
+        }
+        if (instanceId == null) {
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.beginReimageAll(resourceGroupName, vmScaleSetName, instanceId, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().beginPostOrDeleteAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -577,13 +597,22 @@ public class VirtualMachineScaleSetVMsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
-    public Observable<OperationStatusResponseInner> beginDeallocateAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        return beginDeallocateWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).map(new Func1<ServiceResponse<OperationStatusResponseInner>, OperationStatusResponseInner>() {
-            @Override
-            public OperationStatusResponseInner call(ServiceResponse<OperationStatusResponseInner> response) {
-                return response.body();
-            }
-        });
+    public Single<PollingState<OperationStatusResponseInner>> beginDeallocateAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (vmScaleSetName == null) {
+            throw new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null.");
+        }
+        if (instanceId == null) {
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.beginDeallocate(resourceGroupName, vmScaleSetName, instanceId, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().beginPostOrDeleteAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -743,13 +772,22 @@ public class VirtualMachineScaleSetVMsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
-    public Observable<OperationStatusResponseInner> beginDeleteAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        return beginDeleteWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).map(new Func1<ServiceResponse<OperationStatusResponseInner>, OperationStatusResponseInner>() {
-            @Override
-            public OperationStatusResponseInner call(ServiceResponse<OperationStatusResponseInner> response) {
-                return response.body();
-            }
-        });
+    public Single<PollingState<OperationStatusResponseInner>> beginDeleteAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (vmScaleSetName == null) {
+            throw new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null.");
+        }
+        if (instanceId == null) {
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.beginDelete(resourceGroupName, vmScaleSetName, instanceId, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().beginPostOrDeleteAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -879,7 +917,7 @@ public class VirtualMachineScaleSetVMsInner {
                         return Observable.error(t);
                     }
                 }
-            });
+                });
     }
 
     private ServiceResponse<VirtualMachineScaleSetVMInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -1345,13 +1383,22 @@ public class VirtualMachineScaleSetVMsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
-    public Observable<OperationStatusResponseInner> beginPowerOffAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        return beginPowerOffWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).map(new Func1<ServiceResponse<OperationStatusResponseInner>, OperationStatusResponseInner>() {
-            @Override
-            public OperationStatusResponseInner call(ServiceResponse<OperationStatusResponseInner> response) {
-                return response.body();
-            }
-        });
+    public Single<PollingState<OperationStatusResponseInner>> beginPowerOffAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (vmScaleSetName == null) {
+            throw new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null.");
+        }
+        if (instanceId == null) {
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.beginPowerOff(resourceGroupName, vmScaleSetName, instanceId, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().beginPostOrDeleteAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -1511,13 +1558,22 @@ public class VirtualMachineScaleSetVMsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
-    public Observable<OperationStatusResponseInner> beginRestartAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        return beginRestartWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).map(new Func1<ServiceResponse<OperationStatusResponseInner>, OperationStatusResponseInner>() {
-            @Override
-            public OperationStatusResponseInner call(ServiceResponse<OperationStatusResponseInner> response) {
-                return response.body();
-            }
-        });
+    public Single<PollingState<OperationStatusResponseInner>> beginRestartAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (vmScaleSetName == null) {
+            throw new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null.");
+        }
+        if (instanceId == null) {
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.beginRestart(resourceGroupName, vmScaleSetName, instanceId, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().beginPostOrDeleteAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -1677,13 +1733,22 @@ public class VirtualMachineScaleSetVMsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
-    public Observable<OperationStatusResponseInner> beginStartAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        return beginStartWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceId).map(new Func1<ServiceResponse<OperationStatusResponseInner>, OperationStatusResponseInner>() {
-            @Override
-            public OperationStatusResponseInner call(ServiceResponse<OperationStatusResponseInner> response) {
-                return response.body();
-            }
-        });
+    public Single<PollingState<OperationStatusResponseInner>> beginStartAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (vmScaleSetName == null) {
+            throw new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null.");
+        }
+        if (instanceId == null) {
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.beginStart(resourceGroupName, vmScaleSetName, instanceId, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().beginPostOrDeleteAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**

@@ -16,8 +16,11 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.compute.AccessLevel;
+import com.microsoft.azure.management.compute.GrantAccessData;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.PollingState;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -39,6 +42,7 @@ import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
+import rx.Single;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -104,11 +108,11 @@ public class DisksInner implements InnerSupportsGet<DiskInner>, InnerSupportsDel
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.Disks grantAccess" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}/beginGetAccess")
-        Observable<Response<ResponseBody>> grantAccess(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("diskName") String diskName, @Query("api-version") String apiVersion, @Body GrantAccessDataInner grantAccessData, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> grantAccess(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("diskName") String diskName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body GrantAccessData grantAccessData, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.Disks beginGrantAccess" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}/beginGetAccess")
-        Observable<Response<ResponseBody>> beginGrantAccess(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("diskName") String diskName, @Query("api-version") String apiVersion, @Body GrantAccessDataInner grantAccessData, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginGrantAccess(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("diskName") String diskName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body GrantAccessData grantAccessData, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.Disks revokeAccess" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}/endGetAccess")
@@ -241,13 +245,23 @@ public class DisksInner implements InnerSupportsGet<DiskInner>, InnerSupportsDel
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DiskInner object
      */
-    public Observable<DiskInner> beginCreateOrUpdateAsync(String resourceGroupName, String diskName, DiskInner disk) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, diskName, disk).map(new Func1<ServiceResponse<DiskInner>, DiskInner>() {
-            @Override
-            public DiskInner call(ServiceResponse<DiskInner> response) {
-                return response.body();
-            }
-        });
+    public Single<PollingState<DiskInner>> beginCreateOrUpdateAsync(String resourceGroupName, String diskName, DiskInner disk) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (diskName == null) {
+            throw new IllegalArgumentException("Parameter diskName is required and cannot be null.");
+        }
+        if (disk == null) {
+            throw new IllegalArgumentException("Parameter disk is required and cannot be null.");
+        }
+        Validator.validate(disk);
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.beginCreateOrUpdate(this.client.subscriptionId(), resourceGroupName, diskName, apiVersion, disk, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().beginPutOrPatchAsync(observable, new TypeToken<DiskInner>() { }.getType());
     }
 
     /**
@@ -409,13 +423,23 @@ public class DisksInner implements InnerSupportsGet<DiskInner>, InnerSupportsDel
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DiskInner object
      */
-    public Observable<DiskInner> beginUpdateAsync(String resourceGroupName, String diskName, DiskUpdateInner disk) {
-        return beginUpdateWithServiceResponseAsync(resourceGroupName, diskName, disk).map(new Func1<ServiceResponse<DiskInner>, DiskInner>() {
-            @Override
-            public DiskInner call(ServiceResponse<DiskInner> response) {
-                return response.body();
-            }
-        });
+    public Single<PollingState<DiskInner>> beginUpdateAsync(String resourceGroupName, String diskName, DiskUpdateInner disk) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (diskName == null) {
+            throw new IllegalArgumentException("Parameter diskName is required and cannot be null.");
+        }
+        if (disk == null) {
+            throw new IllegalArgumentException("Parameter disk is required and cannot be null.");
+        }
+        Validator.validate(disk);
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.beginUpdate(this.client.subscriptionId(), resourceGroupName, diskName, apiVersion, disk, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().beginPutOrPatchAsync(observable, new TypeToken<DiskInner>() { }.getType());
     }
 
     /**
@@ -650,13 +674,19 @@ public class DisksInner implements InnerSupportsGet<DiskInner>, InnerSupportsDel
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
-    public Observable<OperationStatusResponseInner> beginDeleteAsync(String resourceGroupName, String diskName) {
-        return beginDeleteWithServiceResponseAsync(resourceGroupName, diskName).map(new Func1<ServiceResponse<OperationStatusResponseInner>, OperationStatusResponseInner>() {
-            @Override
-            public OperationStatusResponseInner call(ServiceResponse<OperationStatusResponseInner> response) {
-                return response.body();
-            }
-        });
+    public Single<PollingState<OperationStatusResponseInner>> beginDeleteAsync(String resourceGroupName, String diskName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (diskName == null) {
+            throw new IllegalArgumentException("Parameter diskName is required and cannot be null.");
+        }
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.beginDelete(this.client.subscriptionId(), resourceGroupName, diskName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().beginPostOrDeleteAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -924,14 +954,15 @@ public class DisksInner implements InnerSupportsGet<DiskInner>, InnerSupportsDel
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
-     * @param grantAccessData Access data object supplied in the body of the get disk access operation.
+     * @param access Possible values include: 'None', 'Read'
+     * @param durationInSeconds Time duration in seconds until the SAS access expires.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AccessUriInner object if successful.
      */
-    public AccessUriInner grantAccess(String resourceGroupName, String diskName, GrantAccessDataInner grantAccessData) {
-        return grantAccessWithServiceResponseAsync(resourceGroupName, diskName, grantAccessData).toBlocking().last().body();
+    public AccessUriInner grantAccess(String resourceGroupName, String diskName, AccessLevel access, int durationInSeconds) {
+        return grantAccessWithServiceResponseAsync(resourceGroupName, diskName, access, durationInSeconds).toBlocking().last().body();
     }
 
     /**
@@ -939,13 +970,14 @@ public class DisksInner implements InnerSupportsGet<DiskInner>, InnerSupportsDel
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
-     * @param grantAccessData Access data object supplied in the body of the get disk access operation.
+     * @param access Possible values include: 'None', 'Read'
+     * @param durationInSeconds Time duration in seconds until the SAS access expires.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<AccessUriInner> grantAccessAsync(String resourceGroupName, String diskName, GrantAccessDataInner grantAccessData, final ServiceCallback<AccessUriInner> serviceCallback) {
-        return ServiceFuture.fromResponse(grantAccessWithServiceResponseAsync(resourceGroupName, diskName, grantAccessData), serviceCallback);
+    public ServiceFuture<AccessUriInner> grantAccessAsync(String resourceGroupName, String diskName, AccessLevel access, int durationInSeconds, final ServiceCallback<AccessUriInner> serviceCallback) {
+        return ServiceFuture.fromResponse(grantAccessWithServiceResponseAsync(resourceGroupName, diskName, access, durationInSeconds), serviceCallback);
     }
 
     /**
@@ -953,12 +985,13 @@ public class DisksInner implements InnerSupportsGet<DiskInner>, InnerSupportsDel
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
-     * @param grantAccessData Access data object supplied in the body of the get disk access operation.
+     * @param access Possible values include: 'None', 'Read'
+     * @param durationInSeconds Time duration in seconds until the SAS access expires.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<AccessUriInner> grantAccessAsync(String resourceGroupName, String diskName, GrantAccessDataInner grantAccessData) {
-        return grantAccessWithServiceResponseAsync(resourceGroupName, diskName, grantAccessData).map(new Func1<ServiceResponse<AccessUriInner>, AccessUriInner>() {
+    public Observable<AccessUriInner> grantAccessAsync(String resourceGroupName, String diskName, AccessLevel access, int durationInSeconds) {
+        return grantAccessWithServiceResponseAsync(resourceGroupName, diskName, access, durationInSeconds).map(new Func1<ServiceResponse<AccessUriInner>, AccessUriInner>() {
             @Override
             public AccessUriInner call(ServiceResponse<AccessUriInner> response) {
                 return response.body();
@@ -971,11 +1004,12 @@ public class DisksInner implements InnerSupportsGet<DiskInner>, InnerSupportsDel
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
-     * @param grantAccessData Access data object supplied in the body of the get disk access operation.
+     * @param access Possible values include: 'None', 'Read'
+     * @param durationInSeconds Time duration in seconds until the SAS access expires.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<AccessUriInner>> grantAccessWithServiceResponseAsync(String resourceGroupName, String diskName, GrantAccessDataInner grantAccessData) {
+    public Observable<ServiceResponse<AccessUriInner>> grantAccessWithServiceResponseAsync(String resourceGroupName, String diskName, AccessLevel access, int durationInSeconds) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -985,12 +1019,14 @@ public class DisksInner implements InnerSupportsGet<DiskInner>, InnerSupportsDel
         if (diskName == null) {
             throw new IllegalArgumentException("Parameter diskName is required and cannot be null.");
         }
-        if (grantAccessData == null) {
-            throw new IllegalArgumentException("Parameter grantAccessData is required and cannot be null.");
+        if (access == null) {
+            throw new IllegalArgumentException("Parameter access is required and cannot be null.");
         }
-        Validator.validate(grantAccessData);
         final String apiVersion = "2016-04-30-preview";
-        Observable<Response<ResponseBody>> observable = service.grantAccess(this.client.subscriptionId(), resourceGroupName, diskName, apiVersion, grantAccessData, this.client.acceptLanguage(), this.client.userAgent());
+        GrantAccessData grantAccessData = new GrantAccessData();
+        grantAccessData.withAccess(access);
+        grantAccessData.withDurationInSeconds(durationInSeconds);
+        Observable<Response<ResponseBody>> observable = service.grantAccess(this.client.subscriptionId(), resourceGroupName, diskName, apiVersion, this.client.acceptLanguage(), grantAccessData, this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<AccessUriInner>() { }.getType());
     }
 
@@ -999,14 +1035,15 @@ public class DisksInner implements InnerSupportsGet<DiskInner>, InnerSupportsDel
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
-     * @param grantAccessData Access data object supplied in the body of the get disk access operation.
+     * @param access Possible values include: 'None', 'Read'
+     * @param durationInSeconds Time duration in seconds until the SAS access expires.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AccessUriInner object if successful.
      */
-    public AccessUriInner beginGrantAccess(String resourceGroupName, String diskName, GrantAccessDataInner grantAccessData) {
-        return beginGrantAccessWithServiceResponseAsync(resourceGroupName, diskName, grantAccessData).toBlocking().single().body();
+    public AccessUriInner beginGrantAccess(String resourceGroupName, String diskName, AccessLevel access, int durationInSeconds) {
+        return beginGrantAccessWithServiceResponseAsync(resourceGroupName, diskName, access, durationInSeconds).toBlocking().single().body();
     }
 
     /**
@@ -1014,13 +1051,14 @@ public class DisksInner implements InnerSupportsGet<DiskInner>, InnerSupportsDel
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
-     * @param grantAccessData Access data object supplied in the body of the get disk access operation.
+     * @param access Possible values include: 'None', 'Read'
+     * @param durationInSeconds Time duration in seconds until the SAS access expires.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<AccessUriInner> beginGrantAccessAsync(String resourceGroupName, String diskName, GrantAccessDataInner grantAccessData, final ServiceCallback<AccessUriInner> serviceCallback) {
-        return ServiceFuture.fromResponse(beginGrantAccessWithServiceResponseAsync(resourceGroupName, diskName, grantAccessData), serviceCallback);
+    public ServiceFuture<AccessUriInner> beginGrantAccessAsync(String resourceGroupName, String diskName, AccessLevel access, int durationInSeconds, final ServiceCallback<AccessUriInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginGrantAccessWithServiceResponseAsync(resourceGroupName, diskName, access, durationInSeconds), serviceCallback);
     }
 
     /**
@@ -1028,29 +1066,12 @@ public class DisksInner implements InnerSupportsGet<DiskInner>, InnerSupportsDel
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
-     * @param grantAccessData Access data object supplied in the body of the get disk access operation.
+     * @param access Possible values include: 'None', 'Read'
+     * @param durationInSeconds Time duration in seconds until the SAS access expires.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AccessUriInner object
      */
-    public Observable<AccessUriInner> beginGrantAccessAsync(String resourceGroupName, String diskName, GrantAccessDataInner grantAccessData) {
-        return beginGrantAccessWithServiceResponseAsync(resourceGroupName, diskName, grantAccessData).map(new Func1<ServiceResponse<AccessUriInner>, AccessUriInner>() {
-            @Override
-            public AccessUriInner call(ServiceResponse<AccessUriInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Grants access to a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the disk within the given subscription and resource group.
-     * @param grantAccessData Access data object supplied in the body of the get disk access operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AccessUriInner object
-     */
-    public Observable<ServiceResponse<AccessUriInner>> beginGrantAccessWithServiceResponseAsync(String resourceGroupName, String diskName, GrantAccessDataInner grantAccessData) {
+    public Single<PollingState<AccessUriInner>> beginGrantAccessAsync(String resourceGroupName, String diskName, AccessLevel access, int durationInSeconds) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -1060,23 +1081,56 @@ public class DisksInner implements InnerSupportsGet<DiskInner>, InnerSupportsDel
         if (diskName == null) {
             throw new IllegalArgumentException("Parameter diskName is required and cannot be null.");
         }
-        if (grantAccessData == null) {
-            throw new IllegalArgumentException("Parameter grantAccessData is required and cannot be null.");
+        if (access == null) {
+            throw new IllegalArgumentException("Parameter access is required and cannot be null.");
         }
-        Validator.validate(grantAccessData);
         final String apiVersion = "2016-04-30-preview";
-        return service.beginGrantAccess(this.client.subscriptionId(), resourceGroupName, diskName, apiVersion, grantAccessData, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AccessUriInner>>>() {
-                @Override
-                public Observable<ServiceResponse<AccessUriInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<AccessUriInner> clientResponse = beginGrantAccessDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
+        GrantAccessData grantAccessData = new GrantAccessData();
+        grantAccessData.withAccess(access);
+        grantAccessData.withDurationInSeconds(durationInSeconds);
+        Observable<Response<ResponseBody>> observable = service.beginGrantAccess(this.client.subscriptionId(), resourceGroupName, diskName, apiVersion, this.client.acceptLanguage(), grantAccessData, this.client.userAgent());
+        return client.getAzureClient().beginPostOrDeleteAsync(observable, new TypeToken<AccessUriInner>() { }.getType());
+    }
+
+    /**
+     * Grants access to a disk.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskName The name of the disk within the given subscription and resource group.
+     * @param access Possible values include: 'None', 'Read'
+     * @param durationInSeconds Time duration in seconds until the SAS access expires.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AccessUriInner object
+     */
+    public Observable<ServiceResponse<AccessUriInner>> beginGrantAccessWithServiceResponseAsync(String resourceGroupName, String diskName, AccessLevel access, int durationInSeconds) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (diskName == null) {
+            throw new IllegalArgumentException("Parameter diskName is required and cannot be null.");
+        }
+        if (access == null) {
+            throw new IllegalArgumentException("Parameter access is required and cannot be null.");
+        }
+        final String apiVersion = "2016-04-30-preview";
+        GrantAccessData grantAccessData = new GrantAccessData();
+        grantAccessData.withAccess(access);
+        grantAccessData.withDurationInSeconds(durationInSeconds);
+        return service.beginGrantAccess(this.client.subscriptionId(), resourceGroupName, diskName, apiVersion, this.client.acceptLanguage(), grantAccessData, this.client.userAgent())
+                .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AccessUriInner>>>() {
+                    @Override
+                    public Observable<ServiceResponse<AccessUriInner>> call(Response<ResponseBody> response) {
+                        try {
+                            ServiceResponse<AccessUriInner> clientResponse = beginGrantAccessDelegate(response);
+                            return Observable.just(clientResponse);
+                        } catch (Throwable t) {
+                            return Observable.error(t);
+                        }
                     }
-                }
-            });
+                });
     }
 
     private ServiceResponse<AccessUriInner> beginGrantAccessDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -1189,13 +1243,19 @@ public class DisksInner implements InnerSupportsGet<DiskInner>, InnerSupportsDel
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
-    public Observable<OperationStatusResponseInner> beginRevokeAccessAsync(String resourceGroupName, String diskName) {
-        return beginRevokeAccessWithServiceResponseAsync(resourceGroupName, diskName).map(new Func1<ServiceResponse<OperationStatusResponseInner>, OperationStatusResponseInner>() {
-            @Override
-            public OperationStatusResponseInner call(ServiceResponse<OperationStatusResponseInner> response) {
-                return response.body();
-            }
-        });
+    public Single<PollingState<OperationStatusResponseInner>> beginRevokeAccessAsync(String resourceGroupName, String diskName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (diskName == null) {
+            throw new IllegalArgumentException("Parameter diskName is required and cannot be null.");
+        }
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.beginRevokeAccess(this.client.subscriptionId(), resourceGroupName, diskName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().beginPostOrDeleteAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**

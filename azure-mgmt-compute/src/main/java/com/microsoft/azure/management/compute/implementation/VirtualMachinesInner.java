@@ -19,6 +19,7 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.compute.InstanceViewTypes;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.PollingState;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -39,6 +40,7 @@ import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
+import rx.Single;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -281,13 +283,23 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VirtualMachineCaptureResultInner object
      */
-    public Observable<VirtualMachineCaptureResultInner> beginCaptureAsync(String resourceGroupName, String vmName, VirtualMachineCaptureParametersInner parameters) {
-        return beginCaptureWithServiceResponseAsync(resourceGroupName, vmName, parameters).map(new Func1<ServiceResponse<VirtualMachineCaptureResultInner>, VirtualMachineCaptureResultInner>() {
-            @Override
-            public VirtualMachineCaptureResultInner call(ServiceResponse<VirtualMachineCaptureResultInner> response) {
-                return response.body();
-            }
-        });
+    public Single<PollingState<VirtualMachineCaptureResultInner>> beginCaptureAsync(String resourceGroupName, String vmName, VirtualMachineCaptureParametersInner parameters) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (vmName == null) {
+            throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.beginCapture(resourceGroupName, vmName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().beginPostOrDeleteAsync(observable, new TypeToken<VirtualMachineCaptureResultInner>() { }.getType());
     }
 
     /**
@@ -449,13 +461,23 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VirtualMachineInner object
      */
-    public Observable<VirtualMachineInner> beginCreateOrUpdateAsync(String resourceGroupName, String vmName, VirtualMachineInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, parameters).map(new Func1<ServiceResponse<VirtualMachineInner>, VirtualMachineInner>() {
-            @Override
-            public VirtualMachineInner call(ServiceResponse<VirtualMachineInner> response) {
-                return response.body();
-            }
-        });
+    public Single<PollingState<VirtualMachineInner>> beginCreateOrUpdateAsync(String resourceGroupName, String vmName, VirtualMachineInner parameters) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (vmName == null) {
+            throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.beginCreateOrUpdate(resourceGroupName, vmName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().beginPutOrPatchAsync(observable, new TypeToken<VirtualMachineInner>() { }.getType());
     }
 
     /**
@@ -483,17 +505,17 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
         Validator.validate(parameters);
         final String apiVersion = "2016-04-30-preview";
         return service.beginCreateOrUpdate(resourceGroupName, vmName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualMachineInner>>>() {
-                @Override
-                public Observable<ServiceResponse<VirtualMachineInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<VirtualMachineInner> clientResponse = beginCreateOrUpdateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
+                .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualMachineInner>>>() {
+                    @Override
+                    public Observable<ServiceResponse<VirtualMachineInner>> call(Response<ResponseBody> response) {
+                        try {
+                            ServiceResponse<VirtualMachineInner> clientResponse = beginCreateOrUpdateDelegate(response);
+                            return Observable.just(clientResponse);
+                        } catch (Throwable t) {
+                            return Observable.error(t);
+                        }
                     }
-                }
-            });
+                });
     }
 
     private ServiceResponse<VirtualMachineInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -606,13 +628,19 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
-    public Observable<OperationStatusResponseInner> beginDeleteAsync(String resourceGroupName, String vmName) {
-        return beginDeleteWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<OperationStatusResponseInner>, OperationStatusResponseInner>() {
-            @Override
-            public OperationStatusResponseInner call(ServiceResponse<OperationStatusResponseInner> response) {
-                return response.body();
-            }
-        });
+    public Single<PollingState<OperationStatusResponseInner>> beginDeleteAsync(String resourceGroupName, String vmName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (vmName == null) {
+            throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.beginDelete(resourceGroupName, vmName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().beginPostOrDeleteAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -925,13 +953,19 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
-    public Observable<OperationStatusResponseInner> beginConvertToManagedDisksAsync(String resourceGroupName, String vmName) {
-        return beginConvertToManagedDisksWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<OperationStatusResponseInner>, OperationStatusResponseInner>() {
-            @Override
-            public OperationStatusResponseInner call(ServiceResponse<OperationStatusResponseInner> response) {
-                return response.body();
-            }
-        });
+    public Single<PollingState<OperationStatusResponseInner>> beginConvertToManagedDisksAsync(String resourceGroupName, String vmName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (vmName == null) {
+            throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.beginConvertToManagedDisks(resourceGroupName, vmName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().beginPostOrDeleteAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -1077,13 +1111,19 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
-    public Observable<OperationStatusResponseInner> beginDeallocateAsync(String resourceGroupName, String vmName) {
-        return beginDeallocateWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<OperationStatusResponseInner>, OperationStatusResponseInner>() {
-            @Override
-            public OperationStatusResponseInner call(ServiceResponse<OperationStatusResponseInner> response) {
-                return response.body();
-            }
-        });
+    public Single<PollingState<OperationStatusResponseInner>> beginDeallocateAsync(String resourceGroupName, String vmName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (vmName == null) {
+            throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.beginDeallocate(resourceGroupName, vmName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().beginPostOrDeleteAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -1616,13 +1656,19 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
-    public Observable<OperationStatusResponseInner> beginPowerOffAsync(String resourceGroupName, String vmName) {
-        return beginPowerOffWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<OperationStatusResponseInner>, OperationStatusResponseInner>() {
-            @Override
-            public OperationStatusResponseInner call(ServiceResponse<OperationStatusResponseInner> response) {
-                return response.body();
-            }
-        });
+    public Single<PollingState<OperationStatusResponseInner>> beginPowerOffAsync(String resourceGroupName, String vmName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (vmName == null) {
+            throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.beginPowerOff(resourceGroupName, vmName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().beginPostOrDeleteAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -1768,13 +1814,19 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
-    public Observable<OperationStatusResponseInner> beginRestartAsync(String resourceGroupName, String vmName) {
-        return beginRestartWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<OperationStatusResponseInner>, OperationStatusResponseInner>() {
-            @Override
-            public OperationStatusResponseInner call(ServiceResponse<OperationStatusResponseInner> response) {
-                return response.body();
-            }
-        });
+    public Single<PollingState<OperationStatusResponseInner>> beginRestartAsync(String resourceGroupName, String vmName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (vmName == null) {
+            throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.beginRestart(resourceGroupName, vmName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().beginPostOrDeleteAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -1920,13 +1972,19 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
-    public Observable<OperationStatusResponseInner> beginStartAsync(String resourceGroupName, String vmName) {
-        return beginStartWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<OperationStatusResponseInner>, OperationStatusResponseInner>() {
-            @Override
-            public OperationStatusResponseInner call(ServiceResponse<OperationStatusResponseInner> response) {
-                return response.body();
-            }
-        });
+    public Single<PollingState<OperationStatusResponseInner>> beginStartAsync(String resourceGroupName, String vmName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (vmName == null) {
+            throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.beginStart(resourceGroupName, vmName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().beginPostOrDeleteAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -2072,13 +2130,19 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
-    public Observable<OperationStatusResponseInner> beginRedeployAsync(String resourceGroupName, String vmName) {
-        return beginRedeployWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<OperationStatusResponseInner>, OperationStatusResponseInner>() {
-            @Override
-            public OperationStatusResponseInner call(ServiceResponse<OperationStatusResponseInner> response) {
-                return response.body();
-            }
-        });
+    public Single<PollingState<OperationStatusResponseInner>> beginRedeployAsync(String resourceGroupName, String vmName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (vmName == null) {
+            throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.beginRedeploy(resourceGroupName, vmName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().beginPostOrDeleteAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -2171,12 +2235,12 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
      */
     public Observable<Page<VirtualMachineInner>> listByResourceGroupNextAsync(final String nextPageLink) {
         return listByResourceGroupNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Page<VirtualMachineInner>>() {
-                @Override
-                public Page<VirtualMachineInner> call(ServiceResponse<Page<VirtualMachineInner>> response) {
-                    return response.body();
-                }
-            });
+                .map(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Page<VirtualMachineInner>>() {
+                    @Override
+                    public Page<VirtualMachineInner> call(ServiceResponse<Page<VirtualMachineInner>> response) {
+                        return response.body();
+                    }
+                });
     }
 
     /**
@@ -2314,7 +2378,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
     /**
      * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
      *
-    ServiceResponse<PageImpl1<VirtualMachineInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     ServiceResponse<PageImpl1<VirtualMachineInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */

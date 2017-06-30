@@ -11,6 +11,7 @@ package com.microsoft.azure.management.compute.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.PollingState;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -28,6 +29,7 @@ import retrofit2.http.Query;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
+import rx.Single;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -200,13 +202,26 @@ public class VirtualMachineExtensionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VirtualMachineExtensionInner object
      */
-    public Observable<VirtualMachineExtensionInner> beginCreateOrUpdateAsync(String resourceGroupName, String vmName, String vmExtensionName, VirtualMachineExtensionInner extensionParameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters).map(new Func1<ServiceResponse<VirtualMachineExtensionInner>, VirtualMachineExtensionInner>() {
-            @Override
-            public VirtualMachineExtensionInner call(ServiceResponse<VirtualMachineExtensionInner> response) {
-                return response.body();
-            }
-        });
+    public Single<PollingState<VirtualMachineExtensionInner>> beginCreateOrUpdateAsync(String resourceGroupName, String vmName, String vmExtensionName, VirtualMachineExtensionInner extensionParameters) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (vmName == null) {
+            throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
+        }
+        if (vmExtensionName == null) {
+            throw new IllegalArgumentException("Parameter vmExtensionName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (extensionParameters == null) {
+            throw new IllegalArgumentException("Parameter extensionParameters is required and cannot be null.");
+        }
+        Validator.validate(extensionParameters);
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.beginCreateOrUpdate(resourceGroupName, vmName, vmExtensionName, this.client.subscriptionId(), extensionParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().beginPutOrPatchAsync(observable, new TypeToken<VirtualMachineExtensionInner>() { }.getType());
     }
 
     /**
@@ -371,13 +386,22 @@ public class VirtualMachineExtensionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
-    public Observable<OperationStatusResponseInner> beginDeleteAsync(String resourceGroupName, String vmName, String vmExtensionName) {
-        return beginDeleteWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).map(new Func1<ServiceResponse<OperationStatusResponseInner>, OperationStatusResponseInner>() {
-            @Override
-            public OperationStatusResponseInner call(ServiceResponse<OperationStatusResponseInner> response) {
-                return response.body();
-            }
-        });
+    public Single<PollingState<OperationStatusResponseInner>> beginDeleteAsync(String resourceGroupName, String vmName, String vmExtensionName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (vmName == null) {
+            throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
+        }
+        if (vmExtensionName == null) {
+            throw new IllegalArgumentException("Parameter vmExtensionName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.beginDelete(resourceGroupName, vmName, vmExtensionName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().beginPostOrDeleteAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
