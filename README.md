@@ -18,7 +18,7 @@ The Azure Management Libraries for Java is a higher-level, object-oriented API f
   <tr>
     <td>Compute</td>
     <td>Virtual machines and VM extensions<br>Virtual machine scale sets<br>Managed disks</td>
-    <td valign="top">Azure container services<br>Azure container registry</td>
+    <td valign="top">Azure container service and registry</td>
     <td valign="top"></td>
   </tr>
   <tr>
