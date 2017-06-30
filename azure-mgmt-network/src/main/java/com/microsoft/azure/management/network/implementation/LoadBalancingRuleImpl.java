@@ -120,13 +120,7 @@ class LoadBalancingRuleImpl
 
     @Override
     public LoadBalancingRuleImpl withExistingPublicIPAddress(String resourceId) {
-        if (null == resourceId) {
-            return this;
-        } else {
-            LoadBalancerFrontendImpl frontend = this.parent().ensureDefaultFrontend()
-                .withExistingPublicIPAddress(resourceId);
-            return this.withFrontend(frontend.name());
-        }
+        return (null != resourceId) ? this.withFrontend(this.parent().ensureFrontendWithPip(resourceId).name()) : this;
     }
 
     @Override
@@ -188,18 +182,10 @@ class LoadBalancingRuleImpl
 
     @Override
     public LoadBalancingRuleImpl withFrontend(String frontendName) {
-        // Ensure existence of frontend, creating one if needed
-        if (frontendName == null) {
-            frontendName = this.parent().ensureDefaultFrontend().name();
-        } else {
-            LoadBalancerFrontendImpl frontend = this.parent().defineFrontend(frontendName);
-            frontendName = frontend.name();
-            frontend.attach();
+        SubResource frontendRef = this.parent().ensureFrontendRef(frontendName);
+        if (frontendRef != null) {
+            this.inner().withFrontendIPConfiguration(frontendRef);
         }
-
-        SubResource frontendRef = new SubResource()
-                .withId(this.parent().futureResourceId() + "/frontendIPConfigurations/" + frontendName);
-        this.inner().withFrontendIPConfiguration(frontendRef);
         return this;
     }
 

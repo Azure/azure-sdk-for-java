@@ -317,7 +317,7 @@ public class TestLoadBalancer {
                     // Load balancing rules
                     .defineLoadBalancingRule("rule1")
                         .withProtocol(TransportProtocol.TCP)    // Required
-                        .withDefaultFrontend()
+                        .withExistingPublicIPAddress(pip)
                         .withFrontendPort(81)
                         .withProbe("tcpProbe1")
                         .withDefaultBackend()

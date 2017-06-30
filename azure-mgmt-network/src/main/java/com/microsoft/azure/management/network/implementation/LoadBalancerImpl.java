@@ -124,6 +124,21 @@ class LoadBalancerImpl
         }
     }
 
+    protected SubResource ensureFrontendRef(String name) {
+        // Ensure existence of frontend, creating one if needed
+        LoadBalancerFrontendImpl frontend;
+        if (name == null) {
+            frontend = this.ensureDefaultFrontend();
+        } else {
+            frontend = this.defineFrontend(name);
+            frontend.attach();
+        }
+
+        // Return frontend reference
+        return new SubResource()
+                .withId(this.futureResourceId() + "/frontendIPConfigurations/" + name);
+    }
+
     protected LoadBalancerFrontendImpl ensureDefaultFrontend() {
         LoadBalancerFrontendImpl frontend = this.defaultFrontend();
         if (frontend != null) {
@@ -134,6 +149,25 @@ class LoadBalancerImpl
             frontend.attach();
             this.defaultFrontend = frontend;
             return frontend;
+        }
+    }
+
+    LoadBalancerFrontend ensureFrontendWithPip(String pipId) {
+        if (pipId == null) {
+            return null;
+        } else {
+            // Use existing frontend already pointing at this PIP, if any
+            for (LoadBalancerPublicFrontend frontend : this.publicFrontends().values()) {
+                if (frontend.publicIPAddressId() == null) {
+                    continue;
+                }
+                else if (pipId.toLowerCase().equalsIgnoreCase(frontend.publicIPAddressId().toLowerCase())) {
+                    return frontend;
+                }
+            }
+
+            // Existing not found so use default
+            return this.ensureDefaultFrontend().withExistingPublicIPAddress(pipId);
         }
     }
 
