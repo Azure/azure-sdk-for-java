@@ -250,6 +250,11 @@ public interface WebAppBase extends
     PlatformArchitecture platformArchitecture();
 
     /**
+     * @return the Linux app framework and version if this is a Linux web app.
+     */
+    String linuxFxVersion();
+
+    /**
      * @return the mapping from host names and the host name bindings
      */
     @Method
