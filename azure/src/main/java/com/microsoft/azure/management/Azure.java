@@ -686,7 +686,7 @@ public final class Azure {
      * @return entry point to managing Container Regsitries.
      */
     @Beta(SinceVersion.V1_1_0)
-    public DocumentDBAccounts documentDBAccounts() {
+    public DocumentDBAccounts documentDBs() {
         return documentDBManager.databaseAccounts();
     }
 
