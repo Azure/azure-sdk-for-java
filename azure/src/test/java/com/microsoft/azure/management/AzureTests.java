@@ -124,7 +124,7 @@ public class AzureTests extends TestBase {
 
     /**
      * Tests subscription listing.
-     * @throws Exception
+     * @throws Exception exception
      */
     @Test
     public void listSubscriptions() throws Exception {
