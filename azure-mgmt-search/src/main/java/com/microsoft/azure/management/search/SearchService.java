@@ -243,7 +243,6 @@ public interface SearchService extends
       /**
        * Specifies to use a standard sku type for the Search service.
        *
-       * @param
        * @return the next stage of the definition
        */
       WithPartitionsAndCreate withStandardSku();
