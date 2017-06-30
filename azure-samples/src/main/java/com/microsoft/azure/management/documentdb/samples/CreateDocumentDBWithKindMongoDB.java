@@ -43,7 +43,7 @@ public final class CreateDocumentDBWithKindMongoDB {
             // Create a DocumentDB
 
             System.out.println("Creating a DocumentDB...");
-            DocumentDBAccount documentDBAccount = azure.documentDBAccounts().define(docDBName)
+            DocumentDBAccount documentDBAccount = azure.documentDBs().define(docDBName)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
                     .withKind(DatabaseAccountKind.MONGO_DB)
@@ -63,7 +63,7 @@ public final class CreateDocumentDBWithKindMongoDB {
             //============================================================
             // Delete DocumentDB
             System.out.println("Deleting the DocumentDB");
-            azure.documentDBAccounts().deleteById(documentDBAccount.id());
+            azure.documentDBs().deleteById(documentDBAccount.id());
             System.out.println("Deleted the DocumentDB");
 
             return true;
