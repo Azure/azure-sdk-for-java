@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.CoreMessageSender;
+import com.microsoft.azure.servicebus.primitives.ExceptionUtil;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import com.microsoft.azure.servicebus.primitives.StringUtil;
@@ -86,12 +87,29 @@ final class MessageSender extends InitializableEntity implements IMessageSender
 			{
 			    TRACE_LOGGER.info("Creating MessageSender to entity '{}'", this.entityPath);
 				CompletableFuture<CoreMessageSender> senderFuture = CoreMessageSender.create(this.messagingFactory, StringUtil.getShortRandomString(), this.entityPath);
-				return senderFuture.thenAcceptAsync((s) -> 
-				{
-					this.internalSender = s;
-					this.isInitialized = true;
-					TRACE_LOGGER.info("Created MessageSender to entity '{}'", this.entityPath);
-				});
+				CompletableFuture<Void> postSenderCreationFuture = new CompletableFuture<Void>();
+				senderFuture.handleAsync((s, coreSenderCreationEx) -> {
+                    if(coreSenderCreationEx == null)
+                    {
+                        this.internalSender = s;
+                        this.isInitialized = true;
+                        TRACE_LOGGER.info("Created MessageSender to entity '{}'", this.entityPath);
+                        postSenderCreationFuture.complete(null);
+                    }
+                    else
+                    {
+                        Throwable cause = ExceptionUtil.extractAsyncCompletionCause(coreSenderCreationEx);
+                        TRACE_LOGGER.error("Creating MessageSender to entity '{}' failed", this.entityPath, cause);
+                        if(this.ownsMessagingFactory)
+                        {
+                            // Close factory
+                            this.messagingFactory.closeAsync();
+                        }
+                        postSenderCreationFuture.completeExceptionally(cause);
+                    }
+                    return null;
+                });
+				return postSenderCreationFuture;
 			});
 		}
 	}

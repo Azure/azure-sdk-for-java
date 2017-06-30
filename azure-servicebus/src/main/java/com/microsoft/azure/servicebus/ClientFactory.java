@@ -8,7 +8,7 @@ import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
 public class ClientFactory {
 	
-	private static final ReceiveMode DEFAULTRECEIVEMODE = ReceiveMode.PeekLock;
+	private static final ReceiveMode DEFAULTRECEIVEMODE = ReceiveMode.PEEKLOCK;
 	
 	// Create sender
 	public static IMessageSender createMessageSenderFromConnectionString(String amqpConnectionString) throws InterruptedException, ServiceBusException

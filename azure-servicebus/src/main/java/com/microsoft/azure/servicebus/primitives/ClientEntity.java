@@ -9,9 +9,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 /**
- *  Contract for all client entities with Open-Close/Abort state m/c
- *  main-purpose: closeAll related entities
+ *  Contract for all client entities with Open-Close/Abort state m/c <p>
+ *  main-purpose: closeAll related entities <p>
  *  Internal-class
+ *  @since 1.0
  */
 public abstract class ClientEntity
 {

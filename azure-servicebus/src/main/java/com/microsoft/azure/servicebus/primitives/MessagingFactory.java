@@ -37,15 +37,15 @@ import com.microsoft.azure.servicebus.amqp.ReactorHandler;
 import com.microsoft.azure.servicebus.amqp.ReactorDispatcher;
 
 /**
- * Abstracts all amqp related details and exposes AmqpConnection object
- * Manages connection life-cycle
+ * Abstracts all AMQP related details and encapsulates an AMQP connection and manages its life cycle. Each instance of this class represent one AMQP connection to the namespace.
+ * If an application creates multiple senders, receivers or clients using the same MessagingFacotry instance, all those senders, receivers or clients will share the same connection to the namespace.
+ * @since 1.0
  */
-public class MessagingFactory extends ClientEntity implements IAmqpConnection, IConnectionFactory
+public class MessagingFactory extends ClientEntity implements IAmqpConnection
 {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(MessagingFactory.class);
-    
-	public static final Duration DefaultOperationTimeout = Duration.ofSeconds(30);	
-	private static final int MAX_CBS_LINK_CREATION_ATTEMPTS = 3;
+	
+	private static final int MAX_CBS_LINK_CREATION_ATTEMPTS = 3;	
 	private final ConnectionStringBuilder builder;
 	private final String hostName;
 	private final CompletableFuture<Void> connetionCloseFuture;
@@ -67,10 +67,6 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	private int cbsLinkCreationAttempts = 0;
 	private Throwable lastCBSLinkCreationException = null;
 	
-
-	/**
-	 * @param reactor parameter reactor is purely for testing purposes and the SDK code should always set it to null
-	 */
 	MessagingFactory(final ConnectionStringBuilder builder)
 	{
 		super("MessagingFactory".concat(StringUtil.getShortRandomString()), null);
@@ -96,7 +92,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 				super.onReactorInit(e);
 
 				final Reactor r = e.getReactor();
-				TRACE_LOGGER.info("Creatina connection to host '{}:{}'", hostName, ClientConstants.AMQPS_PORT);
+				TRACE_LOGGER.info("Creating connection to host '{}:{}'", hostName, ClientConstants.AMQPS_PORT);
 				connection = r.connectionToHost(hostName, ClientConstants.AMQPS_PORT, connectionHandler);
 			}
 		};
@@ -137,29 +133,42 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		reactorThread.start();
 		TRACE_LOGGER.info("Started reactor");
 	}
-
-	@Override
-	public Connection getConnection()
+	
+	Connection getConnection()
 	{
 		if (this.connection == null || this.connection.getLocalState() == EndpointState.CLOSED || this.connection.getRemoteState() == EndpointState.CLOSED)
 		{
-		    TRACE_LOGGER.info("Creatina connection to host '{}:{}'", hostName, ClientConstants.AMQPS_PORT);
+		    TRACE_LOGGER.info("Creating connection to host '{}:{}'", hostName, ClientConstants.AMQPS_PORT);
 			this.connection = this.getReactor().connectionToHost(this.hostName, ClientConstants.AMQPS_PORT, this.connectionHandler);
 		}
 
 		return this.connection;
 	}
 
+	/**
+	 * Gets the operation timeout from the connections string.
+	 * @return operation timeout specified in the connection string
+	 */
 	public Duration getOperationTimeout()
 	{
 		return this.operationTimeout;
 	}
 
+	/**
+	 * Gets the retry policy from the connection string.
+	 * @return retry policy specified in the connection string
+	 */
 	public RetryPolicy getRetryPolicy()
 	{
 		return this.retryPolicy;
 	}
 
+	/**
+	 * Creates an instance of MessagingFactory from the given connection string builder. This is a non-blocking method.
+	 * @param builder connection string builder to the  bus namespace or entity
+	 * @return a <code>CompletableFuture</code> which completes when a connection is established to the namespace or when a connection couldn't be established.
+	 * @see java.util.concurrent.CompletableFuture
+	 */
 	public static CompletableFuture<MessagingFactory> createFromConnectionStringBuilderAsync(final ConnectionStringBuilder builder)
 	{	
 	    if(TRACE_LOGGER.isInfoEnabled())
@@ -178,22 +187,45 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		return messagingFactory.factoryOpenFuture;
 	}
 	
+	/**
+	 * Creates an instance of MessagingFactory from the given connection string. This is a non-blocking method.
+	 * @param connectionString connection string to the  bus namespace or entity
+	 * @return a <code>CompletableFuture</code> which completes when a connection is established to the namespace or when a connection couldn't be established.
+	 * @see java.util.concurrent.CompletableFuture
+	 */
 	public static CompletableFuture<MessagingFactory> createFromConnectionStringAsync(final String connectionString)
 	{
 		ConnectionStringBuilder builder = new ConnectionStringBuilder(connectionString);
 		return createFromConnectionStringBuilderAsync(builder);
 	}
 	
+	/**
+	 * Creates an instance of MessagingFactory from the given connection string builder. This method blocks for a connection to the namespace to be established.
+	 * @param builder connection string builder to the  bus namespace or entity
+	 * @return an instance of MessagingFactory
+	 * @throws InterruptedException if blocking thread is interrupted
+	 * @throws ExecutionException if a connection couldn't be established to the namespace. Cause of the failure can be found by calling {@link Exception#getCause()}
+	 */
 	public static MessagingFactory createFromConnectionStringBuilder(final ConnectionStringBuilder builder) throws InterruptedException, ExecutionException
 	{		
 		return createFromConnectionStringBuilderAsync(builder).get();
 	}
 	
+	/**
+	 * Creates an instance of MessagingFactory from the given connection string. This method blocks for a connection to the namespace to be established.
+	 * @param connectionString connection string to the  bus namespace or entity
+	 * @return an instance of MessagingFactory
+	 * @throws InterruptedException if blocking thread is interrupted
+	 * @throws ExecutionException if a connection couldn't be established to the namespace. Cause of the failure can be found by calling {@link Exception#getCause()}
+	 */
 	public static MessagingFactory createFromConnectionString(final String connectionString) throws InterruptedException, ExecutionException
 	{		
 		return createFromConnectionStringAsync(connectionString).get();
 	}
 
+	/**
+     * Internal method.&nbsp;Clients should not use this method.
+     */
 	@Override
 	public void onOpenComplete()
 	{
@@ -208,6 +240,9 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	    this.createCBSLinkAsync();
 	}
 
+	/**
+	 * Internal method.&nbsp;Clients should not use this method.
+	 */
 	@Override
 	public void onConnectionError(ErrorCondition error)
 	{
@@ -282,25 +317,6 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	        }
 	        
 	        TRACE_LOGGER.debug("Closed all links on the connection. Number of links '{}'", links.length);
-	        	        
-	        if(this.cbsLink != null)
-	        {
-	            TRACE_LOGGER.debug("Closing CBS link on the connection");
-	            try {
-	                this.cbsLink.close();
-	                TRACE_LOGGER.debug("Closed CBS on the connection");
-	            } catch (ServiceBusException e) {
-	                TRACE_LOGGER.warn("Closing CBS link on the connection failed.", e);
-	            }	            
-	        }
-	        
-	        
-	        if(this.cbsLinkCreationFuture != null && !this.cbsLinkCreationFuture.isDone())
-	        {
-	            AsyncUtil.completeFutureExceptionally(this.cbsLinkCreationFuture, new Exception("Connection closed."));
-	        }
-	        
-	        this.cbsLinkCreationFuture = new CompletableFuture<Void>();
 
 	        if (currentConnection.getLocalState() != EndpointState.CLOSED && currentConnection.getRemoteState() != EndpointState.CLOSED)
 	        {
@@ -347,7 +363,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		    cbsLinkCloseFuture.thenRun(() -> this.managementLinksCache.freeAsync()).thenRun(() -> {
 		        if(this.cbsLinkCreationFuture != null && !this.cbsLinkCreationFuture.isDone())
 	            {
-	                AsyncUtil.completeFutureExceptionally(this.cbsLinkCreationFuture, new Exception("Connection closed."));
+	                this.cbsLinkCreationFuture.completeExceptionally(new Exception("Connection closed."));
 	            }
 		        
 		        if (this.connection != null && this.connection.getRemoteState() != EndpointState.CLOSED)
@@ -464,24 +480,30 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		}
 	}
 
+	/**
+     * Internal method.&nbsp;Clients should not use this method.
+     */
 	@Override
 	public void registerForConnectionError(Link link)
 	{
 		this.registeredLinks.add(link);
 	}
 
+	/**
+     * Internal method.&nbsp;Clients should not use this method.
+     */
 	@Override
 	public void deregisterForConnectionError(Link link)
 	{
 		this.registeredLinks.remove(link);
 	}
 	
-	public void scheduleOnReactorThread(final DispatchHandler handler) throws IOException
+	void scheduleOnReactorThread(final DispatchHandler handler) throws IOException
 	{
 		this.getReactorScheduler().invoke(handler);
 	}
 
-	public void scheduleOnReactorThread(final int delay, final DispatchHandler handler) throws IOException
+	void scheduleOnReactorThread(final int delay, final DispatchHandler handler) throws IOException
 	{
 		this.getReactorScheduler().invoke(delay, handler);
 	}

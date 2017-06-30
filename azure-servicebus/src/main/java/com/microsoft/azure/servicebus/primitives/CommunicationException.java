@@ -14,6 +14,7 @@ package com.microsoft.azure.servicebus.primitives;
  * <li> Check for any general network connectivity issues, as well as network latency.
  * </ul>
  * @see <a href="http://go.microsoft.com/fwlink/?LinkId=761101">http://go.microsoft.com/fwlink/?LinkId=761101</a>
+ * @since 1.0
  */
 public class CommunicationException extends ServiceBusException
 {

@@ -8,6 +8,7 @@ package com.microsoft.azure.servicebus.primitives;
  * This exception is thrown when the operation has exceeded the predetermined time limit.
  * User should check connectivity is healthy between client process and service.
  * @see <a href="http://go.microsoft.com/fwlink/?LinkId=761101">http://go.microsoft.com/fwlink/?LinkId=761101</a>
+ * @since 1.0
  */
 public class TimeoutException extends ServiceBusException
 {

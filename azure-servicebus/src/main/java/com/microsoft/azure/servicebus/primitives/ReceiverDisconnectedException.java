@@ -14,6 +14,7 @@ package com.microsoft.azure.servicebus.primitives;
  * User should make sure either all code are using non-epoch receivers, or ensure that there is only one epoch receiver processing a given partition 
  * at any given point in time. 
  * @see <a href="http://go.microsoft.com/fwlink/?LinkId=761101">http://go.microsoft.com/fwlink/?LinkId=761101</a>
+ * @since 1.0
  */
 public class ReceiverDisconnectedException extends ServiceBusException
 {

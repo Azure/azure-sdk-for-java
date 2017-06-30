@@ -6,6 +6,7 @@ package com.microsoft.azure.servicebus.primitives;
 
 /**
  * This exception is thrown when the underlying Amqp layer encounter an abnormal link abort or disconnect of connection in an unexpected fashion.
+ * @since 1.0
  */
 public class OperationCancelledException extends ServiceBusException
 {

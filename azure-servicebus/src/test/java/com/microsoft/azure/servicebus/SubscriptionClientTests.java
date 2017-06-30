@@ -53,12 +53,12 @@ public class SubscriptionClientTests {
 	
 	private void createSubscriptionClient() throws InterruptedException, ServiceBusException
 	{
-		this.createSubscriptionClient(ReceiveMode.PeekLock);
+		this.createSubscriptionClient(ReceiveMode.PEEKLOCK);
 	}
 	
 	private void createSessionfulSubscriptionClient() throws InterruptedException, ServiceBusException
 	{
-		this.createSessionfulSubscriptionClient(ReceiveMode.PeekLock);
+		this.createSessionfulSubscriptionClient(ReceiveMode.PEEKLOCK);
 	}
 	
 	private void createSubscriptionClient(ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
@@ -128,7 +128,7 @@ public class SubscriptionClientTests {
 	@Test
 	public void testReceiveAndDeleteMessagePump() throws InterruptedException, ServiceBusException
 	{
-		this.createSubscriptionClient(ReceiveMode.ReceiveAndDelete);
+		this.createSubscriptionClient(ReceiveMode.RECEIVEANDDELETE);
 		MessageAndSessionPumpTests.testMessagePumpAutoComplete(this.topicClient, this.subscriptionClient);
 	}
 	
@@ -184,7 +184,7 @@ public class SubscriptionClientTests {
 	@Test
 	public void testReceiveAndDeleteSessionPump() throws InterruptedException, ServiceBusException
 	{
-		this.createSessionfulSubscriptionClient(ReceiveMode.ReceiveAndDelete);
+		this.createSessionfulSubscriptionClient(ReceiveMode.RECEIVEANDDELETE);
 		MessageAndSessionPumpTests.testSessionPumpAutoCompleteWithOneConcurrentCallPerSession(this.sessionfulTopicClient, this.sessionfulSubscriptionClient);
 	}
 	
@@ -219,7 +219,7 @@ public class SubscriptionClientTests {
 	@Test
     public void testSubscriptionNameSplitting() throws InterruptedException, ServiceBusException
     {
-	    this.subscriptionClient = new SubscriptionClient(TestUtils.getNonPartitionedSubscriptionConnectionStringBuilder(), ReceiveMode.PeekLock);
+	    this.subscriptionClient = new SubscriptionClient(TestUtils.getNonPartitionedSubscriptionConnectionStringBuilder(), ReceiveMode.PEEKLOCK);
         Assert.assertEquals("Wrong subscription name returned.", TestUtils.getProperty(TestUtils.SUBSCRIPTION_NAME_PROPERTY), this.subscriptionClient.getSubscriptionName());
     }
 }

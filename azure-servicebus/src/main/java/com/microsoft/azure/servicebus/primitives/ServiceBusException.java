@@ -7,7 +7,8 @@ package com.microsoft.azure.servicebus.primitives;
 import java.util.Locale;
 
 /**
- * This is the base exception that service bus will produce for all error cases.
+ * This is the base exception that service bus will generate for all error cases.
+ * @since 1.0
  */
 public class ServiceBusException extends Exception
 {

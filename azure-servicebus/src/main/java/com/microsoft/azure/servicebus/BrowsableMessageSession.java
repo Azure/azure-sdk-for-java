@@ -10,13 +10,17 @@ import java.util.concurrent.CompletableFuture;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
+/**
+ * A session object that can only be used to browse messages and state of a server side session. It cannot be used to receive messages from the service or to set state of the session.
+ *
+ */
 final class BrowsableMessageSession extends MessageSession
 {
 	private static final String INVALID_OPERATION_ERROR_MESSAGE = "Unsupported operation on a browse only session.";	
 	
 	BrowsableMessageSession(String sessionId, MessagingFactory messagingFactory, String entityPath)
 	{
-		super(messagingFactory, entityPath, sessionId, ReceiveMode.PeekLock);	
+		super(messagingFactory, entityPath, sessionId, ReceiveMode.PEEKLOCK);	
 //		try {
 //			this.initializeAsync().get();
 //		} catch (InterruptedException | ExecutionException e) {

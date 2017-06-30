@@ -9,6 +9,7 @@ package com.microsoft.azure.servicebus.primitives;
  * When encountered this exception user should check whether the token/key provided in the connection string is valid, and has correct 
  * execution right for the intended operations (e.g. Receive call will need Listen claim associated with the key/token).
  * @see <a href="http://go.microsoft.com/fwlink/?LinkId=761101">http://go.microsoft.com/fwlink/?LinkId=761101</a>
+ * @since 1.0
  */
 public class AuthorizationFailedException extends ServiceBusException
 {

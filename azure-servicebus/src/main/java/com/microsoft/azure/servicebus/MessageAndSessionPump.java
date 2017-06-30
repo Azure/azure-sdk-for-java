@@ -130,7 +130,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
 					    TRACE_LOGGER.trace("Message with sequence number '{}' received from entity '{}'.", message.getSequenceNumber(), this.entityPath);
 						// Start renew lock loop
 						final MessgeRenewLockLoop renewLockLoop;													
-						if(this.innerReceiver.getReceiveMode() == ReceiveMode.PeekLock)
+						if(this.innerReceiver.getReceiveMode() == ReceiveMode.PEEKLOCK)
 						{
 							Instant stopRenewMessageLockAt = Instant.now().plus(this.messageHandlerOptions.getMaxAutoRenewDuration());
 							renewLockLoop = new MessgeRenewLockLoop(this.innerReceiver, this, message, stopRenewMessageLockAt);
@@ -162,7 +162,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
 								TRACE_LOGGER.error("onMessage with message containing sequence number '{}' threw exception", message.getSequenceNumber(), onMessageEx);
 								this.notifyExceptionToMessageHandler(onMessageEx, ExceptionPhase.USERCALLBACK);
 							}
-							if(this.innerReceiver.getReceiveMode() == ReceiveMode.PeekLock)
+							if(this.innerReceiver.getReceiveMode() == ReceiveMode.PEEKLOCK)
 							{
 								if(renewLockLoop != null)
 								{								    
@@ -329,7 +329,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
 								TRACE_LOGGER.error("onMessage with message containing sequence number '{}' threw exception", message.getSequenceNumber(), onMessageEx);
 								this.notifyExceptionToSessionHandler(onMessageEx, ExceptionPhase.USERCALLBACK);
 							}
-							if(this.receiveMode == ReceiveMode.PeekLock)
+							if(this.receiveMode == ReceiveMode.PEEKLOCK)
 							{								
 								CompletableFuture<Void> updateDispositionFuture;
 								ExceptionPhase dispositionPhase;

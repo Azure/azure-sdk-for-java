@@ -45,112 +45,112 @@ public abstract class SendReceiveTests {
 	@Test
 	public void testBasicReceiveAndDelete() throws InterruptedException, ServiceBusException, ExecutionException
 	{
-		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.ReceiveAndDelete);
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.RECEIVEANDDELETE);
 		TestCommons.testBasicReceiveAndDelete(this.sender, this.sessionId, this.receiver);
 	}
 	
 	@Test
 	public void testBasicReceiveBatchAndDelete() throws InterruptedException, ServiceBusException, ExecutionException
 	{
-		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.ReceiveAndDelete);
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.RECEIVEANDDELETE);
 		TestCommons.testBasicReceiveBatchAndDelete(this.sender, this.sessionId, this.receiver);
 	}
 	
 	@Test
 	public void testBasicReceiveAndComplete() throws InterruptedException, ServiceBusException, ExecutionException
 	{
-		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.PeekLock);
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.PEEKLOCK);
 		TestCommons.testBasicReceiveAndComplete(this.sender, this.sessionId, this.receiver);
 	}
 	
 	@Test
 	public void testBasicReceiveAndAbandon() throws InterruptedException, ServiceBusException, ExecutionException
 	{
-		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.PeekLock);
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.PEEKLOCK);
 		TestCommons.testBasicReceiveAndAbandon(this.sender, this.sessionId, this.receiver);
 	}
 	
 	@Test
 	public void testBasicReceiveAndDeadLetter() throws InterruptedException, ServiceBusException, ExecutionException
 	{
-		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.PeekLock);
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.PEEKLOCK);
 		TestCommons.testBasicReceiveAndDeadLetter(this.sender, this.sessionId, this.receiver);
 	}
 	
 	@Test
 	public void testBasicReceiveAndRenewLock() throws InterruptedException, ServiceBusException, ExecutionException
 	{
-		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.PeekLock);
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.PEEKLOCK);
 		TestCommons.testBasicReceiveAndRenewLock(this.sender, this.sessionId, this.receiver);
 	}
 	
 	@Test
 	public void testBasicReceiveAndRenewLockBatch() throws InterruptedException, ServiceBusException, ExecutionException
 	{		
-		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.PeekLock);
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.PEEKLOCK);
 		TestCommons.testBasicReceiveAndRenewLockBatch(this.sender, this.sessionId, this.receiver);
 	}
 	
 	@Test
 	public void testBasicReceiveBatchAndComplete() throws InterruptedException, ServiceBusException, ExecutionException
 	{
-		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.PeekLock);
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.PEEKLOCK);
 		TestCommons.testBasicReceiveBatchAndComplete(this.sender, this.sessionId, this.receiver);
 	}
 	
 	@Test
 	public void testSendSceduledMessageAndReceive() throws InterruptedException, ServiceBusException
 	{	
-		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.ReceiveAndDelete);
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.RECEIVEANDDELETE);
 		TestCommons.testSendSceduledMessageAndReceive(this.sender, this.sessionId, this.receiver);
 	}
 	
 	@Test
 	public void testSendSceduledMessageAndCancel() throws InterruptedException, ServiceBusException
 	{
-		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.ReceiveAndDelete);
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.RECEIVEANDDELETE);
 		TestCommons.testSendSceduledMessageAndCancel(this.sender, this.sessionId, this.receiver);
 	}
 	
 	@Test
 	public void testPeekMessage() throws InterruptedException, ServiceBusException
 	{		
-		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, receiveBuilder.getEntityPath(), ReceiveMode.PeekLock);
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, receiveBuilder.getEntityPath(), ReceiveMode.PEEKLOCK);
 		TestCommons.testPeekMessage(this.sender, this.sessionId, this.receiver);
 	}
 	
 	@Test
 	public void testPeekMessageBatch() throws InterruptedException, ServiceBusException
 	{
-		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, receiveBuilder.getEntityPath(), ReceiveMode.PeekLock);
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, receiveBuilder.getEntityPath(), ReceiveMode.PEEKLOCK);
 		TestCommons.testPeekMessageBatch(this.sender, this.sessionId, this.receiver);
 	}
 	
 	@Test
 	public void testReceiveBySequenceNumberAndComplete() throws InterruptedException, ServiceBusException
 	{
-		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.PeekLock);
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.PEEKLOCK);
 		TestCommons.testReceiveBySequenceNumberAndComplete(this.sender, this.sessionId, this.receiver);
 	}
 	
 	@Test
 	public void testReceiveBySequenceNumberAndAbandon() throws InterruptedException, ServiceBusException
 	{
-		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.PeekLock);
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.PEEKLOCK);
 		TestCommons.testReceiveBySequenceNumberAndAbandon(this.sender, this.sessionId, this.receiver);
 	}
 	
 	@Test
 	public void testReceiveBySequenceNumberAndDefer() throws InterruptedException, ServiceBusException
 	{
-		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.PeekLock);
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.PEEKLOCK);
 		TestCommons.testReceiveBySequenceNumberAndDefer(this.sender, this.sessionId, this.receiver);
 	}
 	
 	@Test
 	public void testReceiveBySequenceNumberAndDeadletter() throws InterruptedException, ServiceBusException
 	{
-		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.PeekLock);
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveBuilder.getEntityPath(), ReceiveMode.PEEKLOCK);
 		TestCommons.testReceiveBySequenceNumberAndDeadletter(this.sender, this.sessionId, this.receiver);
 	}	
 	

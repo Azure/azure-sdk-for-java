@@ -11,15 +11,15 @@ import java.util.*;
 import java.util.regex.*;
 
 /**
- * {@link ConnectionStringBuilder} can be used to construct a connection string which can establish communication with ServiceBus entities.
+ * This class can be used to construct a connection string which can establish communication with ServiceBus entities.
  * It can also be used to perform basic validation on an existing connection string.
  * <p> Sample Code:
- * <pre>{@code
- * 	ConnectionStringBuilder connectionStringBuilder = new ConnectionStringBuilder(
- *     "ServiceBusNamespaceName", 
- *     "ServiceBusEntityName", // eventHubName or QueueName or TopicName 
- *     "SharedAccessSignatureKeyName", 
- *     "SharedAccessSignatureKey");
+ * <pre>{@code 
+ * ConnectionStringBuilder connectionStringBuilder = new ConnectionStringBuilder(
+ *                                          "ServiceBusNamespaceName", 
+ *                                          "ServiceBusEntityName", // QueueName or TopicName or SubscriptionPath
+ *                                          "SharedAccessSignatureKeyName", 
+ *                                          "SharedAccessSignatureKey");
  *  
  * String connectionString = connectionStringBuilder.toString();
  * }</pre>
@@ -27,11 +27,15 @@ import java.util.regex.*;
  * A connection string is basically a string consisted of key-value pair separated by ";". 
  * Basic format is {{@literal <}key{@literal >}={@literal <}value{@literal >}[;{@literal <}key{@literal >}={@literal <}value{@literal >}]} where supported key name are as follow:
  * <ul>
- * <li> Endpoint - the URL that contains the servicebus namespace
- * <li> EntityPath - the path to the service bus entity (queue/topic/eventhub/subscription/consumergroup/partition)
- * <li> SharedAccessKeyName - the key name to the corresponding shared access policy rule for the namespace, or entity.
- * <li> SharedAccessKey - the key for the corresponding shared access policy rule of the namespace or entity.
+ * <li> Endpoint - URL that points to the servicebus namespace
+ * <li> EntityPath - Path to the service bus entity (queue/topic/subscription/). For queues and topics, it is just the entity name. For subscriptions, path is &lt;topicName&gt;/subscriptions/&lt;subscriptionName&gt;
+ * <li> SharedAccessKeyName - Key name to the corresponding shared access policy rule for the namespace, or entity.
+ * <li> SharedAccessKey - Key value for the corresponding shared access policy rule of the namespace or entity.
+ * <li> SharedAccessSignatureToken - Instead of a key name and key value, clients can provide an already generated SAS Token.
+ * <li> OperationTimeout - Default timeout to be used for all senders, receiver and clients created from this connection string.
+ * <li> RetryPolicy - Name of the retry policy.
  * </ul>
+ * @since 1.0
  */
 public class ConnectionStringBuilder
 {	
@@ -63,6 +67,11 @@ public class ConnectionStringBuilder
 	private String entityPath;
 	private Duration operationTimeout;
 	private RetryPolicy retryPolicy;
+	
+	/**
+	 * Default operation timeout if timeout is not specified in the connection string. 30 seconds.
+	 */
+    public static final Duration DefaultOperationTimeout = Duration.ofSeconds(30);
 
 	private ConnectionStringBuilder(
             final URI endpointAddress,
@@ -122,7 +131,7 @@ public class ConnectionStringBuilder
     }
 
 	/**
-	 * Build a connection string
+	 * Creates a new instance from namespace, entity path and SAS Key name and value.
 	 * @param namespaceName Namespace name (dns suffix - ex: .servicebus.windows.net is not required)
 	 * @param entityPath Entity path. For queue or topic, use name. For subscription use &lt;topicName&gt;/subscriptions/&lt;subscriptionName&gt;
 	 * @param sharedAccessKeyName Shared Access Key name
@@ -134,11 +143,11 @@ public class ConnectionStringBuilder
 			final String sharedAccessKeyName,
 			final String sharedAccessKey)
 	{
-		this(namespaceName, entityPath, sharedAccessKeyName, sharedAccessKey, MessagingFactory.DefaultOperationTimeout, RetryPolicy.getDefault());
+		this(namespaceName, entityPath, sharedAccessKeyName, sharedAccessKey, ConnectionStringBuilder.DefaultOperationTimeout, RetryPolicy.getDefault());
 	}
 	
 	/**
-     * Build a connection string
+     * Creates a new instance from namespace, entity path and already generated SAS token.
      * @param namespaceName Namespace name (dns suffix - ex: .servicebus.windows.net is not required)
      * @param entityPath Entity path. For queue or topic, use name. For subscription use &lt;topicName&gt;/subscriptions/&lt;subscriptionName&gt;
      * @param sharedAccessSingature Shared Access Signature already generated
@@ -148,12 +157,12 @@ public class ConnectionStringBuilder
             final String entityPath,
             final String sharedAccessSingature)
     {
-        this(namespaceName, entityPath, sharedAccessSingature, MessagingFactory.DefaultOperationTimeout, RetryPolicy.getDefault());
+        this(namespaceName, entityPath, sharedAccessSingature, ConnectionStringBuilder.DefaultOperationTimeout, RetryPolicy.getDefault());
     }
 	
 
 	/**
-	 * Build a connection string
+	 * Creates a new instance from endpoint address of the namesapce, entity path and SAS Key name and value
 	 * @param endpointAddress namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
 	 * @param entityPath Entity path. For queue or topic, use name. For subscription use &lt;topicName&gt;/subscriptions/&lt;subscriptionName&gt;
 	 * @param sharedAccessKeyName Shared Access Key name
@@ -165,11 +174,11 @@ public class ConnectionStringBuilder
 			final String sharedAccessKeyName,
 			final String sharedAccessKey)
 	{
-		this(endpointAddress, entityPath, sharedAccessKeyName, sharedAccessKey, MessagingFactory.DefaultOperationTimeout, RetryPolicy.getDefault());
+		this(endpointAddress, entityPath, sharedAccessKeyName, sharedAccessKey, ConnectionStringBuilder.DefaultOperationTimeout, RetryPolicy.getDefault());
 	}
 	
 	/**
-	 * Build a connection string
+	 * Creates a new instance from endpoint address of the namesapce, entity path and already generated SAS token.
 	 * @param endpointAddress namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
 	 * @param entityPath Entity path. For queue or topic, use name. For subscription use &lt;topicName&gt;/subscriptions/&lt;subscriptionName&gt;
 	 * @param sharedAccessSingature Shared Access Signature already generated
@@ -179,10 +188,11 @@ public class ConnectionStringBuilder
             final String entityPath,
             final String sharedAccessSingature)
     {
-        this(endpointAddress, entityPath, sharedAccessSingature, MessagingFactory.DefaultOperationTimeout, RetryPolicy.getDefault());
+        this(endpointAddress, entityPath, sharedAccessSingature, ConnectionStringBuilder.DefaultOperationTimeout, RetryPolicy.getDefault());
     }
 
 	/**
+	 * Creates a new instance from the given connection string.
 	 * ConnectionString format:
 	 * 		Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;SharedAccessKeyName=SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY
 	 * or Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;SharedAccessSignatureToken=SHARED_ACCESS_SIGNATURE_TOKEN
@@ -195,6 +205,7 @@ public class ConnectionStringBuilder
 	}
 	
 	/**
+	 * Creates a new instance from the given connection string and entity path. A connection string may or may not include the entity path.
 	 * ConnectionString format:
 	 * 		Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;SharedAccessKeyName=SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY
 	 * or Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;SharedAccessSignatureToken=SHARED_ACCESS_SIGNATURE_TOKEN
@@ -209,7 +220,7 @@ public class ConnectionStringBuilder
 
 	/**
 	 * Get the endpoint which can be used to connect to the ServiceBus Namespace
-	 * @return Endpoint
+	 * @return Endpoint representing the service bus namespace
 	 */
 	public URI getEndpoint()
 	{
@@ -218,7 +229,7 @@ public class ConnectionStringBuilder
 
 	/**
 	 * Get the shared access policy key value from the connection string or null.
-	 * @return Shared Access Signature key
+	 * @return Shared Access Signature key value
 	 */
 	public String getSasKey()
 	{
@@ -227,7 +238,7 @@ public class ConnectionStringBuilder
 
 	/**
 	 * Get the shared access policy owner name from the connection string or null.
-	 * @return Shared Access Signature key name.
+	 * @return Shared Access Signature key name
 	 */
 	public String getSasKeyName()
 	{
@@ -253,17 +264,18 @@ public class ConnectionStringBuilder
 	}
 
 	/**
-	 * OperationTimeout is applied in erroneous situations to notify the caller about the relevant {@link ServiceBusException}
+	 * Gets the duration after which a pending operation like SEND or RECEIVE will time out. If a timeout is not specified, it defaults to {@link #DefaultOperationTimeout}
+	 * This value will be used by all operations which uses this {@link ConnectionStringBuilder}, unless explicitly over-ridden. 
 	 * @return operationTimeout
 	 */
 	public Duration getOperationTimeout()
 	{
-		return (this.operationTimeout == null ? MessagingFactory.DefaultOperationTimeout : this.operationTimeout);
+		return (this.operationTimeout == null ? ConnectionStringBuilder.DefaultOperationTimeout : this.operationTimeout);
 	}
 
 	/**
 	 * Set the OperationTimeout value in the Connection String. This value will be used by all operations which uses this {@link ConnectionStringBuilder}, unless explicitly over-ridden.
-	 * <p>ConnectionString with operationTimeout is not interoperable between java and clients in other platforms.
+	 * <p>ConnectionString with operationTimeout is not inter-operable between java and clients in other platforms.
 	 * @param operationTimeout Operation Timeout
 	 */
 	public void setOperationTimeout(final Duration operationTimeout)

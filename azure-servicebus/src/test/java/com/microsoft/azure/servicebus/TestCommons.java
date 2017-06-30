@@ -573,7 +573,7 @@ public class TestCommons {
 		Collection<IMessage> messages = receiver.receiveBatch(batchSize, DRAIN_MESSAGES_WAIT_TIME);
 		while(messages !=null && messages.size() > 0)
 		{
-			if(receiver.getReceiveMode() == ReceiveMode.PeekLock)
+			if(receiver.getReceiveMode() == ReceiveMode.PEEKLOCK)
 			{
 				for(IMessage message: messages)
 				{
@@ -591,7 +591,7 @@ public class TestCommons {
 				try
 				{
 					IMessage message = receiver.receiveBySequenceNumber(peekedMessage.getSequenceNumber());
-					if(receiver.getReceiveMode() == ReceiveMode.PeekLock)
+					if(receiver.getReceiveMode() == ReceiveMode.PEEKLOCK)
 					{
 						receiver.complete(message.getLockToken());
 					}
@@ -607,7 +607,7 @@ public class TestCommons {
 	
 	public static void drainAllMessages(ConnectionStringBuilder connectionStringBuilder) throws InterruptedException, ServiceBusException
 	{
-		IMessageReceiver receiver = ClientFactory.createMessageReceiverFromConnectionStringBuilder(connectionStringBuilder, ReceiveMode.ReceiveAndDelete);
+		IMessageReceiver receiver = ClientFactory.createMessageReceiverFromConnectionStringBuilder(connectionStringBuilder, ReceiveMode.RECEIVEANDDELETE);
 		TestCommons.drainAllMessagesFromReceiver(receiver);
 		receiver.close();
 	}
@@ -618,12 +618,12 @@ public class TestCommons {
 		Collection<IMessageSession> browsableSessions;
 		if(isQueue)
 		{
-			QueueClient qc = new QueueClient(connectionStringBuilder, ReceiveMode.ReceiveAndDelete);
+			QueueClient qc = new QueueClient(connectionStringBuilder, ReceiveMode.RECEIVEANDDELETE);
 			browsableSessions = qc.getMessageSessions();
 		}
 		else
 		{
-			SubscriptionClient sc = new SubscriptionClient(connectionStringBuilder, ReceiveMode.ReceiveAndDelete);
+			SubscriptionClient sc = new SubscriptionClient(connectionStringBuilder, ReceiveMode.RECEIVEANDDELETE);
 			browsableSessions = sc.getMessageSessions();
 		}		
 		
@@ -634,7 +634,7 @@ public class TestCommons {
 			for(IMessageSession browsableSession : browsableSessions)
 			{				
 				CompletableFuture<Void> drainFuture = ClientFactory.acceptSessionFromConnectionStringBuilderAsync
-						(connectionStringBuilder, browsableSession.getSessionId(), ReceiveMode.ReceiveAndDelete).thenAcceptAsync((session) -> {
+						(connectionStringBuilder, browsableSession.getSessionId(), ReceiveMode.RECEIVEANDDELETE).thenAcceptAsync((session) -> {
 							try {
 								TestCommons.drainAllMessagesFromReceiver(session, false);
 								session.setState(null);

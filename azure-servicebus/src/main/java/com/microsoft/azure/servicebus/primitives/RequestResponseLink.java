@@ -191,7 +191,7 @@ class RequestResponseLink extends ClientEntity{
 	
 	private void recreateInternalLinks() throws InterruptedException, ExecutionException
 	{
-	    TRACE_LOGGER.info("RequestResponseLink - recreating internal send and receive links to {}" + this.linkPath);
+	    TRACE_LOGGER.info("RequestResponseLink - recreating internal send and receive links to {}", this.linkPath);
 		try
 		{
 			this.amqpSender.close();
@@ -213,6 +213,16 @@ class RequestResponseLink extends ClientEntity{
 		this.createInternalLinks();
 		this.amqpSender.openFuture.thenComposeAsync((v) -> this.amqpReceiver.openFuture).get();
 	}
+	
+	private void handleConnectionErrorInReceiver(Exception exception)
+	{
+	    // Ignore connection errors coming from internal receiver as internal sender also receives the same connection error.
+	}
+	
+	private void handleConnectionErrorInSender(Exception exception)
+    {
+        this.handleConnectionError(exception);
+    }
 	
 	private void handleConnectionError(Exception exception)
 	{
@@ -485,7 +495,7 @@ class RequestResponseLink extends ClientEntity{
 					}
 					else
 					{
-						this.parent.handleConnectionError(exception);
+						this.parent.handleConnectionErrorInReceiver(exception);
 					}
 				}
 			}						
@@ -650,7 +660,7 @@ class RequestResponseLink extends ClientEntity{
 					}
 					else
 					{
-						this.parent.handleConnectionError(exception);
+						this.parent.handleConnectionErrorInSender(exception);
 					}
 				}
 			}

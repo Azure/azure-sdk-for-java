@@ -10,6 +10,7 @@ import java.time.Duration;
  *  RetryPolicy implementation where the delay between retries will grow in an exponential manner.
  *  RetryPolicy can be set on the client operations using {@link ConnectionStringBuilder}.
  *  RetryIntervals will be computed using a retryFactor which is a function of deltaBackOff (MaximumBackoff - MinimumBackoff) and MaximumRetryCount
+ *  @since 1.0
  */
 public final class RetryExponential extends RetryPolicy
 {

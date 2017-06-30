@@ -51,7 +51,7 @@ import com.microsoft.azure.servicebus.amqp.IAmqpSender;
 import com.microsoft.azure.servicebus.amqp.SendLinkHandler;
 import com.microsoft.azure.servicebus.amqp.SessionHandler;
 
-/**
+/*
  * Abstracts all amqp related details
  * translates event-driven reactor model into async send Api
  */

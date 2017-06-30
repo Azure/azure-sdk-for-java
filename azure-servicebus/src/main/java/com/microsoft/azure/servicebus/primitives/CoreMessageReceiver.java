@@ -56,7 +56,7 @@ import com.microsoft.azure.servicebus.amqp.IAmqpReceiver;
 import com.microsoft.azure.servicebus.amqp.ReceiveLinkHandler;
 import com.microsoft.azure.servicebus.amqp.SessionHandler;
 
-/**
+/*
  * Common Receiver that abstracts all amqp related details
  * translates event-driven reactor model into async receive Api
  */
@@ -451,52 +451,59 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 					}
 					else
 					{
-					    TRACE_LOGGER.debug("There are no prefetched messages. Waiting for messages from '{}'", CoreMessageReceiver.this.receivePath);
-						final ReceiveWorkItem receiveWorkItem = new ReceiveWorkItem(onReceive, timeout, maxMessageCount);
-						Timer.schedule(
-								new Runnable()
-								{
-									public void run()
-									{										
-										if( CoreMessageReceiver.this.pendingReceives.remove(receiveWorkItem))
-										{										
-											// TODO: can we do it better?
-											// workaround to push the sendflow-performative to reactor
-											// this sets the receiveLink endpoint to modified state
-											// (and increment the unsentCredits in proton by 0)
-											try
-											{
-												CoreMessageReceiver.this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler()
-												{
-													@Override
-													public void onEvent()
-													{
-														//TODO: not working
-														// Make credit 0, to stop further receiving on this link
-														//MessageReceiver.this.receiveLink.flow(-1 * MessageReceiver.this.receiveLink.getCredit());
-														CoreMessageReceiver.this.receiveLink.flow(0);
-														
-														// See if detach stops
-//														MessageReceiver.this.receiveLink.detach();
-//														MessageReceiver.this.receiveLink.close();
-//														MessageReceiver.this.underlyingFactory.deregisterForConnectionError(MessageReceiver.this.receiveLink);
-													}
-												});
-											}
-											catch (IOException ignore)
-											{
-											}
-											
-											TRACE_LOGGER.warn("No messages received from '{}'. Pending receive request timed out. Returning null to the client.", CoreMessageReceiver.this.receivePath);
-											receiveWorkItem.getWork().complete(null);
-										}										
-									}
-								},
-								timeout,
-								TimerType.OneTimeRun);
-						pendingReceives.add(receiveWorkItem);
+					    if(timeout == Duration.ZERO)
+					    {
+					        TRACE_LOGGER.debug("Timeout is zero. Returning null as there are no prefetched messages from '{}'", CoreMessageReceiver.this.receivePath);
+					        AsyncUtil.completeFuture(onReceive, null);
+					    }
+					    else
+					    {
+					        TRACE_LOGGER.debug("There are no prefetched messages. Waiting for messages from '{}'", CoreMessageReceiver.this.receivePath);
+	                        final ReceiveWorkItem receiveWorkItem = new ReceiveWorkItem(onReceive, timeout, maxMessageCount);
+	                        Timer.schedule(
+	                                new Runnable()
+	                                {
+	                                    public void run()
+	                                    {
+	                                        if( CoreMessageReceiver.this.pendingReceives.remove(receiveWorkItem))
+	                                        {
+	                                            // TODO: can we do it better?
+	                                            // workaround to push the sendflow-performative to reactor
+	                                            // this sets the receiveLink endpoint to modified state
+	                                            // (and increment the unsentCredits in proton by 0)
+	                                            try
+	                                            {
+	                                                CoreMessageReceiver.this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler()
+	                                                {
+	                                                    @Override
+	                                                    public void onEvent()
+	                                                    {
+	                                                        //TODO: not working
+	                                                        // Make credit 0, to stop further receiving on this link
+	                                                        //MessageReceiver.this.receiveLink.flow(-1 * MessageReceiver.this.receiveLink.getCredit());
+	                                                        CoreMessageReceiver.this.receiveLink.flow(0);
+	                                                        
+	                                                        // See if detach stops
+//	                                                      MessageReceiver.this.receiveLink.detach();
+//	                                                      MessageReceiver.this.receiveLink.close();
+//	                                                      MessageReceiver.this.underlyingFactory.deregisterForConnectionError(MessageReceiver.this.receiveLink);
+	                                                    }
+	                                                });
+	                                            }
+	                                            catch (IOException ignore)
+	                                            {
+	                                            }
+	                                            
+	                                            TRACE_LOGGER.warn("No messages received from '{}'. Pending receive request timed out. Returning null to the client.", CoreMessageReceiver.this.receivePath);
+	                                            receiveWorkItem.getWork().complete(null);
+	                                        }
+	                                    }
+	                                },
+	                                timeout,
+	                                TimerType.OneTimeRun);
+	                        pendingReceives.add(receiveWorkItem);
+	                    }
 					}
-						
 				}
 			});
 		}

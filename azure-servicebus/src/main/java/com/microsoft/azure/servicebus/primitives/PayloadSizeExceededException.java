@@ -9,6 +9,7 @@ package com.microsoft.azure.servicebus.primitives;
  * allowed payload size as defined by the service. Note that in a batch send scenario the limit can include possible 
  * batch overhead.
  * @see <a href="http://go.microsoft.com/fwlink/?LinkId=761101">http://go.microsoft.com/fwlink/?LinkId=761101</a>
+ * @since 1.0
  */
 public class PayloadSizeExceededException extends ServiceBusException
 {
