@@ -10,6 +10,7 @@ import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.PollingState;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.apigeneration.Beta;
@@ -83,9 +84,12 @@ import com.microsoft.azure.management.trafficmanager.TrafficManagerProfiles;
 import com.microsoft.azure.management.trafficmanager.implementation.TrafficManager;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
+import rx.Observable;
+import rx.Single;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 /**
  * The entry point for accessing resource management APIs in Azure.
@@ -692,5 +696,38 @@ public final class Azure {
     @Beta(SinceVersion.V1_2_0)
     public AccessManagement accessManagement() {
         return this.authenticated;
+    }
+
+    /**
+     * Given a polling state representing state of a LRO operation, this method returns {@link Single} object,
+     * when subscribed to it, a single poll will be performed and emits the latest polling state. A poll will be
+     * performed only if the current polling state is not in terminal state.
+     *
+     * Note: this method does not implicitly introduce concurrency, by default the deferred action will be executed
+     * in scheduler (if any) set for the provided observable.
+     *
+     * @param pollingState the current polling state
+     * @param <T> the type of the resource
+     * @param resourceType the java.lang.reflect.Type of the resource.
+     * @return the observable of which a subscription will lead single polling action.
+     */
+    @Beta(SinceVersion.V1_2_0)
+    public <T> Single<PollingState<T>> pollSingleAsync(final PollingState<T> pollingState, final Type resourceType) {
+        return this.resourceManager.pollSingleAsync(pollingState, resourceType);
+    }
+
+    /**
+     * Given a polling state representing state of an LRO operation, this method returns {@link Observable} object,
+     * when subscribed to it, a series of polling will be performed and emits each polling state to downstream.
+     * Polling will completes when the operation finish with success, failure or exception.
+     *
+     * @param pollingState the current polling state
+     * @param resourceType the java.lang.reflect.Type of the resource.
+     * @param <T> the type of the resource
+     * @return the observable of which a subscription will lead multiple polling action.
+     */
+    @Beta(SinceVersion.V1_2_0)
+    public <T> Observable<PollingState<T>> pollAsync(final PollingState<T> pollingState, final Type resourceType) {
+        return this.resourceManager.pollAsync(pollingState, resourceType);
     }
 }
