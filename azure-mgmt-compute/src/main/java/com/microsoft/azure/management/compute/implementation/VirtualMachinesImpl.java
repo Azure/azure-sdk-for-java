@@ -7,6 +7,7 @@ package com.microsoft.azure.management.compute.implementation;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microsoft.azure.PollingState;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.DataDisk;
 import com.microsoft.azure.management.compute.HardwareProfile;
@@ -18,9 +19,13 @@ import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizes;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
+import com.microsoft.azure.management.resources.fluentcore.arm.CompletableOperationPollingState;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
+import rx.Single;
 import rx.exceptions.Exceptions;
+import rx.functions.Func1;
 
 import java.util.ArrayList;
 
@@ -108,6 +113,26 @@ class VirtualMachinesImpl
     @Override
     public void migrateToManaged(String groupName, String name) {
         this.inner().convertToManagedDisks(groupName, name);
+    }
+
+    @Override
+    public Single<CompletableOperationPollingState> beginDeleteByIdAsync(String id) {
+        // TODO: this method will be moved to base class TopLevelModifiableResourcesImpl
+        return beginDeleteByResourceGroupAsync(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+    }
+
+    @Override
+    public Single<CompletableOperationPollingState> beginDeleteByResourceGroupAsync(String resourceGroupName, String name) {
+        return this.manager()
+                .inner()
+                .virtualMachines()
+                .beginDeleteAsync(resourceGroupName, name)
+                .map(new Func1<PollingState<?>, CompletableOperationPollingState>() {
+                    @Override
+                    public CompletableOperationPollingState call(PollingState<?> innerState) {
+                        return new CompletableOperationPollingState((PollingState<Void>)innerState);
+                    }
+                });
     }
 
     // Getters

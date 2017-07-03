@@ -7,10 +7,13 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.implementation;
 
 import com.microsoft.azure.PollingState;
+import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.resources.fluentcore.arm.CompletableOperationPollingState;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.RestClient;
 import rx.Observable;
 import rx.Single;
+import rx.functions.Func1;
 
 import java.lang.reflect.Type;
 
@@ -56,12 +59,20 @@ public abstract class ManagerBase {
      * in scheduler (if any) set for the provided observable.
      *
      * @param pollingState the current polling state
-     * @param <T> the type of the resource
-     * @param resourceType the java.lang.reflect.Type of the resource.
      * @return the observable of which a subscription will lead single polling action.
      */
-    public <T> Single<PollingState<T>> pollSingleAsync(final PollingState<T> pollingState, final Type resourceType) {
-        return this.resourceManager.inner().getAzureClient().pollSingleAsync(pollingState, resourceType);
+    @Beta(Beta.SinceVersion.V1_2_0)
+    public Single<CompletableOperationPollingState> pollSingleAsync(final CompletableOperationPollingState pollingState) {
+        return this.resourceManager.inner()
+                .getAzureClient()
+                .pollSingleAsync(pollingState.innerPollingState(), pollingState.innerResourceType())
+                .map(new Func1<PollingState<Void>, CompletableOperationPollingState>() {
+                    @Override
+                    public CompletableOperationPollingState call(PollingState<Void> voidPollingState) {
+                        pollingState.setInnerPollingState(voidPollingState);
+                        return pollingState;
+                    }
+                });
     }
 
     /**
@@ -70,11 +81,19 @@ public abstract class ManagerBase {
      * Polling will completes when the operation finish with success, failure or exception.
      *
      * @param pollingState the current polling state
-     * @param resourceType the java.lang.reflect.Type of the resource.
-     * @param <T> the type of the resource
      * @return the observable of which a subscription will lead multiple polling action.
      */
-    public <T> Observable<PollingState<T>> pollAsync(final PollingState<T> pollingState, final Type resourceType) {
-        return this.resourceManager.inner().getAzureClient().pollAsync(pollingState, resourceType);
+    @Beta(Beta.SinceVersion.V1_2_0)
+    public Observable<CompletableOperationPollingState> pollAsync(final CompletableOperationPollingState pollingState) {
+        return this.resourceManager.inner()
+                .getAzureClient()
+                .pollAsync(pollingState.innerPollingState(), pollingState.innerResourceType())
+                .map(new Func1<PollingState<Void>, CompletableOperationPollingState>() {
+                    @Override
+                    public CompletableOperationPollingState call(PollingState<Void> voidPollingState) {
+                        pollingState.setInnerPollingState(voidPollingState);
+                        return pollingState;
+                    }
+                });
     }
 }

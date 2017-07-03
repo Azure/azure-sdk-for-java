@@ -69,6 +69,7 @@ import com.microsoft.azure.management.resources.Subscription;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.Tenants;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
+import com.microsoft.azure.management.resources.fluentcore.arm.CompletableOperationPollingState;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
 import com.microsoft.azure.management.resources.implementation.ResourceManagementClientImpl;
@@ -707,13 +708,11 @@ public final class Azure {
      * in scheduler (if any) set for the provided observable.
      *
      * @param pollingState the current polling state
-     * @param <T> the type of the resource
-     * @param resourceType the java.lang.reflect.Type of the resource.
      * @return the observable of which a subscription will lead single polling action.
      */
     @Beta(SinceVersion.V1_2_0)
-    public <T> Single<PollingState<T>> pollSingleAsync(final PollingState<T> pollingState, final Type resourceType) {
-        return this.resourceManager.pollSingleAsync(pollingState, resourceType);
+    public Single<CompletableOperationPollingState> pollSingleAsync(final CompletableOperationPollingState pollingState) {
+        return this.resourceManager.pollSingleAsync(pollingState);
     }
 
     /**
@@ -722,12 +721,10 @@ public final class Azure {
      * Polling will completes when the operation finish with success, failure or exception.
      *
      * @param pollingState the current polling state
-     * @param resourceType the java.lang.reflect.Type of the resource.
-     * @param <T> the type of the resource
      * @return the observable of which a subscription will lead multiple polling action.
      */
     @Beta(SinceVersion.V1_2_0)
-    public <T> Observable<PollingState<T>> pollAsync(final PollingState<T> pollingState, final Type resourceType) {
-        return this.resourceManager.pollAsync(pollingState, resourceType);
+    public Observable<CompletableOperationPollingState> pollAsync(final CompletableOperationPollingState pollingState) {
+        return this.resourceManager.pollAsync(pollingState);
     }
 }

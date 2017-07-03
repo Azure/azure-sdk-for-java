@@ -6,9 +6,11 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.VirtualMachinesInner;
+import com.microsoft.azure.management.resources.fluentcore.arm.CompletableOperationPollingState;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
@@ -20,6 +22,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCr
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import rx.Single;
 
 /**
  *  Entry point to virtual machine management API.
@@ -111,4 +114,27 @@ public interface VirtualMachines extends
      * @param name the virtual machine name
      */
     void migrateToManaged(String groupName, String name);
+
+    /**
+     * Initiate the deletion of a virtual machine asynchronously.
+     * TODO: This method will be moved to SupportsDeleteById interface (keeping it now in this
+     * TODO: interface to avoid all collection that extends SupportsDeleteById from implementing this.)
+     *
+     * @param id the resource id
+     * @return an observable that emits the initial polling state
+     */
+    @Beta(Beta.SinceVersion.V1_2_0)
+    Single<CompletableOperationPollingState> beginDeleteByIdAsync(String id);
+
+    /**
+     * Initiate deletion a virtual machine from Azure, identifying it by its name and its resource group.
+     * TODO: This method will be moved to SupportsDeleteByResourceGroup interface (keeping it now in this
+     * TODO: interface to avoid all collection that extends SupportsDeleteById from implementing this.)
+     *
+     * @param resourceGroupName the resource group the resource is part of
+     * @param name the name of the resource
+     * @return an observable that emits the initial polling state
+     */
+    @Beta(Beta.SinceVersion.V1_2_0)
+    Single<CompletableOperationPollingState> beginDeleteByResourceGroupAsync(String resourceGroupName, String name);
 }
