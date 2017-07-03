@@ -14,6 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.rest.RestClient;
 import org.junit.Assert;
@@ -41,6 +42,49 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     @Override
     protected void cleanUpResources() {
         resourceManager.resourceGroups().deleteByName(RG_NAME);
+    }
+
+    @Test
+    public void canCreateVirtualMachineWithDiagnostics() throws Exception {
+        final String storageName = SdkContext.randomResourceName("st", 14);
+
+        // Create a storage account for the diagnostics
+        StorageAccount storageAccount = storageManager.storageAccounts().define(storageName)
+                .withRegion(REGION)
+                .withNewResourceGroup(RG_NAME)
+                .create();
+
+        // Create
+        Creatable<VirtualMachine> vmDefinition = computeManager.virtualMachines()
+                .define(VMNAME)
+                .withRegion(REGION)
+                .withExistingResourceGroup(RG_NAME)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
+                .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_DATACENTER)
+                .withAdminUsername("Foo12")
+                .withAdminPassword("abc!@#F0orL");
+
+        // TODO: This will need to be modeled using fluent API someday
+        DiagnosticsProfile diagnostics = new DiagnosticsProfile();
+        ((VirtualMachine) vmDefinition).inner().withDiagnosticsProfile(diagnostics);
+        BootDiagnostics boot = new BootDiagnostics();
+        diagnostics.withBootDiagnostics(boot);
+        boot.withEnabled(true);
+        final String storageUri = "http://" + storageAccount.name() + ".blob.core.windows.net/";
+        boot.withStorageUri(storageUri);
+
+        VirtualMachine vm = vmDefinition.create();
+
+        // Verify diagnostics
+        Assert.assertNotNull(vm.diagnosticsProfile());
+        Assert.assertNotNull(vm.diagnosticsProfile().bootDiagnostics());
+        Assert.assertNotNull(vm.diagnosticsProfile().bootDiagnostics().storageUri());
+        Assert.assertTrue(storageUri.equalsIgnoreCase(vm.diagnosticsProfile().bootDiagnostics().storageUri()));
+
+        // Delete VM
+        computeManager.virtualMachines().deleteById(vm.id());
     }
 
     @Test

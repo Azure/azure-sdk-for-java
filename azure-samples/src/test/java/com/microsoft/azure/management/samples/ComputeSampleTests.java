@@ -12,10 +12,13 @@ import com.microsoft.azure.management.compute.samples.CreateVirtualMachineUsingS
 import com.microsoft.azure.management.compute.samples.CreateVirtualMachineUsingSpecializedDiskFromVhd;
 import com.microsoft.azure.management.compute.samples.CreateVirtualMachinesInParallel;
 import com.microsoft.azure.management.compute.samples.CreateVirtualMachinesUsingCustomImageOrSpecializedVHD;
+import com.microsoft.azure.management.compute.samples.DeployImageFromContainerRegistryToKubernetes;
 import com.microsoft.azure.management.compute.samples.ListVirtualMachineExtensionImages;
 import com.microsoft.azure.management.compute.samples.ListVirtualMachineImages;
 import com.microsoft.azure.management.compute.samples.ManageAvailabilitySet;
 import com.microsoft.azure.management.compute.samples.ManageManagedDisks;
+import com.microsoft.azure.management.compute.samples.ManageContainerServiceUsingDockerSwarm;
+import com.microsoft.azure.management.compute.samples.ManageContainerServiceUsingKubernetes;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachine;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineAsync;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineExtension;
@@ -129,5 +132,26 @@ public class ComputeSampleTests extends SamplesTestBase {
     @Test
     public void testManageManagedDisks() {
       Assert.assertTrue(ManageManagedDisks.runSample(azure));
+    }
+
+    @Test
+    public void testManageContainerServiceUsingKubernetes() {
+        if (IS_MOCKED) {
+            Assert.assertTrue(ManageContainerServiceUsingKubernetes.runSample(azure, "client id", "secret"));
+        } else {
+            Assert.assertTrue(ManageContainerServiceUsingKubernetes.runSample(azure, "", ""));
+        }
+    }
+
+    @Test
+    public void testManageContainerServiceUsingDockerSwarm() {
+        Assert.assertTrue(ManageContainerServiceUsingDockerSwarm.runSample(azure));
+    }
+
+    @Test
+    public void testDeployImageFromContainerRegistryToKubernetes() {
+        if (!IS_MOCKED) {
+            Assert.assertTrue(DeployImageFromContainerRegistryToKubernetes.runSample(azure, "", ""));
+        }
     }
 }

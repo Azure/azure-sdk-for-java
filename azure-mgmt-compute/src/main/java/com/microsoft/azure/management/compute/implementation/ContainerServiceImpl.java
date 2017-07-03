@@ -19,6 +19,7 @@ import com.microsoft.azure.management.compute.ContainerServiceSshConfiguration;
 import com.microsoft.azure.management.compute.ContainerServiceAgentPool;
 import com.microsoft.azure.management.compute.ContainerServiceVMDiagnostics;
 import com.microsoft.azure.management.compute.ContainerServiceDiagnosticsProfile;
+import com.microsoft.azure.management.compute.ContainerServiceServicePrincipalProfile;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import rx.Observable;
 import rx.functions.Func1;
@@ -151,6 +152,24 @@ public class ContainerServiceImpl
     }
 
     @Override
+    public String servicePrincipalClientId() {
+        if (this.inner().servicePrincipalProfile() == null) {
+            return null;
+        }
+
+        return this.inner().servicePrincipalProfile().clientId();
+    }
+
+    @Override
+    public String servicePrincipalSecret() {
+        if (this.inner().servicePrincipalProfile() == null) {
+            return null;
+        }
+
+        return this.inner().servicePrincipalProfile().secret();
+    }
+
+    @Override
     public boolean isDiagnosticsEnabled() {
         if (this.inner().diagnosticsProfile() == null
                 || this.inner().diagnosticsProfile().vmDiagnostics() == null) {
@@ -184,12 +203,6 @@ public class ContainerServiceImpl
     @Override
     public ContainerServiceImpl withDiagnostics() {
         this.withDiagnosticsProfile(true);
-        return this;
-    }
-
-    @Override
-    public ContainerServiceImpl withoutDiagnostics() {
-        this.withDiagnosticsProfile(false);
         return this;
     }
 
@@ -237,6 +250,17 @@ public class ContainerServiceImpl
         return this;
     }
 
+    @Override
+    public ContainerServiceImpl withServicePrincipal(String clientId, String secret) {
+        ContainerServiceServicePrincipalProfile serviceProfile =
+                new ContainerServiceServicePrincipalProfile();
+        serviceProfile.withClientId(clientId);
+        serviceProfile.withSecret(secret);
+        this.inner().withServicePrincipalProfile(serviceProfile);
+        return this;
+    }
+
+
     void attachAgentPoolProfile(ContainerServiceAgentPool agentPoolProfile) {
         this.inner().agentPoolProfiles().add(agentPoolProfile.inner());
     }
@@ -275,6 +299,10 @@ public class ContainerServiceImpl
     @Override
     public Observable<ContainerService> createResourceAsync() {
         final ContainerServiceImpl self = this;
+        if (!this.isInCreateMode()) {
+            this.inner().withServicePrincipalProfile(null);
+        }
+
         return this.manager().inner().containerServices().createOrUpdateAsync(resourceGroupName(), name(), inner())
                 .map(new Func1<ContainerServiceInner, ContainerService>() {
                     @Override

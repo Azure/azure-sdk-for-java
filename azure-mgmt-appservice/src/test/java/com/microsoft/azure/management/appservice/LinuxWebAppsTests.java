@@ -22,7 +22,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
     private static String RG_NAME_2 = "";
     private static String WEBAPP_NAME_1 = "";
     private static String WEBAPP_NAME_2 = "";
-    private static OkHttpClient httpClient = new OkHttpClient.Builder().readTimeout(1, TimeUnit.MINUTES).build();
+    private static OkHttpClient httpClient = new OkHttpClient.Builder().readTimeout(3, TimeUnit.MINUTES).build();
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
@@ -41,6 +41,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
     }
 
     @Test
+//    @Ignore("Pending ICM 39157077 & https://github.com/Azure-App-Service/kudu/issues/30")
     public void canCRUDLinuxWebApp() throws Exception {
         // Create with new app service plan
         WebApp webApp1 = appServiceManager.webApps().define(WEBAPP_NAME_1)
@@ -84,7 +85,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
         Assert.assertEquals(OperatingSystem.LINUX, plan2.operatingSystem());
 
         webApp1.update()
-                .withBuiltInImage(RuntimeStack.NODEJS_6_6_0)
+                .withBuiltInImage(RuntimeStack.NODEJS_6_6)
                 .defineSourceControl()
                     .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test")
                     .withBranch("master")

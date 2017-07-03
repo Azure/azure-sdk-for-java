@@ -53,6 +53,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The implementation for WebAppBase.
@@ -100,8 +101,19 @@ abstract class WebAppBaseImpl<
 
     WebAppBaseImpl(String name, SiteInner innerObject, SiteConfigResourceInner configObject, AppServiceManager manager) {
         super(name, innerObject, manager);
+        if (innerObject != null && innerObject.kind() != null) {
+            innerObject.withKind(innerObject.kind().replace(";", ","));
+        }
         this.siteConfig = configObject;
         normalizeProperties();
+    }
+
+    @Override
+    public void setInner(SiteInner innerObject) {
+        if (innerObject.kind() != null) {
+            innerObject.withKind(innerObject.kind().replace(";", ","));
+        }
+        super.setInner(innerObject);
     }
 
     @SuppressWarnings("unchecked")
@@ -377,6 +389,14 @@ abstract class WebAppBaseImpl<
         } else {
             return PlatformArchitecture.X64;
         }
+    }
+
+    @Override
+    public String linuxFxVersion() {
+        if (siteConfig == null) {
+            return null;
+        }
+        return siteConfig.linuxFxVersion();
     }
 
     @Override
@@ -760,6 +780,7 @@ abstract class WebAppBaseImpl<
                     return createOrUpdateSourceControl(sourceControl.inner());
                 }
             })
+            .delay(30, TimeUnit.SECONDS)
             .map(new Func1<SiteSourceControlInner, SiteInner>() {
                 @Override
                 public SiteInner call(SiteSourceControlInner siteSourceControlInner) {
