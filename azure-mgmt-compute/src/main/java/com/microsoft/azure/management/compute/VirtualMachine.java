@@ -15,6 +15,7 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.model.HasNetworkInterfaces;
+import com.microsoft.azure.management.resources.fluentcore.arm.DeleteOperationMonitor;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -204,6 +205,15 @@ public interface VirtualMachine extends
      */
     @Method
     Observable<VirtualMachineInstanceView> refreshInstanceViewAsync();
+
+    /**
+     * Deletes the virtual machine.
+     *
+     * @return an observable that fire delete request when subscribed and emits monitor
+     * instance to track the delete operation progress.
+     *
+     */
+    Observable<DeleteOperationMonitor> beginDeleteAsync();
 
     // Getters
     //
