@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.PollingState;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AvailabilitySet;
@@ -37,6 +38,7 @@ import com.microsoft.azure.management.compute.StorageAccountTypes;
 import com.microsoft.azure.management.compute.StorageProfile;
 import com.microsoft.azure.management.compute.VirtualHardDisk;
 import com.microsoft.azure.management.compute.VirtualMachine;
+import com.microsoft.azure.management.compute.VirtualMachineCaptureResult;
 import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
 import com.microsoft.azure.management.compute.VirtualMachineEncryption;
 import com.microsoft.azure.management.compute.VirtualMachineUnmanagedDataDisk;
@@ -65,6 +67,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 import rx.exceptions.Exceptions;
 import rx.functions.Func0;
 import rx.functions.Func1;
@@ -320,6 +323,41 @@ class VirtualMachineImpl
         } catch (JsonProcessingException e) {
             throw Exceptions.propagate(e);
         }
+    }
+
+    @Override
+    public Single<PollingState<VirtualMachineCaptureResult>> beginCaptureAsync(String containerName, String vhdPrefix, boolean overwriteVhd) {
+        VirtualMachineCaptureParametersInner parameters = new VirtualMachineCaptureParametersInner();
+        parameters.withDestinationContainerName(containerName);
+        parameters.withOverwriteVhds(overwriteVhd);
+        parameters.withVhdPrefix(vhdPrefix);
+        return this.manager().inner().virtualMachines().beginCaptureAsync(this.resourceGroupName(), this.name(), parameters)
+                .map(new Func1<PollingState<VirtualMachineCaptureResultInner>, PollingState<VirtualMachineCaptureResult>>() {
+                    @Override
+                    public PollingState<VirtualMachineCaptureResult> call(PollingState<VirtualMachineCaptureResultInner> innerState) {
+                        VirtualMachineCaptureResult result = null;
+                        if (innerState.resource() != null) {
+                            result = new VirtualMachineCaptureResultImpl(innerState.resource());
+                        }
+                        return PollingState.createFromPollingState(innerState, result);
+                    }
+                });
+    }
+
+    @Override
+    public Observable<PollingState<VirtualMachineCaptureResult>> pollCaptureAsync(final PollingState<VirtualMachineCaptureResult> state) {
+        PollingState<VirtualMachineCaptureResultInner> innerState = PollingState.createFromPollingState(state, null);
+        return this.manager().inner().getAzureClient().pollAsync(innerState, VirtualMachineCaptureResultInner.class)
+                .map(new Func1<PollingState<VirtualMachineCaptureResultInner>, PollingState<VirtualMachineCaptureResult>>() {
+                    @Override
+                    public PollingState<VirtualMachineCaptureResult> call(PollingState<VirtualMachineCaptureResultInner> innerState) {
+                        VirtualMachineCaptureResult result = null;
+                        if (innerState.resource() != null) {
+                            result = new VirtualMachineCaptureResultImpl(innerState.resource());
+                        }
+                        return PollingState.createFromPollingState(innerState, result);
+                    }
+                });
     }
 
     @Override

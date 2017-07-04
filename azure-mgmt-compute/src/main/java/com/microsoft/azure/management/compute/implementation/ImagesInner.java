@@ -18,6 +18,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.PollingState;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -37,6 +38,7 @@ import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
+import rx.Single;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -215,13 +217,23 @@ public class ImagesInner implements InnerSupportsGet<ImageInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageInner object
      */
-    public Observable<ImageInner> beginCreateOrUpdateAsync(String resourceGroupName, String imageName, ImageInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, imageName, parameters).map(new Func1<ServiceResponse<ImageInner>, ImageInner>() {
-            @Override
-            public ImageInner call(ServiceResponse<ImageInner> response) {
-                return response.body();
-            }
-        });
+    public Single<PollingState<ImageInner>> beginCreateOrUpdateAsync(String resourceGroupName, String imageName, ImageInner parameters) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (imageName == null) {
+            throw new IllegalArgumentException("Parameter imageName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.beginCreateOrUpdate(resourceGroupName, imageName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().beginPutOrPatchAsync(observable, new TypeToken<ImageInner>() { }.getType());
     }
 
     /**
@@ -372,13 +384,19 @@ public class ImagesInner implements InnerSupportsGet<ImageInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
-    public Observable<OperationStatusResponseInner> beginDeleteAsync(String resourceGroupName, String imageName) {
-        return beginDeleteWithServiceResponseAsync(resourceGroupName, imageName).map(new Func1<ServiceResponse<OperationStatusResponseInner>, OperationStatusResponseInner>() {
-            @Override
-            public OperationStatusResponseInner call(ServiceResponse<OperationStatusResponseInner> response) {
-                return response.body();
-            }
-        });
+    public Single<PollingState<OperationStatusResponseInner>> beginDeleteAsync(String resourceGroupName, String imageName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (imageName == null) {
+            throw new IllegalArgumentException("Parameter imageName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-04-30-preview";
+        Observable<Response<ResponseBody>> observable = service.beginDelete(resourceGroupName, imageName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().beginPostOrDeleteAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -637,12 +655,12 @@ public class ImagesInner implements InnerSupportsGet<ImageInner>, InnerSupportsD
      */
     public Observable<Page<ImageInner>> listByResourceGroupAsync(final String resourceGroupName) {
         return listByResourceGroupWithServiceResponseAsync(resourceGroupName)
-            .map(new Func1<ServiceResponse<Page<ImageInner>>, Page<ImageInner>>() {
-                @Override
-                public Page<ImageInner> call(ServiceResponse<Page<ImageInner>> response) {
-                    return response.body();
-                }
-            });
+                .map(new Func1<ServiceResponse<Page<ImageInner>>, Page<ImageInner>>() {
+                    @Override
+                    public Page<ImageInner> call(ServiceResponse<Page<ImageInner>> response) {
+                        return response.body();
+                    }
+                });
     }
 
     /**
@@ -999,7 +1017,7 @@ public class ImagesInner implements InnerSupportsGet<ImageInner>, InnerSupportsD
     /**
      * Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of Images. Do this till nextLink is not null to fetch all the Images.
      *
-    ServiceResponse<PageImpl1<ImageInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     ServiceResponse<PageImpl1<ImageInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ImageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */

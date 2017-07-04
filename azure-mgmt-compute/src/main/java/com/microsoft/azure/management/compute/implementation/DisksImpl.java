@@ -34,11 +34,8 @@ class DisksImpl
                               String diskName,
                               AccessLevel accessLevel,
                               int accessDuration) {
-        GrantAccessDataInner grantAccessDataInner = new GrantAccessDataInner();
-        grantAccessDataInner.withAccess(accessLevel)
-                .withDurationInSeconds(accessDuration);
         AccessUriInner accessUriInner = this.inner().grantAccess(resourceGroupName,
-                diskName, grantAccessDataInner);
+                diskName, accessLevel, accessDuration);
         return accessUriInner.accessSAS();
     }
 

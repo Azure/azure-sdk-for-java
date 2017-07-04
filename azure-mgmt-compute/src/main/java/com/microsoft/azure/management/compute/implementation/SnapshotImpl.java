@@ -76,12 +76,8 @@ class SnapshotImpl
 
     @Override
     public Observable<String> grantAccessAsync(int accessDurationInSeconds) {
-        GrantAccessDataInner grantAccessDataInner = new GrantAccessDataInner();
-        grantAccessDataInner.withAccess(AccessLevel.READ)
-                .withDurationInSeconds(accessDurationInSeconds);
-
         return this.manager().inner().snapshots().grantAccessAsync(this.resourceGroupName(),
-                this.name(), grantAccessDataInner).map(new Func1<AccessUriInner, String>() {
+                this.name(), AccessLevel.READ, accessDurationInSeconds).map(new Func1<AccessUriInner, String>() {
             @Override
             public String call(AccessUriInner accessUriInner) {
                 if (accessUriInner == null) {

@@ -6,8 +6,12 @@
 
 package com.microsoft.azure.management.resources.fluentcore.arm.implementation;
 
+import com.microsoft.azure.PollingState;
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.RestClient;
+import rx.Observable;
+import rx.Single;
 
 /**
  * Base class for Azure resource managers.
@@ -40,5 +44,38 @@ public abstract class ManagerBase {
      */
     public ResourceManager resourceManager() {
         return this.resourceManager;
+    }
+
+    /**
+     * Given a polling state representing state of a LRO operation, this method returns {@link Single} object,
+     * when subscribed to it, a single poll will be performed and emits the latest polling state. A poll will be
+     * performed only if the current polling state is not in terminal state.
+     *
+     * Note: this method does not implicitly introduce concurrency, by default the deferred action will be executed
+     * in scheduler (if any) set for the provided observable.
+     *
+     * @param pollingState the current polling state
+     * @return the observable of which a subscription will lead single polling action.
+     */
+    @Beta(Beta.SinceVersion.V1_2_0)
+    public Single<PollingState<Void>> pollSingleAsync(PollingState<Void> pollingState) {
+        return this.resourceManager.inner()
+                .getAzureClient()
+                .pollSingleAsync(pollingState, Void.class);
+    }
+
+    /**
+     * Given a polling state representing state of an LRO operation, this method returns {@link Observable} object,
+     * when subscribed to it, a series of polling will be performed and emits each polling state to downstream.
+     * Polling will completes when the operation finish with success, failure or exception.
+     *
+     * @param pollingState the current polling state
+     * @return the observable of which a subscription will lead multiple polling action.
+     */
+    @Beta(Beta.SinceVersion.V1_2_0)
+    public Observable<PollingState<Void>> pollAsync(PollingState<Void> pollingState) {
+        return this.resourceManager.inner()
+                .getAzureClient()
+                .pollAsync(pollingState, Void.class);
     }
 }

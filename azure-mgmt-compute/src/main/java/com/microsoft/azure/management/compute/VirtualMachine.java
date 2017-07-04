@@ -7,6 +7,8 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.PollingState;
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
@@ -26,6 +28,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 import java.util.Map;
 
@@ -186,6 +189,30 @@ public interface VirtualMachine extends
      * @return the JSON template for creating more such virtual machines
      */
     String capture(String containerName, String vhdPrefix, boolean overwriteVhd);
+
+    /**
+     * Initiate virtual machine capture operation asynchronously.
+     *
+     * @param containerName destination container name to store the captured VHD
+     * @param vhdPrefix the prefix for the VHD holding captured image
+     * @param overwriteVhd whether to overwrites destination VHD if it exists
+     *
+     * @return an observable that emits the initial polling state
+     */
+    @Beta(Beta.SinceVersion.V1_2_0)
+    Single<PollingState<VirtualMachineCaptureResult>> beginCaptureAsync(String containerName, String vhdPrefix, boolean overwriteVhd);
+
+    /***
+     * Poll the status of the capture operation asynchronously. This method polls multiple times
+     * until the operation finishes successfully or with error. If there is no subscription then
+     * no polling will be performed.
+     *
+     * @param state polling state of the capture operation
+     *
+     * @return the observable that emits polling states of the capture operation
+     */
+    @Beta(Beta.SinceVersion.V1_2_0)
+    Observable<PollingState<VirtualMachineCaptureResult>> pollCaptureAsync(final PollingState<VirtualMachineCaptureResult> state);
 
     /**
      * Refreshes the virtual machine instance view to sync with Azure.
