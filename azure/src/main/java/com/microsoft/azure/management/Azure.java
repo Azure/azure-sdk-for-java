@@ -69,7 +69,6 @@ import com.microsoft.azure.management.resources.Subscription;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.Tenants;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
-import com.microsoft.azure.management.resources.fluentcore.arm.CompletableOperationPollingState;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
 import com.microsoft.azure.management.resources.implementation.ResourceManagementClientImpl;
@@ -710,9 +709,11 @@ public final class Azure {
      * @param pollingState the current polling state
      * @return the observable of which a subscription will lead single polling action.
      */
-    @Beta(SinceVersion.V1_2_0)
-    public Single<CompletableOperationPollingState> pollSingleAsync(final CompletableOperationPollingState pollingState) {
-        return this.resourceManager.pollSingleAsync(pollingState);
+    @Beta(Beta.SinceVersion.V1_2_0)
+    public Single<PollingState<Void>> pollSingleAsync(PollingState<Void> pollingState) {
+        return this.resourceManager.inner()
+                .getAzureClient()
+                .pollSingleAsync(pollingState, Void.class);
     }
 
     /**
@@ -723,8 +724,10 @@ public final class Azure {
      * @param pollingState the current polling state
      * @return the observable of which a subscription will lead multiple polling action.
      */
-    @Beta(SinceVersion.V1_2_0)
-    public Observable<CompletableOperationPollingState> pollAsync(final CompletableOperationPollingState pollingState) {
-        return this.resourceManager.pollAsync(pollingState);
+    @Beta(Beta.SinceVersion.V1_2_0)
+    public Observable<PollingState<Void>> pollAsync(PollingState<Void> pollingState) {
+        return this.resourceManager.inner()
+                .getAzureClient()
+                .pollAsync(pollingState, Void.class);
     }
 }

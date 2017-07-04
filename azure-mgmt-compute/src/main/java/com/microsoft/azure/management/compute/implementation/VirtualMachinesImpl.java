@@ -19,7 +19,6 @@ import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizes;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
-import com.microsoft.azure.management.resources.fluentcore.arm.CompletableOperationPollingState;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
@@ -116,21 +115,21 @@ class VirtualMachinesImpl
     }
 
     @Override
-    public Single<CompletableOperationPollingState> beginDeleteByIdAsync(String id) {
+    public Single<PollingState<Void>> beginDeleteByIdAsync(String id) {
         // TODO: this method will be moved to base class TopLevelModifiableResourcesImpl
         return beginDeleteByResourceGroupAsync(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
-    public Single<CompletableOperationPollingState> beginDeleteByResourceGroupAsync(String resourceGroupName, String name) {
+    public Single<PollingState<Void>> beginDeleteByResourceGroupAsync(String resourceGroupName, String name) {
         return this.manager()
                 .inner()
                 .virtualMachines()
                 .beginDeleteAsync(resourceGroupName, name)
-                .map(new Func1<PollingState<?>, CompletableOperationPollingState>() {
+                .map(new Func1<PollingState<OperationStatusResponseInner>, PollingState<Void>>() {
                     @Override
-                    public CompletableOperationPollingState call(PollingState<?> innerState) {
-                        return new CompletableOperationPollingState((PollingState<Void>)innerState);
+                    public PollingState<Void> call(PollingState<OperationStatusResponseInner> innerState) {
+                        return PollingState.createFromPollingState(innerState, null);
                     }
                 });
     }

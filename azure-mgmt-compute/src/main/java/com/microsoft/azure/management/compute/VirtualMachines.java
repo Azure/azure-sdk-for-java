@@ -6,11 +6,11 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.PollingState;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.VirtualMachinesInner;
-import com.microsoft.azure.management.resources.fluentcore.arm.CompletableOperationPollingState;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
@@ -124,7 +124,7 @@ public interface VirtualMachines extends
      * @return an observable that emits the initial polling state
      */
     @Beta(Beta.SinceVersion.V1_2_0)
-    Single<CompletableOperationPollingState> beginDeleteByIdAsync(String id);
+    Single<PollingState<Void>> beginDeleteByIdAsync(String id);
 
     /**
      * Initiate deletion a virtual machine from Azure, identifying it by its name and its resource group.
@@ -136,5 +136,5 @@ public interface VirtualMachines extends
      * @return an observable that emits the initial polling state
      */
     @Beta(Beta.SinceVersion.V1_2_0)
-    Single<CompletableOperationPollingState> beginDeleteByResourceGroupAsync(String resourceGroupName, String name);
+    Single<PollingState<Void>> beginDeleteByResourceGroupAsync(String resourceGroupName, String name);
 }

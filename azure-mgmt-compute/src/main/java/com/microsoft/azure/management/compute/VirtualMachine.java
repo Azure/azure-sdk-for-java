@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.PollingState;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
@@ -16,7 +17,6 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.model.HasNetworkInterfaces;
-import com.microsoft.azure.management.resources.fluentcore.arm.CompletableOperationPollingState;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -115,26 +115,6 @@ public interface VirtualMachine extends
     Completable restartAsync();
 
     /**
-     * Initiate virtual machine restart operation asynchronously.
-     *
-     * @return an observable that emits the initial polling state
-     */
-    @Beta(Beta.SinceVersion.V1_2_0)
-    Single<VirtualMachineRestartPollingState> beginRestartAsync();
-
-    /***
-     * Poll the status of the restart operation asynchronously. This method polls multiple times
-     * until the operation finishes successfully or with error. If there is no subscription then
-     * no polling will be performed.
-     *
-     * @param state polling state of the restart operation
-     *
-     * @return the observable that emits polling states of the restart operation.
-     */
-    @Beta(Beta.SinceVersion.V1_2_0)
-    Observable<VirtualMachineRestartPollingState> pollRestartAsync(final VirtualMachineRestartPollingState state);
-
-    /**
      * Restarts the virtual machine asynchronously.
      *
      * @param callback the callback to call on success or failure
@@ -213,10 +193,14 @@ public interface VirtualMachine extends
     /**
      * Initiate virtual machine capture operation asynchronously.
      *
+     * @param containerName destination container name to store the captured VHD
+     * @param vhdPrefix the prefix for the VHD holding captured image
+     * @param overwriteVhd whether to overwrites destination VHD if it exists
+     *
      * @return an observable that emits the initial polling state
      */
     @Beta(Beta.SinceVersion.V1_2_0)
-    Single<VirtualMachineCapturePollingState> beginCaptureAsync(String containerName, String vhdPrefix, boolean overwriteVhd);
+    Single<PollingState<VirtualMachineCaptureResult>> beginCaptureAsync(String containerName, String vhdPrefix, boolean overwriteVhd);
 
     /***
      * Poll the status of the capture operation asynchronously. This method polls multiple times
@@ -228,7 +212,7 @@ public interface VirtualMachine extends
      * @return the observable that emits polling states of the capture operation
      */
     @Beta(Beta.SinceVersion.V1_2_0)
-    Observable<VirtualMachineCapturePollingState> pollCaptureAsync(final VirtualMachineCapturePollingState state);
+    Observable<PollingState<VirtualMachineCaptureResult>> pollCaptureAsync(final PollingState<VirtualMachineCaptureResult> state);
 
     /**
      * Refreshes the virtual machine instance view to sync with Azure.

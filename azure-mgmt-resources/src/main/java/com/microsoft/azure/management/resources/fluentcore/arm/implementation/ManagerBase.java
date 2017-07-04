@@ -8,14 +8,10 @@ package com.microsoft.azure.management.resources.fluentcore.arm.implementation;
 
 import com.microsoft.azure.PollingState;
 import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.azure.management.resources.fluentcore.arm.CompletableOperationPollingState;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.RestClient;
 import rx.Observable;
 import rx.Single;
-import rx.functions.Func1;
-
-import java.lang.reflect.Type;
 
 /**
  * Base class for Azure resource managers.
@@ -62,17 +58,10 @@ public abstract class ManagerBase {
      * @return the observable of which a subscription will lead single polling action.
      */
     @Beta(Beta.SinceVersion.V1_2_0)
-    public Single<CompletableOperationPollingState> pollSingleAsync(final CompletableOperationPollingState pollingState) {
+    public Single<PollingState<Void>> pollSingleAsync(PollingState<Void> pollingState) {
         return this.resourceManager.inner()
                 .getAzureClient()
-                .pollSingleAsync(pollingState.innerPollingState(), pollingState.innerResourceType())
-                .map(new Func1<PollingState<Void>, CompletableOperationPollingState>() {
-                    @Override
-                    public CompletableOperationPollingState call(PollingState<Void> voidPollingState) {
-                        pollingState.setInnerPollingState(voidPollingState);
-                        return pollingState;
-                    }
-                });
+                .pollSingleAsync(pollingState, Void.class);
     }
 
     /**
@@ -84,16 +73,9 @@ public abstract class ManagerBase {
      * @return the observable of which a subscription will lead multiple polling action.
      */
     @Beta(Beta.SinceVersion.V1_2_0)
-    public Observable<CompletableOperationPollingState> pollAsync(final CompletableOperationPollingState pollingState) {
+    public Observable<PollingState<Void>> pollAsync(PollingState<Void> pollingState) {
         return this.resourceManager.inner()
                 .getAzureClient()
-                .pollAsync(pollingState.innerPollingState(), pollingState.innerResourceType())
-                .map(new Func1<PollingState<Void>, CompletableOperationPollingState>() {
-                    @Override
-                    public CompletableOperationPollingState call(PollingState<Void> voidPollingState) {
-                        pollingState.setInnerPollingState(voidPollingState);
-                        return pollingState;
-                    }
-                });
+                .pollAsync(pollingState, Void.class);
     }
 }
