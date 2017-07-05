@@ -8,8 +8,10 @@ package com.microsoft.azure.management.resources.fluentcore.model.implementation
 
 import com.microsoft.azure.management.resources.fluentcore.dag.TaskGroup;
 import com.microsoft.azure.management.resources.fluentcore.dag.TaskGroupTerminateOnErrorStrategy;
+import com.microsoft.azure.management.resources.fluentcore.dag.TaskItem;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Executable;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
@@ -26,15 +28,15 @@ import rx.functions.Func1;
  * @param <FluentModelImplT> the implementation type of the fluent model
  */
 public abstract class CreatableUpdatableImpl<
-            FluentModelT extends Indexable,
-            InnerModelT,
-            FluentModelImplT extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>>
+        FluentModelT extends Indexable,
+        InnerModelT,
+        FluentModelImplT extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>>
         extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
         implements
-            Appliable<FluentModelT>,
-            Creatable<FluentModelT>,
-            TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>>,
-            CreateUpdateTask.ResourceCreatorUpdator<FluentModelT> {
+        Appliable<FluentModelT>,
+        Creatable<FluentModelT>,
+        TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>>,
+        CreateUpdateTask.ResourceCreatorUpdator<FluentModelT> {
     /**
      * The name of the creatable updatable model.
      */
@@ -90,6 +92,23 @@ public abstract class CreatableUpdatableImpl<
         TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>> childModel =
                 (TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>>) appliable;
         childModel.taskGroup().merge(this.taskGroup);
+    }
+
+    /**
+     * Add an executable dependency for this executable model.
+     *
+     * @param executable the executable dependency
+     */
+    @SuppressWarnings("unchecked")
+    protected void addExecutableDependency(Executable<? extends Indexable> executable) {
+        TaskGroup.HasTaskGroup<FluentModelT, TaskItem<FluentModelT>> childModel =
+                (TaskGroup.HasTaskGroup<FluentModelT, TaskItem<FluentModelT>>) executable;
+
+        Creatable<FluentModelT> that = this;
+        TaskGroup.HasTaskGroup<FluentModelT, TaskItem<FluentModelT>> parentModel =
+                (TaskGroup.HasTaskGroup<FluentModelT, TaskItem<FluentModelT>>) that;
+
+        childModel.taskGroup().merge(parentModel.taskGroup());
     }
 
     @Override
@@ -156,11 +175,11 @@ public abstract class CreatableUpdatableImpl<
     protected Observable<Indexable> executeTaskGroupAsyncStreaming() {
         return taskGroup.executeAsync()
                 .map(new Func1<FluentModelT, Indexable>() {
-                        @Override
-                        public Indexable call(FluentModelT fluentModel) {
-                            return fluentModel;
-                        }
-                    });
+                    @Override
+                    public Indexable call(FluentModelT fluentModel) {
+                        return fluentModel;
+                    }
+                });
     }
 
     protected FluentModelT createdModel(String key) {

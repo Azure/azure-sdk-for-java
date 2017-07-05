@@ -74,6 +74,40 @@ public final class SSHShell {
     }
 
     /**
+     * Creates SSHShell.
+     *
+     * @param host the host name
+     * @param port the ssh port
+     * @param userName the ssh user name
+     * @param sshPrivateKey the ssh password
+     * @return the shell
+     * @throws JSchException
+     * @throws IOException
+     */
+    private SSHShell(String host, int port, String userName, byte[] sshPrivateKey)
+        throws JSchException, IOException {
+        Closure expectClosure = getExpectClosure();
+        for (String linuxPromptPattern : new String[]{"\\>", "#", "~#", "~\\$"}) {
+            try {
+                Match match = new RegExpMatch(linuxPromptPattern, expectClosure);
+                linuxPromptMatches.add(match);
+            } catch (MalformedPatternException malformedEx) {
+                throw new RuntimeException(malformedEx);
+            }
+        }
+        JSch jsch = new JSch();
+        jsch.setKnownHosts(System.getProperty("user.home") + "/.ssh/known_hosts");
+        jsch.addIdentity(host, sshPrivateKey, (byte[]) null, (byte[]) null);
+        this.session = jsch.getSession(userName, host, port);
+        this.session.setConfig("StrictHostKeyChecking", "no");
+        this.session.setConfig("PreferredAuthentications", "publickey,keyboard-interactive,password");
+        session.connect(60000);
+        this.channel = (ChannelShell) session.openChannel("shell");
+        this.expect = new Expect4j(channel.getInputStream(), channel.getOutputStream());
+        channel.connect();
+    }
+
+    /**
      * Opens a SSH shell.
      *
      * @param host the host name
@@ -87,6 +121,22 @@ public final class SSHShell {
     public static SSHShell open(String host, int port, String userName, String password)
             throws JSchException, IOException {
         return new SSHShell(host, port, userName, password);
+    }
+
+    /**
+     * Opens a SSH shell.
+     *
+     * @param host the host name
+     * @param port the ssh port
+     * @param userName the ssh user name
+     * @param sshPrivateKey the ssh private key
+     * @return the shell
+     * @throws JSchException exception thrown
+     * @throws IOException IO exception thrown
+     */
+    public static SSHShell open(String host, int port, String userName, byte[] sshPrivateKey)
+        throws JSchException, IOException {
+        return new SSHShell(host, port, userName, sshPrivateKey);
     }
 
     /**
