@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
@@ -346,11 +347,13 @@ public interface VirtualMachine extends
     /**
      * @return true if boot diagnostics is enabled for the virtual machine
      */
+    @Beta(Beta.SinceVersion.V1_2_0)
     boolean isBootDiagnosticsEnabled();
 
     /**
      * @return the storage blob endpoint uri if boot diagnostics is enabled for the virtual machine
      */
+    @Beta(Beta.SinceVersion.V1_2_0)
     String bootDiagnosticsStorageUri();
 
     // Setters
@@ -1392,6 +1395,7 @@ public interface VirtualMachine extends
         /**
          * The stage of the virtual machine definition allowing to enable boot diagnostics.
          */
+        @Beta(Beta.SinceVersion.V1_2_0)
         interface WithBootDiagnostics {
             /**
              * Specifies that boot diagnostics needs to be enabled in the virtual machine.
@@ -1757,6 +1761,7 @@ public interface VirtualMachine extends
         /**
          * The stage of the virtual machine definition allowing to enable boot diagnostics.
          */
+        @Beta(Beta.SinceVersion.V1_2_0)
         interface WithBootDiagnostics {
             /**
              * Specifies that boot diagnostics needs to be enabled in the virtual machine.
