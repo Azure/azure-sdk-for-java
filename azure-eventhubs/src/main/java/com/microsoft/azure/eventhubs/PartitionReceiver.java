@@ -454,7 +454,22 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
     @Override
     public Map<Symbol, Object> getProperties() {
 
-        return this.isEpochReceiver ? Collections.singletonMap(AmqpConstants.EPOCH, (Object) this.epoch) : null;
+        if (!this.isEpochReceiver &&
+                (this.receiverOptions == null || this.receiverOptions.getIdentifier() == null)) {
+            return null;
+        }
+
+        final Map<Symbol, Object> properties = new HashMap<>();
+
+        if (this.isEpochReceiver) {
+            properties.put(AmqpConstants.EPOCH, (Object) this.epoch);
+        }
+
+        if (this.receiverOptions != null && this.receiverOptions.getIdentifier() != null) {
+            properties.put(AmqpConstants.RECEIVER_IDENTIFIER_NAME, (Object) this.receiverOptions.getIdentifier());
+        }
+
+        return properties;
     }
 
     @Override
