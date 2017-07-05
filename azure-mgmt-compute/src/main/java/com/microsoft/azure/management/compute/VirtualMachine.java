@@ -1073,7 +1073,7 @@ public interface VirtualMachine extends
              * @param size the VHD size
              * @return the next stage of the definition
              */
-            WithCreate withOSDiskSizeInGB(Integer size);
+            WithCreate withOSDiskSizeInGB(int size);
 
             /**
              * Specifies the name for the OS Disk.
@@ -1854,7 +1854,7 @@ public interface VirtualMachine extends
          * @param size a disk size.
          * @return the next stage of the update
          */
-        Update withOSDiskSizeInGB(Integer size);
+        Update withOSDiskSizeInGB(int size);
 
         /**
          * Specifies a new size for the virtual machine.
