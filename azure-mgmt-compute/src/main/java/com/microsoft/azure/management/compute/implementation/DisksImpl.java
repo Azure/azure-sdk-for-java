@@ -54,11 +54,10 @@ class DisksImpl
 
     @Override
     protected DiskImpl wrapModel(DiskInner inner) {
-        if (inner != null) {
-            return new DiskImpl(inner.name(), inner, this.manager());
-        } else {
+        if (inner == null) {
             return null;
         }
+        return new DiskImpl(inner.name(), inner, this.manager());
     }
 
     @Override
