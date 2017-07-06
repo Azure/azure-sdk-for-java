@@ -13,28 +13,15 @@ import com.microsoft.azure.management.search.AdminKeys;
  */
 class AdminKeysImpl extends WrapperImpl<AdminKeyResultInner> implements AdminKeys {
 
-  /**
-   * Create AdminKeysImpl.
-   */
   protected AdminKeysImpl(AdminKeyResultInner innerObject) {
     super(innerObject);
   }
 
-  /**
-   * Get the primaryKey value.
-   *
-   * @return the primaryKey value
-   */
   @Override
   public String primaryKey() {
     return this.inner().primaryKey();
   }
 
-  /**
-   * Get the secondaryKey value.
-   *
-   * @return the secondaryKey value
-   */
   @Override
   public String secondaryKey() {
     return this.inner().secondaryKey();

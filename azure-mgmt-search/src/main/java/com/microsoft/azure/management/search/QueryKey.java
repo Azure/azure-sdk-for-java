@@ -16,15 +16,11 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 @Beta(Beta.SinceVersion.V1_2_0)
 public interface QueryKey {
   /**
-   * Get the name value.
-   *
-   * @return the name value
+   * @return the name of the query API key
    */
   String name();
 
   /**
-   * Get the key value.
-   *
    * @return the key value
    */
   String key();

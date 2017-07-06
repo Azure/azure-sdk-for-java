@@ -17,13 +17,11 @@ import com.microsoft.azure.management.search.implementation.CheckNameAvailabilit
 @Beta(Beta.SinceVersion.V1_2_0)
 public interface CheckNameAvailabilityResult extends HasInner<CheckNameAvailabilityOutputInner> {
   /**
-   * @return a boolean value that indicates whether the name is available for
-   * you to use. If true, the name is available. If false, the name has
-   * already been taken or invalid and cannot be used.
+   * @return true if the specified name is valid and available for use, otherwise false
    */
   boolean isAvailable();
   /**
-   * @return the unavailabilityReason that a Search service name could not be used. The
+   * @return the reason why the user-provided name for the search service could not be used, if any. The
    * Reason element is only returned if NameAvailable is false.
    */
   UnavailableNameReason unavailabilityReason();

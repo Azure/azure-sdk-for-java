@@ -36,67 +36,83 @@ public interface SearchService extends
    ***********************************************************/
 
   /**
-   * Get the hostingMode value.
+   * The hosting mode value.
+   * <p>
+   * Applicable only for the standard3 SKU. You can set this property to enable up to 3 high density partitions that
+   *   allow up to 1000 indexes, which is much higher than the maximum indexes allowed for any other SKU. For the
+   *   standard3 SKU, the value is either 'default' or 'highDensity'. For all other SKUs, this value must be 'default'.
    *
-   * @return the hostingMode value
+   * @return the hosting mode value.
    */
   HostingMode hostingMode();
 
   /**
-   * Get the partitionCount value.
-   *
-   * @return the partitions count of the Search service.
+   * @return the number of partitions used by the service
    */
   int partitionCount();
 
   /**
-   * Get the provisioningState value.
+   * The state of the last provisioning operation performed on the Search service.
+   * <p>
+   * Provisioning is an intermediate state that occurs while service capacity is being established. After capacity
+   *   is set up, provisioningState changes to either 'succeeded' or 'failed'. Client applications can poll
+   *   provisioning status (the recommended polling interval is from 30 seconds to one minute) by using the Get Search
+   *   Service operation to see when an operation is completed. If you are using the free service, this value tends
+   *   to come back as 'succeeded' directly in the call to Create Search service. This is because the free service uses
+   *   capacity that is already set up.
    *
-   * @return the provisioningState value
+   * @return the provisioning state of the resource
    */
   ProvisioningState provisioningState();
 
   /**
-   * Get the replicaCount value.
-   *
-   * @return the replicas count of the Search service.
+   * @return the number of replicas used by the service
    */
   int replicaCount();
 
   /**
-   * @return the SKU of the Search service.
+   * @return the SKU type of the service
    */
   Sku sku();
 
   /**
-   * Get the status value.
+   * The status of the Search service.
+   * <p>
+   * Possible values include:
+   *   'running':  the Search service is running and no provisioning operations are underway.
+   *   'provisioning': the Search service is being provisioned or scaled up or down.
+   *   'deleting': the Search service is being deleted.
+   *   'degraded': the Search service is degraded. This can occur when the underlying search units are not healthy.
+   *     The Search service is most likely operational, but performance might be slow and some requests might be dropped.
+   *   'disabled': the Search service is disabled. In this state, the service will reject all API requests.
+   *   'error': the Search service is in an error state. If your service is in the degraded, disabled, or error states,
+   *     it means the Azure Search team is actively investigating the underlying issue. Dedicated services in these
+   *     states are still chargeable based on the number of search units provisioned.
    *
-   * @return the status value
+   * @return the status of the service
    */
   SearchServiceStatus status();
 
   /**
-   * Get the statusDetails value.
-   *
-   * @return the statusDetails value
+   * @return the details of the status.
    */
   String statusDetails();
 
   /**
-   * Gets the primary and secondary admin API keys for the specified Azure Search service.
+   * The primary and secondary admin API keys for the specified Azure Search service.
    *
    * @throws IllegalArgumentException thrown if parameters fail the validation
    * @throws CloudException thrown if the request is rejected by server
    * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-   * @return the AdminKeys object if successful.
+   * @return the AdminKeys object if successful
    */
   AdminKeys getAdminKeys();
 
   /**
-   * Gets the primary and secondary admin API keys for the specified Azure Search service.
+   * The primary and secondary admin API keys for the specified Azure Search service.
    *
    * @throws IllegalArgumentException thrown if parameters fail the validation
-   * @return the observable to the AdminKeys object
+   * @return a representation of the future computation of this call
    */
   Observable<AdminKeys> getAdminKeysAsync();
 
@@ -106,7 +122,7 @@ public interface SearchService extends
    * @throws IllegalArgumentException thrown if parameters fail the validation
    * @throws CloudException thrown if the request is rejected by server
    * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-   * @return the List&lt;QueryKey&gt; object if successful.
+   * @return the List&lt;QueryKey&gt; object if successful
    */
   List<QueryKey> listQueryKeys();
 
@@ -114,7 +130,7 @@ public interface SearchService extends
    * Returns the list of query API keys for the given Azure Search service.
    *
    * @throws IllegalArgumentException thrown if parameters fail the validation
-   * @return the observable to the List&lt;QueryKeyInner&gt; object
+   * @return the observable to the List&lt;QueryKey&gt; object
    */
   Observable<QueryKey> listQueryKeysAsync();
 
@@ -124,50 +140,56 @@ public interface SearchService extends
    ***********************************************************/
 
   /**
-   * Regenerates either the primary or secondary admin API key. You can only regenerate one key at a time.
+   * Regenerates either the primary or secondary admin API key.
+   * <p>
+   * You can only regenerate one key at a time.
    *
-   * @param keyKind Specifies which key to regenerate. Valid values include 'primary' and 'secondary'.
-   *                Possible values include: 'primary', 'secondary'
+   * @param keyKind specifies which key to regenerate
    * @throws IllegalArgumentException thrown if parameters fail the validation
    * @throws CloudException thrown if the request is rejected by server
    * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-   * @return the AdminKeys object if successful.
+   * @return the AdminKeys object if successful
    */
   AdminKeys regenerateAdminKeys(AdminKeyKind keyKind);
 
   /**
    * Regenerates either the primary or secondary admin API key. You can only regenerate one key at a time.
    *
-   * @param keyKind Specifies which key to regenerate. Valid values include 'primary' and 'secondary'.
-   *                Possible values include: 'primary', 'secondary'
+   * @param keyKind Specifies which key to regenerate
    * @throws IllegalArgumentException thrown if parameters fail the validation
-   * @return the observable to the AdminKeyResultInner object
+   * @return a representation of the future computation of this call
    */
   Observable<AdminKeys> regenerateAdminKeysAsync(AdminKeyKind keyKind);
 
   /**
-   * Regenerates either the primary or secondary admin API key. You can only regenerate one key at a time.
+   * Regenerates either the primary or secondary admin API key.
+   * <p>
+   * You can only regenerate one key at a time.
    *
    * @param name The name of the new query API key.
    * @throws IllegalArgumentException thrown if parameters fail the validation
    * @throws CloudException thrown if the request is rejected by server
    * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-   * @return the List&lt;QueryKey&gt; object if successful.
+   * @return the &lt;QueryKey&gt; object if successful
    */
   QueryKey createQueryKey(String name);
 
   /**
-   * Regenerates either the primary or secondary admin API key. You can only regenerate one key at a time.
+   * Regenerates either the primary or secondary admin API key.
+   * <p>
+   * You can only regenerate one key at a time.
    *
    * @param name The name of the new query API key.
    * @throws IllegalArgumentException thrown if parameters fail the validation
-   * @return the observable to the List&lt;QueryKey&gt; object
+   * @return a representation of the future computation of this call
    */
   Observable<QueryKey> createQueryKeyAsync(String name);
 
   /**
-   * Deletes the specified query key. Unlike admin keys, query keys are not regenerated. The process for
-   * regenerating a query key is to delete and then recreate it.
+   * Deletes the specified query key.
+   * <p>
+   * Unlike admin keys, query keys are not regenerated. The process for regenerating a query key is to delete and then
+   *   recreate it.
    *
    * @param key The query key to be deleted. Query keys are identified by value, not by name.
    * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -177,12 +199,14 @@ public interface SearchService extends
   void deleteQueryKey(String key);
 
   /**
-   * Deletes the specified query key. Unlike admin keys, query keys are not regenerated. The process for
-   * regenerating a query key is to delete and then recreate it.
+   * Deletes the specified query key.
+   * <p>
+   * Unlike admin keys, query keys are not regenerated. The process for
+   *   regenerating a query key is to delete and then recreate it.
    *
    * @param key The query key to be deleted. Query keys are identified by value, not by name.
    * @throws IllegalArgumentException thrown if parameters fail the validation
-   * @return the Observable to {@link Completable} object if successful.
+   * @return a representation of the future computation of this call
    */
   Completable deleteQueryKeyAsync(String key);
 
@@ -218,30 +242,33 @@ public interface SearchService extends
     }
 
     /**
-     * The stage of the Search service definition allowing to specify the sku.
+     * The stage of the Search service definition allowing to specify the SKU.
      */
     interface WithSku {
       /**
-       * Specifies the sku of the Search service.
-       * @param skuName the sku
+       * Specifies the SKU of the Search service.
+       *
+       * @param skuName the SKU
        * @return the next stage of the definition
        */
       WithCreate withSku(SkuName skuName);
 
       /**
-       * Specifies to use a free sku type for the Search service.
+       * Specifies to use a free SKU type for the Search service.
+       *
        * @return the next stage of the definition
        */
       WithCreate withFreeSku();
 
       /**
-       * Specifies to use a basic sku type for the Search service.
+       * Specifies to use a basic SKU type for the Search service.
+       *
        * @return the next stage of the definition
        */
       WithReplicasAndCreate withBasicSku();
 
       /**
-       * Specifies to use a standard sku type for the Search service.
+       * Specifies to use a standard SKU type for the Search service.
        *
        * @return the next stage of the definition
        */
@@ -250,7 +277,8 @@ public interface SearchService extends
 
     interface WithReplicasAndCreate extends WithCreate {
       /**
-       * Specifies the sku of the Search service.
+       * Specifies the SKU of the Search service.
+       *
        * @param replicaCount the number of replicas to be created
        * @return the next stage of the definition
        */
@@ -259,7 +287,8 @@ public interface SearchService extends
 
     interface WithPartitionsAndCreate extends WithReplicasAndCreate {
       /**
-       * Specifies the sku of the Search service.
+       * Specifies the SKU of the Search service.
+       *
        * @param partitionCount the number of partitions to be created
        * @return the next stage of the definition
        */
@@ -267,9 +296,8 @@ public interface SearchService extends
     }
 
     /**
-     * The stage of the definition which contains all the minimum required inputs for
-     * the resource to be created (via {@link WithCreate#create()}), but also allows
-     * for any other optional settings to be specified.
+     * The stage of the definition which contains all the minimum required inputs for the resource to be created
+     *   (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
      */
     interface WithCreate extends
         Creatable<SearchService>,
@@ -297,9 +325,10 @@ public interface SearchService extends
      */
     interface WithReplicas {
       /**
-        * Specifies the Replicas count of the Search service.
-        * @param replicaCount the replicas count; replicas distribute workloads across the service. You need 2 or more to support high availability (applies to Basic and Standard tiers only)
-        * @return the next stage of the definition
+       * Specifies the replicas count of the Search service.
+       *
+       * @param replicaCount the replicas count; replicas distribute workloads across the service. You need 2 or more to support high availability (applies to Basic and Standard tiers only)
+       * @return the next stage of the definition
        */
       Update withReplicas(int replicaCount);
     }

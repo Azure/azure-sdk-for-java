@@ -20,7 +20,7 @@ import com.microsoft.rest.RestClient;
 /**
  * Entry point to Azure Search service management.
  */
-@Beta(Beta.SinceVersion.V1_1_0)
+@Beta(Beta.SinceVersion.V1_2_0)
 public final class SearchServiceManager extends Manager<SearchServiceManager, SearchManagementClientImpl> {
 
   // Collections
