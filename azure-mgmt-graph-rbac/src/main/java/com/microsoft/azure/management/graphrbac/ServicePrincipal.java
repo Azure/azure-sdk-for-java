@@ -23,6 +23,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * An immutable client-side representation of an Azure AD service principal.
@@ -57,6 +58,12 @@ public interface ServicePrincipal extends
      */
     @Beta(SinceVersion.V1_1_0)
     Map<String, CertificateCredential> certificateCredentials();
+
+    /**
+     * @return the mapping from scopes to role assignments
+     */
+    @Beta(SinceVersion.V1_2_0)
+    Set<RoleAssignment> roleAssignments();
 
     /**************************************************************
      * Fluent interfaces to provision a service principal
@@ -245,6 +252,14 @@ public interface ServicePrincipal extends
              */
             @Beta(SinceVersion.V1_1_0)
             Update withNewRoleInResourceGroup(BuiltInRole role, ResourceGroup resourceGroup);
+
+            /**
+             * Removes a role from the service principal.
+             * @param roleAssignment the role assignment to remove
+             * @return the next stage of the service principal update
+             */
+            @Beta(SinceVersion.V1_1_0)
+            Update withoutRole(RoleAssignment roleAssignment);
         }
     }
 

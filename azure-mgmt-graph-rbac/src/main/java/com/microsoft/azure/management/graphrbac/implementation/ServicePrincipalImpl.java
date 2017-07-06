@@ -18,17 +18,20 @@ import com.microsoft.azure.management.graphrbac.RoleAssignment;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import rx.Observable;
 import rx.exceptions.Exceptions;
-import rx.functions.Action0;
+import rx.functions.Action1;
+import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.functions.Func2;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -59,12 +62,22 @@ class ServicePrincipalImpl
     String assignedSubscription;
     private List<CertificateCredentialImpl<?>> certificateCredentialsToCreate;
     private List<PasswordCredentialImpl<?>> passwordCredentialsToCreate;
+    private Set<String> certificateCredentialsToDelete;
+    private Set<String> passwordCredentialsToDelete;
 
     ServicePrincipalImpl(ServicePrincipalInner innerObject, GraphRbacManager manager) {
         super(innerObject.displayName(), innerObject);
         this.manager = manager;
         this.createParameters = new ServicePrincipalCreateParametersInner().withAccountEnabled(true);
+        this.cachedRoleAssignments = new HashMap<>();
         this.rolesToCreate = new HashMap<>();
+        this.rolesToDelete = new HashSet<>();
+        this.cachedCertificateCredentials = new HashMap<>();
+        this.certificateCredentialsToCreate = new ArrayList<>();
+        this.certificateCredentialsToDelete = new HashSet<>();
+        this.cachedPasswordCredentials = new HashMap<>();
+        this.passwordCredentialsToCreate = new ArrayList<>();
+        this.passwordCredentialsToDelete = new HashSet<>();
     }
 
     @Override
@@ -84,18 +97,17 @@ class ServicePrincipalImpl
 
     @Override
     public Map<String, PasswordCredential> passwordCredentials() {
-        if (cachedPasswordCredentials == null) {
-            return Collections.emptyMap();
-        }
         return Collections.unmodifiableMap(cachedPasswordCredentials);
     }
 
     @Override
     public Map<String, CertificateCredential> certificateCredentials() {
-        if (cachedCertificateCredentials == null) {
-            return Collections.emptyMap();
-        }
         return Collections.unmodifiableMap(cachedCertificateCredentials);
+    }
+
+    @Override
+    public Set<RoleAssignment> roleAssignments() {
+        return Collections.unmodifiableSet(new HashSet<>(cachedRoleAssignments.values()));
     }
 
     @Override
@@ -122,18 +134,14 @@ class ServicePrincipalImpl
         }).map(new Func1<ServicePrincipal, ServicePrincipal>() {
             @Override
             public ServicePrincipal call(ServicePrincipal servicePrincipal) {
-                if (passwordCredentialsToCreate != null) {
-                    for (PasswordCredentialImpl<?> passwordCredential : passwordCredentialsToCreate) {
-                        passwordCredential.exportAuthFile((ServicePrincipalImpl) servicePrincipal);
-                    }
+                for (PasswordCredentialImpl<?> passwordCredential : passwordCredentialsToCreate) {
+                    passwordCredential.exportAuthFile((ServicePrincipalImpl) servicePrincipal);
                 }
-                if (certificateCredentialsToCreate != null) {
-                    for (CertificateCredentialImpl<?> certificateCredential : certificateCredentialsToCreate) {
-                        certificateCredential.exportAuthFile((ServicePrincipalImpl) servicePrincipal);
-                    }
+                for (CertificateCredentialImpl<?> certificateCredential : certificateCredentialsToCreate) {
+                    certificateCredential.exportAuthFile((ServicePrincipalImpl) servicePrincipal);
                 }
-                passwordCredentialsToCreate = null;
-                certificateCredentialsToCreate = null;
+                passwordCredentialsToCreate.clear();
+                certificateCredentialsToCreate.clear();
                 return servicePrincipal;
             }
         });
@@ -141,18 +149,32 @@ class ServicePrincipalImpl
 
     private Observable<ServicePrincipal> submitCredentialsAsync(final ServicePrincipal sp) {
         Observable<Void> observable = Observable.just(null);
-        if (cachedCertificateCredentials != null && !cachedCertificateCredentials.isEmpty()) {
+        if (!certificateCredentialsToCreate.isEmpty() || !certificateCredentialsToDelete.isEmpty()) {
+            Map<String, CertificateCredential> newCerts = new HashMap<>(cachedCertificateCredentials);
+            for (String delete : certificateCredentialsToDelete) {
+                newCerts.remove(delete);
+            }
+            for (CertificateCredential create : certificateCredentialsToCreate) {
+                newCerts.put(create.name(), create);
+            }
             observable = observable.mergeWith(manager().inner().servicePrincipals().updateKeyCredentialsAsync(sp.id(),
-                    Lists.transform(new ArrayList<>(cachedCertificateCredentials.values()), new Function<CertificateCredential, KeyCredentialInner>() {
+                    Lists.transform(new ArrayList<>(newCerts.values()), new Function<CertificateCredential, KeyCredentialInner>() {
                         @Override
                         public KeyCredentialInner apply(CertificateCredential input) {
                             return input.inner();
                         }
                     })));
         }
-        if (cachedPasswordCredentials != null && !cachedPasswordCredentials.isEmpty()) {
+        if (!passwordCredentialsToCreate.isEmpty() || !passwordCredentialsToDelete.isEmpty()) {
+            Map<String, PasswordCredential> newPasses = new HashMap<>(cachedPasswordCredentials);
+            for (String delete : passwordCredentialsToDelete) {
+                newPasses.remove(delete);
+            }
+            for (PasswordCredential create : passwordCredentialsToCreate) {
+                newPasses.put(create.name(), create);
+            }
             observable = observable.mergeWith(manager().inner().servicePrincipals().updatePasswordCredentialsAsync(sp.id(),
-                    Lists.transform(new ArrayList<>(cachedPasswordCredentials.values()), new Function<PasswordCredential, PasswordCredentialInner>() {
+                    Lists.transform(new ArrayList<>(newPasses.values()), new Function<PasswordCredential, PasswordCredentialInner>() {
                         @Override
                         public PasswordCredentialInner apply(PasswordCredential input) {
                             return input.inner();
@@ -162,6 +184,8 @@ class ServicePrincipalImpl
         return observable.last().flatMap(new Func1<Void, Observable<ServicePrincipal>>() {
             @Override
             public Observable<ServicePrincipal> call(Void aVoid) {
+                passwordCredentialsToDelete.clear();
+                certificateCredentialsToDelete.clear();
                 return refreshCredentialsAsync();
             }
         });
@@ -169,13 +193,13 @@ class ServicePrincipalImpl
 
     private Observable<ServicePrincipal> submitRolesAsync(final ServicePrincipal servicePrincipal) {
         Observable<ServicePrincipal> create;
-        if (rolesToCreate == null || rolesToCreate.isEmpty()) {
+        if (rolesToCreate.isEmpty()) {
             create = Observable.just(servicePrincipal);
         } else {
             create = Observable.from(rolesToCreate.entrySet())
-                    .flatMap(new Func1<Map.Entry<String, BuiltInRole>, Observable<?>>() {
+                    .flatMap(new Func1<Map.Entry<String, BuiltInRole>, Observable<Indexable>>() {
                         @Override
-                        public Observable<?> call(Map.Entry<String, BuiltInRole> role) {
+                        public Observable<Indexable> call(Map.Entry<String, BuiltInRole> role) {
                             return manager().roleAssignments().define(SdkContext.randomUuid())
                                     .forServicePrincipal(servicePrincipal)
                                     .withBuiltInRole(role.getValue())
@@ -204,35 +228,49 @@ class ServicePrincipalImpl
                                     });
                         }
                     })
-                    .last()
-                    .map(new Func1<Object, ServicePrincipal>() {
+                    .doOnNext(new Action1<Indexable>() {
                         @Override
-                        public ServicePrincipal call(Object o) {
+                        public void call(Indexable o) {
+                            cachedRoleAssignments.put(((RoleAssignment) o).id(), (RoleAssignment) o);
+                        }
+                    })
+                    .last()
+                    .map(new Func1<Indexable, ServicePrincipal>() {
+                        @Override
+                        public ServicePrincipal call(Indexable o) {
+                            rolesToCreate.clear();
                             return servicePrincipal;
                         }
                     });
         }
         Observable<ServicePrincipal> delete;
-        if (rolesToDelete == null || rolesToDelete.isEmpty()) {
+        if (rolesToDelete.isEmpty()) {
             delete =  Observable.just(servicePrincipal);
         } else {
             delete = Observable.from(rolesToDelete)
-                    .flatMap(new Func1<String, Observable<?>>() {
+                    .flatMap(new Func1<String, Observable<String>>() {
                         @Override
-                        public Observable<?> call(final String s) {
-                            return manager().roleAssignments().deleteByIdAsync(cachedRoleAssignments.get(s).id()).toObservable()
-                                    .doOnCompleted(new Action0() {
+                        public Observable<String> call(final String s) {
+                            return manager().roleAssignments().deleteByIdAsync(cachedRoleAssignments.get(s).id())
+                                    .toSingle(new Func0<String>() {
                                         @Override
-                                        public void call() {
-                                            cachedRoleAssignments.remove(s);
+                                        public String call() {
+                                            return s;
                                         }
-                                    });
+                                    }).toObservable();
+                        }
+                    })
+                    .doOnNext(new Action1<String>() {
+                        @Override
+                        public void call(String s) {
+                            cachedRoleAssignments.remove(s);
                         }
                     })
                     .last()
                     .map(new Func1<Object, ServicePrincipal>() {
                         @Override
                         public ServicePrincipal call(Object o) {
+                            rolesToDelete.clear();
                             return servicePrincipal;
                         }
                     });
@@ -242,7 +280,7 @@ class ServicePrincipalImpl
 
     @Override
     public boolean isInCreateMode() {
-        return true;
+        return id() == null;
     }
 
     Observable<ServicePrincipal> refreshCredentialsAsync() {
@@ -251,7 +289,7 @@ class ServicePrincipalImpl
                     @Override
                     public Map<String, CertificateCredential> call(List<KeyCredentialInner> keyCredentialInners) {
                         if (keyCredentialInners == null || keyCredentialInners.isEmpty()) {
-                            return null;
+                            return Collections.emptyMap();
                         }
                         Map<String, CertificateCredential> certificateCredentialMap = new HashMap<String, CertificateCredential>();
                         for (KeyCredentialInner inner : keyCredentialInners) {
@@ -273,7 +311,7 @@ class ServicePrincipalImpl
                     @Override
                     public Map<String, PasswordCredential> call(List<PasswordCredentialInner> passwordCredentialInners) {
                         if (passwordCredentialInners == null || passwordCredentialInners.isEmpty()) {
-                            return null;
+                            return Collections.emptyMap();
                         }
                         Map<String, PasswordCredential> passwordCredentialMap = new HashMap<String, PasswordCredential>();
                         for (PasswordCredentialInner inner : passwordCredentialInners) {
@@ -319,36 +357,23 @@ class ServicePrincipalImpl
     @Override
     public ServicePrincipalImpl withoutCredential(String name) {
         if (cachedPasswordCredentials.containsKey(name)) {
-            cachedPasswordCredentials.remove(name);
+            passwordCredentialsToDelete.add(name);
         } else if (cachedCertificateCredentials.containsKey(name)) {
-            cachedCertificateCredentials.remove(name);
+            certificateCredentialsToDelete.add(name);
         }
         return this;
     }
 
     @Override
     public ServicePrincipalImpl withCertificateCredential(CertificateCredentialImpl<?> credential) {
-        if (certificateCredentialsToCreate == null) {
-            certificateCredentialsToCreate = new ArrayList<>();
-        }
         this.certificateCredentialsToCreate.add(credential);
-        if (cachedCertificateCredentials == null) {
-            cachedCertificateCredentials = new HashMap<>();
-        }
-        this.cachedCertificateCredentials.put(credential.name(), credential);
         return this;
     }
 
     @Override
     public ServicePrincipalImpl withPasswordCredential(PasswordCredentialImpl<?> credential) {
-        if (passwordCredentialsToCreate == null) {
-            passwordCredentialsToCreate = new ArrayList<>();
-        }
+
         this.passwordCredentialsToCreate.add(credential);
-        if (cachedPasswordCredentials == null) {
-            cachedPasswordCredentials = new HashMap<>();
-        }
-        this.cachedPasswordCredentials.put(credential.name(), credential);
         return this;
     }
 
@@ -373,7 +398,7 @@ class ServicePrincipalImpl
 
     @Override
     public ServicePrincipalImpl withNewApplication(String signOnUrl) {
-        return withNewApplication(manager.applications().define(signOnUrl)
+        return withNewApplication(manager.applications().define(name())
                 .withSignOnUrl(signOnUrl)
                 .withIdentifierUrl(signOnUrl));
     }
@@ -398,5 +423,11 @@ class ServicePrincipalImpl
     @Override
     public ServicePrincipalImpl withNewRoleInResourceGroup(BuiltInRole role, ResourceGroup resourceGroup) {
         return withNewRole(role, resourceGroup.id());
+    }
+
+    @Override
+    public Update withoutRole(RoleAssignment roleAssignment) {
+        this.rolesToDelete.add(roleAssignment.id());
+        return this;
     }
 }
