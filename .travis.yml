@@ -8,9 +8,7 @@ script:
 - |-
   if [ ${TRAVIS_EVENT_TYPE} = "push" -o ${TRAVIS_EVENT_TYPE} = "pull_request" ]; then
    mvn install -DskipTests=true || travis_terminate 1 ;
-   mvn test -f azure/pom.xml -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dsurefire.forkNumber=2 -Dsurefire.rerunFailingTestsCount=6|| travis_terminate 1 ;
-   mvn test -pl !azure,!azure-samples -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dsurefire.forkNumber=2 -Dsurefire.rerunFailingTestsCount=6|| travis_terminate 1 ;
-   mvn test -f azure-samples/pom.xml -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dsurefire.forkNumber=2 -Dsurefire.rerunFailingTestsCount=6|| travis_terminate 1 ;
+   mvn test -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dsurefire.forkNumber=1 -Dsurefire.rerunFailingTestsCount=6|| travis_terminate 1 ;
    mvn checkstyle:check || travis_terminate 1 ;
    mvn -pl !azure-samples package javadoc:aggregate -DskipTests=true || travis_terminate 1 ;
   else
