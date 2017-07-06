@@ -17,7 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 
 /**
- *  Implementation for {@link LoadBalancerInboundNatRule}.
+ *  Implementation for LoadBalancerInboundNatRule.
  */
 @LangDefinition
 class LoadBalancerInboundNatRuleImpl

@@ -674,12 +674,12 @@ class LoadBalancerImpl
     }
 
     @Override
-    public LoadBalancerFrontendImpl updateInternetFrontend(String name) {
+    public LoadBalancerFrontendImpl updatePublicFrontend(String name) {
         return (LoadBalancerFrontendImpl) this.frontends.get(name);
     }
 
     @Override
-    public LoadBalancerFrontendImpl updateInternalFrontend(String name) {
+    public LoadBalancerFrontendImpl updatePrivateFrontend(String name) {
         return (LoadBalancerFrontendImpl) this.frontends.get(name);
     }
 

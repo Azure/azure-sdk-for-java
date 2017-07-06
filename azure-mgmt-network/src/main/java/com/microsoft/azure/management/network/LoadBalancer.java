@@ -555,7 +555,7 @@ public interface LoadBalancer extends
              * @param name the name of the frontend to update
              * @return the first stage of the frontend update
              */
-            LoadBalancerPublicFrontend.Update updateInternetFrontend(String name);
+            LoadBalancerPublicFrontend.Update updatePublicFrontend(String name);
         }
 
         /**
@@ -580,7 +580,7 @@ public interface LoadBalancer extends
              * @param name the name of an existing frontend from this load balancer
              * @return the first stage of the frontend update
              */
-            LoadBalancerPrivateFrontend.Update updateInternalFrontend(String name);
+            LoadBalancerPrivateFrontend.Update updatePrivateFrontend(String name);
         }
 
         /**

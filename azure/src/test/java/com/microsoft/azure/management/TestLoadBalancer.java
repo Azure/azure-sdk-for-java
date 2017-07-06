@@ -429,7 +429,7 @@ public class TestLoadBalancer {
             ensurePIPs(resource.manager().publicIPAddresses());
             PublicIPAddress pip = resource.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[1]);
             resource =  resource.update()
-                    .updateInternetFrontend(frontendName)
+                    .updatePublicFrontend(frontendName)
                         .withExistingPublicIPAddress(pip)
                         .parent()
                     .withoutLoadBalancingRule("rule1")
@@ -548,7 +548,7 @@ public class TestLoadBalancer {
 
             PublicIPAddress pip = resource.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[1]);
             resource =  resource.update()
-                    .updateInternetFrontend(frontend.name())
+                    .updatePublicFrontend(frontend.name())
                         .withExistingPublicIPAddress(pip)
                         .parent()
                     .defineBackend("backend2")
@@ -862,7 +862,7 @@ public class TestLoadBalancer {
             Assert.assertNotNull(backend);
 
             resource =  resource.update()
-                    .updateInternalFrontend(frontend.name())
+                    .updatePrivateFrontend(frontend.name())
                         .withExistingSubnet(this.network, "subnet2")
                         .withPrivateIPAddressStatic("10.0.0.13")
                         .parent()
