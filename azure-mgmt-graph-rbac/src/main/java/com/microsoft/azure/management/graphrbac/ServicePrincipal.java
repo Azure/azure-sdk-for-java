@@ -202,7 +202,7 @@ public interface ServicePrincipal extends
              * @param name the descriptive name of the certificate credential
              * @return the first stage in certificate credential update
              */
-            @Beta(SinceVersion.V1_1_0)
+            @Beta(SinceVersion.V1_2_0)
             CertificateCredential.DefinitionStages.Blank<Update> defineCertificateCredential(String name);
 
             /**
@@ -210,7 +210,7 @@ public interface ServicePrincipal extends
              * @param name the descriptive name of the password credential
              * @return the first stage in password credential update
              */
-            @Beta(SinceVersion.V1_1_0)
+            @Beta(SinceVersion.V1_2_0)
             PasswordCredential.DefinitionStages.Blank<Update> definePasswordCredential(String name);
 
             /**
@@ -218,7 +218,7 @@ public interface ServicePrincipal extends
              * @param name the name of the credential
              * @return the next stage of the service principal update
              */
-            @Beta(SinceVersion.V1_1_0)
+            @Beta(SinceVersion.V1_2_0)
             Update withoutCredential(String name);
         }
 
@@ -232,7 +232,7 @@ public interface ServicePrincipal extends
              * @param scope the scope the service principal can access
              * @return the next stage of the service principal update
              */
-            @Beta(SinceVersion.V1_1_0)
+            @Beta(SinceVersion.V1_2_0)
             Update withNewRole(BuiltInRole role, String scope);
 
             /**
@@ -241,7 +241,7 @@ public interface ServicePrincipal extends
              * @param subscriptionId the subscription the service principal can access
              * @return the next stage of the service principal update
              */
-            @Beta(SinceVersion.V1_1_0)
+            @Beta(SinceVersion.V1_2_0)
             Update withNewRoleInSubscription(BuiltInRole role, String subscriptionId);
 
             /**
@@ -250,7 +250,7 @@ public interface ServicePrincipal extends
              * @param resourceGroup the resource group the service principal can access
              * @return the next stage of the service principal update
              */
-            @Beta(SinceVersion.V1_1_0)
+            @Beta(SinceVersion.V1_2_0)
             Update withNewRoleInResourceGroup(BuiltInRole role, ResourceGroup resourceGroup);
 
             /**
@@ -258,7 +258,7 @@ public interface ServicePrincipal extends
              * @param roleAssignment the role assignment to remove
              * @return the next stage of the service principal update
              */
-            @Beta(SinceVersion.V1_1_0)
+            @Beta(SinceVersion.V1_2_0)
             Update withoutRole(RoleAssignment roleAssignment);
         }
     }
