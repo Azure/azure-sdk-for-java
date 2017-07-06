@@ -143,7 +143,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
                         try {
                             underlyingFactory.getCBSChannel().sendToken(
                                     underlyingFactory.getReactorScheduler(),
-                                    underlyingFactory.getTokenProvider().getToken(tokenAudience, ClientConstants.TOKEN_REFRESH_INTERVAL),
+                                    underlyingFactory.getTokenProvider().getToken(tokenAudience, ClientConstants.TOKEN_VALIDITY),
                                     tokenAudience,
                                     new IOperationResult<Void, Exception>() {
                                         @Override
@@ -566,7 +566,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
         try {
             this.underlyingFactory.getCBSChannel().sendToken(
                     this.underlyingFactory.getReactorScheduler(),
-                    this.underlyingFactory.getTokenProvider().getToken(tokenAudience, ClientConstants.TOKEN_REFRESH_INTERVAL),
+                    this.underlyingFactory.getTokenProvider().getToken(tokenAudience, ClientConstants.TOKEN_VALIDITY),
                     tokenAudience,
                     new IOperationResult<Void, Exception>() {
                         @Override

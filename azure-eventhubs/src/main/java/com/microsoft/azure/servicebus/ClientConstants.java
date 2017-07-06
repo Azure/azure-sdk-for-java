@@ -35,7 +35,8 @@ public final class ClientConstants {
 
     public final static Duration DEFAULT_RERTRY_MIN_BACKOFF = Duration.ofSeconds(0);
     public final static Duration DEFAULT_RERTRY_MAX_BACKOFF = Duration.ofSeconds(30);
-    public final static Duration TOKEN_REFRESH_INTERVAL = Duration.ofMinutes(20);
+    public final static Duration TOKEN_REFRESH_INTERVAL = Duration.ofMinutes(10); // renew every 10 mins, which expires 20 mins
+    public final static Duration TOKEN_VALIDITY = Duration.ofMinutes(20);
 
     public final static int DEFAULT_MAX_RETRY_COUNT = 10;
 
