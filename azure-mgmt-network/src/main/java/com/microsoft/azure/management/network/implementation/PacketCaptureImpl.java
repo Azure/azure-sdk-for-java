@@ -15,7 +15,6 @@ import com.microsoft.azure.management.network.PacketCaptureStorageLocation;
 import com.microsoft.azure.management.network.ProvisioningState;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import com.microsoft.azure.management.storage.StorageAccount;
 import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
@@ -79,11 +78,6 @@ public class PacketCaptureImpl extends
     public PacketCaptureImpl withTarget(String target) {
         createParameters.withTarget(target);
         return this;
-    }
-
-    @Override
-    public PacketCaptureImpl withExistingStorageAccount(StorageAccount storageAccount) {
-        return this.withStorageAccountId(storageAccount.id());
     }
 
     @Override
