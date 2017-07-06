@@ -38,7 +38,7 @@ public final class CreateDocumentDBWithIPRange {
             // Create a DocumentDB
 
             System.out.println("Creating a DocumentDB...");
-            DocumentDBAccount documentDBAccount = azure.documentDBs().define(docDBName)
+            DocumentDBAccount documentDBAccount = azure.documentDBAccounts().define(docDBName)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
                     .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
@@ -54,7 +54,7 @@ public final class CreateDocumentDBWithIPRange {
             //============================================================
             // Delete DocumentDB
             System.out.println("Deleting the DocumentDB");
-            azure.documentDBs().deleteById(documentDBAccount.id());
+            azure.documentDBAccounts().deleteById(documentDBAccount.id());
             System.out.println("Deleted the DocumentDB");
 
             return true;
