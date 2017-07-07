@@ -140,15 +140,6 @@ public final class ManageVirtualMachineScaleSetAsync {
                                                     .definePublicFrontend(frontendName)
                                                         .withExistingPublicIPAddress(publicIp)
                                                         .attach()
-                                                    // Add two probes one per rule
-                                                    .defineHttpProbe(httpProbe)
-                                                        .withRequestPath("/")
-                                                        .withPort(80)
-                                                        .attach()
-                                                    .defineHttpProbe(httpsProbe)
-                                                        .withRequestPath("/")
-                                                        .withPort(443)
-                                                        .attach()
                                                     // Add two rules that uses above backend and probe
                                                     .defineLoadBalancingRule(httpLoadBalancingRule)
                                                         .withProtocol(TransportProtocol.TCP)
@@ -178,6 +169,17 @@ public final class ManageVirtualMachineScaleSetAsync {
                                                         .withFrontendPortRange(6000, 6099)
                                                         .withBackendPort(23)
                                                         .attach()
+
+                                                    // Add two probes one per rule
+                                                    .defineHttpProbe(httpProbe)
+                                                        .withRequestPath("/")
+                                                        .withPort(80)
+                                                        .attach()
+                                                    .defineHttpProbe(httpsProbe)
+                                                        .withRequestPath("/")
+                                                        .withPort(443)
+                                                        .attach()
+
                                                     .createAsync());
                                     }
                                     return Observable.just(indexable);

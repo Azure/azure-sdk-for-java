@@ -105,19 +105,6 @@ public class TestLoadBalancer {
                     .definePublicFrontend("frontend1")
                         .withExistingPublicIPAddress(pip1)
                         .attach()
-
-                    // Probes
-                    .defineTcpProbe("tcpProbe1")
-                        .withPort(25)               // Required
-                        .withIntervalInSeconds(15)  // Optionals
-                        .withNumberOfProbes(5)
-                        .attach()
-                    .defineHttpProbe("httpProbe1")
-                        .withRequestPath("/")       // Required
-                        .withIntervalInSeconds(13)  // Optionals
-                        .withNumberOfProbes(4)
-                        .attach()
-
                     // Load balancing rules
                     .defineLoadBalancingRule("rule1")
                         .withProtocol(TransportProtocol.TCP)    // Required
@@ -138,7 +125,19 @@ public class TestLoadBalancer {
                         .withBackendPort(8080)
                         .attach()
 
-                    // Backends (OPTIONAL)
+                   // Probes (Optional)
+                   .defineTcpProbe("tcpProbe1")
+                        .withPort(25)               // Required
+                        .withIntervalInSeconds(15)  // Optionals
+                        .withNumberOfProbes(5)
+                        .attach()
+                   .defineHttpProbe("httpProbe1")
+                        .withRequestPath("/")       // Required
+                        .withIntervalInSeconds(13)  // Optionals
+                        .withNumberOfProbes(4)
+                        .attach()
+
+                    // Backends (Optional)
                     .withExistingVirtualMachines(existingVMs)
 
                     .create();
@@ -302,18 +301,6 @@ public class TestLoadBalancer {
                     // Frontends
                     .withExistingPublicIPAddress(pip)
 
-                    // Probes
-                    .defineTcpProbe("tcpProbe1")
-                        .withPort(25)               // Required
-                        .withIntervalInSeconds(15)  // Optionals
-                        .withNumberOfProbes(5)
-                        .attach()
-                    .defineHttpProbe("httpProbe1")
-                        .withRequestPath("/")       // Required
-                        .withIntervalInSeconds(13)  // Optionals
-                        .withNumberOfProbes(4)
-                        .attach()
-
                     // Load balancing rules
                     .defineLoadBalancingRule("rule1")
                         .withProtocol(TransportProtocol.TCP)    // Required
@@ -331,6 +318,18 @@ public class TestLoadBalancer {
                         .withProtocol(TransportProtocol.TCP)
                         .withDefaultFrontend()
                         .withFrontendPort(88)
+                        .attach()
+
+                    // Probes (Optional)
+                    .defineTcpProbe("tcpProbe1")
+                        .withPort(25)               // Required
+                        .withIntervalInSeconds(15)  // Optionals
+                        .withNumberOfProbes(5)
+                        .attach()
+                    .defineHttpProbe("httpProbe1")
+                        .withRequestPath("/")       // Required
+                        .withIntervalInSeconds(13)  // Optionals
+                        .withNumberOfProbes(4)
                         .attach()
 
                     .create();
@@ -625,12 +624,12 @@ public class TestLoadBalancer {
                     .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
                     // Frontend (default)
                     .withExistingPublicIPAddress(pip)
-                    // Probe (default)
-                    .withTcpProbe(22)
                     // LB rule (default)
                     .withLoadBalancingRule(80, TransportProtocol.TCP)
                     // Backend (default)
                     .withExistingVirtualMachines(existingVMs)
+                    // Probe
+                    .withTcpProbe(22)
                     .create();
 
             // Verify frontends
@@ -796,14 +795,14 @@ public class TestLoadBalancer {
             LoadBalancer lb = resources.define(TestLoadBalancer.LB_NAME)
                     .withRegion(TestLoadBalancer.REGION)
                     .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
-                    // Frontend (default)
+                    // Frontend
                     .withFrontendSubnet(network, "subnet1")
-                    // Probe (default)
-                    .withTcpProbe(22)
                     // LB rule (default)
                     .withLoadBalancingRule(80, TransportProtocol.TCP)
                     // Backends
                     .withExistingVirtualMachines(existingVMs)
+                    // Probe
+                    .withTcpProbe(22)
                     .create();
 
             // Verify frontends

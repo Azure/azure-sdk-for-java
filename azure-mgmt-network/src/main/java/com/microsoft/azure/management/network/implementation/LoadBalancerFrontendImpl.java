@@ -34,11 +34,11 @@ class LoadBalancerFrontendImpl
     implements
         LoadBalancerFrontend,
         LoadBalancerPrivateFrontend,
-        LoadBalancerPrivateFrontend.Definition<LoadBalancer.DefinitionStages.WithPrivateFrontendOrProbe>,
+        LoadBalancerPrivateFrontend.Definition<LoadBalancer.DefinitionStages.WithPrivateFrontendOrRuleNat>,
         LoadBalancerPrivateFrontend.UpdateDefinition<LoadBalancer.Update>,
         LoadBalancerPrivateFrontend.Update,
         LoadBalancerPublicFrontend,
-        LoadBalancerPublicFrontend.Definition<LoadBalancer.DefinitionStages.WithPublicFrontendOrProbe>,
+        LoadBalancerPublicFrontend.Definition<LoadBalancer.DefinitionStages.WithPublicFrontendOrRuleNat>,
         LoadBalancerPublicFrontend.UpdateDefinition<LoadBalancer.Update>,
         LoadBalancerPublicFrontend.Update {
 

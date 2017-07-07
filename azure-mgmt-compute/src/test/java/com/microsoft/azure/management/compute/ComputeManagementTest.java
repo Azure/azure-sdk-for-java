@@ -138,10 +138,6 @@ public abstract class ComputeManagementTest extends TestBase {
                 .definePublicFrontend(frontendName)
                     .withExistingPublicIPAddress(publicIPAddress)
                     .attach()
-                .defineHttpProbe("httpProbe")
-                    .withRequestPath("/")
-                    .attach()
-
                 // Add two rules that uses above backend and probe
                 .defineLoadBalancingRule("httpRule")
                     .withProtocol(TransportProtocol.TCP)
@@ -156,6 +152,11 @@ public abstract class ComputeManagementTest extends TestBase {
                     .withFrontendPortRange(5000, 5099)
                     .withBackendPort(22)
                     .attach()
+                // Add an HTTP probe
+                .defineHttpProbe("httpProbe")
+                    .withRequestPath("/")
+                    .attach()
+
                 .create();
         return loadBalancer;
 
@@ -181,14 +182,6 @@ public abstract class ComputeManagementTest extends TestBase {
                 .withExistingResourceGroup(resourceGroup)
                 .definePublicFrontend(frontendName)
                     .withExistingPublicIPAddress(publicIPAddress)
-                    .attach()
-
-                // Add two probes one per rule
-                .defineHttpProbe("httpProbe")
-                    .withRequestPath("/")
-                    .attach()
-                .defineHttpProbe("httpsProbe")
-                    .withRequestPath("/")
                     .attach()
 
                 // Add two rules that uses above backend and probe
@@ -220,6 +213,14 @@ public abstract class ComputeManagementTest extends TestBase {
                     .withFrontendPortRange(6000, 6099)
                     .withBackendPort(23)
                     .attach()
+
+                // Add two probes one per rule
+                .defineHttpProbe("httpProbe")
+                    .withRequestPath("/")
+                    .attach()
+                .defineHttpProbe("httpsProbe")
+                    .withRequestPath("/")
+                    .attach()
                 .create();
         return loadBalancer;
     }
@@ -239,14 +240,6 @@ public abstract class ComputeManagementTest extends TestBase {
                 .withExistingResourceGroup(resourceGroup)
                 .definePrivateFrontend(privateFrontEndName)
                     .withExistingSubnet(network, subnetName)
-                    .attach()
-
-                // Add two probes one per rule
-                .defineHttpProbe("httpProbe")
-                    .withRequestPath("/")
-                    .attach()
-                .defineHttpProbe("httpsProbe")
-                    .withRequestPath("/")
                     .attach()
 
                 // Add two rules that uses above backend and probe
@@ -278,6 +271,15 @@ public abstract class ComputeManagementTest extends TestBase {
                     .withFrontendPortRange(9000, 9099)
                     .withBackendPort(45)
                     .attach()
+
+                // Add two probes one per rule
+                .defineHttpProbe("httpProbe")
+                    .withRequestPath("/")
+                    .attach()
+                .defineHttpProbe("httpsProbe")
+                    .withRequestPath("/")
+                    .attach()
+
                 .create();
         return loadBalancer;
     }

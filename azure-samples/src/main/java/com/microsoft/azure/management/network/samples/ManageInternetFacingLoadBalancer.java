@@ -172,17 +172,6 @@ public final class ManageInternetFacingLoadBalancer {
                         .withExistingPublicIPAddress(publicIPAddress)
                         .attach()
 
-                    // Add two probes one per rule
-                    .defineHttpProbe(httpProbe)
-                        .withRequestPath("/")
-                        .withPort(80)
-                        .attach()
-
-                    .defineHttpProbe(httpsProbe)
-                        .withRequestPath("/")
-                        .withPort(443)
-                        .attach()
-
                     // Add two rules that uses above backend and probe
                     .defineLoadBalancingRule(httpLoadBalancingRule)
                         .withProtocol(TransportProtocol.TCP)
@@ -229,6 +218,18 @@ public final class ManageInternetFacingLoadBalancer {
                         .withFrontendPort(5003)
                         .withBackendPort(23)
                         .attach()
+
+                    // Add two probes one per rule
+                    .defineHttpProbe(httpProbe)
+                        .withRequestPath("/")
+                        .withPort(80)
+                        .attach()
+
+                    .defineHttpProbe(httpsProbe)
+                        .withRequestPath("/")
+                        .withPort(443)
+                        .attach()
+
                     .create();
 
             // Print load balancer details
@@ -382,17 +383,6 @@ public final class ManageInternetFacingLoadBalancer {
                         .withExistingPublicIPAddress(publicIPAddress2)
                         .attach()
 
-                    // Add two probes one per rule
-                    .defineHttpProbe(httpProbe)
-                        .withRequestPath("/")
-                        .withPort(80)
-                        .attach()
-
-                    .defineHttpProbe(httpsProbe)
-                        .withRequestPath("/")
-                        .withPort(443)
-                        .attach()
-
                     // Add two rules that uses above backend and probe
                     .defineLoadBalancingRule(httpLoadBalancingRule)
                         .withProtocol(TransportProtocol.TCP)
@@ -439,6 +429,18 @@ public final class ManageInternetFacingLoadBalancer {
                         .withFrontendPort(5003)
                         .withBackendPort(23)
                         .attach()
+
+                    // Add two probes one per rule
+                    .defineHttpProbe(httpProbe)
+                        .withRequestPath("/")
+                        .withPort(80)
+                        .attach()
+
+                    .defineHttpProbe(httpsProbe)
+                        .withRequestPath("/")
+                        .withPort(443)
+                        .attach()
+
                     .create();
 
             // Print load balancer details

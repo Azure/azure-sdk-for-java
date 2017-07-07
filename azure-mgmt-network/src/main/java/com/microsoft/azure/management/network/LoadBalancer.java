@@ -90,12 +90,10 @@ public interface LoadBalancer extends
         DefinitionStages.WithGroup,
         DefinitionStages.WithFrontend,
         DefinitionStages.WithCreate,
-        DefinitionStages.WithPublicFrontendOrProbe,
-        DefinitionStages.WithPrivateFrontendOrProbe,
+        DefinitionStages.WithPublicFrontendOrRuleNat,
+        DefinitionStages.WithPrivateFrontendOrRuleNat,
         DefinitionStages.WithNetworkSubnet,
         DefinitionStages.WithBackend,
-        DefinitionStages.WithProbe,
-        DefinitionStages.WithProbeOrLoadBalancingRule,
         DefinitionStages.WithProbeOrNat,
         DefinitionStages.WithLoadBalancingRule,
         DefinitionStages.WithLoadBalancingRuleOrCreate,
@@ -126,7 +124,7 @@ public interface LoadBalancer extends
          * The stage of a load balancer definition describing the nature of the frontend of the load balancer: internal or Internet-facing.
          */
         interface WithFrontend extends
-            WithPublicIPAddress<WithPublicFrontendOrProbe>,
+            WithPublicIPAddress<WithPublicFrontendOrRuleNat>,
             WithPublicFrontend,
             WithPrivateFrontend {
         }
@@ -135,13 +133,14 @@ public interface LoadBalancer extends
          * The stage of an internal load balancer definition allowing to define one or more private frontends.
          */
         interface WithPrivateFrontend extends WithNetworkSubnet {
-            LoadBalancerPrivateFrontend.DefinitionStages.Blank<WithPrivateFrontendOrProbe> definePrivateFrontend(String name);
+            LoadBalancerPrivateFrontend.DefinitionStages.Blank<WithPrivateFrontendOrRuleNat> definePrivateFrontend(String name);
         }
 
         /**
-         * The stage of an internal load balancer definition allowing to specify another private frontend or start specifying probes, NAT rules or NAT pools.
+         * The stage of an internal load balancer definition allowing to specify another private frontend
+         * or start adding load balancing rules, NAT rules or NAT pools.
          */
-        interface WithPrivateFrontendOrProbe extends WithPrivateFrontend, WithProbeOrNat {
+        interface WithPrivateFrontendOrRuleNat extends WithPrivateFrontend, WithRuleOrNat {
         }
 
         /**
@@ -153,14 +152,14 @@ public interface LoadBalancer extends
              * @param name the name for the frontend
              * @return the first stage of the new frontend definition
              */
-            LoadBalancerPublicFrontend.DefinitionStages.Blank<WithPublicFrontendOrProbe> definePublicFrontend(String name);
+            LoadBalancerPublicFrontend.DefinitionStages.Blank<WithPublicFrontendOrRuleNat> definePublicFrontend(String name);
         }
 
         /**
          * The stage of an Internet-facing load balancer definition allowing to add additional public frontends
-         * or start adding probes, NAT rules or NAT pools.
+         * or start adding load balancing rules, NAT rules or NAT pools.
          */
-        interface WithPublicFrontendOrProbe extends WithPublicFrontend, WithProbeOrNat {
+        interface WithPublicFrontendOrRuleNat extends WithPublicFrontend, WithRuleOrNat {
         }
 
         /**
@@ -176,15 +175,15 @@ public interface LoadBalancer extends
         }
 
         /**
-         * The stage of a load balancer definition allowing to add a backend or start adding probes, or NAT rules, or NAT pools.
-         */
-        interface WithBackendOrProbe extends WithBackend, WithProbeOrNat {
-        }
-
-        /**
          * The stage of a load balancer definition allowing to add a probe or an inbound NAT rule or pool.
          */
         interface WithProbeOrNat extends WithProbe, WithInboundNatRule, WithInboundNatPool {
+        }
+
+        /**
+         * The stage of a load balancer definition allowing to add a load blanacing rule, or an inbound NAT rule or pool.
+         */
+        interface WithRuleOrNat extends WithLoadBalancingRule, WithInboundNatRule, WithInboundNatPool {
         }
 
         /**
@@ -198,7 +197,7 @@ public interface LoadBalancer extends
              * @param port the port number for the probe to monitor
              * @return the next stage of the definition
              */
-            WithProbeOrLoadBalancingRule withTcpProbe(int port);
+            WithCreate withTcpProbe(int port);
 
             /**
              * Adds an HTTP probe checking for an HTTP 200 response from the specified path at regular intervals, using port 80.
@@ -207,31 +206,21 @@ public interface LoadBalancer extends
              * @param requestPath the path for the probe to invoke
              * @return the next stage of the definition
              */
-            WithProbeOrLoadBalancingRule withHttpProbe(String requestPath);
+            WithCreate withHttpProbe(String requestPath);
 
             /**
              * Begins the definition of a new TCP probe to add to the load balancer.
-             * <p>
-             * The definition must be completed with a call to {@link LoadBalancerTcpProbe.DefinitionStages.WithAttach#attach()}
              * @param name the name of the probe
              * @return the first stage of the new probe definition
              */
-            LoadBalancerTcpProbe.DefinitionStages.Blank<WithProbeOrLoadBalancingRule> defineTcpProbe(String name);
+            LoadBalancerTcpProbe.DefinitionStages.Blank<WithCreate> defineTcpProbe(String name);
 
             /**
              * Begins the definition of a new HTTP probe to add to the load balancer.
-             * <p>
-             * The definition must be completed with a call to {@link LoadBalancerHttpProbe.DefinitionStages.WithAttach#attach()}
              * @param name the name of the probe
              * @return the first stage of the new probe definition
              */
-            LoadBalancerHttpProbe.DefinitionStages.Blank<WithProbeOrLoadBalancingRule> defineHttpProbe(String name);
-        }
-
-        /**
-         * The stage of a load balancer definition allowing to add another probe or start adding load balancing rules.
-         */
-        interface WithProbeOrLoadBalancingRule extends WithProbe, WithLoadBalancingRule {
+            LoadBalancerHttpProbe.DefinitionStages.Blank<WithCreate> defineHttpProbe(String name);
         }
 
         /**
@@ -280,7 +269,7 @@ public interface LoadBalancer extends
              * @param subnetName the name of an existing subnet on the specified network
              * @return the next stage of the definition
              */
-            WithPrivateFrontendOrProbe withFrontendSubnet(Network network, String subnetName);
+            WithPrivateFrontendOrRuleNat withFrontendSubnet(Network network, String subnetName);
         }
 
         /**
@@ -301,7 +290,7 @@ public interface LoadBalancer extends
             /**
              * Creates a load balancing rule for the specified port and protocol and default frontend and backend associations.
              * <p>
-             * The load balancing rule will created under the name "default". It will reference a backend, a frontend, and a load balancing probe all named "default".
+             * The load balancing rule will created under the name "default". It will reference a default backend, a default frontend, and a load balancing probe named "default".
              * @param port the port number on the front and back end for the network traffic to be load balanced on
              * @param protocol the protocol to load balance
              * @return the next stage of the definition
@@ -332,7 +321,8 @@ public interface LoadBalancer extends
         interface WithCreate extends
             Creatable<LoadBalancer>,
             Resource.DefinitionWithTags<WithCreate>,
-            WithBackend {
+            WithBackend,
+            WithProbe {
         }
 
         /**
@@ -508,8 +498,6 @@ public interface LoadBalancer extends
 
             /**
              * Begins the definition of a new load balancing rule to add to the load balancer.
-             * <p>
-             * The definition must be completed with a call to {@link LoadBalancerTcpProbe.DefinitionStages.WithAttach#attach()}
              * @param name the name of the load balancing rule
              * @return the first stage of the new load balancing rule definition
              */

@@ -140,16 +140,6 @@ public final class ManageVirtualMachineScaleSet {
                         .withExistingPublicIPAddress(publicIPAddress)
                         .attach()
 
-                    // Add two probes one per rule
-                    .defineHttpProbe(httpProbe)
-                        .withRequestPath("/")
-                        .withPort(80)
-                        .attach()
-                    .defineHttpProbe(httpsProbe)
-                        .withRequestPath("/")
-                        .withPort(443)
-                        .attach()
-
                     // Add two rules that uses above backend and probe
                     .defineLoadBalancingRule(httpLoadBalancingRule)
                         .withProtocol(TransportProtocol.TCP)
@@ -180,6 +170,17 @@ public final class ManageVirtualMachineScaleSet {
                         .withFrontendPortRange(6000, 6099)
                         .withBackendPort(23)
                         .attach()
+
+                    // Add two probes one per rule
+                    .defineHttpProbe(httpProbe)
+                        .withRequestPath("/")
+                        .withPort(80)
+                        .attach()
+                    .defineHttpProbe(httpsProbe)
+                        .withRequestPath("/")
+                        .withPort(443)
+                        .attach()
+
                     .create();
 
             // Print load balancer details

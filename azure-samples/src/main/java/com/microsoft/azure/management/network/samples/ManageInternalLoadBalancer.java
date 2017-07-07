@@ -156,11 +156,6 @@ public final class ManageInternalLoadBalancer {
                         .withPrivateIPAddressStatic("172.16.3.5")
                         .attach()
 
-                    // Add one probes - one per rule
-                    .defineHttpProbe("httpProbe")
-                        .withRequestPath("/")
-                        .attach()
-
                     // Add one rule that uses above backend and probe
                     .defineLoadBalancingRule(tcpLoadBalancingRule)
                         .withProtocol(TransportProtocol.TCP)
@@ -199,6 +194,12 @@ public final class ManageInternalLoadBalancer {
                         .withFrontendPort(6003)
                         .withBackendPort(23)
                         .attach()
+
+                    // Add one probes - one per rule
+                    .defineHttpProbe("httpProbe")
+                        .withRequestPath("/")
+                        .attach()
+
                     .create();
 
             // Print load balancer details
@@ -334,11 +335,6 @@ public final class ManageInternalLoadBalancer {
                         .withPrivateIPAddressStatic("172.16.3.15")
                         .attach()
 
-                    // Add one probes - one per rule
-                    .defineHttpProbe("httpProbe")
-                        .withRequestPath("/")
-                        .attach()
-
                     // Add one rule that uses above backend and probe
                     .defineLoadBalancingRule(tcpLoadBalancingRule)
                         .withProtocol(TransportProtocol.TCP)
@@ -377,6 +373,12 @@ public final class ManageInternalLoadBalancer {
                         .withFrontendPort(6003)
                         .withBackendPort(23)
                         .attach()
+
+                    // Add one probes - one per rule
+                    .defineHttpProbe("httpProbe")
+                        .withRequestPath("/")
+                        .attach()
+
                     .create();
 
             // Print load balancer details

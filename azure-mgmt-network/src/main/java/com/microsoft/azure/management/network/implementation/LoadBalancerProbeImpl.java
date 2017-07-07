@@ -28,11 +28,11 @@ class LoadBalancerProbeImpl
     extends ChildResourceImpl<ProbeInner, LoadBalancerImpl, LoadBalancer>
     implements
         LoadBalancerTcpProbe,
-        LoadBalancerTcpProbe.Definition<LoadBalancer.DefinitionStages.WithProbeOrLoadBalancingRule>,
+        LoadBalancerTcpProbe.Definition<LoadBalancer.DefinitionStages.WithCreate>,
         LoadBalancerTcpProbe.UpdateDefinition<LoadBalancer.Update>,
         LoadBalancerTcpProbe.Update,
         LoadBalancerHttpProbe,
-        LoadBalancerHttpProbe.Definition<LoadBalancer.DefinitionStages.WithProbeOrLoadBalancingRule>,
+        LoadBalancerHttpProbe.Definition<LoadBalancer.DefinitionStages.WithCreate>,
         LoadBalancerHttpProbe.UpdateDefinition<LoadBalancer.Update>,
         LoadBalancerHttpProbe.Update {
 
