@@ -10,24 +10,16 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-import com.microsoft.azure.eventhubs.EventHubClient;
-import com.microsoft.azure.eventhubs.EventHubPartitionRuntimeInformation;
-import com.microsoft.azure.eventhubs.EventHubRuntimeInformation;
-import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.*;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import com.microsoft.azure.servicebus.AuthorizationFailedException;
-import com.microsoft.azure.servicebus.ClientConstants;
-import com.microsoft.azure.servicebus.ConnectionStringBuilder;
-import com.microsoft.azure.servicebus.FaultTolerantObject;
-import com.microsoft.azure.servicebus.MessagingFactory;
-import com.microsoft.azure.servicebus.ServiceBusException;
-import com.microsoft.azure.servicebus.amqp.AmqpException;
-import com.microsoft.azure.servicebus.amqp.AmqpResponseCode;
-import com.microsoft.azure.servicebus.amqp.IOperation;
-import com.microsoft.azure.servicebus.amqp.IOperationResult;
-import com.microsoft.azure.servicebus.amqp.ReactorDispatcher;
-import com.microsoft.azure.servicebus.amqp.RequestResponseChannel;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.amqp.AmqpException;
+import com.microsoft.azure.eventhubs.amqp.AmqpResponseCode;
+import com.microsoft.azure.eventhubs.amqp.IOperation;
+import com.microsoft.azure.eventhubs.amqp.IOperationResult;
+import com.microsoft.azure.eventhubs.amqp.ReactorDispatcher;
+import com.microsoft.azure.eventhubs.amqp.RequestResponseChannel;
 
 import junit.framework.Assert;
 import junit.framework.AssertionFailedError;
@@ -248,7 +240,7 @@ public class RequestResponseTest  extends ApiTestBase {
     }
     
     @Test
-    public void testGetRuntimesBadHub() throws ServiceBusException, IOException {
+    public void testGetRuntimesBadHub() throws EventHubException, IOException {
     	ConnectionStringBuilder bogusConnectionString = new ConnectionStringBuilder(connectionString.getEndpoint(), "NOHUBZZZZZ",
     			connectionString.getSasKeyName(), connectionString.getSasKey());
     	EventHubClient ehc = EventHubClient.createFromConnectionStringSync(bogusConnectionString.toString());
@@ -299,7 +291,7 @@ public class RequestResponseTest  extends ApiTestBase {
     }
     
     @Test
-    public void testGetRuntimesBadKeyname() throws ServiceBusException, IOException {
+    public void testGetRuntimesBadKeyname() throws EventHubException, IOException {
     	ConnectionStringBuilder bogusConnectionString = new ConnectionStringBuilder(connectionString.getEndpoint(), connectionString.getEntityPath(),
     			"xxxnokeyxxx", connectionString.getSasKey());
     	EventHubClient ehc = EventHubClient.createFromConnectionStringSync(bogusConnectionString.toString());
@@ -346,7 +338,7 @@ public class RequestResponseTest  extends ApiTestBase {
     }
     
     @AfterClass()
-    public static void cleanup() throws ServiceBusException {
+    public static void cleanup() throws EventHubException {
 
         if (factory != null)
             factory.closeSync();

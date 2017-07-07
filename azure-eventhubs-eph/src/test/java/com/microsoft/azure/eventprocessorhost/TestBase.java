@@ -9,9 +9,9 @@ import java.util.concurrent.Future;
 
 import org.junit.AfterClass;
 
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.EventHubClient;
-import com.microsoft.azure.servicebus.ConnectionStringBuilder;
-import com.microsoft.azure.servicebus.ServiceBusException;
+import com.microsoft.azure.eventhubs.EventHubException;
 
 public class TestBase
 {
@@ -138,7 +138,7 @@ public class TestBase
 	final static int SKIP_COUNT_CHECK = -3; // expectedMessages could be anything, don't check it at all
 	final static int NO_CHECKS = -2; // do no checks at all, used for tests which are expected fail in startup
 	final static int ANY_NONZERO_COUNT = -1; // if expectedMessages is -1, just check for > 0
-	void testFinish(PerTestSettings settings, int expectedMessages) throws InterruptedException, ExecutionException, ServiceBusException
+	void testFinish(PerTestSettings settings, int expectedMessages) throws InterruptedException, ExecutionException, EventHubException
 	{
 		if (settings.outHost != null)
 		{

@@ -13,8 +13,7 @@ import java.util.function.Consumer;
 
 import org.apache.qpid.proton.message.Message;
 
-import com.microsoft.azure.servicebus.amqp.AmqpConstants;
-import com.microsoft.azure.servicebus.PassByRef;
+import com.microsoft.azure.eventhubs.amqp.AmqpConstants;
 
 /*
  * Internal utility class for EventData

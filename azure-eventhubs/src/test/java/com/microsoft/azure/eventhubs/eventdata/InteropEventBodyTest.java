@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.microsoft.azure.eventhubs.*;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.AmqpSequence;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
@@ -23,16 +24,9 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.microsoft.azure.eventhubs.EventData;
-import com.microsoft.azure.eventhubs.EventHubClient;
-import com.microsoft.azure.eventhubs.PartitionReceiver;
-import com.microsoft.azure.eventhubs.PartitionSender;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import com.microsoft.azure.servicebus.ConnectionStringBuilder;
-import com.microsoft.azure.servicebus.MessageSender;
-import com.microsoft.azure.servicebus.MessagingFactory;
-import com.microsoft.azure.servicebus.ServiceBusException;
+import com.microsoft.azure.eventhubs.EventHubException;
 
 public class InteropEventBodyTest extends ApiTestBase {
     
@@ -48,7 +42,7 @@ public class InteropEventBodyTest extends ApiTestBase {
     static Message reSendAndReceivedMessage;
 
     @BeforeClass
-    public static void initialize() throws ServiceBusException, IOException, InterruptedException, ExecutionException
+    public static void initialize() throws EventHubException, IOException, InterruptedException, ExecutionException
     {
         final ConnectionStringBuilder connStrBuilder = TestContext.getConnectionString();
         final String connectionString = connStrBuilder.toString();
@@ -68,7 +62,7 @@ public class InteropEventBodyTest extends ApiTestBase {
     }
 
     @Test
-    public void interopWithProtonAmqpMessageBodyAsAmqpValue() throws ServiceBusException, InterruptedException, ExecutionException
+    public void interopWithProtonAmqpMessageBodyAsAmqpValue() throws EventHubException, InterruptedException, ExecutionException
     {
         Message originalMessage = Proton.message();
         String payload = "testmsg";
@@ -86,7 +80,7 @@ public class InteropEventBodyTest extends ApiTestBase {
     }
     
     @Test
-    public void interopWithProtonAmqpMessageBodyAsAmqpSequence() throws ServiceBusException, InterruptedException, ExecutionException
+    public void interopWithProtonAmqpMessageBodyAsAmqpSequence() throws EventHubException, InterruptedException, ExecutionException
     {
         Message originalMessage = Proton.message();
         String payload = "testmsg";
@@ -107,7 +101,7 @@ public class InteropEventBodyTest extends ApiTestBase {
     }
     
     @AfterClass
-    public static void cleanup() throws ServiceBusException
+    public static void cleanup() throws EventHubException
     {
         if (partitionMsgSender != null)
                 partitionMsgSender.closeSync();

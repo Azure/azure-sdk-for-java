@@ -14,20 +14,15 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import com.microsoft.azure.eventhubs.*;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.microsoft.azure.eventhubs.EventData;
-import com.microsoft.azure.eventhubs.EventHubClient;
-import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
-import com.microsoft.azure.eventhubs.PartitionReceiver;
-import com.microsoft.azure.eventhubs.PartitionSender;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import com.microsoft.azure.servicebus.ConnectionStringBuilder;
-import com.microsoft.azure.servicebus.ServiceBusException;
+import com.microsoft.azure.eventhubs.EventHubException;
 
 import junit.framework.AssertionFailedError;
 
@@ -49,7 +44,7 @@ public class SendTest extends ApiTestBase
 	}
 	
 	@Test
-	public void sendBatchRetainsOrderWithinBatch() throws ServiceBusException, InterruptedException, ExecutionException, TimeoutException
+	public void sendBatchRetainsOrderWithinBatch() throws EventHubException, InterruptedException, ExecutionException, TimeoutException
 	{
 		LinkedList<EventData> batchEvents = new LinkedList<>();
 		final int batchSize = 50;
@@ -79,7 +74,7 @@ public class SendTest extends ApiTestBase
 	}
 	
 	@Test
-	public void sendResultsInSysPropertiesWithPartitionKey() throws ServiceBusException, InterruptedException, ExecutionException, TimeoutException
+	public void sendResultsInSysPropertiesWithPartitionKey() throws EventHubException, InterruptedException, ExecutionException, TimeoutException
 	{
 		final int partitionCount = TestContext.getPartitionCount();
 		final String partitionKey = UUID.randomUUID().toString();
@@ -105,7 +100,7 @@ public class SendTest extends ApiTestBase
 	}
 	
 	@Test
-	public void sendBatchResultsInSysPropertiesWithPartitionKey() throws ServiceBusException, InterruptedException, ExecutionException, TimeoutException
+	public void sendBatchResultsInSysPropertiesWithPartitionKey() throws EventHubException, InterruptedException, ExecutionException, TimeoutException
 	{
 		final int batchSize = 20;
 		final int partitionCount = TestContext.getPartitionCount();
@@ -136,7 +131,7 @@ public class SendTest extends ApiTestBase
 	}
 	
 	@After
-	public void cleanup() throws ServiceBusException
+	public void cleanup() throws EventHubException
 	{
 		if (sender != null)
 		{
@@ -154,7 +149,7 @@ public class SendTest extends ApiTestBase
 	}
 	
 	@AfterClass
-	public static void cleanupClient() throws ServiceBusException
+	public static void cleanupClient() throws EventHubException
 	{
 		ehClient.closeSync();
 	}

@@ -7,8 +7,6 @@ package com.microsoft.azure.eventhubs;
 import java.util.concurrent.*;
 import java.util.function.*;
 
-import com.microsoft.azure.servicebus.*;
-
 /**
  * This sender class is a logical representation of sending events to a specific EventHub partition. Do not use this class
  * if you do not care about sending events to specific partitions. Instead, use {@link EventHubClient#send} method.
@@ -34,7 +32,7 @@ public final class PartitionSender extends ClientEntity {
     /**
      * Internal-Only: factory pattern to Create EventHubSender
      */
-    static CompletableFuture<PartitionSender> Create(MessagingFactory factory, String eventHubName, String partitionId) throws ServiceBusException {
+    static CompletableFuture<PartitionSender> Create(MessagingFactory factory, String eventHubName, String partitionId) throws EventHubException {
         final PartitionSender sender = new PartitionSender(factory, eventHubName, partitionId);
         return sender.createInternalSender()
                 .thenApply(new Function<Void, PartitionSender>() {
@@ -44,7 +42,7 @@ public final class PartitionSender extends ClientEntity {
                 });
     }
 
-    private CompletableFuture<Void> createInternalSender() throws ServiceBusException {
+    private CompletableFuture<Void> createInternalSender() throws EventHubException {
         return MessageSender.create(this.factory, StringUtil.getRandomString(),
                 String.format("%s/Partitions/%s", this.eventHubName, this.partitionId))
                 .thenAccept(new Consumer<MessageSender>() {
@@ -59,10 +57,10 @@ public final class PartitionSender extends ClientEntity {
      *
      * @param data the {@link EventData} to be sent.
      * @throws PayloadSizeExceededException if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
-     * @throws ServiceBusException          if Service Bus service encountered problems during the operation.
+     * @throws EventHubException          if Service Bus service encountered problems during the operation.
      */
     public final void sendSync(final EventData data)
-            throws ServiceBusException {
+            throws EventHubException {
         try {
             this.send(data).get();
         } catch (InterruptedException | ExecutionException exception) {
@@ -77,11 +75,11 @@ public final class PartitionSender extends ClientEntity {
                     throw (RuntimeException) throwable;
                 }
 
-                if (throwable instanceof ServiceBusException) {
-                    throw (ServiceBusException) throwable;
+                if (throwable instanceof EventHubException) {
+                    throw (EventHubException) throwable;
                 }
 
-                throw new ServiceBusException(true, throwable);
+                throw new EventHubException(true, throwable);
             }
         }
     }
@@ -114,10 +112,10 @@ public final class PartitionSender extends ClientEntity {
      * Synchronous version of {@link #send(Iterable)} .
      *
      * @param eventDatas batch of events to send to EventHub
-     * @throws ServiceBusException if Service Bus service encountered problems during the operation.
+     * @throws EventHubException if Service Bus service encountered problems during the operation.
      */
     public final void sendSync(final Iterable<EventData> eventDatas)
-            throws ServiceBusException {
+            throws EventHubException {
         try {
             this.send(eventDatas).get();
         } catch (InterruptedException | ExecutionException exception) {
@@ -132,11 +130,11 @@ public final class PartitionSender extends ClientEntity {
                     throw (RuntimeException) throwable;
                 }
 
-                if (throwable instanceof ServiceBusException) {
-                    throw (ServiceBusException) throwable;
+                if (throwable instanceof EventHubException) {
+                    throw (EventHubException) throwable;
                 }
 
-                throw new ServiceBusException(true, throwable);
+                throw new EventHubException(true, throwable);
             }
         }
     }
@@ -180,10 +178,10 @@ public final class PartitionSender extends ClientEntity {
      * @param eventDatas batch of events to send to EventHub
      * @return a CompletableFuture that can be completed when the send operations is done..
      * @throws PayloadSizeExceededException if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
-     * @throws ServiceBusException          if Service Bus service encountered problems during the operation.
+     * @throws EventHubException          if Service Bus service encountered problems during the operation.
      */
     public final CompletableFuture<Void> send(Iterable<EventData> eventDatas)
-            throws ServiceBusException {
+            throws EventHubException {
         if (eventDatas == null || IteratorUtil.sizeEquals(eventDatas, 0)) {
             throw new IllegalArgumentException("EventData batch cannot be empty.");
         }

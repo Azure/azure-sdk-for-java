@@ -5,12 +5,11 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
-import com.microsoft.azure.servicebus.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.storage.StorageException;
 
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
-import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.concurrent.*;
 import java.util.logging.Logger;

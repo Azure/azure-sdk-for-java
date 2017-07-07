@@ -8,20 +8,16 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.LinkedList;
 
+import com.microsoft.azure.eventhubs.*;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.microsoft.azure.eventhubs.EventData;
-import com.microsoft.azure.eventhubs.EventHubClient;
-import com.microsoft.azure.eventhubs.PartitionReceiver;
-import com.microsoft.azure.eventhubs.ReceiverOptions;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import com.microsoft.azure.servicebus.ConnectionStringBuilder;
-import com.microsoft.azure.servicebus.ServiceBusException;
+import com.microsoft.azure.eventhubs.EventHubException;
 
 public class ReceiverRuntimeMetricsTest  extends ApiTestBase {
     
@@ -56,7 +52,7 @@ public class ReceiverRuntimeMetricsTest  extends ApiTestBase {
     }
 
     @Test()
-    public void testRuntimeMetricsReturnedWhenEnabled() throws ServiceBusException {
+    public void testRuntimeMetricsReturnedWhenEnabled() throws EventHubException {
 
         LinkedList<EventData> receivedEventsWithOptions = new LinkedList<>();
         while (receivedEventsWithOptions.size() < sentEvents)
@@ -74,21 +70,21 @@ public class ReceiverRuntimeMetricsTest  extends ApiTestBase {
     }
 
     @Test()
-    public void testRuntimeMetricsWhenDisabled() throws ServiceBusException {
+    public void testRuntimeMetricsWhenDisabled() throws EventHubException {
 
         receiverWithOptionsDisabled.receiveSync(10);
         Assert.assertTrue(receiverWithOptionsDisabled.getRuntimeInformation() == null);
     }
     
     @Test()
-    public void testRuntimeMetricsDefaultDisabled() throws ServiceBusException {
+    public void testRuntimeMetricsDefaultDisabled() throws EventHubException {
 
         receiverWithoutOptions.receiveSync(10);
         Assert.assertTrue(receiverWithoutOptions.getRuntimeInformation() == null);
     }
     
     @AfterClass()
-    public static void cleanup() throws ServiceBusException {
+    public static void cleanup() throws EventHubException {
         
         if (receiverWithOptions != null)
             receiverWithOptions.closeSync();

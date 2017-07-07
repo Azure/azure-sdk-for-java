@@ -10,7 +10,6 @@ import java.util.*;
 import org.apache.logging.log4j.core.appender.*;
 
 import com.microsoft.azure.eventhubs.*;
-import com.microsoft.azure.servicebus.*;
 
 public final class EventHubsManager extends AbstractManager
 {
@@ -24,7 +23,7 @@ public final class EventHubsManager extends AbstractManager
 		this.eventHubConnectionString = eventHubConnectionString;
 	}
 	
-	public void send(final byte[] msg) throws ServiceBusException
+	public void send(final byte[] msg) throws EventHubException
 	{
 		if (msg != null)
 		{
@@ -33,7 +32,7 @@ public final class EventHubsManager extends AbstractManager
 		}
 	}
 	
-	public void send(final Iterable<byte[]> messages) throws ServiceBusException
+	public void send(final Iterable<byte[]> messages) throws EventHubException
 	{
 		if (messages != null)
 		{
@@ -47,7 +46,7 @@ public final class EventHubsManager extends AbstractManager
 		}
 	}
 
-	public void startup() throws ServiceBusException, IOException
+	public void startup() throws EventHubException, IOException
 	{
 		this.eventHubSender = EventHubClient.createFromConnectionStringSync(this.eventHubConnectionString);
 	}

@@ -26,10 +26,10 @@ import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import com.microsoft.azure.servicebus.ConnectionStringBuilder;
-import com.microsoft.azure.servicebus.MessageSender;
-import com.microsoft.azure.servicebus.MessagingFactory;
-import com.microsoft.azure.servicebus.ServiceBusException;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.MessageSender;
+import com.microsoft.azure.eventhubs.MessagingFactory;
+import com.microsoft.azure.eventhubs.EventHubException;
 
 public class BackCompatTest extends ApiTestBase
 {
@@ -65,7 +65,7 @@ public class BackCompatTest extends ApiTestBase
 		}};
 		
 	@BeforeClass
-	public static void initialize() throws ServiceBusException, IOException, InterruptedException, ExecutionException
+	public static void initialize() throws EventHubException, IOException, InterruptedException, ExecutionException
 	{
 		final ConnectionStringBuilder connStrBuilder = TestContext.getConnectionString();
 		final String connectionString = connStrBuilder.toString();
@@ -98,7 +98,7 @@ public class BackCompatTest extends ApiTestBase
 	}
 	
 	@AfterClass
-	public static void cleanup() throws ServiceBusException
+	public static void cleanup() throws EventHubException
 	{
 		if (partitionMsgSender != null)
 			partitionMsgSender.closeSync();

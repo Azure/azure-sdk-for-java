@@ -15,7 +15,7 @@ import java.util.concurrent.*;
 import java.util.logging.Level;
 
 import com.google.gson.Gson;
-import com.microsoft.azure.servicebus.IllegalEntityException;
+import com.microsoft.azure.eventhubs.IllegalEntityException;
 import com.microsoft.azure.storage.AccessCondition;
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;

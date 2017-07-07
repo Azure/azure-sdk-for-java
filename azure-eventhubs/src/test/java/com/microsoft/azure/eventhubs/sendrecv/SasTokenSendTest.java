@@ -7,6 +7,7 @@ package com.microsoft.azure.eventhubs.sendrecv;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
+import com.microsoft.azure.eventhubs.EventHubException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -15,7 +16,6 @@ import org.junit.Test;
 
 import com.microsoft.azure.eventhubs.lib.SasTokenTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import com.microsoft.azure.servicebus.ServiceBusException;
 
 public class SasTokenSendTest extends SasTokenTestBase {
     
@@ -33,25 +33,25 @@ public class SasTokenSendTest extends SasTokenTestBase {
     }
     
     @Test
-    public void sendBatchRetainsOrderWithinBatch() throws ServiceBusException, InterruptedException, ExecutionException, TimeoutException {
+    public void sendBatchRetainsOrderWithinBatch() throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
         
         sendTest.sendBatchRetainsOrderWithinBatch();
     }
     
     @Test
-    public void sendResultsInSysPropertiesWithPartitionKey() throws ServiceBusException, InterruptedException, ExecutionException, TimeoutException {
+    public void sendResultsInSysPropertiesWithPartitionKey() throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
         
         sendTest.sendResultsInSysPropertiesWithPartitionKey();
     }
     
     @After
-    public void cleanup() throws ServiceBusException {
+    public void cleanup() throws EventHubException {
         
         sendTest.cleanup();
     }
     
     @AfterClass
-    public static void cleanupClient() throws ServiceBusException {
+    public static void cleanupClient() throws EventHubException {
 
         SendTest.cleanupClient();
     }

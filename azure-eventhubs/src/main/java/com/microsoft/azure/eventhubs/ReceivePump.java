@@ -9,11 +9,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.microsoft.azure.servicebus.ClientConstants;
-import com.microsoft.azure.servicebus.ServiceBusException;
-
 public class ReceivePump {
-    private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
+    private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.EVENTHUB_CLIENT_TRACE);
 
     private final IPartitionReceiver receiver;
     private final PartitionReceiveHandler onReceiveHandler;
@@ -86,6 +83,6 @@ public class ReceivePump {
     public static interface IPartitionReceiver {
         public String getPartitionId();
 
-        public Iterable<EventData> receive(final int maxBatchSize) throws ServiceBusException;
+        public Iterable<EventData> receive(final int maxBatchSize) throws EventHubException;
     }
 }

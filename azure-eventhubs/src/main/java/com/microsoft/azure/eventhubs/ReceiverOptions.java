@@ -4,8 +4,6 @@
  */
 package com.microsoft.azure.eventhubs;
 
-import com.microsoft.azure.servicebus.ClientConstants;
-
 /**
  * Represents various optional behaviors which can be turned on or off during the creation of a {@link PartitionReceiver}.
  */
@@ -55,7 +53,7 @@ public final class ReceiverOptions {
      * <p>
      *     This identifier will be used by EventHubs service when reporting any errors across receivers, and is caused by this receiver.
      * For example, when receiver quota limit is hit, while a user is trying to create New receiver,
-     * EventHubs service will throw {@link com.microsoft.azure.servicebus.QuotaExceededException} and will include this identifier.
+     * EventHubs service will throw {@link QuotaExceededException} and will include this identifier.
      * So, its very critical to choose a value, which can uniquely identify the whereabouts of {@link PartitionReceiver}.
      *
      * </p>

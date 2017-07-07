@@ -4,32 +4,20 @@
  */
 package com.microsoft.azure.eventhubs.sendrecv;
 
-import java.time.Instant;
-import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
-import java.util.function.Consumer;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import org.junit.After;
+import com.microsoft.azure.eventhubs.*;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Test;
 
-import com.microsoft.azure.eventhubs.EventData;
-import com.microsoft.azure.eventhubs.EventHubClient;
-import com.microsoft.azure.eventhubs.PartitionReceiver;
-import com.microsoft.azure.eventhubs.PartitionSender;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import com.microsoft.azure.servicebus.amqp.AmqpConstants;
-import com.microsoft.azure.servicebus.ConnectionStringBuilder;
-import com.microsoft.azure.servicebus.IteratorUtil;
-import com.microsoft.azure.servicebus.ServiceBusException;
+import com.microsoft.azure.eventhubs.EventHubException;
 
 public class ReceiveParallelManualTest extends ApiTestBase
 {
@@ -67,14 +55,14 @@ public class ReceiveParallelManualTest extends ApiTestBase
                 e.printStackTrace();
             } catch (ExecutionException e) {
                 e.printStackTrace();
-            } catch (ServiceBusException e) {
+            } catch (EventHubException e) {
                 e.printStackTrace();
             }
 
             PartitionReceiver offsetReceiver1 = null;
             try {
                 offsetReceiver1 = ehClient.createReceiverSync(cgName, sPartitionId, PartitionReceiver.START_OF_STREAM, false);
-            } catch (ServiceBusException e) {
+            } catch (EventHubException e) {
                 e.printStackTrace();
             }
 
@@ -124,7 +112,7 @@ public class ReceiveParallelManualTest extends ApiTestBase
 	}
 	
 	@AfterClass()
-	public static void cleanup() throws ServiceBusException
+	public static void cleanup() throws EventHubException
 	{
 		if (ehClient != null)
 		{

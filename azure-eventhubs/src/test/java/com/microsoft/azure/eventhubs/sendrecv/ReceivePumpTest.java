@@ -8,15 +8,12 @@ import java.util.LinkedList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
+import com.microsoft.azure.eventhubs.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.microsoft.azure.eventhubs.EventData;
-import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
-import com.microsoft.azure.eventhubs.ReceivePump;
-import com.microsoft.azure.servicebus.IteratorUtil;
-import com.microsoft.azure.servicebus.ServiceBusException;
+import com.microsoft.azure.eventhubs.EventHubException;
 
 public class ReceivePumpTest
 {
@@ -35,7 +32,7 @@ public class ReceivePumpTest
 		final ReceivePump receivePump = new ReceivePump(
 				new ReceivePump.IPartitionReceiver()
 				{
-					@Override public Iterable<EventData> receive(int maxBatchSize) throws ServiceBusException
+					@Override public Iterable<EventData> receive(int maxBatchSize) throws EventHubException
 					{
 						LinkedList<EventData> events = new LinkedList<EventData>();
 						events.add(new EventData("some".getBytes()));
@@ -66,14 +63,14 @@ public class ReceivePumpTest
 	}
 
 	@Test()
-	public void testPumpReceiveTransientErrorsPropagated() throws ServiceBusException, InterruptedException, ExecutionException, TimeoutException
+	public void testPumpReceiveTransientErrorsPropagated() throws EventHubException, InterruptedException, ExecutionException, TimeoutException
 	{
 		final ReceivePump receivePump = new ReceivePump(
 				new ReceivePump.IPartitionReceiver()
 				{
-					@Override public Iterable<EventData> receive(int maxBatchSize) throws ServiceBusException
+					@Override public Iterable<EventData> receive(int maxBatchSize) throws EventHubException
 					{
-						throw new ServiceBusException(true, exceptionMessage);
+						throw new EventHubException(true, exceptionMessage);
 					}
 					@Override public String getPartitionId()
 					{
@@ -96,14 +93,14 @@ public class ReceivePumpTest
 	}
 	
 	@Test()
-	public void testPumpReceiveExceptionsPropagated() throws ServiceBusException, InterruptedException, ExecutionException, TimeoutException
+	public void testPumpReceiveExceptionsPropagated() throws EventHubException, InterruptedException, ExecutionException, TimeoutException
 	{
 		final ReceivePump receivePump = new ReceivePump(
 				new ReceivePump.IPartitionReceiver()
 				{
-					@Override public Iterable<EventData> receive(int maxBatchSize) throws ServiceBusException
+					@Override public Iterable<EventData> receive(int maxBatchSize) throws EventHubException
 					{
-						throw new ServiceBusException(false, exceptionMessage);
+						throw new EventHubException(false, exceptionMessage);
 					}
 					@Override public String getPartitionId()
 					{
@@ -126,13 +123,13 @@ public class ReceivePumpTest
 	}
 	
 	@Test()
-	public void testPumpOnReceiveExceptionsPropagated() throws ServiceBusException, InterruptedException, ExecutionException, TimeoutException
+	public void testPumpOnReceiveExceptionsPropagated() throws EventHubException, InterruptedException, ExecutionException, TimeoutException
 	{
 		final String runtimeExceptionMsg = "random exception";
 		final ReceivePump receivePump = new ReceivePump(
 				new ReceivePump.IPartitionReceiver()
 				{
-					@Override public Iterable<EventData> receive(int maxBatchSize) throws ServiceBusException
+					@Override public Iterable<EventData> receive(int maxBatchSize) throws EventHubException
 					{
 						return null;
 					}

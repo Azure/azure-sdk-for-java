@@ -11,13 +11,12 @@ import org.junit.*;
 
 import com.microsoft.azure.eventhubs.*;
 import com.microsoft.azure.eventhubs.lib.*;
-import com.microsoft.azure.servicebus.*;
 
 public class EventHubClientTest extends ApiTestBase
 {
 	
 	@Test()
-	public void testParallelEventHubClients() throws ServiceBusException, InterruptedException, ExecutionException, IOException
+	public void testParallelEventHubClients() throws EventHubException, InterruptedException, ExecutionException, IOException
 	{
 		final String consumerGroupName = TestContext.getConsumerGroupName();
 		final String partitionId = "0";

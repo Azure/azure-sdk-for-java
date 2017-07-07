@@ -16,9 +16,9 @@ import java.util.logging.Level;
 
 import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.EventHubRuntimeInformation;
-import com.microsoft.azure.servicebus.IllegalEntityException;
-import com.microsoft.azure.servicebus.ServiceBusException;
-import com.microsoft.azure.servicebus.TimeoutException;
+import com.microsoft.azure.eventhubs.IllegalEntityException;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.TimeoutException;
 import com.microsoft.azure.storage.StorageException;
 
 class PartitionManager
@@ -62,7 +62,7 @@ class PartitionManager
 					saved = new TimeoutException("getRuntimeInformation returned null");
 				}
 			}
-			catch (ServiceBusException | IOException | InterruptedException | ExecutionException e)
+			catch (EventHubException | IOException | InterruptedException | ExecutionException e)
 			{
 				saved = e;
 			}

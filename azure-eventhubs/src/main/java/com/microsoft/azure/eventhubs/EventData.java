@@ -27,7 +27,7 @@ import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
 
-import com.microsoft.azure.servicebus.amqp.AmqpConstants;
+import com.microsoft.azure.eventhubs.amqp.AmqpConstants;
 
 /**
  * The data structure encapsulating the Event being sent-to and received-from EventHubs.

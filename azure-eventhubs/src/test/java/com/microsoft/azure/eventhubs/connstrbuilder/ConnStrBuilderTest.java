@@ -11,9 +11,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
-import com.microsoft.azure.servicebus.ConnectionStringBuilder;
-import com.microsoft.azure.servicebus.IllegalConnectionStringFormatException;
-import com.microsoft.azure.servicebus.RetryPolicy;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.IllegalConnectionStringFormatException;
+import com.microsoft.azure.eventhubs.RetryPolicy;
 
 public class ConnStrBuilderTest extends ApiTestBase
 {

@@ -12,20 +12,16 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import com.microsoft.azure.eventhubs.*;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.microsoft.azure.eventhubs.EventData;
-import com.microsoft.azure.eventhubs.EventHubClient;
-import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
-import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import com.microsoft.azure.servicebus.ConnectionStringBuilder;
-import com.microsoft.azure.servicebus.ServiceBusException;
+import com.microsoft.azure.eventhubs.EventHubException;
 
 public class ReceivePumpEventHubTest extends ApiTestBase
 {
@@ -37,20 +33,20 @@ public class ReceivePumpEventHubTest extends ApiTestBase
 	PartitionReceiver receiver;
 	
 	@BeforeClass
-	public static void initializeEventHub()  throws ServiceBusException, IOException
+	public static void initializeEventHub()  throws EventHubException, IOException
 	{
 		final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
 		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString());
 	}
 	
 	@Before
-	public void initializeTest() throws ServiceBusException
+	public void initializeTest() throws EventHubException
 	{
 		receiver = ehClient.createReceiverSync(cgName, partitionId, Instant.now());
 	}
 	
 	@Test(expected = TimeoutException.class)
-	public void testInvokeOnTimeoutKnobDefault() throws ServiceBusException, InterruptedException, ExecutionException, TimeoutException
+	public void testInvokeOnTimeoutKnobDefault() throws EventHubException, InterruptedException, ExecutionException, TimeoutException
 	{
 		CompletableFuture<Void> invokeSignal = new CompletableFuture<Void>();
 		receiver.setReceiveTimeout(Duration.ofSeconds(1));
@@ -59,7 +55,7 @@ public class ReceivePumpEventHubTest extends ApiTestBase
 	}
 	
 	@Test(expected = TimeoutException.class)
-	public void testInvokeOnTimeoutKnobFalse() throws ServiceBusException, InterruptedException, ExecutionException, TimeoutException
+	public void testInvokeOnTimeoutKnobFalse() throws EventHubException, InterruptedException, ExecutionException, TimeoutException
 	{
 		CompletableFuture<Void> invokeSignal = new CompletableFuture<Void>();
 		receiver.setReceiveTimeout(Duration.ofSeconds(1));
@@ -68,7 +64,7 @@ public class ReceivePumpEventHubTest extends ApiTestBase
 	}
 	
 	@Test()
-	public void testInvokeOnTimeoutKnobTrue() throws ServiceBusException, InterruptedException, ExecutionException, TimeoutException
+	public void testInvokeOnTimeoutKnobTrue() throws EventHubException, InterruptedException, ExecutionException, TimeoutException
 	{
 		CompletableFuture<Void> invokeSignal = new CompletableFuture<Void>();
 		receiver.setReceiveTimeout(Duration.ofSeconds(1));
@@ -77,7 +73,7 @@ public class ReceivePumpEventHubTest extends ApiTestBase
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testSetReceiveHandlerMultipleTimes() throws ServiceBusException, InterruptedException, ExecutionException, TimeoutException
+	public void testSetReceiveHandlerMultipleTimes() throws EventHubException, InterruptedException, ExecutionException, TimeoutException
 	{
 		CompletableFuture<Void> invokeSignal = new CompletableFuture<Void>();
 		receiver.setReceiveTimeout(Duration.ofSeconds(1));
@@ -87,7 +83,7 @@ public class ReceivePumpEventHubTest extends ApiTestBase
 	}
 	
 	@Test()
-	public void testGraceFullCloseReceivePump() throws ServiceBusException, InterruptedException, ExecutionException, TimeoutException
+	public void testGraceFullCloseReceivePump() throws EventHubException, InterruptedException, ExecutionException, TimeoutException
 	{
 		CompletableFuture<Void> invokeSignal = new CompletableFuture<Void>();
 		receiver.setReceiveTimeout(Duration.ofSeconds(1));
@@ -101,14 +97,14 @@ public class ReceivePumpEventHubTest extends ApiTestBase
 	}
 	
 	@After
-	public void cleanupTest() throws ServiceBusException
+	public void cleanupTest() throws EventHubException
 	{
 		if (receiver != null)
 			receiver.closeSync();
 	}
 	
 	@AfterClass
-	public static void cleanup() throws ServiceBusException
+	public static void cleanup() throws EventHubException
 	{
 		if (ehClient != null)
 			ehClient.closeSync();

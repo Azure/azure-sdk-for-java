@@ -5,7 +5,7 @@ import java.util.concurrent.ExecutionException;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import com.microsoft.azure.servicebus.IllegalEntityException;
+import com.microsoft.azure.eventhubs.IllegalEntityException;
 
 public class SadPathTests extends TestBase
 {

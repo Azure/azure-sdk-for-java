@@ -245,7 +245,7 @@ file with the following contents:
     # Set tracing level for Event Processor Host as desired
     eventprocessorhost.trace.level=FINE
     # Set tracing level for Event Hub client as desired
-    servicebus.trace.level=FINE
+    eventhub.trace.level=FINE
     # Set tracing for Apache Qpid Proton-J as desired
     proton.trace.level=FINE
     # Tell FileHandler to not filter anything

@@ -4,6 +4,7 @@
  */
 package com.microsoft.azure.eventhubs.sendrecv;
 
+import com.microsoft.azure.eventhubs.EventHubException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -12,7 +13,6 @@ import org.junit.Test;
 
 import com.microsoft.azure.eventhubs.lib.SasTokenTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import com.microsoft.azure.servicebus.ServiceBusException;
 
 public class SasTokenReceiveTest extends SasTokenTestBase {
     
@@ -30,19 +30,19 @@ public class SasTokenReceiveTest extends SasTokenTestBase {
     }
     
     @Test()
-    public void testReceiverStartOfStreamFilters() throws ServiceBusException {
+    public void testReceiverStartOfStreamFilters() throws EventHubException {
         
         receiveTest.testReceiverStartOfStreamFilters();
     }
     
     @After
-    public void testCleanup() throws ServiceBusException {
+    public void testCleanup() throws EventHubException {
         
         receiveTest.testCleanup();
     }
     
     @AfterClass()
-    public static void cleanup() throws ServiceBusException {
+    public static void cleanup() throws EventHubException {
         
         ReceiveTest.cleanup();
     }

@@ -6,18 +6,13 @@ package com.microsoft.azure.eventhubs.exceptioncontracts;
 
 import java.time.Duration;
 
+import com.microsoft.azure.eventhubs.*;
 import org.junit.After;
 import org.junit.Test;
 
-import com.microsoft.azure.eventhubs.EventData;
-import com.microsoft.azure.eventhubs.EventHubClient;
-import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import com.microsoft.azure.servicebus.AuthorizationFailedException;
-import com.microsoft.azure.servicebus.ConnectionStringBuilder;
-import com.microsoft.azure.servicebus.ServiceBusException;
-import com.microsoft.azure.servicebus.SharedAccessSignatureTokenProvider;
+import com.microsoft.azure.eventhubs.EventHubException;
 
 public class SecurityExceptionsTest extends ApiTestBase
 {
@@ -52,7 +47,7 @@ public class SecurityExceptionsTest extends ApiTestBase
 		ehClient.sendSync(new EventData("Test Message".getBytes()));
 	}
         
-        @Test (expected = ServiceBusException.class)
+        @Test (expected = EventHubException.class)
 	public void testEventHubClientInvalidAccessToken() throws Throwable
 	{
                 final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
@@ -143,7 +138,7 @@ public class SecurityExceptionsTest extends ApiTestBase
 	}
 	
 	@After
-	public void cleanup() throws ServiceBusException
+	public void cleanup() throws EventHubException
 	{
 		ehClient.closeSync();
 	}

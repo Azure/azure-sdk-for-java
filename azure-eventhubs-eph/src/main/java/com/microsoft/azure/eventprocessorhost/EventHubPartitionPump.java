@@ -17,8 +17,8 @@ import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
 import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.ReceiverOptions;
-import com.microsoft.azure.servicebus.ReceiverDisconnectedException;
-import com.microsoft.azure.servicebus.ServiceBusException;
+import com.microsoft.azure.eventhubs.ReceiverDisconnectedException;
+import com.microsoft.azure.eventhubs.EventHubException;
 
 class EventHubPartitionPump extends PartitionPump
 {
@@ -90,7 +90,7 @@ class EventHubPartitionPump extends PartitionPump
         }
     }
     
-    private void openClients() throws ServiceBusException, IOException, InterruptedException, ExecutionException
+    private void openClients() throws EventHubException, IOException, InterruptedException, ExecutionException
     {
     	// Create new client
     	this.host.logWithHostAndPartition(Level.FINER, this.partitionContext, "Opening EH client");
@@ -173,7 +173,7 @@ class EventHubPartitionPump extends PartitionPump
 			{
 				partitionReceiverTemp.closeSync();
 			}
-			catch (ServiceBusException exception)
+			catch (EventHubException exception)
 			{
 				this.host.logWithHostAndPartition(Level.FINE, this.partitionContext,"Closing EH receiver failed.", exception);
 			}
@@ -189,7 +189,7 @@ class EventHubPartitionPump extends PartitionPump
 			{
 				eventHubClientTemp.closeSync();
 			}
-			catch (ServiceBusException exception)
+			catch (EventHubException exception)
 			{
 				this.host.logWithHostAndPartition(Level.FINE, this.partitionContext, "Closing EH client failed.", exception);
 			}

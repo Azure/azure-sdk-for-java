@@ -7,26 +7,21 @@ package com.microsoft.azure.eventhubs.sendrecv;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
+import com.microsoft.azure.eventhubs.*;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.microsoft.azure.eventhubs.EventData;
-import com.microsoft.azure.eventhubs.EventHubClient;
-import com.microsoft.azure.eventhubs.PartitionReceiver;
-import com.microsoft.azure.eventhubs.PartitionSender;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import com.microsoft.azure.servicebus.ConnectionStringBuilder;
-import com.microsoft.azure.servicebus.ServiceBusException;
-import com.microsoft.azure.servicebus.amqp.AmqpConstants;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.amqp.AmqpConstants;
 
 public class ReceiveTest extends ApiTestBase
 {
@@ -47,7 +42,7 @@ public class ReceiveTest extends ApiTestBase
 	}
 	
 	@Test()
-	public void testReceiverStartOfStreamFilters() throws ServiceBusException
+	public void testReceiverStartOfStreamFilters() throws EventHubException
 	{
 		offsetReceiver = ehClient.createReceiverSync(cgName, partitionId, PartitionReceiver.START_OF_STREAM, false);
 		Iterable<EventData> startingEventsUsingOffsetReceiver = offsetReceiver.receiveSync(100);
@@ -73,7 +68,7 @@ public class ReceiveTest extends ApiTestBase
 	}
 	
 	@Test()
-	public void testReceiverLatestFilter() throws ServiceBusException, ExecutionException, InterruptedException
+	public void testReceiverLatestFilter() throws EventHubException, ExecutionException, InterruptedException
 	{
 		offsetReceiver = ehClient.createReceiverSync(cgName, partitionId, PartitionReceiver.END_OF_STREAM, false);
 		Iterable<EventData> events = offsetReceiver.receiveSync(100);
@@ -85,7 +80,7 @@ public class ReceiveTest extends ApiTestBase
 	}
 
 	@Test()
-	public void testReceiverOffsetInclusiveFilter() throws ServiceBusException
+	public void testReceiverOffsetInclusiveFilter() throws EventHubException
 	{
 		datetimeReceiver = ehClient.createReceiverSync(cgName, partitionId, Instant.EPOCH);
 		Iterable<EventData> events = datetimeReceiver.receiveSync(100);
@@ -101,7 +96,7 @@ public class ReceiveTest extends ApiTestBase
 	}
 	
 	@Test()
-	public void testReceiverOffsetNonInclusiveFilter() throws ServiceBusException
+	public void testReceiverOffsetNonInclusiveFilter() throws EventHubException
 	{
 		datetimeReceiver = ehClient.createReceiverSync(cgName, partitionId, Instant.EPOCH);
 		Iterable<EventData> events = datetimeReceiver.receiveSync(100);
@@ -116,7 +111,7 @@ public class ReceiveTest extends ApiTestBase
 	}
 	
 	@Test()
-	public void testReceivedBodyAndProperties() throws ServiceBusException
+	public void testReceivedBodyAndProperties() throws EventHubException
 	{
 		datetimeReceiver = ehClient.createReceiverSync(cgName, partitionId, PartitionReceiver.END_OF_STREAM);
 		datetimeReceiver.setReceiveTimeout(Duration.ofSeconds(5));
@@ -169,7 +164,7 @@ public class ReceiveTest extends ApiTestBase
 	}
 	
 	@After
-	public void testCleanup() throws ServiceBusException
+	public void testCleanup() throws EventHubException
 	{
 		if (offsetReceiver != null)
 		{
@@ -185,7 +180,7 @@ public class ReceiveTest extends ApiTestBase
 	}
 	
 	@AfterClass()
-	public static void cleanup() throws ServiceBusException
+	public static void cleanup() throws EventHubException
 	{
 		if (ehClient != null)
 		{

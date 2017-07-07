@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-import com.microsoft.azure.servicebus.QuotaExceededException;
+import com.microsoft.azure.eventhubs.QuotaExceededException;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -21,8 +21,8 @@ import com.microsoft.azure.eventhubs.ReceiverOptions;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import com.microsoft.azure.servicebus.ConnectionStringBuilder;
-import com.microsoft.azure.servicebus.ServiceBusException;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventHubException;
 
 public class ReceiverIdentifierTest extends ApiTestBase {
 
@@ -44,7 +44,7 @@ public class ReceiverIdentifierTest extends ApiTestBase {
     }
 
     @Test()
-    public void testReceiverIdentierShowsUpInQuotaErrors() throws ServiceBusException {
+    public void testReceiverIdentierShowsUpInQuotaErrors() throws EventHubException {
 
         final String receiverIdentifierPrefix = UUID.randomUUID().toString();
         for (int receiverCount = 0; receiverCount < 5; receiverCount ++) {
@@ -66,7 +66,7 @@ public class ReceiverIdentifierTest extends ApiTestBase {
     }
 
     @AfterClass()
-    public static void cleanup() throws ServiceBusException {
+    public static void cleanup() throws EventHubException {
 
         for (PartitionReceiver receiver : receivers)
             receiver.closeSync();

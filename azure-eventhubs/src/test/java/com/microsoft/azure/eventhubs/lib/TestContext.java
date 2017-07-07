@@ -4,7 +4,7 @@
  */
 package com.microsoft.azure.eventhubs.lib;
 
-import com.microsoft.azure.servicebus.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 
 public final class TestContext
 {
