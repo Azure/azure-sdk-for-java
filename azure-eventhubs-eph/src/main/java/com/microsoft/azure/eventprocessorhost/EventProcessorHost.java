@@ -420,10 +420,6 @@ public final class EventProcessorHost
     String getConsumerGroupName() { return this.consumerGroupName; }
     EventProcessorOptions getEventProcessorOptions() { return this.processorOptions; }
     
-    public PartitionManagerOptions getPartitionManagerOptions() { return this.partitionManagerOptions; }
-    
-    public void setPartitionManagerOptions(PartitionManagerOptions options) { this.partitionManagerOptions = options; }
-    
     /**
      * Returns the existing partition manager options object. Unless you are providing implementations of
      * ILeaseManager and ICheckpointMananger, to change partition manager options, call this method to get
