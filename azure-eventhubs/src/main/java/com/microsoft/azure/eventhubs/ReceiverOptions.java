@@ -40,11 +40,27 @@ public final class ReceiverOptions {
         this.receiverRuntimeMetricEnabled = value;
     }
 
+    /**
+     * Gets the identifier of the {@link PartitionReceiver}
+     *
+     * @return identifier of the {@link PartitionReceiver}; null if nothing was set
+     */
     public String getIdentifier() {
 
         return this.identifier;
     }
 
+    /**
+     * Set an identifier to {@link PartitionReceiver}.
+     * <p>
+     *     This identifier will be used by EventHubs service when reporting any errors across receivers, and is caused by this receiver.
+     * For example, when receiver quota limit is hit, while a user is trying to create New receiver,
+     * EventHubs service will throw {@link com.microsoft.azure.servicebus.QuotaExceededException} and will include this identifier.
+     * So, its very critical to choose a value, which can uniquely identify the whereabouts of {@link PartitionReceiver}.
+     *
+     * </p>
+     * @param value string to identify {@link PartitionReceiver}
+     */
     public void setIdentifier(final String value) {
 
         ReceiverOptions.validateReceiverIdentifier(value);
