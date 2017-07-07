@@ -10,6 +10,7 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineExtensionImageInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import rx.Observable;
 
 /**
  * An immutable client-side representation of an Azure virtual machine extension image version.
@@ -37,4 +38,10 @@ public interface VirtualMachineExtensionImageVersion extends
      * @return virtual machine extension image this version represents
      */
     VirtualMachineExtensionImage getImage();
+
+
+    /**
+     * @return an observable upon subscription emits the image
+     */
+    Observable<VirtualMachineExtensionImage> getImageAsync();
 }

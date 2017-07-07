@@ -84,10 +84,10 @@ class VirtualMachineExtensionImagesImpl
                     public Observable<VirtualMachineExtensionImageVersion> call(VirtualMachineExtensionImageType virtualMachineExtensionImageType) {
                         return virtualMachineExtensionImageType.versions().listAsync();
                     }
-                }).map(new Func1<VirtualMachineExtensionImageVersion, VirtualMachineExtensionImage>() {
+                }).flatMap(new Func1<VirtualMachineExtensionImageVersion, Observable<VirtualMachineExtensionImage>>() {
                     @Override
-                    public VirtualMachineExtensionImage call(VirtualMachineExtensionImageVersion virtualMachineExtensionImageVersion) {
-                        return virtualMachineExtensionImageVersion.getImage();
+                    public Observable<VirtualMachineExtensionImage> call(VirtualMachineExtensionImageVersion virtualMachineExtensionImageVersion) {
+                        return virtualMachineExtensionImageVersion.getImageAsync();
                     }
                 });
     }
