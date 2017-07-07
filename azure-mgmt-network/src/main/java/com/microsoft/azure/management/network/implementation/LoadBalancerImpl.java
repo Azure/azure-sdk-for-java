@@ -469,7 +469,7 @@ class LoadBalancerImpl
 
     @Override
     public LoadBalancerImpl withNewPublicIPAddress(Creatable<PublicIPAddress> creatablePIP) {
-        return withNewPublicIPAddress(creatablePIP, DEFAULT);
+        return withNewPublicIPAddress(creatablePIP, this.ensureDefaultFrontend().name());
     }
 
     private LoadBalancerImpl withNewPublicIPAddress(Creatable<PublicIPAddress> creatablePip, String configName) {
