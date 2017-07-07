@@ -36,7 +36,6 @@ import com.microsoft.azure.management.network.LoadDistribution;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.Networks;
-import com.microsoft.azure.management.network.ProbeProtocol;
 import com.microsoft.azure.management.network.LoadBalancerPrivateFrontend;
 import com.microsoft.azure.management.network.LoadBalancerProbe;
 import com.microsoft.azure.management.network.PublicIPAddress;
@@ -628,8 +627,6 @@ public class TestLoadBalancer {
                     .withLoadBalancingRule(80, TransportProtocol.TCP)
                     // Backend (default)
                     .withExistingVirtualMachines(existingVMs)
-                    // Probe
-                    .withTcpProbe(22)
                     .create();
 
             // Verify frontends
@@ -644,23 +641,16 @@ public class TestLoadBalancer {
             Assert.assertTrue(pip.id().equalsIgnoreCase(publicFrontend.publicIPAddressId()));
 
             // Verify TCP probes
-            Assert.assertTrue(lb.tcpProbes().containsKey("default"));
-            Assert.assertEquals(1, lb.tcpProbes().size());
-            LoadBalancerTcpProbe tcpProbe = lb.tcpProbes().get("default");
-            Assert.assertTrue(tcpProbe.loadBalancingRules().containsKey("default"));
-            Assert.assertEquals(1, tcpProbe.loadBalancingRules().size());
-            Assert.assertEquals(22, tcpProbe.port());
-            Assert.assertEquals(ProbeProtocol.TCP, tcpProbe.protocol());
+            Assert.assertEquals(0, lb.tcpProbes().size());
 
             // Verify rules
             Assert.assertEquals(1, lb.loadBalancingRules().size());
             Assert.assertTrue(lb.loadBalancingRules().containsKey("default"));
             LoadBalancingRule lbrule = lb.loadBalancingRules().get("default");
             Assert.assertNotNull(lbrule.frontend());
-            Assert.assertTrue("default".equalsIgnoreCase(lbrule.probe().name()));
             Assert.assertEquals(80, lbrule.backendPort());
             Assert.assertEquals(80, lbrule.frontendPort());
-            Assert.assertNotNull(lbrule.probe());
+            Assert.assertNull(lbrule.probe());
             Assert.assertEquals(TransportProtocol.TCP, lbrule.protocol());
             Assert.assertNotNull(lbrule.backend());
 
@@ -685,9 +675,9 @@ public class TestLoadBalancer {
             PublicIPAddress pip = resource.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[1]);
             resource =  resource.update()
                     .withExistingPublicIPAddress(pip)
-                    .updateTcpProbe("default")
+                    .defineTcpProbe("tcpprobe")
                         .withPort(22)
-                        .parent()
+                        .attach()
                     .defineHttpProbe("httpprobe")
                         .withRequestPath("/foo")
                         .withNumberOfProbes(3)
@@ -696,6 +686,7 @@ public class TestLoadBalancer {
                     .updateLoadBalancingRule("default")
                         .withBackendPort(8080)
                         .withIdleTimeoutInMinutes(11)
+                        // TODO: .withProbe("tcpprobe")
                         .parent()
                     .defineLoadBalancingRule("lbrule2")
                         .withProtocol(TransportProtocol.UDP)
@@ -723,7 +714,7 @@ public class TestLoadBalancer {
             Assert.assertEquals(2, publicFrontend.loadBalancingRules().size());
 
             // Verify probes
-            LoadBalancerTcpProbe tcpProbe = resource.tcpProbes().get("default");
+            LoadBalancerTcpProbe tcpProbe = resource.tcpProbes().get("tcpprobe");
             Assert.assertNotNull(tcpProbe);
             Assert.assertEquals(22, tcpProbe.port());
 
@@ -801,8 +792,6 @@ public class TestLoadBalancer {
                     .withLoadBalancingRule(80, TransportProtocol.TCP)
                     // Backends
                     .withExistingVirtualMachines(existingVMs)
-                    // Probe
-                    .withTcpProbe(22)
                     .create();
 
             // Verify frontends
@@ -820,23 +809,16 @@ public class TestLoadBalancer {
             Assert.assertEquals(IPAllocationMethod.DYNAMIC, privateFrontend.privateIPAllocationMethod());
 
             // Verify TCP probes
-            Assert.assertTrue(lb.tcpProbes().containsKey("default"));
-            Assert.assertEquals(1, lb.tcpProbes().size());
-            LoadBalancerTcpProbe tcpProbe = lb.tcpProbes().get("default");
-            Assert.assertTrue(tcpProbe.loadBalancingRules().containsKey("default"));
-            Assert.assertEquals(1, tcpProbe.loadBalancingRules().size());
-            Assert.assertEquals(22, tcpProbe.port());
-            Assert.assertEquals(ProbeProtocol.TCP, tcpProbe.protocol());
+            Assert.assertEquals(0, lb.tcpProbes().size());
 
             // Verify rules
             Assert.assertEquals(1, lb.loadBalancingRules().size());
             Assert.assertTrue(lb.loadBalancingRules().containsKey("default"));
             LoadBalancingRule lbrule = lb.loadBalancingRules().get("default");
             Assert.assertNotNull(lbrule.frontend());
-            Assert.assertTrue("default".equalsIgnoreCase(lbrule.probe().name()));
             Assert.assertEquals(80, lbrule.backendPort());
             Assert.assertEquals(80, lbrule.frontendPort());
-            Assert.assertNotNull(lbrule.probe());
+            Assert.assertNull(lbrule.probe());
             Assert.assertEquals(TransportProtocol.TCP, lbrule.protocol());
             Assert.assertNotNull(lbrule.backend());
 
@@ -865,9 +847,9 @@ public class TestLoadBalancer {
                         .withExistingSubnet(this.network, "subnet2")
                         .withPrivateIPAddressStatic("10.0.0.13")
                         .parent()
-                    .updateTcpProbe("default")
+                    .defineTcpProbe("tcpprobe")
                         .withPort(22)
-                        .parent()
+                        .attach()
                     .defineHttpProbe("httpprobe")
                         .withRequestPath("/foo")
                         .withNumberOfProbes(3)
@@ -905,7 +887,8 @@ public class TestLoadBalancer {
             Assert.assertEquals(2, privateFrontend.loadBalancingRules().size());
 
             // Verify probes
-            LoadBalancerTcpProbe tcpProbe = resource.tcpProbes().get("default");
+            Assert.assertEquals(1, resource.tcpProbes().size());
+            LoadBalancerTcpProbe tcpProbe = resource.tcpProbes().get("tcpprobe");
             Assert.assertNotNull(tcpProbe);
             Assert.assertEquals(22,  tcpProbe.port());
 

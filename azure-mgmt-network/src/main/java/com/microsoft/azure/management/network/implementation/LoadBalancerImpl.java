@@ -136,7 +136,7 @@ class LoadBalancerImpl
 
         // Return frontend reference
         return new SubResource()
-                .withId(this.futureResourceId() + "/frontendIPConfigurations/" + name);
+                .withId(this.futureResourceId() + "/frontendIPConfigurations/" + frontend.name());
     }
 
     protected LoadBalancerFrontendImpl ensureDefaultFrontend() {
@@ -529,7 +529,6 @@ class LoadBalancerImpl
             .withBackendPort(backendPort)
             .withDefaultBackend()
             .withProtocol(protocol)
-            .withProbe(DEFAULT)
             .attach();
         return this;
     }
