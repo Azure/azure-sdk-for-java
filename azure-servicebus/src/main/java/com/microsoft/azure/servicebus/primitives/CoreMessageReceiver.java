@@ -83,6 +83,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	private boolean isSessionReceiver;
 	private boolean isBrowsableSession;
 	private Instant sessionLockedUntilUtc;
+	private boolean isSessionLockLost;
 
 	private ConcurrentLinkedQueue<MessageWithDeliveryTag> prefetchedMessages;
 	private Receiver receiveLink;
@@ -329,6 +330,16 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
             return sendTokenFuture.thenAccept((f) -> {this.sasTokenRenewTimerFuture = f;TRACE_LOGGER.debug("Sent SAS Token and set renew timer");});
         }
     }
+	
+	private void throwIfInUnusableState()
+	{
+	    if(this.isSessionReceiver && this.isSessionLockLost)
+	    {
+	        throw new IllegalStateException("Session lock lost and cannot be used. Close this session and accept another session.");
+	    }
+	    
+	    this.throwIfClosed(this.lastKnownLinkError);
+	}
     
     private void cancelSASTokenRenewTimer()
     {
@@ -391,7 +402,8 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	}
 
 	public void setPrefetchCount(final int value) throws ServiceBusException
-	{	    
+	{
+	    this.throwIfInUnusableState();
 		final int deltaPrefetchCount;
 		synchronized (this.prefetchCountSync)
 		{
@@ -424,7 +436,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 
 	public CompletableFuture<Collection<MessageWithDeliveryTag>> receiveAsync(final int maxMessageCount, Duration timeout)
 	{
-		this.throwIfClosed(this.lastKnownLinkError);
+	    this.throwIfInUnusableState();
 		
 		if (maxMessageCount <= 0 || maxMessageCount > this.prefetchCount)
 		{
@@ -535,6 +547,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 					}
 					else
 					{
+					    TRACE_LOGGER.warn("Accepted a session with id '{}', from '{}' which didn't set '{}' property on the receive link.", this.sessionId, this.receivePath, ClientConstants.LOCKED_UNTIL_UTC);
 						this.sessionLockedUntilUtc = Instant.ofEpochMilli(0);
 					}
 					
@@ -739,48 +752,61 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		{
 		    TRACE_LOGGER.error("Receive link to '{}' closed with error.", this.receivePath, exception);
 			this.lastKnownLinkError = exception;
-			this.onOpenComplete(exception);
-			
-			if (exception != null &&
-					(!(exception instanceof ServiceBusException) || !((ServiceBusException) exception).getIsTransient()))
+			if (this.linkOpen != null && !this.linkOpen.getWork().isDone())
 			{
-				this.clearAllPendingWorkItems(exception);
+			    this.onOpenComplete(exception);
 			}
 			else
-			{				
-				// TODO change it. Why recreating link needs to wait for retry interval of pending receive?
-				ReceiveWorkItem workItem = null;
-				if(!this.pendingReceives.isEmpty())
-				{
-					workItem = this.pendingReceives.get(0);
-				}
-				
-				if (workItem != null && workItem.getTimeoutTracker() != null)
-				{
-					Duration nextRetryInterval = this.underlyingFactory.getRetryPolicy()
-							.getNextRetryInterval(this.getClientId(), exception, workItem.getTimeoutTracker().remaining());
-					if (nextRetryInterval != null)
-					{
-					    TRACE_LOGGER.error("Receive link to '{}' will be reopened after '{}'", this.receivePath, nextRetryInterval);
-						try
-						{
-							this.underlyingFactory.scheduleOnReactorThread((int) nextRetryInterval.toMillis(), new DispatchHandler()
-							{
-								@Override
-								public void onEvent()
-								{
-									if (receiveLink.getLocalState() == EndpointState.CLOSED || receiveLink.getRemoteState() == EndpointState.CLOSED)
-									{
-										createReceiveLink();
-									}
-								}
-							});
-						}
-						catch (IOException ignore)
-						{
-						}
-					}
-				}
+			{
+			    if (exception != null &&
+	                    (!(exception instanceof ServiceBusException) || !((ServiceBusException) exception).getIsTransient()))
+	            {
+	                this.clearAllPendingWorkItems(exception);
+	                
+	                if(this.isSessionReceiver && (exception instanceof SessionLockLostException || exception instanceof SessionCannotBeLockedException))
+	                {
+	                    // No point in retrying to establish a link.. SessionLock is lost
+	                    TRACE_LOGGER.warn("Session '{}' lock lost. Closing receiver.", this.sessionId);
+	                    this.isSessionLockLost = true;
+	                    this.closeAsync();         
+	                }
+	            }
+	            else
+	            {               
+	                // TODO change it. Why recreating link needs to wait for retry interval of pending receive?
+	                ReceiveWorkItem workItem = null;
+	                if(!this.pendingReceives.isEmpty())
+	                {
+	                    workItem = this.pendingReceives.get(0);
+	                }
+	                
+	                if (workItem != null && workItem.getTimeoutTracker() != null)
+	                {
+	                    Duration nextRetryInterval = this.underlyingFactory.getRetryPolicy()
+	                            .getNextRetryInterval(this.getClientId(), exception, workItem.getTimeoutTracker().remaining());
+	                    if (nextRetryInterval != null)
+	                    {
+	                        TRACE_LOGGER.error("Receive link to '{}' will be reopened after '{}'", this.receivePath, nextRetryInterval);
+	                        try
+	                        {
+	                            this.underlyingFactory.scheduleOnReactorThread((int) nextRetryInterval.toMillis(), new DispatchHandler()
+	                            {
+	                                @Override
+	                                public void onEvent()
+	                                {
+	                                    if (receiveLink.getLocalState() == EndpointState.CLOSED || receiveLink.getRemoteState() == EndpointState.CLOSED)
+	                                    {
+	                                        createReceiveLink();
+	                                    }
+	                                }
+	                            });
+	                        }
+	                        catch (IOException ignore)
+	                        {
+	                        }
+	                    }
+	                }
+	            }
 			}
 		}
 	}	
@@ -1001,7 +1027,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	
 	private CompletableFuture<Void> updateMessageStateAsync(byte[] deliveryTag, Outcome outcome)
 	{
-		this.throwIfClosed(this.lastKnownLinkError);		
+	    this.throwIfInUnusableState();
 		CompletableFuture<Void> completeMessageFuture = new CompletableFuture<Void>();
 		
 		try
@@ -1039,7 +1065,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	}
 	
 	private void ensureLinkIsOpen()
-	{		
+	{
 		if (this.receiveLink.getLocalState() == EndpointState.CLOSED || this.receiveLink.getRemoteState() == EndpointState.CLOSED)
 		{
 			this.createReceiveLink();
@@ -1108,6 +1134,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	
 	public CompletableFuture<Collection<Instant>> renewMessageLocksAsync(UUID[] lockTokens)
 	{
+	    this.throwIfInUnusableState();
 	    if(TRACE_LOGGER.isDebugEnabled())
 	    {
 	        TRACE_LOGGER.debug("Renewing message locks for lock tokens '{}' of entity '{}', sesion '{}'", Arrays.toString(lockTokens), this.receivePath, this.isSessionReceiver ? this.getSessionId() : "");
@@ -1149,6 +1176,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	
 	public CompletableFuture<Collection<MessageWithLockToken>> receiveBySequenceNumbersAsync(Long[] sequenceNumbers)
 	{
+	    this.throwIfInUnusableState();
 	    if(TRACE_LOGGER.isDebugEnabled())
         {
             TRACE_LOGGER.debug("Receiving messges for sequence numbers '{}' from entity '{}', sesion '{}'", Arrays.toString(sequenceNumbers), this.receivePath, this.isSessionReceiver ? this.getSessionId() : "");
@@ -1214,6 +1242,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	
 	public CompletableFuture<Void> updateDispositionAsync(UUID[] lockTokens, String dispositionStatus, String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify)
 	{
+	    this.throwIfInUnusableState();
 	    if(TRACE_LOGGER.isDebugEnabled())
         {
             TRACE_LOGGER.debug("Update disposition of deliveries '{}' to '{}' on entity '{}', sesion '{}'", Arrays.toString(lockTokens), dispositionStatus, this.receivePath, this.isSessionReceiver ? this.getSessionId() : "");
@@ -1270,6 +1299,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	
 	public CompletableFuture<Void> renewSessionLocksAsync()
 	{
+	    this.throwIfInUnusableState();
 	    TRACE_LOGGER.debug("Renewing session lock on entity '{}' of sesion '{}'", this.receivePath, this.getSessionId());
 		return this.createRequestResponseLinkAsync().thenComposeAsync((v) -> {
 			HashMap requestBodyMap = new HashMap();
@@ -1301,6 +1331,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	
 	public CompletableFuture<byte[]> getSessionStateAsync()
 	{
+	    this.throwIfInUnusableState();
 	    TRACE_LOGGER.debug("Getting session state of sesion '{}' from entity '{}'", this.getSessionId(), this.receivePath);
 		return this.createRequestResponseLinkAsync().thenComposeAsync((v) -> {
 			HashMap requestBodyMap = new HashMap();
@@ -1342,6 +1373,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	// NULL session state is allowed
 	public CompletableFuture<Void> setSessionStateAsync(byte[] sessionState)
 	{
+	    this.throwIfInUnusableState();
 	    TRACE_LOGGER.debug("Setting session state of sesion '{}' on entity '{}'", this.getSessionId(), this.receivePath);
 		return this.createRequestResponseLinkAsync().thenComposeAsync((v) -> {
 			HashMap requestBodyMap = new HashMap();
@@ -1373,6 +1405,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	// A receiver can be used to peek messages from any session-id, useful for browsable sessions
 	public CompletableFuture<Collection<Message>> peekMessagesAsync(long fromSequenceNumber, int messageCount, String sessionId)
 	{
+	    this.throwIfInUnusableState();
 		return this.createRequestResponseLinkAsync().thenComposeAsync((v) -> {
 			return CommonRequestResponseOperations.peekMessagesAsync(this.requestResponseLink, this.operationTimeout, fromSequenceNumber, messageCount, sessionId);
 		});		

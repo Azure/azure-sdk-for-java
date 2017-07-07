@@ -165,8 +165,7 @@ public class Util
 		
 		throw new IllegalArgumentException(String.format(Locale.US, "Encoding Type: %s is not supported", obj.getClass()));
 	}
-	
-	// Unused now.. ServiceBus service serializes DateTime types as java time as per AMQP spec 
+		 
 	// .Net ticks are measured from 01/01/0001, java instants are measured from 01/01/1970
 	public static Instant convertDotNetTicksToInstant(long dotNetTicks)
 	{
