@@ -171,6 +171,21 @@ public interface VirtualMachine extends
     void convertToManaged();
 
     /**
+     * Converts (migrates) the virtual machine with un-managed disks to use managed disk asynchronously.
+     *
+     *  @return a representation of the deferred computation of this call
+     */
+    Completable convertToManagedAsync();
+
+    /**
+     * Converts (migrates) the virtual machine with un-managed disks to use managed disk asynchronously.
+     *
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     */
+    ServiceFuture<Void> convertToManagedAsync(ServiceCallback<Void> callback);
+
+    /**
      * Lists all available virtual machine sizes this virtual machine can resized to.
      *
      * @return the virtual machine sizes
@@ -187,6 +202,27 @@ public interface VirtualMachine extends
      * @return the JSON template for creating more such virtual machines
      */
     String capture(String containerName, String vhdPrefix, boolean overwriteVhd);
+
+    /**
+     * Captures the virtual machine by copying virtual hard disks of the VM asynchronously.
+     *
+             * @param containerName destination container name to store the captured VHD
+     * @param vhdPrefix the prefix for the VHD holding captured image
+     * @param overwriteVhd whether to overwrites destination VHD if it exists
+     * @return a representation of the deferred computation of this call
+     */
+    Observable<String> captureAsync(String containerName, String vhdPrefix, boolean overwriteVhd);
+
+    /**
+     * Captures the virtual machine by copying virtual hard disks of the VM asynchronously.
+     *
+     * @param containerName destination container name to store the captured VHD
+     * @param vhdPrefix the prefix for the VHD holding captured image
+     * @param overwriteVhd whether to overwrites destination VHD if it exists
+     * @param callback the callback to call on success or failure
+     * @return a representation of the deferred computation of this call
+     */
+    ServiceFuture<String> captureAsync(String containerName, String vhdPrefix, boolean overwriteVhd, ServiceCallback<String> callback);
 
     /**
      * Refreshes the virtual machine instance view to sync with Azure.

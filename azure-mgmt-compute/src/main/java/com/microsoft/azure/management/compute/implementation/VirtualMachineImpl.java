@@ -292,6 +292,22 @@ class VirtualMachineImpl
     }
 
     @Override
+    public Completable convertToManagedAsync() {
+        return this.manager().inner().virtualMachines().convertToManagedDisksAsync(this.resourceGroupName(), this.name())
+            .flatMap(new Func1<OperationStatusResponseInner, Observable<?>>() {
+                @Override
+                public Observable<?> call(OperationStatusResponseInner operationStatusResponseInner) {
+                    return refreshAsync();
+                }
+            }).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> convertToManagedAsync(ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.convertToManagedAsync().<Void>toObservable(), callback);
+    }
+
+    @Override
     public VirtualMachineEncryption diskEncryption() {
         return new VirtualMachineEncryptionImpl(this);
     }
@@ -311,21 +327,38 @@ class VirtualMachineImpl
 
     @Override
     public String capture(String containerName, String vhdPrefix, boolean overwriteVhd) {
+        return this.captureAsync(containerName, vhdPrefix, overwriteVhd).toBlocking().last();
+    }
+
+    @Override
+    public Observable<String> captureAsync(String containerName, String vhdPrefix, boolean overwriteVhd) {
         VirtualMachineCaptureParametersInner parameters = new VirtualMachineCaptureParametersInner();
         parameters.withDestinationContainerName(containerName);
         parameters.withOverwriteVhds(overwriteVhd);
         parameters.withVhdPrefix(vhdPrefix);
-        VirtualMachineCaptureResultInner captureResult = this.manager().inner().virtualMachines().capture(this.resourceGroupName(), this.name(), parameters);
-        if (captureResult == null) {
-            return null;
-        }
-        ObjectMapper mapper = new ObjectMapper();
-        //Object to JSON string
-        try {
-            return mapper.writeValueAsString(captureResult.output());
-        } catch (JsonProcessingException e) {
-            throw Exceptions.propagate(e);
-        }
+        return this.manager().inner().virtualMachines().captureAsync(this.resourceGroupName(),
+                this.name(),
+                parameters)
+        .map(new Func1<VirtualMachineCaptureResultInner, String>() {
+            @Override
+            public String call(VirtualMachineCaptureResultInner innerResult) {
+                if (innerResult == null) {
+                    return null;
+                }
+                ObjectMapper mapper = new ObjectMapper();
+                //Object to JSON string
+                try {
+                    return mapper.writeValueAsString(innerResult.output());
+                } catch (JsonProcessingException e) {
+                    throw Exceptions.propagate(e);
+                }
+            }
+        });
+    }
+
+    @Override
+    public ServiceFuture<String> captureAsync(String containerName, String vhdPrefix, boolean overwriteVhd, ServiceCallback<String> callback) {
+        return ServiceFuture.fromBody(this.captureAsync(containerName, vhdPrefix, overwriteVhd), callback);
     }
 
     @Override
