@@ -145,15 +145,15 @@ public final class ManageVirtualMachineScaleSet {
                         .withProtocol(TransportProtocol.TCP)
                         .withFrontend(frontendName)
                         .withFrontendPort(80)
-                        .withProbe(httpProbe)
                         .withBackend(backendPoolName1)
+                        .withProbe(httpProbe)
                         .attach()
                     .defineLoadBalancingRule(httpsLoadBalancingRule)
                         .withProtocol(TransportProtocol.TCP)
                         .withFrontend(frontendName)
                         .withFrontendPort(443)
-                        .withProbe(httpsProbe)
                         .withBackend(backendPoolName2)
+                        .withProbe(httpsProbe)
                         .attach()
 
                     // Add nat pools to enable direct VM connectivity for

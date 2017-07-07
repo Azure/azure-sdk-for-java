@@ -161,8 +161,8 @@ public final class ManageInternalLoadBalancer {
                         .withProtocol(TransportProtocol.TCP)
                         .withFrontend(privateFrontEndName)
                         .withFrontendPort(orcaleSQLNodePort)
-                        .withProbe(httpProbe)
                         .withBackend(backendPoolName3)
+                        .withProbe(httpProbe)
                         .attach()
 
                     // Add two nat pools to enable direct VM connectivity for
@@ -340,8 +340,8 @@ public final class ManageInternalLoadBalancer {
                         .withProtocol(TransportProtocol.TCP)
                         .withFrontend(privateFrontEndName)
                         .withFrontendPort(orcaleSQLNodePort)
-                        .withProbe(httpProbe)
                         .withBackend(backendPoolName3)
+                        .withProbe(httpProbe)
                         .attach()
 
                     // Add two nat pools to enable direct VM connectivity for

@@ -59,51 +59,51 @@ public interface LoadBalancingRule extends
     interface DefinitionStages {
         /**
          * The first stage of the load balancing rule definition.
-         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface Blank<ParentT> extends WithProtocol<ParentT> {
+        interface Blank<ReturnT> extends WithProtocol<ReturnT> {
         }
 
         /**
          * The stage of a load balancing rule definition allowing to specify the transport protocol to apply the rule to.
-         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithProtocol<ParentT> extends
-            HasProtocol.DefinitionStages.WithProtocol<WithFrontend<ParentT>, TransportProtocol> {
+        interface WithProtocol<ReturnT> extends
+            HasProtocol.DefinitionStages.WithProtocol<WithFrontend<ReturnT>, TransportProtocol> {
         }
 
         /**
          * The stage of a load balancing rule definition allowing to specify the frontend port to load balance.
-         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithFrontendPort<ParentT> extends HasFrontendPort.DefinitionStages.WithFrontendPort<WithProbe<ParentT>> {
+        interface WithFrontendPort<ReturnT> extends HasFrontendPort.DefinitionStages.WithFrontendPort<WithBackend<ReturnT>> {
         }
 
         /**
          * The stage of a load balancing rule definition allowing to specify the frontend to associate with the rule.
-         * @param <ParentT> the parent load balancer type
+         * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithFrontend<ParentT> extends
-            HasFrontend.DefinitionStages.WithFrontend<WithFrontendPort<ParentT>> {
+        interface WithFrontend<ReturnT> extends
+            HasFrontend.DefinitionStages.WithFrontend<WithFrontendPort<ReturnT>> {
         }
 
         /**
          * The stage of a load balancing rule definition allowing to specify the probe to associate with the rule.
-         * @param <ParentT> the parent load balancer type
+         * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithProbe<ParentT> {
+        interface WithProbe<ReturnT> {
             /**
              * Associates the specified existing HTTP or TCP probe of this load balancer with the load balancing rule.
              * @param name the name of an existing HTTP or TCP probe
              * @return the next stage of the definition
              */
-            WithBackend<ParentT> withProbe(String name);
+            WithAttach<ReturnT> withProbe(String name);
         }
 
         /** The stage of a load balancing rule definition allowing to specify the backend to associate the rule with.
-         * @param <ParentT> the parent load balancer type
+         * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithBackend<ParentT> {
+        interface WithBackend<ReturnT> {
             /**
              * Associates the load balancing rule with the specified backend of this load balancer.
              * <p>
@@ -111,23 +111,23 @@ public interface LoadBalancingRule extends
              * @param backendName the name of a backend
              * @return the next stage of the definition
              */
-            WithBackendPort<ParentT> withBackend(String backendName);
+            WithBackendPort<ReturnT> withBackend(String backendName);
 
             /**
              * Associates with the default backend.
              * @return the next stage of the definition
              */
             @Beta(SinceVersion.V1_2_0)
-            WithBackendPort<ParentT> withDefaultBackend();
+            WithBackendPort<ReturnT> withDefaultBackend();
         }
 
         /**
          * The stage of a load balancing rule definition allowing to specify the backend port to send the load-balanced traffic to.
-         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithBackendPort<ParentT> extends
-            HasBackendPort.DefinitionStages.WithBackendPort<WithAttach<ParentT>>,
-            WithAttach<ParentT> {
+        interface WithBackendPort<ReturnT> extends
+            HasBackendPort.DefinitionStages.WithBackendPort<WithAttach<ReturnT>>,
+            WithAttach<ReturnT> {
         }
 
         /**
@@ -135,61 +135,61 @@ public interface LoadBalancingRule extends
          * <p>
          * At this stage, any remaining optional settings can be specified, or the load balancing rule definition
          * can be attached to the parent load balancer definition using {@link WithAttach#attach()}.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT> extends
-            Attachable.InDefinition<ParentT>,
-            DefinitionStages.WithFloatingIP<ParentT>,
-            DefinitionStages.WithIdleTimeoutInMinutes<ParentT>,
-            DefinitionStages.WithLoadDistribution<ParentT> {
+        interface WithAttach<ReturnT> extends
+            Attachable.InDefinition<ReturnT>,
+            DefinitionStages.WithFloatingIP<ReturnT>,
+            DefinitionStages.WithIdleTimeoutInMinutes<ReturnT>,
+            DefinitionStages.WithLoadDistribution<ReturnT>,
+            DefinitionStages.WithProbe<ReturnT> {
         }
 
         /**
          * The stage of a load balancing rule definition allowing to enable the floating IP functionality.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithFloatingIP<ParentT> extends HasFloatingIP.DefinitionStages.WithFloatingIP<WithAttach<ParentT>> {
+        interface WithFloatingIP<ReturnT> extends HasFloatingIP.DefinitionStages.WithFloatingIP<WithAttach<ReturnT>> {
         }
 
         /**
          * The stage of a load balancing rule definition allowing to specify the connection timeout for idle connections.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithIdleTimeoutInMinutes<ParentT> {
+        interface WithIdleTimeoutInMinutes<ReturnT> {
             /**
              * Specifies the number of minutes before an idle connection is closed.
              * @param minutes the desired number of minutes
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withIdleTimeoutInMinutes(int minutes);
+            WithAttach<ReturnT> withIdleTimeoutInMinutes(int minutes);
         }
 
         /**
          * The stage of a load balancing rule definition allowing to specify the load distribution.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithLoadDistribution<ParentT> {
+        interface WithLoadDistribution<ReturnT> {
             /**
              * Specifies the load distribution mode.
              * @param loadDistribution a supported load distribution mode
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withLoadDistribution(LoadDistribution loadDistribution);
+            WithAttach<ReturnT> withLoadDistribution(LoadDistribution loadDistribution);
         }
     }
 
     /** The entirety of a load balancing rule definition.
-     * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
+     * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
      */
-    interface Definition<ParentT> extends
-        DefinitionStages.Blank<ParentT>,
-        DefinitionStages.WithAttach<ParentT>,
-        DefinitionStages.WithProtocol<ParentT>,
-        DefinitionStages.WithFrontendPort<ParentT>,
-        DefinitionStages.WithFrontend<ParentT>,
-        DefinitionStages.WithProbe<ParentT>,
-        DefinitionStages.WithBackend<ParentT>,
-        DefinitionStages.WithBackendPort<ParentT> {
+    interface Definition<ReturnT> extends
+        DefinitionStages.Blank<ReturnT>,
+        DefinitionStages.WithAttach<ReturnT>,
+        DefinitionStages.WithProtocol<ReturnT>,
+        DefinitionStages.WithFrontendPort<ReturnT>,
+        DefinitionStages.WithFrontend<ReturnT>,
+        DefinitionStages.WithBackend<ReturnT>,
+        DefinitionStages.WithBackendPort<ReturnT> {
     }
 
     /**
@@ -293,51 +293,51 @@ public interface LoadBalancingRule extends
     interface UpdateDefinitionStages {
         /**
          * The first stage of the load balancing rule definition.
-         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface Blank<ParentT> extends WithProtocol<ParentT> {
+        interface Blank<ReturnT> extends WithProtocol<ReturnT> {
         }
 
         /**
          * The stage of a load balancing rule definition allowing to specify the transport protocol to apply the rule to.
-         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithProtocol<ParentT> extends
-            HasProtocol.UpdateDefinitionStages.WithProtocol<WithFrontend<ParentT>, TransportProtocol> {
+        interface WithProtocol<ReturnT> extends
+            HasProtocol.UpdateDefinitionStages.WithProtocol<WithFrontend<ReturnT>, TransportProtocol> {
         }
 
         /**
          * The stage of a load balancing rule definition allowing to specify the frontend port to load balance.
-         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithFrontendPort<ParentT> extends HasFrontendPort.UpdateDefinitionStages.WithFrontendPort<WithProbe<ParentT>> {
+        interface WithFrontendPort<ReturnT> extends HasFrontendPort.UpdateDefinitionStages.WithFrontendPort<WithBackend<ReturnT>> {
         }
 
         /**
          * The stage of a load balancing rule definition allowing to specify the frontend to associate with the rule.
-         * @param <ParentT> the parent load balancer type
+         * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithFrontend<ParentT> extends
-            HasFrontend.UpdateDefinitionStages.WithFrontend<WithFrontendPort<ParentT>> {
+        interface WithFrontend<ReturnT> extends
+            HasFrontend.UpdateDefinitionStages.WithFrontend<WithFrontendPort<ReturnT>> {
         }
 
         /**
          * The stage of a load balancing rule definition allowing to specify the probe to associate with the rule.
-         * @param <ParentT> the parent load balancer type
+         * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithProbe<ParentT> {
+        interface WithProbe<ReturnT> {
             /**
              * Associates the specified existing HTTP or TCP probe of this load balancer with the load balancing rule.
              * @param name the name of an existing HTTP or TCP probe
              * @return the next stage of the definition
              */
-            WithBackend<ParentT> withProbe(String name);
+            WithAttach<ReturnT> withProbe(String name);
         }
 
         /** The stage of a load balancing rule definition allowing to specify the backend to associate the rule with.
-         * @param <ParentT> the parent load balancer type
+         * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithBackend<ParentT> {
+        interface WithBackend<ReturnT> {
             /**
              * Associates the load balancing rule with the specified backend of this load balancer.
              * <p>
@@ -345,56 +345,56 @@ public interface LoadBalancingRule extends
              * @param backendName the name of an existing backend
              * @return the next stage of the definition
              */
-            WithBackendPort<ParentT> withBackend(String backendName);
+            WithBackendPort<ReturnT> withBackend(String backendName);
 
             /**
              * Associates with the default backend.
              * @return the next stage of the definition
              */
             @Beta(SinceVersion.V1_2_0)
-            WithBackendPort<ParentT> withDefaultBackend();
+            WithBackendPort<ReturnT> withDefaultBackend();
         }
 
         /**
          * The stage of a load balancing rule definition allowing to specify the backend port to send the load-balanced traffic to.
-         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithBackendPort<ParentT> extends
-            HasBackendPort.UpdateDefinitionStages.WithBackendPort<WithAttach<ParentT>>,
-            WithAttach<ParentT> {
+        interface WithBackendPort<ReturnT> extends
+            HasBackendPort.UpdateDefinitionStages.WithBackendPort<WithAttach<ReturnT>>,
+            WithAttach<ReturnT> {
         }
 
         /**
          * The stage of a load balancing rule definition allowing to enable the floating IP functionality.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithFloatingIP<ParentT> extends HasFloatingIP.UpdateDefinitionStages.WithFloatingIP<WithAttach<ParentT>> {
+        interface WithFloatingIP<ReturnT> extends HasFloatingIP.UpdateDefinitionStages.WithFloatingIP<WithAttach<ReturnT>> {
         }
 
         /**
          * The stage of a load balancing rule definition allowing to specify the connection timeout for idle connections.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithIdleTimeoutInMinutes<ParentT> {
+        interface WithIdleTimeoutInMinutes<ReturnT> {
             /**
              * Specifies the number of minutes before an idle connection is closed.
              * @param minutes the desired number of minutes
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withIdleTimeoutInMinutes(int minutes);
+            WithAttach<ReturnT> withIdleTimeoutInMinutes(int minutes);
         }
 
         /**
          * The stage of a load balancing rule definition allowing to specify the load distribution.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithLoadDistribution<ParentT> {
+        interface WithLoadDistribution<ReturnT> {
             /**
              * Specifies the load distribution mode.
              * @param loadDistribution a supported load distribution mode
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withLoadDistribution(LoadDistribution loadDistribution);
+            WithAttach<ReturnT> withLoadDistribution(LoadDistribution loadDistribution);
         }
 
         /**
@@ -402,27 +402,27 @@ public interface LoadBalancingRule extends
          * <p>
          * At this stage, any remaining optional settings can be specified, or the load balancing rule definition
          * can be attached to the parent load balancer definition using {@link WithAttach#attach()}.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT> extends
-            Attachable.InUpdate<ParentT>,
-            UpdateDefinitionStages.WithFloatingIP<ParentT>,
-            UpdateDefinitionStages.WithIdleTimeoutInMinutes<ParentT>,
-            UpdateDefinitionStages.WithLoadDistribution<ParentT> {
+        interface WithAttach<ReturnT> extends
+            Attachable.InUpdate<ReturnT>,
+            UpdateDefinitionStages.WithFloatingIP<ReturnT>,
+            UpdateDefinitionStages.WithIdleTimeoutInMinutes<ReturnT>,
+            UpdateDefinitionStages.WithLoadDistribution<ReturnT>,
+            UpdateDefinitionStages.WithProbe<ReturnT> {
         }
     }
 
     /** The entirety of a load balancing rule definition as part of a load balancer update.
-     * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
+     * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
      */
-    interface UpdateDefinition<ParentT> extends
-        UpdateDefinitionStages.Blank<ParentT>,
-        UpdateDefinitionStages.WithAttach<ParentT>,
-        UpdateDefinitionStages.WithProtocol<ParentT>,
-        UpdateDefinitionStages.WithFrontendPort<ParentT>,
-        UpdateDefinitionStages.WithFrontend<ParentT>,
-        UpdateDefinitionStages.WithProbe<ParentT>,
-        UpdateDefinitionStages.WithBackend<ParentT>,
-        UpdateDefinitionStages.WithBackendPort<ParentT> {
+    interface UpdateDefinition<ReturnT> extends
+        UpdateDefinitionStages.Blank<ReturnT>,
+        UpdateDefinitionStages.WithAttach<ReturnT>,
+        UpdateDefinitionStages.WithProtocol<ReturnT>,
+        UpdateDefinitionStages.WithFrontendPort<ReturnT>,
+        UpdateDefinitionStages.WithFrontend<ReturnT>,
+        UpdateDefinitionStages.WithBackend<ReturnT>,
+        UpdateDefinitionStages.WithBackendPort<ReturnT> {
     }
 }

@@ -109,9 +109,9 @@ public class TestLoadBalancer {
                         .withProtocol(TransportProtocol.TCP)    // Required
                         .withFrontend("frontend1")
                         .withFrontendPort(81)
-                        .withProbe("tcpProbe1")
-                        .withBackend("backend1")
+                        .withDefaultBackend()
                         .withBackendPort(82)                    // Optionals
+                        .withProbe("tcpProbe1")
                         .withIdleTimeoutInMinutes(10)
                         .withLoadDistribution(LoadDistribution.SOURCE_IP)
                         .attach()
@@ -164,11 +164,12 @@ public class TestLoadBalancer {
             Assert.assertTrue(pip0.id().equalsIgnoreCase(publicFrontend.publicIPAddressId()));
 
             // Verify backends
-            Assert.assertTrue(lb.backends().containsKey("backend1"));
-            Assert.assertTrue(lb.backends().size() == 2);
+            Assert.assertTrue(lb.backends().size() == 1);
 
             // Verify probes
+            Assert.assertEquals(1, lb.httpProbes().size()); 
             Assert.assertTrue(lb.httpProbes().containsKey("httpProbe1"));
+            Assert.assertEquals(1, lb.tcpProbes().size());
             Assert.assertTrue(lb.tcpProbes().containsKey("tcpProbe1"));
             Assert.assertTrue(!lb.httpProbes().containsKey("default"));
             Assert.assertTrue(!lb.tcpProbes().containsKey("default"));
@@ -178,7 +179,7 @@ public class TestLoadBalancer {
             Assert.assertTrue(!lb.loadBalancingRules().containsKey("default"));
             Assert.assertTrue(lb.loadBalancingRules().values().size() == 1);
             LoadBalancingRule rule = lb.loadBalancingRules().get("rule1");
-            Assert.assertTrue(rule.backend().name().equalsIgnoreCase("backend1"));
+            Assert.assertNotNull(rule.backend());
             Assert.assertTrue(rule.frontend().name().equalsIgnoreCase("frontend1"));
             Assert.assertTrue(rule.probe().name().equalsIgnoreCase("tcpProbe1"));
 
@@ -305,9 +306,9 @@ public class TestLoadBalancer {
                         .withProtocol(TransportProtocol.TCP)    // Required
                         .withExistingPublicIPAddress(pip)
                         .withFrontendPort(81)
-                        .withProbe("tcpProbe1")
                         .withDefaultBackend()
                         .withBackendPort(82)                    // Optionals
+                        .withProbe("tcpProbe1")
                         .withIdleTimeoutInMinutes(10)
                         .withLoadDistribution(LoadDistribution.SOURCE_IP)
                         .attach()
@@ -698,8 +699,8 @@ public class TestLoadBalancer {
                         .withProtocol(TransportProtocol.UDP)
                         .withDefaultFrontend()
                         .withFrontendPort(22)
-                        .withProbe("httpprobe")
                         .withBackend("backend2")
+                        .withProbe("httpprobe")
                         .attach()
                     .defineBackend("backend2")
                         .attach()
@@ -874,8 +875,8 @@ public class TestLoadBalancer {
                         .withProtocol(TransportProtocol.UDP)
                         .withDefaultFrontend()
                         .withFrontendPort(22)
-                        .withProbe("httpprobe")
                         .withBackend("backend2")
+                        .withProbe("httpprobe")
                         .attach()
                     .defineBackend("backend2")
                         .attach()
