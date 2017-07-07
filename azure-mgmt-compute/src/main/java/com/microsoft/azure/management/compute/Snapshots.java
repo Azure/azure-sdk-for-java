@@ -48,7 +48,7 @@ public interface Snapshots extends
      * @param snapshotName the snapshot name
      * @param accessLevel access level
      * @param accessDuration access duration
-     * @returna representation of the deferred computation of this call returning a read-only SAS URI to the snapshot
+     * @return a representation of the deferred computation of this call returning a read-only SAS URI to the snapshot
      */
     Observable<String> grantAccessAsync(String resourceGroupName,
                                         String snapshotName,

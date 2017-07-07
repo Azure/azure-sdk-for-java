@@ -1759,46 +1759,49 @@ class VirtualMachineImpl
     }
 
     private Observable<StorageAccount> handleBootDiagnosticsStorageSettings(StorageAccount diskStorageAccount) {
-        final Observable<StorageAccount> stgObservable = Observable.just(diskStorageAccount);
+        final Observable<StorageAccount> diskStgObservable = Observable.just(diskStorageAccount);
         if (this.inner().diagnosticsProfile() == null
                 || this.inner().diagnosticsProfile().bootDiagnostics() == null) {
-            return stgObservable;
+            return diskStgObservable;
         }
         if (this.inner().diagnosticsProfile().bootDiagnostics().storageUri() != null) {
-            return stgObservable;
+            return diskStgObservable;
         }
-        if (this.inner().diagnosticsProfile().bootDiagnostics().enabled()) {
-            String diagnosticsStorageUri = null;
+        if (this.inner().diagnosticsProfile().bootDiagnostics().enabled() != null
+                && this.inner().diagnosticsProfile().bootDiagnostics().enabled()) {
             if (this.creatableDiagnosticsStorageAccountKey != null) {
-                StorageAccount createdStorageAccount = (StorageAccount) this.createdResource(this.creatableDiagnosticsStorageAccountKey);
-                diagnosticsStorageUri = createdStorageAccount.endPoints().primary().blob();
-            } else if (diskStorageAccount != null) {
-                diagnosticsStorageUri = diskStorageAccount.endPoints().primary().blob();
-            }
-            if (diagnosticsStorageUri != null) {
+                StorageAccount diagnosticsStgAccount = (StorageAccount) this.createdResource(this.creatableDiagnosticsStorageAccountKey);
                 this.inner()
                         .diagnosticsProfile()
                         .bootDiagnostics()
-                        .withStorageUri(diagnosticsStorageUri);
-                return stgObservable;
+                        .withStorageUri(diagnosticsStgAccount.endPoints().primary().blob());
+                return diskStgObservable == null? Observable.just(diagnosticsStgAccount) : diskStgObservable;
             }
-            return Utils.<StorageAccount>rootResource(this.storageManager.storageAccounts()
-                    .define(this.namer.randomName("stg", 24).replace("-", ""))
-                    .withRegion(this.regionName())
-                    .withExistingResourceGroup(this.resourceGroupName())
-                    .createAsync())
-                    .flatMap(new Func1<StorageAccount, Observable<StorageAccount>>() {
-                        @Override
-                        public Observable<StorageAccount> call(StorageAccount storageAccount) {
-                            inner()
-                                .diagnosticsProfile()
-                                .bootDiagnostics()
-                                .withStorageUri(storageAccount.endPoints().primary().blob());
-                            return stgObservable;
-                        }
-                    });
+            if (diskStorageAccount != null) {
+                this.inner()
+                        .diagnosticsProfile()
+                        .bootDiagnostics()
+                        .withStorageUri(diskStorageAccount.endPoints().primary().blob());
+                return diskStgObservable;
+            } else {
+                return Utils.<StorageAccount>rootResource(this.storageManager.storageAccounts()
+                        .define(this.namer.randomName("stg", 24).replace("-", ""))
+                        .withRegion(this.regionName())
+                        .withExistingResourceGroup(this.resourceGroupName())
+                        .createAsync())
+                        .flatMap(new Func1<StorageAccount, Observable<StorageAccount>>() {
+                            @Override
+                            public Observable<StorageAccount> call(StorageAccount storageAccount) {
+                                inner()
+                                        .diagnosticsProfile()
+                                        .bootDiagnostics()
+                                        .withStorageUri(storageAccount.endPoints().primary().blob());
+                                return diskStgObservable;
+                            }
+                        });
+            }
         }
-        return stgObservable;
+        return diskStgObservable;
     }
 
     private void handleNetworkSettings() {
