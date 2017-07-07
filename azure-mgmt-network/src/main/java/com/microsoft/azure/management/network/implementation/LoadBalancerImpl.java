@@ -539,21 +539,6 @@ class LoadBalancerImpl
     }
 
     @Override
-    public LoadBalancerImpl withTcpProbe(int port) {
-        return this.defineTcpProbe(DEFAULT)
-                .withPort(port)
-                .attach();
-    }
-
-    @Override
-    public LoadBalancerImpl withHttpProbe(String path) {
-        return this.defineHttpProbe(DEFAULT)
-                .withRequestPath(path)
-                .withPort(80)
-                .attach();
-    }
-
-    @Override
     public LoadBalancerProbeImpl defineTcpProbe(String name) {
         LoadBalancerProbe probe = this.tcpProbes.get(name);
         if (probe == null) {

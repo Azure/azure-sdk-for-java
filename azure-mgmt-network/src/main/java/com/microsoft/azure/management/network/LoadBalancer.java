@@ -191,24 +191,6 @@ public interface LoadBalancer extends
          */
         interface WithProbe {
             /**
-             * Adds a TCP probe checking the specified port.
-             * <p>
-             * The probe will be named using an automatically generated name.
-             * @param port the port number for the probe to monitor
-             * @return the next stage of the definition
-             */
-            WithCreate withTcpProbe(int port);
-
-            /**
-             * Adds an HTTP probe checking for an HTTP 200 response from the specified path at regular intervals, using port 80.
-             * <p>
-             * An automatically generated name is assigned to the probe.
-             * @param requestPath the path for the probe to invoke
-             * @return the next stage of the definition
-             */
-            WithCreate withHttpProbe(String requestPath);
-
-            /**
              * Begins the definition of a new TCP probe to add to the load balancer.
              * @param name the name of the probe
              * @return the first stage of the new probe definition
@@ -413,24 +395,6 @@ public interface LoadBalancer extends
          * The stage of the load balancer update allowing to add, remove or modify probes.
          */
         interface WithProbe {
-            /**
-             * Adds a TCP probe checking the specified port.
-             * <p>
-             * The probe will be named using an automatically generated name.
-             * @param port the port number for the probe to monitor
-             * @return the next stage of the definition
-             */
-            Update withTcpProbe(int port);
-
-            /**
-             * Adds an HTTP probe checking for an HTTP 200 response from the specified path at regular intervals, using port 80.
-             * <p>
-             * An automatically generated name is assigned to the probe.
-             * @param requestPath the path for the probe to invoke
-             * @return the next stage of the definition
-             */
-            Update withHttpProbe(String requestPath);
-
             /**
              * Begins the definition of a new HTTP probe to add to the load balancer.
              * <p>
