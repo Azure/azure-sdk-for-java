@@ -74,4 +74,5 @@ public final class AmqpConstants {
     public static final String AMQP_PROPERTY_REPLY_TO_GROUP_ID = "reply-to-group-id";
 
     public static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME = Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
+    public static final Symbol RECEIVER_IDENTIFIER_NAME = Symbol.valueOf(AmqpConstants.VENDOR + ":receiver-name");
 }

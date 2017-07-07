@@ -5,9 +5,9 @@
   <description>libraries and extensions built on Microsoft Azure Event Hubs</description>
 
   <parent>
-	<groupId>com.microsoft.azure</groupId>
-	<artifactId>azure-eventhubs-clients</artifactId>
-	<version>0.14.1-SNAPSHOT</version>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-eventhubs-clients</artifactId>
+    <version>0.14.3</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>

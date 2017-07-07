@@ -35,7 +35,8 @@ public final class ClientConstants {
 
     public final static Duration DEFAULT_RERTRY_MIN_BACKOFF = Duration.ofSeconds(0);
     public final static Duration DEFAULT_RERTRY_MAX_BACKOFF = Duration.ofSeconds(30);
-    public final static Duration TOKEN_REFRESH_INTERVAL = Duration.ofMinutes(20);
+    public final static Duration TOKEN_REFRESH_INTERVAL = Duration.ofMinutes(10); // renew every 10 mins, which expires 20 mins
+    public final static Duration TOKEN_VALIDITY = Duration.ofMinutes(20);
 
     public final static int DEFAULT_MAX_RETRY_COUNT = 10;
 
@@ -52,7 +53,7 @@ public final class ClientConstants {
     public final static String DEFAULT_RETRY = "Default";
 
     public final static String PRODUCT_NAME = "MSJavaClient";
-    public final static String CURRENT_JAVACLIENT_VERSION = "0.14.1-SNAPSHOT";
+    public final static String CURRENT_JAVACLIENT_VERSION = "0.14.3";
 
     public static final String PLATFORM_INFO = getPlatformInfo();
     public static final String FRAMEWORK_INFO = getFrameworkInfo();
@@ -93,6 +94,8 @@ public final class ClientConstants {
 
     public static final String AMQP_PUT_TOKEN_FAILED_ERROR = "Put token failed. status-code: %s, status-description: %s";
     public static final String TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
+
+    public static final int MAX_RECEIVER_NAME_LENGTH = 64;
 
     private static String getPlatformInfo() {
         final StringBuilder platformInfo = new StringBuilder();
