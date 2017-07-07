@@ -217,6 +217,12 @@ class LoadBalancingRuleImpl
         return this;
     }
 
+    @Override
+    public Update withoutProbe() {
+        this.inner().withProbe(null);
+        return this;
+    }
+
     // Verbs
 
     @Override

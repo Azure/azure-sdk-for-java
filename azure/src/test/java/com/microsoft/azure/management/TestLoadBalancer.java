@@ -692,7 +692,7 @@ public class TestLoadBalancer {
                     .updateLoadBalancingRule("default")
                         .withBackendPort(8080)
                         .withIdleTimeoutInMinutes(11)
-                        // TODO: .withProbe("tcpprobe")
+                        .withProbe("tcpprobe")
                         .parent()
                     .defineLoadBalancingRule("lbrule2")
                         .withProtocol(TransportProtocol.UDP)
@@ -723,6 +723,8 @@ public class TestLoadBalancer {
             LoadBalancerTcpProbe tcpProbe = resource.tcpProbes().get("tcpprobe");
             Assert.assertNotNull(tcpProbe);
             Assert.assertEquals(22, tcpProbe.port());
+            Assert.assertEquals(1, tcpProbe.loadBalancingRules().size());
+            Assert.assertTrue(tcpProbe.loadBalancingRules().containsKey("default"));
 
             LoadBalancerHttpProbe httpProbe = resource.httpProbes().get("httpprobe");
             Assert.assertNotNull(httpProbe);
@@ -741,6 +743,8 @@ public class TestLoadBalancer {
             Assert.assertEquals(8080, lbRule.backendPort());
             Assert.assertNotNull(lbRule.frontend());
             Assert.assertEquals(11,  lbRule.idleTimeoutInMinutes());
+            Assert.assertNotNull(lbRule.probe());
+            Assert.assertEquals(tcpProbe.name(), lbRule.probe().name());
 
             lbRule = resource.loadBalancingRules().get("lbrule2");
             Assert.assertNotNull(lbRule);
@@ -864,6 +868,7 @@ public class TestLoadBalancer {
                     .updateLoadBalancingRule("default")
                         .withBackendPort(8080)
                         .withIdleTimeoutInMinutes(11)
+                        .withProbe("tcpprobe")
                         .parent()
                     .defineLoadBalancingRule("lbrule2")
                         .withProtocol(TransportProtocol.UDP)
@@ -897,6 +902,7 @@ public class TestLoadBalancer {
             LoadBalancerTcpProbe tcpProbe = resource.tcpProbes().get("tcpprobe");
             Assert.assertNotNull(tcpProbe);
             Assert.assertEquals(22,  tcpProbe.port());
+            Assert.assertTrue(tcpProbe.loadBalancingRules().containsKey("default"));
 
             LoadBalancerHttpProbe httpProbe = resource.httpProbes().get("httpprobe");
             Assert.assertNotNull(httpProbe);
@@ -915,6 +921,8 @@ public class TestLoadBalancer {
             Assert.assertEquals(8080, lbRule.backendPort());
             Assert.assertNotNull(lbRule.frontend());
             Assert.assertEquals(11,  lbRule.idleTimeoutInMinutes());
+            Assert.assertNotNull(lbRule.probe());
+            Assert.assertEquals(tcpProbe.name(), lbRule.probe().name());
 
             lbRule = resource.loadBalancingRules().get("lbrule2");
             Assert.assertNotNull(lbRule);

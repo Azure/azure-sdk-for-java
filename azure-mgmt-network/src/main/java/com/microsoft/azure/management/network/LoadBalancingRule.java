@@ -242,6 +242,24 @@ public interface LoadBalancingRule extends
         }
 
         /**
+         * The stage of a load balancing rule update allowing to specify the probe to associate with the rule.
+         */
+        interface WithProbe {
+            /**
+             * Associates the specified existing HTTP or TCP probe of this load balancer with the load balancing rule.
+             * @param name the name of an existing HTTP or TCP probe
+             * @return the next stage of the update
+             */
+            Update withProbe(String name);
+
+            /**
+             * Removes any association with a probe and falls back to Azure's default probing mechanism.
+             * @return the next stage of the update
+             */
+            Update withoutProbe();
+        }
+
+        /**
          * The stage of a load balancing rule update allowing to modify the load distribution.
          */
         interface WithLoadDistribution {
@@ -265,7 +283,8 @@ public interface LoadBalancingRule extends
         UpdateStages.WithBackendPort,
         UpdateStages.WithFloatingIP,
         UpdateStages.WithIdleTimeoutInMinutes,
-        UpdateStages.WithLoadDistribution {
+        UpdateStages.WithLoadDistribution,
+        UpdateStages.WithProbe {
     }
 
     /**
