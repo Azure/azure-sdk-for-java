@@ -215,8 +215,8 @@ public interface LoadBalancer extends
              * Adds the specified set of virtual machines, assuming they are from the same
              * availability set, to this load balancer's back end address pool.
              * <p>
-             * This will create a new backend address pool for this load balancer and add references to
-             * the primary IP configurations of the primary network interfaces of each of the provided set of
+             * This will create a new default backend address pool for this load balancer if one does not already exist
+             * and add references to the primary IP configurations of the primary network interfaces of each of the provided set of
              * virtual machines.
              * <p>
              * If the virtual machines are not in the same availability set, the load balancer will still
@@ -259,30 +259,7 @@ public interface LoadBalancer extends
          */
         interface WithLoadBalancingRule {
             /**
-             * Creates a load balancing rule between the specified front end and back end ports and protocol.
-             * <p>
-             * The new rule will be assigned an automatically generated name.
-             * @param frontendPort the port number on the front end to accept incoming traffic on
-             * @param protocol the protocol to load balance
-             * @param backendPort the port number on the back end to send load balanced traffic to
-             * @return the next stage of the definition
-             */
-            WithLoadBalancingRuleOrCreate withLoadBalancingRule(int frontendPort, TransportProtocol protocol, int backendPort);
-
-            /**
-             * Creates a load balancing rule for the specified port and protocol and default frontend and backend associations.
-             * <p>
-             * The load balancing rule will created under the name "default". It will reference a default backend, a default frontend, and a load balancing probe named "default".
-             * @param port the port number on the front and back end for the network traffic to be load balanced on
-             * @param protocol the protocol to load balance
-             * @return the next stage of the definition
-             */
-            WithLoadBalancingRuleOrCreate withLoadBalancingRule(int port, TransportProtocol protocol);
-
-            /**
              * Begins the definition of a new load balancing rule to add to the load balancer.
-             * <p>
-             * The definition must be completed with a call to {@link LoadBalancingRule.DefinitionStages.WithAttach#attach()}
              * @param name the name of the load balancing rule
              * @return the first stage of the new load balancing rule definition
              */
@@ -439,27 +416,6 @@ public interface LoadBalancer extends
          * The stage of the load balancer update allowing to add, remove or modify load balancing rules.
          */
         interface WithLoadBalancingRule {
-            /**
-             * Adds a load balancing rule between the specified front end and back end ports and protocol.
-             * <p>
-             * The new rule will be created under the name "default".
-             * @param frontendPort the port number on the front end to accept incoming traffic on
-             * @param protocol the protocol to load balance
-             * @param backendPort the port number on the back end to send load balanced traffic to
-             * @return the next stage of the definition
-             */
-            Update withLoadBalancingRule(int frontendPort, TransportProtocol protocol, int backendPort);
-
-            /**
-             * Adds a load balancing rule for the specified port and protocol.
-             * <p>
-             * The new rule will be created under the name "default".
-             * @param port the port number on the front and back end for the network traffic to be load balanced on
-             * @param protocol the protocol to load balance
-             * @return the next stage of the definition
-             */
-            Update withLoadBalancingRule(int port, TransportProtocol protocol);
-
             /**
              * Begins the definition of a new load balancing rule to add to the load balancer.
              * @param name the name of the load balancing rule

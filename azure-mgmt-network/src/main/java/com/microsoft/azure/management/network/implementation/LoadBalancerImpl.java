@@ -23,7 +23,6 @@ import com.microsoft.azure.management.network.ProbeProtocol;
 import com.microsoft.azure.management.network.LoadBalancerPublicFrontend;
 import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.LoadBalancerTcpProbe;
-import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.network.model.HasNetworkInterfaces;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
@@ -69,8 +68,6 @@ class LoadBalancerImpl
     private Map<String, LoadBalancerInboundNatPool> inboundNatPools;
     private LoadBalancerFrontendImpl defaultFrontend;
     private LoadBalancerBackendImpl defaultBackend;
-
-    protected static final String DEFAULT = "default";
 
     LoadBalancerImpl(String name,
             final LoadBalancerInner innerModel,
@@ -519,23 +516,6 @@ class LoadBalancerImpl
             }
         }
         return this;
-    }
-
-    @Override
-    public LoadBalancerImpl withLoadBalancingRule(int frontendPort, TransportProtocol protocol, int backendPort) {
-        this.defineLoadBalancingRule(DEFAULT)
-            .withFrontendPort(frontendPort)
-            .withDefaultFrontend()
-            .withBackendPort(backendPort)
-            .withDefaultBackend()
-            .withProtocol(protocol)
-            .attach();
-        return this;
-    }
-
-    @Override
-    public LoadBalancerImpl withLoadBalancingRule(int port, TransportProtocol protocol) {
-        return withLoadBalancingRule(port, protocol, port);
     }
 
     @Override
