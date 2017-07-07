@@ -13,6 +13,7 @@ import com.microsoft.azure.management.graphrbac.implementation.UsersInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByNameAsync;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
@@ -25,6 +26,7 @@ public interface ActiveDirectoryUsers extends
         SupportsGettingById<ActiveDirectoryUser>,
         SupportsGettingByNameAsync<ActiveDirectoryUser>,
         SupportsListing<ActiveDirectoryUser>,
+        SupportsCreating<ActiveDirectoryUser.DefinitionStages.Blank>,
         HasManager<GraphRbacManager>,
         HasInner<UsersInner> {
 }

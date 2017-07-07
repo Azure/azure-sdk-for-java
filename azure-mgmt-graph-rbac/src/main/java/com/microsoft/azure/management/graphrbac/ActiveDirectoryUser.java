@@ -13,7 +13,9 @@ import com.microsoft.azure.management.graphrbac.implementation.UserInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 
 /**
  * An immutable client-side representation of an Azure AD user.
@@ -21,6 +23,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Graph.RBAC.Fluent")
 @Beta
 public interface ActiveDirectoryUser extends
+        Indexable,
         HasInner<UserInner>,
         HasId,
         HasName,
@@ -44,4 +47,59 @@ public interface ActiveDirectoryUser extends
      * @return The mail alias for the user.
      */
     String mailNickname();
+
+    /**************************************************************
+     * Fluent interfaces to provision a user
+     **************************************************************/
+
+    /**
+     * Container interface for all the definitions that need to be implemented.
+     */
+    interface Definition extends
+            DefinitionStages.Blank,
+            DefinitionStages.WithUserPrincipalName,
+            DefinitionStages.WithPassword,
+            DefinitionStages.WithCreate {
+    }
+
+    /**
+     * Grouping of all the user definition stages.
+     */
+    interface DefinitionStages {
+        /**
+         * The first stage of the user definition.
+         */
+        interface Blank extends WithUserPrincipalName {
+        }
+
+        /**
+         * A user definition allowing user principal name to be specified.
+         */
+        interface WithUserPrincipalName {
+            WithPassword withUserPrincipalName(String userPrincipalName);
+
+            WithPassword withEmailAddress(String emailAddress);
+        }
+
+        /**
+         * A user definition allowing password to be specified.
+         */
+        interface WithPassword {
+            WithCreate withPassword(String password);
+        }
+
+        interface WithMailNickname {
+            WithCreate withMailNickname(String mailNickname);
+        }
+
+        /**
+         * An AD user definition with sufficient inputs to create a new
+         * user in the cloud, but exposing additional optional inputs to
+         * specify.
+         */
+        interface WithCreate extends
+                Creatable<ActiveDirectoryUser>,
+                DefinitionStages.WithMailNickname {
+        }
+    }
 }

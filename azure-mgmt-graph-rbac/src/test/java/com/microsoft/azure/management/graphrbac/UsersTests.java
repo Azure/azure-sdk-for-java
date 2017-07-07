@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.graphrbac;
 
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -33,5 +34,17 @@ public class UsersTests extends GraphRbacManagementTest {
     public void canGetUserByDisplayName() throws Exception {
         ActiveDirectoryUser user = graphRbacManager.users().getByName("Reader zero");
         Assert.assertEquals("Reader zero", user.name());
+    }
+
+    @Test
+    public void canCreateUser() throws Exception {
+        String name = SdkContext.randomResourceName("user", 16);
+        ActiveDirectoryUser user = graphRbacManager.users().define(name)
+                .withUserPrincipalName("jianghlu@microsoft.com")
+                .withPassword("StrongPass!123")
+                .create();
+
+        Assert.assertNotNull(user);
+        Assert.assertNotNull(user.id());
     }
 }
