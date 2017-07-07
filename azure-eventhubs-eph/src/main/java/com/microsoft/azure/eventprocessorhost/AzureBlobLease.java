@@ -17,7 +17,7 @@ class AzureBlobLease extends Lease
 	private transient BlobRequestOptions options; // do not serialize
 	private String offset = null; // null means checkpoint is uninitialized
 	private long sequenceNumber = 0;
-	
+
 	// not intended to be used; built for GSon
 	private AzureBlobLease()
 	{

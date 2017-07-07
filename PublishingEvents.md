@@ -12,8 +12,8 @@ following dependency declaration inside of your Maven project file:
     <dependency> 
    		<groupId>com.microsoft.azure</groupId> 
    		<artifactId>azure-eventhubs-clients</artifactId> 
-   		<version>0.14.1-SNAPSHOT</version> 
-   	</dependency>   
+   		<version>0.14.3</version>
+   	</dependency>
  ```
  
  For different types of build environments, the latest released JAR files can also be [explicitly obtained from the 
