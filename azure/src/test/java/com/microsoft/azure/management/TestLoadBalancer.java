@@ -108,7 +108,7 @@ public class TestLoadBalancer {
                     .defineLoadBalancingRule("rule1")
                         .withProtocol(TransportProtocol.TCP)    // Required
                         .fromFrontend("frontend1")
-                        .withFrontendPort(81)
+                        .fromFrontendPort(81)
                         .toDefaultBackend()
                         .toBackendPort(82)                    // Optionals
                         .withProbe("tcpProbe1")
@@ -305,7 +305,7 @@ public class TestLoadBalancer {
                     .defineLoadBalancingRule("rule1")
                         .withProtocol(TransportProtocol.TCP)    // Required
                         .withExistingPublicIPAddress(pip)
-                        .withFrontendPort(81)
+                        .fromFrontendPort(81)
                         .toDefaultBackend()
                         .toBackendPort(82)                    // Optionals
                         .withProbe("tcpProbe1")
@@ -317,7 +317,7 @@ public class TestLoadBalancer {
                     .defineInboundNatRule("natrule1")
                         .withProtocol(TransportProtocol.TCP)
                         .fromDefaultFrontend()
-                        .withFrontendPort(88)
+                        .fromFrontendPort(88)
                         .attach()
 
                     // Probes (Optional)
@@ -494,7 +494,7 @@ public class TestLoadBalancer {
                     .defineInboundNatRule("natrule1")
                         .withProtocol(TransportProtocol.TCP)
                         .fromDefaultFrontend()
-                        .withFrontendPort(88)
+                        .fromFrontendPort(88)
                         .toBackendPort(80)
                         .attach()
                     // Backend (default)
@@ -634,7 +634,7 @@ public class TestLoadBalancer {
                     .defineLoadBalancingRule("lbrule1")
                         .withProtocol(TransportProtocol.TCP)
                         .fromDefaultFrontend()
-                        .withFrontendPort(80)
+                        .fromFrontendPort(80)
                         .toDefaultBackend()
                         .attach()
                     // Backend (default)
@@ -702,7 +702,7 @@ public class TestLoadBalancer {
                     .defineLoadBalancingRule("lbrule2")
                         .withProtocol(TransportProtocol.UDP)
                         .fromDefaultFrontend()
-                        .withFrontendPort(22)
+                        .fromFrontendPort(22)
                         .toBackend("backend2")
                         .withProbe("httpprobe")
                         .attach()
@@ -807,7 +807,7 @@ public class TestLoadBalancer {
                     .defineLoadBalancingRule("lbrule1")
                         .withProtocol(TransportProtocol.TCP)
                         .fromDefaultFrontend()
-                        .withFrontendPort(80)
+                        .fromFrontendPort(80)
                         .toDefaultBackend()
                         .attach()
                     // Backends
@@ -883,7 +883,7 @@ public class TestLoadBalancer {
                     .defineLoadBalancingRule("lbrule2")
                         .withProtocol(TransportProtocol.UDP)
                         .fromDefaultFrontend()
-                        .withFrontendPort(22)
+                        .fromFrontendPort(22)
                         .toBackend("backend2")
                         .withProbe("httpprobe")
                         .attach()

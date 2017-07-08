@@ -114,7 +114,7 @@ class LoadBalancerInboundNatRuleImpl
     }
 
     @Override
-    public LoadBalancerInboundNatRuleImpl withFrontendPort(int port) {
+    public LoadBalancerInboundNatRuleImpl fromFrontendPort(int port) {
         this.inner().withFrontendPort(port);
         if (this.backendPort() == 0) {
             // By default, assume the same backend port

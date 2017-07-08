@@ -152,7 +152,7 @@ class LoadBalancingRuleImpl
     }
 
     @Override
-    public LoadBalancingRuleImpl withFrontendPort(int port) {
+    public LoadBalancingRuleImpl fromFrontendPort(int port) {
         this.inner().withFrontendPort(port);
 
         // If backend port not specified earlier, make it the same as the frontend by default
