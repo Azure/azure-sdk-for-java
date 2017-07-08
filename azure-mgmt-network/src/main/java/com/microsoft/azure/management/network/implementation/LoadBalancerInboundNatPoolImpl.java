@@ -81,7 +81,7 @@ class LoadBalancerInboundNatPoolImpl
     }
 
     @Override
-    public LoadBalancerInboundNatPoolImpl withFrontend(String frontendName) {
+    public LoadBalancerInboundNatPoolImpl fromFrontend(String frontendName) {
         SubResource frontendRef = this.parent().ensureFrontendRef(frontendName);
         if (frontendRef != null) {
             this.inner().withFrontendIPConfiguration(frontendRef);
@@ -109,11 +109,11 @@ class LoadBalancerInboundNatPoolImpl
 
     @Override
     public LoadBalancerInboundNatPoolImpl withExistingPublicIPAddress(String resourceId) {
-        return (null != resourceId) ? this.withFrontend(this.parent().ensureFrontendWithPip(resourceId).name()) : this;
+        return (null != resourceId) ? this.fromFrontend(this.parent().ensureFrontendWithPip(resourceId).name()) : this;
     }
 
     @Override
-    public LoadBalancerInboundNatPoolImpl withDefaultFrontend() {
-        return this.withFrontend(this.parent().ensureDefaultFrontend().name());
+    public LoadBalancerInboundNatPoolImpl fromDefaultFrontend() {
+        return this.fromFrontend(this.parent().ensureDefaultFrontend().name());
     }
 }

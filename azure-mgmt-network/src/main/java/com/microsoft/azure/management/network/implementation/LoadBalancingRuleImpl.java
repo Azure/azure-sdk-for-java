@@ -120,7 +120,7 @@ class LoadBalancingRuleImpl
 
     @Override
     public LoadBalancingRuleImpl withExistingPublicIPAddress(String resourceId) {
-        return (null != resourceId) ? this.withFrontend(this.parent().ensureFrontendWithPip(resourceId).name()) : this;
+        return (null != resourceId) ? this.fromFrontend(this.parent().ensureFrontendWithPip(resourceId).name()) : this;
     }
 
     @Override
@@ -176,12 +176,12 @@ class LoadBalancingRuleImpl
     }
 
     @Override
-    public LoadBalancingRuleImpl withDefaultFrontend() {
-        return this.withFrontend(null);
+    public LoadBalancingRuleImpl fromDefaultFrontend() {
+        return this.fromFrontend(null);
     }
 
     @Override
-    public LoadBalancingRuleImpl withFrontend(String frontendName) {
+    public LoadBalancingRuleImpl fromFrontend(String frontendName) {
         SubResource frontendRef = this.parent().ensureFrontendRef(frontendName);
         if (frontendRef != null) {
             this.inner().withFrontendIPConfiguration(frontendRef);

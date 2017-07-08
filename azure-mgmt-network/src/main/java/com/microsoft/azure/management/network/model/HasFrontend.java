@@ -30,18 +30,18 @@ public interface HasFrontend  {
          */
         interface WithFrontend<ReturnT> extends HasPublicIPAddress.DefinitionStages.WithExistingPublicIPAddress<ReturnT> {
             /**
-             * Specifies the frontend to associate.
+             * Specifies the frontend to receive network traffic from.
              * @param frontendName an existing frontend name on this load balancer
              * @return the next stage of the definition
              */
-            ReturnT withFrontend(String frontendName);
+            ReturnT fromFrontend(String frontendName);
 
             /**
-             * Associates with the default frontend.
+             * Selects the load balancer's default frontend as the frontend to receive network traffic from.
              * @return the next stage of the definition
              */
             @Beta(SinceVersion.V1_2_0)
-            ReturnT withDefaultFrontend();
+            ReturnT fromDefaultFrontend();
         }
     }
 
@@ -59,14 +59,14 @@ public interface HasFrontend  {
              * @param frontendName an existing frontend name from this load balancer
              * @return the next stage of the update
              */
-            ReturnT withFrontend(String frontendName);
+            ReturnT fromFrontend(String frontendName);
 
             /**
              * Associates with the default frontend.
              * @return the next stage of the update
              */
             @Beta(SinceVersion.V1_2_0)
-            ReturnT withDefaultFrontend();
+            ReturnT fromDefaultFrontend();
         }
     }
 
@@ -84,14 +84,14 @@ public interface HasFrontend  {
              * @param frontendName an existing frontend name
              * @return the next stage of the definition
              */
-            ReturnT withFrontend(String frontendName);
+            ReturnT fromFrontend(String frontendName);
 
             /**
              * Associates with the default frontend.
              * @return the next stage of the definition
              */
             @Beta(SinceVersion.V1_2_0)
-            ReturnT withDefaultFrontend();
+            ReturnT fromDefaultFrontend();
         }
     }
 }

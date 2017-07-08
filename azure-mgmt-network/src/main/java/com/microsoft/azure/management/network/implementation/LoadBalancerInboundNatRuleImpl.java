@@ -137,7 +137,7 @@ class LoadBalancerInboundNatRuleImpl
     }
 
     @Override
-    public LoadBalancerInboundNatRuleImpl withFrontend(String frontendName) {
+    public LoadBalancerInboundNatRuleImpl fromFrontend(String frontendName) {
         SubResource frontendRef = this.parent().ensureFrontendRef(frontendName);
         if (frontendRef != null) {
             this.inner().withFrontendIPConfiguration(frontendRef);
@@ -159,11 +159,11 @@ class LoadBalancerInboundNatRuleImpl
 
     @Override
     public LoadBalancerInboundNatRuleImpl withExistingPublicIPAddress(String resourceId) {
-        return (null != resourceId) ? this.withFrontend(this.parent().ensureFrontendWithPip(resourceId).name()) : this;
+        return (null != resourceId) ? this.fromFrontend(this.parent().ensureFrontendWithPip(resourceId).name()) : this;
     }
 
     @Override
-    public LoadBalancerInboundNatRuleImpl withDefaultFrontend() {
-        return this.withFrontend(this.parent().ensureDefaultFrontend().name());
+    public LoadBalancerInboundNatRuleImpl fromDefaultFrontend() {
+        return this.fromFrontend(this.parent().ensureDefaultFrontend().name());
     }
 }
