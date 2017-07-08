@@ -1775,7 +1775,7 @@ class VirtualMachineImpl
                         .diagnosticsProfile()
                         .bootDiagnostics()
                         .withStorageUri(diagnosticsStgAccount.endPoints().primary().blob());
-                return diskStgObservable == null? Observable.just(diagnosticsStgAccount) : diskStgObservable;
+                return diskStgObservable == null ? Observable.just(diagnosticsStgAccount) : diskStgObservable;
             }
             if (diskStorageAccount != null) {
                 this.inner()
