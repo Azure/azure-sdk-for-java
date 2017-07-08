@@ -150,7 +150,7 @@ public abstract class ComputeManagementTest extends TestBase {
                     .withProtocol(TransportProtocol.TCP)
                     .fromFrontend(frontendName)
                     .withFrontendPortRange(5000, 5099)
-                    .withBackendPort(22)
+                    .toBackendPort(22)
                     .attach()
                 // Add an HTTP probe
                 .defineHttpProbe("httpProbe")
@@ -205,13 +205,13 @@ public abstract class ComputeManagementTest extends TestBase {
                     .withProtocol(TransportProtocol.TCP)
                     .fromFrontend(frontendName)
                     .withFrontendPortRange(5000, 5099)
-                    .withBackendPort(22)
+                    .toBackendPort(22)
                     .attach()
                 .defineInboundNatPool(natPoolName2)
                     .withProtocol(TransportProtocol.TCP)
                     .fromFrontend(frontendName)
                     .withFrontendPortRange(6000, 6099)
-                    .withBackendPort(23)
+                    .toBackendPort(23)
                     .attach()
 
                 // Add two probes one per rule
@@ -263,13 +263,13 @@ public abstract class ComputeManagementTest extends TestBase {
                     .withProtocol(TransportProtocol.TCP)
                     .fromFrontend(privateFrontEndName)
                     .withFrontendPortRange(8000, 8099)
-                    .withBackendPort(44)
+                    .toBackendPort(44)
                     .attach()
                 .defineInboundNatPool(natPoolName2)
                     .withProtocol(TransportProtocol.TCP)
                     .fromFrontend(privateFrontEndName)
                     .withFrontendPortRange(9000, 9099)
-                    .withBackendPort(45)
+                    .toBackendPort(45)
                     .attach()
 
                 // Add two probes one per rule

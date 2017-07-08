@@ -164,7 +164,7 @@ class LoadBalancingRuleImpl
     }
 
     @Override
-    public LoadBalancingRuleImpl withBackendPort(int port) {
+    public LoadBalancingRuleImpl toBackendPort(int port) {
         this.inner().withBackendPort(port);
         return this;
     }

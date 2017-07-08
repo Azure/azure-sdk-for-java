@@ -110,7 +110,7 @@ public class TestLoadBalancer {
                         .fromFrontend("frontend1")
                         .withFrontendPort(81)
                         .toDefaultBackend()
-                        .withBackendPort(82)                    // Optionals
+                        .toBackendPort(82)                    // Optionals
                         .withProbe("tcpProbe1")
                         .withIdleTimeoutInMinutes(10)
                         .withLoadDistribution(LoadDistribution.SOURCE_IP)
@@ -121,7 +121,7 @@ public class TestLoadBalancer {
                         .withProtocol(TransportProtocol.TCP)
                         .fromFrontend("frontend1")
                         .withFrontendPortRange(2000, 2001)
-                        .withBackendPort(8080)
+                        .toBackendPort(8080)
                         .attach()
 
                    // Probes (Optional)
@@ -307,7 +307,7 @@ public class TestLoadBalancer {
                         .withExistingPublicIPAddress(pip)
                         .withFrontendPort(81)
                         .toDefaultBackend()
-                        .withBackendPort(82)                    // Optionals
+                        .toBackendPort(82)                    // Optionals
                         .withProbe("tcpProbe1")
                         .withIdleTimeoutInMinutes(10)
                         .withLoadDistribution(LoadDistribution.SOURCE_IP)
@@ -495,7 +495,7 @@ public class TestLoadBalancer {
                         .withProtocol(TransportProtocol.TCP)
                         .fromDefaultFrontend()
                         .withFrontendPort(88)
-                        .withBackendPort(80)
+                        .toBackendPort(80)
                         .attach()
                     // Backend (default)
                     .withExistingVirtualMachines(existingVMs)
@@ -695,7 +695,7 @@ public class TestLoadBalancer {
                         .withPort(443)
                         .attach()
                     .updateLoadBalancingRule("lbrule1")
-                        .withBackendPort(8080)
+                        .toBackendPort(8080)
                         .withIdleTimeoutInMinutes(11)
                         .withProbe("tcpprobe")
                         .parent()
@@ -876,7 +876,7 @@ public class TestLoadBalancer {
                         .withPort(443)
                         .attach()
                     .updateLoadBalancingRule("lbrule1")
-                        .withBackendPort(8080)
+                        .toBackendPort(8080)
                         .withIdleTimeoutInMinutes(11)
                         .withProbe("tcpprobe")
                         .parent()

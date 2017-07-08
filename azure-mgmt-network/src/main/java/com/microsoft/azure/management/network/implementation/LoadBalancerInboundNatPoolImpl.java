@@ -69,7 +69,7 @@ class LoadBalancerInboundNatPoolImpl
     // Fluent setters
 
     @Override
-    public LoadBalancerInboundNatPoolImpl withBackendPort(int port) {
+    public LoadBalancerInboundNatPoolImpl toBackendPort(int port) {
         this.inner().withBackendPort(port);
         return this;
     }

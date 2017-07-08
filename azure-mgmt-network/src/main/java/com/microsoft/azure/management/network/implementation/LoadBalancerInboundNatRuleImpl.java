@@ -92,7 +92,7 @@ class LoadBalancerInboundNatRuleImpl
     // Fluent setters
 
     @Override
-    public LoadBalancerInboundNatRuleImpl withBackendPort(int port) {
+    public LoadBalancerInboundNatRuleImpl toBackendPort(int port) {
         this.inner().withBackendPort(port);
         return this;
     }
@@ -118,7 +118,7 @@ class LoadBalancerInboundNatRuleImpl
         this.inner().withFrontendPort(port);
         if (this.backendPort() == 0) {
             // By default, assume the same backend port
-            return this.withBackendPort(port);
+            return this.toBackendPort(port);
         } else {
             return this;
         }

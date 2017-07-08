@@ -164,13 +164,13 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
                         .withProtocol(TransportProtocol.TCP)
                         .fromFrontend(frontendName)
                         .withFrontendPortRange(5000, 5099)
-                        .withBackendPort(22)
+                        .toBackendPort(22)
                         .attach()
                     .defineInboundNatPool(natPool60XXto23)
                         .withProtocol(TransportProtocol.TCP)
                         .fromFrontend(frontendName)
                         .withFrontendPortRange(6000, 6099)
-                        .withBackendPort(23)
+                        .toBackendPort(23)
                         .attach()
 
                     // Add two probes one per rule
