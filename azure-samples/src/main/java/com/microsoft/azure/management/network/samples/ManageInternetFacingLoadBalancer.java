@@ -177,7 +177,7 @@ public final class ManageInternetFacingLoadBalancer {
                         .withProtocol(TransportProtocol.TCP)
                         .fromFrontend(frontendName)
                         .withFrontendPort(80)
-                        .withBackend(backendPoolName1)
+                        .toBackend(backendPoolName1)
                         .withProbe(httpProbe)
                         .attach()
 
@@ -185,7 +185,7 @@ public final class ManageInternetFacingLoadBalancer {
                         .withProtocol(TransportProtocol.TCP)
                         .fromFrontend(frontendName)
                         .withFrontendPort(443)
-                        .withBackend(backendPoolName2)
+                        .toBackend(backendPoolName2)
                         .withProbe(httpsProbe)
                         .attach()
 
@@ -388,7 +388,7 @@ public final class ManageInternetFacingLoadBalancer {
                         .withProtocol(TransportProtocol.TCP)
                         .fromFrontend(frontendName)
                         .withFrontendPort(80)
-                        .withBackend(backendPoolName1)
+                        .toBackend(backendPoolName1)
                         .withProbe(httpProbe)
                         .attach()
 
@@ -396,7 +396,7 @@ public final class ManageInternetFacingLoadBalancer {
                         .withProtocol(TransportProtocol.TCP)
                         .fromFrontend(frontendName)
                         .withFrontendPort(443)
-                        .withBackend(backendPoolName2)
+                        .toBackend(backendPoolName2)
                         .withProbe(httpsProbe)
                         .attach()
 

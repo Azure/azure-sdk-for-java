@@ -109,7 +109,7 @@ public class TestLoadBalancer {
                         .withProtocol(TransportProtocol.TCP)    // Required
                         .fromFrontend("frontend1")
                         .withFrontendPort(81)
-                        .withDefaultBackend()
+                        .toDefaultBackend()
                         .withBackendPort(82)                    // Optionals
                         .withProbe("tcpProbe1")
                         .withIdleTimeoutInMinutes(10)
@@ -306,7 +306,7 @@ public class TestLoadBalancer {
                         .withProtocol(TransportProtocol.TCP)    // Required
                         .withExistingPublicIPAddress(pip)
                         .withFrontendPort(81)
-                        .withDefaultBackend()
+                        .toDefaultBackend()
                         .withBackendPort(82)                    // Optionals
                         .withProbe("tcpProbe1")
                         .withIdleTimeoutInMinutes(10)
@@ -635,7 +635,7 @@ public class TestLoadBalancer {
                         .withProtocol(TransportProtocol.TCP)
                         .fromDefaultFrontend()
                         .withFrontendPort(80)
-                        .withDefaultBackend()
+                        .toDefaultBackend()
                         .attach()
                     // Backend (default)
                     .withExistingVirtualMachines(existingVMs)
@@ -703,7 +703,7 @@ public class TestLoadBalancer {
                         .withProtocol(TransportProtocol.UDP)
                         .fromDefaultFrontend()
                         .withFrontendPort(22)
-                        .withBackend("backend2")
+                        .toBackend("backend2")
                         .withProbe("httpprobe")
                         .attach()
                     .defineBackend("backend2")
@@ -808,7 +808,7 @@ public class TestLoadBalancer {
                         .withProtocol(TransportProtocol.TCP)
                         .fromDefaultFrontend()
                         .withFrontendPort(80)
-                        .withDefaultBackend()
+                        .toDefaultBackend()
                         .attach()
                     // Backends
                     .withExistingVirtualMachines(existingVMs) // Default backend
@@ -884,7 +884,7 @@ public class TestLoadBalancer {
                         .withProtocol(TransportProtocol.UDP)
                         .fromDefaultFrontend()
                         .withFrontendPort(22)
-                        .withBackend("backend2")
+                        .toBackend("backend2")
                         .withProbe("httpprobe")
                         .attach()
                     .defineBackend("backend2")

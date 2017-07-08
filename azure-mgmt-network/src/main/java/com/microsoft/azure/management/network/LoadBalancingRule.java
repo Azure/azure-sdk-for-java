@@ -105,20 +105,20 @@ public interface LoadBalancingRule extends
          */
         interface WithBackend<ReturnT> {
             /**
-             * Associates the load balancing rule with the specified backend of this load balancer.
+             * Specifies a backend on this load balancer to send network traffic to.
              * <p>
              * If a backend with the specified name does not yet exist on this load balancer, it will be created automatically.
              * @param backendName the name of a backend
              * @return the next stage of the definition
              */
-            WithBackendPort<ReturnT> withBackend(String backendName);
+            WithBackendPort<ReturnT> toBackend(String backendName);
 
             /**
-             * Associates with the default backend.
+             * Selects the load balancer's default backend as the backend to send network traffic to.
              * @return the next stage of the definition
              */
             @Beta(SinceVersion.V1_2_0)
-            WithBackendPort<ReturnT> withDefaultBackend();
+            WithBackendPort<ReturnT> toDefaultBackend();
         }
 
         /**
@@ -339,20 +339,20 @@ public interface LoadBalancingRule extends
          */
         interface WithBackend<ReturnT> {
             /**
-             * Associates the load balancing rule with the specified backend of this load balancer.
+             * Specifies a backend on this load balancer to send network traffic to.
              * <p>
-             * If a backend with the specified name does not yet exist on this load balancer, it will be created automatically.
+             * If a backend with the specified name does not yet exist, it will be created automatically.
              * @param backendName the name of an existing backend
              * @return the next stage of the definition
              */
-            WithBackendPort<ReturnT> withBackend(String backendName);
+            WithBackendPort<ReturnT> toBackend(String backendName);
 
             /**
-             * Associates with the default backend.
+             * Selects the load balancer's default backend as the backend to send network traffic to.
              * @return the next stage of the definition
              */
             @Beta(SinceVersion.V1_2_0)
-            WithBackendPort<ReturnT> withDefaultBackend();
+            WithBackendPort<ReturnT> toDefaultBackend();
         }
 
         /**

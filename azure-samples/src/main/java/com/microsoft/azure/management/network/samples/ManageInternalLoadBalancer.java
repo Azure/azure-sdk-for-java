@@ -161,7 +161,7 @@ public final class ManageInternalLoadBalancer {
                         .withProtocol(TransportProtocol.TCP)
                         .fromFrontend(privateFrontEndName)
                         .withFrontendPort(orcaleSQLNodePort)
-                        .withBackend(backendPoolName3)
+                        .toBackend(backendPoolName3)
                         .withProbe(httpProbe)
                         .attach()
 
@@ -340,7 +340,7 @@ public final class ManageInternalLoadBalancer {
                         .withProtocol(TransportProtocol.TCP)
                         .fromFrontend(privateFrontEndName)
                         .withFrontendPort(orcaleSQLNodePort)
-                        .withBackend(backendPoolName3)
+                        .toBackend(backendPoolName3)
                         .withProbe(httpProbe)
                         .attach()
 

@@ -190,12 +190,12 @@ class LoadBalancingRuleImpl
     }
 
     @Override
-    public LoadBalancingRuleImpl withDefaultBackend() {
-        return this.withBackend(null);
+    public LoadBalancingRuleImpl toDefaultBackend() {
+        return this.toBackend(null);
     }
 
     @Override
-    public LoadBalancingRuleImpl withBackend(String backendName) {
+    public LoadBalancingRuleImpl toBackend(String backendName) {
         // Ensure existence of backend, creating one if needed
         if (backendName == null) {
             backendName = this.parent().ensureDefaultBackend().name();
