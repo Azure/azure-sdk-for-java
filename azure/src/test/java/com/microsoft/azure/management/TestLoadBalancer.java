@@ -120,7 +120,7 @@ public class TestLoadBalancer {
                     .defineInboundNatPool("natpool1")
                         .withProtocol(TransportProtocol.TCP)
                         .fromFrontend("frontend1")
-                        .withFrontendPortRange(2000, 2001)
+                        .fromFrontendPortRange(2000, 2001)
                         .toBackendPort(8080)
                         .attach()
 

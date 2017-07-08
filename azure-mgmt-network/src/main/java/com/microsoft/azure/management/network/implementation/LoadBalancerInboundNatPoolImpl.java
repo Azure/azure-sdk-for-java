@@ -90,7 +90,7 @@ class LoadBalancerInboundNatPoolImpl
     }
 
     @Override
-    public LoadBalancerInboundNatPoolImpl withFrontendPortRange(int from, int to) {
+    public LoadBalancerInboundNatPoolImpl fromFrontendPortRange(int from, int to) {
         this.inner().withFrontendPortRangeStart(from).withFrontendPortRangeEnd(to);
         return this;
     }
