@@ -149,7 +149,7 @@ class LoadBalancerImpl
         }
     }
 
-    LoadBalancerFrontend ensureFrontendWithPip(String pipId) {
+    LoadBalancerPublicFrontend findPublicFrontendWithPip(String pipId) {
         if (pipId == null) {
             return null;
         } else {
@@ -163,8 +163,23 @@ class LoadBalancerImpl
                 }
             }
 
-            // Existing not found so use default
-            return this.ensureDefaultFrontend().withExistingPublicIPAddress(pipId);
+            return null;
+        }
+    }
+
+    LoadBalancerPublicFrontend ensurePublicFrontendWithPip(String pipId) {
+        LoadBalancerPublicFrontend frontend = this.findPublicFrontendWithPip(pipId);
+        if (pipId == null) {
+            return null;
+        } else if (frontend != null) {
+            return frontend;
+        } else {
+            // Create new frontend
+            String frontendName = SdkContext.randomResourceName("pfe", 20);
+            LoadBalancerFrontendImpl pfe = this.definePublicFrontend(frontendName)
+                    .withExistingPublicIPAddress(pipId);
+            pfe.attach();
+            return pfe;
         }
     }
 

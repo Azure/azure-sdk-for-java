@@ -109,7 +109,7 @@ class LoadBalancerInboundNatPoolImpl
 
     @Override
     public LoadBalancerInboundNatPoolImpl withExistingPublicIPAddress(String resourceId) {
-        return (null != resourceId) ? this.fromFrontend(this.parent().ensureFrontendWithPip(resourceId).name()) : this;
+        return (null != resourceId) ? this.fromFrontend(this.parent().ensurePublicFrontendWithPip(resourceId).name()) : this;
     }
 
     @Override

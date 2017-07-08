@@ -299,15 +299,15 @@ public class TestLoadBalancer {
                     .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
 
                     // Frontends
-                    .withExistingPublicIPAddress(pip)
+                    .withExistingPublicIPAddress(pip) // Default public frontend
 
                     // Load balancing rules
                     .defineLoadBalancingRule("rule1")
                         .withProtocol(TransportProtocol.TCP)    // Required
-                        .withExistingPublicIPAddress(pip)
+                        .withExistingPublicIPAddress(pip)       // Uses default frontend because PIP is the same
                         .fromFrontendPort(81)
                         .toDefaultBackend()
-                        .toBackendPort(82)                    // Optionals
+                        .toBackendPort(82)                     // Optionals
                         .withProbe("tcpProbe1")
                         .withIdleTimeoutInMinutes(10)
                         .withLoadDistribution(LoadDistribution.SOURCE_IP)
