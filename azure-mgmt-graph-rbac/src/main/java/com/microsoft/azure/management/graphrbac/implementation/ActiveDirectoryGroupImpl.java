@@ -8,22 +8,29 @@ package com.microsoft.azure.management.graphrbac.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroup;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import rx.Observable;
 
 /**
  * Implementation for Group and its parent interfaces.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.Graph.RBAC.Fluent")
 class ActiveDirectoryGroupImpl
-        extends WrapperImpl<ADGroupInner>
-        implements ActiveDirectoryGroup {
+        extends CreatableUpdatableImpl<ActiveDirectoryGroup, ADGroupInner, ActiveDirectoryGroupImpl>
+        implements ActiveDirectoryGroup,
+            ActiveDirectoryGroup.Definition {
 
     private final GraphRbacManager manager;
+    private GroupCreateParametersInner createParameters;
 
     ActiveDirectoryGroupImpl(ADGroupInner innerModel, GraphRbacManager manager) {
-        super(innerModel);
+        super(innerModel.displayName(), innerModel);
         this.manager = manager;
+        this.createParameters = new GroupCreateParametersInner()
+                .withDisplayName(innerModel.displayName())
+                .withMailEnabled(false)
+                .withSecurityEnabled(true);
     }
 
     @Override
@@ -49,5 +56,26 @@ class ActiveDirectoryGroupImpl
     @Override
     public GraphRbacManager manager() {
         return manager;
+    }
+
+    @Override
+    protected Observable<ADGroupInner> getInnerAsync() {
+        return manager().inner().groups().getAsync(id());
+    }
+
+    @Override
+    public boolean isInCreateMode() {
+        return id() == null;
+    }
+
+    @Override
+    public Observable<ActiveDirectoryGroup> createResourceAsync() {
+        return null;
+    }
+
+    @Override
+    public ActiveDirectoryGroupImpl withEmailAlias(String mailNickname) {
+        createParameters.withMailNickname(mailNickname);
+        return this;
     }
 }

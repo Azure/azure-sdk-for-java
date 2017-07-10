@@ -106,4 +106,9 @@ class ActiveDirectoryGroupsImpl
     public GroupsInner inner() {
         return manager().inner().groups();
     }
+
+    @Override
+    public ActiveDirectoryGroupImpl define(String name) {
+        return wrapModel(new ADGroupInner().withDisplayName(name));
+    }
 }
