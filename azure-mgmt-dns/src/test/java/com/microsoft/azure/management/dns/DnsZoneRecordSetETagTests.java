@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.dns;
 
 
+import com.microsoft.azure.CloudError;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.dns.implementation.DnsZoneManager;
@@ -11,6 +12,7 @@ import com.microsoft.rest.RestClient;
 import org.junit.Assert;
 import org.junit.Test;
 import rx.exceptions.CompositeException;
+import rx.functions.Action0;
 
 public class DnsZoneRecordSetETagTests extends TestBase {
     private static String RG_NAME = "";
@@ -47,17 +49,16 @@ public class DnsZoneRecordSetETagTests extends TestBase {
                 .withETagCheck()
                 .create();
         Assert.assertNotNull(dnsZone.eTag());
-
-        boolean preConditionFailed = false;
-        try {
-            zoneManager.zones().define(topLevelDomain)
-                .withNewResourceGroup(RG_NAME, region)
-                .withETagCheck()
-                .create();
-        } catch (CloudException exception) {
-            preConditionFailed = exception.getMessage().contains("PreconditionFailed");
-        }
-        Assert.assertTrue("Expected error due to ETag concurrency check is not thrown", preConditionFailed);
+        Action0 action = new Action0() {
+            @Override
+            public void call() {
+                zoneManager.zones().define(topLevelDomain)
+                        .withNewResourceGroup(RG_NAME, region)
+                        .withETagCheck()
+                        .create();
+            }
+        };
+        ensureETagExceptionIsThrown(action);
     }
 
     @Test
@@ -65,22 +66,20 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         final Region region = Region.US_EAST;
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
-        DnsZone dnsZone = zoneManager.zones().define(topLevelDomain)
+        final DnsZone dnsZone = zoneManager.zones().define(topLevelDomain)
                 .withNewResourceGroup(RG_NAME, region)
                 .withETagCheck()
                 .create();
         Assert.assertNotNull(dnsZone.eTag());
-
-        boolean preConditionFailed = false;
-        try {
-            dnsZone.update()
-                    .withETagCheck(dnsZone.eTag() + "-foo")
-                    .apply();
-        } catch (CloudException exception) {
-            preConditionFailed = exception.getMessage().contains("PreconditionFailed");
-        }
-        Assert.assertTrue("Expected error due to ETag concurrency check is not thrown", preConditionFailed);
-
+        Action0 action = new Action0() {
+            @Override
+            public void call() {
+                dnsZone.update()
+                        .withETagCheck(dnsZone.eTag() + "-foo")
+                        .apply();
+            }
+        };
+        ensureETagExceptionIsThrown(action);
         dnsZone.update()
                 .withETagCheck(dnsZone.eTag())
                 .apply();
@@ -91,19 +90,18 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         final Region region = Region.US_EAST;
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
-        DnsZone dnsZone = zoneManager.zones().define(topLevelDomain)
+        final DnsZone dnsZone = zoneManager.zones().define(topLevelDomain)
                 .withNewResourceGroup(RG_NAME, region)
                 .withETagCheck()
                 .create();
         Assert.assertNotNull(dnsZone.eTag());
-
-        boolean preConditionFailed = false;
-        try {
-            zoneManager.zones().deleteById(dnsZone.id(), dnsZone.eTag() + "-foo");
-        } catch (CloudException exception) {
-            preConditionFailed = exception.getMessage().contains("PreconditionFailed");
-        }
-        Assert.assertTrue("Expected error due to ETag concurrency check is not thrown", preConditionFailed);
+        Action0 action = new Action0() {
+            @Override
+            public void call() {
+                zoneManager.zones().deleteById(dnsZone.id(), dnsZone.eTag() + "-foo");
+            }
+        };
+        ensureETagExceptionIsThrown(action);
         zoneManager.zones().deleteById(dnsZone.id(), dnsZone.eTag());
     }
 
@@ -181,7 +179,10 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         Assert.assertEquals(4, compositeException.getExceptions().size());
         for(Throwable exception : compositeException.getExceptions()) {
             Assert.assertTrue(exception instanceof CloudException);
-            Assert.assertTrue(exception.getMessage().contains("PreconditionFailed"));
+            CloudError cloudError = ((CloudException) exception).body();
+            Assert.assertNotNull(cloudError);
+            Assert.assertNotNull(cloudError.code());
+            Assert.assertTrue(cloudError.code().contains("PreconditionFailed"));
         }
     }
 
@@ -236,7 +237,10 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         Assert.assertEquals(2, compositeException.getExceptions().size());
         for(Throwable exception : compositeException.getExceptions()) {
             Assert.assertTrue(exception instanceof CloudException);
-            Assert.assertTrue(exception.getMessage().contains("PreconditionFailed"));
+            CloudError cloudError = ((CloudException) exception).body();
+            Assert.assertNotNull(cloudError);
+            Assert.assertNotNull(cloudError.code());
+            Assert.assertTrue(cloudError.code().contains("PreconditionFailed"));
         }
         // Try update with correct etags
         dnsZone.update()
@@ -310,7 +314,10 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         Assert.assertEquals(2, compositeException.getExceptions().size());
         for(Throwable exception : compositeException.getExceptions()) {
             Assert.assertTrue(exception instanceof CloudException);
-            Assert.assertTrue(exception.getMessage().contains("PreconditionFailed"));
+            CloudError cloudError = ((CloudException) exception).body();
+            Assert.assertNotNull(cloudError);
+            Assert.assertNotNull(cloudError.code());
+            Assert.assertTrue(cloudError.code().contains("PreconditionFailed"));
         }
         // Try delete with correct etags
         dnsZone.update()
@@ -325,6 +332,31 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         // Check AAAA records
         aaaaRecordSets = dnsZone.aaaaRecordSets().list();
         Assert.assertTrue(aaaaRecordSets.size() == 0);
+    }
+
+    /**
+     * Runs the action and assert that action throws CloudException with CloudError.Code
+     * property set to 'PreconditionFailed'.
+     *
+     * @param action action to run
+     */
+    private void ensureETagExceptionIsThrown(final Action0 action) {
+        boolean isCloudExceptionThrown = false;
+        boolean isCloudErrorSet = false;
+        boolean isPreconditionFailedCodeSet = false;
+        try {
+            action.call();
+        } catch (CloudException exception) {
+            isCloudExceptionThrown = true;
+            CloudError cloudError = exception.body();
+            if (cloudError != null) {
+                isCloudErrorSet = true;
+                isPreconditionFailedCodeSet = cloudError.code().contains("PreconditionFailed");
+            }
+        }
+        Assert.assertTrue("Expected CloudException is not thrown", isCloudExceptionThrown);
+        Assert.assertTrue("Expected CloudError property is not set in CloudException", isCloudErrorSet);
+        Assert.assertTrue("Expected PreconditionFailed code is not set indicating ETag concurrency check failure", isPreconditionFailedCodeSet);
     }
 }
 
