@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.dns;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.dns.implementation.RecordSetInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
@@ -1043,6 +1044,7 @@ public interface DnsRecordSet extends
              * @param textChunks the text value as list
              * @return the next stage of the record set update
              */
+            @Beta(Beta.SinceVersion.V1_2_0)
             UpdateTxtRecordSet withoutText(List<String> textChunks);
         }
 

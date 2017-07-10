@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.dns;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.dns.implementation.DnsZoneManager;
@@ -177,6 +178,7 @@ public interface DnsZone extends
              * @param name name of the CNAME record set
              * @return the next stage of DNS zone definition
              */
+            @Beta(Beta.SinceVersion.V1_2_0)
             DnsRecordSet.DefinitionStages.CNameRecordSetBlank<WithCreate> defineCNameRecordSet(String name);
 
             /**
@@ -283,6 +285,7 @@ public interface DnsZone extends
              * @param name name of the CNAME record set
              * @return the next stage of DNS zone definition
              */
+            @Beta(Beta.SinceVersion.V1_2_0)
             DnsRecordSet.UpdateDefinitionStages.CNameRecordSetBlank<Update> defineCNameRecordSet(String name);
 
             /**
@@ -347,6 +350,7 @@ public interface DnsZone extends
              * @param name name of the CNAME record set
              * @return the stage representing configuration for the CNAME record set
              */
+            @Beta(Beta.SinceVersion.V1_2_0)
             DnsRecordSet.UpdateCNameRecordSet updateCNameRecordSet(String name);
 
             /**
