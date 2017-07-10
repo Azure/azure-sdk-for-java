@@ -279,20 +279,20 @@ public interface SearchService extends
       /**
        * Specifies the SKU of the Search service.
        *
-       * @param replicaCount the number of replicas to be created
+       * @param count the number of replicas to be created
        * @return the next stage of the definition
        */
-     WithCreate withReplicas(int replicaCount);
+     WithCreate withReplicaCount(int count);
     }
 
     interface WithPartitionsAndCreate extends WithReplicasAndCreate {
       /**
        * Specifies the SKU of the Search service.
        *
-       * @param partitionCount the number of partitions to be created
+       * @param count the number of partitions to be created
        * @return the next stage of the definition
        */
-      WithReplicasAndCreate withPartitions(int partitionCount);
+      WithReplicasAndCreate withPartitionCount(int count);
     }
 
     /**
@@ -311,8 +311,8 @@ public interface SearchService extends
   interface Update extends
       Appliable<SearchService>,
       Resource.UpdateWithTags<Update>,
-      SearchService.UpdateStages.WithReplicas,
-      SearchService.UpdateStages.WithPartitions {
+      UpdateStages.WithReplicaCount,
+      UpdateStages.WithPartitionCount {
   }
 
   /**
@@ -323,26 +323,26 @@ public interface SearchService extends
     /**
      * The stage of the Search service update allowing to modify the number of replicas used.
      */
-    interface WithReplicas {
+    interface WithReplicaCount {
       /**
        * Specifies the replicas count of the Search service.
        *
-       * @param replicaCount the replicas count; replicas distribute workloads across the service. You need 2 or more to support high availability (applies to Basic and Standard tiers only)
+       * @param count the replicas count; replicas distribute workloads across the service. You need 2 or more to support high availability (applies to Basic and Standard tiers only)
        * @return the next stage of the definition
        */
-      Update withReplicas(int replicaCount);
+      Update withReplicaCount(int count);
     }
 
     /**
      * The stage of the Search service update allowing to modify the number of partitions used.
      */
-    interface WithPartitions {
+    interface WithPartitionCount {
       /**
        * Specifies the Partitions count of the Search service.
-       * @param partitionCount the partitions count; Partitions allow for scaling of document counts as well as faster data ingestion by spanning your index over multiple Azure Search Units (applies to Standard tiers only)
+       * @param count the partitions count; Partitions allow for scaling of document counts as well as faster data ingestion by spanning your index over multiple Azure Search Units (applies to Standard tiers only)
        * @return the next stage of the definition
        */
-      Update withPartitions(int partitionCount);
+      Update withPartitionCount(int count);
     }
   }
 }

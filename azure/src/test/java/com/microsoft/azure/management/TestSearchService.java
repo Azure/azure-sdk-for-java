@@ -55,8 +55,8 @@ public class TestSearchService {
                 .withTag("tag2", "value2")
                 .withTag("tag3", "value3")
                 .withoutTag("tag1")
-                .withReplicas(2)
-                .withPartitions(2)
+                .withReplicaCount(2)
+                .withPartitionCount(2)
                 .apply();
             Assert.assertTrue(resource.tags().containsKey("tag2"));
             Assert.assertTrue(!resource.tags().containsKey("tag1"));
@@ -136,7 +136,7 @@ public class TestSearchService {
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup()
                 .withBasicSku()
-                .withReplicas(2)
+                .withReplicaCount(2)
                 .create();
 
             Assert.assertEquals(SkuName.BASIC, searchService.sku().name());
@@ -177,8 +177,8 @@ public class TestSearchService {
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup()
                 .withStandardSku()
-                .withPartitions(2)
-                .withReplicas(2)
+                .withPartitionCount(2)
+                .withReplicaCount(2)
                 .create();
 
             Assert.assertEquals(SkuName.STANDARD, searchService.sku().name());

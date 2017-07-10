@@ -77,8 +77,8 @@ public class ManageSearchService {
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withStandardSku()
-                    .withPartitions(1)
-                    .withReplicas(1)
+                    .withPartitionCount(1)
+                    .withReplicaCount(1)
                     .create();
 
             t2 = new Date();
@@ -122,8 +122,8 @@ public class ManageSearchService {
                     .withTag("tag2", "value2")
                     .withTag("tag3", "value3")
                     .withoutTag("tag1")
-                    .withReplicas(3)
-                    .withPartitions(3)
+                    .withReplicaCount(3)
+                    .withPartitionCount(3)
                     .apply();
 
             Utils.print(searchService);

@@ -246,13 +246,13 @@ class SearchServiceImpl
   }
 
   @Override
-  public SearchServiceImpl withReplicas(int replicaCount) {
+  public SearchServiceImpl withReplicaCount(int replicaCount) {
     this.inner().withReplicaCount(replicaCount);
     return this;
   }
 
   @Override
-  public SearchServiceImpl withPartitions(int partitionCount) {
+  public SearchServiceImpl withPartitionCount(int partitionCount) {
     this.inner().withPartitionCount(partitionCount);
     return this;
   }
