@@ -84,7 +84,7 @@ var mappings = {
     },
     'trafficmanager': {
         'dir': 'azure-mgmt-trafficmanager',
-        'source': 'arm-trafficmanager/2015-11-01/swagger/trafficmanager.json',
+        'source': 'arm-trafficmanager/2017-05-01/swagger/trafficmanager.json',
         'package': 'com.microsoft.azure.management.trafficmanager',
         'args': '-FT 1'
     },

@@ -11,28 +11,25 @@ package com.microsoft.azure.management.trafficmanager;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for TrafficRoutingMethod.
+ * Defines values for MonitorProtocol.
  */
-public final class TrafficRoutingMethod {
-    /** Static value Performance for TrafficRoutingMethod. */
-    public static final TrafficRoutingMethod PERFORMANCE = new TrafficRoutingMethod("Performance");
+public final class MonitorProtocol {
+    /** Static value HTTP for MonitorProtocol. */
+    public static final MonitorProtocol HTTP = new MonitorProtocol("HTTP");
 
-    /** Static value Priority for TrafficRoutingMethod. */
-    public static final TrafficRoutingMethod PRIORITY = new TrafficRoutingMethod("Priority");
+    /** Static value HTTPS for MonitorProtocol. */
+    public static final MonitorProtocol HTTPS = new MonitorProtocol("HTTPS");
 
-    /** Static value Weighted for TrafficRoutingMethod. */
-    public static final TrafficRoutingMethod WEIGHTED = new TrafficRoutingMethod("Weighted");
-
-    /** Static value Geographic for TrafficRoutingMethod. */
-    public static final TrafficRoutingMethod GEOGRAPHIC = new TrafficRoutingMethod("Geographic");
+    /** Static value TCP for MonitorProtocol. */
+    public static final MonitorProtocol TCP = new MonitorProtocol("TCP");
 
     private String value;
 
     /**
-     * Creates a custom value for TrafficRoutingMethod.
+     * Creates a custom value for MonitorProtocol.
      * @param value the custom value
      */
-    public TrafficRoutingMethod(String value) {
+    public MonitorProtocol(String value) {
         this.value = value;
     }
 
@@ -49,13 +46,13 @@ public final class TrafficRoutingMethod {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof TrafficRoutingMethod)) {
+        if (!(obj instanceof MonitorProtocol)) {
             return false;
         }
         if (obj == this) {
             return true;
         }
-        TrafficRoutingMethod rhs = (TrafficRoutingMethod) obj;
+        MonitorProtocol rhs = (MonitorProtocol) obj;
         if (value == null) {
             return rhs.value == null;
         } else {

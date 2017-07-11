@@ -8,6 +8,9 @@
 
 package com.microsoft.azure.management.trafficmanager.implementation;
 
+import com.microsoft.azure.management.trafficmanager.EndpointStatus;
+import com.microsoft.azure.management.trafficmanager.EndpointMonitorStatus;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
@@ -15,61 +18,42 @@ import com.microsoft.rest.serializer.JsonFlatten;
  * Class representing a Traffic Manager endpoint.
  */
 @JsonFlatten
-public class EndpointInner {
+public class EndpointInner extends ProxyResourceInner {
     /**
-     * Gets or sets the ID of the Traffic Manager endpoint.
-     */
-    @JsonProperty(value = "id")
-    private String id;
-
-    /**
-     * Gets or sets the name of the Traffic Manager endpoint.
-     */
-    @JsonProperty(value = "name")
-    private String name;
-
-    /**
-     * Gets or sets the endpoint type of the Traffic Manager endpoint.
-     */
-    @JsonProperty(value = "type")
-    private String type;
-
-    /**
-     * Gets or sets the Azure Resource URI of the of the endpoint.  Not
-     * applicable to endpoints of type 'ExternalEndpoints'.
+     * The Azure Resource URI of the of the endpoint. Not applicable to
+     * endpoints of type 'ExternalEndpoints'.
      */
     @JsonProperty(value = "properties.targetResourceId")
     private String targetResourceId;
 
     /**
-     * Gets or sets the fully-qualified DNS name of the endpoint.  Traffic
-     * Manager returns this value in DNS responses to direct traffic to this
-     * endpoint.
+     * The fully-qualified DNS name of the endpoint. Traffic Manager returns
+     * this value in DNS responses to direct traffic to this endpoint.
      */
     @JsonProperty(value = "properties.target")
     private String target;
 
     /**
-     * Gets or sets the status of the endpoint..  If the endpoint is Enabled,
-     * it is probed for endpoint health and is included in the traffic routing
-     * method.  Possible values are 'Enabled' and 'Disabled'.
+     * The status of the endpoint. If the endpoint is Enabled, it is probed for
+     * endpoint health and is included in the traffic routing method. Possible
+     * values include: 'Enabled', 'Disabled'.
      */
     @JsonProperty(value = "properties.endpointStatus")
-    private String endpointStatus;
+    private EndpointStatus endpointStatus;
 
     /**
-     * Gets or sets the weight of this endpoint when using the 'Weighted'
-     * traffic routing method. Possible values are from 1 to 1000.
+     * The weight of this endpoint when using the 'Weighted' traffic routing
+     * method. Possible values are from 1 to 1000.
      */
     @JsonProperty(value = "properties.weight")
     private Long weight;
 
     /**
-     * Gets or sets the priority of this endpoint when using the ‘Priority’
-     * traffic routing method. Possible values are from 1 to 1000, lower values
-     * represent higher priority. This is an optional parameter.  If specified,
-     * it must be specified on all endpoints, and no two endpoints can share
-     * the same priority value.
+     * The priority of this endpoint when using the ‘Priority’ traffic routing
+     * method. Possible values are from 1 to 1000, lower values represent
+     * higher priority. This is an optional parameter.  If specified, it must
+     * be specified on all endpoints, and no two endpoints can share the same
+     * priority value.
      */
     @JsonProperty(value = "properties.priority")
     private Long priority;
@@ -82,78 +66,28 @@ public class EndpointInner {
     private String endpointLocation;
 
     /**
-     * Gets or sets the monitoring status of the endpoint.
+     * The monitoring status of the endpoint. Possible values include:
+     * 'CheckingEndpoint', 'Online', 'Degraded', 'Disabled', 'Inactive',
+     * 'Stopped'.
      */
     @JsonProperty(value = "properties.endpointMonitorStatus")
-    private String endpointMonitorStatus;
+    private EndpointMonitorStatus endpointMonitorStatus;
 
     /**
-     * Gets or sets the minimum number of endpoints that must be available in
-     * the child profile in order for the parent profile to be considered
-     * available. Only applicable to endpoint of type 'NestedEndpoints'.
+     * The minimum number of endpoints that must be available in the child
+     * profile in order for the parent profile to be considered available. Only
+     * applicable to endpoint of type 'NestedEndpoints'.
      */
     @JsonProperty(value = "properties.minChildEndpoints")
     private Long minChildEndpoints;
 
     /**
-     * Get the id value.
-     *
-     * @return the id value
+     * The list of countries/regions mapped to this endpoint when using the
+     * ‘Geographic’ traffic routing method. Please consult Traffic Manager
+     * Geographic documentation for a full list of accepted values.
      */
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Set the id value.
-     *
-     * @param id the id value to set
-     * @return the EndpointInner object itself.
-     */
-    public EndpointInner withId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
-     * Get the name value.
-     *
-     * @return the name value
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Set the name value.
-     *
-     * @param name the name value to set
-     * @return the EndpointInner object itself.
-     */
-    public EndpointInner withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Get the type value.
-     *
-     * @return the type value
-     */
-    public String type() {
-        return this.type;
-    }
-
-    /**
-     * Set the type value.
-     *
-     * @param type the type value to set
-     * @return the EndpointInner object itself.
-     */
-    public EndpointInner withType(String type) {
-        this.type = type;
-        return this;
-    }
+    @JsonProperty(value = "properties.geoMapping")
+    private List<String> geoMapping;
 
     /**
      * Get the targetResourceId value.
@@ -200,7 +134,7 @@ public class EndpointInner {
      *
      * @return the endpointStatus value
      */
-    public String endpointStatus() {
+    public EndpointStatus endpointStatus() {
         return this.endpointStatus;
     }
 
@@ -210,7 +144,7 @@ public class EndpointInner {
      * @param endpointStatus the endpointStatus value to set
      * @return the EndpointInner object itself.
      */
-    public EndpointInner withEndpointStatus(String endpointStatus) {
+    public EndpointInner withEndpointStatus(EndpointStatus endpointStatus) {
         this.endpointStatus = endpointStatus;
         return this;
     }
@@ -280,7 +214,7 @@ public class EndpointInner {
      *
      * @return the endpointMonitorStatus value
      */
-    public String endpointMonitorStatus() {
+    public EndpointMonitorStatus endpointMonitorStatus() {
         return this.endpointMonitorStatus;
     }
 
@@ -290,7 +224,7 @@ public class EndpointInner {
      * @param endpointMonitorStatus the endpointMonitorStatus value to set
      * @return the EndpointInner object itself.
      */
-    public EndpointInner withEndpointMonitorStatus(String endpointMonitorStatus) {
+    public EndpointInner withEndpointMonitorStatus(EndpointMonitorStatus endpointMonitorStatus) {
         this.endpointMonitorStatus = endpointMonitorStatus;
         return this;
     }
@@ -312,6 +246,26 @@ public class EndpointInner {
      */
     public EndpointInner withMinChildEndpoints(Long minChildEndpoints) {
         this.minChildEndpoints = minChildEndpoints;
+        return this;
+    }
+
+    /**
+     * Get the geoMapping value.
+     *
+     * @return the geoMapping value
+     */
+    public List<String> geoMapping() {
+        return this.geoMapping;
+    }
+
+    /**
+     * Set the geoMapping value.
+     *
+     * @param geoMapping the geoMapping value to set
+     * @return the EndpointInner object itself.
+     */
+    public EndpointInner withGeoMapping(List<String> geoMapping) {
+        this.geoMapping = geoMapping;
         return this;
     }
 

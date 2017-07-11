@@ -143,12 +143,20 @@ public interface TrafficManagerProfile extends
             WithEndpoint withWeightBasedRouting();
 
             /**
-             * Specifies that end user traffic should be routed based on the geographic location of the endpoint
-             * close to user.
+             * Specifies that end user traffic should be routed based on the closest available endpoint in terms
+             * of the lowest network latency.
              *
              * @return the next stage of the definition
              */
             WithEndpoint withPerformanceBasedRouting();
+
+            /**
+             * Specifies that end user traffic should be routed to the endpoint that is designated to serve users
+             * geographic region.
+             *
+             * @return the next stage of the definition
+             */
+            WithEndpoint withGeographicBasedRouting();
 
             /**
              * Specify the traffic routing method for the profile.
@@ -297,12 +305,20 @@ public interface TrafficManagerProfile extends
             Update withWeightBasedRouting();
 
             /**
-             * Specifies that end user traffic should be routed based on the geographic location of the endpoint
-             * close to user.
+             * Specifies that end user traffic should be routed based on the closest available endpoint in terms
+             * of the lowest network latency.
              *
-             * @return the next stage of the traffic manager profile update
+             * @return the next stage of the update
              */
             Update withPerformanceBasedRouting();
+
+            /**
+             * Specifies that end user traffic should be routed to the endpoint that is designated to serve users
+             * geographic region.
+             *
+             * @return the next stage of the update
+             */
+            Update withGeographicBasedRouting();
 
             /**
              * Specifies the traffic routing method for the profile.

@@ -9,12 +9,16 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import com.microsoft.azure.management.trafficmanager.EndpointStatus;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerEndpoint;
 import com.microsoft.azure.management.trafficmanager.EndpointMonitorStatus;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
 import com.microsoft.azure.management.trafficmanager.EndpointType;
 import rx.Observable;
 import rx.functions.Func1;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementation for {@link TrafficManagerEndpoint}.
@@ -31,8 +35,6 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
         TrafficManagerEndpoint.UpdateExternalEndpoint,
         TrafficManagerEndpoint.UpdateNestedProfileEndpoint {
     private final EndpointsInner client;
-    private final String endpointStatusDisabled = "Disabled";
-    private final String endpointStatusEnabled = "Enabled";
 
     TrafficManagerEndpointImpl(String name,
                                TrafficManagerProfileImpl parent,
@@ -54,12 +56,12 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
 
     @Override
     public EndpointMonitorStatus monitorStatus() {
-        return new EndpointMonitorStatus(this.inner().endpointMonitorStatus());
+        return this.inner().endpointMonitorStatus();
     }
 
     @Override
     public boolean isEnabled() {
-        return this.inner().endpointStatus().equalsIgnoreCase(this.endpointStatusEnabled);
+        return this.inner().endpointStatus().equals(EndpointStatus.ENABLED);
     }
 
     @Override
@@ -110,19 +112,63 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
 
     @Override
     public TrafficManagerEndpointImpl withTrafficDisabled() {
-        this.inner().withEndpointStatus(this.endpointStatusDisabled);
+        this.inner().withEndpointStatus(EndpointStatus.DISABLED);
         return this;
     }
 
     @Override
     public TrafficManagerEndpointImpl withTrafficEnabled() {
-        this.inner().withEndpointStatus(this.endpointStatusEnabled);
+        this.inner().withEndpointStatus(EndpointStatus.ENABLED);
         return this;
     }
 
     @Override
     public TrafficManagerEndpointImpl withRoutingWeight(int weight) {
         this.inner().withWeight(new Long(weight));
+        return this;
+    }
+
+    @Override
+    public TrafficManagerEndpointImpl withGeographicLocation(String geographicLocation) {
+        if (this.inner().geoMapping() == null) {
+            this.inner().withGeoMapping(new ArrayList<String>());
+        }
+        boolean notFound = true;
+        for(String location : this.inner().geoMapping()) {
+            if (location.toLowerCase().equalsIgnoreCase(geographicLocation.toLowerCase())) {
+                notFound = false;
+                break;
+            }
+        }
+        if (notFound) {
+            this.inner().geoMapping().add(geographicLocation);
+        }
+        return this;
+    }
+
+    @Override
+    public TrafficManagerEndpointImpl withoutGeographicLocation(String geographicLocation) {
+        if (this.inner().geoMapping() == null) {
+            return this;
+        }
+        int itemIndex = -1;
+        int i = 0;
+        for(String location : this.inner().geoMapping()) {
+            if (location.toLowerCase().equalsIgnoreCase(geographicLocation.toLowerCase())) {
+                itemIndex = i;
+                break;
+            }
+            i++;
+        }
+        if (itemIndex != -1) {
+            this.inner().geoMapping().remove(itemIndex);
+        }
+        return this;
+    }
+
+    @Override
+    public TrafficManagerEndpointImpl withGeographicLocations(List<String> geographicLocations) {
+        this.inner().withGeoMapping(geographicLocations);
         return this;
     }
 
@@ -153,7 +199,12 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
         return this.client.deleteAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.endpointType().localName(),
-                this.name());
+                this.name()).map(new Func1<DeleteOperationResultInner, Void>() {
+            @Override
+            public Void call(DeleteOperationResultInner deleteOperationResultInner) {
+                return null;
+            }
+        });
     }
 
     @Override
