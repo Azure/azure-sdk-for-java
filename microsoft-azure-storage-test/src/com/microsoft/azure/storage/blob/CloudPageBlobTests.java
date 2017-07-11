@@ -1200,4 +1200,36 @@ public class CloudPageBlobTests {
         assertNotNull(copy.properties.getCopyState().getCopyDestinationSnapshotID());
         assertNotNull(copy.getCopyState().getCompletionTime());
     }
+
+    @Test
+    public void testEightTBBlob() throws StorageException, URISyntaxException, IOException {
+        CloudPageBlob blob = this.container.getPageBlobReference("blob1");
+        CloudPageBlob blob2 = this.container.getPageBlobReference("blob1");
+
+        long eightTb = 8L * 1024L * 1024L * 1024L * 1024L;
+        blob.create(eightTb);
+        assertEquals(eightTb, blob.getProperties().getLength());
+
+        blob2.downloadAttributes();
+        assertEquals(eightTb, blob2.getProperties().getLength());
+
+        for (ListBlobItem listBlob : this.container.listBlobs()) {
+            CloudPageBlob listPageBlob = (CloudPageBlob)listBlob;
+            assertEquals(eightTb, listPageBlob.getProperties().getLength());
+        }
+
+        CloudPageBlob blob3 = this.container.getPageBlobReference("blob3");
+        blob3.create(1024);
+        blob3.resize(eightTb);
+
+        final Random randGenerator = new Random();
+        final byte[] buffer = new byte[1024];
+        randGenerator.nextBytes(buffer);
+        blob.uploadPages(new ByteArrayInputStream(buffer), eightTb - 512L, 512L);
+
+        ArrayList<PageRange> ranges = blob.downloadPageRanges();
+        assertEquals(1, ranges.size());
+        assertEquals(eightTb - 512L, ranges.get(0).getStartOffset());
+        assertEquals(eightTb - 1L, ranges.get(0).getEndOffset());
+    }
 }
