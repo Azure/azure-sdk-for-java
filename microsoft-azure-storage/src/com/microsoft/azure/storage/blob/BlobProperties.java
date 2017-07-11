@@ -118,6 +118,16 @@ public final class BlobProperties {
     private boolean isIncrementalCopy;
     
     /**
+     * Represents the premium page blob tier.
+     */
+    private PremiumPageBlobTier premiumPageBlobTier;
+
+    /**
+     * Represents whether or not the blob tier is inferred.
+     */
+    private Boolean isBlobTierInferredTier;
+    
+    /**
      * Creates an instance of the <code>BlobProperties</code> class.
      */
     public BlobProperties() {
@@ -150,6 +160,8 @@ public final class BlobProperties {
         this.pageBlobSequenceNumber = other.pageBlobSequenceNumber;
         this.serverEncrypted = other.serverEncrypted;
         this.isIncrementalCopy = other.isIncrementalCopy;
+        this.premiumPageBlobTier = other.premiumPageBlobTier;
+        this.isBlobTierInferredTier = other.isBlobTierInferredTier;
     }
 
     /**
@@ -272,6 +284,13 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets a value indicating if the tier of the premium page blob has been inferred.
+     *
+     * @return A {@Link java.lang.Boolean} object which represents if the blob tier was inferred.
+     */
+    public Boolean getInferredBlobTier() { return this.isBlobTierInferredTier; }
+
+    /**
      * Gets the lease status for the blob.
      * 
      * @return A {@link LeaseStatus} object which represents the lease status. 
@@ -315,7 +334,16 @@ public final class BlobProperties {
     public Long getPageBlobSequenceNumber() {
         return this.pageBlobSequenceNumber;
     }
-    
+
+    /**
+     * If using a premium account and the blob is a page blob, gets the tier of the blob.
+     * @return A {@link PremiumPageBlobTier} object which represents the tier of the blob
+     * or <code>null</code> if the tier has not been set.
+     */
+    public PremiumPageBlobTier getPremiumPageBlobTier() {
+        return this.premiumPageBlobTier;
+    }
+
     /**
      * Gets the blob's server-side encryption status;
      * 
@@ -511,5 +539,23 @@ public final class BlobProperties {
      */
     protected void setIncrementalCopy(boolean isIncrementalCopy) {
         this.isIncrementalCopy = isIncrementalCopy;
+    }
+
+    /**
+     * Sets the tier of the page blob. This is only supported for premium accounts.
+     * @param premiumPageBlobTier
+     *        A {@link PremiumPageBlobTier} object which represents the tier of the blob.
+     */
+    protected void setPremiumPageBlobTier(PremiumPageBlobTier premiumPageBlobTier) {
+        this.premiumPageBlobTier = premiumPageBlobTier;
+    }
+
+    /**
+     * Sets whether the blob tier is inferred.
+     * @param isBlobTierInferredTier
+     *      A {@Link java.lang.Boolean} which specifies if the blob tier is inferred.
+     */
+    protected void setBlobTierInferredTier(Boolean isBlobTierInferredTier) {
+        this.isBlobTierInferredTier = isBlobTierInferredTier;
     }
 }

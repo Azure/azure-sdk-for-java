@@ -14,9 +14,7 @@
  */
 package com.microsoft.azure.storage.blob;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -214,6 +212,41 @@ public final class CloudPageBlob extends CloudBlob {
      */
     @DoesServiceRequest
     public final String startCopy(final CloudPageBlob sourceBlob, final AccessCondition sourceAccessCondition,
+                                  final AccessCondition destinationAccessCondition, BlobRequestOptions options, OperationContext opContext)
+            throws StorageException, URISyntaxException {
+        return this.startCopy(sourceBlob, null /* premiumBlobTier */, sourceAccessCondition, destinationAccessCondition, options, opContext);
+    }
+
+    /**
+     * Requests the service to start copying a blob's contents, properties, and metadata to a new blob, using the
+     * specified blob tier, access conditions, lease ID, request options, and operation context.
+     *
+     * @param sourceBlob
+     *            A <code>CloudPageBlob</code> object that represents the source blob to copy.
+     * @param premiumBlobTier
+     *            A {@link PremiumPageBlobTier} object which represents the tier of the blob.
+     * @param sourceAccessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the source blob.
+     * @param destinationAccessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the destination blob.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     *
+     * @return A <code>String</code> which represents the copy ID associated with the copy operation.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws URISyntaxException
+     *
+     */
+    @DoesServiceRequest
+    public final String startCopy(final CloudPageBlob sourceBlob, final PremiumPageBlobTier premiumBlobTier, final AccessCondition sourceAccessCondition,
             final AccessCondition destinationAccessCondition, BlobRequestOptions options, OperationContext opContext)
             throws StorageException, URISyntaxException {
         Utility.assertNotNull("sourceBlob", sourceBlob);
@@ -224,7 +257,7 @@ public final class CloudPageBlob extends CloudBlob {
             source = sourceBlob.getServiceClient().getCredentials().transformUri(sourceBlob.getSnapshotQualifiedUri());
         }
 
-        return this.startCopy(source, sourceAccessCondition, destinationAccessCondition, options, opContext);
+        return this.startCopy(source, premiumBlobTier, sourceAccessCondition, destinationAccessCondition, options, opContext);
     }
 
     /**
@@ -343,7 +376,7 @@ public final class CloudPageBlob extends CloudBlob {
         options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
 
         return ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
-                this.startCopyImpl(sourceSnapshot, true /* incrementalCopy */, null /* sourceAccesCondition */,
+                this.startCopyImpl(sourceSnapshot, true /* incrementalCopy */, null /* premiumPageBlobTier */, null /* sourceAccesCondition */,
                         destinationAccessCondition, options),
                 options.getRetryPolicyFactory(), opContext);
     }
@@ -436,12 +469,44 @@ public final class CloudPageBlob extends CloudBlob {
     }
 
     /**
+     * Creates a page blob using the specified request options and operation context. If the blob already exists,
+     * this will replace it. To instead throw an error if the blob already exists, use
+     * {@link AccessCondition#generateIfNotExistsCondition()}.
+     *
+     * @param length
+     *            A <code>long</code> which represents the size, in bytes, of the page blob.
+     * @param accessCondition
+     *            An {@link AccessCondition} object which represents the access conditions for the blob.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object which represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     *
+     * @throws IllegalArgumentException
+     *             If the length is not a multiple of 512.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public void create(final long length, final AccessCondition accessCondition, BlobRequestOptions options,
+                       OperationContext opContext) throws StorageException {
+        this.create(length, null /* premiumBlobTier */, accessCondition, options, opContext);
+    }
+
+    /**
      * Creates a page blob using the specified request options and operation context. If the blob already exists, 
      * this will replace it. To instead throw an error if the blob already exists, use 
      * {@link AccessCondition#generateIfNotExistsCondition()}.
      * 
      * @param length
      *            A <code>long</code> which represents the size, in bytes, of the page blob.
+     * @param premiumBlobTier
+     *            A {@link PremiumPageBlobTier} object which represents the tier of the blob.
      * @param accessCondition
      *            An {@link AccessCondition} object which represents the access conditions for the blob.
      * @param options
@@ -460,7 +525,7 @@ public final class CloudPageBlob extends CloudBlob {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public void create(final long length, final AccessCondition accessCondition, BlobRequestOptions options,
+    public void create(final long length, final PremiumPageBlobTier premiumBlobTier, final AccessCondition accessCondition, BlobRequestOptions options,
             OperationContext opContext) throws StorageException {
         assertNoWriteOperationForSnapshot();
 
@@ -475,10 +540,10 @@ public final class CloudPageBlob extends CloudBlob {
         options = BlobRequestOptions.populateAndApplyDefaults(options, BlobType.PAGE_BLOB, this.blobServiceClient);
 
         ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
-                this.createImpl(length, accessCondition, options), options.getRetryPolicyFactory(), opContext);
+                this.createImpl(length, premiumBlobTier, accessCondition, options), options.getRetryPolicyFactory(), opContext);
     }
 
-    private StorageRequest<CloudBlobClient, CloudBlob, Void> createImpl(final long length,
+    private StorageRequest<CloudBlobClient, CloudBlob, Void> createImpl(final long length, final PremiumPageBlobTier premiumBlobTier,
             final AccessCondition accessCondition, final BlobRequestOptions options) {
         final StorageRequest<CloudBlobClient, CloudBlob, Void> putRequest = new StorageRequest<CloudBlobClient, CloudBlob, Void>(
                 options, this.getStorageUri()) {
@@ -487,7 +552,7 @@ public final class CloudPageBlob extends CloudBlob {
             public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlob blob, OperationContext context)
                     throws Exception {
                 return BlobRequest.putBlob(blob.getTransformedAddress(context).getUri(this.getCurrentLocation()),
-                        options, context, accessCondition, blob.properties, BlobType.PAGE_BLOB, length);
+                        options, context, accessCondition, blob.properties, BlobType.PAGE_BLOB, length, premiumBlobTier);
             }
 
             @Override
@@ -512,6 +577,11 @@ public final class CloudPageBlob extends CloudBlob {
                 blob.updateEtagAndLastModifiedFromResponse(this.getConnection());
                 this.getResult().setRequestServiceEncrypted(CloudBlob.isServerRequestEncrypted(this.getConnection()));
                 blob.getProperties().setLength(length);
+                blob.getProperties().setPremiumPageBlobTier(premiumBlobTier);
+                if (premiumBlobTier != null) {
+                    blob.getProperties().setBlobTierInferredTier(false);
+                }
+
                 return null;
             }
 
@@ -806,7 +876,7 @@ public final class CloudPageBlob extends CloudBlob {
     @DoesServiceRequest
     public BlobOutputStream openWriteExisting() throws StorageException {
         return this
-                .openOutputStreamInternal(null /* length */, null /* accessCondition */, null /* options */, null /* opContext */);
+                .openOutputStreamInternal(null /* length */, null /* premiumBlobTier */,null /* accessCondition */, null /* options */, null /* opContext */);
     }
 
     /**
@@ -832,7 +902,7 @@ public final class CloudPageBlob extends CloudBlob {
     @DoesServiceRequest
     public BlobOutputStream openWriteExisting(AccessCondition accessCondition, BlobRequestOptions options,
             OperationContext opContext) throws StorageException {
-        return this.openOutputStreamInternal(null /* length */, accessCondition, options, opContext);
+        return this.openOutputStreamInternal(null /* length */, null /* premiumBlobTier */, accessCondition, options, opContext);
     }
 
     /**
@@ -855,7 +925,40 @@ public final class CloudPageBlob extends CloudBlob {
     @DoesServiceRequest
     public BlobOutputStream openWriteNew(final long length) throws StorageException {
         return this
-                .openOutputStreamInternal(length, null /* accessCondition */, null /* options */, null /* opContext */);
+                .openOutputStreamInternal(length, null /* premiumBlobTier */, null /* accessCondition */, null /* options */, null /* opContext */);
+    }
+
+    /**
+     * Opens an output stream object to write data to the page blob, using the specified lease ID, request options and
+     * operation context. The page blob does not need to yet exist and will be created with the length specified.If the
+     * blob already exists on the service, it will be overwritten.
+     * <p>
+     * To avoid overwriting and instead throw an error, please pass in an {@link AccessCondition} generated using
+     * {@link AccessCondition#generateIfNotExistsCondition()}.
+     *
+     * @param length
+     *            A <code>long</code> which represents the length, in bytes, of the stream to create. This value must be
+     *            a multiple of 512.
+     * @param accessCondition
+     *            An {@link AccessCondition} object which represents the access conditions for the blob.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object which represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     *
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public BlobOutputStream openWriteNew(final long length, AccessCondition accessCondition,
+                                         BlobRequestOptions options, OperationContext opContext) throws StorageException {
+        return openOutputStreamInternal(length, null /* premiumBlobTier */, accessCondition, options, opContext);
     }
 
     /**
@@ -869,6 +972,8 @@ public final class CloudPageBlob extends CloudBlob {
      * @param length
      *            A <code>long</code> which represents the length, in bytes, of the stream to create. This value must be
      *            a multiple of 512.
+     * @param premiumBlobTier
+     *            A {@link PremiumPageBlobTier} object which represents the tier of the blob.
      * @param accessCondition
      *            An {@link AccessCondition} object which represents the access conditions for the blob.
      * @param options
@@ -886,9 +991,9 @@ public final class CloudPageBlob extends CloudBlob {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public BlobOutputStream openWriteNew(final long length, AccessCondition accessCondition,
+    public BlobOutputStream openWriteNew(final long length, final PremiumPageBlobTier premiumBlobTier, AccessCondition accessCondition,
             BlobRequestOptions options, OperationContext opContext) throws StorageException {
-        return openOutputStreamInternal(length, accessCondition, options, opContext);
+        return openOutputStreamInternal(length, premiumBlobTier, accessCondition, options, opContext);
     }
 
     /**
@@ -900,6 +1005,8 @@ public final class CloudPageBlob extends CloudBlob {
      *            A <code>long</code> which represents the length, in bytes, of the stream to create. This value must be
      *            a multiple of 512 or null if the
      *            page blob already exists.
+     * @param premiumBlobTier
+     *            A {@link PremiumPageBlobTier} object which represents the tier of the blob.
      * @param accessCondition
      *            An {@link AccessCondition} object which represents the access conditions for the blob.
      * @param options
@@ -916,7 +1023,7 @@ public final class CloudPageBlob extends CloudBlob {
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    private BlobOutputStream openOutputStreamInternal(Long length, AccessCondition accessCondition,
+    private BlobOutputStream openOutputStreamInternal(Long length, PremiumPageBlobTier premiumBlobTier, AccessCondition accessCondition,
             BlobRequestOptions options, OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
@@ -943,9 +1050,8 @@ public final class CloudPageBlob extends CloudBlob {
                 throw new IllegalArgumentException(SR.INVALID_PAGE_BLOB_LENGTH);
             }
 
-            this.create(length, accessCondition, options, opContext);
+            this.create(length, premiumBlobTier, accessCondition, options, opContext);
         }
-
         else {
             if (options.getEncryptionPolicy() != null) {
                 throw new IllegalArgumentException(SR.ENCRYPTION_NOT_SUPPORTED_FOR_EXISTING_BLOBS);
@@ -1153,6 +1259,71 @@ public final class CloudPageBlob extends CloudBlob {
     }
 
     /**
+     * Uploads a blob from data in a byte array. If the blob already exists on the service, it will be overwritten.
+     *
+     * @param buffer
+     *            A <code>byte</code> array which represents the data to write to the blob.
+     * @param offset
+     *            A <code>int</code> which represents the offset of the byte array from which to start the data upload.
+     * @param length
+     *            An <code>int</code> which represents the number of bytes to upload from the input buffer.
+     * @param premiumBlobTier
+     *            A {@link PremiumPageBlobTier} object which represents the tier of the blob.
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws IOException
+     */
+    public void uploadFromByteArray(final byte[] buffer, final int offset, final int length, final PremiumPageBlobTier premiumBlobTier,
+                                    final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
+            throws StorageException, IOException {
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(buffer, offset, length);
+        this.upload(inputStream, length, premiumBlobTier, accessCondition, options, opContext);
+        inputStream.close();
+    }
+
+    /**
+     * Uploads a blob from a file. If the blob already exists on the service, it will be overwritten.
+     *
+     * @param path
+     *            A <code>String</code> which represents the path to the file to be uploaded.
+     * @param premiumBlobTier
+     *            A {@link PremiumPageBlobTier} object which represents the tier of the blob.
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws IOException
+     */
+    public void uploadFromFile(final String path, final PremiumPageBlobTier premiumBlobTier, final AccessCondition accessCondition, BlobRequestOptions options,
+                               OperationContext opContext) throws StorageException, IOException {
+        File file = new File(path);
+        long fileLength = file.length();
+        InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+        this.upload(inputStream, fileLength, premiumBlobTier, accessCondition, options, opContext);
+        inputStream.close();
+    }
+
+    /**
      * Uploads the source stream data to the page blob. If the blob already exists on the service, it will be 
      * overwritten.
      * 
@@ -1170,7 +1341,39 @@ public final class CloudPageBlob extends CloudBlob {
     @Override
     @DoesServiceRequest
     public void upload(final InputStream sourceStream, final long length) throws StorageException, IOException {
-        this.upload(sourceStream, length, null /* accessCondition */, null /* options */, null /* opContext */);
+        this.upload(sourceStream, length, null /* premiumBlobTier */, null /* accessCondition */, null /* options */, null /* opContext */);
+    }
+
+    /**
+     * Uploads the source stream data to the page blob using the specified lease ID, request options, and operation
+     * context. If the blob already exists on the service, it will be overwritten.
+     *
+     * @param sourceStream
+     *            An {@link InputStream} object to read from.
+     * @param length
+     *            A <code>long</code> which represents the length, in bytes, of the stream data. This must be great than
+     *            zero and a multiple of 512.
+     * @param accessCondition
+     *            An {@link AccessCondition} object which represents the access conditions for the blob.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object which represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     *
+     * @throws IOException
+     *             If an I/O exception occurred.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @Override
+    @DoesServiceRequest
+    public void upload(final InputStream sourceStream, final long length, final AccessCondition accessCondition,
+                       BlobRequestOptions options, OperationContext opContext) throws StorageException, IOException {
+        this.upload(sourceStream, length, null /* premiumBlobTier*/, accessCondition, options, opContext);
     }
 
     /**
@@ -1182,6 +1385,8 @@ public final class CloudPageBlob extends CloudBlob {
      * @param length
      *            A <code>long</code> which represents the length, in bytes, of the stream data. This must be great than
      *            zero and a multiple of 512.
+     * @param premiumBlobTier
+     *            A {@link PremiumPageBlobTier} object which represents the tier of the blob.
      * @param accessCondition
      *            An {@link AccessCondition} object which represents the access conditions for the blob.
      * @param options
@@ -1198,9 +1403,8 @@ public final class CloudPageBlob extends CloudBlob {
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    @Override
     @DoesServiceRequest
-    public void upload(final InputStream sourceStream, final long length, final AccessCondition accessCondition,
+    public void upload(final InputStream sourceStream, final long length, final PremiumPageBlobTier premiumBlobTier, final AccessCondition accessCondition,
             BlobRequestOptions options, OperationContext opContext) throws StorageException, IOException {
         assertNoWriteOperationForSnapshot();
 
@@ -1224,7 +1428,7 @@ public final class CloudPageBlob extends CloudBlob {
             sourceStream.mark(Constants.MAX_MARK_LENGTH);
         }
 
-        final BlobOutputStream streamRef = this.openWriteNew(length, accessCondition, options, opContext);
+        final BlobOutputStream streamRef = this.openWriteNew(length, premiumBlobTier, accessCondition, options, opContext);
         try {
             streamRef.write(sourceStream, length);
         }
@@ -1364,5 +1568,86 @@ public final class CloudPageBlob extends CloudBlob {
         }
 
         this.streamWriteSizeInBytes = streamWriteSizeInBytes;
+    }
+    
+    /**
+     * Sets the blob tier on a page blob on a premium storage account.
+     * @param premiumBlobTier
+     *            A {@link PremiumPageBlobTier} object which represents the tier of the blob.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public void uploadPremiumPageBlobTier(final PremiumPageBlobTier premiumBlobTier) throws StorageException {
+        this.uploadPremiumPageBlobTier(premiumBlobTier, null /* options */, null /* opContext */);
+    }
+
+    /**
+     * Sets the tier on a page blob on a premium storage account.
+     * @param premiumBlobTier
+     *            A {@link PremiumPageBlobTier} object which represents the tier of the blob.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object which represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public void uploadPremiumPageBlobTier(final PremiumPageBlobTier premiumBlobTier, BlobRequestOptions options,
+            OperationContext opContext) throws StorageException {
+        assertNoWriteOperationForSnapshot();
+        Utility.assertNotNull("premiumBlobTier", premiumBlobTier);
+
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        options = BlobRequestOptions.populateAndApplyDefaults(options, BlobType.PAGE_BLOB, this.blobServiceClient);
+
+        ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
+                this.uploadPremiumPageBlobTierImpl(premiumBlobTier, options), options.getRetryPolicyFactory(), opContext);
+    }
+
+    private StorageRequest<CloudBlobClient, CloudBlob, Void> uploadPremiumPageBlobTierImpl(final PremiumPageBlobTier premiumBlobTier,
+            final BlobRequestOptions options) {
+        final StorageRequest<CloudBlobClient, CloudBlob, Void> setTierRequest = new StorageRequest<CloudBlobClient, CloudBlob, Void>(
+                options, this.getStorageUri()) {
+
+            @Override
+            public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlob blob, OperationContext context)
+                    throws Exception {
+                return BlobRequest.setBlobTier(blob.getTransformedAddress(context).getUri(this.getCurrentLocation()), options, context, premiumBlobTier.toString());
+            }
+
+            @Override
+            public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
+                    throws Exception {
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, context);
+            }
+
+            @Override
+            public Void preProcessResponse(CloudBlob blob, CloudBlobClient client, OperationContext context)
+                    throws Exception {
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
+
+                blob.updateEtagAndLastModifiedFromResponse(this.getConnection());
+                this.getResult().setRequestServiceEncrypted(CloudBlob.isServerRequestEncrypted(this.getConnection()));
+                blob.properties.setPremiumPageBlobTier(premiumBlobTier);
+                blob.properties.setBlobTierInferredTier(false);
+
+                return null;
+            }
+
+        };
+
+        return setTierRequest;
     }
 }

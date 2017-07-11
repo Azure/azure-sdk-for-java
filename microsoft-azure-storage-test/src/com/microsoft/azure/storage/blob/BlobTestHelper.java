@@ -50,6 +50,14 @@ public class BlobTestHelper extends TestHelper {
         return container;
     }
 
+    public static CloudBlobContainer getRandomPremiumBlobContainerReference() throws URISyntaxException, StorageException {
+        String containerName = generateRandomContainerName();
+        CloudBlobClient bClient = TestHelper.createPremiumCloudBlobClient();
+        CloudBlobContainer container = bClient.getContainerReference(containerName);
+
+        return container;
+    }
+
     public static String generateRandomBlobNameWithPrefix(String prefix) {
         if (prefix == null) {
             prefix = "";
