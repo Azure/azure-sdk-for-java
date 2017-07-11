@@ -1640,7 +1640,6 @@ public final class CloudPageBlob extends CloudBlob {
                 }
 
                 blob.updateEtagAndLastModifiedFromResponse(this.getConnection());
-                this.getResult().setRequestServiceEncrypted(CloudBlob.isServerRequestEncrypted(this.getConnection()));
                 blob.properties.setPremiumPageBlobTier(premiumBlobTier);
                 blob.properties.setBlobTierInferredTier(false);
 
