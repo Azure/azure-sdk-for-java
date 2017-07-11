@@ -9,19 +9,22 @@ import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 
 /**
- * Describes an API key for a given Azure Search service that has permissions
- * for query operations only.
+ * Response containing the primary and secondary admin API keys for a given Azure Search service.
  */
 @Fluent
 @Beta(Beta.SinceVersion.V1_2_0)
-public interface QueryKey {
+public interface AdminKeys {
   /**
-   * @return the name of the query API key
+   * Get the primaryKey value.
+   *
+   * @return the primaryKey value
    */
-  String name();
+  String primaryKey();
 
   /**
-   * @return the key value
+   * Get the secondaryKey value.
+   *
+   * @return the secondaryKey value
    */
-  String key();
+  String secondaryKey();
 }

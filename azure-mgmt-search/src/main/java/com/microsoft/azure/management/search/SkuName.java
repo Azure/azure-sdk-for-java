@@ -12,35 +12,41 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for SkuType.
+ * Defines values for SkuName.
  */
-public enum SkuType {
+public enum SkuName {
     /** Enum value free. */
     FREE("free"),
+
+    /** Enum value basic. */
+    BASIC("basic"),
 
     /** Enum value standard. */
     STANDARD("standard"),
 
     /** Enum value standard2. */
-    STANDARD2("standard2");
+    STANDARD2("standard2"),
 
-    /** The actual serialized value for a SkuType instance. */
+    /** Enum value standard3. */
+    STANDARD3("standard3");
+
+    /** The actual serialized value for a SkuName instance. */
     private String value;
 
-    SkuType(String value) {
+    SkuName(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a SkuType instance.
+     * Parses a serialized value to a SkuName instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed SkuType object, or null if unable to parse.
+     * @return the parsed SkuName object, or null if unable to parse.
      */
     @JsonCreator
-    public static SkuType fromString(String value) {
-        SkuType[] items = SkuType.values();
-        for (SkuType item : items) {
+    public static SkuName fromString(String value) {
+        SkuName[] items = SkuName.values();
+        for (SkuName item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
