@@ -109,6 +109,6 @@ class ActiveDirectoryGroupsImpl
 
     @Override
     public ActiveDirectoryGroupImpl define(String name) {
-        return wrapModel(new ADGroupInner().withDisplayName(name));
+        return wrapModel((ADGroupInner) new ADGroupInner().withDisplayName(name));
     }
 }

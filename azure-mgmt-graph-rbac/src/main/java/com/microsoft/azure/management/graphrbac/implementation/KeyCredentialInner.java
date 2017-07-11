@@ -16,12 +16,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class KeyCredentialInner {
     /**
-     * Custom key identifier.
-     */
-    @JsonProperty(value = "customKeyIdentifier")
-    private String customKeyIdentifier;
-
-    /**
      * Start date.
      */
     @JsonProperty(value = "startDate")
@@ -74,26 +68,6 @@ public class KeyCredentialInner {
      */
     public KeyCredentialInner withStartDate(DateTime startDate) {
         this.startDate = startDate;
-        return this;
-    }
-
-    /**
-     * Get the customKeyIdentifier value.
-     *
-     * @return the customKeyIdentifier value
-     */
-    public String customKeyIdentifier() {
-        return this.customKeyIdentifier;
-    }
-
-    /**
-     * Set the customKeyIdentifier value.
-     *
-     * @param customKeyIdentifier the customKeyIdentifier value to set
-     * @return the KeyCredentialInner object itself.
-     */
-    public KeyCredentialInner withCustomKeyIdentifier(String customKeyIdentifier) {
-        this.customKeyIdentifier = customKeyIdentifier;
         return this;
     }
 

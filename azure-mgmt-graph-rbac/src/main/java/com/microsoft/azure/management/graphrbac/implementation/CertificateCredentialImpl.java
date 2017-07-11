@@ -40,13 +40,13 @@ class CertificateCredentialImpl<T>
 
     CertificateCredentialImpl(KeyCredentialInner keyCredential) {
         super(keyCredential);
-        this.name = new String(BaseEncoding.base64().decode(keyCredential.customKeyIdentifier()));
+        this.name = new String(BaseEncoding.base64().decode(keyCredential.keyId()));
     }
 
     CertificateCredentialImpl(String name, HasCredential<?> parent) {
         super(new KeyCredentialInner()
                 .withUsage("Verify")
-                .withCustomKeyIdentifier(BaseEncoding.base64().encode(name.getBytes()))
+                .withKeyId(BaseEncoding.base64().encode(name.getBytes()))
                 .withStartDate(DateTime.now())
                 .withEndDate(DateTime.now().plusYears(1)));
         this.name = name;

@@ -151,7 +151,7 @@ class ActiveDirectoryUsersImpl
 
     @Override
     protected ActiveDirectoryUserImpl wrapModel(String name) {
-        return new ActiveDirectoryUserImpl(new UserInner().withDisplayName(name), manager());
+        return new ActiveDirectoryUserImpl((UserInner) new UserInner().withDisplayName(name), manager());
     }
 
     @Override
