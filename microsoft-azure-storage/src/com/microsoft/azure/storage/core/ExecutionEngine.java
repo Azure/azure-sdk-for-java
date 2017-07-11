@@ -22,22 +22,7 @@ import java.util.Date;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeoutException;
 
-import com.microsoft.azure.storage.Constants;
-import com.microsoft.azure.storage.LocationMode;
-import com.microsoft.azure.storage.OperationContext;
-import com.microsoft.azure.storage.RequestCompletedEvent;
-import com.microsoft.azure.storage.RequestResult;
-import com.microsoft.azure.storage.ResponseReceivedEvent;
-import com.microsoft.azure.storage.RetryContext;
-import com.microsoft.azure.storage.RetryInfo;
-import com.microsoft.azure.storage.RetryNoRetry;
-import com.microsoft.azure.storage.RetryPolicy;
-import com.microsoft.azure.storage.RetryPolicyFactory;
-import com.microsoft.azure.storage.RetryingEvent;
-import com.microsoft.azure.storage.SendingRequestEvent;
-import com.microsoft.azure.storage.StorageErrorCodeStrings;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.StorageLocation;
+import com.microsoft.azure.storage.*;
 
 /**
  * RESERVED FOR INTERNAL USE. A class that handles execution of StorageOperations and enforces retry policies.
@@ -98,44 +83,55 @@ public final class ExecutionEngine {
                         request.getRequestProperty(Constants.HeaderConstants.DATE));
 
                 // 5. Potentially upload data
-                if (task.getSendStream() != null) {
-                    Logger.info(opContext, LogConstants.UPLOAD);
-                    final StreamMd5AndLength descriptor = Utility.writeToOutputStream(task.getSendStream(),
-                            request.getOutputStream(), task.getLength(), false /* rewindStream */,
-                            false /* calculate MD5 */, opContext, task.getRequestOptions());
-
-                    task.validateStreamWrite(descriptor);
-                    Logger.info(opContext, LogConstants.UPLOADDONE);
-                }
-
-                Utility.logHttpRequest(request, opContext);
-
-                // 6. Process the request - Get response
-                RequestResult currResult = task.getResult();
-                currResult.setStartDate(new Date());
-
-                Logger.info(opContext, LogConstants.GET_RESPONSE);
+                boolean responseReceivedEventTriggered = false;
                 try {
+                    if (task.getSendStream() != null) {
+                        Logger.info(opContext, LogConstants.UPLOAD);
+                        final StreamMd5AndLength descriptor = Utility.writeToOutputStream(task.getSendStream(),
+                                request.getOutputStream(), task.getLength(), false /* rewindStream */,
+                                false /* calculate MD5 */, opContext, task.getRequestOptions());
+
+                        task.validateStreamWrite(descriptor);
+                        Logger.info(opContext, LogConstants.UPLOADDONE);
+                    }
+
+                    Utility.logHttpRequest(request, opContext);
+
+                    // 6. Process the request - Get response
+                    RequestResult currResult = task.getResult();
+                    currResult.setStartDate(new Date());
+
+                    Logger.info(opContext, LogConstants.GET_RESPONSE);
+
                     currResult.setStatusCode(request.getResponseCode());
                     currResult.setStatusMessage(request.getResponseMessage());
+                    currResult.setStopDate(new Date());
+
+                    currResult.setServiceRequestID(BaseResponse.getRequestId(request));
+                    currResult.setEtag(BaseResponse.getEtag(request));
+                    currResult.setRequestDate(BaseResponse.getDate(request));
+                    currResult.setContentMD5(BaseResponse.getContentMD5(request));
+
+                    // 7. Fire ResponseReceived Event
+                    responseReceivedEventTriggered = true;
+                    ExecutionEngine.fireResponseReceivedEvent(opContext, request, task.getResult());
+
+                    Logger.info(opContext, LogConstants.RESPONSE_RECEIVED, currResult.getStatusCode(),
+                            currResult.getServiceRequestID(), currResult.getContentMD5(), currResult.getEtag(),
+                            currResult.getRequestDate());
+
+                    Utility.logHttpResponse(request, opContext);
                 }
                 finally {
-                    currResult.setStopDate(new Date());
+                    Logger.info(opContext, LogConstants.ERROR_RECEIVING_RESPONSE);
+                    if (!responseReceivedEventTriggered) {
+                        if (task.getResult().getStartDate() == null) {
+                            task.getResult().setStartDate(new Date());
+                        }
+
+                        ExecutionEngine.fireErrorReceivingResponseEvent(opContext, request, task.getResult());
+                    }
                 }
-
-                currResult.setServiceRequestID(BaseResponse.getRequestId(request));
-                currResult.setEtag(BaseResponse.getEtag(request));
-                currResult.setRequestDate(BaseResponse.getDate(request));
-                currResult.setContentMD5(BaseResponse.getContentMD5(request));
-
-                // 7. Fire ResponseReceived Event
-                ExecutionEngine.fireResponseReceivedEvent(opContext, request, task.getResult());
-
-                Logger.info(opContext, LogConstants.RESPONSE_RECEIVED, currResult.getStatusCode(),
-                        currResult.getServiceRequestID(), currResult.getContentMD5(), currResult.getEtag(),
-                        currResult.getRequestDate());
-               
-                Utility.logHttpResponse(request, opContext);   
 
                 // 8. Pre-process response to check if there was an exception. Do Response parsing (headers etc).
                 Logger.info(opContext, LogConstants.PRE_PROCESS);
@@ -168,6 +164,7 @@ public final class ExecutionEngine {
                             }
                         }
                     }
+
                     Logger.info(opContext, LogConstants.COMPLETE);
 
                     return result;
@@ -375,6 +372,19 @@ public final class ExecutionEngine {
             ResponseReceivedEvent event = new ResponseReceivedEvent(opContext, request, result);
             opContext.getResponseReceivedEventHandler().fireEvent(event);
             OperationContext.getGlobalResponseReceivedEventHandler().fireEvent(event);
+        }
+    }
+
+    /**
+     * Fires events representing that an error occurred when receiving the response.
+     */
+    private static void fireErrorReceivingResponseEvent(OperationContext opContext, HttpURLConnection request,
+            RequestResult result) {
+        if (opContext.getErrorReceivingResponseEventHandler().hasListeners()
+                || OperationContext.getGlobalErrorReceivingResponseEventHandler().hasListeners()) {
+            ErrorReceivingResponseEvent event = new ErrorReceivingResponseEvent(opContext, request, result);
+            opContext.getErrorReceivingResponseEventHandler().fireEvent(event);
+            OperationContext.getGlobalErrorReceivingResponseEventHandler().fireEvent(event);
         }
     }
 

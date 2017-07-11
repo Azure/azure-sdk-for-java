@@ -124,6 +124,26 @@ final class BlobResponse extends BaseResponse {
             properties.setAppendBlobCommittedBlockCount(Integer.parseInt(comittedBlockCount));
         }
 
+        // Get the tier of the blob
+        final String premiumBlobTierString = request.getHeaderField(BlobConstants.ACCESS_TIER_HEADER);
+
+        if (properties.getBlobType().equals(BlobType.PAGE_BLOB))
+        {
+            PremiumPageBlobTier premiumPageBlobTier = PremiumPageBlobTier.parse(premiumBlobTierString);
+            properties.setPremiumPageBlobTier(premiumPageBlobTier);
+        }
+        else if (properties.getBlobType().equals(BlobType.UNSPECIFIED)) {
+            PremiumPageBlobTier premiumPageBlobTier = PremiumPageBlobTier.parse(premiumBlobTierString);
+            if (!premiumPageBlobTier.equals(PremiumPageBlobTier.UNKNOWN)) {
+                properties.setPremiumPageBlobTier(premiumPageBlobTier);
+            }
+        }
+
+        final String tierInferredString = request.getHeaderField(BlobConstants.ACCESS_TIER_INFERRED_HEADER);
+        if (!Utility.isNullOrEmpty(tierInferredString)) {
+            properties.setBlobTierInferredTier(Boolean.parseBoolean(tierInferredString));
+        }
+
         final String incrementalCopyHeaderString =
                 request.getHeaderField(Constants.HeaderConstants.INCREMENTAL_COPY);
         if (!Utility.isNullOrEmpty(incrementalCopyHeaderString)) {
