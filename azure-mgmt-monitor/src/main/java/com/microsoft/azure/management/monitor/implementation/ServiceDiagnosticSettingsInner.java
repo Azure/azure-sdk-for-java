@@ -11,6 +11,7 @@ package com.microsoft.azure.management.monitor.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.monitor.ErrorResponseException;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -21,6 +22,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.PATCH;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
@@ -62,14 +64,18 @@ public class ServiceDiagnosticSettingsInner {
         @PUT("{resourceUri}/providers/microsoft.insights/diagnosticSettings/service")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceUri") String resourceUri, @Query("api-version") String apiVersion, @Body ServiceDiagnosticSettingsResourceInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.monitor.ServiceDiagnosticSettings update" })
+        @PATCH("{resourceUri}/providers/microsoft.insights/diagnosticSettings/service")
+        Observable<Response<ResponseBody>> update(@Path("resourceUri") String resourceUri, @Query("api-version") String apiVersion, @Body ServiceDiagnosticSettingsResourcePatchInner serviceDiagnosticSettingsResource, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
     }
 
     /**
-     * Gets the active diagnostic settings for the specified resource.
+     * Gets the active diagnostic settings for the specified resource. **WARNING**: This method will be deprecated in future releases.
      *
      * @param resourceUri The identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ServiceDiagnosticSettingsResourceInner object if successful.
      */
@@ -78,7 +84,7 @@ public class ServiceDiagnosticSettingsInner {
     }
 
     /**
-     * Gets the active diagnostic settings for the specified resource.
+     * Gets the active diagnostic settings for the specified resource. **WARNING**: This method will be deprecated in future releases.
      *
      * @param resourceUri The identifier of the resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -90,7 +96,7 @@ public class ServiceDiagnosticSettingsInner {
     }
 
     /**
-     * Gets the active diagnostic settings for the specified resource.
+     * Gets the active diagnostic settings for the specified resource. **WARNING**: This method will be deprecated in future releases.
      *
      * @param resourceUri The identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -106,7 +112,7 @@ public class ServiceDiagnosticSettingsInner {
     }
 
     /**
-     * Gets the active diagnostic settings for the specified resource.
+     * Gets the active diagnostic settings for the specified resource. **WARNING**: This method will be deprecated in future releases.
      *
      * @param resourceUri The identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -116,7 +122,7 @@ public class ServiceDiagnosticSettingsInner {
         if (resourceUri == null) {
             throw new IllegalArgumentException("Parameter resourceUri is required and cannot be null.");
         }
-        final String apiVersion = "2015-07-01";
+        final String apiVersion = "2016-09-01";
         return service.get(resourceUri, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServiceDiagnosticSettingsResourceInner>>>() {
                 @Override
@@ -131,15 +137,15 @@ public class ServiceDiagnosticSettingsInner {
             });
     }
 
-    private ServiceResponse<ServiceDiagnosticSettingsResourceInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ServiceDiagnosticSettingsResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<ServiceDiagnosticSettingsResourceInner> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ServiceDiagnosticSettingsResourceInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ServiceDiagnosticSettingsResourceInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
     /**
-     * Create or update new diagnostic settings for the specified resource.
+     * Create or update new diagnostic settings for the specified resource. **WARNING**: This method will be deprecated in future releases.
      *
      * @param resourceUri The identifier of the resource.
      * @param parameters Parameters supplied to the operation.
@@ -153,7 +159,7 @@ public class ServiceDiagnosticSettingsInner {
     }
 
     /**
-     * Create or update new diagnostic settings for the specified resource.
+     * Create or update new diagnostic settings for the specified resource. **WARNING**: This method will be deprecated in future releases.
      *
      * @param resourceUri The identifier of the resource.
      * @param parameters Parameters supplied to the operation.
@@ -166,7 +172,7 @@ public class ServiceDiagnosticSettingsInner {
     }
 
     /**
-     * Create or update new diagnostic settings for the specified resource.
+     * Create or update new diagnostic settings for the specified resource. **WARNING**: This method will be deprecated in future releases.
      *
      * @param resourceUri The identifier of the resource.
      * @param parameters Parameters supplied to the operation.
@@ -183,7 +189,7 @@ public class ServiceDiagnosticSettingsInner {
     }
 
     /**
-     * Create or update new diagnostic settings for the specified resource.
+     * Create or update new diagnostic settings for the specified resource. **WARNING**: This method will be deprecated in future releases.
      *
      * @param resourceUri The identifier of the resource.
      * @param parameters Parameters supplied to the operation.
@@ -198,7 +204,7 @@ public class ServiceDiagnosticSettingsInner {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2015-07-01";
+        final String apiVersion = "2016-09-01";
         return service.createOrUpdate(resourceUri, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServiceDiagnosticSettingsResourceInner>>>() {
                 @Override
@@ -217,6 +223,88 @@ public class ServiceDiagnosticSettingsInner {
         return this.client.restClient().responseBuilderFactory().<ServiceDiagnosticSettingsResourceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ServiceDiagnosticSettingsResourceInner>() { }.getType())
                 .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Updates an existing ServiceDiagnosticSettingsResource. To update other fields use the CreateOrUpdate method. **WARNING**: This method will be deprecated in future releases.
+     *
+     * @param resourceUri The identifier of the resource.
+     * @param serviceDiagnosticSettingsResource Parameters supplied to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ServiceDiagnosticSettingsResourceInner object if successful.
+     */
+    public ServiceDiagnosticSettingsResourceInner update(String resourceUri, ServiceDiagnosticSettingsResourcePatchInner serviceDiagnosticSettingsResource) {
+        return updateWithServiceResponseAsync(resourceUri, serviceDiagnosticSettingsResource).toBlocking().single().body();
+    }
+
+    /**
+     * Updates an existing ServiceDiagnosticSettingsResource. To update other fields use the CreateOrUpdate method. **WARNING**: This method will be deprecated in future releases.
+     *
+     * @param resourceUri The identifier of the resource.
+     * @param serviceDiagnosticSettingsResource Parameters supplied to the operation.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ServiceDiagnosticSettingsResourceInner> updateAsync(String resourceUri, ServiceDiagnosticSettingsResourcePatchInner serviceDiagnosticSettingsResource, final ServiceCallback<ServiceDiagnosticSettingsResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceUri, serviceDiagnosticSettingsResource), serviceCallback);
+    }
+
+    /**
+     * Updates an existing ServiceDiagnosticSettingsResource. To update other fields use the CreateOrUpdate method. **WARNING**: This method will be deprecated in future releases.
+     *
+     * @param resourceUri The identifier of the resource.
+     * @param serviceDiagnosticSettingsResource Parameters supplied to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ServiceDiagnosticSettingsResourceInner object
+     */
+    public Observable<ServiceDiagnosticSettingsResourceInner> updateAsync(String resourceUri, ServiceDiagnosticSettingsResourcePatchInner serviceDiagnosticSettingsResource) {
+        return updateWithServiceResponseAsync(resourceUri, serviceDiagnosticSettingsResource).map(new Func1<ServiceResponse<ServiceDiagnosticSettingsResourceInner>, ServiceDiagnosticSettingsResourceInner>() {
+            @Override
+            public ServiceDiagnosticSettingsResourceInner call(ServiceResponse<ServiceDiagnosticSettingsResourceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates an existing ServiceDiagnosticSettingsResource. To update other fields use the CreateOrUpdate method. **WARNING**: This method will be deprecated in future releases.
+     *
+     * @param resourceUri The identifier of the resource.
+     * @param serviceDiagnosticSettingsResource Parameters supplied to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ServiceDiagnosticSettingsResourceInner object
+     */
+    public Observable<ServiceResponse<ServiceDiagnosticSettingsResourceInner>> updateWithServiceResponseAsync(String resourceUri, ServiceDiagnosticSettingsResourcePatchInner serviceDiagnosticSettingsResource) {
+        if (resourceUri == null) {
+            throw new IllegalArgumentException("Parameter resourceUri is required and cannot be null.");
+        }
+        if (serviceDiagnosticSettingsResource == null) {
+            throw new IllegalArgumentException("Parameter serviceDiagnosticSettingsResource is required and cannot be null.");
+        }
+        Validator.validate(serviceDiagnosticSettingsResource);
+        final String apiVersion = "2016-09-01";
+        return service.update(resourceUri, apiVersion, serviceDiagnosticSettingsResource, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServiceDiagnosticSettingsResourceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ServiceDiagnosticSettingsResourceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ServiceDiagnosticSettingsResourceInner> clientResponse = updateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ServiceDiagnosticSettingsResourceInner> updateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ServiceDiagnosticSettingsResourceInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ServiceDiagnosticSettingsResourceInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
