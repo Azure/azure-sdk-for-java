@@ -36,7 +36,7 @@ public final class SearchServiceManager extends Manager<SearchServiceManager, Se
   }
 
   /**
-   * Creates an instance of ContainerRegistryManager that exposes Registry resource management API entry points.
+   * Creates an instance of SearchServiceManager that exposes Search service resource management API entry points.
    *
    * @param credentials the credentials to use
    * @param subscriptionId the subscription
@@ -53,7 +53,7 @@ public final class SearchServiceManager extends Manager<SearchServiceManager, Se
   }
 
   /**
-   * Creates an instance of SearchServiceManager that exposes Registry resource management API entry points.
+   * Creates an instance of SearchServiceManager that exposes Search service resource management API entry points.
    *
    * @param restClient the RestClient to be used for API calls.
    * @param subscriptionId the subscription
