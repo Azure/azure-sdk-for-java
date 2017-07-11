@@ -8,24 +8,30 @@
 
 package com.microsoft.azure.management.monitor.implementation;
 
+import java.util.Map;
 import com.microsoft.azure.management.monitor.RuleCondition;
 import java.util.List;
 import com.microsoft.azure.management.monitor.RuleAction;
 import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.Resource;
 
 /**
- * The alert rule resource.
+ * The alert rule object for patch operations.
  */
 @JsonFlatten
-public class AlertRuleResourceInner extends Resource {
+public class AlertRuleResourcePatchInner {
+    /**
+     * Resource tags.
+     */
+    @JsonProperty(value = "tags")
+    private Map<String, String> tags;
+
     /**
      * the name of the alert rule.
      */
     @JsonProperty(value = "properties.name", required = true)
-    private String alertRuleResourceName;
+    private String name;
 
     /**
      * the description of the alert rule that will be included in the alert
@@ -60,22 +66,42 @@ public class AlertRuleResourceInner extends Resource {
     private DateTime lastUpdatedTime;
 
     /**
-     * Get the alertRuleResourceName value.
+     * Get the tags value.
      *
-     * @return the alertRuleResourceName value
+     * @return the tags value
      */
-    public String alertRuleResourceName() {
-        return this.alertRuleResourceName;
+    public Map<String, String> tags() {
+        return this.tags;
     }
 
     /**
-     * Set the alertRuleResourceName value.
+     * Set the tags value.
      *
-     * @param alertRuleResourceName the alertRuleResourceName value to set
-     * @return the AlertRuleResourceInner object itself.
+     * @param tags the tags value to set
+     * @return the AlertRuleResourcePatchInner object itself.
      */
-    public AlertRuleResourceInner withAlertRuleResourceName(String alertRuleResourceName) {
-        this.alertRuleResourceName = alertRuleResourceName;
+    public AlertRuleResourcePatchInner withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the name value.
+     *
+     * @return the name value
+     */
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Set the name value.
+     *
+     * @param name the name value to set
+     * @return the AlertRuleResourcePatchInner object itself.
+     */
+    public AlertRuleResourcePatchInner withName(String name) {
+        this.name = name;
         return this;
     }
 
@@ -92,9 +118,9 @@ public class AlertRuleResourceInner extends Resource {
      * Set the description value.
      *
      * @param description the description value to set
-     * @return the AlertRuleResourceInner object itself.
+     * @return the AlertRuleResourcePatchInner object itself.
      */
-    public AlertRuleResourceInner withDescription(String description) {
+    public AlertRuleResourcePatchInner withDescription(String description) {
         this.description = description;
         return this;
     }
@@ -112,9 +138,9 @@ public class AlertRuleResourceInner extends Resource {
      * Set the isEnabled value.
      *
      * @param isEnabled the isEnabled value to set
-     * @return the AlertRuleResourceInner object itself.
+     * @return the AlertRuleResourcePatchInner object itself.
      */
-    public AlertRuleResourceInner withIsEnabled(boolean isEnabled) {
+    public AlertRuleResourcePatchInner withIsEnabled(boolean isEnabled) {
         this.isEnabled = isEnabled;
         return this;
     }
@@ -132,9 +158,9 @@ public class AlertRuleResourceInner extends Resource {
      * Set the condition value.
      *
      * @param condition the condition value to set
-     * @return the AlertRuleResourceInner object itself.
+     * @return the AlertRuleResourcePatchInner object itself.
      */
-    public AlertRuleResourceInner withCondition(RuleCondition condition) {
+    public AlertRuleResourcePatchInner withCondition(RuleCondition condition) {
         this.condition = condition;
         return this;
     }
@@ -152,9 +178,9 @@ public class AlertRuleResourceInner extends Resource {
      * Set the actions value.
      *
      * @param actions the actions value to set
-     * @return the AlertRuleResourceInner object itself.
+     * @return the AlertRuleResourcePatchInner object itself.
      */
-    public AlertRuleResourceInner withActions(List<RuleAction> actions) {
+    public AlertRuleResourcePatchInner withActions(List<RuleAction> actions) {
         this.actions = actions;
         return this;
     }
