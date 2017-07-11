@@ -34,6 +34,7 @@ import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.StorageUri;
+import com.microsoft.azure.storage.core.BaseResponse;
 import com.microsoft.azure.storage.core.ExecutionEngine;
 import com.microsoft.azure.storage.core.LazySegmentedIterable;
 import com.microsoft.azure.storage.core.ListResponse;
@@ -238,6 +239,7 @@ public final class CloudFileDirectory implements ListFileItem {
                 final FileDirectoryAttributes attributes = FileResponse
                         .getFileDirectoryAttributes(this.getConnection(), client.isUsePathStyleUris());
                 directory.setProperties(attributes.getProperties());
+                this.getResult().setRequestServiceEncrypted(BaseResponse.isServerRequestEncrypted(this.getConnection()));
                 return null;
             }
         };
@@ -629,6 +631,7 @@ public final class CloudFileDirectory implements ListFileItem {
                 }
 
                 directory.updatePropertiesFromResponse(this.getConnection());
+                this.getResult().setRequestServiceEncrypted(BaseResponse.isServerRequestEncrypted(this.getConnection()));
                 return null;
             }
         };

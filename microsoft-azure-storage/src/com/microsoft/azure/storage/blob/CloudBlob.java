@@ -44,6 +44,7 @@ import com.microsoft.azure.storage.StorageErrorCodeStrings;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.StorageLocation;
 import com.microsoft.azure.storage.StorageUri;
+import com.microsoft.azure.storage.core.BaseResponse;
 import com.microsoft.azure.storage.core.ExecutionEngine;
 import com.microsoft.azure.storage.core.Logger;
 import com.microsoft.azure.storage.core.NetworkInputStream;
@@ -2828,7 +2829,7 @@ public abstract class CloudBlob implements ListBlobItem {
                 }
 
                 blob.updateEtagAndLastModifiedFromResponse(this.getConnection());
-                this.getResult().setRequestServiceEncrypted(CloudBlob.isServerRequestEncrypted(this.getConnection()));
+                this.getResult().setRequestServiceEncrypted(BaseResponse.isServerRequestEncrypted(this.getConnection()));
                 return null;
             }
         };
@@ -2977,9 +2978,5 @@ public abstract class CloudBlob implements ListBlobItem {
         }
 
         return parentName;
-    }
-    
-    protected static boolean isServerRequestEncrypted(HttpURLConnection connection) {
-        return Constants.TRUE.equals(connection.getHeaderField(Constants.HeaderConstants.SERVER_REQUEST_ENCRYPTED));
     }
 }
