@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.PacketCaptureStatus;
 import com.microsoft.azure.management.network.PcError;
 import com.microsoft.azure.management.network.PcStatus;
@@ -16,6 +17,7 @@ import java.util.List;
 /**
  * Implementation for {@link com.microsoft.azure.management.network.PacketCaptureStatus}.
  */
+@LangDefinition
 public class PacketCaptureStatusImpl extends WrapperImpl<PacketCaptureQueryStatusResultInner>
         implements PacketCaptureStatus {
     PacketCaptureStatusImpl(PacketCaptureQueryStatusResultInner innerObject) {
