@@ -19,13 +19,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.ManagementEventRuleCondition")
 public class ManagementEventRuleCondition extends RuleCondition {
     /**
-     * the resource from which the rule collects its data. For this type
-     * dataSource will always be of type RuleManagementEventDataSource.
-     */
-    @JsonProperty(value = "dataSource")
-    private RuleDataSource dataSource;
-
-    /**
      * How the data that is collected should be combined over time and when the
      * alert is activated. Note that for management event alerts aggregation is
      * optional – if it is not provided then any event will cause the alert to
@@ -33,26 +26,6 @@ public class ManagementEventRuleCondition extends RuleCondition {
      */
     @JsonProperty(value = "aggregation")
     private ManagementEventAggregationCondition aggregation;
-
-    /**
-     * Get the dataSource value.
-     *
-     * @return the dataSource value
-     */
-    public RuleDataSource dataSource() {
-        return this.dataSource;
-    }
-
-    /**
-     * Set the dataSource value.
-     *
-     * @param dataSource the dataSource value to set
-     * @return the ManagementEventRuleCondition object itself.
-     */
-    public ManagementEventRuleCondition withDataSource(RuleDataSource dataSource) {
-        this.dataSource = dataSource;
-        return this;
-    }
 
     /**
      * Get the aggregation value.

@@ -27,11 +27,11 @@ public interface HasFrontendPort  {
          */
         interface WithFrontendPort<ReturnT> {
             /**
-             * Specifies the frontend port.
+             * Specifies the frontend port to receive network traffic on.
              * @param port a port number
              * @return the next stage of the definition
              */
-            ReturnT withFrontendPort(int port);
+            ReturnT fromFrontendPort(int port);
         }
     }
 
@@ -45,11 +45,11 @@ public interface HasFrontendPort  {
          */
         interface WithFrontendPort<ReturnT> {
             /**
-             * Specifies the frontend port.
+             * Specifies the frontend port to receive network traffic on.
              * @param port a port number
              * @return the next stage of the definition
              */
-            ReturnT withFrontendPort(int port);
+            ReturnT fromFrontendPort(int port);
         }
     }
 
@@ -63,11 +63,11 @@ public interface HasFrontendPort  {
          */
         interface WithFrontendPort<ReturnT> {
             /**
-             * Specifies the frontend port.
+             * Specifies the frontend port to receive network traffic on.
              * @param port a port number
              * @return the next stage of the definition
              */
-            ReturnT withFrontendPort(int port);
+            ReturnT fromFrontendPort(int port);
         }
     }
 }

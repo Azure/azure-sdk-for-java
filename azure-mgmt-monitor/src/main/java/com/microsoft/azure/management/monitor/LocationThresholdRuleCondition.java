@@ -20,13 +20,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.LocationThresholdRuleCondition")
 public class LocationThresholdRuleCondition extends RuleCondition {
     /**
-     * the resource from which the rule collects its data. For this type
-     * dataSource will always be of type RuleMetricDataSource.
-     */
-    @JsonProperty(value = "dataSource")
-    private RuleDataSource dataSource;
-
-    /**
      * the period of time (in ISO 8601 duration format) that is used to monitor
      * alert activity based on the threshold. If specified then it must be
      * between 5 minutes and 1 day.
@@ -39,26 +32,6 @@ public class LocationThresholdRuleCondition extends RuleCondition {
      */
     @JsonProperty(value = "failedLocationCount", required = true)
     private int failedLocationCount;
-
-    /**
-     * Get the dataSource value.
-     *
-     * @return the dataSource value
-     */
-    public RuleDataSource dataSource() {
-        return this.dataSource;
-    }
-
-    /**
-     * Set the dataSource value.
-     *
-     * @param dataSource the dataSource value to set
-     * @return the LocationThresholdRuleCondition object itself.
-     */
-    public LocationThresholdRuleCondition withDataSource(RuleDataSource dataSource) {
-        this.dataSource = dataSource;
-        return this;
-    }
 
     /**
      * Get the windowSize value.

@@ -78,7 +78,7 @@ var mappings = {
     },
     'search': {
         'dir': 'azure-mgmt-search',
-        'source': 'arm-search/2015-02-28/swagger/search.json',
+        'source': 'arm-search/2015-08-19/swagger/search.json',
         'package': 'com.microsoft.azure.management.search',
         'args': '-FT 1'
     },

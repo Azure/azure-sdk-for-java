@@ -57,12 +57,6 @@ public class RuleManagementEventDataSource extends RuleDataSource {
     private String resourceProviderName;
 
     /**
-     * the resource uri.
-     */
-    @JsonProperty(value = "resourceUri")
-    private String resourceUri;
-
-    /**
      * The status of the operation that should be checked for. If no status is
      * provided, any status will match.
      */
@@ -198,26 +192,6 @@ public class RuleManagementEventDataSource extends RuleDataSource {
      */
     public RuleManagementEventDataSource withResourceProviderName(String resourceProviderName) {
         this.resourceProviderName = resourceProviderName;
-        return this;
-    }
-
-    /**
-     * Get the resourceUri value.
-     *
-     * @return the resourceUri value
-     */
-    public String resourceUri() {
-        return this.resourceUri;
-    }
-
-    /**
-     * Set the resourceUri value.
-     *
-     * @param resourceUri the resourceUri value to set
-     * @return the RuleManagementEventDataSource object itself.
-     */
-    public RuleManagementEventDataSource withResourceUri(String resourceUri) {
-        this.resourceUri = resourceUri;
         return this;
     }
 

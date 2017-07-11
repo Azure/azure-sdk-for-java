@@ -9,6 +9,7 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
+import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -16,7 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 
 /**
- *  Implementation for {@link LoadBalancerInboundNatRule}.
+ *  Implementation for LoadBalancerInboundNatRule.
  */
 @LangDefinition
 class LoadBalancerInboundNatRuleImpl
@@ -91,7 +92,7 @@ class LoadBalancerInboundNatRuleImpl
     // Fluent setters
 
     @Override
-    public LoadBalancerInboundNatRuleImpl withBackendPort(int port) {
+    public LoadBalancerInboundNatRuleImpl toBackendPort(int port) {
         this.inner().withBackendPort(port);
         return this;
     }
@@ -113,11 +114,11 @@ class LoadBalancerInboundNatRuleImpl
     }
 
     @Override
-    public LoadBalancerInboundNatRuleImpl withFrontendPort(int port) {
+    public LoadBalancerInboundNatRuleImpl fromFrontendPort(int port) {
         this.inner().withFrontendPort(port);
         if (this.backendPort() == 0) {
             // By default, assume the same backend port
-            return this.withBackendPort(port);
+            return this.toBackendPort(port);
         } else {
             return this;
         }
@@ -136,10 +137,11 @@ class LoadBalancerInboundNatRuleImpl
     }
 
     @Override
-    public LoadBalancerInboundNatRuleImpl withFrontend(String frontendName) {
-        SubResource frontendRef = new SubResource()
-                .withId(this.parent().futureResourceId() + "/frontendIPConfigurations/" + frontendName);
-        this.inner().withFrontendIPConfiguration(frontendRef);
+    public LoadBalancerInboundNatRuleImpl fromFrontend(String frontendName) {
+        SubResource frontendRef = this.parent().ensureFrontendRef(frontendName);
+        if (frontendRef != null) {
+            this.inner().withFrontendIPConfiguration(frontendRef);
+        }
         return this;
     }
 
@@ -148,5 +150,20 @@ class LoadBalancerInboundNatRuleImpl
     @Override
     public LoadBalancerImpl attach() {
         return this.parent().withInboundNatRule(this);
+    }
+
+    @Override
+    public LoadBalancerInboundNatRuleImpl withExistingPublicIPAddress(PublicIPAddress publicIPAddress) {
+        return (publicIPAddress != null) ? this.withExistingPublicIPAddress(publicIPAddress.id()) : this;
+    }
+
+    @Override
+    public LoadBalancerInboundNatRuleImpl withExistingPublicIPAddress(String resourceId) {
+        return (null != resourceId) ? this.fromFrontend(this.parent().ensurePublicFrontendWithPip(resourceId).name()) : this;
+    }
+
+    @Override
+    public LoadBalancerInboundNatRuleImpl fromDefaultFrontend() {
+        return this.fromFrontend(this.parent().ensureDefaultFrontend().name());
     }
 }
