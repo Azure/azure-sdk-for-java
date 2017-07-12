@@ -9,7 +9,9 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.LoadBalancerInboundNatPool;
+import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIPAddress;
+import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -115,5 +117,26 @@ class LoadBalancerInboundNatPoolImpl
     @Override
     public LoadBalancerInboundNatPoolImpl fromDefaultFrontend() {
         return this.fromFrontend(this.parent().ensureDefaultFrontend().name());
+    }
+
+    @Override
+    public LoadBalancerInboundNatPoolImpl fromExistingSubnet(String networkResourceId, String subnetName) {
+        return (null != networkResourceId && null != subnetName)
+                ? this.fromFrontend(this.parent().ensurePrivateFrontendWithSubnet(networkResourceId, subnetName).name())
+                : this;
+    }
+
+    @Override
+    public LoadBalancerInboundNatPoolImpl fromExistingSubnet(Network network, String subnetName) {
+        return (null != network && null != subnetName)
+                ? this.fromExistingSubnet(network.id(), subnetName)
+                : this;
+    }
+
+    @Override
+    public LoadBalancerInboundNatPoolImpl fromExistingSubnet(Subnet subnet) {
+        return (null != subnet)
+                ? this.fromExistingSubnet(subnet.parent().id(), subnet.name())
+                : this;
     }
 }

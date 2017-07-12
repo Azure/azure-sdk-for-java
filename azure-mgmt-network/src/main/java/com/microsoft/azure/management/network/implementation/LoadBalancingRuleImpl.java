@@ -12,7 +12,9 @@ import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.LoadDistribution;
+import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIPAddress;
+import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.network.LoadBalancerProbe;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -121,6 +123,27 @@ class LoadBalancingRuleImpl
     @Override
     public LoadBalancingRuleImpl fromExistingPublicIPAddress(String resourceId) {
         return (null != resourceId) ? this.fromFrontend(this.parent().ensurePublicFrontendWithPip(resourceId).name()) : this;
+    }
+
+    @Override
+    public LoadBalancingRuleImpl fromExistingSubnet(String networkResourceId, String subnetName) {
+        return (null != networkResourceId && null != subnetName)
+                ? this.fromFrontend(this.parent().ensurePrivateFrontendWithSubnet(networkResourceId, subnetName).name())
+                : this;
+    }
+
+    @Override
+    public LoadBalancingRuleImpl fromExistingSubnet(Network network, String subnetName) {
+        return (null != network && null != subnetName)
+                ? this.fromExistingSubnet(network.id(), subnetName)
+                : this;
+    }
+
+    @Override
+    public LoadBalancingRuleImpl fromExistingSubnet(Subnet subnet) {
+        return (null != subnet)
+                ? this.fromExistingSubnet(subnet.parent().id(), subnet.name())
+                : this;
     }
 
     @Override

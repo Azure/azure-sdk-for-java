@@ -158,12 +158,47 @@ class LoadBalancerImpl
                 if (frontend.publicIPAddressId() == null) {
                     continue;
                 }
-                else if (pipId.toLowerCase().equalsIgnoreCase(frontend.publicIPAddressId().toLowerCase())) {
+                else if (pipId.equalsIgnoreCase(frontend.publicIPAddressId())) {
                     return frontend;
                 }
             }
 
             return null;
+        }
+    }
+
+    LoadBalancerPrivateFrontend findPrivateFrontendWithSubnet(String networkId, String subnetName) {
+        if (null == networkId || null == subnetName) {
+            return null;
+        } else {
+            // Use existing frontend already pointing at this PIP, if any
+            for (LoadBalancerPrivateFrontend frontend : this.privateFrontends().values()) {
+                if (frontend.networkId() == null || frontend.subnetName() == null) {
+                    continue;
+                }
+                else if (networkId.equalsIgnoreCase(frontend.networkId()) && subnetName.equalsIgnoreCase(frontend.subnetName())) {
+                    return frontend;
+                }
+            }
+
+            return null;
+        }
+    }
+
+    LoadBalancerPrivateFrontend ensurePrivateFrontendWithSubnet(String networkId, String subnetName) {
+        LoadBalancerPrivateFrontend frontend = this.findPrivateFrontendWithSubnet(networkId, subnetName);
+        if (networkId == null || subnetName == null) {
+            return null;
+        } else if (frontend != null) {
+            return frontend;
+        } else {
+            // Create new frontend
+            String frontendName = SdkContext.randomResourceName("priv", 20);
+            LoadBalancerFrontendImpl fe = this.definePrivateFrontend(frontendName)
+                    .withExistingSubnet(networkId, subnetName)
+                    .withPrivateIPAddressDynamic();
+            fe.attach();
+            return fe;
         }
     }
 

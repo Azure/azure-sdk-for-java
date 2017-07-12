@@ -316,7 +316,7 @@ public class TestLoadBalancer {
                     // Inbound NAT rules
                     .defineInboundNatRule("natrule1")
                         .withProtocol(TransportProtocol.TCP)
-                        .fromDefaultFrontend()
+                        .fromExistingPublicIPAddress(pip)
                         .fromFrontendPort(88)
                         .attach()
 
@@ -633,7 +633,7 @@ public class TestLoadBalancer {
                     // LB rule
                     .defineLoadBalancingRule("lbrule1")
                         .withProtocol(TransportProtocol.TCP)
-                        .fromDefaultFrontend()
+                        .fromExistingPublicIPAddress(pip)
                         .fromFrontendPort(80)
                         .toDefaultBackend()
                         .attach()
@@ -806,7 +806,7 @@ public class TestLoadBalancer {
                     // LB rule
                     .defineLoadBalancingRule("lbrule1")
                         .withProtocol(TransportProtocol.TCP)
-                        .fromDefaultFrontend()
+                        .fromExistingSubnet(network, "subnet1")
                         .fromFrontendPort(80)
                         .toDefaultBackend()
                         .attach()
