@@ -1,5 +1,6 @@
 <TestConfigurations>
 <TargetTestTenant>ProductionTenant</TargetTestTenant>
+<TargetPremiumBlobTenant>ProductionTenant</TargetPremiumBlobTenant>
 <TenantConfigurations>
   <TenantConfiguration>
     <TenantName>DevStore</TenantName>

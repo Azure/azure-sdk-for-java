@@ -50,6 +50,7 @@ import com.microsoft.azure.storage.blob.BlobRequestOptions;
 import com.microsoft.azure.storage.blob.CloudBlob;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.core.Base64;
+import com.microsoft.azure.storage.core.BaseResponse;
 import com.microsoft.azure.storage.core.ExecutionEngine;
 import com.microsoft.azure.storage.core.Logger;
 import com.microsoft.azure.storage.core.NetworkInputStream;
@@ -667,6 +668,7 @@ public final class CloudFile implements ListFileItem {
                 }
 
                 file.updateEtagAndLastModifiedFromResponse(this.getConnection());
+                this.getResult().setRequestServiceEncrypted(BaseResponse.isServerRequestEncrypted(this.getConnection()));
                 return null;
             }
 
@@ -2284,6 +2286,7 @@ public final class CloudFile implements ListFileItem {
                 }
 
                 file.updateEtagAndLastModifiedFromResponse(this.getConnection());
+                this.getResult().setRequestServiceEncrypted(BaseResponse.isServerRequestEncrypted(this.getConnection()));
                 return null;
             }
         };
@@ -2376,6 +2379,7 @@ public final class CloudFile implements ListFileItem {
                 }
 
                 file.updateEtagAndLastModifiedFromResponse(this.getConnection());
+                this.getResult().setRequestServiceEncrypted(BaseResponse.isServerRequestEncrypted(this.getConnection()));
                 return null;
             }
         };
@@ -2462,6 +2466,7 @@ public final class CloudFile implements ListFileItem {
                 }
 
                 file.updateEtagAndLastModifiedFromResponse(this.getConnection());
+                this.getResult().setRequestServiceEncrypted(BaseResponse.isServerRequestEncrypted(this.getConnection()));
                 return null;
             }
         };
@@ -2544,6 +2549,7 @@ public final class CloudFile implements ListFileItem {
 
                 file.getProperties().setLength(size);
                 file.updateEtagAndLastModifiedFromResponse(this.getConnection());
+                this.getResult().setRequestServiceEncrypted(BaseResponse.isServerRequestEncrypted(this.getConnection()));
                 return null;
             }
         };

@@ -77,6 +77,11 @@ public final class FileProperties {
     private Date lastModified;
 
     /**
+     * Represents the file's server-side encryption status.
+     */
+    private boolean serverEncrypted;
+
+    /**
      * Creates an instance of the <code>FileProperties</code> class.
      */
     public FileProperties() {
@@ -100,6 +105,7 @@ public final class FileProperties {
         this.etag = other.etag;
         this.length = other.length;
         this.lastModified = other.lastModified;
+        this.serverEncrypted = other.serverEncrypted;
     }
 
     /**
@@ -204,6 +210,15 @@ public final class FileProperties {
     }
 
     /**
+     * Gets the file's server-side encryption status.
+     * 
+     * @return A <code>boolean</code> which specifies the file's encryption status.
+     */
+    public boolean isServerEncrypted() {
+        return serverEncrypted;
+    }
+
+    /**
      * Sets the cache control value for the file.
      * 
      * @param cacheControl
@@ -262,7 +277,17 @@ public final class FileProperties {
     public void setContentType(final String contentType) {
         this.contentType = contentType;
     }
-    
+
+    /**
+     * Sets the file's server-side encryption status.
+     * 
+     * @param serverEncrypted
+     *        A <code>boolean</code> which specifies the encryption status to set.
+     */
+    protected void setServerEncrypted(boolean serverEncrypted) {
+        this.serverEncrypted = serverEncrypted;
+    }
+
     /**
      * Sets the copy state value for the file.
      * 

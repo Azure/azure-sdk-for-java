@@ -34,6 +34,11 @@ public final class FileDirectoryProperties {
     private Date lastModified;
 
     /**
+     * Represents the directory's server-side encryption status.
+     */
+    private boolean serverEncrypted;
+
+    /**
      * Gets the ETag value of the directory.
      * <p>
      * The ETag value is a unique identifier that is updated when a write operation is performed against the directory.
@@ -59,6 +64,15 @@ public final class FileDirectoryProperties {
     }
 
     /**
+     * Gets the directory's server-side encryption status.
+     * 
+     * @return A <code>boolean</code> which specifies the directory's encryption status.
+     */
+    public boolean isServerEncrypted() {
+        return serverEncrypted;
+    }
+
+    /**
      * Sets the ETag value on the directory.
      * 
      * @param etag
@@ -66,6 +80,16 @@ public final class FileDirectoryProperties {
      */
     protected void setEtag(final String etag) {
         this.etag = etag;
+    }
+
+    /**
+     * Sets the directory's server-side encryption status.
+     * 
+     * @param serverEncrypted
+     *        A <code>boolean</code> which specifies the encryption status to set.
+     */
+    protected void setServerEncrypted(boolean serverEncrypted) {
+        this.serverEncrypted = serverEncrypted;
     }
 
     /**
