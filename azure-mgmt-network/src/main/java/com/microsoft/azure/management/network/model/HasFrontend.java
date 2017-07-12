@@ -9,6 +9,7 @@ import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
+import com.microsoft.azure.management.network.PublicIPAddress;
 
 /**
  * An interface representing a model's ability to references a frontend.
@@ -28,12 +29,13 @@ public interface HasFrontend  {
          * The stage of a definition allowing to specify a load balancer frontend.
          * @param <ReturnT> the next stage of the definition
          */
-        interface WithFrontend<ReturnT> extends HasPublicIPAddress.DefinitionStages.WithExistingPublicIPAddress<ReturnT> {
+        interface WithFrontend<ReturnT> {
             /**
              * Specifies the frontend to receive network traffic from.
              * @param frontendName an existing frontend name on this load balancer
              * @return the next stage of the definition
              */
+            @Beta(SinceVersion.V1_2_0)
             ReturnT fromFrontend(String frontendName);
 
             /**
@@ -42,6 +44,28 @@ public interface HasFrontend  {
              */
             @Beta(SinceVersion.V1_2_0)
             ReturnT fromDefaultFrontend();
+
+            /**
+             * Specifies an existing public IP address to receive network traffic from.
+             * <p>
+             * If this load balancer already has a frontend referencing this public IP address, that is the frontend that will be used.
+             * Else, an automatically named new frontend will be created implicitly on the load balancer.
+             * @param publicIPAddress an existing public IP address
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_2_0)
+            ReturnT fromExistingPublicIPAddress(PublicIPAddress publicIPAddress);
+
+            /**
+             * Specifies an existing public IP address to receive network traffic from.
+             * <p>
+             * If this load balancer already has a frontend referencing this public IP address, that is the frontend that will be used.
+             * Else, an automatically named new frontend will be created implicitly on the load balancer.
+             * @param resourceId the resource ID of an existing public IP address
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_2_0)
+            ReturnT fromExistingPublicIPAddress(String resourceId);
         }
     }
 
@@ -59,6 +83,7 @@ public interface HasFrontend  {
              * @param frontendName an existing frontend name from this load balancer
              * @return the next stage of the update
              */
+            @Beta(SinceVersion.V1_2_0)
             ReturnT fromFrontend(String frontendName);
 
             /**
@@ -78,12 +103,13 @@ public interface HasFrontend  {
          * The stage of a definition allowing to specify a frontend from to associate.
          * @param <ReturnT> the next stage of the definition
          */
-        interface WithFrontend<ReturnT> extends HasPublicIPAddress.UpdateDefinitionStages.WithExistingPublicIPAddress<ReturnT> {
+        interface WithFrontend<ReturnT> {
             /**
              * Specifies the frontend to associate.
              * @param frontendName an existing frontend name
              * @return the next stage of the definition
              */
+            @Beta(SinceVersion.V1_2_0)
             ReturnT fromFrontend(String frontendName);
 
             /**
@@ -92,6 +118,28 @@ public interface HasFrontend  {
              */
             @Beta(SinceVersion.V1_2_0)
             ReturnT fromDefaultFrontend();
+
+            /**
+             * Specifies an existing public IP address to receive network traffic from.
+             * <p>
+             * If this load balancer already has a frontend referencing this public IP address, that is the frontend that will be used.
+             * Else, an automatically named new frontend will be created implicitly on the load balancer.
+             * @param publicIPAddress an existing public IP address
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_2_0)
+            ReturnT fromExistingPublicIPAddress(PublicIPAddress publicIPAddress);
+
+            /**
+             * Specifies an existing public IP address to receive network traffic from.
+             * <p>
+             * If this load balancer already has a frontend referencing this public IP address, that is the frontend that will be used.
+             * Else, an automatically named new frontend will be created implicitly on the load balancer.
+             * @param resourceId the resource ID of an existing public IP address
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_2_0)
+            ReturnT fromExistingPublicIPAddress(String resourceId);
         }
     }
 }

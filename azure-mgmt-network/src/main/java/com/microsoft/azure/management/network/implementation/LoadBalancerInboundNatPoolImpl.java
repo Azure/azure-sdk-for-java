@@ -103,12 +103,12 @@ class LoadBalancerInboundNatPoolImpl
     }
 
     @Override
-    public LoadBalancerInboundNatPoolImpl withExistingPublicIPAddress(PublicIPAddress publicIPAddress) {
-        return (publicIPAddress != null) ? this.withExistingPublicIPAddress(publicIPAddress.id()) : this;
+    public LoadBalancerInboundNatPoolImpl fromExistingPublicIPAddress(PublicIPAddress publicIPAddress) {
+        return (publicIPAddress != null) ? this.fromExistingPublicIPAddress(publicIPAddress.id()) : this;
     }
 
     @Override
-    public LoadBalancerInboundNatPoolImpl withExistingPublicIPAddress(String resourceId) {
+    public LoadBalancerInboundNatPoolImpl fromExistingPublicIPAddress(String resourceId) {
         return (null != resourceId) ? this.fromFrontend(this.parent().ensurePublicFrontendWithPip(resourceId).name()) : this;
     }
 

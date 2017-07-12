@@ -304,7 +304,7 @@ public class TestLoadBalancer {
                     // Load balancing rules
                     .defineLoadBalancingRule("rule1")
                         .withProtocol(TransportProtocol.TCP)    // Required
-                        .withExistingPublicIPAddress(pip)       // Uses default frontend because PIP is the same
+                        .fromExistingPublicIPAddress(pip)       // Uses default frontend because PIP is the same
                         .fromFrontendPort(81)
                         .toDefaultBackend()
                         .toBackendPort(82)                     // Optionals

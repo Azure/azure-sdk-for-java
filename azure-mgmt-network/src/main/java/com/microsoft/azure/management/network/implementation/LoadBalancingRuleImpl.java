@@ -114,12 +114,12 @@ class LoadBalancingRuleImpl
     // Fluent withers
 
     @Override
-    public LoadBalancingRuleImpl withExistingPublicIPAddress(PublicIPAddress publicIPAddress) {
-        return (publicIPAddress != null) ? this.withExistingPublicIPAddress(publicIPAddress.id()) : this;
+    public LoadBalancingRuleImpl fromExistingPublicIPAddress(PublicIPAddress publicIPAddress) {
+        return (publicIPAddress != null) ? this.fromExistingPublicIPAddress(publicIPAddress.id()) : this;
     }
 
     @Override
-    public LoadBalancingRuleImpl withExistingPublicIPAddress(String resourceId) {
+    public LoadBalancingRuleImpl fromExistingPublicIPAddress(String resourceId) {
         return (null != resourceId) ? this.fromFrontend(this.parent().ensurePublicFrontendWithPip(resourceId).name()) : this;
     }
 

@@ -153,12 +153,12 @@ class LoadBalancerInboundNatRuleImpl
     }
 
     @Override
-    public LoadBalancerInboundNatRuleImpl withExistingPublicIPAddress(PublicIPAddress publicIPAddress) {
-        return (publicIPAddress != null) ? this.withExistingPublicIPAddress(publicIPAddress.id()) : this;
+    public LoadBalancerInboundNatRuleImpl fromExistingPublicIPAddress(PublicIPAddress publicIPAddress) {
+        return (publicIPAddress != null) ? this.fromExistingPublicIPAddress(publicIPAddress.id()) : this;
     }
 
     @Override
-    public LoadBalancerInboundNatRuleImpl withExistingPublicIPAddress(String resourceId) {
+    public LoadBalancerInboundNatRuleImpl fromExistingPublicIPAddress(String resourceId) {
         return (null != resourceId) ? this.fromFrontend(this.parent().ensurePublicFrontendWithPip(resourceId).name()) : this;
     }
 

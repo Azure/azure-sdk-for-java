@@ -783,7 +783,6 @@ public class AzureTests extends TestBase {
                 .runTest(azure.dnsZones(), azure.resourceGroups());
     }
 
-
     @Test
     public void testSqlServer() throws Exception {
         new TestSql().runTest(azure.sqlServers(), azure.resourceGroups());
@@ -812,6 +811,7 @@ public class AzureTests extends TestBase {
         new TestDocumentDB()
                 .runTest(azure.documentDBAccounts(), azure.resourceGroups());
     }
+
     @Test
     public void testSearchServiceAnySku() throws Exception {
         new TestSearchService.SearchServiceAnySku()
