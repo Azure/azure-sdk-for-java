@@ -172,11 +172,51 @@ public final class ManageInternetFacingLoadBalancer {
                         .withExistingPublicIPAddress(publicIPAddress)
                         .attach()
 
-                    // Add two backend one per rule
-                    .defineBackend(backendPoolName1)
+                    // Add two rules that uses above backend and probe
+                    .defineLoadBalancingRule(httpLoadBalancingRule)
+                        .withProtocol(TransportProtocol.TCP)
+                        .fromFrontend(frontendName)
+                        .fromFrontendPort(80)
+                        .toBackend(backendPoolName1)
+                        .withProbe(httpProbe)
                         .attach()
 
-                    .defineBackend(backendPoolName2)
+                    .defineLoadBalancingRule(httpsLoadBalancingRule)
+                        .withProtocol(TransportProtocol.TCP)
+                        .fromFrontend(frontendName)
+                        .fromFrontendPort(443)
+                        .toBackend(backendPoolName2)
+                        .withProbe(httpsProbe)
+                        .attach()
+
+                    // Add two nat pools to enable direct VM connectivity for
+                    //  SSH to port 22 and TELNET to port 23
+                    .defineInboundNatRule(natRule5000to22forVM1)
+                        .withProtocol(TransportProtocol.TCP)
+                        .fromFrontend(frontendName)
+                        .fromFrontendPort(5000)
+                        .toBackendPort(22)
+                        .attach()
+
+                    .defineInboundNatRule(natRule5001to23forVM1)
+                        .withProtocol(TransportProtocol.TCP)
+                        .fromFrontend(frontendName)
+                        .fromFrontendPort(5001)
+                        .toBackendPort(23)
+                        .attach()
+
+                    .defineInboundNatRule(natRule5002to22forVM2)
+                        .withProtocol(TransportProtocol.TCP)
+                        .fromFrontend(frontendName)
+                        .fromFrontendPort(5002)
+                        .toBackendPort(22)
+                        .attach()
+
+                    .defineInboundNatRule(natRule5003to23forVM2)
+                        .withProtocol(TransportProtocol.TCP)
+                        .fromFrontend(frontendName)
+                        .fromFrontendPort(5003)
+                        .toBackendPort(23)
                         .attach()
 
                     // Add two probes one per rule
@@ -190,52 +230,6 @@ public final class ManageInternetFacingLoadBalancer {
                         .withPort(443)
                         .attach()
 
-                    // Add two rules that uses above backend and probe
-                    .defineLoadBalancingRule(httpLoadBalancingRule)
-                        .withProtocol(TransportProtocol.TCP)
-                        .withFrontend(frontendName)
-                        .withFrontendPort(80)
-                        .withProbe(httpProbe)
-                        .withBackend(backendPoolName1)
-                        .attach()
-
-                    .defineLoadBalancingRule(httpsLoadBalancingRule)
-                        .withProtocol(TransportProtocol.TCP)
-                        .withFrontend(frontendName)
-                        .withFrontendPort(443)
-                        .withProbe(httpsProbe)
-                        .withBackend(backendPoolName2)
-                        .attach()
-
-                    // Add two nat pools to enable direct VM connectivity for
-                    //  SSH to port 22 and TELNET to port 23
-                    .defineInboundNatRule(natRule5000to22forVM1)
-                        .withProtocol(TransportProtocol.TCP)
-                        .withFrontend(frontendName)
-                        .withFrontendPort(5000)
-                        .withBackendPort(22)
-                        .attach()
-
-                    .defineInboundNatRule(natRule5001to23forVM1)
-                        .withProtocol(TransportProtocol.TCP)
-                        .withFrontend(frontendName)
-                        .withFrontendPort(5001)
-                        .withBackendPort(23)
-                        .attach()
-
-                    .defineInboundNatRule(natRule5002to22forVM2)
-                        .withProtocol(TransportProtocol.TCP)
-                        .withFrontend(frontendName)
-                        .withFrontendPort(5002)
-                        .withBackendPort(22)
-                        .attach()
-
-                    .defineInboundNatRule(natRule5003to23forVM2)
-                        .withProtocol(TransportProtocol.TCP)
-                        .withFrontend(frontendName)
-                        .withFrontendPort(5003)
-                        .withBackendPort(23)
-                        .attach()
                     .create();
 
             // Print load balancer details
@@ -389,11 +383,51 @@ public final class ManageInternetFacingLoadBalancer {
                         .withExistingPublicIPAddress(publicIPAddress2)
                         .attach()
 
-                    // Add two backend one per rule
-                    .defineBackend(backendPoolName1)
+                    // Add two rules that uses above backend and probe
+                    .defineLoadBalancingRule(httpLoadBalancingRule)
+                        .withProtocol(TransportProtocol.TCP)
+                        .fromFrontend(frontendName)
+                        .fromFrontendPort(80)
+                        .toBackend(backendPoolName1)
+                        .withProbe(httpProbe)
                         .attach()
 
-                    .defineBackend(backendPoolName2)
+                    .defineLoadBalancingRule(httpsLoadBalancingRule)
+                        .withProtocol(TransportProtocol.TCP)
+                        .fromFrontend(frontendName)
+                        .fromFrontendPort(443)
+                        .toBackend(backendPoolName2)
+                        .withProbe(httpsProbe)
+                        .attach()
+
+                    // Add two nat pools to enable direct VM connectivity for
+                    //  SSH to port 22 and TELNET to port 23
+                    .defineInboundNatRule(natRule5000to22forVM1)
+                        .withProtocol(TransportProtocol.TCP)
+                        .fromFrontend(frontendName)
+                        .fromFrontendPort(5000)
+                        .toBackendPort(22)
+                        .attach()
+
+                    .defineInboundNatRule(natRule5001to23forVM1)
+                        .withProtocol(TransportProtocol.TCP)
+                        .fromFrontend(frontendName)
+                        .fromFrontendPort(5001)
+                        .toBackendPort(23)
+                        .attach()
+
+                    .defineInboundNatRule(natRule5002to22forVM2)
+                        .withProtocol(TransportProtocol.TCP)
+                        .fromFrontend(frontendName)
+                        .fromFrontendPort(5002)
+                        .toBackendPort(22)
+                        .attach()
+
+                    .defineInboundNatRule(natRule5003to23forVM2)
+                        .withProtocol(TransportProtocol.TCP)
+                        .fromFrontend(frontendName)
+                        .fromFrontendPort(5003)
+                        .toBackendPort(23)
                         .attach()
 
                     // Add two probes one per rule
@@ -407,52 +441,6 @@ public final class ManageInternetFacingLoadBalancer {
                         .withPort(443)
                         .attach()
 
-                    // Add two rules that uses above backend and probe
-                    .defineLoadBalancingRule(httpLoadBalancingRule)
-                        .withProtocol(TransportProtocol.TCP)
-                        .withFrontend(frontendName)
-                        .withFrontendPort(80)
-                        .withProbe(httpProbe)
-                        .withBackend(backendPoolName1)
-                        .attach()
-
-                    .defineLoadBalancingRule(httpsLoadBalancingRule)
-                        .withProtocol(TransportProtocol.TCP)
-                        .withFrontend(frontendName)
-                        .withFrontendPort(443)
-                        .withProbe(httpsProbe)
-                        .withBackend(backendPoolName2)
-                        .attach()
-
-                    // Add two nat pools to enable direct VM connectivity for
-                    //  SSH to port 22 and TELNET to port 23
-                    .defineInboundNatRule(natRule5000to22forVM1)
-                        .withProtocol(TransportProtocol.TCP)
-                        .withFrontend(frontendName)
-                        .withFrontendPort(5000)
-                        .withBackendPort(22)
-                        .attach()
-
-                    .defineInboundNatRule(natRule5001to23forVM1)
-                        .withProtocol(TransportProtocol.TCP)
-                        .withFrontend(frontendName)
-                        .withFrontendPort(5001)
-                        .withBackendPort(23)
-                        .attach()
-
-                    .defineInboundNatRule(natRule5002to22forVM2)
-                        .withProtocol(TransportProtocol.TCP)
-                        .withFrontend(frontendName)
-                        .withFrontendPort(5002)
-                        .withBackendPort(22)
-                        .attach()
-
-                    .defineInboundNatRule(natRule5003to23forVM2)
-                        .withProtocol(TransportProtocol.TCP)
-                        .withFrontend(frontendName)
-                        .withFrontendPort(5003)
-                        .withBackendPort(23)
-                        .attach()
                     .create();
 
             // Print load balancer details

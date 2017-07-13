@@ -17,7 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
- * An immutable client-side representation of an inbound NAT rule.
+ * An immutable client-side representation of an inbound NAT pool.
  */
 @Fluent()
 @Beta
@@ -82,12 +82,12 @@ public interface LoadBalancerInboundNatPool extends
          */
         interface WithFrontendPortRange<ParentT> {
             /**
-             * Specifies the frontend port range.
+             * Specifies the frontend port range to receive network traffic from.
              * @param from the starting port number, between 1 and 65534
              * @param to the ending port number, greater than the starting port number and no more than 65534
              * @return the next stage of the definition
              */
-            WithBackendPort<ParentT> withFrontendPortRange(int from, int to);
+            WithBackendPort<ParentT> fromFrontendPortRange(int from, int to);
         }
 
         /**
@@ -139,7 +139,7 @@ public interface LoadBalancerInboundNatPool extends
              * @param to the ending port number, greater than the starting port number and no more than 65534
              * @return the next stage of the definition
              */
-            Update withFrontendPortRange(int from, int to);
+            Update fromFrontendPortRange(int from, int to);
         }
 
         /**
@@ -210,7 +210,7 @@ public interface LoadBalancerInboundNatPool extends
              * @param to the ending port number, greater than the starting port number and no more than 65534
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withFrontendPortRange(int from, int to);
+            WithAttach<ParentT> fromFrontendPortRange(int from, int to);
         }
 
         /**

@@ -51,6 +51,7 @@ import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.NetworkUsages;
 import com.microsoft.azure.management.network.Networks;
+import com.microsoft.azure.management.network.NetworkWatchers;
 import com.microsoft.azure.management.network.PublicIPAddresses;
 import com.microsoft.azure.management.network.RouteTables;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
@@ -71,6 +72,8 @@ import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Az
 import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
 import com.microsoft.azure.management.resources.implementation.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
+import com.microsoft.azure.management.search.SearchServices;
+import com.microsoft.azure.management.search.implementation.SearchServiceManager;
 import com.microsoft.azure.management.servicebus.ServiceBusNamespaces;
 import com.microsoft.azure.management.servicebus.implementation.ServiceBusManager;
 import com.microsoft.azure.management.sql.SqlServers;
@@ -104,6 +107,7 @@ public final class Azure {
     private final SqlServerManager sqlServerManager;
     private final ServiceBusManager serviceBusManager;
     private final ContainerRegistryManager containerRegistryManager;
+    private final SearchServiceManager searchServiceManager;
     private final DocumentDBManager documentDBManager;
     private final String subscriptionId;
     private final Authenticated authenticated;
@@ -152,8 +156,8 @@ public final class Azure {
     }
 
     /**
-     * Authenticates API access using a {@link RestClient} instance.
-     * @param restClient the {@link RestClient} configured with Azure authentication credentials
+     * Authenticates API access using a RestClient instance.
+     * @param restClient the RestClient configured with Azure authentication credentials
      * @param tenantId the tenantId in Active Directory
      * @return authenticated Azure client
      */
@@ -162,8 +166,8 @@ public final class Azure {
     }
 
     /**
-     * Authenticates API access using a {@link RestClient} instance.
-     * @param restClient the {@link RestClient} configured with Azure authentication credentials
+     * Authenticates API access using a RestClient instance.
+     * @param restClient the RestClient configured with Azure authentication credentials
      * @param tenantId the tenantId in Active Directory
      * @param subscriptionId the ID of the subscription
      * @return authenticated Azure client
@@ -208,7 +212,11 @@ public final class Azure {
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         @Override
         public Authenticated authenticate(AzureTokenCredentials credentials) {
-            return Azure.authenticate(buildRestClient(credentials), credentials.domain());
+            if (credentials.defaultSubscriptionId() != null) {
+                return Azure.authenticate(buildRestClient(credentials), credentials.domain(), credentials.defaultSubscriptionId());
+            } else {
+                return Azure.authenticate(buildRestClient(credentials), credentials.domain());
+            }
         }
 
         @Override
@@ -222,11 +230,10 @@ public final class Azure {
      * Provides authenticated access to a subset of Azure APIs that do not require a specific subscription.
      * <p>
      * To access the subscription-specific APIs, use {@link Authenticated#withSubscription(String)},
-     * or {@link Authenticated#withDefaultSubscription()} if a default subscription has already been previously specified
+     * or withDefaultSubscription() if a default subscription has already been previously specified
      * (for example, in a previously specified authentication file).
-     * @see Azure#authenticate(File)
      */
-    public interface Authenticated {
+    public interface Authenticated extends AccessManagement {
         /**
          * @return the currently selected tenant ID this client is authenticated to work with
          */
@@ -245,54 +252,6 @@ public final class Azure {
          * @return Tenants interface providing access to tenant management
          */
         Tenants tenants();
-
-        /**
-         * Entry point to AD user management APIs.
-         *
-         * @return ActiveDirectoryUsers interface providing access to tenant management
-         */
-        @Beta(SinceVersion.V1_1_0)
-        ActiveDirectoryUsers activeDirectoryUsers();
-
-        /**
-         * Entry point to AD group management APIs.
-         *
-         * @return ActiveDirectoryGroups interface providing access to tenant management
-         */
-        @Beta(SinceVersion.V1_1_0)
-        ActiveDirectoryGroups activeDirectoryGroups();
-
-        /**
-         * Entry point to AD service principal management APIs.
-         *
-         * @return ServicePrincipals interface providing access to tenant management
-         */
-        @Beta(SinceVersion.V1_1_0)
-        ServicePrincipals servicePrincipals();
-
-        /**
-         * Entry point to AD application management APIs.
-         *
-         * @return Applications interface providing access to tenant management
-         */
-        @Beta(SinceVersion.V1_1_0)
-        ActiveDirectoryApplications activeDirectoryApplications();
-
-        /**
-         * Entry point to role definition management APIs.
-         *
-         * @return RoleDefinitions interface providing access to tenant management
-         */
-        @Beta(SinceVersion.V1_1_0)
-        RoleDefinitions roleDefinitions();
-
-        /**
-         * Entry point to role assignment management APIs.
-         *
-         * @return RoleAssignments interface providing access to tenant management
-         */
-        @Beta(SinceVersion.V1_1_0)
-        RoleAssignments roleAssignments();
 
         /**
          * Selects a specific subscription for the APIs to work with.
@@ -317,7 +276,7 @@ public final class Azure {
     }
 
     /**
-     * The implementation for {@link Authenticated}.
+     * The implementation for the Authenticated interface.
      */
     private static final class AuthenticatedImpl implements Authenticated {
         private final RestClient restClient;
@@ -421,6 +380,7 @@ public final class Azure {
         this.serviceBusManager = ServiceBusManager.authenticate(restClient, subscriptionId);
         this.containerRegistryManager = ContainerRegistryManager.authenticate(restClient, subscriptionId);
         this.documentDBManager = DocumentDBManager.authenticate(restClient, subscriptionId);
+        this.searchServiceManager = SearchServiceManager.authenticate(restClient, subscriptionId);
         this.subscriptionId = subscriptionId;
         this.authenticated = authenticated;
     }
@@ -556,6 +516,13 @@ public final class Azure {
      */
     public NetworkUsages networkUsages() {
         return networkManager.usages();
+    }
+
+    /**
+     * @return entry point to managing network watchers
+     */
+    public NetworkWatchers networkWatchers() {
+        return networkManager.networkWatchers();
     }
 
     /**
@@ -723,7 +690,23 @@ public final class Azure {
      * @return entry point to managing Container Regsitries.
      */
     @Beta(SinceVersion.V1_1_0)
-    public DocumentDBAccounts documentDBs() {
+    public DocumentDBAccounts documentDBAccounts() {
         return documentDBManager.databaseAccounts();
+    }
+
+    /**
+     * @return entry point to managing Search services.
+     */
+    @Beta(SinceVersion.V1_2_0)
+    public SearchServices searchServices() {
+        return searchServiceManager.searchServices();
+    }
+
+    /**
+     * @return entry point to authentication and authorization management in Azure
+     */
+    @Beta(SinceVersion.V1_2_0)
+    public AccessManagement accessManagement() {
+        return this.authenticated;
     }
 }
