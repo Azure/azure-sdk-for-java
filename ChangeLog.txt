@@ -1,3 +1,7 @@
+2017.06.21 Version 5.3.1
+ * Fixed a bug in specific upload case for block blobs. This only affects uploads greater than the max put blob threshold, that have increased the streamWriteSizeInBytes beyond the 4 MB and storeBlobContentMD5 has been disabled.
+ * In some cases in the above mentioned upload path, fixed a bug where StorageExceptions were being thrown instead of IOExceptions.
+
 2017.06.13 Version 5.3.0
  * Fixed a bug where the transactional MD5 check would fail when downloading a range of blob or file and the recovery action is performed on a subsection of the range.
  * Fixed leaking connections for table requests.
