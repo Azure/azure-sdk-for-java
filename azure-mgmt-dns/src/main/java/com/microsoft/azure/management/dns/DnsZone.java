@@ -41,11 +41,13 @@ public interface DnsZone extends
     /**
      * @return the etag associated with this zone.
      */
+    @Beta(Beta.SinceVersion.V1_2_0)
     String eTag();
 
     /**
      * @return the record sets in this zone.
      */
+    @Beta(Beta.SinceVersion.V1_2_0)
     PagedList<DnsRecordSet> listRecordSets();
 
     /**
@@ -54,6 +56,7 @@ public interface DnsZone extends
      * @param recordSetNameSuffix the record set name suffix
      * @return the record sets
      */
+    @Beta(Beta.SinceVersion.V1_2_0)
     PagedList<DnsRecordSet> listRecordSets(String recordSetNameSuffix);
 
     /**
@@ -63,6 +66,7 @@ public interface DnsZone extends
      * @param pageSize the maximum number of record sets in a page
      * @return the record sets
      */
+    @Beta(Beta.SinceVersion.V1_2_0)
     PagedList<DnsRecordSet> listRecordSets(int pageSize);
 
     /**
@@ -73,6 +77,7 @@ public interface DnsZone extends
      * @param pageSize the maximum number of record sets in a page
      * @return the record sets
      */
+    @Beta(Beta.SinceVersion.V1_2_0)
     PagedList<DnsRecordSet> listRecordSets(String recordSetNameSuffix, int pageSize);
 
     /**
@@ -231,6 +236,7 @@ public interface DnsZone extends
              *
              * @return the next stage of the definition
              */
+            @Beta(Beta.SinceVersion.V1_2_0)
             WithCreate withETagCheck();
         }
 
@@ -416,6 +422,7 @@ public interface DnsZone extends
              * @param eTagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
+            @Beta(Beta.SinceVersion.V1_2_0)
             Update withoutARecordSet(String name, String eTagValue);
 
             /**
@@ -433,6 +440,7 @@ public interface DnsZone extends
              * @param eTagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
+            @Beta(Beta.SinceVersion.V1_2_0)
             Update withoutAaaaRecordSet(String name, String eTagValue);
 
             /**
@@ -450,6 +458,7 @@ public interface DnsZone extends
              * @param eTagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
+            @Beta(Beta.SinceVersion.V1_2_0)
             Update withoutCNameRecordSet(String name, String eTagValue);
 
             /**
@@ -467,6 +476,7 @@ public interface DnsZone extends
              * @param eTagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
+            @Beta(Beta.SinceVersion.V1_2_0)
             Update withoutMXRecordSet(String name, String eTagValue);
 
             /**
@@ -484,6 +494,7 @@ public interface DnsZone extends
              * @param eTagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
+            @Beta(Beta.SinceVersion.V1_2_0)
             Update withoutNSRecordSet(String name, String eTagValue);
 
             /**
@@ -501,6 +512,7 @@ public interface DnsZone extends
              * @param eTagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
+            @Beta(Beta.SinceVersion.V1_2_0)
             Update withoutPtrRecordSet(String name, String eTagValue);
 
             /**
@@ -518,6 +530,7 @@ public interface DnsZone extends
              * @param eTagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
+            @Beta(Beta.SinceVersion.V1_2_0)
             Update withoutSrvRecordSet(String name, String eTagValue);
 
             /**
@@ -535,6 +548,7 @@ public interface DnsZone extends
              * @param eTagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
+            @Beta(Beta.SinceVersion.V1_2_0)
             Update withoutTxtRecordSet(String name, String eTagValue);
         }
 
@@ -548,6 +562,7 @@ public interface DnsZone extends
              *
              * @return the next stage of the update
              */
+            @Beta(Beta.SinceVersion.V1_2_0)
             Update withETagCheck();
 
             /**
@@ -556,6 +571,7 @@ public interface DnsZone extends
              * @param eTagValue the eTag value
              * @return the next stage of the update
              */
+            @Beta(Beta.SinceVersion.V1_2_0)
             Update withETagCheck(String eTagValue);
         }
     }

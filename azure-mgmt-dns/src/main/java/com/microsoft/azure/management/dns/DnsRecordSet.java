@@ -47,7 +47,7 @@ public interface DnsRecordSet extends
     /**
      * The entirety of a DNS zone record set definition as a part of parent definition.
      *
-     * @param <ParentT> the return type of the final {@link Attachable#attach()}
+     * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
     interface Definition<ParentT> extends
             DefinitionStages.ARecordSetBlank<ParentT>,
@@ -84,7 +84,7 @@ public interface DnsRecordSet extends
         /**
          * The first stage of an A record definition.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface ARecordSetBlank<ParentT> extends WithARecordIPv4Address<ParentT> {
         }
@@ -92,7 +92,7 @@ public interface DnsRecordSet extends
         /**
          * The stage of the A record set definition allowing to add first A record.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithARecordIPv4Address<ParentT> {
             /**
@@ -108,7 +108,7 @@ public interface DnsRecordSet extends
          * The stage of the A record set definition allowing to add additional A records or
          * attach the record set to the parent.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithARecordIPv4AddressOrAttachable<ParentT>
                 extends WithARecordIPv4Address<ParentT>, WithAttach<ParentT> {
@@ -117,7 +117,7 @@ public interface DnsRecordSet extends
         /**
          * The first stage of a AAAA record definition.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface AaaaRecordSetBlank<ParentT> extends WithAaaaRecordIPv6Address<ParentT> {
         }
@@ -141,7 +141,7 @@ public interface DnsRecordSet extends
          * The stage of the AAAA record set definition allowing to add additional AAAA records or
          * attach the record set to the parent.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAaaaRecordIPv6AddressOrAttachable<ParentT>
                 extends WithAaaaRecordIPv6Address<ParentT>, WithAttach<ParentT> {
@@ -150,7 +150,7 @@ public interface DnsRecordSet extends
         /**
          * The first stage of a CNAME record set definition.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface CNameRecordSetBlank<ParentT> extends WithCNameRecordAlias<ParentT> {
         }
@@ -158,7 +158,7 @@ public interface DnsRecordSet extends
         /**
          * The stage of a CNAME record definition allowing to add alias.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithCNameRecordAlias<ParentT> {
             /**
@@ -167,13 +167,14 @@ public interface DnsRecordSet extends
              * @param alias the alias
              * @return the next stage of the definition
              */
+            @Beta(Beta.SinceVersion.V1_2_0)
             WithCNameRecordSetAttachable<ParentT> withAlias(String alias);
         }
 
         /**
          * The stage of the CNAME record set definition allowing attach the record set to the parent.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithCNameRecordSetAttachable<ParentT> extends WithAttach<ParentT> {
         }
@@ -181,7 +182,7 @@ public interface DnsRecordSet extends
         /**
          * The first stage of a MX record definition.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface MXRecordSetBlank<ParentT> extends WithMXRecordMailExchange<ParentT> {
         }
@@ -189,7 +190,7 @@ public interface DnsRecordSet extends
         /**
          * The stage of the MX record set definition allowing to add first MX record.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithMXRecordMailExchange<ParentT> {
             /**
@@ -206,7 +207,7 @@ public interface DnsRecordSet extends
          * The stage of the MX record set definition allowing to add additional MX records or attach the record set
          * to the parent.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithMXRecordMailExchangeOrAttachable<ParentT>
                 extends WithMXRecordMailExchange<ParentT>, WithAttach<ParentT> {
@@ -215,7 +216,7 @@ public interface DnsRecordSet extends
         /**
          * The first stage of a NS record definition.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface NSRecordSetBlank<ParentT> extends WithNSRecordNameServer<ParentT> {
         }
@@ -223,7 +224,7 @@ public interface DnsRecordSet extends
         /**
          * The stage of the NS record set definition allowing to add a NS record.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithNSRecordNameServer<ParentT> {
             /**
@@ -239,7 +240,7 @@ public interface DnsRecordSet extends
          * The stage of the NS record set definition allowing to add additional NS records or
          * attach the record set to the parent.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithNSRecordNameServerOrAttachable<ParentT>
                 extends WithNSRecordNameServer<ParentT>, WithAttach<ParentT> {
@@ -248,7 +249,7 @@ public interface DnsRecordSet extends
         /**
          * The first stage of a PTR record definition.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface PtrRecordSetBlank<ParentT> extends WithPtrRecordTargetDomainName<ParentT> {
         }
@@ -256,7 +257,7 @@ public interface DnsRecordSet extends
         /**
          * The stage of the PTR record set definition allowing to add first CNAME record.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithPtrRecordTargetDomainName<ParentT> {
             /**
@@ -272,7 +273,7 @@ public interface DnsRecordSet extends
          * The stage of the PTR record set definition allowing to add additional PTR records or
          * attach the record set to the parent.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithPtrRecordTargetDomainNameOrAttachable<ParentT>
                 extends WithPtrRecordTargetDomainName<ParentT>, WithAttach<ParentT> {
@@ -281,7 +282,7 @@ public interface DnsRecordSet extends
         /**
          * The first stage of a SRV record definition.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface SrvRecordSetBlank<ParentT> extends WithSrvRecordEntry<ParentT> {
         }
@@ -289,7 +290,7 @@ public interface DnsRecordSet extends
         /**
          * The stage of the SRV record definition allowing to add first service record.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithSrvRecordEntry<ParentT> {
             /**
@@ -308,7 +309,7 @@ public interface DnsRecordSet extends
          * The stage of the SRV record set definition allowing to add additional SRV records or attach the record set
          * to the parent.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithSrvRecordEntryOrAttachable<ParentT>
             extends WithSrvRecordEntry<ParentT>, WithAttach<ParentT> {
@@ -317,7 +318,7 @@ public interface DnsRecordSet extends
         /**
          * The first stage of a TXT record definition.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface TxtRecordSetBlank<ParentT> extends WithTxtRecordTextValue<ParentT> {
         }
@@ -325,7 +326,7 @@ public interface DnsRecordSet extends
         /**
          * The stage of the TXT record definition allowing to add first TXT record.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithTxtRecordTextValue<ParentT> {
             /**
@@ -341,7 +342,7 @@ public interface DnsRecordSet extends
          * The stage of the TXT record set definition allowing to add additional TXT records or attach the record set
          * to the parent.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface  WithTxtRecordTextValueOrAttachable<ParentT>
             extends WithTxtRecordTextValue<ParentT>, WithAttach<ParentT> {
@@ -350,7 +351,7 @@ public interface DnsRecordSet extends
         /**
          * The stage of the record set definition allowing to specify the Time To Live (TTL) for the records in this record set.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithTtl<ParentT> {
             /**
@@ -365,7 +366,7 @@ public interface DnsRecordSet extends
         /**
          * The stage of the record set definition allowing to specify metadata.
          *
-         * @param <ParentT> the return type of {@link UpdateDefinitionStages.WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithMetadata<ParentT> {
             /**
@@ -381,7 +382,7 @@ public interface DnsRecordSet extends
         /**
          * The stage of the record set definition allowing to enable ETag validation.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithETagCheck<ParentT> {
             /**
@@ -396,7 +397,8 @@ public interface DnsRecordSet extends
          * <p>
          * At this stage, any remaining optional settings can be specified, or the DNS zone record set
          * definition can be attached to the parent traffic manager profile definition using {@link DnsRecordSet.DefinitionStages.WithAttach#attach()}.
-         * @param <ParentT> the return type of {@link DnsRecordSet.DefinitionStages.WithAttach#attach()}
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends
                 Attachable.InDefinition<ParentT>,
@@ -409,7 +411,7 @@ public interface DnsRecordSet extends
     /**
      * The entirety of a DNS zone record set definition as a part of parent update.
      *
-     * @param <ParentT> the return type of the final {@link Attachable#attach()}
+     * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
     interface UpdateDefinition<ParentT> extends
             UpdateDefinitionStages.ARecordSetBlank<ParentT>,
@@ -446,7 +448,7 @@ public interface DnsRecordSet extends
         /**
          * The first stage of a A record definition.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface ARecordSetBlank<ParentT> extends WithARecordIPv4Address<ParentT> {
         }
@@ -454,7 +456,7 @@ public interface DnsRecordSet extends
         /**
          * The stage of the A record set definition allowing to add first A record.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithARecordIPv4Address<ParentT> {
             /**
@@ -470,7 +472,7 @@ public interface DnsRecordSet extends
          * The stage of the A record set definition allowing to add additional A records or
          * attach the record set to the parent.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithARecordIPv4AddressOrAttachable<ParentT>
                 extends WithARecordIPv4Address<ParentT>, WithAttach<ParentT> {
@@ -479,7 +481,7 @@ public interface DnsRecordSet extends
         /**
          * The first stage of a AAAA record definition.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface AaaaRecordSetBlank<ParentT> extends WithAaaaRecordIPv6Address<ParentT> {
         }
@@ -487,7 +489,7 @@ public interface DnsRecordSet extends
         /**
          * The stage of the AAAA record set definition allowing to add first AAAA record.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAaaaRecordIPv6Address<ParentT> {
             /**
@@ -503,7 +505,7 @@ public interface DnsRecordSet extends
          * The stage of the AAAA record set definition allowing to add additional A records or
          * attach the record set to the parent.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAaaaRecordIPv6AddressOrAttachable<ParentT>
                 extends WithAaaaRecordIPv6Address<ParentT>, WithAttach<ParentT> {
@@ -512,7 +514,7 @@ public interface DnsRecordSet extends
         /**
          * The first stage of a CNAME record set definition.
          *
-         * @param <ParentT> the return type of {@link DefinitionStages.WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface CNameRecordSetBlank<ParentT> extends WithCNameRecordAlias<ParentT> {
         }
@@ -520,7 +522,7 @@ public interface DnsRecordSet extends
         /**
          * The stage of a CNAME record definition allowing to add alias.
          *
-         * @param <ParentT> the return type of {@link DefinitionStages.WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithCNameRecordAlias<ParentT> {
             /**
@@ -529,13 +531,14 @@ public interface DnsRecordSet extends
              * @param alias the alias
              * @return the next stage of the definition
              */
+            @Beta(Beta.SinceVersion.V1_2_0)
             WithCNameRecordSetAttachable<ParentT> withAlias(String alias);
         }
 
         /**
          * The stage of the CNAME record set definition allowing attach the record set to the parent.
          *
-         * @param <ParentT> the return type of {@link UpdateDefinitionStages.WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithCNameRecordSetAttachable<ParentT> extends WithAttach<ParentT> {
         }
@@ -543,7 +546,7 @@ public interface DnsRecordSet extends
         /**
          * The first stage of an MX record definition.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @@param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface MXRecordSetBlank<ParentT> extends WithMXRecordMailExchange<ParentT> {
         }
@@ -551,7 +554,7 @@ public interface DnsRecordSet extends
         /**
          * The stage of the MX record set definition allowing to add first MX record.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithMXRecordMailExchange<ParentT> {
             /**
@@ -568,7 +571,7 @@ public interface DnsRecordSet extends
          * The stage of the MX record set definition allowing to add additional MX records or attach the record set
          * to the parent.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithMXRecordMailExchangeOrAttachable<ParentT>
                 extends WithMXRecordMailExchange<ParentT>, WithAttach<ParentT> {
@@ -577,7 +580,7 @@ public interface DnsRecordSet extends
         /**
          * The first stage of a NS record definition.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface NSRecordSetBlank<ParentT> extends WithNSRecordNameServer<ParentT> {
         }
@@ -585,7 +588,7 @@ public interface DnsRecordSet extends
         /**
          * The stage of the NS record set definition allowing to add a NS record.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithNSRecordNameServer<ParentT> {
             /**
@@ -601,7 +604,7 @@ public interface DnsRecordSet extends
          * The stage of the NS record set definition allowing to add additional NS records or
          * attach the record set to the parent.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithNSRecordNameServerOrAttachable<ParentT>
                 extends WithNSRecordNameServer<ParentT>, WithAttach<ParentT> {
@@ -610,7 +613,7 @@ public interface DnsRecordSet extends
         /**
          * The first stage of a PTR record definition.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface PtrRecordSetBlank<ParentT> extends WithPtrRecordTargetDomainName<ParentT> {
         }
@@ -618,7 +621,7 @@ public interface DnsRecordSet extends
         /**
          * The stage of the PTR record set definition allowing to add first CNAME record.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithPtrRecordTargetDomainName<ParentT> {
             /**
@@ -634,7 +637,7 @@ public interface DnsRecordSet extends
          * The stage of the PTR record set definition allowing to add additional PTR records or
          * attach the record set to the parent.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithPtrRecordTargetDomainNameOrAttachable<ParentT>
                 extends WithPtrRecordTargetDomainName<ParentT>, WithAttach<ParentT> {
@@ -643,7 +646,7 @@ public interface DnsRecordSet extends
         /**
          * The first stage of a SRV record definition.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface SrvRecordSetBlank<ParentT> extends WithSrvRecordEntry<ParentT> {
         }
@@ -651,7 +654,7 @@ public interface DnsRecordSet extends
         /**
          * The stage of the SRV record definition allowing to add first service record.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithSrvRecordEntry<ParentT> {
             /**
@@ -670,7 +673,7 @@ public interface DnsRecordSet extends
          * The stage of the SRV record set definition allowing to add additional SRV records or attach the record set
          * to the parent.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithSrvRecordEntryOrAttachable<ParentT>
                 extends WithSrvRecordEntry<ParentT>, WithAttach<ParentT> {
@@ -679,7 +682,7 @@ public interface DnsRecordSet extends
         /**
          * The first stage of a TXT record definition.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface TxtRecordSetBlank<ParentT> extends WithTxtRecordTextValue<ParentT> {
         }
@@ -687,7 +690,7 @@ public interface DnsRecordSet extends
         /**
          * The stage of the TXT record definition allowing to add first Txt record.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithTxtRecordTextValue<ParentT> {
             /**
@@ -703,7 +706,7 @@ public interface DnsRecordSet extends
          * The stage of the TXT record set definition allowing to add additional TXT records or attach the record set
          * to the parent.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface  WithTxtRecordTextValueOrAttachable<ParentT>
                 extends WithTxtRecordTextValue<ParentT>, WithAttach<ParentT> {
@@ -712,7 +715,7 @@ public interface DnsRecordSet extends
         /**
          * The stage of the record set definition allowing to specify TTL for the records in this record set.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithTtl<ParentT> {
             /**
@@ -727,7 +730,7 @@ public interface DnsRecordSet extends
         /**
          * The stage of the record set definition allowing to specify metadata.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithMetadata<ParentT> {
             /**
@@ -743,7 +746,7 @@ public interface DnsRecordSet extends
         /**
          * The stage of the record set definition allowing to enable ETag validation.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithETagCheck<ParentT> {
             /**
@@ -759,7 +762,7 @@ public interface DnsRecordSet extends
          * At this stage, any remaining optional settings can be specified, or the DNS zone record set
          * definition can be attached to the parent traffic manager profile definition
          * using {@link DnsRecordSet.UpdateDefinitionStages.WithAttach#attach()}.
-         * @param <ParentT> the return type of {@link DnsRecordSet.UpdateDefinitionStages.WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends
                 Attachable.InUpdate<ParentT>,
@@ -923,6 +926,7 @@ public interface DnsRecordSet extends
              * @param alias the alias
              * @return the next stage of the record set update
              */
+            @Beta(Beta.SinceVersion.V1_2_0)
             UpdateCNameRecordSet withAlias(String alias);
         }
 
@@ -1149,6 +1153,7 @@ public interface DnsRecordSet extends
              *
              * @return the next stage of the update
              */
+            @Beta(Beta.SinceVersion.V1_2_0)
             Update withETagCheck();
 
             /**
@@ -1157,6 +1162,7 @@ public interface DnsRecordSet extends
              * @param eTagValue the eTag value
              * @return the next stage of the update
              */
+            @Beta(Beta.SinceVersion.V1_2_0)
             Update withETagCheck(String eTagValue);
         }
     }

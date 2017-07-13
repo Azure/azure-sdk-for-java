@@ -8,6 +8,7 @@ package com.microsoft.azure.management.dns.implementation;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.DnsRecordSets;
+import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import rx.Observable;
 
@@ -20,6 +21,25 @@ abstract class DnsRecordSetsBaseImpl<RecordSetT, RecordSetImplT extends RecordSe
         ReadableWrappersImpl<RecordSetT, RecordSetImplT, RecordSetInner>
     implements
         DnsRecordSets<RecordSetT> {
+    /**
+     * the parent DNS zone of the record set.
+     */
+    protected final DnsZoneImpl dnsZone;
+    /**
+     * the record type in the record set
+     */
+    protected  final RecordType recordType;
+
+    /**
+     * Creates DnsRecordSetsBaseImpl.
+     *
+     * @param parent the parent DNS zone of the record set
+     * @param recordType the record type in the record set
+     */
+    public DnsRecordSetsBaseImpl(DnsZoneImpl parent, RecordType recordType) {
+        this.dnsZone = parent;
+        this.recordType = recordType;
+    }
 
     @Override
     public PagedList<RecordSetT> list() {
@@ -59,6 +79,11 @@ abstract class DnsRecordSetsBaseImpl<RecordSetT, RecordSetImplT extends RecordSe
     @Override
     public Observable<RecordSetT> listAsync(String recordSetNameSuffix, int pageSize) {
         return listInternAsync(recordSetNameSuffix, pageSize);
+    }
+
+    @Override
+    public DnsZoneImpl parent() {
+        return this.dnsZone;
     }
 
     protected abstract PagedList<RecordSetT> listIntern(String recordSetNameSuffix, Integer pageSize);

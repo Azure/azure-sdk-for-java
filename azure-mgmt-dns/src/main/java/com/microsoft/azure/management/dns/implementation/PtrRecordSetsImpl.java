@@ -20,28 +20,26 @@ class PtrRecordSetsImpl
         extends DnsRecordSetsBaseImpl<PtrRecordSet, PtrRecordSetImpl>
         implements PtrRecordSets {
 
-    private final DnsZoneImpl dnsZone;
-
     PtrRecordSetsImpl(DnsZoneImpl dnsZone) {
-        this.dnsZone = dnsZone;
+        super(dnsZone, RecordType.PTR);
     }
 
     @Override
     public PtrRecordSetImpl getByName(String name) {
         RecordSetInner inner = this.parent().manager().inner().recordSets().get(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
+                this.dnsZone.resourceGroupName(),
+                this.dnsZone.name(),
                 name,
-                RecordType.PTR);
-        return new PtrRecordSetImpl(this.parent(), inner);
+                this.recordType);
+        return new PtrRecordSetImpl(this.dnsZone, inner);
     }
 
     @Override
     protected PagedList<PtrRecordSet> listIntern(String recordSetNameSuffix, Integer pageSize) {
         return super.wrapList(this.parent().manager().inner().recordSets().listByType(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
-                RecordType.PTR,
+                this.dnsZone.resourceGroupName(),
+                this.dnsZone.name(),
+                recordType,
                 pageSize,
                 recordSetNameSuffix));
     }
@@ -51,16 +49,11 @@ class PtrRecordSetsImpl
         return wrapPageAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
                 this.dnsZone.resourceGroupName(),
                 this.dnsZone.name(),
-                RecordType.PTR));
+                this.recordType));
     }
 
     @Override
     protected PtrRecordSetImpl wrapModel(RecordSetInner inner) {
-        return new PtrRecordSetImpl(this.parent(), inner);
-    }
-
-    @Override
-    public DnsZoneImpl parent() {
-        return this.dnsZone;
+        return new PtrRecordSetImpl(this.dnsZone, inner);
     }
 }

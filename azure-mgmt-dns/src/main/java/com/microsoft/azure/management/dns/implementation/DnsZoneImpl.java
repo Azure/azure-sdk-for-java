@@ -21,10 +21,12 @@ import com.microsoft.azure.management.dns.SrvRecordSets;
 import com.microsoft.azure.management.dns.TxtRecordSets;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 import rx.functions.Func0;
 import rx.functions.Func1;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -61,12 +63,12 @@ public class DnsZoneImpl
 
     @Override
     public long maxNumberOfRecordSets() {
-        return this.inner().maxNumberOfRecordSets();
+        return Utils.toPrimitiveLong(this.inner().maxNumberOfRecordSets());
     }
 
     @Override
     public long numberOfRecordSets() {
-        return this.inner().numberOfRecordSets();
+        return Utils.toPrimitiveLong(this.inner().numberOfRecordSets());
     }
 
     @Override
@@ -96,6 +98,9 @@ public class DnsZoneImpl
 
     @Override
     public List<String> nameServers() {
+        if (this.inner() == null) {
+            return new ArrayList<>();
+        }
         return this.inner().nameServers();
     }
 

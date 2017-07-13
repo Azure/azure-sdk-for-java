@@ -20,10 +20,8 @@ class AaaaRecordSetsImpl
         extends DnsRecordSetsBaseImpl<AaaaRecordSet, AaaaRecordSetImpl>
         implements AaaaRecordSets {
 
-    private final DnsZoneImpl dnsZone;
-
     AaaaRecordSetsImpl(DnsZoneImpl dnsZone) {
-        this.dnsZone = dnsZone;
+        super(dnsZone, RecordType.AAAA);
     }
 
     @Override
@@ -31,16 +29,16 @@ class AaaaRecordSetsImpl
         RecordSetInner inner = this.parent().manager().inner().recordSets().get(this.dnsZone.resourceGroupName(),
                 this.dnsZone.name(),
                 name,
-                RecordType.AAAA);
+                this.recordType);
         return new AaaaRecordSetImpl(this.dnsZone, inner);
     }
 
     @Override
     protected PagedList<AaaaRecordSet> listIntern(String recordSetNameSuffix, Integer pageSize) {
         return super.wrapList(this.parent().manager().inner().recordSets().listByType(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
-                RecordType.AAAA,
+                this.dnsZone.resourceGroupName(),
+                this.dnsZone.name(),
+                this.recordType,
                 pageSize,
                 recordSetNameSuffix));
     }
@@ -50,16 +48,11 @@ class AaaaRecordSetsImpl
         return wrapPageAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
                 this.dnsZone.resourceGroupName(),
                 this.dnsZone.name(),
-                RecordType.AAAA));
+                this.recordType));
     }
 
     @Override
     protected AaaaRecordSetImpl wrapModel(RecordSetInner inner) {
         return new AaaaRecordSetImpl(this.dnsZone, inner);
-    }
-
-    @Override
-    public DnsZoneImpl parent() {
-        return this.dnsZone;
     }
 }

@@ -20,33 +20,31 @@ class MXRecordSetsImpl
         extends DnsRecordSetsBaseImpl<MXRecordSet, MXRecordSetImpl>
         implements MXRecordSets {
 
-    private final DnsZoneImpl dnsZone;
-
     MXRecordSetsImpl(DnsZoneImpl dnsZone) {
-        this.dnsZone = dnsZone;
+        super(dnsZone, RecordType.MX);
     }
 
     @Override
     public MXRecordSetImpl getByName(String name) {
-        RecordSetInner inner = this.parent().manager().inner().recordSets().get(this.parent().resourceGroupName(),
-                this.parent().name(),
+        RecordSetInner inner = this.parent().manager().inner().recordSets().get(this.dnsZone.resourceGroupName(),
+                this.dnsZone.name(),
                 name,
-                RecordType.MX);
-        return new MXRecordSetImpl(this.parent(), inner);
+                this.recordType);
+        return new MXRecordSetImpl(this.dnsZone, inner);
     }
 
     @Override
     public PagedList<MXRecordSet> list() {
         return super.wrapList(this.parent().manager().inner().recordSets().listByType(
-                this.parent().resourceGroupName(), this.parent().name(), RecordType.MX));
+                this.dnsZone.resourceGroupName(), this.dnsZone.name(), this.recordType));
     }
 
     @Override
     protected PagedList<MXRecordSet> listIntern(String recordSetNameSuffix, Integer pageSize) {
         return super.wrapList(this.parent().manager().inner().recordSets().listByType(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
-                RecordType.MX,
+                this.dnsZone.resourceGroupName(),
+                this.dnsZone.name(),
+                this.recordType,
                 pageSize,
                 recordSetNameSuffix));
     }
@@ -56,16 +54,11 @@ class MXRecordSetsImpl
         return wrapPageAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
                 this.dnsZone.resourceGroupName(),
                 this.dnsZone.name(),
-                RecordType.MX));
+                this.recordType));
     }
 
     @Override
     protected MXRecordSetImpl wrapModel(RecordSetInner inner) {
-        return new MXRecordSetImpl(this.parent(), inner);
-    }
-
-    @Override
-    public DnsZoneImpl parent() {
-        return this.dnsZone;
+        return new MXRecordSetImpl(this.dnsZone, inner);
     }
 }

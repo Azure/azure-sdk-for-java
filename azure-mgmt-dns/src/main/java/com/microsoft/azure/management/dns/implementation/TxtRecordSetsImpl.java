@@ -20,28 +20,26 @@ class TxtRecordSetsImpl
         extends DnsRecordSetsBaseImpl<TxtRecordSet, TxtRecordSetImpl>
         implements TxtRecordSets {
 
-    private final DnsZoneImpl dnsZone;
-
     TxtRecordSetsImpl(DnsZoneImpl dnsZone) {
-        this.dnsZone = dnsZone;
+        super(dnsZone, RecordType.TXT);
     }
 
     @Override
     public TxtRecordSetImpl getByName(String name) {
         RecordSetInner inner = this.parent().manager().inner().recordSets().get(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
+                this.dnsZone.resourceGroupName(),
+                this.dnsZone.name(),
                 name,
-                RecordType.TXT);
-        return new TxtRecordSetImpl(this.parent(), inner);
+                recordType);
+        return new TxtRecordSetImpl(this.dnsZone, inner);
     }
 
     @Override
     protected PagedList<TxtRecordSet> listIntern(String recordSetNameSuffix, Integer pageSize) {
         return super.wrapList(this.parent().manager().inner().recordSets().listByType(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
-                RecordType.TXT,
+                this.dnsZone.resourceGroupName(),
+                this.dnsZone.name(),
+                recordType,
                 pageSize,
                 recordSetNameSuffix));
     }
@@ -51,16 +49,11 @@ class TxtRecordSetsImpl
         return wrapPageAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
                 this.dnsZone.resourceGroupName(),
                 this.dnsZone.name(),
-                RecordType.TXT));
+                recordType));
     }
 
     @Override
     protected TxtRecordSetImpl wrapModel(RecordSetInner inner) {
-        return new TxtRecordSetImpl(this.parent(), inner);
-    }
-
-    @Override
-    public DnsZoneImpl parent() {
-        return this.dnsZone;
+        return new TxtRecordSetImpl(this.dnsZone, inner);
     }
 }

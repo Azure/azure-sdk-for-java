@@ -20,28 +20,26 @@ class SrvRecordSetsImpl
         extends DnsRecordSetsBaseImpl<SrvRecordSet, SrvRecordSetImpl>
         implements SrvRecordSets {
 
-    private final DnsZoneImpl dnsZone;
-
     SrvRecordSetsImpl(DnsZoneImpl dnsZone) {
-        this.dnsZone = dnsZone;
+        super(dnsZone, RecordType.SRV);
     }
 
     @Override
     public SrvRecordSetImpl getByName(String name) {
         RecordSetInner inner = this.parent().manager().inner().recordSets().get(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
+                this.dnsZone.resourceGroupName(),
+                this.dnsZone.name(),
                 name,
-                RecordType.SRV);
-        return new SrvRecordSetImpl(this.parent(), inner);
+                this.recordType);
+        return new SrvRecordSetImpl(this.dnsZone, inner);
     }
 
     @Override
     protected PagedList<SrvRecordSet> listIntern(String recordSetNameSuffix, Integer pageSize) {
         return super.wrapList(this.parent().manager().inner().recordSets().listByType(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
-                RecordType.SRV,
+                this.dnsZone.resourceGroupName(),
+                this.dnsZone.name(),
+                this.recordType,
                 pageSize,
                 recordSetNameSuffix));
     }
@@ -51,16 +49,11 @@ class SrvRecordSetsImpl
         return wrapPageAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
                 this.dnsZone.resourceGroupName(),
                 this.dnsZone.name(),
-                RecordType.SRV));
+                this.recordType));
     }
 
     @Override
     protected SrvRecordSetImpl wrapModel(RecordSetInner inner) {
-        return new SrvRecordSetImpl(this.parent(), inner);
-    }
-
-    @Override
-    public DnsZoneImpl parent() {
-        return this.dnsZone;
+        return new SrvRecordSetImpl(this.dnsZone, inner);
     }
 }
