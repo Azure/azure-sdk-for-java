@@ -73,7 +73,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
             Assert.assertNotNull(servicePrincipal.applicationId());
             Assert.assertEquals(2, servicePrincipal.servicePrincipalNames().size());
 
-            Thread.sleep(10000);
+            SdkContext.sleep(10000);
             ResourceManager resourceManager = ResourceManager.authenticate(
                     ApplicationTokenCredentials.fromFile(new File(authFile))).withSubscription(subscription);
             Assert.assertNotNull(resourceManager.resourceGroups().list());

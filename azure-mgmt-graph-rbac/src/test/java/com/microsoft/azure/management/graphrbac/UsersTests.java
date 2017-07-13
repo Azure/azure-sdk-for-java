@@ -12,9 +12,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 public class UsersTests extends GraphRbacManagementTest {
-    private static final String RG_NAME = "javacsmrg350";
-    private static final String APP_NAME = "app-javacsm350";
-
     @Test
     @Ignore("Need a specific domain")
     public void canGetUserByEmail() throws Exception {
@@ -39,8 +36,8 @@ public class UsersTests extends GraphRbacManagementTest {
     @Test
     public void canCreateUser() throws Exception {
         String name = SdkContext.randomResourceName("user", 16);
-        ActiveDirectoryUser user = graphRbacManager.users().define(name)
-                .withUserPrincipalName("jianghlu@microsoft.com")
+        ActiveDirectoryUser user = graphRbacManager.users().define("Automatic " + name)
+                .withEmailAlias(name)
                 .withPassword("StrongPass!123")
                 .withPromptToChangePasswordOnLogin(true)
                 .create();

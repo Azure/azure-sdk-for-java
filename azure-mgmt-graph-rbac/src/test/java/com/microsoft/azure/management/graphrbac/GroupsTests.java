@@ -35,7 +35,7 @@ public class GroupsTests extends GraphRbacManagementTest {
             group1 = graphRbacManager.groups().define(group1Name)
                     .withEmailAlias(group1Name)
                     .create();
-            Thread.sleep(15000);
+            SdkContext.sleep(15000);
             group2 = graphRbacManager.groups().define(group2Name)
                     .withEmailAlias(group2Name)
                     .withMember(user.id())
