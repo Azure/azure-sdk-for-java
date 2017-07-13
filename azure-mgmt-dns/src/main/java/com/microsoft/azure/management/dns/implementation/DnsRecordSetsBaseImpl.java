@@ -26,7 +26,7 @@ abstract class DnsRecordSetsBaseImpl<RecordSetT, RecordSetImplT extends RecordSe
      */
     protected final DnsZoneImpl dnsZone;
     /**
-     * the record type in the record set
+     * the record type in the record set.
      */
     protected  final RecordType recordType;
 
@@ -36,7 +36,7 @@ abstract class DnsRecordSetsBaseImpl<RecordSetT, RecordSetImplT extends RecordSe
      * @param parent the parent DNS zone of the record set
      * @param recordType the record type in the record set
      */
-    public DnsRecordSetsBaseImpl(DnsZoneImpl parent, RecordType recordType) {
+    DnsRecordSetsBaseImpl(DnsZoneImpl parent, RecordType recordType) {
         this.dnsZone = parent;
         this.recordType = recordType;
     }
