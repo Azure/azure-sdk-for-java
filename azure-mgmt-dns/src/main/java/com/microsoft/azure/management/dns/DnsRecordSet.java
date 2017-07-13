@@ -390,6 +390,7 @@ public interface DnsRecordSet extends
              *
              * @return the next stage of the definition
              */
+            @Beta(Beta.SinceVersion.V1_2_0)
             WithAttach<ParentT> withETagCheck();
         }
 
@@ -754,8 +755,9 @@ public interface DnsRecordSet extends
              *
              * @return the next stage of the definition
              */
+            @Beta(Beta.SinceVersion.V1_2_0)
             WithAttach<ParentT> withETagCheck();
-        }
+    }
 
         /** The final stage of the DNS zone record set definition.
          * <p>
