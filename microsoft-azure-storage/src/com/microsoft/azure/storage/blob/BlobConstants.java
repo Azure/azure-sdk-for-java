@@ -20,12 +20,21 @@ import com.microsoft.azure.storage.Constants;
  * Holds the Constants used for the Blob Service.
  */
 final class BlobConstants {
-    
+
+    /**
+     * The header that specifies the access tier header.
+     */
+    public static final String ACCESS_TIER_HEADER = Constants.PREFIX_FOR_STORAGE_HEADER + "access-tier";
+
+    /**
+     * The header that specifies if the access tier is inferred.
+     */
+    public static final String ACCESS_TIER_INFERRED_HEADER = Constants.PREFIX_FOR_STORAGE_HEADER + "access-tier-inferred";
     /**
      * Specifies the append blob type.
      */
     public static final String APPEND_BLOB = "AppendBlob";
-    
+
     /**
      * XML element for authentication error details.
      */

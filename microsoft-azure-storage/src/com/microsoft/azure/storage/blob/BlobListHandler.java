@@ -324,5 +324,10 @@ final class BlobListHandler extends DefaultHandler {
             }
             this.copyState.setCopyDestinationSnapshotID(value);
         }
+        else if (Constants.ACCESS_TIER.equals(currentNode)) {
+            PremiumPageBlobTier premiumPageBlobTier = PremiumPageBlobTier.parse(value);
+            this.properties.setPremiumPageBlobTier(premiumPageBlobTier);
+            this.properties.setBlobTierInferredTier(false);
+        }
     }
 }
