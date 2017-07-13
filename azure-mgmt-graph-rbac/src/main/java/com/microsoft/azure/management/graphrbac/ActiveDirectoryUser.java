@@ -8,14 +8,9 @@ package com.microsoft.azure.management.graphrbac;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.graphrbac.implementation.UserInner;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 
 /**
  * An immutable client-side representation of an Azure AD user.
@@ -23,11 +18,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Graph.RBAC.Fluent")
 @Beta
 public interface ActiveDirectoryUser extends
-        Indexable,
-        HasInner<UserInner>,
-        HasId,
-        HasName,
-        HasManager<GraphRbacManager> {
+        ActiveDirectoryObject,
+        HasInner<UserInner> {
     /**
      * @return Gets or sets user principal name.
      */
@@ -78,7 +70,7 @@ public interface ActiveDirectoryUser extends
         interface WithUserPrincipalName {
             WithPassword withUserPrincipalName(String userPrincipalName);
 
-            WithPassword withEmailAddress(String emailAddress);
+            WithPassword withEmailAlias(String emailAlias);
         }
 
         /**
@@ -92,6 +84,10 @@ public interface ActiveDirectoryUser extends
             WithCreate withMailNickname(String mailNickname);
         }
 
+        interface WithPromptToChangePasswordOnLogin {
+            WithCreate withPromptToChangePasswordOnLogin(boolean promptToChangePasswordOnLogin);
+        }
+
         /**
          * An AD user definition with sufficient inputs to create a new
          * user in the cloud, but exposing additional optional inputs to
@@ -99,7 +95,8 @@ public interface ActiveDirectoryUser extends
          */
         interface WithCreate extends
                 Creatable<ActiveDirectoryUser>,
-                DefinitionStages.WithMailNickname {
+                DefinitionStages.WithMailNickname,
+                DefinitionStages.WithPromptToChangePasswordOnLogin {
         }
     }
 }

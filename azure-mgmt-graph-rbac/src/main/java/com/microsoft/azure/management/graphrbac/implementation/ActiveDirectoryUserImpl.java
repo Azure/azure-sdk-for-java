@@ -8,11 +8,12 @@ package com.microsoft.azure.management.graphrbac.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryUser;
-import com.microsoft.azure.management.graphrbac.GraphErrorException;
 import com.microsoft.azure.management.graphrbac.PasswordProfile;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import rx.functions.Func1;
+
+import java.util.List;
 
 /**
  * Implementation for User and its parent interfaces.
@@ -27,11 +28,12 @@ class ActiveDirectoryUserImpl
     private final GraphRbacManager manager;
     private UserCreateParametersInner createParameters;
     private UserUpdateParametersInner updateParameters;
+    private String emailAlias;
 
     ActiveDirectoryUserImpl(UserInner innerObject, GraphRbacManager manager) {
         super(innerObject.displayName(), innerObject);
         this.manager = manager;
-        this.createParameters = new UserCreateParametersInner().withDisplayName(name());
+        this.createParameters = new UserCreateParametersInner().withDisplayName(name()).withAccountEnabled(true);
         this.updateParameters = new UserUpdateParametersInner().withDisplayName(name());
     }
 
@@ -80,8 +82,9 @@ class ActiveDirectoryUserImpl
     }
 
     @Override
-    public ActiveDirectoryUserImpl withEmailAddress(String emailAddress) {
-        return withUserPrincipalName(emailAddress);
+    public ActiveDirectoryUserImpl withEmailAlias(String emailAlias) {
+        this.emailAlias = emailAlias;
+        return this;
     }
 
     @Override
@@ -102,18 +105,62 @@ class ActiveDirectoryUserImpl
 
     @Override
     public Observable<ActiveDirectoryUser> createResourceAsync() {
-        return manager().inner().users().createAsync(createParameters)
-                .onErrorResumeNext(new Func1<Throwable, Observable<? extends UserInner>>() {
+        Observable<ActiveDirectoryUserImpl> domain;
+        if (emailAlias != null) {
+            domain = manager().inner().domains().listAsync()
+                .map(new Func1<List<DomainInner>, ActiveDirectoryUserImpl>() {
                     @Override
-                    public Observable<? extends UserInner> call(Throwable throwable) {
-                        if (throwable instanceof GraphErrorException
-                                && throwable.getMessage().contains("Property userPrincipalName is invalid")) {
-                            // TODO: append #EXT#@domain.com
+                    public ActiveDirectoryUserImpl call(List<DomainInner> domainInners) {
+                        for (DomainInner inner : domainInners) {
+                            if (inner.isVerified() && inner.isDefault()) {
+                                if (emailAlias != null) {
+                                    withUserPrincipalName(emailAlias + "@" + inner.name());
+                                }
+                            }
                         }
-                        return Observable.error(throwable);
+                        return ActiveDirectoryUserImpl.this;
                     }
-                })
-                .map(innerToFluentMap(this));
+                });
+        } else {
+            domain = Observable.just(this);
+        }
+        return domain.flatMap(new Func1<ActiveDirectoryUserImpl, Observable<UserInner>>() {
+            @Override
+            public Observable<UserInner> call(ActiveDirectoryUserImpl activeDirectoryUser) {
+                return manager().inner().users().createAsync(createParameters);
+            }
+        })
+//                .onErrorResumeNext(new Func1<Throwable, Observable<? extends UserInner>>() {
+//                    @Override
+//                    public Observable<? extends UserInner> call(Throwable throwable) {
+//                        if (throwable instanceof GraphErrorException
+//                                && throwable.getMessage().contains("Property userPrincipalName is invalid")
+//                                && emailAddress != null) {
+//                            return manager().inner().domains().listAsync()
+//                                    .map(new Func1<List<DomainInner>, DomainInner>() {
+//                                        @Override
+//                                        public DomainInner call(List<DomainInner> domainInners) {
+//                                            for (DomainInner inner : domainInners) {
+//                                                if (inner.isVerified() && inner.isDefault()) {
+//                                                    withUserPrincipalName(
+//                                                            String.format("%s#EXT#@%s",
+//                                                            emailAddress.replace("@", "_"),
+//                                                            inner.name()));
+//                                                }
+//                                            }
+//                                            return null;
+//                                        }
+//                                    }).flatMap(new Func1<DomainInner, Observable<UserInner>>() {
+//                                        @Override
+//                                        public Observable<UserInner> call(DomainInner domainInner) {
+//                                            return manager().inner().users().createAsync(createParameters);
+//                                        }
+//                                    });
+//                        }
+//                        return Observable.error(throwable);
+//                    }
+//                })
+        .map(innerToFluentMap(this));
     }
 
     @Override
@@ -121,5 +168,16 @@ class ActiveDirectoryUserImpl
         createParameters.withMailNickname(mailNickname);
         updateParameters.withMailNickname(mailNickname);
         return this;
+    }
+
+    @Override
+    public ActiveDirectoryUserImpl withPromptToChangePasswordOnLogin(boolean promptToChangePasswordOnLogin) {
+        createParameters.passwordProfile().withForceChangePasswordNextLogin(promptToChangePasswordOnLogin);
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return name() + " - " + userPrincipalName();
     }
 }

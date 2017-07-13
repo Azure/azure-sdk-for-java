@@ -42,6 +42,7 @@ public class UsersTests extends GraphRbacManagementTest {
         ActiveDirectoryUser user = graphRbacManager.users().define(name)
                 .withUserPrincipalName("jianghlu@microsoft.com")
                 .withPassword("StrongPass!123")
+                .withPromptToChangePasswordOnLogin(true)
                 .create();
 
         Assert.assertNotNull(user);

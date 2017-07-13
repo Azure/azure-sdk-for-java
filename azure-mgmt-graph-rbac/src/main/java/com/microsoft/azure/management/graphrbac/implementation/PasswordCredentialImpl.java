@@ -37,12 +37,12 @@ class PasswordCredentialImpl<T>
 
     PasswordCredentialImpl(PasswordCredentialInner passwordCredential) {
         super(passwordCredential);
-        this.name = new String(BaseEncoding.base64().decode(passwordCredential.keyId()));
+        this.name = new String(BaseEncoding.base64().decode(passwordCredential.customKeyIdentifier()));
     }
 
     PasswordCredentialImpl(String name, HasCredential<?> parent) {
         super(new PasswordCredentialInner()
-                .withKeyId(BaseEncoding.base64().encode(name.getBytes()))
+                .withCustomKeyIdentifier(BaseEncoding.base64().encode(name.getBytes()))
                 .withStartDate(DateTime.now())
                 .withEndDate(DateTime.now().plusYears(1)));
         this.name = name;
