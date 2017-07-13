@@ -105,6 +105,9 @@ public class TestRunners {
     public interface DevFabricTests {
     }
 
+    public interface PremiumBlobTests {
+    }
+
     // Test suites
     @RunWith(Suite.class)
     @SuiteClasses({ AccountSasTests.class, EventFiringTests.class, GenericTests.class, LoggerTests.class,
@@ -116,7 +119,8 @@ public class TestRunners {
     @RunWith(Suite.class)
     @SuiteClasses({ BlobOutputStreamTests.class, CloudBlobClientTests.class, CloudBlobContainerTests.class,
             CloudBlobDirectoryTests.class, CloudAppendBlobTests.class, CloudBlockBlobTests.class, CloudPageBlobTests.class,
-            CloudBlobClientEncryptionTests.class, CloudBlobServerEncryptionTests.class, LeaseTests.class, SasTests.class })
+            CloudBlobClientEncryptionTests.class, CloudBlobServerEncryptionTests.class, LeaseTests.class, SasTests.class,
+            PremiumBlobTests.class })
     public static class BlobTestSuite {
     }
 
@@ -176,5 +180,10 @@ public class TestRunners {
     @ExcludeCategory(SlowTests.class)
     @SuiteClasses(AllTestSuite.class)
     public static class FastTestSuite {
+    }
+
+    @RunWith(Categories.class)
+    @IncludeCategory(PremiumBlobTests.class)
+    public static class PremiumBlobTestSuite {
     }
 }
