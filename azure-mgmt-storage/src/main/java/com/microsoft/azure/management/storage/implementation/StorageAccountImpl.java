@@ -116,7 +116,7 @@ class StorageAccountImpl
                 || this.inner().encryption().keySource() == null) {
             return null;
         }
-        return new StorageAccountEncryptionKeySource(this.inner().encryption().keySource());
+        return StorageAccountEncryptionKeySource.fromString(this.inner().encryption().keySource());
     }
 
     @Override

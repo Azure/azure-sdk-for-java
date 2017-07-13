@@ -88,22 +88,20 @@ public interface StorageAccount extends
 
     /**
      * @return the encryption settings on the account.
-     * TODO: This getter should be deprecated and removed eventually
+     * TODO: This getter should be deprecated and removed (the new fully fluent encryption replaces this)
      */
     Encryption encryption();
 
     /**
      * @return the source of the key used for encryption.
-     * TODO: Add SinceVersion_1_2_0 once it is available in the api-generation namespace
      */
-    @Beta
+    @Beta(Beta.SinceVersion.V1_2_0)
     StorageAccountEncryptionKeySource encryptionKeySource();
 
     /**
      * @return the encryption statuses indexed by storage service type.
-     * TODO: Add SinceVersion_1_2_0 once it is available in the api-generation namespace
      */
-    @Beta
+    @Beta(Beta.SinceVersion.V1_2_0)
     Map<StorageService, StorageAccountEncryptionStatus> encryptionStatuses();
 
     /**
@@ -234,7 +232,7 @@ public interface StorageAccount extends
             /**
              * Specifies the encryption settings on the account. The default
              * setting is unencrypted.
-             * TODO: This overload should be deprecated and removed eventually
+             * TODO: This overload should be deprecated and removed (the new fully fluent encryption withers replaces this)
              *
              * @param encryption the encryption setting
              * @return the next stage of storage account definition
@@ -244,11 +242,10 @@ public interface StorageAccount extends
 
             /**
              * Enables encryption for all storage services in the account that supports encryption.
-             * TODO: Add SinceVersion_1_2_0 once it is available in the api-generation namespace
              *
              * @return the next stage of storage account definition
              */
-            @Beta
+            @Beta(Beta.SinceVersion.V1_2_0)
             WithCreate withEncryption();
         }
 
@@ -370,7 +367,7 @@ public interface StorageAccount extends
              * Specifies the encryption setting on the account.
              * <p>
              * The default setting is unencrypted.
-             * TODO: This overload should be deprecated and removed eventually
+             * TODO: This overload should be deprecated and removed (the new fully fluent encryption withers replaces this)
              *
              * @param encryption the encryption setting
              * @return the nest stage of storage account update
@@ -380,20 +377,18 @@ public interface StorageAccount extends
 
             /**
              * Enables encryption for all storage services in the account that supports encryption.
-             * TODO: Add SinceVersion_1_2_0 once it is available in the api-generation namespace
              *
              * @return the next stage of storage account update
              */
-            @Beta
+            @Beta(Beta.SinceVersion.V1_2_0)
             Update withEncryption();
 
             /**
              * Disables encryption for all storage services in the account that supports encryption.
-             * TODO: Add SinceVersion_1_2_0 once it is available in the api-generation namespace
              *
              * @return the next stage of storage account update
              */
-            @Beta
+            @Beta(Beta.SinceVersion.V1_2_0)
             Update withoutEncryption();
         }
 

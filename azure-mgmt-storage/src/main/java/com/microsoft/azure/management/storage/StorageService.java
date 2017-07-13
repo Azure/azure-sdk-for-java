@@ -7,54 +7,38 @@
 package com.microsoft.azure.management.storage;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
+
+import java.util.Collection;
 
 /**
  * Azure storage service types.
  */
 @LangDefinition
-public class StorageService {
+public class StorageService extends ExpandableStringEnum<StorageService> {
     /** Static value Blob for StorageService. */
-    public static final StorageService BLOB = new StorageService("Blob");
+    public static final StorageService BLOB = fromString("Blob");
 
     /** Static value Table for StorageService. */
-    public static final StorageService TABLE = new StorageService("Table");
+    public static final StorageService TABLE = fromString("Table");
 
     /** Static value Queue for StorageService. */
-    public static final StorageService QUEUE = new StorageService("Queue");
-
-    private String value;
+    public static final StorageService QUEUE = fromString("Queue");
 
     /**
-     * Creates a custom value for StorageService.
-     * @param value the custom value
+     * Creates or finds a service service type based on its name.
+     *
+     * @param name a name to look for
+     * @return an StorageService
      */
-    public StorageService(String value) {
-        this.value = value;
+    public static StorageService fromString(String name) {
+        return fromString(name, StorageService.class);
     }
 
-    @Override
-    public String toString() {
-        return value;
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof StorageService)) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        StorageService rhs = (StorageService) obj;
-        if (value == null) {
-            return rhs.value == null;
-        } else {
-            return value.equals(rhs.value);
-        }
+    /**
+     * @return known storage service types.
+     */
+    public static Collection<StorageService> values() {
+        return values(StorageService.class);
     }
 }

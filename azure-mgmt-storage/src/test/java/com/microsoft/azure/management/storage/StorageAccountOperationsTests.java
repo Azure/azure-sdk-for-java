@@ -115,6 +115,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assert.assertNotNull(statuses);
         Assert.assertTrue(statuses.size() > 0);
         blobServiceEncryptionStatus = statuses.get(StorageService.BLOB);
+        Assert.assertNotNull(blobServiceEncryptionStatus);
         Assert.assertFalse(blobServiceEncryptionStatus.isEnabled());
     }
 }
