@@ -14,8 +14,6 @@
  */
 package com.microsoft.azure.storage.blob;
 
-import junit.framework.Assert;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -59,6 +57,7 @@ import com.microsoft.azure.storage.TestRunners;
 import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.TestRunners.DevFabricTests;
 import com.microsoft.azure.storage.TestRunners.DevStoreTests;
+import com.microsoft.azure.storage.TestRunners.PremiumBlobTests;
 import com.microsoft.azure.storage.core.SR;
 import com.microsoft.azure.storage.core.UriQueryBuilder;
 import com.microsoft.azure.storage.core.Utility;
@@ -1199,5 +1198,210 @@ public class CloudPageBlobTests {
         assertTrue(copy.properties.isIncrementalCopy());
         assertNotNull(copy.properties.getCopyState().getCopyDestinationSnapshotID());
         assertNotNull(copy.getCopyState().getCompletionTime());
+    }
+
+    @Test
+    public void testEightTBBlob() throws StorageException, URISyntaxException, IOException {
+        CloudPageBlob blob = this.container.getPageBlobReference("blob1");
+        CloudPageBlob blob2 = this.container.getPageBlobReference("blob1");
+
+        long eightTb = 8L * 1024L * 1024L * 1024L * 1024L;
+        blob.create(eightTb);
+        assertEquals(eightTb, blob.getProperties().getLength());
+
+        blob2.downloadAttributes();
+        assertEquals(eightTb, blob2.getProperties().getLength());
+
+        for (ListBlobItem listBlob : this.container.listBlobs()) {
+            CloudPageBlob listPageBlob = (CloudPageBlob)listBlob;
+            assertEquals(eightTb, listPageBlob.getProperties().getLength());
+        }
+
+        CloudPageBlob blob3 = this.container.getPageBlobReference("blob3");
+        blob3.create(1024);
+        blob3.resize(eightTb);
+
+        final Random randGenerator = new Random();
+        final byte[] buffer = new byte[1024];
+        randGenerator.nextBytes(buffer);
+        blob.uploadPages(new ByteArrayInputStream(buffer), eightTb - 512L, 512L);
+
+        ArrayList<PageRange> ranges = blob.downloadPageRanges();
+        assertEquals(1, ranges.size());
+        assertEquals(eightTb - 512L, ranges.get(0).getStartOffset());
+        assertEquals(eightTb - 1L, ranges.get(0).getEndOffset());
+    }
+
+    @Test
+    @Category(PremiumBlobTests.class)
+    public void testCloudPageBlobSetPremiumBlobTierOnCreate() throws URISyntaxException, StorageException, IOException {
+        CloudBlobContainer container =  BlobTestHelper.getRandomPremiumBlobContainerReference();
+        try {
+            container.create();
+            String blobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testblob");
+
+            // Test create API
+            CloudPageBlob blob = container.getPageBlobReference(blobName);
+            assertNull(blob.getProperties().getInferredBlobTier());
+            blob.create(1024, PremiumPageBlobTier.P4, null, null, null);
+            assertEquals(PremiumPageBlobTier.P4, blob.getProperties().getPremiumPageBlobTier());
+            assertFalse(blob.getProperties().getInferredBlobTier());
+
+            CloudPageBlob blob2 = container.getPageBlobReference(blobName);
+            blob2.downloadAttributes();
+            assertEquals(PremiumPageBlobTier.P4, blob2.getProperties().getPremiumPageBlobTier());
+            assertNull(blob2.getProperties().getInferredBlobTier());
+
+            // Test upload from byte array API
+            byte[] buffer = BlobTestHelper.getRandomBuffer(1024);
+            CloudPageBlob blob3 = container.getPageBlobReference("blob3");
+            blob3.uploadFromByteArray(buffer, 0, 1024, PremiumPageBlobTier.P6, null, null, null);
+            assertEquals(PremiumPageBlobTier.P6, blob3.getProperties().getPremiumPageBlobTier());
+            assertFalse(blob3.getProperties().getInferredBlobTier());
+
+            CloudPageBlob blob3Ref = container.getPageBlobReference("blob3");
+            blob3Ref.downloadAttributes();
+            assertEquals(PremiumPageBlobTier.P6, blob3Ref.getProperties().getPremiumPageBlobTier());
+            assertNull(blob3Ref.getProperties().getInferredBlobTier());
+
+            // Test upload from stream API
+            ByteArrayInputStream srcStream = new ByteArrayInputStream(buffer);
+            CloudPageBlob blob4 = container.getPageBlobReference("blob4");
+            blob4.upload(srcStream, 1024, PremiumPageBlobTier.P10, null, null, null);
+            assertEquals(PremiumPageBlobTier.P10, blob4.getProperties().getPremiumPageBlobTier());
+            assertFalse(blob4.getProperties().getInferredBlobTier());
+
+            CloudPageBlob blob4Ref = container.getPageBlobReference("blob4");
+            blob4Ref.downloadAttributes();
+            assertEquals(PremiumPageBlobTier.P10, blob4Ref.getProperties().getPremiumPageBlobTier());
+            assertNull(blob4Ref.getProperties().getInferredBlobTier());
+
+            // Test upload from file API
+            File sourceFile = File.createTempFile("sourceFile", ".tmp");
+            File destinationFile = new File(sourceFile.getParentFile(),
+                    "destinationFile.tmp");
+            FileOutputStream fos = new FileOutputStream(sourceFile);
+            fos.write(buffer);
+            fos.close();
+            CloudPageBlob blob5 = container.getPageBlobReference("blob5");
+            blob5.uploadFromFile(sourceFile.getAbsolutePath(), PremiumPageBlobTier.P20, null, null, null);
+            assertEquals(PremiumPageBlobTier.P20, blob5.getProperties().getPremiumPageBlobTier());
+            assertFalse(blob5.getProperties().getInferredBlobTier());
+
+            CloudPageBlob blob5Ref = container.getPageBlobReference("blob5");
+            blob5Ref.downloadAttributes();
+            assertEquals(PremiumPageBlobTier.P20, blob5Ref.getProperties().getPremiumPageBlobTier());
+            assertNull(blob5Ref.getProperties().getInferredBlobTier());
+        }
+        finally {
+            container.deleteIfExists();
+        }
+    }
+
+    @Test
+    @Category(PremiumBlobTests.class)
+    public void testCloudPageBlobSetBlobTier() throws URISyntaxException, StorageException {
+        CloudBlobContainer container =  BlobTestHelper.getRandomPremiumBlobContainerReference();
+        try {
+            container.create();
+            String blobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testblob");
+            CloudPageBlob blob = container.getPageBlobReference(blobName);
+            blob.create(1024);
+            assertNull(blob.getProperties().getInferredBlobTier());
+            blob.downloadAttributes();
+            assertTrue(blob.getProperties().getInferredBlobTier());
+            assertEquals(PremiumPageBlobTier.P10, blob.getProperties().getPremiumPageBlobTier());
+
+            blob.uploadPremiumPageBlobTier(PremiumPageBlobTier.P40);
+            assertEquals(PremiumPageBlobTier.P40, blob.properties.getPremiumPageBlobTier());
+            assertFalse(blob.getProperties().getInferredBlobTier());
+
+            CloudPageBlob blob2 = container.getPageBlobReference(blobName);
+            blob2.downloadAttributes();
+            assertEquals(PremiumPageBlobTier.P40, blob2.properties.getPremiumPageBlobTier());
+            assertNull(blob2.getProperties().getInferredBlobTier());
+
+            boolean pageBlobWithTierFound = false;
+            for (ListBlobItem blobItem : container.listBlobs()) {
+                CloudPageBlob blob3 = (CloudPageBlob) blobItem;
+
+                if (blob.getName().equals(blobName) && !pageBlobWithTierFound) {
+                    // Check that the blob is found exactly once
+                    assertEquals(PremiumPageBlobTier.P40, blob3.properties.getPremiumPageBlobTier());
+                    assertFalse(blob3.getProperties().getInferredBlobTier());
+                    pageBlobWithTierFound = true;
+                } else if (blob.getName().equals(blobName)) {
+                    fail("Page blob found twice");
+                }
+            }
+
+            assertTrue(pageBlobWithTierFound);
+
+            try
+            {
+                CloudPageBlob blob4 = container.getPageBlobReference("blob4");
+                blob4.create(256 * (long)Constants.GB);
+                blob4.uploadPremiumPageBlobTier(PremiumPageBlobTier.P6);
+                fail("Expected failure when setting blob tier size to be less than content length");
+            }
+            catch (StorageException e)
+            {
+                assertEquals("Specified blob tier size limit cannot be less than content length.", e.getMessage());
+            }
+
+            try
+            {
+                blob2.uploadPremiumPageBlobTier(PremiumPageBlobTier.P4);
+                fail("Expected failure when attempted to set the tier to a lower value than previously");
+            }
+            catch (StorageException e)
+            {
+                assertEquals("A higher blob tier has already been explicitly set.", e.getMessage());
+            }
+        }
+        finally {
+            container.deleteIfExists();
+        }
+    }
+
+    @Test
+    @Category(PremiumBlobTests.class)
+    public void testCloudPageBlobSetBlobTierOnCopy() throws URISyntaxException, StorageException, InterruptedException {
+        CloudBlobContainer container =  BlobTestHelper.getRandomPremiumBlobContainerReference();
+        try {
+            container.create();
+            CloudPageBlob source = container.getPageBlobReference("source");
+            source.create(1024, PremiumPageBlobTier.P10, null, null, null);
+
+            // copy to larger disk
+            CloudPageBlob copy = container.getPageBlobReference("copy");
+            String copyId = copy.startCopy(TestHelper.defiddler(source.getUri()), PremiumPageBlobTier.P30, null, null, null, null);
+            assertEquals(BlobType.PAGE_BLOB, copy.getProperties().getBlobType());
+            assertEquals(PremiumPageBlobTier.P30, copy.getProperties().getPremiumPageBlobTier());
+            assertEquals(PremiumPageBlobTier.P10, source.getProperties().getPremiumPageBlobTier());
+            assertFalse(source.getProperties().getInferredBlobTier());
+            assertFalse(copy.getProperties().getInferredBlobTier());
+            BlobTestHelper.waitForCopy(copy);
+
+            CloudPageBlob copyRef = container.getPageBlobReference("copy");
+            copyRef.downloadAttributes();
+            assertEquals(PremiumPageBlobTier.P30, copyRef.getProperties().getPremiumPageBlobTier());
+            assertNull(copyRef.getProperties().getInferredBlobTier());
+
+            // copy where source does not have a tier
+            CloudPageBlob source2 = container.getPageBlobReference("source2");
+            source2.create(1024);
+
+            CloudPageBlob copy3 = container.getPageBlobReference("copy3");
+            String copyId3 = copy3.startCopy(TestHelper.defiddler(source2.getUri()), PremiumPageBlobTier.P60, null ,null ,null, null);
+            assertEquals(BlobType.PAGE_BLOB, copy3.getProperties().getBlobType());
+            assertEquals(PremiumPageBlobTier.P60, copy3.getProperties().getPremiumPageBlobTier());
+            assertNull(source2.getProperties().getPremiumPageBlobTier());
+            assertNull(source2.getProperties().getInferredBlobTier());
+            assertFalse(copy3.getProperties().getInferredBlobTier());
+        }
+        finally {
+            container.deleteIfExists();
+        }
     }
 }

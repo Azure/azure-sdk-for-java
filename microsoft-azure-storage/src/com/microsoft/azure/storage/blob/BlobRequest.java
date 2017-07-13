@@ -54,6 +54,8 @@ final class BlobRequest {
 
     private static final String SNAPSHOTS_QUERY_ELEMENT_NAME = "snapshots";
 
+    private static final String TIER_QUERY_ELEMENT_NAME = "tier";
+
     private static final String UNCOMMITTED_BLOBS_QUERY_ELEMENT_NAME = "uncommittedblobs";
 
     /**
@@ -219,6 +221,8 @@ final class BlobRequest {
      *            The snapshot version, if the source blob is a snapshot.
      * @param incrementalCopy
      *            A boolean indicating whether or not this is an incremental copy.
+     * @param premiumPageBlobTier
+     *            A {@link PremiumPageBlobTier} object which represents the tier of the blob.
      * @return a HttpURLConnection configured for the operation.
      * @throws StorageException
      *             an exception representing any error which occurred during the operation.
@@ -229,7 +233,7 @@ final class BlobRequest {
     public static HttpURLConnection copyFrom(final URI uri, final BlobRequestOptions blobOptions,
             final OperationContext opContext, final AccessCondition sourceAccessCondition,
             final AccessCondition destinationAccessCondition, String source, final String sourceSnapshotID,
-            final boolean incrementalCopy)
+            final boolean incrementalCopy, final PremiumPageBlobTier premiumPageBlobTier)
             throws StorageException, IOException, URISyntaxException {
 
         if (sourceSnapshotID != null) {
@@ -251,6 +255,10 @@ final class BlobRequest {
         request.setRequestMethod(Constants.HTTP_PUT);
 
         request.setRequestProperty(Constants.HeaderConstants.COPY_SOURCE_HEADER, source);
+
+        if (premiumPageBlobTier != null) {
+            request.setRequestProperty(BlobConstants.ACCESS_TIER_HEADER, String.valueOf(premiumPageBlobTier));
+        }
 
         if (sourceAccessCondition != null) {
             sourceAccessCondition.applySourceConditionToRequest(request);
@@ -1146,6 +1154,44 @@ final class BlobRequest {
     public static HttpURLConnection putBlob(final URI uri, final BlobRequestOptions blobOptions,
             final OperationContext opContext, final AccessCondition accessCondition, final BlobProperties properties,
             final BlobType blobType, final long pageBlobSize) throws IOException, URISyntaxException, StorageException {
+        return BlobRequest.putBlob(uri, blobOptions, opContext, accessCondition, properties, blobType, pageBlobSize, null /* premiumPageBlobTier */);
+    }
+
+    /**
+     * Constructs a HttpURLConnection to upload a blob. Sign with blob length, or -1 for pageblob create.
+     * 
+     * @param uri
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
+     * @param blobOptions
+     *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
+     *            {@link CloudBlobClient}.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     * @param properties
+     *            The properties to set for the blob.
+     * @param blobType
+     *            The type of the blob.
+     * @param pageBlobSize
+     *            For a page blob, the size of the blob. This parameter is ignored for block blobs.
+     * @param premiumPageBlobTier
+     *            A {@link PremiumPageBlobTier} object representing the tier to set.
+     * @return a HttpURLConnection to use to perform the operation.
+     * @throws IOException
+     *             if there is an error opening the connection
+     * @throws URISyntaxException
+     *             if the resource URI is invalid
+     * @throws StorageException
+     *             an exception representing any error which occurred during the operation.
+     * @throws IllegalArgumentException
+     */
+    public static HttpURLConnection putBlob(final URI uri, final BlobRequestOptions blobOptions,
+            final OperationContext opContext, final AccessCondition accessCondition, final BlobProperties properties,
+            final BlobType blobType, final long pageBlobSize, final PremiumPageBlobTier premiumPageBlobTier) throws IOException, URISyntaxException, StorageException {
         if (blobType == BlobType.UNSPECIFIED) {
             throw new IllegalArgumentException(SR.BLOB_TYPE_NOT_DEFINED);
         }
@@ -1164,6 +1210,11 @@ final class BlobRequest {
 
             request.setRequestProperty(BlobConstants.BLOB_TYPE_HEADER, BlobConstants.PAGE_BLOB);
             request.setRequestProperty(BlobConstants.SIZE, String.valueOf(pageBlobSize));
+
+            if (premiumPageBlobTier != null)
+            {
+                request.setRequestProperty(BlobConstants.ACCESS_TIER_HEADER, String.valueOf(premiumPageBlobTier));
+            }
 
             properties.setLength(pageBlobSize);
         }
@@ -1224,6 +1275,48 @@ final class BlobRequest {
         if (accessCondition != null) {
             accessCondition.applyConditionToRequest(request);
         }
+
+        return request;
+    }
+    
+    /**
+     * Constructs a HttpURLConnection to set the the tier on a page blob.
+     * This API is only supported for premium accounts.
+     * 
+     * @param uri
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
+     * @param blobOptions
+     *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
+     *            {@link CloudBlobClient}.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * @param premiumBlobTier
+     *            A {@link PremiumPageBlobTier} object representing the tier to set.
+     * @return a HttpURLConnection to use to perform the operation.
+     * @throws IOException
+     *             if there is an error opening the connection
+     * @throws URISyntaxException
+     *             if the resource URI is invalid
+     * @throws StorageException
+     *             an exception representing any error which occurred during the operation.
+     * @throws IllegalArgumentException
+     */
+    public static HttpURLConnection setBlobTier(final URI uri, final BlobRequestOptions blobOptions,
+            final OperationContext opContext, final String premiumBlobTier)
+            throws IOException, URISyntaxException, StorageException {
+        final UriQueryBuilder builder = new UriQueryBuilder();
+        builder.add(Constants.QueryConstants.COMPONENT, TIER_QUERY_ELEMENT_NAME);
+
+        final HttpURLConnection request = createURLConnection(uri, builder, blobOptions, opContext);
+
+        request.setDoOutput(true);
+        request.setRequestMethod(Constants.HTTP_PUT);
+        request.setFixedLengthStreamingMode(0);
+        request.setRequestProperty(Constants.HeaderConstants.CONTENT_LENGTH, "0");
+        request.setRequestProperty(BlobConstants.ACCESS_TIER_HEADER, premiumBlobTier);
 
         return request;
     }

@@ -81,6 +81,16 @@ public class BaseResponse {
     }
 
     /**
+     * Gets if the request was encrypted by the server.
+     * @param request
+     *            The response from the server.
+     * @return A boolean indicating if the request was encrypted by the server.
+     */
+    public static boolean isServerRequestEncrypted(HttpURLConnection request) {
+        return Constants.TRUE.equals(request.getHeaderField(Constants.HeaderConstants.SERVER_REQUEST_ENCRYPTED));
+    }
+    
+    /**
      * Returns all the header/value pairs with the given prefix.
      * 
      * @param request
