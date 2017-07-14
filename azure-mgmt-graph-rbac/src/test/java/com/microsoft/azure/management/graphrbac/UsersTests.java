@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.graphrbac;
 
+import com.microsoft.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -44,5 +45,20 @@ public class UsersTests extends GraphRbacManagementTest {
 
         Assert.assertNotNull(user);
         Assert.assertNotNull(user.id());
+    }
+
+    @Test
+    public void canUpdateUser() throws Exception {
+        String name = SdkContext.randomResourceName("user", 16);
+        ActiveDirectoryUser user = graphRbacManager.users().define("Test " + name)
+                .withEmailAlias(name)
+                .withPassword("StrongPass!123")
+                .create();
+
+        user = user.update()
+                .withUsageLocation(CountryIsoCode.AUSTRALIA)
+                .apply();
+
+        Assert.assertEquals(CountryIsoCode.AUSTRALIA, user.usageLocation());
     }
 }

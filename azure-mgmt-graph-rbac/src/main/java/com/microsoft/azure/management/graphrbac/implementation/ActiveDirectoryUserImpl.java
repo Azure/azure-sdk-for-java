@@ -9,6 +9,7 @@ package com.microsoft.azure.management.graphrbac.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryUser;
 import com.microsoft.azure.management.graphrbac.PasswordProfile;
+import com.microsoft.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import rx.functions.Func1;
@@ -23,7 +24,8 @@ class ActiveDirectoryUserImpl
         extends CreatableUpdatableImpl<ActiveDirectoryUser, UserInner, ActiveDirectoryUserImpl>
         implements
         ActiveDirectoryUser,
-        ActiveDirectoryUser.Definition {
+        ActiveDirectoryUser.Definition,
+        ActiveDirectoryUser.Update {
 
     private final GraphRbacManager manager;
     private UserCreateParametersInner createParameters;
@@ -65,6 +67,11 @@ class ActiveDirectoryUserImpl
     @Override
     public String mailNickname() {
         return inner().mailNickname();
+    }
+
+    @Override
+    public CountryIsoCode usageLocation() {
+        return CountryIsoCode.fromString(inner().usageLocation());
     }
 
     @Override
@@ -130,44 +137,22 @@ class ActiveDirectoryUserImpl
                 return manager().inner().users().createAsync(createParameters);
             }
         })
-//                .onErrorResumeNext(new Func1<Throwable, Observable<? extends UserInner>>() {
-//                    @Override
-//                    public Observable<? extends UserInner> call(Throwable throwable) {
-//                        if (throwable instanceof GraphErrorException
-//                                && throwable.getMessage().contains("Property userPrincipalName is invalid")
-//                                && emailAddress != null) {
-//                            return manager().inner().domains().listAsync()
-//                                    .map(new Func1<List<DomainInner>, DomainInner>() {
-//                                        @Override
-//                                        public DomainInner call(List<DomainInner> domainInners) {
-//                                            for (DomainInner inner : domainInners) {
-//                                                if (inner.isVerified() && inner.isDefault()) {
-//                                                    withUserPrincipalName(
-//                                                            String.format("%s#EXT#@%s",
-//                                                            emailAddress.replace("@", "_"),
-//                                                            inner.name()));
-//                                                }
-//                                            }
-//                                            return null;
-//                                        }
-//                                    }).flatMap(new Func1<DomainInner, Observable<UserInner>>() {
-//                                        @Override
-//                                        public Observable<UserInner> call(DomainInner domainInner) {
-//                                            return manager().inner().users().createAsync(createParameters);
-//                                        }
-//                                    });
-//                        }
-//                        return Observable.error(throwable);
-//                    }
-//                })
         .map(innerToFluentMap(this));
     }
 
-    @Override
-    public ActiveDirectoryUserImpl withMailNickname(String mailNickname) {
+    public Observable<ActiveDirectoryUser> updateResourceAsync() {
+        return manager().inner().users().updateAsync(id(), updateParameters)
+                .flatMap(new Func1<Void, Observable<ActiveDirectoryUser>>() {
+                    @Override
+                    public Observable<ActiveDirectoryUser> call(Void aVoid) {
+                        return refreshAsync();
+                    }
+                });
+    }
+
+    private void withMailNickname(String mailNickname) {
         createParameters.withMailNickname(mailNickname);
         updateParameters.withMailNickname(mailNickname);
-        return this;
     }
 
     @Override
@@ -179,5 +164,19 @@ class ActiveDirectoryUserImpl
     @Override
     public String toString() {
         return name() + " - " + userPrincipalName();
+    }
+
+    @Override
+    public ActiveDirectoryUserImpl withAccountEnabled(boolean accountEnabled) {
+        createParameters.withAccountEnabled(accountEnabled);
+        updateParameters.withAccountEnabled(accountEnabled);
+        return this;
+    }
+
+    @Override
+    public ActiveDirectoryUserImpl withUsageLocation(CountryIsoCode usageLocation) {
+        createParameters.withUsageLocation(usageLocation.toString());
+        updateParameters.withUsageLocation(usageLocation.toString());
+        return this;
     }
 }
