@@ -8,6 +8,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
+import com.microsoft.azure.management.scheduler.JobCollections;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 
@@ -15,7 +16,7 @@ import com.microsoft.rest.RestClient;
 public class ScheduleServiceManager extends Manager<ScheduleServiceManager, SchedulerManagementClientImpl> {
 
     // Collections
-//    private JobCollections jobCollections;
+    private JobCollections jobCollections;
 
     /**
      * Get a Configurable instance that can be used to create ScheduleServiceManager with optional configuration.
@@ -85,13 +86,14 @@ public class ScheduleServiceManager extends Manager<ScheduleServiceManager, Sche
             new SchedulerManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
     }
 
-//    /**
-//     * @return the job collection resource management API entry point
-//     */
-//    public JobCollections jobCollections() {
-//        if (jobCollections == null) {
-//            jobCollections = new JobCollectionsImpl(this);
-//        }
-//        return jobCollections;
-//    }
+    /**
+     * @return the job collection resource management API entry point
+     */
+    public JobCollections jobCollections() {
+        if (jobCollections == null) {
+            jobCollections = new JobCollectionsImpl(this);
+        }
+
+        return jobCollections;
+    }
 }

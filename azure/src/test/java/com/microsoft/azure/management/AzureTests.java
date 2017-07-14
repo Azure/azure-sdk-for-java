@@ -812,6 +812,13 @@ public class AzureTests extends TestBase {
         new TestDocumentDB()
                 .runTest(azure.documentDBAccounts(), azure.resourceGroups());
     }
+
+    @Test
+    public void testJobCollectionAnySku() throws Exception {
+        new TestSchedulerService.JobCollectionAnySku()
+            .runTest(azure.jobScheduler(), azure.resourceGroups());
+    }
+
     @Test
     public void testSearchServiceAnySku() throws Exception {
         new TestSearchService.SearchServiceAnySku()
