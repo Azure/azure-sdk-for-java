@@ -25,7 +25,7 @@ import java.util.Set;
 public interface ActiveDirectoryGroup extends
         ActiveDirectoryObject,
         HasInner<ADGroupInner>,
-        Updatable<ActiveDirectoryGroup.Update>{
+        Updatable<ActiveDirectoryGroup.Update> {
     /**
      * @return security enabled field.
      */
@@ -36,8 +36,16 @@ public interface ActiveDirectoryGroup extends
      */
     String mail();
 
+    /**
+     * List the members in the group.
+     * @return an unmodifiable set of the members
+     */
     Set<ActiveDirectoryObject> listMembers();
 
+    /**
+     * List the members in the group.
+     * @return an unmodifiable set of the members
+     */
     Observable<ActiveDirectoryObject> listMembersAsync();
 
     /**
@@ -89,6 +97,9 @@ public interface ActiveDirectoryGroup extends
         }
     }
 
+    /**
+     * Grouping of all the AD group update stages.
+     */
     interface UpdateStages {
         /**
          * An AD Group definition allowing members to be added or removed.
@@ -110,6 +121,9 @@ public interface ActiveDirectoryGroup extends
         }
     }
 
+    /**
+     * The template for a group update operation, containing all the settings that can be modified.
+     */
     interface Update extends
             Appliable<ActiveDirectoryGroup>,
             UpdateStages.WithMember {

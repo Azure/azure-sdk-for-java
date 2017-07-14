@@ -23,7 +23,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 public interface ActiveDirectoryUser extends
         ActiveDirectoryObject,
         HasInner<UserInner>,
-        Updatable<ActiveDirectoryUser.Update>{
+        Updatable<ActiveDirectoryUser.Update> {
     /**
      * @return Gets or sets user principal name
      */
