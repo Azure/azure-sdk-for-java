@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.storage.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.storage.AccessTier;
 import com.microsoft.azure.management.storage.CustomDomain;
@@ -36,6 +37,7 @@ import java.util.Map;
 /**
  * Implementation for StorageAccount and its parent interfaces.
  */
+@LangDefinition
 class StorageAccountImpl
         extends GroupableResourceImpl<
             StorageAccount,

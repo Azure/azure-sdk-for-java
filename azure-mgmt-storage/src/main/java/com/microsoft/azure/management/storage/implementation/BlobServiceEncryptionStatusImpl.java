@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.storage.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.storage.EncryptionServices;
 import com.microsoft.azure.management.storage.StorageAccountEncryptionStatus;
 import com.microsoft.azure.management.storage.StorageService;
@@ -14,6 +15,7 @@ import org.joda.time.DateTime;
 /**
  * Implementation of StorageAccountEncryptionStatus for Blob service.
  */
+@LangDefinition
 class BlobServiceEncryptionStatusImpl implements StorageAccountEncryptionStatus {
     private final EncryptionServices encryptionServices;
 

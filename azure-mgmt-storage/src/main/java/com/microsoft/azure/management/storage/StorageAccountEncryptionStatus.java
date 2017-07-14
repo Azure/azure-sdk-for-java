@@ -6,11 +6,13 @@
 
 package com.microsoft.azure.management.storage;
 
+import com.microsoft.azure.management.apigeneration.Fluent;
 import org.joda.time.DateTime;
 
 /**
  * Type representing the encryption status of a storage service.
  */
+@Fluent
 public interface StorageAccountEncryptionStatus {
     /**
      * @return the storage service type
