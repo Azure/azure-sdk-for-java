@@ -12,6 +12,12 @@ var mappings = {
         'args': '-FT 1',
         'modeler': 'CompositeSwagger'
     },
+    'eventhub': {
+        'dir': 'azure-mgmt-eventhub',
+        'source': 'arm-eventhub/2015-08-01/swagger/EventHub.json',
+        'package': 'com.microsoft.azure.management.eventhub',
+        'args': '-FT 1'
+    },
     'graphrbac': {
         'dir': 'azure-mgmt-graph-rbac',
         'source': 'arm-graphrbac/1.6/swagger/graphrbac.json',
@@ -245,7 +251,7 @@ var codegen = function(project, cb) {
                         ' -CodeGenerator ' + generator +
                         ' -Namespace ' + mappings[project].package +
                         ' -Input ' + specRoot + '/' + mappings[project].source +
-                        ' -outputDirectory ' + mappings[project].dir + '/src/main/java/' + mappings[project].package.replace(/\./g, '/') +
+                        ' -outputDirectory ' + mappings[project].dir +
                         ' -Header MICROSOFT_MIT_NO_CODEGEN' +
                         ' -skipValidation true' +
                         ' -' + autoRestArgs;
