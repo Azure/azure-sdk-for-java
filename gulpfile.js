@@ -254,6 +254,7 @@ var codegen = function(project, cb) {
                         ' -outputDirectory ' + mappings[project].dir +
                         ' -Header MICROSOFT_MIT_NO_CODEGEN' +
                         ' -skipValidation true' +
+                        ' -RegenerateManager true ' +
                         ' -' + autoRestArgs;
     if (mappings[project].args !== undefined) {
         cmd = cmd + ' ' + mappings[project].args;
