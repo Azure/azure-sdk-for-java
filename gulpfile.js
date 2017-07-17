@@ -67,10 +67,10 @@ var mappings = {
         'package': 'com.microsoft.azure.management.customerinsights',
         'args': '-FT 1'
     },
-    'devtestlabs': {
-        'dir': 'azure-mgmt-devtestlabs',
+    'devtestlab': {
+        'dir': 'azure-mgmt-devtestlab',
         'source': 'arm-devtestlabs/2016-05-15/swagger/DTL.json',
-        'package': 'com.microsoft.azure.management.devtestlabs',
+        'package': 'com.microsoft.azure.management.devtestlab',
         'args': '-FT 1'
     },
     'insights': {
