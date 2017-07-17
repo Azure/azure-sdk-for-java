@@ -149,24 +149,6 @@ class LoadBalancerImpl
         }
     }
 
-    LoadBalancerPublicFrontend findPublicFrontendWithPip(String pipId) {
-        if (pipId == null) {
-            return null;
-        } else {
-            // Use existing frontend already pointing at this PIP, if any
-            for (LoadBalancerPublicFrontend frontend : this.publicFrontends().values()) {
-                if (frontend.publicIPAddressId() == null) {
-                    continue;
-                }
-                else if (pipId.equalsIgnoreCase(frontend.publicIPAddressId())) {
-                    return frontend;
-                }
-            }
-
-            return null;
-        }
-    }
-
     LoadBalancerPrivateFrontend findPrivateFrontendWithSubnet(String networkId, String subnetName) {
         if (null == networkId || null == subnetName) {
             return null;
@@ -203,7 +185,7 @@ class LoadBalancerImpl
     }
 
     LoadBalancerPublicFrontend ensurePublicFrontendWithPip(String pipId) {
-        LoadBalancerPublicFrontend frontend = this.findPublicFrontendWithPip(pipId);
+        LoadBalancerPublicFrontend frontend = this.findFrontendByPublicIPAddress(pipId);
         if (pipId == null) {
             return null;
         } else if (frontend != null) {
@@ -219,7 +201,7 @@ class LoadBalancerImpl
     }
 
     @Override
-    protected void beforeCreating()  {
+    protected void beforeCreating() {
         // Account for the newly created public IPs
         for (Entry<String, String> pipFrontendAssociation : this.creatablePIPKeys.entrySet()) {
             PublicIPAddress pip = (PublicIPAddress) this.createdResource(pipFrontendAssociation.getKey());
@@ -501,8 +483,7 @@ class LoadBalancerImpl
         return withNewPublicIPAddress(dnsLeafLabel);
     }
 
-    @Override
-    public LoadBalancerImpl withNewPublicIPAddress(String dnsLeafLabel) {
+    LoadBalancerImpl withNewPublicIPAddress(String dnsLeafLabel, String frontendName) {
         PublicIPAddress.DefinitionStages.WithGroup precreatablePIP = manager().publicIPAddresses().define(dnsLeafLabel)
                 .withRegion(this.regionName());
         Creatable<PublicIPAddress> creatablePip;
@@ -511,17 +492,40 @@ class LoadBalancerImpl
         } else {
             creatablePip = precreatablePIP.withNewResourceGroup(super.creatableGroup).withLeafDomainLabel(dnsLeafLabel);
         }
-        return withNewPublicIPAddress(creatablePip);
+        return withNewPublicIPAddress(creatablePip, frontendName);
+    }
+
+    @Override
+    public LoadBalancerImpl withNewPublicIPAddress(String dnsLeafLabel) {
+        return withNewPublicIPAddress(dnsLeafLabel, null);
     }
 
     @Override
     public LoadBalancerImpl withNewPublicIPAddress(Creatable<PublicIPAddress> creatablePIP) {
-        return withNewPublicIPAddress(creatablePIP, this.ensureDefaultFrontend().name());
+        return withNewPublicIPAddress(creatablePIP, null);
     }
 
-    private LoadBalancerImpl withNewPublicIPAddress(Creatable<PublicIPAddress> creatablePip, String configName) {
-        this.creatablePIPKeys.put(creatablePip.key(), configName);
-        this.addCreatableDependency(creatablePip);
+    LoadBalancerImpl withNewPublicIPAddress(Creatable<PublicIPAddress> creatablePip, String frontendName) {
+        String existingPipFrontendName = this.creatablePIPKeys.get(creatablePip.key());
+        if (frontendName == null) {
+            if (existingPipFrontendName != null) {
+                // Reuse frontend already associated with this PIP
+                frontendName = existingPipFrontendName;
+            } else {
+                // Auto-named default frontend
+                frontendName = ensureDefaultFrontend().name();
+            }
+        }
+
+        if (existingPipFrontendName == null) {
+            // No frontend associated with this PIP yet so create new association
+            this.creatablePIPKeys.put(creatablePip.key(), frontendName);
+            this.addCreatableDependency(creatablePip);
+        } else if (!existingPipFrontendName.equalsIgnoreCase(frontendName)) {
+            // Existing PIP definition already in use but under a different frontend, so error
+            throw new IllegalArgumentException("This public IP address definition is already associated with a frontend under a different name.");
+        };
+
         return this;
     }
 
@@ -848,5 +852,33 @@ class LoadBalancerImpl
         }
 
         return this.defaultFrontend;
+    }
+
+    @Override
+    public LoadBalancerPublicFrontend findFrontendByPublicIPAddress(String pipId) {
+        if (pipId == null) {
+            return null;
+        } else {
+            // Use existing frontend already pointing at this PIP, if any
+            for (LoadBalancerPublicFrontend frontend : this.publicFrontends().values()) {
+                if (frontend.publicIPAddressId() == null) {
+                    continue;
+                }
+                else if (pipId.equalsIgnoreCase(frontend.publicIPAddressId())) {
+                    return frontend;
+                }
+            }
+
+            return null;
+        }
+    }
+
+    @Override
+    public LoadBalancerPublicFrontend findFrontendByPublicIPAddress(PublicIPAddress publicIPAddress) {
+        if (publicIPAddress == null) {
+            return null;
+        } else {
+            return this.findFrontendByPublicIPAddress(publicIPAddress.id());
+        }
     }
 }

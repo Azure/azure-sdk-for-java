@@ -72,6 +72,22 @@ public interface LoadBalancer extends
     Map<String, LoadBalancerPrivateFrontend> privateFrontends();
 
     /**
+     * Searches for the public frontend that is associated with the provided public IP address, if one exists.
+     * @param publicIPAddress a public IP address to search by
+     * @return a public frontend associated with the provided public IP address
+     */
+    @Beta(SinceVersion.V1_2_0)
+    LoadBalancerPublicFrontend findFrontendByPublicIPAddress(PublicIPAddress publicIPAddress);
+
+    /**
+     * Searches for the public frontend that is associated with the provided public IP address, if one exists.
+     * @param publicIPAddressId the resource ID of a public IP address to search by
+     * @return a public frontend associated with the provided public IP address
+     */
+    @Beta(SinceVersion.V1_2_0)
+    LoadBalancerPublicFrontend findFrontendByPublicIPAddress(String publicIPAddressId);
+
+    /**
      * @return public (Internet-facing) frontends
      */
     @Beta(SinceVersion.V1_2_0)
