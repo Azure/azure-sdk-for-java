@@ -18,6 +18,18 @@ var mappings = {
         'package': 'com.microsoft.azure.management.eventhub',
         'args': '-FT 1'
     },
+    'servicefabric': {
+        'dir': 'azure-mgmt-servicefabric',
+        'source': 'arm-servicefabric/2016-09-01/swagger/servicefabric.json',
+        'package': 'com.microsoft.azure.management.servicefabric',
+        'args': '-FT 1'
+    },
+    'notificationhubs': {
+        'dir': 'azure-mgmt-notificationhubs',
+        'source': 'arm-notificationhubs/2017-04-01/swagger/notificationhubs.json',
+        'package': 'com.microsoft.azure.management.notificationhubs',
+        'args': '-FT 1'
+    },
     'graphrbac': {
         'dir': 'azure-mgmt-graph-rbac',
         'source': 'arm-graphrbac/1.6/swagger/graphrbac.json',
