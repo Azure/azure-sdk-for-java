@@ -1760,15 +1760,14 @@ class VirtualMachineImpl
 
     private Observable<StorageAccount> handleBootDiagnosticsStorageSettings(StorageAccount diskStorageAccount) {
         final Observable<StorageAccount> diskStgObservable = Observable.just(diskStorageAccount);
-        if (this.inner().diagnosticsProfile() == null
-                || this.inner().diagnosticsProfile().bootDiagnostics() == null) {
+        DiagnosticsProfile diagnosticsProfile = this.inner().diagnosticsProfile();
+        if (diagnosticsProfile == null
+                || diagnosticsProfile.bootDiagnostics() == null) {
             return diskStgObservable;
-        }
-        if (this.inner().diagnosticsProfile().bootDiagnostics().storageUri() != null) {
+        } else if (diagnosticsProfile.bootDiagnostics().storageUri() != null) {
             return diskStgObservable;
-        }
-        if (this.inner().diagnosticsProfile().bootDiagnostics().enabled() != null
-                && this.inner().diagnosticsProfile().bootDiagnostics().enabled()) {
+        } else if (diagnosticsProfile.bootDiagnostics().enabled() != null
+                && diagnosticsProfile.bootDiagnostics().enabled()) {
             if (this.creatableDiagnosticsStorageAccountKey != null) {
                 StorageAccount diagnosticsStgAccount = (StorageAccount) this.createdResource(this.creatableDiagnosticsStorageAccountKey);
                 this.inner()
@@ -1776,8 +1775,7 @@ class VirtualMachineImpl
                         .bootDiagnostics()
                         .withStorageUri(diagnosticsStgAccount.endPoints().primary().blob());
                 return diskStgObservable == null ? Observable.just(diagnosticsStgAccount) : diskStgObservable;
-            }
-            if (diskStorageAccount != null) {
+            } else if (diskStorageAccount != null) {
                 this.inner()
                         .diagnosticsProfile()
                         .bootDiagnostics()
