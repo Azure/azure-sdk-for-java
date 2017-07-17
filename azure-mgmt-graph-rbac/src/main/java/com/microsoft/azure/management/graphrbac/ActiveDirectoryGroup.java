@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.graphrbac;
 
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.graphrbac.implementation.ADGroupInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -37,15 +38,17 @@ public interface ActiveDirectoryGroup extends
     String mail();
 
     /**
-     * List the members in the group.
+     * Lists the members in the group.
      * @return an unmodifiable set of the members
      */
+    @Beta(SinceVersion.V1_2_0)
     Set<ActiveDirectoryObject> listMembers();
 
     /**
-     * List the members in the group.
+     * Lists the members in the group.
      * @return an unmodifiable set of the members
      */
+    @Beta(SinceVersion.V1_2_0)
     Observable<ActiveDirectoryObject> listMembersAsync();
 
     /**
@@ -71,6 +74,7 @@ public interface ActiveDirectoryGroup extends
          * An AD Group definition allowing mail nickname to be specified.
          */
         interface WithEmailAlias {
+            @Beta(SinceVersion.V1_2_0)
             WithCreate withEmailAlias(String mailNickname);
         }
 
@@ -83,7 +87,32 @@ public interface ActiveDirectoryGroup extends
              * @param objectId the Active Directory object's id
              * @return the next AD Group definition stage
              */
+            @Beta(SinceVersion.V1_2_0)
             WithCreate withMember(String objectId);
+
+            /**
+             * Adds a user as a member in the group.
+             * @param user the Active Directory user to add
+             * @return the next AD group definition stage
+             */
+            @Beta(SinceVersion.V1_2_0)
+            WithCreate withMember(ActiveDirectoryUser user);
+
+            /**
+             * Adds a group as a member in the group.
+             * @param group the Active Directory group to add
+             * @return the next AD group definition stage
+             */
+            @Beta(SinceVersion.V1_2_0)
+            WithCreate withMember(ActiveDirectoryGroup group);
+
+            /**
+             * Adds a service principal as a member in the group.
+             * @param servicePrincipal the service principal to add
+             * @return the next AD group definition stage
+             */
+            @Beta(SinceVersion.V1_2_0)
+            WithCreate withMember(ServicePrincipal servicePrincipal);
         }
 
         /**
@@ -91,6 +120,7 @@ public interface ActiveDirectoryGroup extends
          * group in the cloud, but exposing additional optional inputs to
          * specify.
          */
+        @Beta(SinceVersion.V1_2_0)
         interface WithCreate extends
                 Creatable<ActiveDirectoryGroup>,
                 WithMember {
@@ -110,20 +140,71 @@ public interface ActiveDirectoryGroup extends
              * @param objectId the Active Directory object's id
              * @return the next AD Group update stage
              */
+            @Beta(SinceVersion.V1_2_0)
             Update withMember(String objectId);
+
+            /**
+             * Adds a user as a member in the group.
+             * @param user the Active Directory user to add
+             * @return the next AD group update stage
+             */
+            @Beta(SinceVersion.V1_2_0)
+            Update withMember(ActiveDirectoryUser user);
+
+            /**
+             * Adds a group as a member in the group.
+             * @param group the Active Directory group to add
+             * @return the next AD group update stage
+             */
+            @Beta(SinceVersion.V1_2_0)
+            Update withMember(ActiveDirectoryGroup group);
+
+            /**
+             * Adds a service principal as a member in the group.
+             * @param servicePrincipal the service principal to add
+             * @return the next AD group update stage
+             */
+            @Beta(SinceVersion.V1_2_0)
+            Update withMember(ServicePrincipal servicePrincipal);
 
             /**
              * Removes a member based on its object id.
              * @param objectId the Active Directory object's id
              * @return the next AD Group update stage
              */
+            @Beta(SinceVersion.V1_2_0)
             Update withoutMember(String objectId);
+
+            /**
+             * Removes a user as a member in the group.
+             * @param user the Active Directory user to remove
+             * @return the next AD group update stage
+             */
+            @Beta(SinceVersion.V1_2_0)
+            Update withoutMember(ActiveDirectoryUser user);
+
+            /**
+             * Removes a group as a member in the group.
+             * @param group the Active Directory group to remove
+             * @return the next AD group update stage
+             */
+            @Beta(SinceVersion.V1_2_0)
+            Update withoutMember(ActiveDirectoryGroup group);
+
+            /**
+             * Removes a service principal as a member in the group.
+             * @param servicePrincipal the service principal to remove
+             * @return the next AD group update stage
+             */
+            @Beta(SinceVersion.V1_2_0)
+            Update withoutMember(ServicePrincipal servicePrincipal);
         }
     }
 
     /**
      * The template for a group update operation, containing all the settings that can be modified.
      */
+    @Beta(SinceVersion.V1_2_0)
     interface Update extends
             Appliable<ActiveDirectoryGroup>,
             UpdateStages.WithMember {

@@ -10,6 +10,8 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroup;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryObject;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryUser;
+import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.protocol.SerializerAdapter;
@@ -195,8 +197,38 @@ class ActiveDirectoryGroupImpl
     }
 
     @Override
+    public ActiveDirectoryGroupImpl withMember(ActiveDirectoryUser user) {
+        return withMember(user.id());
+    }
+
+    @Override
+    public ActiveDirectoryGroupImpl withMember(ActiveDirectoryGroup group) {
+        return withMember(group.id());
+    }
+
+    @Override
+    public ActiveDirectoryGroupImpl withMember(ServicePrincipal servicePrincipal) {
+        return withMember(servicePrincipal.id());
+    }
+
+    @Override
     public ActiveDirectoryGroupImpl withoutMember(String objectId) {
         membersToRemove.add(objectId);
         return this;
+    }
+
+    @Override
+    public ActiveDirectoryGroupImpl withoutMember(ActiveDirectoryUser user) {
+        return withoutMember(user.id());
+    }
+
+    @Override
+    public ActiveDirectoryGroupImpl withoutMember(ActiveDirectoryGroup group) {
+        return withoutMember(group.id());
+    }
+
+    @Override
+    public ActiveDirectoryGroupImpl withoutMember(ServicePrincipal servicePrincipal) {
+        return withoutMember(servicePrincipal.id());
     }
 }
