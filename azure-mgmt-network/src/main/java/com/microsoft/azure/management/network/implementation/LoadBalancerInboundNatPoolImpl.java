@@ -16,6 +16,8 @@ import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 
 /**
@@ -112,6 +114,28 @@ class LoadBalancerInboundNatPoolImpl
     @Override
     public LoadBalancerInboundNatPoolImpl fromExistingPublicIPAddress(String resourceId) {
         return (null != resourceId) ? this.fromFrontend(this.parent().ensurePublicFrontendWithPip(resourceId).name()) : this;
+    }
+
+    @Override
+    public LoadBalancerInboundNatPoolImpl fromNewPublicIPAddress(String leafDnsLabel) {
+        String frontendName = SdkContext.randomResourceName("fe", 20);
+        this.parent().withNewPublicIPAddress(leafDnsLabel, frontendName);
+        this.fromFrontend(frontendName);
+        return this;
+    }
+
+    @Override
+    public LoadBalancerInboundNatPoolImpl fromNewPublicIPAddress(Creatable<PublicIPAddress> pipDefinition) {
+        String frontendName = SdkContext.randomResourceName("fe", 20);
+        this.parent().withNewPublicIPAddress(pipDefinition, frontendName);
+        this.fromFrontend(frontendName);
+        return this;
+    }
+
+    @Override
+    public LoadBalancerInboundNatPoolImpl fromNewPublicIPAddress() {
+        String dnsLabel = SdkContext.randomResourceName("fe", 20);
+        return this.fromNewPublicIPAddress(dnsLabel);
     }
 
     @Override
