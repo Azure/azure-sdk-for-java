@@ -107,7 +107,7 @@ public class TestLoadBalancer {
                     // Load balancing rules
                     .defineLoadBalancingRule("rule1")
                         .withProtocol(TransportProtocol.TCP)    // Required
-                        .fromFrontend("frontend1")
+                        .fromExistingPublicIPAddress(pip1)
                         .fromFrontendPort(81)
                         .toDefaultBackend()
                         .toBackendPort(82)                    // Optionals
@@ -119,7 +119,7 @@ public class TestLoadBalancer {
                     // Inbound NAT pools
                     .defineInboundNatPool("natpool1")
                         .withProtocol(TransportProtocol.TCP)
-                        .fromFrontend("frontend1")
+                        .fromExistingPublicIPAddress(pip1)
                         .fromFrontendPortRange(2000, 2001)
                         .toBackendPort(8080)
                         .attach()

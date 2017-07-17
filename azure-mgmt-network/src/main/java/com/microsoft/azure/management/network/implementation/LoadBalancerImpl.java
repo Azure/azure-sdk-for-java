@@ -524,7 +524,7 @@ class LoadBalancerImpl
         } else if (!existingPipFrontendName.equalsIgnoreCase(frontendName)) {
             // Existing PIP definition already in use but under a different frontend, so error
             throw new IllegalArgumentException("This public IP address definition is already associated with a frontend under a different name.");
-        };
+        }
 
         return this;
     }
