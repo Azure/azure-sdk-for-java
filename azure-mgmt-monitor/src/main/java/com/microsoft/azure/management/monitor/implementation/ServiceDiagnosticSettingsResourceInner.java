@@ -9,6 +9,8 @@
 package com.microsoft.azure.management.monitor.implementation;
 
 import java.util.List;
+import com.microsoft.azure.management.monitor.MetricSettings;
+import com.microsoft.azure.management.monitor.LogSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -35,16 +37,22 @@ public class ServiceDiagnosticSettingsResourceInner extends Resource {
     private String serviceBusRuleId;
 
     /**
+     * The resource Id for the event hub authorization rule.
+     */
+    @JsonProperty(value = "properties.eventHubAuthorizationRuleId")
+    private String eventHubAuthorizationRuleId;
+
+    /**
      * the list of metric settings.
      */
     @JsonProperty(value = "properties.metrics")
-    private List<MetricSettingsInner> metrics;
+    private List<MetricSettings> metrics;
 
     /**
      * the list of logs settings.
      */
     @JsonProperty(value = "properties.logs")
-    private List<LogSettingsInner> logs;
+    private List<LogSettings> logs;
 
     /**
      * The workspace ID (resource ID of a Log Analytics workspace) for a Log
@@ -96,11 +104,31 @@ public class ServiceDiagnosticSettingsResourceInner extends Resource {
     }
 
     /**
+     * Get the eventHubAuthorizationRuleId value.
+     *
+     * @return the eventHubAuthorizationRuleId value
+     */
+    public String eventHubAuthorizationRuleId() {
+        return this.eventHubAuthorizationRuleId;
+    }
+
+    /**
+     * Set the eventHubAuthorizationRuleId value.
+     *
+     * @param eventHubAuthorizationRuleId the eventHubAuthorizationRuleId value to set
+     * @return the ServiceDiagnosticSettingsResourceInner object itself.
+     */
+    public ServiceDiagnosticSettingsResourceInner withEventHubAuthorizationRuleId(String eventHubAuthorizationRuleId) {
+        this.eventHubAuthorizationRuleId = eventHubAuthorizationRuleId;
+        return this;
+    }
+
+    /**
      * Get the metrics value.
      *
      * @return the metrics value
      */
-    public List<MetricSettingsInner> metrics() {
+    public List<MetricSettings> metrics() {
         return this.metrics;
     }
 
@@ -110,7 +138,7 @@ public class ServiceDiagnosticSettingsResourceInner extends Resource {
      * @param metrics the metrics value to set
      * @return the ServiceDiagnosticSettingsResourceInner object itself.
      */
-    public ServiceDiagnosticSettingsResourceInner withMetrics(List<MetricSettingsInner> metrics) {
+    public ServiceDiagnosticSettingsResourceInner withMetrics(List<MetricSettings> metrics) {
         this.metrics = metrics;
         return this;
     }
@@ -120,7 +148,7 @@ public class ServiceDiagnosticSettingsResourceInner extends Resource {
      *
      * @return the logs value
      */
-    public List<LogSettingsInner> logs() {
+    public List<LogSettings> logs() {
         return this.logs;
     }
 
@@ -130,7 +158,7 @@ public class ServiceDiagnosticSettingsResourceInner extends Resource {
      * @param logs the logs value to set
      * @return the ServiceDiagnosticSettingsResourceInner object itself.
      */
-    public ServiceDiagnosticSettingsResourceInner withLogs(List<LogSettingsInner> logs) {
+    public ServiceDiagnosticSettingsResourceInner withLogs(List<LogSettings> logs) {
         this.logs = logs;
         return this;
     }

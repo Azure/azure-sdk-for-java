@@ -11,11 +11,14 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.graphrbac.implementation.ServicePrincipalInner;
 import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * An immutable client-side representation of an Azure AD service principal.
@@ -24,7 +27,8 @@ import java.util.Map;
 @Beta
 public interface ServicePrincipal extends
         ActiveDirectoryObject,
-        HasInner<ServicePrincipalInner> {
+        HasInner<ServicePrincipalInner>,
+        Updatable<ServicePrincipal.Update> {
     /**
      * @return app id.
      */
@@ -46,6 +50,12 @@ public interface ServicePrincipal extends
      */
     @Beta(SinceVersion.V1_1_0)
     Map<String, CertificateCredential> certificateCredentials();
+
+    /**
+     * @return the mapping from scopes to role assignments
+     */
+    @Beta(SinceVersion.V1_2_0)
+    Set<RoleAssignment> roleAssignments();
 
     /**************************************************************
      * Fluent interfaces to provision a service principal
@@ -169,5 +179,89 @@ public interface ServicePrincipal extends
                 WithCredential,
                 WithRoleAssignment {
         }
+    }
+
+    /**
+     * Grouping of all the service principal update stages.
+     */
+    interface UpdateStages {
+        /**
+         * A service principal update allowing credentials to be specified.
+         */
+        interface WithCredential {
+            /**
+             * Starts the definition of a certificate credential.
+             * @param name the descriptive name of the certificate credential
+             * @return the first stage in certificate credential update
+             */
+            @Beta(SinceVersion.V1_2_0)
+            CertificateCredential.DefinitionStages.Blank<Update> defineCertificateCredential(String name);
+
+            /**
+             * Starts the definition of a password credential.
+             * @param name the descriptive name of the password credential
+             * @return the first stage in password credential update
+             */
+            @Beta(SinceVersion.V1_2_0)
+            PasswordCredential.DefinitionStages.Blank<Update> definePasswordCredential(String name);
+
+            /**
+             * Removes a credential.
+             * @param name the name of the credential
+             * @return the next stage of the service principal update
+             */
+            @Beta(SinceVersion.V1_2_0)
+            Update withoutCredential(String name);
+        }
+
+        /**
+         * A service principal update allowing role assignments to be added.
+         */
+        interface WithRoleAssignment {
+            /**
+             * Assigns a new role to the service principal.
+             * @param role the role to assign to the service principal
+             * @param scope the scope the service principal can access
+             * @return the next stage of the service principal update
+             */
+            @Beta(SinceVersion.V1_2_0)
+            Update withNewRole(BuiltInRole role, String scope);
+
+            /**
+             * Assigns a new role to the service principal.
+             * @param role the role to assign to the service principal
+             * @param subscriptionId the subscription the service principal can access
+             * @return the next stage of the service principal update
+             */
+            @Beta(SinceVersion.V1_2_0)
+            Update withNewRoleInSubscription(BuiltInRole role, String subscriptionId);
+
+            /**
+             * Assigns a new role to the service principal.
+             * @param role the role to assign to the service principal
+             * @param resourceGroup the resource group the service principal can access
+             * @return the next stage of the service principal update
+             */
+            @Beta(SinceVersion.V1_2_0)
+            Update withNewRoleInResourceGroup(BuiltInRole role, ResourceGroup resourceGroup);
+
+            /**
+             * Removes a role from the service principal.
+             * @param roleAssignment the role assignment to remove
+             * @return the next stage of the service principal update
+             */
+            @Beta(SinceVersion.V1_2_0)
+            Update withoutRole(RoleAssignment roleAssignment);
+        }
+    }
+
+    /**
+     * The template for a service principal update operation, containing all the settings that can be modified.
+     */
+    interface Update extends
+            Appliable<ServicePrincipal>,
+            ServicePrincipal.UpdateStages.WithCredential,
+            ServicePrincipal.UpdateStages.WithRoleAssignment {
+
     }
 }

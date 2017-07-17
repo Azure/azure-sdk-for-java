@@ -36,7 +36,6 @@ import com.microsoft.azure.management.network.LoadDistribution;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.Networks;
-import com.microsoft.azure.management.network.ProbeProtocol;
 import com.microsoft.azure.management.network.LoadBalancerPrivateFrontend;
 import com.microsoft.azure.management.network.LoadBalancerProbe;
 import com.microsoft.azure.management.network.PublicIPAddress;
@@ -105,32 +104,14 @@ public class TestLoadBalancer {
                     .definePublicFrontend("frontend1")
                         .withExistingPublicIPAddress(pip1)
                         .attach()
-
-                    // Backends
-                    .withExistingVirtualMachines(existingVMs)
-                    .defineBackend("backend1")
-                        .attach()
-
-                    // Probes
-                    .defineTcpProbe("tcpProbe1")
-                        .withPort(25)               // Required
-                        .withIntervalInSeconds(15)  // Optionals
-                        .withNumberOfProbes(5)
-                        .attach()
-                    .defineHttpProbe("httpProbe1")
-                        .withRequestPath("/")       // Required
-                        .withIntervalInSeconds(13)  // Optionals
-                        .withNumberOfProbes(4)
-                        .attach()
-
                     // Load balancing rules
                     .defineLoadBalancingRule("rule1")
                         .withProtocol(TransportProtocol.TCP)    // Required
-                        .withFrontend("frontend1")
-                        .withFrontendPort(81)
+                        .fromFrontend("frontend1")
+                        .fromFrontendPort(81)
+                        .toDefaultBackend()
+                        .toBackendPort(82)                    // Optionals
                         .withProbe("tcpProbe1")
-                        .withBackend("backend1")
-                        .withBackendPort(82)                    // Optionals
                         .withIdleTimeoutInMinutes(10)
                         .withLoadDistribution(LoadDistribution.SOURCE_IP)
                         .attach()
@@ -138,33 +119,57 @@ public class TestLoadBalancer {
                     // Inbound NAT pools
                     .defineInboundNatPool("natpool1")
                         .withProtocol(TransportProtocol.TCP)
-                        .withFrontend("frontend1")
-                        .withFrontendPortRange(2000, 2001)
-                        .withBackendPort(8080)
+                        .fromFrontend("frontend1")
+                        .fromFrontendPortRange(2000, 2001)
+                        .toBackendPort(8080)
                         .attach()
+
+                   // Probes (Optional)
+                   .defineTcpProbe("tcpProbe1")
+                        .withPort(25)               // Required
+                        .withIntervalInSeconds(15)  // Optionals
+                        .withNumberOfProbes(5)
+                        .attach()
+                   .defineHttpProbe("httpProbe1")
+                        .withRequestPath("/")       // Required
+                        .withIntervalInSeconds(13)  // Optionals
+                        .withNumberOfProbes(4)
+                        .attach()
+
+                    // Backends (Optional)
+                    .withExistingVirtualMachines(existingVMs)
 
                     .create();
 
             // Verify frontends
-            Assert.assertTrue(lb.frontends().size() == 2);
-
+            Assert.assertEquals(2, lb.frontends().size());
+            Assert.assertEquals(2, lb.publicFrontends().size());
+            Assert.assertEquals(0, lb.privateFrontends().size());
             LoadBalancerFrontend frontend = lb.frontends().get("frontend1");
             Assert.assertTrue(frontend.isPublic());
             LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
             Assert.assertTrue(pip1.id().equalsIgnoreCase(publicFrontend.publicIPAddressId()));
 
-            frontend = lb.frontends().get("default");
+            for (LoadBalancerFrontend f : lb.frontends().values()) {
+                // Find the implicitly created frontend
+                if (!"frontend1".equalsIgnoreCase(f.name())) {
+                    frontend = f;
+                    break;
+                }
+            }
+
+            Assert.assertNotNull(frontend);
             Assert.assertTrue(frontend.isPublic());
             publicFrontend = (LoadBalancerPublicFrontend) frontend;
             Assert.assertTrue(pip0.id().equalsIgnoreCase(publicFrontend.publicIPAddressId()));
 
             // Verify backends
-            Assert.assertTrue(lb.backends().containsKey("default"));
-            Assert.assertTrue(lb.backends().containsKey("backend1"));
-            Assert.assertTrue(lb.backends().size() == 2);
+            Assert.assertTrue(lb.backends().size() == 1);
 
             // Verify probes
+            Assert.assertEquals(1, lb.httpProbes().size()); 
             Assert.assertTrue(lb.httpProbes().containsKey("httpProbe1"));
+            Assert.assertEquals(1, lb.tcpProbes().size());
             Assert.assertTrue(lb.tcpProbes().containsKey("tcpProbe1"));
             Assert.assertTrue(!lb.httpProbes().containsKey("default"));
             Assert.assertTrue(!lb.tcpProbes().containsKey("default"));
@@ -174,7 +179,7 @@ public class TestLoadBalancer {
             Assert.assertTrue(!lb.loadBalancingRules().containsKey("default"));
             Assert.assertTrue(lb.loadBalancingRules().values().size() == 1);
             LoadBalancingRule rule = lb.loadBalancingRules().get("rule1");
-            Assert.assertTrue(rule.backend().name().equalsIgnoreCase("backend1"));
+            Assert.assertNotNull(rule.backend());
             Assert.assertTrue(rule.frontend().name().equalsIgnoreCase("frontend1"));
             Assert.assertTrue(rule.probe().name().equalsIgnoreCase("tcpProbe1"));
 
@@ -192,9 +197,29 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
+            LoadBalancerFrontend frontend = null;
+            // Find the implicitly created frontend
+            for (LoadBalancerFrontend f : resource.frontends().values()) {
+                if (!"frontend1".equalsIgnoreCase(f.name())) {
+                    frontend = f;
+                    break;
+                }
+            }
+            Assert.assertNotNull(frontend);
+
+            // Find the implicitly created backend
+            LoadBalancerBackend backend = null;
+            for (LoadBalancerBackend b : resource.backends().values()) {
+                if (!"backend1".equalsIgnoreCase(b.name())) {
+                    backend = b;
+                    break;
+                }
+            }
+            Assert.assertNotNull(backend);
+
             resource =  resource.update()
-                    .withoutFrontend("default")
-                    .withoutBackend("default")
+                    .withoutFrontend(frontend.name())
+                    .withoutBackend(backend.name())
                     .withoutBackend("backend1")
                     .withoutLoadBalancingRule("rule1")
                     .withoutInboundNatPool("natpool1")
@@ -208,8 +233,10 @@ public class TestLoadBalancer {
             Assert.assertTrue(resource.tags().containsKey("tag1"));
 
             // Verify frontends
-            Assert.assertFalse(resource.frontends().containsKey("default"));
+            Assert.assertFalse(resource.frontends().containsKey(frontend.name()));
             Assert.assertEquals(1, resource.frontends().size());
+            Assert.assertEquals(1,  resource.publicFrontends().size());
+            Assert.assertEquals(0,  resource.privateFrontends().size());
 
             // Verify probes
             Assert.assertFalse(resource.httpProbes().containsKey("httpProbe1"));
@@ -218,7 +245,7 @@ public class TestLoadBalancer {
             Assert.assertEquals(0, resource.tcpProbes().size());
 
             // Verify backends
-            Assert.assertFalse(resource.backends().containsKey("default"));
+            Assert.assertFalse(resource.backends().containsKey(backend.name()));
             Assert.assertFalse(resource.backends().containsKey("backend1"));
             Assert.assertEquals(0, resource.backends().size());
 
@@ -272,15 +299,28 @@ public class TestLoadBalancer {
                     .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
 
                     // Frontends
-                    .definePublicFrontend("frontend1")
-                        .withExistingPublicIPAddress(pip)
+                    .withExistingPublicIPAddress(pip) // Default public frontend
+
+                    // Load balancing rules
+                    .defineLoadBalancingRule("rule1")
+                        .withProtocol(TransportProtocol.TCP)    // Required
+                        .withExistingPublicIPAddress(pip)       // Uses default frontend because PIP is the same
+                        .fromFrontendPort(81)
+                        .toDefaultBackend()
+                        .toBackendPort(82)                     // Optionals
+                        .withProbe("tcpProbe1")
+                        .withIdleTimeoutInMinutes(10)
+                        .withLoadDistribution(LoadDistribution.SOURCE_IP)
                         .attach()
 
-                    // Backends
-                    .defineBackend("backend1")
+                    // Inbound NAT rules
+                    .defineInboundNatRule("natrule1")
+                        .withProtocol(TransportProtocol.TCP)
+                        .fromDefaultFrontend()
+                        .fromFrontendPort(88)
                         .attach()
 
-                    // Probes
+                    // Probes (Optional)
                     .defineTcpProbe("tcpProbe1")
                         .withPort(25)               // Required
                         .withIntervalInSeconds(15)  // Optionals
@@ -292,58 +332,45 @@ public class TestLoadBalancer {
                         .withNumberOfProbes(4)
                         .attach()
 
-                    // Load balancing rules
-                    .defineLoadBalancingRule("rule1")
-                        .withProtocol(TransportProtocol.TCP)    // Required
-                        .withFrontend("frontend1")
-                        .withFrontendPort(81)
-                        .withProbe("tcpProbe1")
-                        .withBackend("backend1")
-                        .withBackendPort(82)                    // Optionals
-                        .withIdleTimeoutInMinutes(10)
-                        .withLoadDistribution(LoadDistribution.SOURCE_IP)
-                        .attach()
-
-                    // Inbound NAT rules
-                    .defineInboundNatRule("natrule1")
-                        .withProtocol(TransportProtocol.TCP)
-                        .withFrontend("frontend1")
-                        .withFrontendPort(88)
-                        .attach()
                     .create();
+
+            String backendName = lb.backends().values().iterator().next().name();
+            String frontendName = lb.frontends().values().iterator().next().name();
 
             // Connect NICs explicitly
             nic1.update()
-                .withExistingLoadBalancerBackend(lb, "backend1")
+                .withExistingLoadBalancerBackend(lb, backendName)
                 .withExistingLoadBalancerInboundNatRule(lb,  "natrule1")
                 .apply();
             TestNetworkInterface.printNic(nic1);
             Assert.assertTrue(nic1.primaryIPConfiguration().listAssociatedLoadBalancerBackends().get(0).name()
-                    .equalsIgnoreCase("backend1"));
+                    .equalsIgnoreCase(backendName));
             Assert.assertTrue(nic1.primaryIPConfiguration().listAssociatedLoadBalancerInboundNatRules().get(0).name()
                     .equalsIgnoreCase("natrule1"));
 
             nic2.update()
-                .withExistingLoadBalancerBackend(lb, "backend1")
+                .withExistingLoadBalancerBackend(lb, backendName)
                 .apply();
             TestNetworkInterface.printNic(nic2);
             Assert.assertTrue(nic2.primaryIPConfiguration().listAssociatedLoadBalancerBackends().get(0).name()
-                    .equalsIgnoreCase("backend1"));
+                    .equalsIgnoreCase(backendName));
 
             // Verify frontends
-            Assert.assertTrue(lb.frontends().size() == 1);
-            LoadBalancerFrontend frontend = lb.frontends().get("frontend1");
+            Assert.assertEquals(1, lb.frontends().size());
+            Assert.assertEquals(1, lb.publicFrontends().size());
+            Assert.assertEquals(0, lb.privateFrontends().size());
+            LoadBalancerFrontend frontend = lb.frontends().get(frontendName);
             Assert.assertNotNull(frontend);
             Assert.assertTrue(frontend.isPublic());
             LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
             Assert.assertTrue(pip.id().equalsIgnoreCase(publicFrontend.publicIPAddressId()));
 
             pip.refresh();
-            Assert.assertTrue(pip.getAssignedLoadBalancerFrontend().name().equalsIgnoreCase("frontend1"));
+            Assert.assertTrue(pip.getAssignedLoadBalancerFrontend().name().equalsIgnoreCase(frontendName));
             TestPublicIPAddress.printPIP(pip.refresh());
 
             // Verify backends
-            Assert.assertTrue(lb.backends().containsKey("backend1"));
+            Assert.assertTrue(lb.backends().containsKey(backendName));
             Assert.assertTrue(lb.backends().size() == 1);
 
             // Verify probes
@@ -357,15 +384,15 @@ public class TestLoadBalancer {
             Assert.assertTrue(!lb.loadBalancingRules().containsKey("default"));
             Assert.assertTrue(lb.loadBalancingRules().values().size() == 1);
             LoadBalancingRule rule = lb.loadBalancingRules().get("rule1");
-            Assert.assertTrue(rule.backend().name().equalsIgnoreCase("backend1"));
-            Assert.assertTrue(rule.frontend().name().equalsIgnoreCase("frontend1"));
+            Assert.assertTrue(rule.backend().name().equalsIgnoreCase(backendName));
+            Assert.assertTrue(rule.frontend().name().equalsIgnoreCase(frontendName));
             Assert.assertTrue(rule.probe().name().equalsIgnoreCase("tcpProbe1"));
 
             // Verify inbound NAT rules
             Assert.assertTrue(lb.inboundNatRules().containsKey("natrule1"));
             Assert.assertTrue(lb.inboundNatRules().size() == 1);
             LoadBalancerInboundNatRule inboundNatRule = lb.inboundNatRules().get("natrule1");
-            Assert.assertTrue(inboundNatRule.frontend().name().equalsIgnoreCase("frontend1"));
+            Assert.assertTrue(inboundNatRule.frontend().name().equalsIgnoreCase(frontendName));
             Assert.assertTrue(inboundNatRule.frontendPort() == 88);
             Assert.assertTrue(inboundNatRule.backendPort() == 88);
 
@@ -374,8 +401,11 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
+            String backendName = resource.backends().values().iterator().next().name();
+            String frontendName = resource.frontends().values().iterator().next().name();
+
             List<NetworkInterface> nics = new ArrayList<>();
-            for (String nicId : resource.backends().get("backend1").backendNicIPConfigurationNames().keySet()) {
+            for (String nicId : resource.backends().get(backendName).backendNicIPConfigurationNames().keySet()) {
                 nics.add(resource.manager().networkInterfaces().getById(nicId));
             }
             NetworkInterface nic1 = nics.get(0);
@@ -398,11 +428,9 @@ public class TestLoadBalancer {
             ensurePIPs(resource.manager().publicIPAddresses());
             PublicIPAddress pip = resource.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[1]);
             resource =  resource.update()
-                    .updateInternetFrontend("frontend1")
+                    .updatePublicFrontend(frontendName)
                         .withExistingPublicIPAddress(pip)
                         .parent()
-                    .withoutFrontend("default")
-                    .withoutBackend("default")
                     .withoutLoadBalancingRule("rule1")
                     .withoutInboundNatRule("natrule1")
                     .withTag("tag1", "value1")
@@ -412,7 +440,9 @@ public class TestLoadBalancer {
             Assert.assertEquals(0, resource.inboundNatRules().size());
 
             // Verify frontends
-            LoadBalancerFrontend frontend = resource.frontends().get("frontend1");
+            LoadBalancerFrontend frontend = resource.frontends().get(frontendName);
+            Assert.assertEquals(1,  resource.publicFrontends().size());
+            Assert.assertEquals(0,  resource.privateFrontends().size());
             Assert.assertNotNull(frontend);
             Assert.assertTrue(frontend.isPublic());
             LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
@@ -449,34 +479,38 @@ public class TestLoadBalancer {
                     computeManager.virtualMachines(),
                     computeManager.availabilitySets(),
                     2);
-            ensurePIPs(resources.manager().publicIPAddresses());
-            PublicIPAddress pip = resources.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[0]);
+            Creatable<PublicIPAddress> pipDef = resources.manager().publicIPAddresses().define(PIP_NAMES[0])
+                    .withRegion(TestLoadBalancer.REGION)
+                    .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
+                    .withLeafDomainLabel(PIP_NAMES[0]);
 
             // Create a load balancer
             LoadBalancer lb = resources.define(TestLoadBalancer.LB_NAME)
                     .withRegion(TestLoadBalancer.REGION)
                     .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
                     // Frontend (default)
-                    .withExistingPublicIPAddress(pip)
-                    // Backend (default)
-                    .withExistingVirtualMachines(existingVMs)
+                    .withNewPublicIPAddress(pipDef)
                     // Inbound NAT rule
                     .defineInboundNatRule("natrule1")
                         .withProtocol(TransportProtocol.TCP)
-                        .withFrontend("default")
-                        .withFrontendPort(88)
-                        .withBackendPort(80)
+                        .fromDefaultFrontend()
+                        .fromFrontendPort(88)
+                        .toBackendPort(80)
                         .attach()
+                    // Backend (default)
+                    .withExistingVirtualMachines(existingVMs)
 
                     .create();
 
             // Verify frontends
-            Assert.assertTrue(lb.frontends().containsKey("default"));
-            LoadBalancerFrontend frontend = lb.frontends().get("default");
+            Assert.assertEquals(1, lb.frontends().size());
+            LoadBalancerFrontend frontend = lb.frontends().values().iterator().next();
+            Assert.assertEquals(1, lb.publicFrontends().size());
+            Assert.assertEquals(0,  lb.privateFrontends().size());
             Assert.assertEquals(0, frontend.loadBalancingRules().size());
             Assert.assertTrue(frontend.isPublic());
             LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
-            Assert.assertTrue(pip.id().equalsIgnoreCase(publicFrontend.publicIPAddressId()));
+            Assert.assertNotNull(publicFrontend.publicIPAddressId());
 
             // Verify probes
             Assert.assertTrue(lb.tcpProbes().isEmpty());
@@ -491,12 +525,11 @@ public class TestLoadBalancer {
             Assert.assertNotNull(natRule);
             Assert.assertEquals(TransportProtocol.TCP, natRule.protocol());
             Assert.assertNotNull(natRule.frontend());
-            Assert.assertEquals("default", natRule.frontend().name());
             Assert.assertEquals(88, natRule.frontendPort());
 
             // Verify backends
             Assert.assertEquals(1, lb.backends().size());
-            LoadBalancerBackend backend = lb.backends().get("default");
+            LoadBalancerBackend backend = lb.backends().values().iterator().next();
             Assert.assertNotNull(backend);
             Assert.assertEquals(2, backend.backendNicIPConfigurationNames().size());
             for (VirtualMachine vm : existingVMs) {
@@ -508,13 +541,24 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
-            ensurePIPs(resource.manager().publicIPAddresses());
-            PublicIPAddress pip = resource.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[1]);
+            LoadBalancerFrontend frontend = resource.frontends().values().iterator().next();
+            Assert.assertNotNull(frontend);
+            LoadBalancerBackend backend = resource.backends().values().iterator().next();
+            Assert.assertNotNull(backend);
+
+            PublicIPAddress pip = resource.manager().publicIPAddresses().define(PIP_NAMES[1])
+                    .withRegion(TestLoadBalancer.REGION)
+                    .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
+                    .withLeafDomainLabel(PIP_NAMES[1])
+                    .create();
+
             resource =  resource.update()
-                    .withExistingPublicIPAddress(pip)
+                    .updatePublicFrontend(frontend.name())
+                        .withExistingPublicIPAddress(pip)
+                        .parent()
                     .defineBackend("backend2")
                         .attach()
-                    .withoutBackend("default")
+                    .withoutBackend(backend.name())
                     .withoutInboundNatRule("natrule1")
                     .withTag("tag1", "value1")
                     .withTag("tag2", "value2")
@@ -523,7 +567,9 @@ public class TestLoadBalancer {
 
             // Verify frontends
             Assert.assertEquals(1, resource.frontends().size());
-            LoadBalancerFrontend frontend = resource.frontends().get("default");
+            Assert.assertEquals(1, resource.publicFrontends().size());
+            Assert.assertEquals(0,  resource.privateFrontends().size());
+            frontend = resource.frontends().get(frontend.name());
             Assert.assertTrue(frontend.isPublic());
             LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
             Assert.assertTrue(pip.id().equalsIgnoreCase(publicFrontend.publicIPAddressId()));
@@ -535,7 +581,7 @@ public class TestLoadBalancer {
 
             // Verify backends
             Assert.assertTrue(resource.backends().containsKey("backend2"));
-            Assert.assertTrue(!resource.backends().containsKey("default"));
+            Assert.assertTrue(!resource.backends().containsKey(backend.name()));
 
             // Verify NAT rules
             Assert.assertTrue(resource.inboundNatRules().isEmpty());
@@ -584,51 +630,44 @@ public class TestLoadBalancer {
                     .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
                     // Frontend (default)
                     .withExistingPublicIPAddress(pip)
+                    // LB rule
+                    .defineLoadBalancingRule("lbrule1")
+                        .withProtocol(TransportProtocol.TCP)
+                        .fromDefaultFrontend()
+                        .fromFrontendPort(80)
+                        .toDefaultBackend()
+                        .attach()
                     // Backend (default)
                     .withExistingVirtualMachines(existingVMs)
-                    // Probe (default)
-                    .withTcpProbe(22)
-                    // LB rule (default)
-                    .withLoadBalancingRule(80, TransportProtocol.TCP)
                     .create();
 
             // Verify frontends
-            Assert.assertTrue(lb.frontends().containsKey("default"));
-            LoadBalancerFrontend frontend = lb.frontends().get("default");
+            Assert.assertEquals(1, lb.frontends().size());
+            Assert.assertEquals(1, lb.publicFrontends().size());
+            Assert.assertEquals(0, lb.privateFrontends().size());
+            LoadBalancerFrontend frontend = lb.frontends().values().iterator().next();
             Assert.assertEquals(1, frontend.loadBalancingRules().size());
-            Assert.assertTrue("default".equalsIgnoreCase(frontend.loadBalancingRules().values().iterator().next().name()));
+            Assert.assertTrue("lbrule1".equalsIgnoreCase(frontend.loadBalancingRules().values().iterator().next().name()));
             Assert.assertTrue(frontend.isPublic());
             LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
             Assert.assertTrue(pip.id().equalsIgnoreCase(publicFrontend.publicIPAddressId()));
 
             // Verify TCP probes
-            Assert.assertTrue(lb.tcpProbes().containsKey("default"));
-            Assert.assertEquals(1, lb.tcpProbes().size());
-            LoadBalancerTcpProbe tcpProbe = lb.tcpProbes().get("default");
-            Assert.assertTrue(tcpProbe.loadBalancingRules().containsKey("default"));
-            Assert.assertEquals(1, tcpProbe.loadBalancingRules().size());
-            Assert.assertEquals(22, tcpProbe.port());
-            Assert.assertEquals(ProbeProtocol.TCP, tcpProbe.protocol());
+            Assert.assertEquals(0, lb.tcpProbes().size());
 
             // Verify rules
             Assert.assertEquals(1, lb.loadBalancingRules().size());
-            Assert.assertTrue(lb.loadBalancingRules().containsKey("default"));
-            LoadBalancingRule lbrule = lb.loadBalancingRules().get("default");
-            Assert.assertTrue("default".equalsIgnoreCase(lbrule.frontend().name()));
-            Assert.assertTrue("default".equalsIgnoreCase(lbrule.probe().name()));
-            Assert.assertEquals(80, lbrule.backendPort());
+            LoadBalancingRule lbrule = lb.loadBalancingRules().get("lbrule1");
             Assert.assertNotNull(lbrule.frontend());
-            Assert.assertTrue("default".equalsIgnoreCase(lbrule.frontend().name()));
+            Assert.assertEquals(80, lbrule.backendPort());
             Assert.assertEquals(80, lbrule.frontendPort());
-            Assert.assertNotNull(lbrule.probe());
-            Assert.assertTrue("default".equalsIgnoreCase(lbrule.probe().name()));
+            Assert.assertNull(lbrule.probe());
             Assert.assertEquals(TransportProtocol.TCP, lbrule.protocol());
             Assert.assertNotNull(lbrule.backend());
-            Assert.assertTrue("default".equalsIgnoreCase(lbrule.backend().name()));
 
             // Verify backends
             Assert.assertEquals(1, lb.backends().size());
-            LoadBalancerBackend backend = lb.backends().get("default");
+            LoadBalancerBackend backend = lb.backends().values().iterator().next();
             Assert.assertNotNull(backend);
             Assert.assertEquals(2, backend.backendNicIPConfigurationNames().size());
             for (VirtualMachine vm : existingVMs) {
@@ -640,32 +679,36 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
+            LoadBalancerBackend backend = resource.backends().values().iterator().next();
+            Assert.assertNotNull(backend);
+
             ensurePIPs(resource.manager().publicIPAddresses());
             PublicIPAddress pip = resource.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[1]);
             resource =  resource.update()
                     .withExistingPublicIPAddress(pip)
-                    .updateTcpProbe("default")
+                    .defineTcpProbe("tcpprobe")
                         .withPort(22)
-                        .parent()
+                        .attach()
                     .defineHttpProbe("httpprobe")
                         .withRequestPath("/foo")
                         .withNumberOfProbes(3)
                         .withPort(443)
                         .attach()
-                    .updateLoadBalancingRule("default")
-                        .withBackendPort(8080)
+                    .updateLoadBalancingRule("lbrule1")
+                        .toBackendPort(8080)
                         .withIdleTimeoutInMinutes(11)
+                        .withProbe("tcpprobe")
                         .parent()
                     .defineLoadBalancingRule("lbrule2")
                         .withProtocol(TransportProtocol.UDP)
-                        .withFrontend("default")
-                        .withFrontendPort(22)
+                        .fromDefaultFrontend()
+                        .fromFrontendPort(22)
+                        .toBackend("backend2")
                         .withProbe("httpprobe")
-                        .withBackend("backend2")
                         .attach()
                     .defineBackend("backend2")
                         .attach()
-                    .withoutBackend("default")
+                    .withoutBackend(backend.name())
                     .withTag("tag1", "value1")
                     .withTag("tag2", "value2")
                     .apply();
@@ -673,16 +716,20 @@ public class TestLoadBalancer {
 
             // Verify frontends
             Assert.assertEquals(1, resource.frontends().size());
-            LoadBalancerFrontend frontend = resource.frontends().get("default");
+            Assert.assertEquals(1, resource.publicFrontends().size());
+            Assert.assertEquals(0, resource.privateFrontends().size());
+            LoadBalancerFrontend frontend = resource.frontends().values().iterator().next();
             Assert.assertTrue(frontend.isPublic());
             LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
             Assert.assertTrue(pip.id().equalsIgnoreCase(publicFrontend.publicIPAddressId()));
             Assert.assertEquals(2, publicFrontend.loadBalancingRules().size());
 
             // Verify probes
-            LoadBalancerTcpProbe tcpProbe = resource.tcpProbes().get("default");
+            LoadBalancerTcpProbe tcpProbe = resource.tcpProbes().get("tcpprobe");
             Assert.assertNotNull(tcpProbe);
             Assert.assertEquals(22, tcpProbe.port());
+            Assert.assertEquals(1, tcpProbe.loadBalancingRules().size());
+            Assert.assertTrue(tcpProbe.loadBalancingRules().containsKey("lbrule1"));
 
             LoadBalancerHttpProbe httpProbe = resource.httpProbes().get("httpprobe");
             Assert.assertNotNull(httpProbe);
@@ -692,21 +739,22 @@ public class TestLoadBalancer {
 
             // Verify backends
             Assert.assertTrue(resource.backends().containsKey("backend2"));
-            Assert.assertTrue(!resource.backends().containsKey("default"));
+            Assert.assertTrue(!resource.backends().containsKey(backend.name()));
 
             // Verify load balancing rules
-            LoadBalancingRule lbRule = resource.loadBalancingRules().get("default");
+            LoadBalancingRule lbRule = resource.loadBalancingRules().get("lbrule1");
             Assert.assertNotNull(lbRule);
             Assert.assertNull(lbRule.backend());
             Assert.assertEquals(8080, lbRule.backendPort());
-            Assert.assertTrue("default".equalsIgnoreCase(lbRule.frontend().name()));
+            Assert.assertNotNull(lbRule.frontend());
             Assert.assertEquals(11,  lbRule.idleTimeoutInMinutes());
+            Assert.assertNotNull(lbRule.probe());
+            Assert.assertEquals(tcpProbe.name(), lbRule.probe().name());
 
             lbRule = resource.loadBalancingRules().get("lbrule2");
             Assert.assertNotNull(lbRule);
             Assert.assertEquals(22, lbRule.frontendPort());
             Assert.assertNotNull(lbRule.frontend());
-            Assert.assertTrue("default".equalsIgnoreCase(lbRule.frontend().name()));
             Assert.assertTrue("httpprobe".equalsIgnoreCase(lbRule.probe().name()));
             Assert.assertEquals(TransportProtocol.UDP, lbRule.protocol());
             Assert.assertNotNull(lbRule.backend());
@@ -753,24 +801,27 @@ public class TestLoadBalancer {
             LoadBalancer lb = resources.define(TestLoadBalancer.LB_NAME)
                     .withRegion(TestLoadBalancer.REGION)
                     .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
-                    // Frontend (default)
+                    // Frontend
                     .withFrontendSubnet(network, "subnet1")
-                    // Backend (default)
-                    .withExistingVirtualMachines(existingVMs)
-                    .defineBackend("foo")
-                    .attach()
-                    // Probe (default)
-                    .withTcpProbe(22)
-                    // LB rule (default)
-                    .withLoadBalancingRule(80, TransportProtocol.TCP)
+                    // LB rule
+                    .defineLoadBalancingRule("lbrule1")
+                        .withProtocol(TransportProtocol.TCP)
+                        .fromDefaultFrontend()
+                        .fromFrontendPort(80)
+                        .toDefaultBackend()
+                        .attach()
+                    // Backends
+                    .withExistingVirtualMachines(existingVMs) // Default backend
                     .create();
 
             // Verify frontends
-            Assert.assertTrue(lb.frontends().containsKey("default"));
-            LoadBalancerFrontend frontend = lb.frontends().get("default");
+            Assert.assertEquals(1, lb.frontends().size());
+            Assert.assertEquals(1, lb.privateFrontends().size());
+            Assert.assertEquals(0, lb.publicFrontends().size());
+            LoadBalancerFrontend frontend = lb.frontends().values().iterator().next();
             Assert.assertEquals(1, frontend.loadBalancingRules().size());
-            Assert.assertTrue("default".equalsIgnoreCase(frontend.loadBalancingRules().values().iterator().next().name()));
             Assert.assertFalse(frontend.isPublic());
+            Assert.assertTrue("lbrule1".equalsIgnoreCase(frontend.loadBalancingRules().values().iterator().next().name()));
             LoadBalancerPrivateFrontend privateFrontend = (LoadBalancerPrivateFrontend) frontend;
             Assert.assertTrue(network.id().equalsIgnoreCase(privateFrontend.networkId()));
             Assert.assertNotNull(privateFrontend.privateIPAddress());
@@ -778,38 +829,23 @@ public class TestLoadBalancer {
             Assert.assertEquals(IPAllocationMethod.DYNAMIC, privateFrontend.privateIPAllocationMethod());
 
             // Verify TCP probes
-            Assert.assertTrue(lb.tcpProbes().containsKey("default"));
-            Assert.assertEquals(1, lb.tcpProbes().size());
-            LoadBalancerTcpProbe tcpProbe = lb.tcpProbes().get("default");
-            Assert.assertTrue(tcpProbe.loadBalancingRules().containsKey("default"));
-            Assert.assertEquals(1, tcpProbe.loadBalancingRules().size());
-            Assert.assertEquals(22, tcpProbe.port());
-            Assert.assertEquals(ProbeProtocol.TCP, tcpProbe.protocol());
+            Assert.assertEquals(0, lb.tcpProbes().size());
 
             // Verify rules
             Assert.assertEquals(1, lb.loadBalancingRules().size());
-            Assert.assertTrue(lb.loadBalancingRules().containsKey("default"));
-            LoadBalancingRule lbrule = lb.loadBalancingRules().get("default");
-            Assert.assertTrue("default".equalsIgnoreCase(lbrule.frontend().name()));
-            Assert.assertTrue("default".equalsIgnoreCase(lbrule.probe().name()));
-            Assert.assertEquals(80, lbrule.backendPort());
+            LoadBalancingRule lbrule = lb.loadBalancingRules().get("lbrule1");
+            Assert.assertNotNull(lbrule);
             Assert.assertNotNull(lbrule.frontend());
-            Assert.assertTrue("default".equalsIgnoreCase(lbrule.frontend().name()));
+            Assert.assertEquals(80, lbrule.backendPort());
             Assert.assertEquals(80, lbrule.frontendPort());
-            Assert.assertNotNull(lbrule.probe());
-            Assert.assertTrue("default".equalsIgnoreCase(lbrule.probe().name()));
+            Assert.assertNull(lbrule.probe());
             Assert.assertEquals(TransportProtocol.TCP, lbrule.protocol());
             Assert.assertNotNull(lbrule.backend());
-            Assert.assertTrue("default".equalsIgnoreCase(lbrule.backend().name()));
 
             // Verify backends
-            Assert.assertEquals(2, lb.backends().size());
+            Assert.assertEquals(1, lb.backends().size());
 
-            LoadBalancerBackend backend = lb.backends().get("foo");
-            Assert.assertNotNull(backend);
-            Assert.assertTrue(backend.backendNicIPConfigurationNames().isEmpty());
-
-            backend = lb.backends().get("default");
+            LoadBalancerBackend backend = lb.backends().values().iterator().next();
             Assert.assertNotNull(backend);
             Assert.assertEquals(2, backend.backendNicIPConfigurationNames().size());
             for (VirtualMachine vm : existingVMs) {
@@ -821,33 +857,39 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
+            LoadBalancerFrontend frontend = resource.frontends().values().iterator().next();
+            Assert.assertNotNull(frontend);
+            LoadBalancerBackend backend = resource.backends().values().iterator().next();
+            Assert.assertNotNull(backend);
+
             resource =  resource.update()
-                    .updateInternalFrontend("default")
+                    .updatePrivateFrontend(frontend.name())
                         .withExistingSubnet(this.network, "subnet2")
                         .withPrivateIPAddressStatic("10.0.0.13")
                         .parent()
-                    .updateTcpProbe("default")
+                    .defineTcpProbe("tcpprobe")
                         .withPort(22)
-                        .parent()
+                        .attach()
                     .defineHttpProbe("httpprobe")
                         .withRequestPath("/foo")
                         .withNumberOfProbes(3)
                         .withPort(443)
                         .attach()
-                    .updateLoadBalancingRule("default")
-                        .withBackendPort(8080)
+                    .updateLoadBalancingRule("lbrule1")
+                        .toBackendPort(8080)
                         .withIdleTimeoutInMinutes(11)
+                        .withProbe("tcpprobe")
                         .parent()
                     .defineLoadBalancingRule("lbrule2")
                         .withProtocol(TransportProtocol.UDP)
-                        .withFrontend("default")
-                        .withFrontendPort(22)
+                        .fromDefaultFrontend()
+                        .fromFrontendPort(22)
+                        .toBackend("backend2")
                         .withProbe("httpprobe")
-                        .withBackend("backend2")
                         .attach()
                     .defineBackend("backend2")
                         .attach()
-                    .withoutBackend("default")
+                    .withoutBackend(backend.name())
                     .withTag("tag1", "value1")
                     .withTag("tag2", "value2")
                     .apply();
@@ -855,7 +897,9 @@ public class TestLoadBalancer {
 
             // Verify frontends
             Assert.assertEquals(1, resource.frontends().size());
-            LoadBalancerFrontend frontend = resource.frontends().get("default");
+            Assert.assertEquals(1,  resource.privateFrontends().size());
+            Assert.assertEquals(0, resource.publicFrontends().size());
+            frontend = resource.frontends().get(frontend.name());
             Assert.assertFalse(frontend.isPublic());
             LoadBalancerPrivateFrontend privateFrontend = (LoadBalancerPrivateFrontend) frontend;
             Assert.assertTrue("subnet2".equalsIgnoreCase(privateFrontend.subnetName()));
@@ -864,9 +908,11 @@ public class TestLoadBalancer {
             Assert.assertEquals(2, privateFrontend.loadBalancingRules().size());
 
             // Verify probes
-            LoadBalancerTcpProbe tcpProbe = resource.tcpProbes().get("default");
+            Assert.assertEquals(1, resource.tcpProbes().size());
+            LoadBalancerTcpProbe tcpProbe = resource.tcpProbes().get("tcpprobe");
             Assert.assertNotNull(tcpProbe);
             Assert.assertEquals(22,  tcpProbe.port());
+            Assert.assertTrue(tcpProbe.loadBalancingRules().containsKey("lbrule1"));
 
             LoadBalancerHttpProbe httpProbe = resource.httpProbes().get("httpprobe");
             Assert.assertNotNull(httpProbe);
@@ -876,21 +922,22 @@ public class TestLoadBalancer {
 
             // Verify backends
             Assert.assertTrue(resource.backends().containsKey("backend2"));
-            Assert.assertTrue(!resource.backends().containsKey("default"));
+            Assert.assertTrue(!resource.backends().containsKey(backend.name()));
 
             // Verify load balancing rules
-            LoadBalancingRule lbRule = resource.loadBalancingRules().get("default");
+            LoadBalancingRule lbRule = resource.loadBalancingRules().get("lbrule1");
             Assert.assertNotNull(lbRule);
             Assert.assertNull(lbRule.backend());
             Assert.assertEquals(8080, lbRule.backendPort());
-            Assert.assertTrue("default".equalsIgnoreCase(lbRule.frontend().name()));
+            Assert.assertNotNull(lbRule.frontend());
             Assert.assertEquals(11,  lbRule.idleTimeoutInMinutes());
+            Assert.assertNotNull(lbRule.probe());
+            Assert.assertEquals(tcpProbe.name(), lbRule.probe().name());
 
             lbRule = resource.loadBalancingRules().get("lbrule2");
             Assert.assertNotNull(lbRule);
             Assert.assertEquals(22, lbRule.frontendPort());
             Assert.assertNotNull(lbRule.frontend());
-            Assert.assertTrue("default".equalsIgnoreCase(lbRule.frontend().name()));
             Assert.assertTrue("httpprobe".equalsIgnoreCase(lbRule.probe().name()));
             Assert.assertEquals(TransportProtocol.UDP, lbRule.protocol());
             Assert.assertNotNull(lbRule.backend());

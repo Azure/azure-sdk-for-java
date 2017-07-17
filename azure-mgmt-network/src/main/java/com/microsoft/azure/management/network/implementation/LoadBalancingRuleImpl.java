@@ -12,6 +12,7 @@ import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.LoadDistribution;
+import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.LoadBalancerProbe;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -19,7 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 
 /**
- *  Implementation for {@link LoadBalancingRule}.
+ *  Implementation for LoadBalancingRule.
  */
 @LangDefinition
 class LoadBalancingRuleImpl
@@ -110,8 +111,17 @@ class LoadBalancingRuleImpl
         }
     }
 
+    // Fluent withers
 
-    // Fluent setters
+    @Override
+    public LoadBalancingRuleImpl withExistingPublicIPAddress(PublicIPAddress publicIPAddress) {
+        return (publicIPAddress != null) ? this.withExistingPublicIPAddress(publicIPAddress.id()) : this;
+    }
+
+    @Override
+    public LoadBalancingRuleImpl withExistingPublicIPAddress(String resourceId) {
+        return (null != resourceId) ? this.fromFrontend(this.parent().ensurePublicFrontendWithPip(resourceId).name()) : this;
+    }
 
     @Override
     public LoadBalancingRuleImpl withIdleTimeoutInMinutes(int minutes) {
@@ -142,7 +152,7 @@ class LoadBalancingRuleImpl
     }
 
     @Override
-    public LoadBalancingRuleImpl withFrontendPort(int port) {
+    public LoadBalancingRuleImpl fromFrontendPort(int port) {
         this.inner().withFrontendPort(port);
 
         // If backend port not specified earlier, make it the same as the frontend by default
@@ -154,7 +164,7 @@ class LoadBalancingRuleImpl
     }
 
     @Override
-    public LoadBalancingRuleImpl withBackendPort(int port) {
+    public LoadBalancingRuleImpl toBackendPort(int port) {
         this.inner().withBackendPort(port);
         return this;
     }
@@ -166,15 +176,33 @@ class LoadBalancingRuleImpl
     }
 
     @Override
-    public LoadBalancingRuleImpl withFrontend(String frontendName) {
-        SubResource frontendRef = new SubResource()
-                .withId(this.parent().futureResourceId() + "/frontendIPConfigurations/" + frontendName);
-        this.inner().withFrontendIPConfiguration(frontendRef);
+    public LoadBalancingRuleImpl fromDefaultFrontend() {
+        return this.fromFrontend(null);
+    }
+
+    @Override
+    public LoadBalancingRuleImpl fromFrontend(String frontendName) {
+        SubResource frontendRef = this.parent().ensureFrontendRef(frontendName);
+        if (frontendRef != null) {
+            this.inner().withFrontendIPConfiguration(frontendRef);
+        }
         return this;
     }
 
     @Override
-    public LoadBalancingRuleImpl withBackend(String backendName) {
+    public LoadBalancingRuleImpl toDefaultBackend() {
+        return this.toBackend(null);
+    }
+
+    @Override
+    public LoadBalancingRuleImpl toBackend(String backendName) {
+        // Ensure existence of backend, creating one if needed
+        if (backendName == null) {
+            backendName = this.parent().ensureDefaultBackend().name();
+        } else {
+            this.parent().defineBackend(backendName).attach();
+        }
+
         SubResource backendRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/backendAddressPools/" + backendName);
         this.inner().withBackendAddressPool(backendRef);
@@ -186,6 +214,12 @@ class LoadBalancingRuleImpl
         SubResource probeRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/probes/" + name);
         this.inner().withProbe(probeRef);
+        return this;
+    }
+
+    @Override
+    public Update withoutProbe() {
+        this.inner().withProbe(null);
         return this;
     }
 

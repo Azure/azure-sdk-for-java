@@ -600,7 +600,7 @@ public class AzureTests extends TestBase {
         PacketCapture packetCapture = nw.packetCaptures()
                 .define("NewPacketCapture")
                 .withTarget(virtualMachines[0].id())
-                .withExistingStorageAccount(storageAccount)
+                .withStorageAccountId(storageAccount.id())
                 .withTimeLimitInSeconds(1500)
                 .definePacketCaptureFilter()
                     .withProtocol(PcProtocol.TCP)
@@ -812,4 +812,10 @@ public class AzureTests extends TestBase {
         new TestDocumentDB()
                 .runTest(azure.documentDBAccounts(), azure.resourceGroups());
     }
+    @Test
+    public void testSearchServiceAnySku() throws Exception {
+        new TestSearchService.SearchServiceAnySku()
+            .runTest(azure.searchServices(), azure.resourceGroups());
+    }
+
 }

@@ -48,13 +48,13 @@ public class LogProfileResourceInner extends Resource {
      * convenient to the user. Some values are: 'Write', 'Delete', and/or
      * 'Action.'.
      */
-    @JsonProperty(value = "properties.categories")
+    @JsonProperty(value = "properties.categories", required = true)
     private List<String> categories;
 
     /**
      * the retention policy for the events in the log.
      */
-    @JsonProperty(value = "properties.retentionPolicy")
+    @JsonProperty(value = "properties.retentionPolicy", required = true)
     private RetentionPolicy retentionPolicy;
 
     /**
