@@ -223,11 +223,6 @@ class LoadBalancingRuleImpl
     }
 
     @Override
-    public LoadBalancingRuleImpl fromDefaultFrontend() {
-        return this.fromFrontend(null);
-    }
-
-    @Override
     public LoadBalancingRuleImpl fromFrontend(String frontendName) {
         SubResource frontendRef = this.parent().ensureFrontendRef(frontendName);
         if (frontendRef != null) {

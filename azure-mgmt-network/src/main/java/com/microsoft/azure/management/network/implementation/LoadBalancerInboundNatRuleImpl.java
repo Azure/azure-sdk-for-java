@@ -189,11 +189,6 @@ class LoadBalancerInboundNatRuleImpl
     }
 
     @Override
-    public LoadBalancerInboundNatRuleImpl fromDefaultFrontend() {
-        return this.fromFrontend(this.parent().ensureDefaultFrontend().name());
-    }
-
-    @Override
     public LoadBalancerInboundNatRuleImpl fromExistingSubnet(String networkResourceId, String subnetName) {
         return (null != networkResourceId && null != subnetName)
                 ? this.fromFrontend(this.parent().ensurePrivateFrontendWithSubnet(networkResourceId, subnetName).name())

@@ -42,13 +42,6 @@ public interface HasFrontend  {
             ReturnT fromFrontend(String frontendName);
 
             /**
-             * Selects the load balancer's default frontend as the frontend to receive network traffic from.
-             * @return the next stage of the definition
-             */
-            @Beta(SinceVersion.V1_2_0)
-            ReturnT fromDefaultFrontend();
-
-            /**
              * Specifies that network traffic should be received on a new public IP address that is to be created along with the load balancer
              * in the same region and resource group but under the provided leaf DNS label, assuming it is available.
              * <p>
@@ -155,13 +148,6 @@ public interface HasFrontend  {
              */
             @Beta(SinceVersion.V1_2_0)
             ReturnT fromFrontend(String frontendName);
-
-            /**
-             * Associates with the default frontend.
-             * @return the next stage of the update
-             */
-            @Beta(SinceVersion.V1_2_0)
-            ReturnT fromDefaultFrontend();
         }
     }
 
@@ -181,13 +167,6 @@ public interface HasFrontend  {
              */
             @Beta(SinceVersion.V1_2_0)
             ReturnT fromFrontend(String frontendName);
-
-            /**
-             * Associates with the default frontend.
-             * @return the next stage of the definition
-             */
-            @Beta(SinceVersion.V1_2_0)
-            ReturnT fromDefaultFrontend();
 
             /**
              * Specifies an existing public IP address to receive network traffic from.
