@@ -138,26 +138,25 @@ public abstract class ComputeManagementTest extends TestBase {
                 .definePublicFrontend(frontendName)
                     .withExistingPublicIPAddress(publicIPAddress)
                     .attach()
-                .defineBackend(backendPoolName)
+                // Add two rules that uses above backend and probe
+                .defineLoadBalancingRule("httpRule")
+                    .withProtocol(TransportProtocol.TCP)
+                    .fromFrontend(frontendName)
+                    .fromFrontendPort(80)
+                    .toBackend(backendPoolName)
+                    .withProbe("httpProbe")
                     .attach()
+                .defineInboundNatPool(natPoolName)
+                    .withProtocol(TransportProtocol.TCP)
+                    .fromFrontend(frontendName)
+                    .fromFrontendPortRange(5000, 5099)
+                    .toBackendPort(22)
+                    .attach()
+                // Add an HTTP probe
                 .defineHttpProbe("httpProbe")
                     .withRequestPath("/")
                     .attach()
 
-                // Add two rules that uses above backend and probe
-                .defineLoadBalancingRule("httpRule")
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(frontendName)
-                    .withFrontendPort(80)
-                    .withProbe("httpProbe")
-                    .withBackend(backendPoolName)
-                    .attach()
-                .defineInboundNatPool(natPoolName)
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(frontendName)
-                    .withFrontendPortRange(5000, 5099)
-                    .withBackendPort(22)
-                    .attach()
                 .create();
         return loadBalancer;
 
@@ -185,10 +184,34 @@ public abstract class ComputeManagementTest extends TestBase {
                     .withExistingPublicIPAddress(publicIPAddress)
                     .attach()
 
-                // Add two backend one per rule
-                .defineBackend(backendPoolName1)
+                // Add two rules that uses above backend and probe
+                .defineLoadBalancingRule("httpRule")
+                    .withProtocol(TransportProtocol.TCP)
+                    .fromFrontend(frontendName)
+                    .fromFrontendPort(80)
+                    .toBackend(backendPoolName1)
+                    .withProbe("httpProbe")
                     .attach()
-                .defineBackend(backendPoolName2)
+                .defineLoadBalancingRule("httpsRule")
+                    .withProtocol(TransportProtocol.TCP)
+                    .fromFrontend(frontendName)
+                    .fromFrontendPort(443)
+                    .toBackend(backendPoolName2)
+                    .withProbe("httpsProbe")
+                    .attach()
+
+                // Add two nat pools to enable direct VM connectivity to port SSH and 23
+                .defineInboundNatPool(natPoolName1)
+                    .withProtocol(TransportProtocol.TCP)
+                    .fromFrontend(frontendName)
+                    .fromFrontendPortRange(5000, 5099)
+                    .toBackendPort(22)
+                    .attach()
+                .defineInboundNatPool(natPoolName2)
+                    .withProtocol(TransportProtocol.TCP)
+                    .fromFrontend(frontendName)
+                    .fromFrontendPortRange(6000, 6099)
+                    .toBackendPort(23)
                     .attach()
 
                 // Add two probes one per rule
@@ -197,36 +220,6 @@ public abstract class ComputeManagementTest extends TestBase {
                     .attach()
                 .defineHttpProbe("httpsProbe")
                     .withRequestPath("/")
-                    .attach()
-
-                // Add two rules that uses above backend and probe
-                .defineLoadBalancingRule("httpRule")
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(frontendName)
-                    .withFrontendPort(80)
-                    .withProbe("httpProbe")
-                    .withBackend(backendPoolName1)
-                    .attach()
-                .defineLoadBalancingRule("httpsRule")
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(frontendName)
-                    .withFrontendPort(443)
-                    .withProbe("httpsProbe")
-                    .withBackend(backendPoolName2)
-                    .attach()
-
-                // Add two nat pools to enable direct VM connectivity to port SSH and 23
-                .defineInboundNatPool(natPoolName1)
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(frontendName)
-                    .withFrontendPortRange(5000, 5099)
-                    .withBackendPort(22)
-                    .attach()
-                .defineInboundNatPool(natPoolName2)
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(frontendName)
-                    .withFrontendPortRange(6000, 6099)
-                    .withBackendPort(23)
                     .attach()
                 .create();
         return loadBalancer;
@@ -249,10 +242,34 @@ public abstract class ComputeManagementTest extends TestBase {
                     .withExistingSubnet(network, subnetName)
                     .attach()
 
-                // Add two backend one per rule
-                .defineBackend(backendPoolName1)
+                // Add two rules that uses above backend and probe
+                .defineLoadBalancingRule("httpRule")
+                    .withProtocol(TransportProtocol.TCP)
+                    .fromFrontend(privateFrontEndName)
+                    .fromFrontendPort(1000)
+                    .toBackend(backendPoolName1)
+                    .withProbe("httpProbe")
                     .attach()
-                .defineBackend(backendPoolName2)
+                .defineLoadBalancingRule("httpsRule")
+                    .withProtocol(TransportProtocol.TCP)
+                    .fromFrontend(privateFrontEndName)
+                    .fromFrontendPort(1001)
+                    .toBackend(backendPoolName2)
+                    .withProbe("httpsProbe")
+                    .attach()
+
+                // Add two NAT pools to enable direct VM connectivity to port 44 and 45
+                .defineInboundNatPool(natPoolName1)
+                    .withProtocol(TransportProtocol.TCP)
+                    .fromFrontend(privateFrontEndName)
+                    .fromFrontendPortRange(8000, 8099)
+                    .toBackendPort(44)
+                    .attach()
+                .defineInboundNatPool(natPoolName2)
+                    .withProtocol(TransportProtocol.TCP)
+                    .fromFrontend(privateFrontEndName)
+                    .fromFrontendPortRange(9000, 9099)
+                    .toBackendPort(45)
                     .attach()
 
                 // Add two probes one per rule
@@ -263,35 +280,6 @@ public abstract class ComputeManagementTest extends TestBase {
                     .withRequestPath("/")
                     .attach()
 
-                // Add two rules that uses above backend and probe
-                .defineLoadBalancingRule("httpRule")
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(privateFrontEndName)
-                    .withFrontendPort(1000)
-                    .withProbe("httpProbe")
-                    .withBackend(backendPoolName1)
-                    .attach()
-                .defineLoadBalancingRule("httpsRule")
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(privateFrontEndName)
-                    .withFrontendPort(1001)
-                    .withProbe("httpsProbe")
-                    .withBackend(backendPoolName2)
-                    .attach()
-
-                // Add two nat pools to enable direct VM connectivity to port 44 and 45
-                .defineInboundNatPool(natPoolName1)
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(privateFrontEndName)
-                    .withFrontendPortRange(8000, 8099)
-                    .withBackendPort(44)
-                    .attach()
-                .defineInboundNatPool(natPoolName2)
-                    .withProtocol(TransportProtocol.TCP)
-                    .withFrontend(privateFrontEndName)
-                    .withFrontendPortRange(9000, 9099)
-                    .withBackendPort(45)
-                    .attach()
                 .create();
         return loadBalancer;
     }

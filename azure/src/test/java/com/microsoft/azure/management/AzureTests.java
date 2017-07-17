@@ -600,7 +600,7 @@ public class AzureTests extends TestBase {
         PacketCapture packetCapture = nw.packetCaptures()
                 .define("NewPacketCapture")
                 .withTarget(virtualMachines[0].id())
-                .withExistingStorageAccount(storageAccount)
+                .withStorageAccountId(storageAccount.id())
                 .withTimeLimitInSeconds(1500)
                 .definePacketCaptureFilter()
                     .withProtocol(PcProtocol.TCP)
@@ -810,6 +810,12 @@ public class AzureTests extends TestBase {
     @Ignore("Runs locally find but fails for unknown reason on check in.")
     public void testDocumentDB() throws Exception {
         new TestDocumentDB()
-                .runTest(azure.documentDBs(), azure.resourceGroups());
+                .runTest(azure.documentDBAccounts(), azure.resourceGroups());
     }
+    @Test
+    public void testSearchServiceAnySku() throws Exception {
+        new TestSearchService.SearchServiceAnySku()
+            .runTest(azure.searchServices(), azure.resourceGroups());
+    }
+
 }

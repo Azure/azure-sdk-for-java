@@ -6,11 +6,13 @@
 
 package com.microsoft.azure.management.storage.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.storage.AccountStatus;
 
 /**
  * An instance of this class stores the availability of a storage account.
  */
+@LangDefinition
 public class AccountStatuses {
     private AccountStatus primary;
     private AccountStatus secondary;

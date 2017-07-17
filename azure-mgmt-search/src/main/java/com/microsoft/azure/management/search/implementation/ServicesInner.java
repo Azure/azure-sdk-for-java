@@ -8,14 +8,19 @@
 
 package com.microsoft.azure.management.search.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.rest.ServiceFuture;
+import com.microsoft.azure.management.search.CheckNameAvailabilityInput;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
+import java.util.UUID;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -23,6 +28,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.HTTP;
 import retrofit2.http.Path;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.Response;
@@ -33,7 +39,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Services.
  */
-public final class ServicesInner {
+public class ServicesInner implements InnerSupportsGet<SearchServiceInner>, InnerSupportsDelete<Void> {
     /** The Retrofit service to perform REST calls. */
     private ServicesService service;
     /** The service client containing this operation class. */
@@ -56,56 +62,69 @@ public final class ServicesInner {
      */
     interface ServicesService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.search.Services createOrUpdate" })
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{serviceName}")
-        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Path("subscriptionId") String subscriptionId, @Body SearchServiceCreateOrUpdateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}")
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("searchServiceName") String searchServiceName, @Path("subscriptionId") String subscriptionId, @Body SearchServiceInner service, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-client-request-id") UUID clientRequestId, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.search.Services getByResourceGroup" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}")
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("searchServiceName") String searchServiceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-client-request-id") UUID clientRequestId, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.search.Services delete" })
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{serviceName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("searchServiceName") String searchServiceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-client-request-id") UUID clientRequestId, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.search.Services list" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.search.Services listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices")
-        Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-client-request-id") UUID clientRequestId, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.search.Services checkNameAvailability" })
+        @POST("subscriptions/{subscriptionId}/providers/Microsoft.Search/checkNameAvailability")
+        Observable<Response<ResponseBody>> checkNameAvailability(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-client-request-id") UUID clientRequestId, @Body CheckNameAvailabilityInput checkNameAvailabilityInput, @Header("User-Agent") String userAgent);
 
     }
 
     /**
      * Creates or updates a Search service in the given resource group. If the Search service already exists, all properties will be updated with the given values.
      *
-     * @param resourceGroupName The name of the resource group within the current subscription.
-     * @param serviceName The name of the Search service to create or update.
-     * @param parameters The properties to set or update on the Search service.
-     * @return the SearchServiceResourceInner object if successful.
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service to create or update. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the service name after the service is created.
+     * @param service The definition of the Search service to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SearchServiceInner object if successful.
      */
-    public SearchServiceResourceInner createOrUpdate(String resourceGroupName, String serviceName, SearchServiceCreateOrUpdateParametersInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, parameters).toBlocking().single().body();
+    public SearchServiceInner createOrUpdate(String resourceGroupName, String searchServiceName, SearchServiceInner service) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, searchServiceName, service).toBlocking().single().body();
     }
 
     /**
      * Creates or updates a Search service in the given resource group. If the Search service already exists, all properties will be updated with the given values.
      *
-     * @param resourceGroupName The name of the resource group within the current subscription.
-     * @param serviceName The name of the Search service to create or update.
-     * @param parameters The properties to set or update on the Search service.
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service to create or update. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the service name after the service is created.
+     * @param service The definition of the Search service to create or update.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<SearchServiceResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName, SearchServiceCreateOrUpdateParametersInner parameters, final ServiceCallback<SearchServiceResourceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, parameters), serviceCallback);
+    public ServiceFuture<SearchServiceInner> createOrUpdateAsync(String resourceGroupName, String searchServiceName, SearchServiceInner service, final ServiceCallback<SearchServiceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, searchServiceName, service), serviceCallback);
     }
 
     /**
      * Creates or updates a Search service in the given resource group. If the Search service already exists, all properties will be updated with the given values.
      *
-     * @param resourceGroupName The name of the resource group within the current subscription.
-     * @param serviceName The name of the Search service to create or update.
-     * @param parameters The properties to set or update on the Search service.
-     * @return the observable to the SearchServiceResourceInner object
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service to create or update. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the service name after the service is created.
+     * @param service The definition of the Search service to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SearchServiceInner object
      */
-    public Observable<SearchServiceResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName, SearchServiceCreateOrUpdateParametersInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, parameters).map(new Func1<ServiceResponse<SearchServiceResourceInner>, SearchServiceResourceInner>() {
+    public Observable<SearchServiceInner> createOrUpdateAsync(String resourceGroupName, String searchServiceName, SearchServiceInner service) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, searchServiceName, service).map(new Func1<ServiceResponse<SearchServiceInner>, SearchServiceInner>() {
             @Override
-            public SearchServiceResourceInner call(ServiceResponse<SearchServiceResourceInner> response) {
+            public SearchServiceInner call(ServiceResponse<SearchServiceInner> response) {
                 return response.body();
             }
         });
@@ -114,34 +133,37 @@ public final class ServicesInner {
     /**
      * Creates or updates a Search service in the given resource group. If the Search service already exists, all properties will be updated with the given values.
      *
-     * @param resourceGroupName The name of the resource group within the current subscription.
-     * @param serviceName The name of the Search service to create or update.
-     * @param parameters The properties to set or update on the Search service.
-     * @return the observable to the SearchServiceResourceInner object
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service to create or update. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the service name after the service is created.
+     * @param serviceParameter The definition of the Search service to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SearchServiceInner object
      */
-    public Observable<ServiceResponse<SearchServiceResourceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String serviceName, SearchServiceCreateOrUpdateParametersInner parameters) {
+    public Observable<ServiceResponse<SearchServiceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String searchServiceName, SearchServiceInner serviceParameter) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        if (serviceName == null) {
-            throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
+        if (searchServiceName == null) {
+            throw new IllegalArgumentException("Parameter searchServiceName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        if (serviceParameter == null) {
+            throw new IllegalArgumentException("Parameter service is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(parameters);
-        return service.createOrUpdate(resourceGroupName, serviceName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SearchServiceResourceInner>>>() {
+        Validator.validate(serviceParameter);
+        final SearchManagementRequestOptionsInner searchManagementRequestOptions = null;
+        UUID clientRequestId = null;
+        return service.createOrUpdate(resourceGroupName, searchServiceName, this.client.subscriptionId(), serviceParameter, this.client.apiVersion(), this.client.acceptLanguage(), clientRequestId, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SearchServiceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<SearchServiceResourceInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<SearchServiceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<SearchServiceResourceInner> clientResponse = createOrUpdateDelegate(response);
+                        ServiceResponse<SearchServiceInner> clientResponse = createOrUpdateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -150,10 +172,282 @@ public final class ServicesInner {
             });
     }
 
-    private ServiceResponse<SearchServiceResourceInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SearchServiceResourceInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<SearchServiceResourceInner>() { }.getType())
-                .register(201, new TypeToken<SearchServiceResourceInner>() { }.getType())
+    /**
+     * Creates or updates a Search service in the given resource group. If the Search service already exists, all properties will be updated with the given values.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service to create or update. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the service name after the service is created.
+     * @param service The definition of the Search service to create or update.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SearchServiceInner object if successful.
+     */
+    public SearchServiceInner createOrUpdate(String resourceGroupName, String searchServiceName, SearchServiceInner service, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, searchServiceName, service, searchManagementRequestOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Creates or updates a Search service in the given resource group. If the Search service already exists, all properties will be updated with the given values.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service to create or update. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the service name after the service is created.
+     * @param service The definition of the Search service to create or update.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SearchServiceInner> createOrUpdateAsync(String resourceGroupName, String searchServiceName, SearchServiceInner service, SearchManagementRequestOptionsInner searchManagementRequestOptions, final ServiceCallback<SearchServiceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, searchServiceName, service, searchManagementRequestOptions), serviceCallback);
+    }
+
+    /**
+     * Creates or updates a Search service in the given resource group. If the Search service already exists, all properties will be updated with the given values.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service to create or update. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the service name after the service is created.
+     * @param service The definition of the Search service to create or update.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SearchServiceInner object
+     */
+    public Observable<SearchServiceInner> createOrUpdateAsync(String resourceGroupName, String searchServiceName, SearchServiceInner service, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, searchServiceName, service, searchManagementRequestOptions).map(new Func1<ServiceResponse<SearchServiceInner>, SearchServiceInner>() {
+            @Override
+            public SearchServiceInner call(ServiceResponse<SearchServiceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Creates or updates a Search service in the given resource group. If the Search service already exists, all properties will be updated with the given values.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service to create or update. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the service name after the service is created.
+     * @param serviceParameter The definition of the Search service to create or update.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SearchServiceInner object
+     */
+    public Observable<ServiceResponse<SearchServiceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String searchServiceName, SearchServiceInner serviceParameter, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (searchServiceName == null) {
+            throw new IllegalArgumentException("Parameter searchServiceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (serviceParameter == null) {
+            throw new IllegalArgumentException("Parameter service is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(serviceParameter);
+        Validator.validate(searchManagementRequestOptions);
+        UUID clientRequestId = null;
+        if (searchManagementRequestOptions != null) {
+            clientRequestId = searchManagementRequestOptions.clientRequestId();
+        }
+        return service.createOrUpdate(resourceGroupName, searchServiceName, this.client.subscriptionId(), serviceParameter, this.client.apiVersion(), this.client.acceptLanguage(), clientRequestId, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SearchServiceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SearchServiceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SearchServiceInner> clientResponse = createOrUpdateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SearchServiceInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SearchServiceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SearchServiceInner>() { }.getType())
+                .register(201, new TypeToken<SearchServiceInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the Search service with the given name in the given resource group.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SearchServiceInner object if successful.
+     */
+    public SearchServiceInner getByResourceGroup(String resourceGroupName, String searchServiceName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, searchServiceName).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the Search service with the given name in the given resource group.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SearchServiceInner> getByResourceGroupAsync(String resourceGroupName, String searchServiceName, final ServiceCallback<SearchServiceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, searchServiceName), serviceCallback);
+    }
+
+    /**
+     * Gets the Search service with the given name in the given resource group.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SearchServiceInner object
+     */
+    public Observable<SearchServiceInner> getByResourceGroupAsync(String resourceGroupName, String searchServiceName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, searchServiceName).map(new Func1<ServiceResponse<SearchServiceInner>, SearchServiceInner>() {
+            @Override
+            public SearchServiceInner call(ServiceResponse<SearchServiceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the Search service with the given name in the given resource group.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SearchServiceInner object
+     */
+    public Observable<ServiceResponse<SearchServiceInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String searchServiceName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (searchServiceName == null) {
+            throw new IllegalArgumentException("Parameter searchServiceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final SearchManagementRequestOptionsInner searchManagementRequestOptions = null;
+        UUID clientRequestId = null;
+        return service.getByResourceGroup(resourceGroupName, searchServiceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), clientRequestId, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SearchServiceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SearchServiceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SearchServiceInner> clientResponse = getByResourceGroupDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Gets the Search service with the given name in the given resource group.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SearchServiceInner object if successful.
+     */
+    public SearchServiceInner getByResourceGroup(String resourceGroupName, String searchServiceName, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, searchServiceName, searchManagementRequestOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the Search service with the given name in the given resource group.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SearchServiceInner> getByResourceGroupAsync(String resourceGroupName, String searchServiceName, SearchManagementRequestOptionsInner searchManagementRequestOptions, final ServiceCallback<SearchServiceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, searchServiceName, searchManagementRequestOptions), serviceCallback);
+    }
+
+    /**
+     * Gets the Search service with the given name in the given resource group.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SearchServiceInner object
+     */
+    public Observable<SearchServiceInner> getByResourceGroupAsync(String resourceGroupName, String searchServiceName, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, searchServiceName, searchManagementRequestOptions).map(new Func1<ServiceResponse<SearchServiceInner>, SearchServiceInner>() {
+            @Override
+            public SearchServiceInner call(ServiceResponse<SearchServiceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the Search service with the given name in the given resource group.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SearchServiceInner object
+     */
+    public Observable<ServiceResponse<SearchServiceInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String searchServiceName, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (searchServiceName == null) {
+            throw new IllegalArgumentException("Parameter searchServiceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(searchManagementRequestOptions);
+        UUID clientRequestId = null;
+        if (searchManagementRequestOptions != null) {
+            clientRequestId = searchManagementRequestOptions.clientRequestId();
+        }
+        return service.getByResourceGroup(resourceGroupName, searchServiceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), clientRequestId, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SearchServiceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SearchServiceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SearchServiceInner> clientResponse = getByResourceGroupDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SearchServiceInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SearchServiceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SearchServiceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -161,34 +455,39 @@ public final class ServicesInner {
     /**
      * Deletes a Search service in the given resource group, along with its associated resources.
      *
-     * @param resourceGroupName The name of the resource group within the current subscription.
-     * @param serviceName The name of the Search service to delete.
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void delete(String resourceGroupName, String serviceName) {
-        deleteWithServiceResponseAsync(resourceGroupName, serviceName).toBlocking().single().body();
+    public void delete(String resourceGroupName, String searchServiceName) {
+        deleteWithServiceResponseAsync(resourceGroupName, searchServiceName).toBlocking().single().body();
     }
 
     /**
      * Deletes a Search service in the given resource group, along with its associated resources.
      *
-     * @param resourceGroupName The name of the resource group within the current subscription.
-     * @param serviceName The name of the Search service to delete.
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String serviceName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, serviceName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String searchServiceName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, searchServiceName), serviceCallback);
     }
 
     /**
      * Deletes a Search service in the given resource group, along with its associated resources.
      *
-     * @param resourceGroupName The name of the resource group within the current subscription.
-     * @param serviceName The name of the Search service to delete.
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> deleteAsync(String resourceGroupName, String serviceName) {
-        return deleteWithServiceResponseAsync(resourceGroupName, serviceName).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> deleteAsync(String resourceGroupName, String searchServiceName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, searchServiceName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -199,16 +498,17 @@ public final class ServicesInner {
     /**
      * Deletes a Search service in the given resource group, along with its associated resources.
      *
-     * @param resourceGroupName The name of the resource group within the current subscription.
-     * @param serviceName The name of the Search service to delete.
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String serviceName) {
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String searchServiceName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        if (serviceName == null) {
-            throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
+        if (searchServiceName == null) {
+            throw new IllegalArgumentException("Parameter searchServiceName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
@@ -216,7 +516,96 @@ public final class ServicesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.delete(resourceGroupName, serviceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final SearchManagementRequestOptionsInner searchManagementRequestOptions = null;
+        UUID clientRequestId = null;
+        return service.delete(resourceGroupName, searchServiceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), clientRequestId, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Deletes a Search service in the given resource group, along with its associated resources.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void delete(String resourceGroupName, String searchServiceName, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        deleteWithServiceResponseAsync(resourceGroupName, searchServiceName, searchManagementRequestOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes a Search service in the given resource group, along with its associated resources.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String searchServiceName, SearchManagementRequestOptionsInner searchManagementRequestOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, searchServiceName, searchManagementRequestOptions), serviceCallback);
+    }
+
+    /**
+     * Deletes a Search service in the given resource group, along with its associated resources.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deleteAsync(String resourceGroupName, String searchServiceName, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        return deleteWithServiceResponseAsync(resourceGroupName, searchServiceName, searchManagementRequestOptions).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a Search service in the given resource group, along with its associated resources.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String searchServiceName, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (searchServiceName == null) {
+            throw new IllegalArgumentException("Parameter searchServiceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(searchManagementRequestOptions);
+        UUID clientRequestId = null;
+        if (searchManagementRequestOptions != null) {
+            clientRequestId = searchManagementRequestOptions.clientRequestId();
+        }
+        return service.delete(resourceGroupName, searchServiceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), clientRequestId, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -233,54 +622,61 @@ public final class ServicesInner {
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
-                .register(404, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Returns a list of all Search services in the given resource group.
+     * Gets a list of all Search services in the given resource group.
      *
-     * @param resourceGroupName The name of the resource group within the current subscription.
-     * @return the SearchServiceListResultInner object if successful.
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;SearchServiceInner&gt; object if successful.
      */
-    public SearchServiceListResultInner list(String resourceGroupName) {
-        return listWithServiceResponseAsync(resourceGroupName).toBlocking().single().body();
+    public List<SearchServiceInner> listByResourceGroup(String resourceGroupName) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName).toBlocking().single().body();
     }
 
     /**
-     * Returns a list of all Search services in the given resource group.
+     * Gets a list of all Search services in the given resource group.
      *
-     * @param resourceGroupName The name of the resource group within the current subscription.
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<SearchServiceListResultInner> listAsync(String resourceGroupName, final ServiceCallback<SearchServiceListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithServiceResponseAsync(resourceGroupName), serviceCallback);
+    public ServiceFuture<List<SearchServiceInner>> listByResourceGroupAsync(String resourceGroupName, final ServiceCallback<List<SearchServiceInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listByResourceGroupWithServiceResponseAsync(resourceGroupName), serviceCallback);
     }
 
     /**
-     * Returns a list of all Search services in the given resource group.
+     * Gets a list of all Search services in the given resource group.
      *
-     * @param resourceGroupName The name of the resource group within the current subscription.
-     * @return the observable to the SearchServiceListResultInner object
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;SearchServiceInner&gt; object
      */
-    public Observable<SearchServiceListResultInner> listAsync(String resourceGroupName) {
-        return listWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<SearchServiceListResultInner>, SearchServiceListResultInner>() {
+    public Observable<List<SearchServiceInner>> listByResourceGroupAsync(String resourceGroupName) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<List<SearchServiceInner>>, List<SearchServiceInner>>() {
             @Override
-            public SearchServiceListResultInner call(ServiceResponse<SearchServiceListResultInner> response) {
+            public List<SearchServiceInner> call(ServiceResponse<List<SearchServiceInner>> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Returns a list of all Search services in the given resource group.
+     * Gets a list of all Search services in the given resource group.
      *
-     * @param resourceGroupName The name of the resource group within the current subscription.
-     * @return the observable to the SearchServiceListResultInner object
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;SearchServiceInner&gt; object
      */
-    public Observable<ServiceResponse<SearchServiceListResultInner>> listWithServiceResponseAsync(String resourceGroupName) {
+    public Observable<ServiceResponse<List<SearchServiceInner>>> listByResourceGroupWithServiceResponseAsync(String resourceGroupName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -290,12 +686,15 @@ public final class ServicesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SearchServiceListResultInner>>>() {
+        final SearchManagementRequestOptionsInner searchManagementRequestOptions = null;
+        UUID clientRequestId = null;
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), clientRequestId, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<SearchServiceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<SearchServiceListResultInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<List<SearchServiceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<SearchServiceListResultInner> clientResponse = listDelegate(response);
+                        ServiceResponse<PageImpl<SearchServiceInner>> result = listByResourceGroupDelegate(response);
+                        ServiceResponse<List<SearchServiceInner>> clientResponse = new ServiceResponse<List<SearchServiceInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -304,9 +703,257 @@ public final class ServicesInner {
             });
     }
 
-    private ServiceResponse<SearchServiceListResultInner> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SearchServiceListResultInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<SearchServiceListResultInner>() { }.getType())
+    /**
+     * Gets a list of all Search services in the given resource group.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;SearchServiceInner&gt; object if successful.
+     */
+    public List<SearchServiceInner> listByResourceGroup(String resourceGroupName, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName, searchManagementRequestOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Gets a list of all Search services in the given resource group.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SearchServiceInner>> listByResourceGroupAsync(String resourceGroupName, SearchManagementRequestOptionsInner searchManagementRequestOptions, final ServiceCallback<List<SearchServiceInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listByResourceGroupWithServiceResponseAsync(resourceGroupName, searchManagementRequestOptions), serviceCallback);
+    }
+
+    /**
+     * Gets a list of all Search services in the given resource group.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;SearchServiceInner&gt; object
+     */
+    public Observable<List<SearchServiceInner>> listByResourceGroupAsync(String resourceGroupName, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName, searchManagementRequestOptions).map(new Func1<ServiceResponse<List<SearchServiceInner>>, List<SearchServiceInner>>() {
+            @Override
+            public List<SearchServiceInner> call(ServiceResponse<List<SearchServiceInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets a list of all Search services in the given resource group.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;SearchServiceInner&gt; object
+     */
+    public Observable<ServiceResponse<List<SearchServiceInner>>> listByResourceGroupWithServiceResponseAsync(String resourceGroupName, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(searchManagementRequestOptions);
+        UUID clientRequestId = null;
+        if (searchManagementRequestOptions != null) {
+            clientRequestId = searchManagementRequestOptions.clientRequestId();
+        }
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), clientRequestId, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<SearchServiceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<SearchServiceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SearchServiceInner>> result = listByResourceGroupDelegate(response);
+                        ServiceResponse<List<SearchServiceInner>> clientResponse = new ServiceResponse<List<SearchServiceInner>>(result.body().items(), result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SearchServiceInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SearchServiceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SearchServiceInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Checks whether or not the given Search service name is available for use. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net).
+     *
+     * @param name The Search service name to validate. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CheckNameAvailabilityOutputInner object if successful.
+     */
+    public CheckNameAvailabilityOutputInner checkNameAvailability(String name) {
+        return checkNameAvailabilityWithServiceResponseAsync(name).toBlocking().single().body();
+    }
+
+    /**
+     * Checks whether or not the given Search service name is available for use. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net).
+     *
+     * @param name The Search service name to validate. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CheckNameAvailabilityOutputInner> checkNameAvailabilityAsync(String name, final ServiceCallback<CheckNameAvailabilityOutputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkNameAvailabilityWithServiceResponseAsync(name), serviceCallback);
+    }
+
+    /**
+     * Checks whether or not the given Search service name is available for use. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net).
+     *
+     * @param name The Search service name to validate. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CheckNameAvailabilityOutputInner object
+     */
+    public Observable<CheckNameAvailabilityOutputInner> checkNameAvailabilityAsync(String name) {
+        return checkNameAvailabilityWithServiceResponseAsync(name).map(new Func1<ServiceResponse<CheckNameAvailabilityOutputInner>, CheckNameAvailabilityOutputInner>() {
+            @Override
+            public CheckNameAvailabilityOutputInner call(ServiceResponse<CheckNameAvailabilityOutputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Checks whether or not the given Search service name is available for use. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net).
+     *
+     * @param name The Search service name to validate. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CheckNameAvailabilityOutputInner object
+     */
+    public Observable<ServiceResponse<CheckNameAvailabilityOutputInner>> checkNameAvailabilityWithServiceResponseAsync(String name) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        final SearchManagementRequestOptionsInner searchManagementRequestOptions = null;
+        UUID clientRequestId = null;
+        CheckNameAvailabilityInput checkNameAvailabilityInput = new CheckNameAvailabilityInput();
+        checkNameAvailabilityInput.withName(name);
+        return service.checkNameAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), clientRequestId, checkNameAvailabilityInput, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CheckNameAvailabilityOutputInner>>>() {
+                @Override
+                public Observable<ServiceResponse<CheckNameAvailabilityOutputInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CheckNameAvailabilityOutputInner> clientResponse = checkNameAvailabilityDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Checks whether or not the given Search service name is available for use. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net).
+     *
+     * @param name The Search service name to validate. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CheckNameAvailabilityOutputInner object if successful.
+     */
+    public CheckNameAvailabilityOutputInner checkNameAvailability(String name, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        return checkNameAvailabilityWithServiceResponseAsync(name, searchManagementRequestOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Checks whether or not the given Search service name is available for use. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net).
+     *
+     * @param name The Search service name to validate. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CheckNameAvailabilityOutputInner> checkNameAvailabilityAsync(String name, SearchManagementRequestOptionsInner searchManagementRequestOptions, final ServiceCallback<CheckNameAvailabilityOutputInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkNameAvailabilityWithServiceResponseAsync(name, searchManagementRequestOptions), serviceCallback);
+    }
+
+    /**
+     * Checks whether or not the given Search service name is available for use. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net).
+     *
+     * @param name The Search service name to validate. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CheckNameAvailabilityOutputInner object
+     */
+    public Observable<CheckNameAvailabilityOutputInner> checkNameAvailabilityAsync(String name, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        return checkNameAvailabilityWithServiceResponseAsync(name, searchManagementRequestOptions).map(new Func1<ServiceResponse<CheckNameAvailabilityOutputInner>, CheckNameAvailabilityOutputInner>() {
+            @Override
+            public CheckNameAvailabilityOutputInner call(ServiceResponse<CheckNameAvailabilityOutputInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Checks whether or not the given Search service name is available for use. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net).
+     *
+     * @param name The Search service name to validate. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CheckNameAvailabilityOutputInner object
+     */
+    public Observable<ServiceResponse<CheckNameAvailabilityOutputInner>> checkNameAvailabilityWithServiceResponseAsync(String name, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        Validator.validate(searchManagementRequestOptions);
+        UUID clientRequestId = null;
+        if (searchManagementRequestOptions != null) {
+            clientRequestId = searchManagementRequestOptions.clientRequestId();
+        }
+        CheckNameAvailabilityInput checkNameAvailabilityInput = new CheckNameAvailabilityInput();
+        checkNameAvailabilityInput.withName(name);
+        return service.checkNameAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), clientRequestId, checkNameAvailabilityInput, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CheckNameAvailabilityOutputInner>>>() {
+                @Override
+                public Observable<ServiceResponse<CheckNameAvailabilityOutputInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CheckNameAvailabilityOutputInner> clientResponse = checkNameAvailabilityDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<CheckNameAvailabilityOutputInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<CheckNameAvailabilityOutputInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<CheckNameAvailabilityOutputInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

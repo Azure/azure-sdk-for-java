@@ -21,7 +21,7 @@ import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 
 /**
- * Entry point to Azure compute resource management.
+ * Entry point to Azure container registry management.
  */
 @Beta(SinceVersion.V1_1_0)
 public final class ContainerRegistryManager extends Manager<ContainerRegistryManager, ContainerRegistryManagementClientImpl> {
@@ -30,7 +30,7 @@ public final class ContainerRegistryManager extends Manager<ContainerRegistryMan
     private StorageManager storageManager;
 
     /**
-     * Get a Configurable instance that can be used to create ComputeManager with optional configuration.
+     * Get a Configurable instance that can be used to create ContainerRegistryManager with optional configuration.
      *
      * @return Configurable
      */
@@ -39,11 +39,11 @@ public final class ContainerRegistryManager extends Manager<ContainerRegistryMan
     }
 
     /**
-     * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
+     * Creates an instance of ContainerRegistryManager that exposes Registry resource management API entry points.
      *
      * @param credentials the credentials to use
      * @param subscriptionId the subscription
-     * @return the ComputeManager
+     * @return the ContainerRegistryManager
      */
     public static ContainerRegistryManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
         return new ContainerRegistryManager(new RestClient.Builder()
@@ -56,11 +56,11 @@ public final class ContainerRegistryManager extends Manager<ContainerRegistryMan
     }
 
     /**
-     * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
+     * Creates an instance of ContainerRegistryManager that exposes Registry resource management API entry points.
      *
      * @param restClient the RestClient to be used for API calls.
      * @param subscriptionId the subscription
-     * @return the ComputeManager
+     * @return the ContainerRegistryManager
      */
     public static ContainerRegistryManager authenticate(RestClient restClient, String subscriptionId) {
         return new ContainerRegistryManager(restClient, subscriptionId);
@@ -71,11 +71,11 @@ public final class ContainerRegistryManager extends Manager<ContainerRegistryMan
      */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
-         * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
+         * Creates an instance of ContainerRegistryManager that exposes Registry resource management API entry points.
          *
          * @param credentials the credentials to use
          * @param subscriptionId the subscription
-         * @return the ComputeManager
+         * @return the ContainerRegistryManager
          */
         ContainerRegistryManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
     }

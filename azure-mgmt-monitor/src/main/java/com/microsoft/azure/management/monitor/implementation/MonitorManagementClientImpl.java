@@ -134,19 +134,6 @@ public class MonitorManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The ServiceDiagnosticSettingsInner object to access its operations.
-     */
-    private ServiceDiagnosticSettingsInner serviceDiagnosticSettings;
-
-    /**
-     * Gets the ServiceDiagnosticSettingsInner object to access its operations.
-     * @return the ServiceDiagnosticSettingsInner object.
-     */
-    public ServiceDiagnosticSettingsInner serviceDiagnosticSettings() {
-        return this.serviceDiagnosticSettings;
-    }
-
-    /**
      * The AlertRulesInner object to access its operations.
      */
     private AlertRulesInner alertRules;
@@ -173,6 +160,19 @@ public class MonitorManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ActivityLogAlertsInner object to access its operations.
+     */
+    private ActivityLogAlertsInner activityLogAlerts;
+
+    /**
+     * Gets the ActivityLogAlertsInner object to access its operations.
+     * @return the ActivityLogAlertsInner object.
+     */
+    public ActivityLogAlertsInner activityLogAlerts() {
+        return this.activityLogAlerts;
+    }
+
+    /**
      * The LogProfilesInner object to access its operations.
      */
     private LogProfilesInner logProfiles;
@@ -183,6 +183,32 @@ public class MonitorManagementClientImpl extends AzureServiceClient {
      */
     public LogProfilesInner logProfiles() {
         return this.logProfiles;
+    }
+
+    /**
+     * The ServiceDiagnosticSettingsInner object to access its operations.
+     */
+    private ServiceDiagnosticSettingsInner serviceDiagnosticSettings;
+
+    /**
+     * Gets the ServiceDiagnosticSettingsInner object to access its operations.
+     * @return the ServiceDiagnosticSettingsInner object.
+     */
+    public ServiceDiagnosticSettingsInner serviceDiagnosticSettings() {
+        return this.serviceDiagnosticSettings;
+    }
+
+    /**
+     * The ActionGroupsInner object to access its operations.
+     */
+    private ActionGroupsInner actionGroups;
+
+    /**
+     * Gets the ActionGroupsInner object to access its operations.
+     * @return the ActionGroupsInner object.
+     */
+    public ActionGroupsInner actionGroups() {
+        return this.actionGroups;
     }
 
     /**
@@ -220,10 +246,12 @@ public class MonitorManagementClientImpl extends AzureServiceClient {
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
         this.autoscaleSettings = new AutoscaleSettingsInner(restClient().retrofit(), this);
-        this.serviceDiagnosticSettings = new ServiceDiagnosticSettingsInner(restClient().retrofit(), this);
         this.alertRules = new AlertRulesInner(restClient().retrofit(), this);
         this.alertRuleIncidents = new AlertRuleIncidentsInner(restClient().retrofit(), this);
+        this.activityLogAlerts = new ActivityLogAlertsInner(restClient().retrofit(), this);
         this.logProfiles = new LogProfilesInner(restClient().retrofit(), this);
+        this.serviceDiagnosticSettings = new ServiceDiagnosticSettingsInner(restClient().retrofit(), this);
+        this.actionGroups = new ActionGroupsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 

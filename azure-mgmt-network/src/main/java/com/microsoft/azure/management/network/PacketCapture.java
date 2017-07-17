@@ -7,13 +7,13 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.PacketCaptureResultInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
-import com.microsoft.azure.management.storage.StorageAccount;
 import rx.Completable;
 import rx.Observable;
 
@@ -70,12 +70,14 @@ public interface PacketCapture extends
     /**
      * Stops a specified packet capture session.
      */
+    @Method
     void stop();
 
     /**
      * Stops a specified packet capture session asynchronously.
      * @return the handle to the REST call
      */
+    @Method
     Completable stopAsync();
 
     /**
@@ -124,14 +126,6 @@ public interface PacketCapture extends
              * @param storageId The ID of the storage account to save the packet capture session
              */
             WithCreateAndStoragePath withStorageAccountId(String storageId);
-
-            /**
-             * Specify storage account to save the packet capture session.
-             * Required if no local file path is provided.
-             *
-             * @param storageAccount The storage account to save the packet capture session
-             */
-            WithCreateAndStoragePath withExistingStorageAccount(StorageAccount storageAccount);
 
             /**
              * A valid local path on the targeting VM. Must include the name of the
