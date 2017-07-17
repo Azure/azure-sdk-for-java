@@ -7,11 +7,13 @@
 package com.microsoft.azure.management.storage;
 
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.storage.implementation.CheckNameAvailabilityResultInner;
 
 /**
  * The {@link com.microsoft.azure.management.storage.StorageAccounts#checkNameAvailability} action result.
  */
+@LangDefinition
 public class CheckNameAvailabilityResult {
     private CheckNameAvailabilityResultInner inner;
 
