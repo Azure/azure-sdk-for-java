@@ -11,6 +11,11 @@ import com.microsoft.azure.management.compute.AccessLevel;
 import com.microsoft.azure.management.compute.Snapshot;
 import com.microsoft.azure.management.compute.Snapshots;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import rx.Completable;
+import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * The implementation for Snapshots.
@@ -30,20 +35,47 @@ class SnapshotsImpl
     }
 
     @Override
+    public Observable<String> grantAccessAsync(String resourceGroupName, String snapshotName, AccessLevel accessLevel, int accessDuration) {
+        GrantAccessDataInner grantAccessDataInner = new GrantAccessDataInner();
+        grantAccessDataInner.withAccess(accessLevel)
+                .withDurationInSeconds(accessDuration);
+        return this.inner().grantAccessAsync(resourceGroupName, snapshotName, grantAccessDataInner)
+                .map(new Func1<AccessUriInner, String>() {
+                    @Override
+                    public String call(AccessUriInner accessUriInner) {
+                        return accessUriInner.accessSAS();
+                    }
+                });
+    }
+
+    @Override
+    public ServiceFuture<String> grantAccessAsync(String resourceGroupName, String snapshotName, AccessLevel accessLevel, int accessDuration, ServiceCallback<String> callback) {
+        return ServiceFuture.fromBody(this.grantAccessAsync(resourceGroupName, snapshotName, accessLevel, accessDuration), callback);
+    }
+
+    @Override
     public String grantAccess(String resourceGroupName,
                               String snapshotName,
                               AccessLevel accessLevel,
                               int accessDuration) {
-        GrantAccessDataInner grantAccessDataInner = new GrantAccessDataInner();
-        grantAccessDataInner.withAccess(accessLevel)
-                .withDurationInSeconds(accessDuration);
-        AccessUriInner accessUriInner = this.inner().grantAccess(resourceGroupName, snapshotName, grantAccessDataInner);
-        return accessUriInner.accessSAS();
+        return this.grantAccessAsync(resourceGroupName, snapshotName, accessLevel, accessDuration)
+                .toBlocking()
+                .last();
     }
 
     @Override
-    public void revokeAccess(String resourceGroupName, String diskName) {
-        this.inner().revokeAccess(resourceGroupName, diskName);
+    public Completable revokeAccessAsync(String resourceGroupName, String snapName) {
+        return this.inner().revokeAccessAsync(resourceGroupName, snapName).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> revokeAccessAsync(String resourceGroupName, String snapName, ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.revokeAccessAsync(resourceGroupName, snapName).<Void>toObservable(), callback);
+    }
+
+    @Override
+    public void revokeAccess(String resourceGroupName, String snapName) {
+        this.revokeAccessAsync(resourceGroupName, snapName).await();
     }
 
     @Override

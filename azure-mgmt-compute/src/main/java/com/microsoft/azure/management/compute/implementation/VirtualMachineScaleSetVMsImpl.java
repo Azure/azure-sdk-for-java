@@ -36,6 +36,9 @@ class VirtualMachineScaleSetVMsImpl
 
     @Override
     protected VirtualMachineScaleSetVMImpl wrapModel(VirtualMachineScaleSetVMInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new VirtualMachineScaleSetVMImpl(inner, this.scaleSet, this.client, this.computeManager);
     }
 
