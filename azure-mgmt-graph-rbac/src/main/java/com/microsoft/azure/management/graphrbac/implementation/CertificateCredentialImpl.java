@@ -40,7 +40,11 @@ class CertificateCredentialImpl<T>
 
     CertificateCredentialImpl(KeyCredentialInner keyCredential) {
         super(keyCredential);
-        this.name = new String(BaseEncoding.base64().decode(keyCredential.customKeyIdentifier()));
+        if (keyCredential.customKeyIdentifier() != null && !keyCredential.customKeyIdentifier().isEmpty()) {
+            this.name = new String(BaseEncoding.base64().decode(keyCredential.customKeyIdentifier()));
+        } else {
+            this.name = keyCredential.keyId();
+        }
     }
 
     CertificateCredentialImpl(String name, HasCredential<?> parent) {
