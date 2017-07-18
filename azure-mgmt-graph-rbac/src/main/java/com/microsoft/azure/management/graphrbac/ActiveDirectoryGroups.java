@@ -13,6 +13,8 @@ import com.microsoft.azure.management.graphrbac.implementation.GroupsInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByNameAsync;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
@@ -25,6 +27,8 @@ public interface ActiveDirectoryGroups extends
         SupportsListing<ActiveDirectoryGroup>,
         SupportsGettingById<ActiveDirectoryGroup>,
         SupportsGettingByNameAsync<ActiveDirectoryGroup>,
+        SupportsCreating<ActiveDirectoryGroup.DefinitionStages.Blank>,
+        SupportsDeletingById,
         HasManager<GraphRbacManager>,
         HasInner<GroupsInner> {
 }

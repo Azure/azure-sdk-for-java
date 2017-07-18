@@ -56,17 +56,17 @@ public class PermissionsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface PermissionsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.Permissions listByResourceGroup" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.Permissions listForResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Authorization/permissions")
-        Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listForResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.Permissions listForResource" })
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/permissions")
         Observable<Response<ResponseBody>> listForResource(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path(value = "parentResourcePath", encoded = true) String parentResourcePath, @Path(value = "resourceType", encoded = true) String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.Permissions listByResourceGroupNext" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.Permissions listForResourceGroupNext" })
         @GET
-        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listForResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.Permissions listForResourceNext" })
         @GET
@@ -83,12 +83,12 @@ public class PermissionsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PermissionInner&gt; object if successful.
      */
-    public PagedList<PermissionInner> listByResourceGroup(final String resourceGroupName) {
-        ServiceResponse<Page<PermissionInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
+    public PagedList<PermissionInner> listForResourceGroup(final String resourceGroupName) {
+        ServiceResponse<Page<PermissionInner>> response = listForResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<PermissionInner>(response.body()) {
             @Override
             public Page<PermissionInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listForResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -101,13 +101,13 @@ public class PermissionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<PermissionInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<PermissionInner> serviceCallback) {
+    public ServiceFuture<List<PermissionInner>> listForResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<PermissionInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listByResourceGroupSinglePageAsync(resourceGroupName),
+            listForResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<PermissionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PermissionInner>>> call(String nextPageLink) {
-                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
+                    return listForResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -120,8 +120,8 @@ public class PermissionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PermissionInner&gt; object
      */
-    public Observable<Page<PermissionInner>> listByResourceGroupAsync(final String resourceGroupName) {
-        return listByResourceGroupWithServiceResponseAsync(resourceGroupName)
+    public Observable<Page<PermissionInner>> listForResourceGroupAsync(final String resourceGroupName) {
+        return listForResourceGroupWithServiceResponseAsync(resourceGroupName)
             .map(new Func1<ServiceResponse<Page<PermissionInner>>, Page<PermissionInner>>() {
                 @Override
                 public Page<PermissionInner> call(ServiceResponse<Page<PermissionInner>> response) {
@@ -137,8 +137,8 @@ public class PermissionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PermissionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<PermissionInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
-        return listByResourceGroupSinglePageAsync(resourceGroupName)
+    public Observable<ServiceResponse<Page<PermissionInner>>> listForResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
+        return listForResourceGroupSinglePageAsync(resourceGroupName)
             .concatMap(new Func1<ServiceResponse<Page<PermissionInner>>, Observable<ServiceResponse<Page<PermissionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PermissionInner>>> call(ServiceResponse<Page<PermissionInner>> page) {
@@ -146,7 +146,7 @@ public class PermissionsInner {
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listForResourceGroupNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -158,7 +158,7 @@ public class PermissionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PermissionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<PermissionInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
+    public Observable<ServiceResponse<Page<PermissionInner>>> listForResourceGroupSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -168,12 +168,12 @@ public class PermissionsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.listForResourceGroup(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PermissionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PermissionInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<PermissionInner>> result = listByResourceGroupDelegate(response);
+                        ServiceResponse<PageImpl<PermissionInner>> result = listForResourceGroupDelegate(response);
                         return Observable.just(new ServiceResponse<Page<PermissionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -182,7 +182,7 @@ public class PermissionsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<PermissionInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<PermissionInner>> listForResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<PermissionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PermissionInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -345,12 +345,12 @@ public class PermissionsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PermissionInner&gt; object if successful.
      */
-    public PagedList<PermissionInner> listByResourceGroupNext(final String nextPageLink) {
-        ServiceResponse<Page<PermissionInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public PagedList<PermissionInner> listForResourceGroupNext(final String nextPageLink) {
+        ServiceResponse<Page<PermissionInner>> response = listForResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<PermissionInner>(response.body()) {
             @Override
             public Page<PermissionInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listForResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -364,13 +364,13 @@ public class PermissionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<PermissionInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<PermissionInner>> serviceFuture, final ListOperationCallback<PermissionInner> serviceCallback) {
+    public ServiceFuture<List<PermissionInner>> listForResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<PermissionInner>> serviceFuture, final ListOperationCallback<PermissionInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listByResourceGroupNextSinglePageAsync(nextPageLink),
+            listForResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<PermissionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PermissionInner>>> call(String nextPageLink) {
-                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
+                    return listForResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -383,8 +383,8 @@ public class PermissionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PermissionInner&gt; object
      */
-    public Observable<Page<PermissionInner>> listByResourceGroupNextAsync(final String nextPageLink) {
-        return listByResourceGroupNextWithServiceResponseAsync(nextPageLink)
+    public Observable<Page<PermissionInner>> listForResourceGroupNextAsync(final String nextPageLink) {
+        return listForResourceGroupNextWithServiceResponseAsync(nextPageLink)
             .map(new Func1<ServiceResponse<Page<PermissionInner>>, Page<PermissionInner>>() {
                 @Override
                 public Page<PermissionInner> call(ServiceResponse<Page<PermissionInner>> response) {
@@ -400,8 +400,8 @@ public class PermissionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PermissionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<PermissionInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
-        return listByResourceGroupNextSinglePageAsync(nextPageLink)
+    public Observable<ServiceResponse<Page<PermissionInner>>> listForResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
+        return listForResourceGroupNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<PermissionInner>>, Observable<ServiceResponse<Page<PermissionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PermissionInner>>> call(ServiceResponse<Page<PermissionInner>> page) {
@@ -409,7 +409,7 @@ public class PermissionsInner {
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listForResourceGroupNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -421,17 +421,17 @@ public class PermissionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PermissionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<PermissionInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<PermissionInner>>> listForResourceGroupNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
-        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listForResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PermissionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PermissionInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<PermissionInner>> result = listByResourceGroupNextDelegate(response);
+                        ServiceResponse<PageImpl<PermissionInner>> result = listForResourceGroupNextDelegate(response);
                         return Observable.just(new ServiceResponse<Page<PermissionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -440,7 +440,7 @@ public class PermissionsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<PermissionInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<PermissionInner>> listForResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<PermissionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PermissionInner>>() { }.getType())
                 .registerError(CloudException.class)

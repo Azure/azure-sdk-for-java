@@ -52,6 +52,12 @@ public class AADObjectInner {
     private Boolean mailEnabled;
 
     /**
+     * The mail alias for the user.
+     */
+    @JsonProperty(value = "mailNickname", access = JsonProperty.Access.WRITE_ONLY)
+    private String mailNickname;
+
+    /**
      * Whether the AAD object is security-enabled.
      */
     @JsonProperty(value = "securityEnabled")
@@ -74,6 +80,51 @@ public class AADObjectInner {
      */
     @JsonProperty(value = "userType")
     private String userType;
+
+    /**
+     * A two letter country code (ISO standard 3166). Required for users that
+     * will be assigned licenses due to legal requirement to check for
+     * availability of services in countries. Examples include: "US", "JP", and
+     * "GB".
+     */
+    @JsonProperty(value = "usageLocation", access = JsonProperty.Access.WRITE_ONLY)
+    private String usageLocation;
+
+    /**
+     * The application ID.
+     */
+    @JsonProperty(value = "appId", access = JsonProperty.Access.WRITE_ONLY)
+    private String appId;
+
+    /**
+     * The application permissions.
+     */
+    @JsonProperty(value = "appPermissions", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> appPermissions;
+
+    /**
+     * Whether the application is be available to other tenants.
+     */
+    @JsonProperty(value = "availableToOtherTenants", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean availableToOtherTenants;
+
+    /**
+     * A collection of URIs for the application.
+     */
+    @JsonProperty(value = "identifierUris", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> identifierUris;
+
+    /**
+     * A collection of reply URLs for the application.
+     */
+    @JsonProperty(value = "replyUrls", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> replyUrls;
+
+    /**
+     * The home page of the application.
+     */
+    @JsonProperty(value = "homepage", access = JsonProperty.Access.WRITE_ONLY)
+    private String homepage;
 
     /**
      * Get the objectId value.
@@ -196,6 +247,15 @@ public class AADObjectInner {
     }
 
     /**
+     * Get the mailNickname value.
+     *
+     * @return the mailNickname value
+     */
+    public String mailNickname() {
+        return this.mailNickname;
+    }
+
+    /**
      * Get the securityEnabled value.
      *
      * @return the securityEnabled value
@@ -273,6 +333,69 @@ public class AADObjectInner {
     public AADObjectInner withUserType(String userType) {
         this.userType = userType;
         return this;
+    }
+
+    /**
+     * Get the usageLocation value.
+     *
+     * @return the usageLocation value
+     */
+    public String usageLocation() {
+        return this.usageLocation;
+    }
+
+    /**
+     * Get the appId value.
+     *
+     * @return the appId value
+     */
+    public String appId() {
+        return this.appId;
+    }
+
+    /**
+     * Get the appPermissions value.
+     *
+     * @return the appPermissions value
+     */
+    public List<String> appPermissions() {
+        return this.appPermissions;
+    }
+
+    /**
+     * Get the availableToOtherTenants value.
+     *
+     * @return the availableToOtherTenants value
+     */
+    public Boolean availableToOtherTenants() {
+        return this.availableToOtherTenants;
+    }
+
+    /**
+     * Get the identifierUris value.
+     *
+     * @return the identifierUris value
+     */
+    public List<String> identifierUris() {
+        return this.identifierUris;
+    }
+
+    /**
+     * Get the replyUrls value.
+     *
+     * @return the replyUrls value
+     */
+    public List<String> replyUrls() {
+        return this.replyUrls;
+    }
+
+    /**
+     * Get the homepage value.
+     *
+     * @return the homepage value
+     */
+    public String homepage() {
+        return this.homepage;
     }
 
 }

@@ -198,6 +198,19 @@ public class GraphRbacManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The DomainsInner object to access its operations.
+     */
+    private DomainsInner domains;
+
+    /**
+     * Gets the DomainsInner object to access its operations.
+     * @return the DomainsInner object.
+     */
+    public DomainsInner domains() {
+        return this.domains;
+    }
+
+    /**
      * Initializes an instance of GraphRbacManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -237,6 +250,7 @@ public class GraphRbacManagementClientImpl extends AzureServiceClient {
         this.groups = new GroupsInner(restClient().retrofit(), this);
         this.servicePrincipals = new ServicePrincipalsInner(restClient().retrofit(), this);
         this.users = new UsersInner(restClient().retrofit(), this);
+        this.domains = new DomainsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
