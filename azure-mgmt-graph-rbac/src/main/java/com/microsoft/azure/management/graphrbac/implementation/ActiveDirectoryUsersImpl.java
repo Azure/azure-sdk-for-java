@@ -11,10 +11,11 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryUser;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryUsers;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -23,12 +24,12 @@ import rx.functions.Func1;
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.Graph.RBAC.Fluent")
 class ActiveDirectoryUsersImpl
-        extends ReadableWrappersImpl<
-        ActiveDirectoryUser,
-        ActiveDirectoryUserImpl,
-                    UserInner>
+        extends CreatableWrappersImpl<
+            ActiveDirectoryUser,
+            ActiveDirectoryUserImpl,
+            UserInner>
         implements
-        ActiveDirectoryUsers,
+            ActiveDirectoryUsers,
             HasInner<UsersInner> {
     private final GraphRbacManager manager;
 
@@ -141,5 +142,20 @@ class ActiveDirectoryUsersImpl
     @Override
     public GraphRbacManager manager() {
         return manager;
+    }
+
+    @Override
+    public ActiveDirectoryUserImpl define(String name) {
+        return wrapModel(name);
+    }
+
+    @Override
+    protected ActiveDirectoryUserImpl wrapModel(String name) {
+        return new ActiveDirectoryUserImpl((UserInner) new UserInner().withDisplayName(name), manager());
+    }
+
+    @Override
+    public Completable deleteByIdAsync(String id) {
+        return manager().inner().users().deleteAsync(id).toCompletable();
     }
 }

@@ -9,7 +9,6 @@
 package com.microsoft.azure.management.graphrbac.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
-import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
@@ -42,7 +41,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in RoleAssignments.
  */
-public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentInner>, InnerSupportsListing<RoleAssignmentInner> {
+public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentInner> {
     /** The Retrofit service to perform REST calls. */
     private RoleAssignmentsService service;
     /** The service client containing this operation class. */
@@ -68,9 +67,9 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/roleAssignments")
         Observable<Response<ResponseBody>> listForResource(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path(value = "parentResourcePath", encoded = true) String parentResourcePath, @Path(value = "resourceType", encoded = true) String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.RoleAssignments listByResourceGroup" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.RoleAssignments listForResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/roleAssignments")
-        Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listForResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.RoleAssignments delete" })
         @HTTP(path = "{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}", method = "DELETE", hasBody = true)
@@ -108,9 +107,9 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
         @GET
         Observable<Response<ResponseBody>> listForResourceNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.RoleAssignments listByResourceGroupNext" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.RoleAssignments listForResourceGroupNext" })
         @GET
-        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listForResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.graphrbac.RoleAssignments listNext" })
         @GET
@@ -424,12 +423,12 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;RoleAssignmentInner&gt; object if successful.
      */
-    public PagedList<RoleAssignmentInner> listByResourceGroup(final String resourceGroupName) {
-        ServiceResponse<Page<RoleAssignmentInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
+    public PagedList<RoleAssignmentInner> listForResourceGroup(final String resourceGroupName) {
+        ServiceResponse<Page<RoleAssignmentInner>> response = listForResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<RoleAssignmentInner>(response.body()) {
             @Override
             public Page<RoleAssignmentInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listForResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -442,13 +441,13 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<RoleAssignmentInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<RoleAssignmentInner> serviceCallback) {
+    public ServiceFuture<List<RoleAssignmentInner>> listForResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<RoleAssignmentInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listByResourceGroupSinglePageAsync(resourceGroupName),
+            listForResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<RoleAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RoleAssignmentInner>>> call(String nextPageLink) {
-                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
+                    return listForResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -461,8 +460,8 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RoleAssignmentInner&gt; object
      */
-    public Observable<Page<RoleAssignmentInner>> listByResourceGroupAsync(final String resourceGroupName) {
-        return listByResourceGroupWithServiceResponseAsync(resourceGroupName)
+    public Observable<Page<RoleAssignmentInner>> listForResourceGroupAsync(final String resourceGroupName) {
+        return listForResourceGroupWithServiceResponseAsync(resourceGroupName)
             .map(new Func1<ServiceResponse<Page<RoleAssignmentInner>>, Page<RoleAssignmentInner>>() {
                 @Override
                 public Page<RoleAssignmentInner> call(ServiceResponse<Page<RoleAssignmentInner>> response) {
@@ -478,8 +477,8 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RoleAssignmentInner&gt; object
      */
-    public Observable<ServiceResponse<Page<RoleAssignmentInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
-        return listByResourceGroupSinglePageAsync(resourceGroupName)
+    public Observable<ServiceResponse<Page<RoleAssignmentInner>>> listForResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
+        return listForResourceGroupSinglePageAsync(resourceGroupName)
             .concatMap(new Func1<ServiceResponse<Page<RoleAssignmentInner>>, Observable<ServiceResponse<Page<RoleAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RoleAssignmentInner>>> call(ServiceResponse<Page<RoleAssignmentInner>> page) {
@@ -487,7 +486,7 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listForResourceGroupNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -499,7 +498,7 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;RoleAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<RoleAssignmentInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
+    public Observable<ServiceResponse<Page<RoleAssignmentInner>>> listForResourceGroupSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -510,12 +509,12 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String filter = null;
-        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.listForResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RoleAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RoleAssignmentInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<RoleAssignmentInner>> result = listByResourceGroupDelegate(response);
+                        ServiceResponse<PageImpl<RoleAssignmentInner>> result = listForResourceGroupDelegate(response);
                         return Observable.just(new ServiceResponse<Page<RoleAssignmentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -534,12 +533,12 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;RoleAssignmentInner&gt; object if successful.
      */
-    public PagedList<RoleAssignmentInner> listByResourceGroup(final String resourceGroupName, final String filter) {
-        ServiceResponse<Page<RoleAssignmentInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName, filter).toBlocking().single();
+    public PagedList<RoleAssignmentInner> listForResourceGroup(final String resourceGroupName, final String filter) {
+        ServiceResponse<Page<RoleAssignmentInner>> response = listForResourceGroupSinglePageAsync(resourceGroupName, filter).toBlocking().single();
         return new PagedList<RoleAssignmentInner>(response.body()) {
             @Override
             public Page<RoleAssignmentInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listForResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -553,13 +552,13 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<RoleAssignmentInner>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final ListOperationCallback<RoleAssignmentInner> serviceCallback) {
+    public ServiceFuture<List<RoleAssignmentInner>> listForResourceGroupAsync(final String resourceGroupName, final String filter, final ListOperationCallback<RoleAssignmentInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listByResourceGroupSinglePageAsync(resourceGroupName, filter),
+            listForResourceGroupSinglePageAsync(resourceGroupName, filter),
             new Func1<String, Observable<ServiceResponse<Page<RoleAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RoleAssignmentInner>>> call(String nextPageLink) {
-                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
+                    return listForResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -573,8 +572,8 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RoleAssignmentInner&gt; object
      */
-    public Observable<Page<RoleAssignmentInner>> listByResourceGroupAsync(final String resourceGroupName, final String filter) {
-        return listByResourceGroupWithServiceResponseAsync(resourceGroupName, filter)
+    public Observable<Page<RoleAssignmentInner>> listForResourceGroupAsync(final String resourceGroupName, final String filter) {
+        return listForResourceGroupWithServiceResponseAsync(resourceGroupName, filter)
             .map(new Func1<ServiceResponse<Page<RoleAssignmentInner>>, Page<RoleAssignmentInner>>() {
                 @Override
                 public Page<RoleAssignmentInner> call(ServiceResponse<Page<RoleAssignmentInner>> response) {
@@ -591,8 +590,8 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RoleAssignmentInner&gt; object
      */
-    public Observable<ServiceResponse<Page<RoleAssignmentInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName, final String filter) {
-        return listByResourceGroupSinglePageAsync(resourceGroupName, filter)
+    public Observable<ServiceResponse<Page<RoleAssignmentInner>>> listForResourceGroupWithServiceResponseAsync(final String resourceGroupName, final String filter) {
+        return listForResourceGroupSinglePageAsync(resourceGroupName, filter)
             .concatMap(new Func1<ServiceResponse<Page<RoleAssignmentInner>>, Observable<ServiceResponse<Page<RoleAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RoleAssignmentInner>>> call(ServiceResponse<Page<RoleAssignmentInner>> page) {
@@ -600,7 +599,7 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listForResourceGroupNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -613,7 +612,7 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;RoleAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<RoleAssignmentInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName, final String filter) {
+    public Observable<ServiceResponse<Page<RoleAssignmentInner>>> listForResourceGroupSinglePageAsync(final String resourceGroupName, final String filter) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -623,12 +622,12 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.listForResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RoleAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RoleAssignmentInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<RoleAssignmentInner>> result = listByResourceGroupDelegate(response);
+                        ServiceResponse<PageImpl<RoleAssignmentInner>> result = listForResourceGroupDelegate(response);
                         return Observable.just(new ServiceResponse<Page<RoleAssignmentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -637,7 +636,7 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
             });
     }
 
-    private ServiceResponse<PageImpl<RoleAssignmentInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<RoleAssignmentInner>> listForResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<RoleAssignmentInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<RoleAssignmentInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -1842,12 +1841,12 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;RoleAssignmentInner&gt; object if successful.
      */
-    public PagedList<RoleAssignmentInner> listByResourceGroupNext(final String nextPageLink) {
-        ServiceResponse<Page<RoleAssignmentInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public PagedList<RoleAssignmentInner> listForResourceGroupNext(final String nextPageLink) {
+        ServiceResponse<Page<RoleAssignmentInner>> response = listForResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<RoleAssignmentInner>(response.body()) {
             @Override
             public Page<RoleAssignmentInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listForResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1861,13 +1860,13 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<RoleAssignmentInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<RoleAssignmentInner>> serviceFuture, final ListOperationCallback<RoleAssignmentInner> serviceCallback) {
+    public ServiceFuture<List<RoleAssignmentInner>> listForResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<RoleAssignmentInner>> serviceFuture, final ListOperationCallback<RoleAssignmentInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listByResourceGroupNextSinglePageAsync(nextPageLink),
+            listForResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<RoleAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RoleAssignmentInner>>> call(String nextPageLink) {
-                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
+                    return listForResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -1880,8 +1879,8 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RoleAssignmentInner&gt; object
      */
-    public Observable<Page<RoleAssignmentInner>> listByResourceGroupNextAsync(final String nextPageLink) {
-        return listByResourceGroupNextWithServiceResponseAsync(nextPageLink)
+    public Observable<Page<RoleAssignmentInner>> listForResourceGroupNextAsync(final String nextPageLink) {
+        return listForResourceGroupNextWithServiceResponseAsync(nextPageLink)
             .map(new Func1<ServiceResponse<Page<RoleAssignmentInner>>, Page<RoleAssignmentInner>>() {
                 @Override
                 public Page<RoleAssignmentInner> call(ServiceResponse<Page<RoleAssignmentInner>> response) {
@@ -1897,8 +1896,8 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RoleAssignmentInner&gt; object
      */
-    public Observable<ServiceResponse<Page<RoleAssignmentInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
-        return listByResourceGroupNextSinglePageAsync(nextPageLink)
+    public Observable<ServiceResponse<Page<RoleAssignmentInner>>> listForResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
+        return listForResourceGroupNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<RoleAssignmentInner>>, Observable<ServiceResponse<Page<RoleAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RoleAssignmentInner>>> call(ServiceResponse<Page<RoleAssignmentInner>> page) {
@@ -1906,7 +1905,7 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listForResourceGroupNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1918,17 +1917,17 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;RoleAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<RoleAssignmentInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<RoleAssignmentInner>>> listForResourceGroupNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
-        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listForResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RoleAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RoleAssignmentInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<RoleAssignmentInner>> result = listByResourceGroupNextDelegate(response);
+                        ServiceResponse<PageImpl<RoleAssignmentInner>> result = listForResourceGroupNextDelegate(response);
                         return Observable.just(new ServiceResponse<Page<RoleAssignmentInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1937,7 +1936,7 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
             });
     }
 
-    private ServiceResponse<PageImpl<RoleAssignmentInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<RoleAssignmentInner>> listForResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<RoleAssignmentInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<RoleAssignmentInner>>() { }.getType())
                 .registerError(CloudException.class)
