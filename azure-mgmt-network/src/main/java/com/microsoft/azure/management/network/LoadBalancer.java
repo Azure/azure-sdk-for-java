@@ -15,7 +15,6 @@ import com.microsoft.azure.management.network.implementation.LoadBalancerInner;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.network.model.HasLoadBalancingRules;
 import com.microsoft.azure.management.network.model.HasNetworkInterfaces;
-import com.microsoft.azure.management.network.model.HasPublicIPAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -140,7 +139,6 @@ public interface LoadBalancer extends
          * The stage of a load balancer definition describing the nature of the frontend of the load balancer: internal or Internet-facing.
          */
         interface WithFrontend extends
-            WithPublicIPAddress<WithPublicFrontendOrRuleNat>,
             WithPublicFrontend,
             WithPrivateFrontend {
         }
@@ -244,14 +242,6 @@ public interface LoadBalancer extends
              * @return the next stage of the update
              */
             ReturnT withExistingVirtualMachines(HasNetworkInterfaces...vms);
-        }
-
-        /**
-         * The stage of a load balancer definition allowing to add a public IP address as the default public frontend.
-         * @param <ReturnT> the next stage of the definition
-         */
-        interface WithPublicIPAddress<ReturnT>
-            extends HasPublicIPAddress.DefinitionStages.WithPublicIPAddress<ReturnT> {
         }
 
         /**
@@ -457,7 +447,7 @@ public interface LoadBalancer extends
         /**
          * The stage of a load balancer update allowing to define, remove or edit Internet-facing frontends.
          */
-        interface WithInternetFrontend extends WithPublicIPAddress {
+        interface WithInternetFrontend {
             /**
              * Begins the update of a load balancer frontend.
              * <p>
@@ -480,12 +470,6 @@ public interface LoadBalancer extends
              * @return the first stage of the frontend update
              */
             LoadBalancerPublicFrontend.Update updatePublicFrontend(String name);
-        }
-
-        /**
-         * The stage of a load balancer update allowing to add a public IP address as the default public frontend.
-         */
-        interface WithPublicIPAddress extends HasPublicIPAddress.UpdateDefinitionStages.WithPublicIPAddress<Update> {
         }
 
         /**

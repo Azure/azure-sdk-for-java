@@ -154,7 +154,7 @@ public class TestLoadBalancer {
             Assert.assertTrue(lb.backends().size() == 1);
 
             // Verify probes
-            Assert.assertEquals(1, lb.httpProbes().size()); 
+            Assert.assertEquals(1, lb.httpProbes().size());
             Assert.assertTrue(lb.httpProbes().containsKey("httpProbe1"));
             Assert.assertEquals(1, lb.tcpProbes().size());
             Assert.assertTrue(lb.tcpProbes().containsKey("tcpProbe1"));
@@ -672,7 +672,9 @@ public class TestLoadBalancer {
             ensurePIPs(resource.manager().publicIPAddresses());
             PublicIPAddress pip = resource.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[1]);
             resource =  resource.update()
-                    .withExistingPublicIPAddress(pip)
+                    .updatePublicFrontend("frontend1")
+                        .withExistingPublicIPAddress(pip)
+                        .parent()
                     .defineTcpProbe("tcpprobe")
                         .withPort(22)
                         .attach()
@@ -705,7 +707,7 @@ public class TestLoadBalancer {
             Assert.assertEquals(1, resource.frontends().size());
             Assert.assertEquals(1, resource.publicFrontends().size());
             Assert.assertEquals(0, resource.privateFrontends().size());
-            LoadBalancerFrontend frontend = resource.frontends().values().iterator().next();
+            LoadBalancerFrontend frontend = resource.frontends().get("frontend1");
             Assert.assertTrue(frontend.isPublic());
             LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
             Assert.assertTrue(pip.id().equalsIgnoreCase(publicFrontend.publicIPAddressId()));
