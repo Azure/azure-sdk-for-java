@@ -56,7 +56,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
 
             // Update
             servicePrincipal.update()
-                    .withoutCredential("sppass")
+                    .withoutCredential(servicePrincipal.passwordCredentials().iterator().next())
                     .defineCertificateCredential()
                         .withAsymmetricX509Certificate()
                         .withPublicKey(ByteStreams.toByteArray(ServicePrincipalsTests.class.getResourceAsStream("/myTest.cer")))
