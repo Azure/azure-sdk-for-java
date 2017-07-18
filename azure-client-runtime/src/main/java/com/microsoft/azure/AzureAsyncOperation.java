@@ -6,6 +6,11 @@
 
 package com.microsoft.azure;
 
+import com.microsoft.rest.protocol.SerializerAdapter;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
+
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -107,24 +112,43 @@ final class AzureAsyncOperation {
     }
 
     /**
-     * The delay in seconds that should be used when checking
-     * for the status of the operation.
+     * Async operation in string format.
      */
-    private int retryAfter;
+    private String rawString;
 
     /**
-     * @return the delay in seconds
+     * @return the raw string
      */
-    int retryAfter() {
-        return this.retryAfter;
+    String rawString() {
+        return this.rawString;
     }
 
     /**
-     * Sets the delay in seconds.
+     * Creates AzureAsyncOperation from the given HTTP response.
      *
-     * @param retryAfter the delay in seconds.
+     * @param serializerAdapter the adapter to use for deserialization
+     * @param response the response
+     * @return the async operation object
+     * @throws CloudException if the deserialization fails or response contains invalid body
      */
-    void setRetryAfter(int retryAfter) {
-        this.retryAfter = retryAfter;
+    static AzureAsyncOperation fromResponse(SerializerAdapter<?> serializerAdapter, Response<ResponseBody> response) throws CloudException {
+        AzureAsyncOperation asyncOperation = null;
+        String rawString = null;
+        if (response.body() != null) {
+            try {
+                rawString = response.body().string();
+                asyncOperation = serializerAdapter.deserialize(rawString, AzureAsyncOperation.class);
+                asyncOperation.rawString = rawString;
+            } catch (IOException exception) {
+                // Exception will be handled below
+            }
+            finally {
+                response.body().close();
+            }
+        }
+        if (asyncOperation == null || asyncOperation.status() == null) {
+            throw new CloudException("polling response does not contain a valid body: " + rawString, response);
+        }
+        return asyncOperation;
     }
 }

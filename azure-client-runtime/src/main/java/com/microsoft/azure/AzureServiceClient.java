@@ -29,6 +29,7 @@ public abstract class AzureServiceClient extends ServiceClient {
      * Initializes a new instance of the ServiceClient class.
      *
      * @param baseUrl the service base uri
+     * @param credentials the credentials
      * @param clientBuilder the http client builder
      * @param restBuilder the retrofit rest client builder
      */
