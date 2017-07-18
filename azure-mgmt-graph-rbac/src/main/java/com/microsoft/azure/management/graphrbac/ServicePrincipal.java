@@ -17,7 +17,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -43,13 +42,13 @@ public interface ServicePrincipal extends
      * @return the mapping of password credentials from their names
      */
     @Beta(SinceVersion.V1_1_0)
-    Map<String, PasswordCredential> passwordCredentials();
+    Set<PasswordCredential> passwordCredentials();
 
     /**
      * @return the mapping of certificate credentials from their names
      */
     @Beta(SinceVersion.V1_1_0)
-    Map<String, CertificateCredential> certificateCredentials();
+    Set<CertificateCredential> certificateCredentials();
 
     /**
      * @return the mapping from scopes to role assignments
@@ -122,19 +121,17 @@ public interface ServicePrincipal extends
         interface WithCredential {
             /**
              * Starts the definition of a certificate credential.
-             * @param name the descriptive name of the certificate credential
              * @return the first stage in certificate credential definition
              */
             @Beta(SinceVersion.V1_1_0)
-            CertificateCredential.DefinitionStages.Blank<WithCreate> defineCertificateCredential(String name);
+            CertificateCredential.DefinitionStages.Blank<WithCreate> defineCertificateCredential();
 
             /**
              * Starts the definition of a password credential.
-             * @param name the descriptive name of the password credential
              * @return the first stage in password credential definition
              */
             @Beta(SinceVersion.V1_1_0)
-            PasswordCredential.DefinitionStages.Blank<WithCreate> definePasswordCredential(String name);
+            PasswordCredential.DefinitionStages.Blank<WithCreate> definePasswordCredential();
         }
 
         /**
@@ -191,27 +188,25 @@ public interface ServicePrincipal extends
         interface WithCredential {
             /**
              * Starts the definition of a certificate credential.
-             * @param name the descriptive name of the certificate credential
              * @return the first stage in certificate credential update
              */
             @Beta(SinceVersion.V1_2_0)
-            CertificateCredential.DefinitionStages.Blank<Update> defineCertificateCredential(String name);
+            CertificateCredential.DefinitionStages.Blank<Update> defineCertificateCredential();
 
             /**
              * Starts the definition of a password credential.
-             * @param name the descriptive name of the password credential
              * @return the first stage in password credential update
              */
             @Beta(SinceVersion.V1_2_0)
-            PasswordCredential.DefinitionStages.Blank<Update> definePasswordCredential(String name);
+            PasswordCredential.DefinitionStages.Blank<Update> definePasswordCredential();
 
             /**
              * Removes a credential.
-             * @param name the name of the credential
+             * @param credential the credential to remove
              * @return the next stage of the service principal update
              */
             @Beta(SinceVersion.V1_2_0)
-            Update withoutCredential(String name);
+            Update withoutCredential(Credential credential);
         }
 
         /**

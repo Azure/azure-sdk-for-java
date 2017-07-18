@@ -12,6 +12,7 @@ import com.google.common.collect.Sets;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryApplication;
 import com.microsoft.azure.management.graphrbac.CertificateCredential;
+import com.microsoft.azure.management.graphrbac.Credential;
 import com.microsoft.azure.management.graphrbac.PasswordCredential;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
@@ -21,6 +22,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -196,19 +198,19 @@ class ActiveDirectoryApplicationImpl
     }
 
     @Override
-    public Map<String, PasswordCredential> passwordCredentials() {
+    public Set<PasswordCredential> passwordCredentials() {
         if (cachedPasswordCredentials == null) {
             return null;
         }
-        return Collections.unmodifiableMap(cachedPasswordCredentials);
+        return Collections.unmodifiableSet(new HashSet<>(cachedPasswordCredentials.values()));
     }
 
     @Override
-    public Map<String, CertificateCredential> certificateCredentials() {
+    public Set<CertificateCredential> certificateCredentials() {
         if (cachedCertificateCredentials == null) {
             return null;
         }
-        return Collections.unmodifiableMap(cachedCertificateCredentials);
+        return Collections.unmodifiableSet(new HashSet<>(cachedCertificateCredentials.values()));
     }
 
     @Override
@@ -276,20 +278,20 @@ class ActiveDirectoryApplicationImpl
 
     @Override
     @SuppressWarnings("unchecked")
-    public CertificateCredentialImpl defineCertificateCredential(String name) {
-        return new CertificateCredentialImpl<>(name, this);
+    public CertificateCredentialImpl defineCertificateCredential() {
+        return new CertificateCredentialImpl<>(this);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public PasswordCredentialImpl definePasswordCredential(String name) {
-        return new PasswordCredentialImpl<>(name, this);
+    public PasswordCredentialImpl definePasswordCredential() {
+        return new PasswordCredentialImpl<>(this);
     }
 
     @Override
-    public ActiveDirectoryApplicationImpl withoutCredential(final String name) {
-        if (cachedPasswordCredentials.containsKey(name)) {
-            cachedPasswordCredentials.remove(name);
+    public ActiveDirectoryApplicationImpl withoutCredential(final Credential credential) {
+        if (cachedPasswordCredentials.containsKey(credential.name())) {
+            cachedPasswordCredentials.remove(credential.name());
             updateParameters.withPasswordCredentials(Lists.transform(
                     new ArrayList<>(cachedPasswordCredentials.values()),
                     new Function<PasswordCredential, PasswordCredentialInner>() {
@@ -298,8 +300,8 @@ class ActiveDirectoryApplicationImpl
                             return input.inner();
                         }
                     }));
-        } else if (cachedCertificateCredentials.containsKey(name)) {
-            cachedCertificateCredentials.remove(name);
+        } else if (cachedCertificateCredentials.containsKey(credential.name())) {
+            cachedCertificateCredentials.remove(credential.name());
             updateParameters.withKeyCredentials(Lists.transform(
                     new ArrayList<>(cachedCertificateCredentials.values()),
                     new Function<CertificateCredential, KeyCredentialInner>() {

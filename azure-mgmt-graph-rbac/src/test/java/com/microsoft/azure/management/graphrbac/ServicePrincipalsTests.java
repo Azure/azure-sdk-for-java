@@ -35,7 +35,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
             // Create
             servicePrincipal = graphRbacManager.servicePrincipals().define(name)
                     .withNewApplication("http://easycreate.azure.com/" + name)
-                    .definePasswordCredential("sppass")
+                    .definePasswordCredential()
                         .withPasswordValue("StrongPass!12")
                         .attach()
                     .create();
@@ -57,7 +57,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
             // Update
             servicePrincipal.update()
                     .withoutCredential("sppass")
-                    .defineCertificateCredential("spcert")
+                    .defineCertificateCredential()
                         .withAsymmetricX509Certificate()
                         .withPublicKey(ByteStreams.toByteArray(ServicePrincipalsTests.class.getResourceAsStream("/myTest.cer")))
                         .withDuration(Duration.standardDays(1))
@@ -88,10 +88,10 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
             // Create
             servicePrincipal = graphRbacManager.servicePrincipals().define(name)
                     .withNewApplication("http://easycreate.azure.com/ansp/" + name)
-                    .definePasswordCredential("sppass")
+                    .definePasswordCredential()
                         .withPasswordValue("StrongPass!12")
                         .attach()
-                    .defineCertificateCredential("spcert")
+                    .defineCertificateCredential()
                         .withAsymmetricX509Certificate()
                         .withPublicKey(Files.readAllBytes(Paths.get("/Users/jianghlu/Documents/code/certs/myserver.crt")))
                         .withDuration(Duration.standardDays(7))

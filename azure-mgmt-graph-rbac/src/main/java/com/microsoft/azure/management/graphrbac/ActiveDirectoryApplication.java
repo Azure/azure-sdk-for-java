@@ -17,7 +17,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
 import java.net.URL;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -60,14 +59,14 @@ public interface ActiveDirectoryApplication extends
     URL signOnUrl();
 
     /**
-     * @return the mapping of password credentials from their names
+     * @return the set of password credentials
      */
-    Map<String, PasswordCredential> passwordCredentials();
+    Set<PasswordCredential> passwordCredentials();
 
     /**
-     * @return the mapping of certificate credentials from their names
+     * @return the set of certificate credentials
      */
-    Map<String, CertificateCredential> certificateCredentials();
+    Set<CertificateCredential> certificateCredentials();
 
     /**************************************************************
      * Fluent interfaces to provision an application
@@ -136,17 +135,15 @@ public interface ActiveDirectoryApplication extends
         interface WithCredential {
             /**
              * Starts the definition of a certificate credential.
-             * @param name the descriptive name of the certificate credential
              * @return the first stage in certificate credential definition
              */
-            CertificateCredential.DefinitionStages.Blank<WithCreate> defineCertificateCredential(String name);
+            CertificateCredential.DefinitionStages.Blank<WithCreate> defineCertificateCredential();
 
             /**
              * Starts the definition of a password credential.
-             * @param name the descriptive name of the password credential
              * @return the first stage in password credential definition
              */
-            PasswordCredential.DefinitionStages.Blank<WithCreate> definePasswordCredential(String name);
+            PasswordCredential.DefinitionStages.Blank<WithCreate> definePasswordCredential();
         }
 
         /**
@@ -240,24 +237,22 @@ public interface ActiveDirectoryApplication extends
         interface WithCredential {
             /**
              * Starts the definition of a certificate credential.
-             * @param name the descriptive name of the certificate credential
              * @return the first stage in certificate credential definition
              */
-            CertificateCredential.UpdateDefinitionStages.Blank<Update> defineCertificateCredential(String name);
+            CertificateCredential.UpdateDefinitionStages.Blank<Update> defineCertificateCredential();
 
             /**
              * Starts the definition of a password credential.
-             * @param name the descriptive name of the password credential
              * @return the first stage in password credential definition
              */
-            PasswordCredential.UpdateDefinitionStages.Blank<Update> definePasswordCredential(String name);
+            PasswordCredential.UpdateDefinitionStages.Blank<Update> definePasswordCredential();
 
             /**
-             * Removes a key.
-             * @param name the name of the key
+             * Removes a credential.
+             * @param credential the credential to remove
              * @return the next stage of the application update
              */
-            Update withoutCredential(String name);
+            Update withoutCredential(Credential credential);
         }
 
         /**
