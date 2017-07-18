@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.graphrbac.implementation;
 
-import com.google.common.io.BaseEncoding;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
@@ -31,22 +30,18 @@ class PasswordCredentialImpl<T>
         PasswordCredential.Definition<T>,
         PasswordCredential.UpdateDefinition<T> {
 
-    private String name;
     private HasCredential<?> parent;
     OutputStream authFile;
     private String subscriptionId;
 
     PasswordCredentialImpl(PasswordCredentialInner passwordCredential) {
         super(passwordCredential);
-        this.name = new String(BaseEncoding.base64().decode(passwordCredential.customKeyIdentifier()));
     }
 
-    PasswordCredentialImpl(String name, HasCredential<?> parent) {
+    PasswordCredentialImpl(HasCredential<?> parent) {
         super(new PasswordCredentialInner()
-                .withCustomKeyIdentifier(BaseEncoding.base64().encode(name.getBytes()))
                 .withStartDate(DateTime.now())
                 .withEndDate(DateTime.now().plusYears(1)));
-        this.name = name;
         this.parent = parent;
     }
 
@@ -111,7 +106,7 @@ class PasswordCredentialImpl<T>
 
     @Override
     public String name() {
-        return name;
+        return id();
     }
 
     @Override

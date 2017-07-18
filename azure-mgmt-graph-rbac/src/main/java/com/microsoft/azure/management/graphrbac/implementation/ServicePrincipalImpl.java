@@ -13,6 +13,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryApplication;
 import com.microsoft.azure.management.graphrbac.BuiltInRole;
 import com.microsoft.azure.management.graphrbac.CertificateCredential;
+import com.microsoft.azure.management.graphrbac.Credential;
 import com.microsoft.azure.management.graphrbac.PasswordCredential;
 import com.microsoft.azure.management.graphrbac.RoleAssignment;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
@@ -96,13 +97,13 @@ class ServicePrincipalImpl
     }
 
     @Override
-    public Map<String, PasswordCredential> passwordCredentials() {
-        return Collections.unmodifiableMap(cachedPasswordCredentials);
+    public Set<PasswordCredential> passwordCredentials() {
+        return Collections.unmodifiableSet(new HashSet<>(cachedPasswordCredentials.values()));
     }
 
     @Override
-    public Map<String, CertificateCredential> certificateCredentials() {
-        return Collections.unmodifiableMap(cachedCertificateCredentials);
+    public Set<CertificateCredential> certificateCredentials() {
+        return Collections.unmodifiableSet(new HashSet<>(cachedCertificateCredentials.values()));
     }
 
     @Override
@@ -344,22 +345,22 @@ class ServicePrincipalImpl
 
     @Override
     @SuppressWarnings("unchecked")
-    public CertificateCredentialImpl defineCertificateCredential(String name) {
-        return new CertificateCredentialImpl<>(name, this);
+    public CertificateCredentialImpl defineCertificateCredential() {
+        return new CertificateCredentialImpl<>(this);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public PasswordCredentialImpl definePasswordCredential(String name) {
-        return new PasswordCredentialImpl<>(name, this);
+    public PasswordCredentialImpl definePasswordCredential() {
+        return new PasswordCredentialImpl<>(this);
     }
 
     @Override
-    public ServicePrincipalImpl withoutCredential(String name) {
-        if (cachedPasswordCredentials.containsKey(name)) {
-            passwordCredentialsToDelete.add(name);
-        } else if (cachedCertificateCredentials.containsKey(name)) {
-            certificateCredentialsToDelete.add(name);
+    public ServicePrincipalImpl withoutCredential(Credential credential) {
+        if (cachedPasswordCredentials.containsKey(credential.name())) {
+            passwordCredentialsToDelete.add(credential.name());
+        } else if (cachedCertificateCredentials.containsKey(credential.name())) {
+            certificateCredentialsToDelete.add(credential.name());
         }
         return this;
     }

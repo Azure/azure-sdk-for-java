@@ -9,14 +9,8 @@ package com.microsoft.azure.management.graphrbac;
 import com.google.common.io.ByteStreams;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.joda.time.Duration;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
-
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class ApplicationsTests extends GraphRbacManagementTest {
     @Test
@@ -27,11 +21,11 @@ public class ApplicationsTests extends GraphRbacManagementTest {
         try {
             application = graphRbacManager.applications().define(name)
                     .withSignOnUrl("http://easycreate.azure.com/" + name)
-                    .definePasswordCredential("passwd")
+                    .definePasswordCredential()
                         .withPasswordValue("P@ssw0rd")
                         .withDuration(Duration.standardDays(700))
                         .attach()
-                    .defineCertificateCredential("cert")
+                    .defineCertificateCredential()
                         .withAsymmetricX509Certificate()
                         .withPublicKey(ByteStreams.toByteArray(this.getClass().getResourceAsStream("/myTest.cer")))
                         .withDuration(Duration.standardDays(100))
@@ -48,7 +42,7 @@ public class ApplicationsTests extends GraphRbacManagementTest {
             Assert.assertEquals("http://easycreate.azure.com/" + name, application.signOnUrl().toString());
 
             application.update()
-                    .withoutCredential("passwd")
+                    .withoutCredential(application.passwordCredentials().iterator().next())
                     .apply();
             System.out.println(application.id() + " - " + application.applicationId());
             Assert.assertEquals(0, application.passwordCredentials().size());

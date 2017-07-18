@@ -43,11 +43,8 @@ public final class ManageServicePrincipalCredentials {
         final String spName         = Utils.createRandomName("sp");
         final String appName        = SdkContext.randomResourceName("app", 20);
         final String appUrl         = "https://" + appName;
-        final String passwordName1  = SdkContext.randomResourceName("password", 20);
         final String password1      = "P@ssw0rd";
-        final String passwordName2  = SdkContext.randomResourceName("password", 20);
         final String password2      = "StrongP@ss!12";
-        final String certName1      = SdkContext.randomResourceName("cert", 20);
         final String raName         = SdkContext.randomUuid();
         String applicationId = "";
         try {
@@ -59,13 +56,13 @@ public final class ManageServicePrincipalCredentials {
             ActiveDirectoryApplication application = authenticated.activeDirectoryApplications()
                     .define(appName)
                     .withSignOnUrl(appUrl)
-                    .definePasswordCredential(passwordName1)
+                    .definePasswordCredential()
                         .withPasswordValue(password1)
                         .attach()
-                    .definePasswordCredential(passwordName2)
+                    .definePasswordCredential()
                         .withPasswordValue(password2)
                         .attach()
-                    .defineCertificateCredential(certName1)
+                    .defineCertificateCredential()
                         .withAsymmetricX509Certificate()
                         .withPublicKey(ByteStreams.toByteArray(ManageServicePrincipalCredentials.class.getResourceAsStream("/myTest.cer")))
                         .withDuration(Duration.standardDays(1))
@@ -110,31 +107,31 @@ public final class ManageServicePrincipalCredentials {
             // ============================================================
             // Verify the credentials are valid
 
-            System.out.println("Verifying password credential " + passwordName1 + " is valid...");
+            System.out.println("Verifying the 1st password credential is valid...");
 
             ApplicationTokenCredentials testCredential = new ApplicationTokenCredentials(
                     servicePrincipal.applicationId(), authenticated.tenantId(), password1, environment);
             try {
                 Azure.authenticate(testCredential).withDefaultSubscription();
 
-                System.out.println("Verified " + passwordName1 + " is valid.");
+                System.out.println("Verified the 1st password credential is valid.");
             } catch (Exception e) {
-                System.out.println("Failed to verify " + passwordName1 + " is valid.");
+                System.out.println("Failed to verify the 1st password credential is valid.");
             }
 
-            System.out.println("Verifying password credential " + passwordName2 + " is valid...");
+            System.out.println("Verifying the 2nd password credential is valid...");
 
             testCredential = new ApplicationTokenCredentials(
                     servicePrincipal.applicationId(), authenticated.tenantId(), password2, environment);
             try {
                 Azure.authenticate(testCredential).withDefaultSubscription();
 
-                System.out.println("Verified " + passwordName2 + " is valid.");
+                System.out.println("Verified the 2nd password credential is valid.");
             } catch (Exception e) {
-                System.out.println("Failed to verify " + passwordName2 + " is valid.");
+                System.out.println("Failed to verify the 2nd password credential is valid.");
             }
 
-            System.out.println("Verifying certificate credential " + certName1 + " is valid...");
+            System.out.println("Verifying the certificate credential is valid...");
 
             testCredential = new ApplicationTokenCredentials(
                     servicePrincipal.applicationId(),
@@ -145,17 +142,17 @@ public final class ManageServicePrincipalCredentials {
             try {
                 Azure.authenticate(testCredential).withDefaultSubscription();
 
-                System.out.println("Verified " + certName1 + " is valid.");
+                System.out.println("Verified the certificate credential is valid.");
             } catch (Exception e) {
-                System.out.println("Failed to verify " + certName1 + " is valid.");
+                System.out.println("Failed to verify the certificate credential is valid.");
             }
 
             // ============================================================
             // Revoke access of the 1st password credential
-            System.out.println("Revoking access for password credential " + passwordName1 + "...");
+            System.out.println("Revoking access for the 1st password credential ...");
 
             application.update()
-                    .withoutCredential(passwordName1)
+                    .withoutCredential(application.passwordCredentials().iterator().next())
                     .apply();
 
             Thread.sleep(15000);
@@ -165,16 +162,16 @@ public final class ManageServicePrincipalCredentials {
             // ============================================================
             // Verify the revoked password credential is no longer valid
 
-            System.out.println("Verifying password credential " + passwordName1 + " is revoked...");
+            System.out.println("Verifying the 1st password credential is revoked...");
 
             testCredential = new ApplicationTokenCredentials(
                     servicePrincipal.applicationId(), authenticated.tenantId(), password1, environment);
             try {
                 Azure.authenticate(testCredential).withDefaultSubscription();
 
-                System.out.println("Failed to verify " + passwordName1 + " is revoked.");
+                System.out.println("Failed to verify the 1st password credential is revoked.");
             } catch (Exception e) {
-                System.out.println("Verified " + passwordName1 + " is revoked.");
+                System.out.println("Verified the 1st password credential is revoked.");
             }
 
             // ============================================================
@@ -189,7 +186,7 @@ public final class ManageServicePrincipalCredentials {
             // ============================================================
             // Verify the revoked password credential is no longer valid
 
-            System.out.println("Verifying password credential " + passwordName2 + " has no access to subscription...");
+            System.out.println("Verifying the 2nd password credential has no access to subscription...");
 
             testCredential = new ApplicationTokenCredentials(
                     servicePrincipal.applicationId(), authenticated.tenantId(), password2, environment);
@@ -197,9 +194,9 @@ public final class ManageServicePrincipalCredentials {
                 Azure.authenticate(testCredential).withDefaultSubscription()
                         .resourceGroups().list();
 
-                System.out.println("Failed to verify " + passwordName2 + " has no access to subscription.");
+                System.out.println("Failed to verify the 2nd password credential has no access to subscription.");
             } catch (Exception e) {
-                System.out.println("Verified " + passwordName2 + " has no access to subscription.");
+                System.out.println("Verified the 2nd password credential has no access to subscription.");
             }
 
 

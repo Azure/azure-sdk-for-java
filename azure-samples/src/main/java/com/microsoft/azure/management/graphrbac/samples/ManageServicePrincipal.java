@@ -110,12 +110,12 @@ public final class ManageServicePrincipal {
                 .define(name)
                     .withSignOnUrl("https://github.com/Azure/azure-sdk-for-java/" + name)
                     // password credentials definition
-                    .definePasswordCredential("password")
+                    .definePasswordCredential()
                         .withPasswordValue("P@ssw0rd")
                         .withDuration(Duration.standardDays(700))
                         .attach()
                     // certificate credentials definition
-                    .defineCertificateCredential("cert")
+                    .defineCertificateCredential()
                         .withAsymmetricX509Certificate()
                         .withPublicKey(Files.readAllBytes(Paths.get(certificate.getCerPath())))
                         .withDuration(Duration.standardDays(100))
@@ -143,11 +143,11 @@ public final class ManageServicePrincipal {
                 .define("name")
                     .withExistingApplication(activeDirectoryApplication)
                     // password credentials definition
-                    .definePasswordCredential("ServicePrincipalAzureSample")
+                    .definePasswordCredential()
                         .withPasswordValue("StrongPass!12")
                         .attach()
                     // certificate credentials definition
-                    .defineCertificateCredential("spcert")
+                    .defineCertificateCredential()
                         .withAsymmetricX509Certificate()
                         .withPublicKey(Files.readAllBytes(Paths.get(certificate.getCerPath())))
                         .withDuration(Duration.standardDays(7))
@@ -176,7 +176,7 @@ public final class ManageServicePrincipal {
     private static void manageApplication(Azure.Authenticated authenticated, ActiveDirectoryApplication activeDirectoryApplication) {
         activeDirectoryApplication.update()
                 // add another password credentials
-                .definePasswordCredential("password-1")
+                .definePasswordCredential()
                 .withPasswordValue("P@ssw0rd-1")
                 .withDuration(Duration.standardDays(700))
                 .attach()

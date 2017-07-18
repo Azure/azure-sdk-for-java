@@ -32,7 +32,6 @@ class CertificateCredentialImpl<T>
         CertificateCredential.Definition<T>,
         CertificateCredential.UpdateDefinition<T> {
 
-    private String name;
     private HasCredential<?> parent;
     private OutputStream authFile;
     private String privateKeyPath;
@@ -40,16 +39,13 @@ class CertificateCredentialImpl<T>
 
     CertificateCredentialImpl(KeyCredentialInner keyCredential) {
         super(keyCredential);
-        this.name = new String(BaseEncoding.base64().decode(keyCredential.customKeyIdentifier()));
     }
 
-    CertificateCredentialImpl(String name, HasCredential<?> parent) {
+    CertificateCredentialImpl(HasCredential<?> parent) {
         super(new KeyCredentialInner()
                 .withUsage("Verify")
-                .withCustomKeyIdentifier(BaseEncoding.base64().encode(name.getBytes()))
                 .withStartDate(DateTime.now())
                 .withEndDate(DateTime.now().plusYears(1)));
-        this.name = name;
         this.parent = parent;
     }
 
@@ -108,7 +104,7 @@ class CertificateCredentialImpl<T>
 
     @Override
     public String name() {
-        return name;
+        return id();
     }
 
     @Override
