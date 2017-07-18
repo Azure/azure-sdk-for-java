@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.management.compute.DataDisk;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
@@ -209,8 +210,8 @@ class UnmanagedDataDiskImpl
         }
     }
 
-    private static String blobUrl(String storageAccountName, String containerName, String blobName) {
-        // Future: Get the storage domain from the environment
-        return  "https://" + storageAccountName + ".blob.core.windows.net" + "/" + containerName + "/" + blobName;
+    private String blobUrl(String storageAccountName, String containerName, String blobName) {
+        AzureEnvironment azureEnvironment = this.parent().environment();
+        return  "https://" + storageAccountName + ".blob" + azureEnvironment.storageEndpointSuffix() + "/" + containerName + "/" + blobName;
     }
 }
