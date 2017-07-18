@@ -24,6 +24,8 @@ import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 
 /**
  *  Implementation for LoadBalancerPublicFrontend.
@@ -202,6 +204,24 @@ class LoadBalancerFrontendImpl
             // Ensure no conflicting public and private settings
             .withPublicIPAddress(null);
         return this;
+    }
+
+    @Override
+    public LoadBalancerFrontendImpl withNewPublicIPAddress(String leafDnsLabel) {
+        this.parent().withNewPublicIPAddress(leafDnsLabel, this.name());
+        return this;
+    }
+
+    @Override
+    public LoadBalancerFrontendImpl withNewPublicIPAddress(Creatable<PublicIPAddress> creatable) {
+        this.parent().withNewPublicIPAddress(creatable, this.name());
+        return this;
+    }
+
+    @Override
+    public LoadBalancerFrontendImpl withNewPublicIPAddress() {
+        String dnsLabel = SdkContext.randomResourceName("fe", 20);
+        return this.withNewPublicIPAddress(dnsLabel);
     }
 
     // Verbs

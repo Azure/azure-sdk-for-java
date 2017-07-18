@@ -35,7 +35,7 @@ public interface LoadBalancerPublicFrontend extends
          * The stage of a public frontend definition allowing to specify an existing public IP address.
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithPublicIPAddress<ParentT> extends HasPublicIPAddress.DefinitionStages.WithExistingPublicIPAddress<WithAttach<ParentT>> {
+        interface WithPublicIPAddress<ParentT> extends HasPublicIPAddress.DefinitionStages.WithPublicIPAddress<WithAttach<ParentT>> {
         }
 
         /**
@@ -66,7 +66,7 @@ public interface LoadBalancerPublicFrontend extends
         /**
          * The stage of a public frontend update allowing to specify an existing public IP address.
          */
-        interface WithPublicIPAddress extends HasPublicIPAddress.UpdateStages.WithExistingPublicIPAddress<Update> {
+        interface WithPublicIPAddress extends HasPublicIPAddress.UpdateStages.WithPublicIPAddress<Update> {
         }
     }
 
@@ -93,7 +93,7 @@ public interface LoadBalancerPublicFrontend extends
          * The stage of a public frontend definition allowing to specify an existing public IP address.
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithPublicIPAddress<ParentT> extends HasPublicIPAddress.UpdateDefinitionStages.WithExistingPublicIPAddress<WithAttach<ParentT>> {
+        interface WithPublicIPAddress<ParentT> extends HasPublicIPAddress.UpdateDefinitionStages.WithPublicIPAddress<WithAttach<ParentT>> {
         }
 
         /** The final stage of the public frontend definition.

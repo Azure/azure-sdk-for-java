@@ -470,7 +470,9 @@ public class TestLoadBalancer {
                     .withRegion(TestLoadBalancer.REGION)
                     .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
                     // Frontend (default)
-                    .withNewPublicIPAddress(pipDef2)
+                    .definePublicFrontend("frontend1")
+                        .withNewPublicIPAddress(pipDef2)
+                        .attach()
                     // Inbound NAT rule
                     .defineInboundNatRule("natrule1")
                         .withProtocol(TransportProtocol.TCP)
@@ -487,6 +489,9 @@ public class TestLoadBalancer {
             Assert.assertEquals(2, lb.frontends().size());
             Assert.assertEquals(2, lb.publicFrontends().size());
             Assert.assertEquals(0,  lb.privateFrontends().size());
+            LoadBalancerPublicFrontend frontend = lb.publicFrontends().get("frontend1");
+            Assert.assertNotNull(frontend);
+            Assert.assertNotNull(frontend.publicIPAddressId());
 
             // Verify probes
             Assert.assertTrue(lb.tcpProbes().isEmpty());
