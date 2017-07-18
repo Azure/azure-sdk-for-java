@@ -15,7 +15,6 @@ import com.microsoft.azure.management.network.LoadBalancerPrivateFrontend;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
-import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NicIPConfiguration;
 import com.microsoft.azure.management.network.LoadBalancerProbe;
@@ -512,13 +511,6 @@ class LoadBalancerImpl
                 .withExistingPublicIPAddress(resourceId)
                 .attach();
         }
-    }
-
-    @Override
-    public LoadBalancerImpl withFrontendSubnet(Network network, String subnetName) {
-        return ensureDefaultFrontend()
-                .withExistingSubnet(network, subnetName)
-                .attach();
     }
 
     private LoadBalancerImpl withExistingVirtualMachine(HasNetworkInterfaces vm, String backendName) {

@@ -791,7 +791,9 @@ public class TestLoadBalancer {
                     .withRegion(TestLoadBalancer.REGION)
                     .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
                     // Frontend
-                    .withFrontendSubnet(network, "subnet1")
+                    .definePrivateFrontend("frontend1")
+                        .withExistingSubnet(network, "subnet1")
+                        .attach()
                     // LB rule
                     .defineLoadBalancingRule("lbrule1")
                         .withProtocol(TransportProtocol.TCP)
@@ -807,7 +809,7 @@ public class TestLoadBalancer {
             Assert.assertEquals(1, lb.frontends().size());
             Assert.assertEquals(1, lb.privateFrontends().size());
             Assert.assertEquals(0, lb.publicFrontends().size());
-            LoadBalancerFrontend frontend = lb.frontends().values().iterator().next();
+            LoadBalancerFrontend frontend = lb.frontends().get("frontend1");
             Assert.assertEquals(1, frontend.loadBalancingRules().size());
             Assert.assertFalse(frontend.isPublic());
             Assert.assertTrue("lbrule1".equalsIgnoreCase(frontend.loadBalancingRules().values().iterator().next().name()));
@@ -846,13 +848,11 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
-            LoadBalancerFrontend frontend = resource.frontends().values().iterator().next();
-            Assert.assertNotNull(frontend);
             LoadBalancerBackend backend = resource.backends().values().iterator().next();
             Assert.assertNotNull(backend);
 
             resource =  resource.update()
-                    .updatePrivateFrontend(frontend.name())
+                    .updatePrivateFrontend("frontend1")
                         .withExistingSubnet(this.network, "subnet2")
                         .withPrivateIPAddressStatic("10.0.0.13")
                         .parent()
@@ -888,7 +888,8 @@ public class TestLoadBalancer {
             Assert.assertEquals(1, resource.frontends().size());
             Assert.assertEquals(1,  resource.privateFrontends().size());
             Assert.assertEquals(0, resource.publicFrontends().size());
-            frontend = resource.frontends().get(frontend.name());
+            LoadBalancerFrontend frontend = resource.frontends().get("frontend1");
+            Assert.assertNotNull(frontend);
             Assert.assertFalse(frontend.isPublic());
             LoadBalancerPrivateFrontend privateFrontend = (LoadBalancerPrivateFrontend) frontend;
             Assert.assertTrue("subnet2".equalsIgnoreCase(privateFrontend.subnetName()));
