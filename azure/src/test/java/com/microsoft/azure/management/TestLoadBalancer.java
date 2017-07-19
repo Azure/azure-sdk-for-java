@@ -448,9 +448,10 @@ public class TestLoadBalancer {
                         .fromFrontendPort(88)
                         .toBackendPort(80)
                         .attach()
-                    // Backend (default)
-                    .withExistingVirtualMachines(existingVMs)
-
+                    // Backend
+                    .defineBackend("backend1")
+                        .withExistingVirtualMachines(existingVMs)
+                        .attach()
                     .create();
 
             // Verify frontends

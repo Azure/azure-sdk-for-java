@@ -14,7 +14,6 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.network.implementation.LoadBalancerInner;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.network.model.HasLoadBalancingRules;
-import com.microsoft.azure.management.network.model.HasNetworkInterfaces;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -177,7 +176,7 @@ public interface LoadBalancer extends
         /**
          * The stage of a load balancer definition allowing to add a backend.
          */
-        interface WithBackend extends WithVirtualMachine<WithCreate> {
+        interface WithBackend {
             /**
              * Starts the definition of a backend.
              * @param name the name to assign to the backend
@@ -209,31 +208,6 @@ public interface LoadBalancer extends
              * @return the first stage of the new probe definition
              */
             LoadBalancerHttpProbe.DefinitionStages.Blank<WithCreate> defineHttpProbe(String name);
-        }
-
-        /**
-         * The stage of a load balancer definition allowing to add a virtual machine to
-         * the load balancer's backend pool.
-         * @param <ReturnT> the next stage of the definition
-         */
-        interface WithVirtualMachine<ReturnT> {
-            /**
-             * Adds the specified set of virtual machines, assuming they are from the same
-             * availability set, to a new auto-named back end address pool.
-             * <p>
-             * This will create a new backend address pool for this load balancer
-             * and add references to the primary IP configurations of the primary network interfaces of each of the provided set of
-             * virtual machines.
-             * <p>
-             * If the virtual machines are not in the same availability set, the load balancer will still
-             * be created, but the virtual machines will not associated with its back end.
-             * <p>
-             * Only those virtual machines will be associated with the load balancer that already have an existing
-             * network interface. Virtual machines without a network interface will be skipped.
-             * @param vms existing virtual machines
-             * @return the next stage of the update
-             */
-            ReturnT withExistingVirtualMachines(HasNetworkInterfaces...vms);
         }
 
         /**

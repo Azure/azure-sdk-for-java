@@ -510,18 +510,6 @@ class LoadBalancerImpl
     }
 
     @Override
-    public LoadBalancerImpl withExistingVirtualMachines(HasNetworkInterfaces... vms) {
-        if (vms != null) {
-            // Create a separate backend for each provided set of VMs
-            final String backendName = this.ensureUniqueBackend().name();
-            for (HasNetworkInterfaces vm : vms) {
-                withExistingVirtualMachine(vm, backendName);
-            }
-        }
-        return this;
-    }
-
-    @Override
     public LoadBalancerProbeImpl defineTcpProbe(String name) {
         LoadBalancerProbe probe = this.tcpProbes.get(name);
         if (probe == null) {
