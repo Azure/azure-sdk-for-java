@@ -51,7 +51,7 @@ public interface PCFilter extends Indexable,
     /**
      * Definition of packet capture filter.
      *
-     * @param <ParentT>
+     * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
     interface Definition<ParentT> extends
             PCFilter.DefinitionStages.WithAttach<ParentT> {

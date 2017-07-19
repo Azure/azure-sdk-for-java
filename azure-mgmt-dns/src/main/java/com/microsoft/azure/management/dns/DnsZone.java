@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.dns;
 
+import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.dns.implementation.DnsZoneManager;
@@ -35,6 +37,48 @@ public interface DnsZone extends
      * @return the current number of record sets in this zone.
      */
     long numberOfRecordSets();
+
+    /**
+     * @return the etag associated with this zone.
+     */
+    @Beta(Beta.SinceVersion.V1_2_0)
+    String eTag();
+
+    /**
+     * @return the record sets in this zone.
+     */
+    @Beta(Beta.SinceVersion.V1_2_0)
+    PagedList<DnsRecordSet> listRecordSets();
+
+    /**
+     * Lists all the record sets in this zone with the given suffix.
+     *
+     * @param recordSetNameSuffix the record set name suffix
+     * @return the record sets
+     */
+    @Beta(Beta.SinceVersion.V1_2_0)
+    PagedList<DnsRecordSet> listRecordSets(String recordSetNameSuffix);
+
+    /**
+     * Lists all the record sets in this zone with each entries in each page
+     * limited to the given size.
+     *
+     * @param pageSize the maximum number of record sets in a page
+     * @return the record sets
+     */
+    @Beta(Beta.SinceVersion.V1_2_0)
+    PagedList<DnsRecordSet> listRecordSets(int pageSize);
+
+    /**
+     * Lists all the record sets in this zone with the given suffix, also limits
+     * the number of entries per page to the given page size.
+     *
+     * @param recordSetNameSuffix the record set name suffix
+     * @param pageSize the maximum number of record sets in a page
+     * @return the record sets
+     */
+    @Beta(Beta.SinceVersion.V1_2_0)
+    PagedList<DnsRecordSet> listRecordSets(String recordSetNameSuffix, int pageSize);
 
     /**
      * @return name servers assigned for this zone.
@@ -134,6 +178,15 @@ public interface DnsZone extends
             WithCreate withCNameRecordSet(String name, String alias);
 
             /**
+             * Specifies definition of a CNAME record set.
+             *
+             * @param name name of the CNAME record set
+             * @return the next stage of DNS zone definition
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            DnsRecordSet.DefinitionStages.CNameRecordSetBlank<WithCreate> defineCNameRecordSet(String name);
+
+            /**
              * Specifies definition of a MX record set.
              *
              * @param name name of the MX record set
@@ -175,12 +228,26 @@ public interface DnsZone extends
         }
 
         /**
+         * The stage of the DNS zone definition allowing to enable ETag validation.
+         */
+        interface WithETagCheck {
+            /**
+             * Specifies that If-None-Match header needs to set to * to prevent updating an existing DNS zone.
+             *
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            WithCreate withETagCheck();
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created
          * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
         interface WithCreate extends
                 Creatable<DnsZone>,
                 DefinitionStages.WithRecordSet,
+                DefinitionStages.WithETagCheck,
                 Resource.DefinitionWithTags<WithCreate> {
         }
     }
@@ -217,6 +284,15 @@ public interface DnsZone extends
              * @return the next stage of DNS zone definition
              */
             Update withCNameRecordSet(String name, String alias);
+
+            /**
+             * Specifies definition of a CNAME record set.
+             *
+             * @param name name of the CNAME record set
+             * @return the next stage of DNS zone definition
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            DnsRecordSet.UpdateDefinitionStages.CNameRecordSetBlank<Update> defineCNameRecordSet(String name);
 
             /**
              * Specifies definition of a MX record set to be attached to the DNS zone.
@@ -275,6 +351,15 @@ public interface DnsZone extends
             DnsRecordSet.UpdateAaaaRecordSet updateAaaaRecordSet(String name);
 
             /**
+             * Specifies definition of a CNAME record set.
+             *
+             * @param name name of the CNAME record set
+             * @return the stage representing configuration for the CNAME record set
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            DnsRecordSet.UpdateCNameRecordSet updateCNameRecordSet(String name);
+
+            /**
              * Begins the description of an update of an existing MX record set in this DNS zone.
              *
              * @param name name of the MX record set
@@ -331,12 +416,32 @@ public interface DnsZone extends
             Update withoutARecordSet(String name);
 
             /**
+             * Removes a A record set in the DNS zone.
+             *
+             * @param name name of the A record set
+             * @param eTagValue the etag to use for concurrent protection
+             * @return the next stage of DNS zone update
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            Update withoutARecordSet(String name, String eTagValue);
+
+            /**
              * Removes a AAAA record set in the DNS zone.
              *
              * @param name name of the AAAA record set
              * @return the next stage of DNS zone update
              */
             Update withoutAaaaRecordSet(String name);
+
+            /**
+             * Removes a AAAA record set in the DNS zone.
+             *
+             * @param name name of the AAAA record set
+             * @param eTagValue the etag to use for concurrent protection
+             * @return the next stage of DNS zone update
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            Update withoutAaaaRecordSet(String name, String eTagValue);
 
             /**
              * Removes a CNAME record set in the DNS zone.
@@ -347,12 +452,32 @@ public interface DnsZone extends
             Update withoutCNameRecordSet(String name);
 
             /**
+             * Removes a CNAME record set in the DNS zone.
+             *
+             * @param name name of the CNAME record set
+             * @param eTagValue the etag to use for concurrent protection
+             * @return the next stage of DNS zone update
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            Update withoutCNameRecordSet(String name, String eTagValue);
+
+            /**
              * Removes a MX record set in the DNS zone.
              *
              * @param name name of the MX record set
              * @return the next stage of DNS zone update
              */
             Update withoutMXRecordSet(String name);
+
+            /**
+             * Removes a MX record set in the DNS zone.
+             *
+             * @param name name of the MX record set
+             * @param eTagValue the etag to use for concurrent protection
+             * @return the next stage of DNS zone update
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            Update withoutMXRecordSet(String name, String eTagValue);
 
             /**
              * Removes a NS record set in the DNS zone.
@@ -363,12 +488,32 @@ public interface DnsZone extends
             Update withoutNSRecordSet(String name);
 
             /**
+             * Removes a NS record set in the DNS zone.
+             *
+             * @param name name of the NS record set
+             * @param eTagValue the etag to use for concurrent protection
+             * @return the next stage of DNS zone update
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            Update withoutNSRecordSet(String name, String eTagValue);
+
+            /**
              * Removes a PTR record set in the DNS zone.
              *
              * @param name name of the PTR record set
              * @return the next stage of DNS zone update
              */
             Update withoutPtrRecordSet(String name);
+
+            /**
+             * Removes a PTR record set in the DNS zone.
+             *
+             * @param name name of the PTR record set
+             * @param eTagValue the etag to use for concurrent protection
+             * @return the next stage of DNS zone update
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            Update withoutPtrRecordSet(String name, String eTagValue);
 
             /**
              * Removes a SRV record set in the DNS zone.
@@ -379,12 +524,55 @@ public interface DnsZone extends
             Update withoutSrvRecordSet(String name);
 
             /**
+             * Removes a SRV record set in the DNS zone.
+             *
+             * @param name name of the SRV record set
+             * @param eTagValue the etag to use for concurrent protection
+             * @return the next stage of DNS zone update
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            Update withoutSrvRecordSet(String name, String eTagValue);
+
+            /**
              * Removes a TXT record set in the DNS zone.
              *
              * @param name name of the TXT record set
              * @return the next stage of DNS zone update
              */
             Update withoutTxtRecordSet(String name);
+
+            /**
+             * Removes a TXT record set in the DNS zone.
+             *
+             * @param name name of the TXT record set
+             * @param eTagValue the etag to use for concurrent protection
+             * @return the next stage of DNS zone update
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            Update withoutTxtRecordSet(String name, String eTagValue);
+        }
+
+        /**
+         * The stage of the DNS zone update allowing to enable ETag validation.
+         */
+        interface WithETagCheck {
+            /**
+             * Specifies that If-Match header needs to set to the current eTag value associated
+             * with the DNS Zone.
+             *
+             * @return the next stage of the update
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            Update withETagCheck();
+
+            /**
+             * Specifies that if-Match header needs to set to the given eTag value.
+             *
+             * @param eTagValue the eTag value
+             * @return the next stage of the update
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            Update withETagCheck(String eTagValue);
         }
     }
 
@@ -396,6 +584,7 @@ public interface DnsZone extends
     interface Update extends
             Appliable<DnsZone>,
             UpdateStages.WithRecordSet,
+            UpdateStages.WithETagCheck,
             Resource.UpdateWithTags<Update> {
     }
 }
