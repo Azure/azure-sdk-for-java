@@ -17,6 +17,7 @@ import com.microsoft.azure.management.compute.StorageProfile;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizes;
 import com.microsoft.azure.management.compute.VirtualMachines;
+import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
@@ -34,23 +35,26 @@ import java.util.ArrayList;
  */
 @LangDefinition
 class VirtualMachinesImpl
-    extends TopLevelModifiableResourcesImpl<
+        extends TopLevelModifiableResourcesImpl<
         VirtualMachine,
         VirtualMachineImpl,
         VirtualMachineInner,
         VirtualMachinesInner,
         ComputeManager>
-    implements VirtualMachines {
+        implements VirtualMachines {
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
+    private final GraphRbacManager rbacManager;
     private final VirtualMachineSizesImpl vmSizes;
 
     VirtualMachinesImpl(ComputeManager computeManager,
                         StorageManager storageManager,
-                        NetworkManager networkManager) {
+                        NetworkManager networkManager,
+                        GraphRbacManager rbacManager) {
         super(computeManager.inner().virtualMachines(), computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
+        this.rbacManager = rbacManager;
         this.vmSizes = new VirtualMachineSizesImpl(computeManager.inner().virtualMachineSizes());
     }
 
@@ -226,7 +230,8 @@ class VirtualMachinesImpl
                 inner,
                 this.manager(),
                 this.storageManager,
-                this.networkManager);
+                this.networkManager,
+                this.rbacManager);
     }
 
     @Override
@@ -238,6 +243,7 @@ class VirtualMachinesImpl
                 virtualMachineInner,
                 this.manager(),
                 this.storageManager,
-                this.networkManager);
+                this.networkManager,
+                this.rbacManager);
     }
 }
