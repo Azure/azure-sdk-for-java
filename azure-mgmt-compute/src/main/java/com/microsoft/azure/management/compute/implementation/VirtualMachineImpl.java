@@ -146,7 +146,7 @@ class VirtualMachineImpl
     // Unique key of a creatable storage account to be used for boot diagnostics
     private String creatableDiagnosticsStorageAccountKey;
     // Utility to setup MSI for the virtual machine
-    private VirtualMachineMSIHelper virtualMachineMSIHelper;
+    private VirtualMachineMsiHelper virtualMachineMsiHelper;
 
     VirtualMachineImpl(String name,
                        VirtualMachineInner innerModel,
@@ -171,7 +171,7 @@ class VirtualMachineImpl
         this.virtualMachineExtensions = new VirtualMachineExtensionsImpl(computeManager.inner().virtualMachineExtensions(), this);
         this.managedDataDisks = new ManagedDataDiskCollection(this);
         initializeDataDisks();
-        this.virtualMachineMSIHelper = new VirtualMachineMSIHelper(rbacManager);
+        this.virtualMachineMsiHelper = new VirtualMachineMsiHelper(rbacManager);
     }
 
     // Verbs
@@ -1267,25 +1267,25 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withManagedServiceIdentity() {
-        this.virtualMachineMSIHelper.withManagedServiceIdentity(this.inner());
+        this.virtualMachineMsiHelper.withManagedServiceIdentity(this.inner());
         return this;
     }
 
     @Override
     public VirtualMachineImpl withManagedServiceIdentity(BuiltInRole role) {
-        this.virtualMachineMSIHelper.withManagedServiceIdentity(role, this.inner());
+        this.virtualMachineMsiHelper.withManagedServiceIdentity(role, this.inner());
         return this;
     }
 
     @Override
     public VirtualMachineImpl withManagedServiceIdentity(BuiltInRole role, String scope) {
-        this.virtualMachineMSIHelper.withManagedServiceIdentity(role, scope, this.inner());
+        this.virtualMachineMsiHelper.withManagedServiceIdentity(role, scope, this.inner());
         return this;
     }
 
     @Override
     public VirtualMachineImpl withManagedServiceIdentity(BuiltInRole role, String scope, int port) {
-        this.virtualMachineMSIHelper.withManagedServiceIdentity(role, scope, port, this.inner());
+        this.virtualMachineMsiHelper.withManagedServiceIdentity(role, scope, port, this.inner());
         return this;
     }
 
@@ -1607,10 +1607,10 @@ class VirtualMachineImpl
                 }).flatMap(new Func1<VirtualMachine, Observable<? extends VirtualMachine>>() {
                     @Override
                     public Observable<? extends VirtualMachine> call(VirtualMachine virtualMachine) {
-                        return virtualMachineMSIHelper.setupVirtualMachineMSIResourcesAsync(self)
-                                .flatMap(new Func1<VirtualMachineMSIHelper.Result, Observable<VirtualMachine>>() {
+                        return virtualMachineMsiHelper.setupVirtualMachineMSIResourcesAsync(self)
+                                .flatMap(new Func1<VirtualMachineMsiHelper.Result, Observable<VirtualMachine>>() {
                                     @Override
-                                    public Observable<VirtualMachine> call(VirtualMachineMSIHelper.Result result) {
+                                    public Observable<VirtualMachine> call(VirtualMachineMsiHelper.Result result) {
                                         if (result.isExtensionInstalledOrUpdated) {
                                             return refreshAsync();
                                         } else {

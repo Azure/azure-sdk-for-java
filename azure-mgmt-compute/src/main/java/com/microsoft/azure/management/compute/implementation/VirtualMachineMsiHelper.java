@@ -27,9 +27,9 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 /**
- * Utility class to set MSI and MSI related resources for a virtual machine.
+ * Utility class to set Managed Service Identity (MSI) and MSI related resources for a virtual machine.
  */
-class VirtualMachineMSIHelper {
+class VirtualMachineMsiHelper {
     private final int defaultTokenPort = 50342;
     private final GraphRbacManager rbacManager;
     private BuiltInRole role;
@@ -38,26 +38,26 @@ class VirtualMachineMSIHelper {
     private boolean requireSetup;
 
     /**
-     * Creates VirtualMachineMSIHelper.
+     * Creates VirtualMachineMsiHelper.
      *
      * @param rbacManager the graph rbac manager
      */
-    VirtualMachineMSIHelper(final GraphRbacManager rbacManager) {
+    VirtualMachineMsiHelper(final GraphRbacManager rbacManager) {
         this.rbacManager = rbacManager;
         clear();
     }
 
     /**
-     * Specifies that managed service identity property needs to be set in the virtual machine.
+     * Specifies that Managed Service Identity property needs to be set in the virtual machine.
      *
      * Once setupVirtualMachineMSIResourcesAsync is invoked,  applications running on the virtual machine will
      * have "Contributor" access role with scope of access limited to the resource group that this
      * virtual machine belongs to. The access token will be available in the virtual machine at port 50342.
      *
      * @param virtualMachineInner the virtual machine to set the identity
-     * @return VirtualMachineMSIHelper
+     * @return VirtualMachineMsiHelper
      */
-     VirtualMachineMSIHelper withManagedServiceIdentity(VirtualMachineInner virtualMachineInner) {
+     VirtualMachineMsiHelper withManagedServiceIdentity(VirtualMachineInner virtualMachineInner) {
         return withManagedServiceIdentity(BuiltInRole.CONTRIBUTOR,
                 null,
                 defaultTokenPort,
@@ -65,7 +65,7 @@ class VirtualMachineMSIHelper {
     }
 
     /**
-     * Specifies that managed service identity property needs to be set in the virtual machine.
+     * Specifies that Managed Service Identity property needs to be set in the virtual machine.
      *
      * Once setupVirtualMachineMSIResourcesAsync is invoked,  applications running on the virtual machine will
      * have the given access role and scope of access will be limited to the resource group that this
@@ -74,10 +74,10 @@ class VirtualMachineMSIHelper {
      *
      * @param role the role
      * @param virtualMachineInner the virtual machine to set the identity
-     * @return VirtualMachineMSIHelper
+     * @return VirtualMachineMsiHelper
      */
-     VirtualMachineMSIHelper withManagedServiceIdentity(BuiltInRole role,
-                                                              VirtualMachineInner virtualMachineInner) {
+     VirtualMachineMsiHelper withManagedServiceIdentity(BuiltInRole role,
+                                                        VirtualMachineInner virtualMachineInner) {
         return withManagedServiceIdentity(role,
                 null,
                 defaultTokenPort,
@@ -85,7 +85,7 @@ class VirtualMachineMSIHelper {
     }
 
     /**
-     * Specifies that managed service identity property needs to be set in the virtual machine.
+     * Specifies that Managed Service Identity property needs to be set in the virtual machine.
      *
      * Once setupVirtualMachineMSIResourcesAsync is invoked,  applications running on the virtual machine will
      * have the given access role and scope of access will be limited to the arm resource identified by
@@ -95,11 +95,11 @@ class VirtualMachineMSIHelper {
      * @param role access role to assigned to the virtual machine
      * @param scope scope of the access represented in arm resource id format
      * @param virtualMachineInner the virtual machine to set the identity
-     * @return VirtualMachineMSIHelper
+     * @return VirtualMachineMsiHelper
      */
-     VirtualMachineMSIHelper withManagedServiceIdentity(BuiltInRole role,
-                                                              String scope,
-                                                              VirtualMachineInner virtualMachineInner) {
+     VirtualMachineMsiHelper withManagedServiceIdentity(BuiltInRole role,
+                                                        String scope,
+                                                        VirtualMachineInner virtualMachineInner) {
         return withManagedServiceIdentity(role,
                 scope,
                 defaultTokenPort,
@@ -107,9 +107,9 @@ class VirtualMachineMSIHelper {
     }
 
     /**
-     * Specifies that managed service identity property needs to be set in the virtual machine.
+     * Specifies that Managed Service Identity property needs to be set in the virtual machine.
      *
-     * Once setupVirtualMachineMSIResourcesAsync is invoked,  applications running on the virtual machine will
+     * Once setupVirtualMachineMSIResourcesAsync is invoked, applications running on the virtual machine will
      * have the given access role and scope of access will be limited to the arm resource identified by
      * resource id specified in the scope parameter. The access token will be available in the virtual
      * machine at given port.
@@ -120,12 +120,12 @@ class VirtualMachineMSIHelper {
      * @param virtualMachineInner the virtual machine to set the identity
 
      * @param virtualMachineInner the virtual machine to set the identity
-     * @return VirtualMachineMSIHelper
+     * @return VirtualMachineMsiHelper
      */
-     VirtualMachineMSIHelper withManagedServiceIdentity(BuiltInRole role,
-                                                              String scope,
-                                                              int port,
-                                                              VirtualMachineInner virtualMachineInner) {
+     VirtualMachineMsiHelper withManagedServiceIdentity(BuiltInRole role,
+                                                        String scope,
+                                                        int port,
+                                                        VirtualMachineInner virtualMachineInner) {
         this.requireSetup = true;
         this.role = role;
         this.scope = scope;
@@ -260,10 +260,10 @@ class VirtualMachineMSIHelper {
     }
 
     /**
-     * Checks the virtual machine already has the MSI extension installed if so return it.
+     * Checks the virtual machine already has the Managed Service Identity extension installed if so return it.
      *
      * @param virtualMachine the virtual machine
-     * @param typeName the MSI extension type name
+     * @param typeName the Managed Service Identity extension type name
      * @return an observable that emits MSI extension if exists
      */
     private Observable<VirtualMachineExtension> getMSIExtensionAsync(VirtualMachine virtualMachine, final String typeName) {
@@ -277,10 +277,10 @@ class VirtualMachineMSIHelper {
     }
 
     /**
-     * Install MSI extension in the virtual machine.
+     * Install Managed Service Identity extension in the virtual machine.
      *
      * @param virtualMachine the virtual machine
-     * @param typeName the MSI extension type name
+     * @param typeName the Managed Service Identity extension type name
      * @return an observable that emits true indicating MSI extension installed
      */
     private Observable<Boolean> installMSIExtensionAsync(final VirtualMachine virtualMachine, final String typeName) {
@@ -312,11 +312,11 @@ class VirtualMachineMSIHelper {
     }
 
     /**
-     * Update the MSI extension installed in the virtual machine.
+     * Update the Managed Service Identity extension installed in the virtual machine.
      *
      * @param virtualMachine the virtual machine
-     * @param extension the MSI extension
-     * @param typeName the MSI extension
+     * @param extension the Managed Service Identity extension
+     * @param typeName the Managed Service Identity extension type name
      * @return an observable that emits true if MSI extension updated, false otherwise.
      */
     private Observable<Boolean> updateMSIExtensionAsync(final VirtualMachine virtualMachine, VirtualMachineExtension extension, final String typeName) {
@@ -348,7 +348,7 @@ class VirtualMachineMSIHelper {
     }
 
     /**
-     * Sets the identity for the virtual machine.
+     * Sets the identity property of the virtual machine.
      *
      * @param virtualMachineInner the virtual machine
      */

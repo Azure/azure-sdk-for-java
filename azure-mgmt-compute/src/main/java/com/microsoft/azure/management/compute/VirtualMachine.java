@@ -398,20 +398,20 @@ public interface VirtualMachine extends
     String bootDiagnosticsStorageUri();
 
     /**
-     * @return true if managed service identity is enabled for the virtual machine
+     * @return true if Managed Service Identity is enabled for the virtual machine
      */
     @Beta(Beta.SinceVersion.V1_2_0)
     boolean isManagedServiceIdentityEnabled();
 
     /**
-     * @return the managed service identity specific active directory tenant Id assigned to the
+     * @return the Managed Service Identity specific Active Directory tenant id assigned to the
      * virtual machine.
      */
     @Beta(Beta.SinceVersion.V1_2_0)
     String managedServiceIdentityTenantId();
 
     /**
-     * @return the managed service identity specific active directory service principal id assigned
+     * @return the Managed Service Identity specific Active Directory service principal id assigned
      * to the virtual machine.
      */
     @Beta(Beta.SinceVersion.V1_2_0)
@@ -1495,12 +1495,12 @@ public interface VirtualMachine extends
         }
 
         /**
-         * The stage of the virtual machine definition allowing to enable managed service identity.
+         * The stage of the virtual machine definition allowing to enable Managed Service Identity.
          */
         @Beta(Beta.SinceVersion.V1_2_0)
         interface WithManagedServiceIdentity {
             /**
-             * Specifies that managed service identity needs to be enabled in the virtual machine.
+             * Specifies that Managed Service Identity needs to be enabled in the virtual machine.
              * The MSI will have "Contributor" access role with scope of access limited to the
              * resource group that this virtual machine belongs to.
              *
@@ -1510,7 +1510,7 @@ public interface VirtualMachine extends
             WithCreate withManagedServiceIdentity();
 
             /**
-             * Specifies that managed service identity needs to be enabled in the virtual machine.
+             * Specifies that Managed Service Identity needs to be enabled in the virtual machine.
              * The MSI will have the given access role and scope of access will be limited to the
              * resource group that this virtual machine belongs to.
              *
@@ -1522,7 +1522,7 @@ public interface VirtualMachine extends
             WithCreate withManagedServiceIdentity(BuiltInRole role);
 
             /**
-             * Specifies that managed service identity needs to be enabled in the virtual machine.
+             * Specifies that Managed Service Identity needs to be enabled in the virtual machine.
              *
              * @param role access role to assigned to the virtual machine
              * @param scope scope of the access represented in arm resource id format
@@ -1533,7 +1533,7 @@ public interface VirtualMachine extends
             WithCreate withManagedServiceIdentity(BuiltInRole role, String scope);
 
             /**
-             * Specifies that managed service identity needs to be enabled in the virtual machine.
+             * Specifies that Managed Service Identity needs to be enabled in the virtual machine.
              *
              * @param role access role to assigned to the virtual machine.
              * @param scope scope of the access represented in arm resource id format
@@ -1925,12 +1925,12 @@ public interface VirtualMachine extends
         }
 
         /**
-         * The stage of the virtual machine update allowing to enable managed service identity.
+         * The stage of the virtual machine update allowing to enable Managed Service Identity.
          */
         @Beta(Beta.SinceVersion.V1_2_0)
         interface WithManagedServiceIdentity {
             /**
-             * Specifies that managed service identity needs to be enabled in the virtual machine.
+             * Specifies that Managed Service Identity needs to be enabled in the virtual machine.
              * The MSI will have "Contributor" access role with scope of access limited to the
              * resource group that this virtual machine belongs to.
              *
@@ -1940,7 +1940,7 @@ public interface VirtualMachine extends
             Update withManagedServiceIdentity();
 
             /**
-             * Specifies that managed service identity needs to be enabled in the virtual machine.
+             * Specifies that Managed Service Identity needs to be enabled in the virtual machine.
              * The MSI will have the given access role and scope of access will be limited to the
              * resource group that this virtual machine belongs to.
              *
@@ -1952,7 +1952,7 @@ public interface VirtualMachine extends
             Update withManagedServiceIdentity(BuiltInRole role);
 
             /**
-             * Specifies that managed service identity needs to be enabled in the virtual machine.
+             * Specifies that Managed Service Identity needs to be enabled in the virtual machine.
              *
              * @param role access role to assigned to the virtual machine
              * @param scope scope of the access represented in arm resource id format
@@ -1963,7 +1963,7 @@ public interface VirtualMachine extends
             Update withManagedServiceIdentity(BuiltInRole role, String scope);
 
             /**
-             * Specifies that managed service identity needs to be enabled in the virtual machine.
+             * Specifies that Managed Service Identity needs to be enabled in the virtual machine.
              *
              * @param role access role to assigned to the virtual machine.
              * @param scope scope of the access represented in arm resource id format
