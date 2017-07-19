@@ -21,6 +21,7 @@ import com.microsoft.azure.management.compute.VirtualMachineImages;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSets;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.ContainerServices;
+import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
@@ -37,6 +38,8 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
     // The service managers
     private StorageManager storageManager;
     private NetworkManager networkManager;
+    private GraphRbacManager rbacManager;
+
     // The collections
     private AvailabilitySets availabilitySets;
     private VirtualMachines virtualMachines;
@@ -117,6 +120,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
                 new ComputeManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
         storageManager = StorageManager.authenticate(restClient, subscriptionId);
         networkManager = NetworkManager.authenticate(restClient, subscriptionId);
+        rbacManager = GraphRbacManager.authenticate(restClient, ((AzureTokenCredentials)(restClient.credentials())).domain());
     }
 
     /**
@@ -148,7 +152,8 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
             virtualMachines = new VirtualMachinesImpl(
                     this,
                     storageManager,
-                    networkManager);
+                    networkManager,
+                    rbacManager);
         }
         return virtualMachines;
     }
