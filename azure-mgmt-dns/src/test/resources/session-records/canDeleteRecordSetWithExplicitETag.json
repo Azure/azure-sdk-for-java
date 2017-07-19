@@ -1,0 +1,565 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/fe87c6064822458?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 16 Jun 2017 00:09:40 GMT",
+      "content-length" : "183",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "a1ee2c44-ed3d-4c6a-ba0a-40ab22a33597",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170616T000940Z:a1ee2c44-ed3d-4c6a-ba0a-40ab22a33597",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "a1ee2c44-ed3d-4c6a-ba0a-40ab22a33597",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/fe87c6064822458\",\"name\":\"fe87c6064822458\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/fe87c6064822458/providers/Microsoft.Network/dnsZones/www.contosozb7770022.com?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 (DnsManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 16 Jun 2017 00:09:44 GMT",
+      "content-length" : "488",
+      "server" : "Microsoft-IIS/8.5",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "e2c8d1a9-7c56-4dc4-a2ff-f0721df93153",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "x-ms-routing-request-id" : "WESTUS2:20170616T000944Z:e2c8d1a9-7c56-4dc4-a2ff-f0721df93153",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "etag" : "00000002-0000-0000-56bc-63db34e6d201",
+      "cache-control" : "private",
+      "x-ms-request-id" : "1ca99f9a-34a2-461a-a6a7-ee572218f4fa",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/fe87c6064822458\\/providers\\/Microsoft.Network\\/dnszones\\/www.contosozb7770022.com\",\"name\":\"www.contosozb7770022.com\",\"type\":\"Microsoft.Network\\/dnszones\",\"etag\":\"00000002-0000-0000-56bc-63db34e6d201\",\"location\":\"global\",\"tags\":{},\"properties\":{\"maxNumberOfRecordSets\":5000,\"nameServers\":[\"ns1-08.azure-dns.com.\",\"ns2-08.azure-dns.net.\",\"ns3-08.azure-dns.org.\",\"ns4-08.azure-dns.info.\"],\"numberOfRecordSets\":2}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/fe87c6064822458/providers/Microsoft.Network/dnsZones/www.contosozb7770022.com/AAAA/www?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 (DnsManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 16 Jun 2017 00:09:44 GMT",
+      "content-length" : "471",
+      "server" : "Microsoft-IIS/8.5",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "4225b181-8000-4030-bbc5-db6a31e76b59",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "x-ms-routing-request-id" : "WESTUS2:20170616T000945Z:4225b181-8000-4030-bbc5-db6a31e76b59",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "etag" : "00a468df-4798-4582-ab43-575c557ffac4",
+      "cache-control" : "private",
+      "x-ms-request-id" : "d9b2bf2d-0867-4d31-886d-bce08955d8f0",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/fe87c6064822458\\/providers\\/Microsoft.Network\\/dnszones\\/www.contosozb7770022.com\\/AAAA\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/dnszones\\/AAAA\",\"etag\":\"00a468df-4798-4582-ab43-575c557ffac4\",\"properties\":{\"fqdn\":\"www.www.contosozb7770022.com.\",\"TTL\":3600,\"AAAARecords\":[{\"ipv6Address\":\"2001:0db8:85a3:0000:0000:8a2e:0370:7334\"},{\"ipv6Address\":\"2002:0db9:85a4:0000:0000:8a2e:0371:7335\"}]}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/fe87c6064822458/providers/Microsoft.Network/dnsZones/www.contosozb7770022.com/A/www?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 (DnsManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 16 Jun 2017 00:09:45 GMT",
+      "content-length" : "408",
+      "server" : "Microsoft-IIS/8.5",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "c2066ede-6c25-48b4-9d57-8733836d132c",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "x-ms-routing-request-id" : "WESTUS2:20170616T000945Z:c2066ede-6c25-48b4-9d57-8733836d132c",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "etag" : "e8a5fcc4-b43d-436b-9f7a-bd006dcb9b8a",
+      "cache-control" : "private",
+      "x-ms-request-id" : "a3813a33-9d36-458d-b27f-9726e8265141",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/fe87c6064822458\\/providers\\/Microsoft.Network\\/dnszones\\/www.contosozb7770022.com\\/A\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/dnszones\\/A\",\"etag\":\"e8a5fcc4-b43d-436b-9f7a-bd006dcb9b8a\",\"properties\":{\"fqdn\":\"www.www.contosozb7770022.com.\",\"TTL\":7200,\"ARecords\":[{\"ipv4Address\":\"23.96.104.40\"},{\"ipv4Address\":\"24.97.105.41\"}]}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/fe87c6064822458/providers/Microsoft.Network/dnsZones/www.contosozb7770022.com/A?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 (DnsManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 16 Jun 2017 00:09:45 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "420",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "41cf330c-0d22-4ea1-9a24-5429d4ff0110",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "x-ms-routing-request-id" : "WESTUS2:20170616T000946Z:41cf330c-0d22-4ea1-9a24-5429d4ff0110",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "private",
+      "x-ms-request-id" : "01472b40-0a50-4dcb-8009-5a12c6b3fa59",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/fe87c6064822458\\/providers\\/Microsoft.Network\\/dnszones\\/www.contosozb7770022.com\\/A\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/dnszones\\/A\",\"etag\":\"e8a5fcc4-b43d-436b-9f7a-bd006dcb9b8a\",\"properties\":{\"fqdn\":\"www.www.contosozb7770022.com.\",\"TTL\":7200,\"ARecords\":[{\"ipv4Address\":\"23.96.104.40\"},{\"ipv4Address\":\"24.97.105.41\"}]}}]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/fe87c6064822458/providers/Microsoft.Network/dnsZones/www.contosozb7770022.com/AAAA?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 (DnsManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 16 Jun 2017 00:09:45 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "461",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "6c3b63d9-1f9e-4c93-80eb-c1c72ddd076d",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "x-ms-routing-request-id" : "WESTUS2:20170616T000946Z:6c3b63d9-1f9e-4c93-80eb-c1c72ddd076d",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "private",
+      "x-ms-request-id" : "c8c239ef-0e5f-467b-a0c4-c04f0955bd80",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/fe87c6064822458\\/providers\\/Microsoft.Network\\/dnszones\\/www.contosozb7770022.com\\/AAAA\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/dnszones\\/AAAA\",\"etag\":\"00a468df-4798-4582-ab43-575c557ffac4\",\"properties\":{\"fqdn\":\"www.www.contosozb7770022.com.\",\"TTL\":3600,\"AAAARecords\":[{\"ipv6Address\":\"2001:db8:85a3::8a2e:370:7334\"},{\"ipv6Address\":\"2002:db9:85a4::8a2e:371:7335\"}]}}]}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/fe87c6064822458/providers/Microsoft.Network/dnsZones/www.contosozb7770022.com?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 (DnsManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 16 Jun 2017 00:09:46 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "488",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "ef0d9c6f-fabc-4596-b84e-c98d8141f1d0",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11998",
+      "x-ms-routing-request-id" : "WESTUS2:20170616T000946Z:ef0d9c6f-fabc-4596-b84e-c98d8141f1d0",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "etag" : "00000003-0000-0000-56bc-63db34e6d201",
+      "cache-control" : "private",
+      "x-ms-request-id" : "60166f81-345c-408e-9354-ba89e3a1262e",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/fe87c6064822458\\/providers\\/Microsoft.Network\\/dnszones\\/www.contosozb7770022.com\",\"name\":\"www.contosozb7770022.com\",\"type\":\"Microsoft.Network\\/dnszones\",\"etag\":\"00000003-0000-0000-56bc-63db34e6d201\",\"location\":\"global\",\"tags\":{},\"properties\":{\"maxNumberOfRecordSets\":5000,\"nameServers\":[\"ns1-08.azure-dns.com.\",\"ns2-08.azure-dns.net.\",\"ns3-08.azure-dns.org.\",\"ns4-08.azure-dns.info.\"],\"numberOfRecordSets\":4}}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/fe87c6064822458/providers/Microsoft.Network/dnsZones/www.contosozb7770022.com/AAAA/www?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 (DnsManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 16 Jun 2017 00:09:46 GMT",
+      "content-length" : "95",
+      "server" : "Microsoft-IIS/8.5",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "412",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "c92cd0c0-69ac-4165-9773-5492fc722c93",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "x-ms-routing-request-id" : "WESTUS2:20170616T000947Z:c92cd0c0-69ac-4165-9773-5492fc722c93",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "private",
+      "x-ms-request-id" : "13c62df7-247c-4f4d-92c9-0d8b97f73d4b",
+      "Body" : "{\"code\":\"PreconditionFailed\",\"message\":\"The Record set www has been modified (etag mismatch).\"}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/fe87c6064822458/providers/Microsoft.Network/dnsZones/www.contosozb7770022.com/A/www?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 (DnsManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 16 Jun 2017 00:09:47 GMT",
+      "content-length" : "95",
+      "server" : "Microsoft-IIS/8.5",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "412",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "34e8f01a-6304-4bdf-b1c9-e200aee539c9",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "x-ms-routing-request-id" : "WESTUS2:20170616T000947Z:34e8f01a-6304-4bdf-b1c9-e200aee539c9",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "private",
+      "x-ms-request-id" : "c3002851-e585-4696-9594-9af41ac2a755",
+      "Body" : "{\"code\":\"PreconditionFailed\",\"message\":\"The Record set www has been modified (etag mismatch).\"}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/fe87c6064822458/providers/Microsoft.Network/dnsZones/www.contosozb7770022.com?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 (DnsManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 16 Jun 2017 00:09:47 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "488",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "982b816a-7322-4cfa-b7bc-140cb16339fe",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11997",
+      "x-ms-routing-request-id" : "WESTUS2:20170616T000948Z:982b816a-7322-4cfa-b7bc-140cb16339fe",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "etag" : "00000004-0000-0000-56bc-63db34e6d201",
+      "cache-control" : "private",
+      "x-ms-request-id" : "6213b31f-a597-4fd0-8541-b6e7f3e09133",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/fe87c6064822458\\/providers\\/Microsoft.Network\\/dnszones\\/www.contosozb7770022.com\",\"name\":\"www.contosozb7770022.com\",\"type\":\"Microsoft.Network\\/dnszones\",\"etag\":\"00000004-0000-0000-56bc-63db34e6d201\",\"location\":\"global\",\"tags\":{},\"properties\":{\"maxNumberOfRecordSets\":5000,\"nameServers\":[\"ns1-08.azure-dns.com.\",\"ns2-08.azure-dns.net.\",\"ns3-08.azure-dns.org.\",\"ns4-08.azure-dns.info.\"],\"numberOfRecordSets\":4}}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/fe87c6064822458/providers/Microsoft.Network/dnsZones/www.contosozb7770022.com/AAAA/www?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 (DnsManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 16 Jun 2017 00:09:48 GMT",
+      "content-length" : "0",
+      "server" : "Microsoft-IIS/8.5",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "ad2d260d-6b04-4d3d-9745-e6c1bff9bf88",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11998",
+      "x-ms-routing-request-id" : "WESTUS2:20170616T000948Z:ad2d260d-6b04-4d3d-9745-e6c1bff9bf88",
+      "x-powered-by" : "ASP.NET",
+      "cache-control" : "private",
+      "x-ms-request-id" : "74abf139-9fe5-4474-8a91-06ccf8cedd6c",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/fe87c6064822458/providers/Microsoft.Network/dnsZones/www.contosozb7770022.com/A/www?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 (DnsManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 16 Jun 2017 00:09:48 GMT",
+      "content-length" : "0",
+      "server" : "Microsoft-IIS/8.5",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "cf6cf2c0-a9d1-44bf-8a9e-be89539c6030",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11998",
+      "x-ms-routing-request-id" : "WESTUS2:20170616T000948Z:cf6cf2c0-a9d1-44bf-8a9e-be89539c6030",
+      "x-powered-by" : "ASP.NET",
+      "cache-control" : "private",
+      "x-ms-request-id" : "20f6b099-af4f-4a58-85d7-e102e8f37a08",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/fe87c6064822458/providers/Microsoft.Network/dnsZones/www.contosozb7770022.com/A?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 (DnsManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 16 Jun 2017 00:09:48 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "12",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "cbdc4e90-ee79-4ec4-82c3-408976acec62",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11998",
+      "x-ms-routing-request-id" : "WESTUS2:20170616T000949Z:cbdc4e90-ee79-4ec4-82c3-408976acec62",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "private",
+      "x-ms-request-id" : "5b7cf755-4bf8-413c-aadb-cf9cd2742008",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/fe87c6064822458/providers/Microsoft.Network/dnsZones/www.contosozb7770022.com/AAAA?api-version=2016-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 (DnsManagementClient, 2016-04-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 16 Jun 2017 00:09:48 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "12",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "d5ae389a-c800-4646-bbb6-439d515973f5",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11998",
+      "x-ms-routing-request-id" : "WESTUS2:20170616T000949Z:d5ae389a-c800-4646-bbb6-439d515973f5",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "private",
+      "x-ms-request-id" : "a679f893-56bb-4204-9614-f3c2e24dd92b",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/fe87c6064822458?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 16 Jun 2017 00:09:50 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "5e8fc865-9a4f-45f4-83bb-5ad383e7979e",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170616T000950Z:5e8fc865-9a4f-45f4-83bb-5ad383e7979e",
+      "location" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1GRTg3QzYwNjQ4MjI0NTgtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "5e8fc865-9a4f-45f4-83bb-5ad383e7979e",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1GRTg3QzYwNjQ4MjI0NTgtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "date" : "Fri, 16 Jun 2017 00:09:50 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14989",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "caee297c-38de-4a91-8527-b051ebaefce1",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170616T000950Z:caee297c-38de-4a91-8527-b051ebaefce1",
+      "location" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1GRTg3QzYwNjQ4MjI0NTgtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "caee297c-38de-4a91-8527-b051ebaefce1",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1GRTg3QzYwNjQ4MjI0NTgtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "date" : "Fri, 16 Jun 2017 00:10:05 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14989",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "6bab3315-360f-4bb6-8ce1-8362f32c6188",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170616T001005Z:6bab3315-360f-4bb6-8ce1-8362f32c6188",
+      "location" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1GRTg3QzYwNjQ4MjI0NTgtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "6bab3315-360f-4bb6-8ce1-8362f32c6188",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1GRTg3QzYwNjQ4MjI0NTgtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "date" : "Fri, 16 Jun 2017 00:10:20 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14988",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "1fcae08e-ebb6-4b0c-9fe4-767534af878f",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170616T001021Z:1fcae08e-ebb6-4b0c-9fe4-767534af878f",
+      "location" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1GRTg3QzYwNjQ4MjI0NTgtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "1fcae08e-ebb6-4b0c-9fe4-767534af878f",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1GRTg3QzYwNjQ4MjI0NTgtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "date" : "Fri, 16 Jun 2017 00:10:36 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14987",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "e4c0c447-a536-413c-90c5-e2e2960323b1",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170616T001036Z:e4c0c447-a536-413c-90c5-e2e2960323b1",
+      "location" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1GRTg3QzYwNjQ4MjI0NTgtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "e4c0c447-a536-413c-90c5-e2e2960323b1",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1GRTg3QzYwNjQ4MjI0NTgtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "date" : "Fri, 16 Jun 2017 00:10:51 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14986",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "21d5b888-5633-4ae7-a635-035d8113863e",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170616T001051Z:21d5b888-5633-4ae7-a635-035d8113863e",
+      "location" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1GRTg3QzYwNjQ4MjI0NTgtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "21d5b888-5633-4ae7-a635-035d8113863e",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1GRTg3QzYwNjQ4MjI0NTgtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "date" : "Fri, 16 Jun 2017 00:11:06 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14985",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "4658f0c5-3227-4d82-92ec-56cecd0a6016",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170616T001106Z:4658f0c5-3227-4d82-92ec-56cecd0a6016",
+      "location" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1GRTg3QzYwNjQ4MjI0NTgtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "4658f0c5-3227-4d82-92ec-56cecd0a6016",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1GRTg3QzYwNjQ4MjI0NTgtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "date" : "Fri, 16 Jun 2017 00:11:21 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14984",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "9c9c6883-0001-45db-b277-674898755456",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170616T001121Z:9c9c6883-0001-45db-b277-674898755456",
+      "location" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1GRTg3QzYwNjQ4MjI0NTgtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "9c9c6883-0001-45db-b277-674898755456",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:32363/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1GRTg3QzYwNjQ4MjI0NTgtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "date" : "Fri, 16 Jun 2017 00:11:36 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14983",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "b03a1d14-dab1-40e0-a8ec-e1238d76f0dd",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170616T001137Z:b03a1d14-dab1-40e0-a8ec-e1238d76f0dd",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "b03a1d14-dab1-40e0-a8ec-e1238d76f0dd",
+      "Body" : ""
+    }
+  } ],
+  "variables" : [ "fe87c6064822458", "zb7770022" ]
+}

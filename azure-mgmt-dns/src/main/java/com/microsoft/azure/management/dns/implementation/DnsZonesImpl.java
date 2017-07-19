@@ -8,7 +8,9 @@ package com.microsoft.azure.management.dns.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.DnsZone;
 import com.microsoft.azure.management.dns.DnsZones;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import rx.Completable;
 
 /**
  * Implementation of DnsZones.
@@ -45,5 +47,27 @@ class DnsZonesImpl extends TopLevelModifiableResourcesImpl<
         // Zone location must be 'global' irrespective of region of the resource group it resides.
         dnsZone.inner().withLocation("global");
         return dnsZone;
+    }
+
+    @Override
+    public Completable deleteByResourceGroupNameAsync(String resourceGroupName, String zoneName, String eTagValue) {
+        return this.manager().inner().zones().deleteAsync(resourceGroupName, zoneName, eTagValue).toCompletable();
+    }
+
+    @Override
+    public Completable deleteByIdAsync(String id, String eTagValue) {
+        return deleteByResourceGroupNameAsync(ResourceUtils.groupFromResourceId(id),
+                ResourceUtils.nameFromResourceId(id),
+                eTagValue);
+    }
+
+    @Override
+    public void deleteByResourceGroupName(String resourceGroupName, String zoneName, String eTagValue) {
+        deleteByResourceGroupNameAsync(resourceGroupName, zoneName, eTagValue).await();
+    }
+
+    @Override
+    public void deleteById(String id, String eTagValue) {
+        deleteByIdAsync(id, eTagValue).await();
     }
 }

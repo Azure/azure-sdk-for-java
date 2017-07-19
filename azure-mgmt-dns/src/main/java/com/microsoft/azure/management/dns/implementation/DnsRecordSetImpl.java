@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.dns.implementation;
 
+import com.google.common.base.Splitter;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.ARecord;
 import com.microsoft.azure.management.dns.AaaaRecord;
@@ -31,7 +32,7 @@ import java.util.Map;
  * Implementation of DnsRecordSet.
  */
 @LangDefinition
-abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
+class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
             RecordSetInner,
             DnsZoneImpl,
             DnsZone>
@@ -40,6 +41,7 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
             DnsRecordSet.UpdateDefinition<DnsZone.Update>,
             DnsRecordSet.UpdateCombined {
     protected final RecordSetInner recordSetRemoveInfo;
+    private final ETagState eTagState = new ETagState();
 
     protected DnsRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel) {
         super(innerModel.name(), parent, innerModel);
@@ -64,7 +66,9 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
 
     @Override
     public RecordType recordType() {
-        return RecordType.fromString(this.inner().type());
+        String fullyQualifiedType = this.inner().type();
+        String[] parts = fullyQualifiedType.split("/");
+        return RecordType.fromString(parts[parts.length - 1]);
     }
 
     @Override
@@ -78,6 +82,11 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
             return Collections.unmodifiableMap(new LinkedHashMap<String, String>());
         }
         return Collections.unmodifiableMap(this.inner().metadata());
+    }
+
+    @Override
+    public String eTag() {
+        return this.inner().etag();
     }
 
     // Setters
@@ -111,6 +120,14 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
         this.recordSetRemoveInfo
                 .aaaaRecords()
                 .add(new AaaaRecord().withIpv6Address(ipv6Address));
+        return this;
+    }
+
+    @Override
+    public DnsRecordSetImpl withAlias(String alias) {
+        this.inner()
+                .cnameRecord()
+                .withCname(alias);
         return this;
     }
 
@@ -185,18 +202,31 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
 
     @Override
     public DnsRecordSetImpl withText(String text) {
-        List<String> value = new ArrayList<>();
-        value.add(text);
-        this.inner().txtRecords().add(new TxtRecord().withValue(value));
+        if (text == null) {
+            return this;
+        }
+        List<String> chunks = new ArrayList<>();
+        for (String chunk : Splitter.fixedLength(255).split(text)) {
+            chunks.add(chunk);
+        }
+        this.inner().txtRecords().add(new TxtRecord().withValue(chunks));
         return this;
     }
 
     @Override
     public DnsRecordSetImpl withoutText(String text) {
-        List<String> value = new ArrayList<>();
-        value.add(text);
+        if (text == null) {
+            return this;
+        }
+        List<String> chunks = new ArrayList<>();
+        chunks.add(text);
+        return withoutText(chunks);
+    }
+
+    @Override
+    public DnsRecordSetImpl withoutText(List<String> textChunks) {
         this.recordSetRemoveInfo
-                .txtRecords().add(new TxtRecord().withValue(value));
+                .txtRecords().add(new TxtRecord().withValue(textChunks));
         return this;
     }
 
@@ -258,6 +288,19 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
         return this;
     }
 
+    @Override
+    public DnsRecordSetImpl withETagCheck() {
+        this.eTagState.withImplicitETagCheckOnCreate();
+        this.eTagState.withImplicitETagCheckOnUpdate();
+        return this;
+    }
+
+    @Override
+    public DnsRecordSetImpl withETagCheck(String eTagValue) {
+        this.eTagState.withExplicitETagCheckOnUpdate(eTagValue);
+        return this;
+    }
+
     //
 
     @Override
@@ -284,7 +327,7 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
     @Override
     public Observable<Void> deleteAsync() {
         return this.parent().manager().inner().recordSets().deleteAsync(this.parent().resourceGroupName(),
-                this.parent().name(), this.name(), this.recordType());
+                this.parent().name(), this.name(), this.recordType(), this.eTagState.ifMatchValueOnDelete());
     }
 
     @Override
@@ -308,14 +351,12 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
     private Observable<DnsRecordSet> createOrUpdateAsync(RecordSetInner resource) {
         final DnsRecordSetImpl self = this;
         return this.parent().manager().inner().recordSets().createOrUpdateAsync(this.parent().resourceGroupName(),
-                this.parent().name(),
-                this.name(),
-                this.recordType(),
-                resource)
+                this.parent().name(), this.name(), this.recordType(), resource, eTagState.ifMatchValueOnUpdate(resource.etag()), eTagState.ifNonMatchValueOnCreate())
                 .map(new Func1<RecordSetInner, DnsRecordSet>() {
                     @Override
                     public DnsRecordSet call(RecordSetInner inner) {
                         setInner(inner);
+                        self.eTagState.clear();
                         return self;
                     }
                 });
@@ -348,5 +389,71 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
         return prepareForUpdate(resource);
     }
 
-    protected abstract RecordSetInner prepareForUpdate(RecordSetInner resource);
+    protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
+        return resource;
+    }
+
+    DnsRecordSetImpl withETagOnDelete(String eTagValue) {
+        this.eTagState.withExplicitETagCheckOnDelete(eTagValue);
+        return this;
+    }
+
+    @LangDefinition
+    private class ETagState {
+        private boolean doImplicitETagCheckOnCreate;
+        private boolean doImplicitETagCheckOnUpdate;
+        private String eTagOnUpdate;
+        private String eTagOnDelete;
+
+        public ETagState withImplicitETagCheckOnCreate() {
+            this.doImplicitETagCheckOnCreate = true;
+            return this;
+        }
+
+        public ETagState withImplicitETagCheckOnUpdate() {
+            this.doImplicitETagCheckOnUpdate = true;
+            return this;
+        }
+
+        public ETagState withExplicitETagCheckOnUpdate(String eTagValue) {
+            this.eTagOnUpdate = eTagValue;
+            return this;
+        }
+
+        public ETagState withExplicitETagCheckOnDelete(String eTagValue) {
+            this.eTagOnDelete = eTagValue;
+            return this;
+        }
+
+
+        public ETagState clear() {
+            this.doImplicitETagCheckOnCreate = false;
+            this.doImplicitETagCheckOnUpdate = false;
+            this.eTagOnUpdate = null;
+            this.eTagOnDelete = null;
+            return this;
+        }
+
+        public String ifMatchValueOnUpdate(String currentETagValue) {
+            String eTagValue = null;
+            if (this.doImplicitETagCheckOnUpdate) {
+                eTagValue = currentETagValue;
+            }
+            if (this.eTagOnUpdate != null) {
+                eTagValue = this.eTagOnUpdate;
+            }
+            return eTagValue;
+        }
+
+        public String ifMatchValueOnDelete() {
+            return this.eTagOnDelete;
+        }
+
+        public String ifNonMatchValueOnCreate() {
+            if (this.doImplicitETagCheckOnCreate) {
+                return "*";
+            }
+            return null;
+        }
+    }
 }
