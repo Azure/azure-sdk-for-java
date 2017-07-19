@@ -90,6 +90,9 @@ import com.microsoft.azure.management.redis.RedisCache;
 import com.microsoft.azure.management.redis.RedisCachePremium;
 import com.microsoft.azure.management.redis.ScheduleEntry;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
+import com.microsoft.azure.management.search.AdminKeys;
+import com.microsoft.azure.management.search.QueryKey;
+import com.microsoft.azure.management.search.SearchService;
 import com.microsoft.azure.management.servicebus.AccessRights;
 import com.microsoft.azure.management.servicebus.AuthorizationKeys;
 import com.microsoft.azure.management.servicebus.NamespaceAuthorizationRule;
@@ -1078,6 +1081,36 @@ public final class Utils {
             info.append("\n\tName: ").append(containerService.servicePrincipalClientId());
         }
 
+        System.out.println(info.toString());
+    }
+
+    /**
+     * Print an Azure Search Service.
+     * @param searchService an Azure Search Service
+     */
+    public static void print(SearchService searchService) {
+        StringBuilder info = new StringBuilder();
+        AdminKeys adminKeys = searchService.getAdminKeys();
+        List<QueryKey> queryKeys = searchService.listQueryKeys();
+
+        info.append("Azure Search: ").append(searchService.id())
+            .append("\n\tResource group: ").append(searchService.resourceGroupName())
+            .append("\n\tRegion: ").append(searchService.region())
+            .append("\n\tTags: ").append(searchService.tags())
+            .append("\n\tSku: ").append(searchService.sku().name())
+            .append("\n\tStatus: ").append(searchService.status())
+            .append("\n\tProvisioning State: ").append(searchService.provisioningState())
+            .append("\n\tHosting Mode: ").append(searchService.hostingMode())
+            .append("\n\tReplicas: ").append(searchService.replicaCount())
+            .append("\n\tPartitions: ").append(searchService.partitionCount())
+            .append("\n\tPrimary Admin Key: ").append(adminKeys.primaryKey())
+            .append("\n\tSecondary Admin Key: ").append(adminKeys.secondaryKey())
+            .append("\n\tQuery keys:");
+
+        for (QueryKey queryKey : queryKeys) {
+            info.append("\n\t\tKey name: ").append(queryKey.name());
+            info.append("\n\t\t   Value: ").append(queryKey.key());
+        }
         System.out.println(info.toString());
     }
 

@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.PacketCaptureResultInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
@@ -69,12 +70,14 @@ public interface PacketCapture extends
     /**
      * Stops a specified packet capture session.
      */
+    @Method
     void stop();
 
     /**
      * Stops a specified packet capture session asynchronously.
      * @return the handle to the REST call
      */
+    @Method
     Completable stopAsync();
 
     /**

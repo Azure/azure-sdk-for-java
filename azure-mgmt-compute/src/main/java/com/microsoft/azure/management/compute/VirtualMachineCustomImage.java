@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.ImageInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
@@ -264,6 +265,7 @@ public interface VirtualMachineCustomImage extends
              * Begins the definition of a new data disk image to add to the image.
              * @return the first stage of the new data disk image definition
              */
+            @Method
             CustomImageDataDisk.DefinitionStages.Blank<WithCreateAndDataDiskImageOSDiskSettings> defineDataDiskImage();
         }
 

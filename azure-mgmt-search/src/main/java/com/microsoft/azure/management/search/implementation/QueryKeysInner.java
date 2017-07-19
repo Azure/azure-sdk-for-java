@@ -11,15 +11,20 @@ package com.microsoft.azure.management.search.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
+import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
+import java.util.UUID;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.HTTP;
 import retrofit2.http.Path;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.Response;
 import rx.functions.Func1;
@@ -29,7 +34,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in QueryKeys.
  */
-public final class QueryKeysInner {
+public class QueryKeysInner {
     /** The Retrofit service to perform REST calls. */
     private QueryKeysService service;
     /** The service client containing this operation class. */
@@ -51,64 +56,85 @@ public final class QueryKeysInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface QueryKeysService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.search.QueryKeys list" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{serviceName}/listQueryKeys")
-        Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.search.QueryKeys create" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/createQueryKey/{name}")
+        Observable<Response<ResponseBody>> create(@Path("resourceGroupName") String resourceGroupName, @Path("searchServiceName") String searchServiceName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-client-request-id") UUID clientRequestId, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.search.QueryKeys listBySearchService" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/listQueryKeys")
+        Observable<Response<ResponseBody>> listBySearchService(@Path("resourceGroupName") String resourceGroupName, @Path("searchServiceName") String searchServiceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-client-request-id") UUID clientRequestId, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.search.QueryKeys delete" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/deleteQueryKey/{key}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("searchServiceName") String searchServiceName, @Path("key") String key, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-client-request-id") UUID clientRequestId, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * Returns the list of query API keys for the given Azure Search service.
+     * Generates a new query key for the specified Search service. You can create up to 50 query keys per service.
      *
-     * @param resourceGroupName The name of the resource group within the current subscription.
-     * @param serviceName The name of the Search service for which to list query keys.
-     * @return the ListQueryKeysResultInner object if successful.
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param name The name of the new query API key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the QueryKeyInner object if successful.
      */
-    public ListQueryKeysResultInner list(String resourceGroupName, String serviceName) {
-        return listWithServiceResponseAsync(resourceGroupName, serviceName).toBlocking().single().body();
+    public QueryKeyInner create(String resourceGroupName, String searchServiceName, String name) {
+        return createWithServiceResponseAsync(resourceGroupName, searchServiceName, name).toBlocking().single().body();
     }
 
     /**
-     * Returns the list of query API keys for the given Azure Search service.
+     * Generates a new query key for the specified Search service. You can create up to 50 query keys per service.
      *
-     * @param resourceGroupName The name of the resource group within the current subscription.
-     * @param serviceName The name of the Search service for which to list query keys.
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param name The name of the new query API key.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ListQueryKeysResultInner> listAsync(String resourceGroupName, String serviceName, final ServiceCallback<ListQueryKeysResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithServiceResponseAsync(resourceGroupName, serviceName), serviceCallback);
+    public ServiceFuture<QueryKeyInner> createAsync(String resourceGroupName, String searchServiceName, String name, final ServiceCallback<QueryKeyInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, searchServiceName, name), serviceCallback);
     }
 
     /**
-     * Returns the list of query API keys for the given Azure Search service.
+     * Generates a new query key for the specified Search service. You can create up to 50 query keys per service.
      *
-     * @param resourceGroupName The name of the resource group within the current subscription.
-     * @param serviceName The name of the Search service for which to list query keys.
-     * @return the observable to the ListQueryKeysResultInner object
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param name The name of the new query API key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the QueryKeyInner object
      */
-    public Observable<ListQueryKeysResultInner> listAsync(String resourceGroupName, String serviceName) {
-        return listWithServiceResponseAsync(resourceGroupName, serviceName).map(new Func1<ServiceResponse<ListQueryKeysResultInner>, ListQueryKeysResultInner>() {
+    public Observable<QueryKeyInner> createAsync(String resourceGroupName, String searchServiceName, String name) {
+        return createWithServiceResponseAsync(resourceGroupName, searchServiceName, name).map(new Func1<ServiceResponse<QueryKeyInner>, QueryKeyInner>() {
             @Override
-            public ListQueryKeysResultInner call(ServiceResponse<ListQueryKeysResultInner> response) {
+            public QueryKeyInner call(ServiceResponse<QueryKeyInner> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Returns the list of query API keys for the given Azure Search service.
+     * Generates a new query key for the specified Search service. You can create up to 50 query keys per service.
      *
-     * @param resourceGroupName The name of the resource group within the current subscription.
-     * @param serviceName The name of the Search service for which to list query keys.
-     * @return the observable to the ListQueryKeysResultInner object
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param name The name of the new query API key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the QueryKeyInner object
      */
-    public Observable<ServiceResponse<ListQueryKeysResultInner>> listWithServiceResponseAsync(String resourceGroupName, String serviceName) {
+    public Observable<ServiceResponse<QueryKeyInner>> createWithServiceResponseAsync(String resourceGroupName, String searchServiceName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        if (serviceName == null) {
-            throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
+        if (searchServiceName == null) {
+            throw new IllegalArgumentException("Parameter searchServiceName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
@@ -116,12 +142,14 @@ public final class QueryKeysInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(resourceGroupName, serviceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ListQueryKeysResultInner>>>() {
+        final SearchManagementRequestOptionsInner searchManagementRequestOptions = null;
+        UUID clientRequestId = null;
+        return service.create(resourceGroupName, searchServiceName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), clientRequestId, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<QueryKeyInner>>>() {
                 @Override
-                public Observable<ServiceResponse<ListQueryKeysResultInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<QueryKeyInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ListQueryKeysResultInner> clientResponse = listDelegate(response);
+                        ServiceResponse<QueryKeyInner> clientResponse = createDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -130,9 +158,472 @@ public final class QueryKeysInner {
             });
     }
 
-    private ServiceResponse<ListQueryKeysResultInner> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ListQueryKeysResultInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<ListQueryKeysResultInner>() { }.getType())
+    /**
+     * Generates a new query key for the specified Search service. You can create up to 50 query keys per service.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param name The name of the new query API key.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the QueryKeyInner object if successful.
+     */
+    public QueryKeyInner create(String resourceGroupName, String searchServiceName, String name, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        return createWithServiceResponseAsync(resourceGroupName, searchServiceName, name, searchManagementRequestOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Generates a new query key for the specified Search service. You can create up to 50 query keys per service.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param name The name of the new query API key.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<QueryKeyInner> createAsync(String resourceGroupName, String searchServiceName, String name, SearchManagementRequestOptionsInner searchManagementRequestOptions, final ServiceCallback<QueryKeyInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, searchServiceName, name, searchManagementRequestOptions), serviceCallback);
+    }
+
+    /**
+     * Generates a new query key for the specified Search service. You can create up to 50 query keys per service.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param name The name of the new query API key.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the QueryKeyInner object
+     */
+    public Observable<QueryKeyInner> createAsync(String resourceGroupName, String searchServiceName, String name, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        return createWithServiceResponseAsync(resourceGroupName, searchServiceName, name, searchManagementRequestOptions).map(new Func1<ServiceResponse<QueryKeyInner>, QueryKeyInner>() {
+            @Override
+            public QueryKeyInner call(ServiceResponse<QueryKeyInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Generates a new query key for the specified Search service. You can create up to 50 query keys per service.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param name The name of the new query API key.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the QueryKeyInner object
+     */
+    public Observable<ServiceResponse<QueryKeyInner>> createWithServiceResponseAsync(String resourceGroupName, String searchServiceName, String name, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (searchServiceName == null) {
+            throw new IllegalArgumentException("Parameter searchServiceName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(searchManagementRequestOptions);
+        UUID clientRequestId = null;
+        if (searchManagementRequestOptions != null) {
+            clientRequestId = searchManagementRequestOptions.clientRequestId();
+        }
+        return service.create(resourceGroupName, searchServiceName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), clientRequestId, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<QueryKeyInner>>>() {
+                @Override
+                public Observable<ServiceResponse<QueryKeyInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<QueryKeyInner> clientResponse = createDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<QueryKeyInner> createDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<QueryKeyInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<QueryKeyInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns the list of query API keys for the given Azure Search service.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;QueryKeyInner&gt; object if successful.
+     */
+    public List<QueryKeyInner> listBySearchService(String resourceGroupName, String searchServiceName) {
+        return listBySearchServiceWithServiceResponseAsync(resourceGroupName, searchServiceName).toBlocking().single().body();
+    }
+
+    /**
+     * Returns the list of query API keys for the given Azure Search service.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<QueryKeyInner>> listBySearchServiceAsync(String resourceGroupName, String searchServiceName, final ServiceCallback<List<QueryKeyInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listBySearchServiceWithServiceResponseAsync(resourceGroupName, searchServiceName), serviceCallback);
+    }
+
+    /**
+     * Returns the list of query API keys for the given Azure Search service.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;QueryKeyInner&gt; object
+     */
+    public Observable<List<QueryKeyInner>> listBySearchServiceAsync(String resourceGroupName, String searchServiceName) {
+        return listBySearchServiceWithServiceResponseAsync(resourceGroupName, searchServiceName).map(new Func1<ServiceResponse<List<QueryKeyInner>>, List<QueryKeyInner>>() {
+            @Override
+            public List<QueryKeyInner> call(ServiceResponse<List<QueryKeyInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Returns the list of query API keys for the given Azure Search service.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;QueryKeyInner&gt; object
+     */
+    public Observable<ServiceResponse<List<QueryKeyInner>>> listBySearchServiceWithServiceResponseAsync(String resourceGroupName, String searchServiceName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (searchServiceName == null) {
+            throw new IllegalArgumentException("Parameter searchServiceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final SearchManagementRequestOptionsInner searchManagementRequestOptions = null;
+        UUID clientRequestId = null;
+        return service.listBySearchService(resourceGroupName, searchServiceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), clientRequestId, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<QueryKeyInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<QueryKeyInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<QueryKeyInner>> result = listBySearchServiceDelegate(response);
+                        ServiceResponse<List<QueryKeyInner>> clientResponse = new ServiceResponse<List<QueryKeyInner>>(result.body().items(), result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Returns the list of query API keys for the given Azure Search service.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;QueryKeyInner&gt; object if successful.
+     */
+    public List<QueryKeyInner> listBySearchService(String resourceGroupName, String searchServiceName, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        return listBySearchServiceWithServiceResponseAsync(resourceGroupName, searchServiceName, searchManagementRequestOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Returns the list of query API keys for the given Azure Search service.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<QueryKeyInner>> listBySearchServiceAsync(String resourceGroupName, String searchServiceName, SearchManagementRequestOptionsInner searchManagementRequestOptions, final ServiceCallback<List<QueryKeyInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listBySearchServiceWithServiceResponseAsync(resourceGroupName, searchServiceName, searchManagementRequestOptions), serviceCallback);
+    }
+
+    /**
+     * Returns the list of query API keys for the given Azure Search service.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;QueryKeyInner&gt; object
+     */
+    public Observable<List<QueryKeyInner>> listBySearchServiceAsync(String resourceGroupName, String searchServiceName, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        return listBySearchServiceWithServiceResponseAsync(resourceGroupName, searchServiceName, searchManagementRequestOptions).map(new Func1<ServiceResponse<List<QueryKeyInner>>, List<QueryKeyInner>>() {
+            @Override
+            public List<QueryKeyInner> call(ServiceResponse<List<QueryKeyInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Returns the list of query API keys for the given Azure Search service.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;QueryKeyInner&gt; object
+     */
+    public Observable<ServiceResponse<List<QueryKeyInner>>> listBySearchServiceWithServiceResponseAsync(String resourceGroupName, String searchServiceName, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (searchServiceName == null) {
+            throw new IllegalArgumentException("Parameter searchServiceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(searchManagementRequestOptions);
+        UUID clientRequestId = null;
+        if (searchManagementRequestOptions != null) {
+            clientRequestId = searchManagementRequestOptions.clientRequestId();
+        }
+        return service.listBySearchService(resourceGroupName, searchServiceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), clientRequestId, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<QueryKeyInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<QueryKeyInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<QueryKeyInner>> result = listBySearchServiceDelegate(response);
+                        ServiceResponse<List<QueryKeyInner>> clientResponse = new ServiceResponse<List<QueryKeyInner>>(result.body().items(), result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<QueryKeyInner>> listBySearchServiceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<QueryKeyInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<QueryKeyInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes the specified query key. Unlike admin keys, query keys are not regenerated. The process for regenerating a query key is to delete and then recreate it.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param key The query key to be deleted. Query keys are identified by value, not by name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void delete(String resourceGroupName, String searchServiceName, String key) {
+        deleteWithServiceResponseAsync(resourceGroupName, searchServiceName, key).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes the specified query key. Unlike admin keys, query keys are not regenerated. The process for regenerating a query key is to delete and then recreate it.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param key The query key to be deleted. Query keys are identified by value, not by name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String searchServiceName, String key, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, searchServiceName, key), serviceCallback);
+    }
+
+    /**
+     * Deletes the specified query key. Unlike admin keys, query keys are not regenerated. The process for regenerating a query key is to delete and then recreate it.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param key The query key to be deleted. Query keys are identified by value, not by name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deleteAsync(String resourceGroupName, String searchServiceName, String key) {
+        return deleteWithServiceResponseAsync(resourceGroupName, searchServiceName, key).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes the specified query key. Unlike admin keys, query keys are not regenerated. The process for regenerating a query key is to delete and then recreate it.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param key The query key to be deleted. Query keys are identified by value, not by name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String searchServiceName, String key) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (searchServiceName == null) {
+            throw new IllegalArgumentException("Parameter searchServiceName is required and cannot be null.");
+        }
+        if (key == null) {
+            throw new IllegalArgumentException("Parameter key is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final SearchManagementRequestOptionsInner searchManagementRequestOptions = null;
+        UUID clientRequestId = null;
+        return service.delete(resourceGroupName, searchServiceName, key, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), clientRequestId, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Deletes the specified query key. Unlike admin keys, query keys are not regenerated. The process for regenerating a query key is to delete and then recreate it.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param key The query key to be deleted. Query keys are identified by value, not by name.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void delete(String resourceGroupName, String searchServiceName, String key, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        deleteWithServiceResponseAsync(resourceGroupName, searchServiceName, key, searchManagementRequestOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes the specified query key. Unlike admin keys, query keys are not regenerated. The process for regenerating a query key is to delete and then recreate it.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param key The query key to be deleted. Query keys are identified by value, not by name.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String searchServiceName, String key, SearchManagementRequestOptionsInner searchManagementRequestOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, searchServiceName, key, searchManagementRequestOptions), serviceCallback);
+    }
+
+    /**
+     * Deletes the specified query key. Unlike admin keys, query keys are not regenerated. The process for regenerating a query key is to delete and then recreate it.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param key The query key to be deleted. Query keys are identified by value, not by name.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deleteAsync(String resourceGroupName, String searchServiceName, String key, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        return deleteWithServiceResponseAsync(resourceGroupName, searchServiceName, key, searchManagementRequestOptions).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes the specified query key. Unlike admin keys, query keys are not regenerated. The process for regenerating a query key is to delete and then recreate it.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service associated with the specified resource group.
+     * @param key The query key to be deleted. Query keys are identified by value, not by name.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String searchServiceName, String key, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (searchServiceName == null) {
+            throw new IllegalArgumentException("Parameter searchServiceName is required and cannot be null.");
+        }
+        if (key == null) {
+            throw new IllegalArgumentException("Parameter key is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(searchManagementRequestOptions);
+        UUID clientRequestId = null;
+        if (searchManagementRequestOptions != null) {
+            clientRequestId = searchManagementRequestOptions.clientRequestId();
+        }
+        return service.delete(resourceGroupName, searchServiceName, key, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), clientRequestId, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

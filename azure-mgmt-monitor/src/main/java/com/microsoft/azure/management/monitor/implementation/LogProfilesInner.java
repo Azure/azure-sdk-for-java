@@ -11,7 +11,7 @@ package com.microsoft.azure.management.monitor.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.Page;
+import com.microsoft.azure.management.monitor.ErrorResponseException;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -24,6 +24,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.HTTP;
+import retrofit2.http.PATCH;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
@@ -68,6 +69,10 @@ public class LogProfilesInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.monitor.LogProfiles createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/providers/microsoft.insights/logprofiles/{logProfileName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("logProfileName") String logProfileName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body LogProfileResourceInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.monitor.LogProfiles update" })
+        @PATCH("subscriptions/{subscriptionId}/providers/microsoft.insights/logprofiles/{logProfileName}")
+        Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("logProfileName") String logProfileName, @Query("api-version") String apiVersion, @Body LogProfileResourcePatchInner logProfilesResource, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.monitor.LogProfiles list" })
         @GET("subscriptions/{subscriptionId}/providers/microsoft.insights/logprofiles")
@@ -156,7 +161,7 @@ public class LogProfilesInner {
      *
      * @param logProfileName The name of the log profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the LogProfileResourceInner object if successful.
      */
@@ -221,10 +226,10 @@ public class LogProfilesInner {
             });
     }
 
-    private ServiceResponse<LogProfileResourceInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<LogProfileResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<LogProfileResourceInner> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<LogProfileResourceInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<LogProfileResourceInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -314,8 +319,96 @@ public class LogProfilesInner {
     }
 
     /**
+     * Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
+     *
+     * @param logProfileName The name of the log profile.
+     * @param logProfilesResource Parameters supplied to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the LogProfileResourceInner object if successful.
+     */
+    public LogProfileResourceInner update(String logProfileName, LogProfileResourcePatchInner logProfilesResource) {
+        return updateWithServiceResponseAsync(logProfileName, logProfilesResource).toBlocking().single().body();
+    }
+
+    /**
+     * Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
+     *
+     * @param logProfileName The name of the log profile.
+     * @param logProfilesResource Parameters supplied to the operation.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<LogProfileResourceInner> updateAsync(String logProfileName, LogProfileResourcePatchInner logProfilesResource, final ServiceCallback<LogProfileResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(logProfileName, logProfilesResource), serviceCallback);
+    }
+
+    /**
+     * Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
+     *
+     * @param logProfileName The name of the log profile.
+     * @param logProfilesResource Parameters supplied to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the LogProfileResourceInner object
+     */
+    public Observable<LogProfileResourceInner> updateAsync(String logProfileName, LogProfileResourcePatchInner logProfilesResource) {
+        return updateWithServiceResponseAsync(logProfileName, logProfilesResource).map(new Func1<ServiceResponse<LogProfileResourceInner>, LogProfileResourceInner>() {
+            @Override
+            public LogProfileResourceInner call(ServiceResponse<LogProfileResourceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
+     *
+     * @param logProfileName The name of the log profile.
+     * @param logProfilesResource Parameters supplied to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the LogProfileResourceInner object
+     */
+    public Observable<ServiceResponse<LogProfileResourceInner>> updateWithServiceResponseAsync(String logProfileName, LogProfileResourcePatchInner logProfilesResource) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (logProfileName == null) {
+            throw new IllegalArgumentException("Parameter logProfileName is required and cannot be null.");
+        }
+        if (logProfilesResource == null) {
+            throw new IllegalArgumentException("Parameter logProfilesResource is required and cannot be null.");
+        }
+        Validator.validate(logProfilesResource);
+        final String apiVersion = "2016-03-01";
+        return service.update(this.client.subscriptionId(), logProfileName, apiVersion, logProfilesResource, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LogProfileResourceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<LogProfileResourceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<LogProfileResourceInner> clientResponse = updateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<LogProfileResourceInner> updateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<LogProfileResourceInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<LogProfileResourceInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
      * List the log profiles.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;LogProfileResourceInner&gt; object if successful.
      */
     public List<LogProfileResourceInner> list() {
@@ -326,6 +419,7 @@ public class LogProfilesInner {
      * List the log profiles.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<LogProfileResourceInner>> listAsync(final ServiceCallback<List<LogProfileResourceInner>> serviceCallback) {
@@ -335,15 +429,14 @@ public class LogProfilesInner {
     /**
      * List the log profiles.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;LogProfileResourceInner&gt; object
      */
-    public Observable<Page<LogProfileResourceInner>> listAsync() {
-        return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<LogProfileResourceInner>>, Page<LogProfileResourceInner>>() {
+    public Observable<List<LogProfileResourceInner>> listAsync() {
+        return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<LogProfileResourceInner>>, List<LogProfileResourceInner>>() {
             @Override
-            public Page<LogProfileResourceInner> call(ServiceResponse<List<LogProfileResourceInner>> response) {
-                PageImpl1<LogProfileResourceInner> page = new PageImpl1<>();
-                page.setItems(response.body());
-                return page;
+            public List<LogProfileResourceInner> call(ServiceResponse<List<LogProfileResourceInner>> response) {
+                return response.body();
             }
         });
     }
@@ -351,6 +444,7 @@ public class LogProfilesInner {
     /**
      * List the log profiles.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;LogProfileResourceInner&gt; object
      */
     public Observable<ServiceResponse<List<LogProfileResourceInner>>> listWithServiceResponseAsync() {

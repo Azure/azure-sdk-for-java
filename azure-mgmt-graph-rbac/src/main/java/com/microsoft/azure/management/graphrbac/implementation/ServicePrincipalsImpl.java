@@ -156,12 +156,12 @@ class ServicePrincipalsImpl
 
     @Override
     public ServicePrincipalImpl define(String name) {
-        return new ServicePrincipalImpl(new ServicePrincipalInner().withDisplayName(name), manager());
+        return new ServicePrincipalImpl((ServicePrincipalInner) new ServicePrincipalInner().withDisplayName(name), manager());
     }
 
     @Override
     protected ServicePrincipalImpl wrapModel(String name) {
-        return new ServicePrincipalImpl(new ServicePrincipalInner().withDisplayName(name), manager());
+        return new ServicePrincipalImpl((ServicePrincipalInner) new ServicePrincipalInner().withDisplayName(name), manager());
     }
 
     @Override

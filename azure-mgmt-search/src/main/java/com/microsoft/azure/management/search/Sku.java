@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.search;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Defines the SKU of an Azure Search Service, which determines price tier and
@@ -15,17 +16,24 @@ package com.microsoft.azure.management.search;
  */
 public class Sku {
     /**
-     * The SKU of the Search service. Possible values include: 'free',
-     * 'standard', 'standard2'.
+     * The SKU of the Search service. Valid values include: 'free': Shared
+     * service. 'basic': Dedicated service with up to 3 replicas. 'standard':
+     * Dedicated service with up to 12 partitions and 12 replicas. 'standard2':
+     * Similar to standard, but with more capacity per search unit.
+     * 'standard3': Offers maximum capacity per search unit with up to 12
+     * partitions and 12 replicas (or up to 3 partitions with more indexes if
+     * you also set the hostingMode property to 'highDensity'). Possible values
+     * include: 'free', 'basic', 'standard', 'standard2', 'standard3'.
      */
-    private SkuType name;
+    @JsonProperty(value = "name")
+    private SkuName name;
 
     /**
      * Get the name value.
      *
      * @return the name value
      */
-    public SkuType name() {
+    public SkuName name() {
         return this.name;
     }
 
@@ -35,7 +43,7 @@ public class Sku {
      * @param name the name value to set
      * @return the Sku object itself.
      */
-    public Sku withName(SkuType name) {
+    public Sku withName(SkuName name) {
         this.name = name;
         return this;
     }

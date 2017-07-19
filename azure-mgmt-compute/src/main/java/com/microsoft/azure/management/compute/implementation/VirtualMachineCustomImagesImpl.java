@@ -34,6 +34,9 @@ class VirtualMachineCustomImagesImpl extends TopLevelModifiableResourcesImpl<
 
     @Override
     protected VirtualMachineCustomImageImpl wrapModel(ImageInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new VirtualMachineCustomImageImpl(inner.name(), inner, this.manager());
     }
 
