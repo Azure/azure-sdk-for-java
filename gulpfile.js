@@ -125,7 +125,7 @@ var mappings = {
     },
     'recoveryservices': {
         'dir': 'azure-mgmt-recoveryservices',
-        'source': 'compositeRecoveryServicesClient.json',
+        'source': 'arm-recoveryservices/compositeRecoveryServicesClient.json',
         'package': 'com.microsoft.azure.management.recoveryservices',
         'args': '-FT 1',
         'modeler': 'CompositeSwagger'
