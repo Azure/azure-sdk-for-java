@@ -117,10 +117,10 @@ var mappings = {
         'args': '-FT 1',
         'modeler': 'CompositeSwagger'
     },
-    'powerbiembedded': {
-        'dir': 'azure-mgmt-powerbiembedded',
+    'powerbi': {
+        'dir': 'azure-mgmt-powerbi',
         'source': 'arm-powerbiembedded/2016-01-29/swagger/powerbiembedded.json',
-        'package': 'com.microsoft.azure.management.powerbiembedded',
+        'package': 'com.microsoft.azure.management.powerbi',
         'args': '-FT 1'
     },
     'recoveryservices': {
