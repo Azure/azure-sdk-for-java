@@ -103,7 +103,7 @@ public class TestLoadBalancer {
                         .withProtocol(TransportProtocol.TCP)    // Required
                         .fromExistingPublicIPAddress(pip0)
                         .fromFrontendPort(81)
-                        .toDefaultBackend()
+                        .toBackend("backend1")
                         .toBackendPort(82)                    // Optionals
                         .withProbe("tcpProbe1")
                         .withIdleTimeoutInMinutes(10)
@@ -130,8 +130,10 @@ public class TestLoadBalancer {
                         .withNumberOfProbes(4)
                         .attach()
 
-                    // Backends (Optional)
-                    .withExistingVirtualMachines(existingVMs)
+                    // Backends
+                    .defineBackend("backend1")
+                        .withExistingVirtualMachines(existingVMs)
+                        .attach()
 
                     .create();
 
@@ -176,18 +178,7 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
-            // Find the implicitly created backend
-            LoadBalancerBackend backend = null;
-            for (LoadBalancerBackend b : resource.backends().values()) {
-                if (!"backend1".equalsIgnoreCase(b.name())) {
-                    backend = b;
-                    break;
-                }
-            }
-            Assert.assertNotNull(backend);
-
             resource =  resource.update()
-                    .withoutBackend(backend.name())
                     .withoutBackend("backend1")
                     .withoutLoadBalancingRule("rule1")
                     .withoutInboundNatPool("natpool1")
@@ -212,8 +203,6 @@ public class TestLoadBalancer {
             Assert.assertEquals(0, resource.tcpProbes().size());
 
             // Verify backends
-            Assert.assertFalse(resource.backends().containsKey(backend.name()));
-            Assert.assertFalse(resource.backends().containsKey("backend1"));
             Assert.assertEquals(0, resource.backends().size());
 
             // Verify rules
@@ -270,7 +259,7 @@ public class TestLoadBalancer {
                         .withProtocol(TransportProtocol.TCP)    // Required
                         .fromExistingPublicIPAddress(pip)
                         .fromFrontendPort(81)
-                        .toDefaultBackend()
+                        .toBackend("backend1")
                         .toBackendPort(82)                     // Optionals
                         .withProbe("tcpProbe1")
                         .withIdleTimeoutInMinutes(10)
@@ -596,10 +585,12 @@ public class TestLoadBalancer {
                         .withProtocol(TransportProtocol.TCP)
                         .fromNewPublicIPAddress(pipDnsLabel)
                         .fromFrontendPort(80)
-                        .toDefaultBackend()
+                        .toBackend("backend1")
                         .attach()
-                    // Backend (default)
-                    .withExistingVirtualMachines(existingVMs)
+                    // Backend
+                    .defineBackend("backend1")
+                        .withExistingVirtualMachines(existingVMs)
+                        .attach()
                     .create();
 
             // Verify frontends
@@ -674,8 +665,6 @@ public class TestLoadBalancer {
                         .toBackend("backend2")
                         .withProbe("httpprobe")
                         .attach()
-                    .defineBackend("backend2")
-                        .attach()
                     .withoutBackend(backend.name())
                     .withTag("tag1", "value1")
                     .withTag("tag2", "value2")
@@ -706,6 +695,7 @@ public class TestLoadBalancer {
             Assert.assertTrue(httpProbe.loadBalancingRules().containsKey("lbrule2"));
 
             // Verify backends
+            Assert.assertEquals(1, resource.backends().size());
             Assert.assertTrue(resource.backends().containsKey("backend2"));
             Assert.assertTrue(!resource.backends().containsKey(backend.name()));
 
@@ -774,10 +764,12 @@ public class TestLoadBalancer {
                         .withProtocol(TransportProtocol.TCP)
                         .fromExistingSubnet(network, "subnet1")
                         .fromFrontendPort(80)
-                        .toDefaultBackend()
+                        .toBackend("backend1")
                         .attach()
                     // Backends
-                    .withExistingVirtualMachines(existingVMs) // Default backend
+                    .defineBackend("backend1")
+                        .withExistingVirtualMachines(existingVMs)
+                        .attach()
                     .create();
 
             // Verify frontends
@@ -807,12 +799,13 @@ public class TestLoadBalancer {
             Assert.assertNull(lbrule.probe());
             Assert.assertEquals(TransportProtocol.TCP, lbrule.protocol());
             Assert.assertNotNull(lbrule.backend());
+            Assert.assertEquals("backend1", lbrule.backend().name());
 
             // Verify backends
             Assert.assertEquals(1, lb.backends().size());
-
-            LoadBalancerBackend backend = lb.backends().values().iterator().next();
+            LoadBalancerBackend backend = lb.backends().get("backend1");
             Assert.assertNotNull(backend);
+
             Assert.assertEquals(2, backend.backendNicIPConfigurationNames().size());
             for (VirtualMachine vm : existingVMs) {
                 Assert.assertTrue(backend.backendNicIPConfigurationNames().containsKey(vm.primaryNetworkInterfaceId()));
@@ -887,6 +880,7 @@ public class TestLoadBalancer {
             Assert.assertTrue(httpProbe.loadBalancingRules().containsKey("lbrule2"));
 
             // Verify backends
+            Assert.assertEquals(1, resource.backends().size());
             Assert.assertTrue(resource.backends().containsKey("backend2"));
             Assert.assertTrue(!resource.backends().containsKey(backend.name()));
 

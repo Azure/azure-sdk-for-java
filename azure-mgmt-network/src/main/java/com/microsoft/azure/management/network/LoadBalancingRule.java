@@ -7,7 +7,6 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.network.implementation.LoadBalancingRuleInner;
 import com.microsoft.azure.management.network.model.HasBackendPort;
 import com.microsoft.azure.management.network.model.HasFloatingIP;
@@ -112,13 +111,6 @@ public interface LoadBalancingRule extends
              * @return the next stage of the definition
              */
             WithBackendPort<ReturnT> toBackend(String backendName);
-
-            /**
-             * Selects the load balancer's default backend as the backend to send network traffic to.
-             * @return the next stage of the definition
-             */
-            @Beta(SinceVersion.V1_2_0)
-            WithBackendPort<ReturnT> toDefaultBackend();
         }
 
         /**
@@ -346,13 +338,6 @@ public interface LoadBalancingRule extends
              * @return the next stage of the definition
              */
             WithBackendPort<ReturnT> toBackend(String backendName);
-
-            /**
-             * Selects the load balancer's default backend as the backend to send network traffic to.
-             * @return the next stage of the definition
-             */
-            @Beta(SinceVersion.V1_2_0)
-            WithBackendPort<ReturnT> toDefaultBackend();
         }
 
         /**

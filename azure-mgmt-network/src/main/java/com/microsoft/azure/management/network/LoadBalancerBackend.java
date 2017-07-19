@@ -12,6 +12,7 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.BackendAddressPoolInner;
 import com.microsoft.azure.management.network.model.HasBackendNics;
 import com.microsoft.azure.management.network.model.HasLoadBalancingRules;
+import com.microsoft.azure.management.network.model.HasNetworkInterfaces;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
@@ -44,19 +45,43 @@ public interface LoadBalancerBackend extends
         interface Blank<ParentT> extends WithAttach<ParentT> {
         }
 
+        /**
+         * The stage of a load balancer backend definition allowing to select a set of virtual machines to load balance
+         * the network traffic among.
+         * @param <ReturnT> the next stage of the definition
+         */
+        interface WithVirtualMachine<ReturnT> {
+            /**
+             * Adds the specified set of virtual machines, assuming they are from the same
+             * availability set, to this back end address pool.
+             * <p>
+             * This will add references to the primary IP configurations of the primary network interfaces of
+             * the provided set of virtual machines.
+             * <p>
+             * If the virtual machines are not in the same availability set, they will not be associated with this back end.
+             * <p>
+             * Only those virtual machines will be associated with the load balancer that already have an existing
+             * network interface. Virtual machines without a network interface will be skipped.
+             * @param vms existing virtual machines
+             * @return the next stage of the definition
+             */
+            WithAttach<ReturnT> withExistingVirtualMachines(HasNetworkInterfaces...vms);
+        }
+
         /** The final stage of a load balancer backend definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the definition
          * can be attached to the parent load balancer definition using {@link WithAttach#attach()}.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends
-            Attachable.InDefinition<ParentT> {
+            Attachable.InDefinition<ParentT>,
+            WithVirtualMachine<ParentT> {
         }
     }
 
     /** The entirety of a load balancer backend definition.
-     * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
+     * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
@@ -87,6 +112,29 @@ public interface LoadBalancerBackend extends
         interface Blank<ParentT> extends WithAttach<ParentT> {
         }
 
+        /**
+         * The stage of a load balancer backend definition allowing to select a set of virtual machines to load balance
+         * the network traffic among.
+         * @param <ReturnT> the next stage of the definition
+         */
+        interface WithVirtualMachine<ReturnT> {
+            /**
+             * Adds the specified set of virtual machines, assuming they are from the same
+             * availability set, to this back end address pool.
+             * <p>
+             * This will add references to the primary IP configurations of the primary network interfaces of
+             * the provided set of virtual machines.
+             * <p>
+             * If the virtual machines are not in the same availability set, they will not be associated with this back end.
+             * <p>
+             * Only those virtual machines will be associated with the load balancer that already have an existing
+             * network interface. Virtual machines without a network interface will be skipped.
+             * @param vms existing virtual machines
+             * @return the next stage of the definition
+             */
+            WithAttach<ReturnT> withExistingVirtualMachines(HasNetworkInterfaces...vms);
+        }
+
         /** The final stage of a load balancer backend definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the definition
@@ -94,7 +142,8 @@ public interface LoadBalancerBackend extends
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAttach<ParentT> extends
-            Attachable.InUpdate<ParentT> {
+            Attachable.InUpdate<ParentT>,
+            WithVirtualMachine<ParentT> {
         }
     }
 

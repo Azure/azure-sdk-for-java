@@ -219,9 +219,9 @@ public interface LoadBalancer extends
         interface WithVirtualMachine<ReturnT> {
             /**
              * Adds the specified set of virtual machines, assuming they are from the same
-             * availability set, to this load balancer's back end address pool.
+             * availability set, to a new auto-named back end address pool.
              * <p>
-             * This will create a new default backend address pool for this load balancer if one does not already exist
+             * This will create a new backend address pool for this load balancer
              * and add references to the primary IP configurations of the primary network interfaces of each of the provided set of
              * virtual machines.
              * <p>
