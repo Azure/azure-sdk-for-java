@@ -31,7 +31,7 @@ class LoadBalancingRuleImpl
     extends ChildResourceImpl<LoadBalancingRuleInner, LoadBalancerImpl, LoadBalancer>
     implements
         LoadBalancingRule,
-        LoadBalancingRule.Definition<LoadBalancer.DefinitionStages.WithLoadBalancingRuleOrCreate>,
+        LoadBalancingRule.Definition<LoadBalancer.DefinitionStages.WithLBRuleOrNatOrCreate>,
         LoadBalancingRule.UpdateDefinition<LoadBalancer.Update>,
         LoadBalancingRule.Update {
 

@@ -108,9 +108,8 @@ public interface LoadBalancer extends
         DefinitionStages.WithPublicFrontendOrRuleNat,
         DefinitionStages.WithPrivateFrontendOrRuleNat,
         DefinitionStages.WithBackend,
-        DefinitionStages.WithProbeOrNat,
         DefinitionStages.WithLoadBalancingRule,
-        DefinitionStages.WithLoadBalancingRuleOrCreate,
+        DefinitionStages.WithLBRuleOrNatOrCreate,
         DefinitionStages.WithCreateAndInboundNatPool,
         DefinitionStages.WithCreateAndInboundNatRule,
         DefinitionStages.WithCreateAndNatChoice {
@@ -138,8 +137,8 @@ public interface LoadBalancer extends
          * The stage of a load balancer definition describing the nature of the frontend of the load balancer: internal or Internet-facing.
          */
         interface WithFrontend extends
-            WithPublicFrontend,
-            WithPrivateFrontend {
+            WithPublicFrontendOrRuleNat,
+            WithPrivateFrontendOrRuleNat {
         }
 
         /**
@@ -153,7 +152,7 @@ public interface LoadBalancer extends
          * The stage of an internal load balancer definition allowing to specify another private frontend
          * or start adding load balancing rules, NAT rules or NAT pools.
          */
-        interface WithPrivateFrontendOrRuleNat extends WithPrivateFrontend, WithRuleOrNat {
+        interface WithPrivateFrontendOrRuleNat extends WithPrivateFrontend, WithLBRuleOrNat {
         }
 
         /**
@@ -172,7 +171,7 @@ public interface LoadBalancer extends
          * The stage of an Internet-facing load balancer definition allowing to add additional public frontends
          * or start adding load balancing rules, NAT rules or NAT pools.
          */
-        interface WithPublicFrontendOrRuleNat extends WithPublicFrontend, WithRuleOrNat {
+        interface WithPublicFrontendOrRuleNat extends WithPublicFrontend, WithLBRuleOrNat {
         }
 
         /**
@@ -188,15 +187,9 @@ public interface LoadBalancer extends
         }
 
         /**
-         * The stage of a load balancer definition allowing to add a probe or an inbound NAT rule or pool.
-         */
-        interface WithProbeOrNat extends WithProbe, WithInboundNatRule, WithInboundNatPool {
-        }
-
-        /**
          * The stage of a load balancer definition allowing to add a load blanacing rule, or an inbound NAT rule or pool.
          */
-        interface WithRuleOrNat extends WithLoadBalancingRule, WithInboundNatRule, WithInboundNatPool {
+        interface WithLBRuleOrNat extends WithLoadBalancingRule, WithInboundNatRule, WithInboundNatPool {
         }
 
         /**
@@ -252,13 +245,13 @@ public interface LoadBalancer extends
              * @param name the name of the load balancing rule
              * @return the first stage of the new load balancing rule definition
              */
-            LoadBalancingRule.DefinitionStages.Blank<WithLoadBalancingRuleOrCreate> defineLoadBalancingRule(String name);
+            LoadBalancingRule.DefinitionStages.Blank<WithLBRuleOrNatOrCreate> defineLoadBalancingRule(String name);
         }
 
         /**
          * The stage of a load balancer definition allowing to create a load balancing rule or create the load balancer.
          */
-        interface WithLoadBalancingRuleOrCreate extends WithLoadBalancingRule, WithCreateAndNatChoice {
+        interface WithLBRuleOrNatOrCreate extends WithLoadBalancingRule, WithCreateAndNatChoice {
         }
 
         /**
