@@ -12,6 +12,7 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineInner;
+import com.microsoft.azure.management.graphrbac.BuiltInRole;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIPAddress;
@@ -208,7 +209,7 @@ public interface VirtualMachine extends
     /**
      * Captures the virtual machine by copying virtual hard disks of the VM asynchronously.
      *
-             * @param containerName destination container name to store the captured VHD
+     * @param containerName destination container name to store the captured VHD
      * @param vhdPrefix the prefix for the VHD holding captured image
      * @param overwriteVhd whether to overwrites destination VHD if it exists
      * @return a representation of the deferred computation of this call
@@ -395,6 +396,26 @@ public interface VirtualMachine extends
      */
     @Beta(Beta.SinceVersion.V1_2_0)
     String bootDiagnosticsStorageUri();
+
+    /**
+     * @return true if Managed Service Identity is enabled for the virtual machine
+     */
+    @Beta(Beta.SinceVersion.V1_2_0)
+    boolean isManagedServiceIdentityEnabled();
+
+    /**
+     * @return the Managed Service Identity specific Active Directory tenant id assigned to the
+     * virtual machine.
+     */
+    @Beta(Beta.SinceVersion.V1_2_0)
+    String managedServiceIdentityTenantId();
+
+    /**
+     * @return the Managed Service Identity specific Active Directory service principal id assigned
+     * to the virtual machine.
+     */
+    @Beta(Beta.SinceVersion.V1_2_0)
+    String managedServiceIdentityPrincipalId();
 
     // Setters
     //
@@ -1264,9 +1285,9 @@ public interface VirtualMachine extends
              * @return the next stage of the definition
              */
             WithManagedCreate withExistingDataDisk(Disk disk,
-                                        int newSizeInGB,
-                                        int lun,
-                                        CachingTypes cachingType);
+                                                   int newSizeInGB,
+                                                   int lun,
+                                                   CachingTypes cachingType);
 
             /**
              * Specifies the data disk to be created from the data disk image in the virtual machine image.
@@ -1474,6 +1495,57 @@ public interface VirtualMachine extends
         }
 
         /**
+         * The stage of the virtual machine definition allowing to enable Managed Service Identity.
+         */
+        @Beta(Beta.SinceVersion.V1_2_0)
+        interface WithManagedServiceIdentity {
+            /**
+             * Specifies that Managed Service Identity needs to be enabled in the virtual machine.
+             * The MSI will have "Contributor" access role with scope of access limited to the
+             * resource group that this virtual machine belongs to.
+             *
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            WithCreate withManagedServiceIdentity();
+
+            /**
+             * Specifies that Managed Service Identity needs to be enabled in the virtual machine.
+             * The MSI will have the given access role and scope of access will be limited to the
+             * resource group that this virtual machine belongs to.
+             *
+             * @param role access role to assigned to the virtual machine.
+             *
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            WithCreate withManagedServiceIdentity(BuiltInRole role);
+
+            /**
+             * Specifies that Managed Service Identity needs to be enabled in the virtual machine.
+             *
+             * @param role access role to assigned to the virtual machine
+             * @param scope scope of the access represented in arm resource id format
+             *
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            WithCreate withManagedServiceIdentity(BuiltInRole role, String scope);
+
+            /**
+             * Specifies that Managed Service Identity needs to be enabled in the virtual machine.
+             *
+             * @param role access role to assigned to the virtual machine.
+             * @param scope scope of the access represented in arm resource id format
+             * @param port access token retrieval port in the virtual machine
+             *
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            WithCreate withManagedServiceIdentity(BuiltInRole role, String scope, int port);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the VM to be created and optionally allow managed data disks specific settings to
          * be specified.
@@ -1539,7 +1611,8 @@ public interface VirtualMachine extends
                 DefinitionStages.WithSecondaryNetworkInterface,
                 DefinitionStages.WithExtension,
                 DefinitionStages.WithPlan,
-                DefinitionStages.WithBootDiagnostics {
+                DefinitionStages.WithBootDiagnostics,
+                DefinitionStages.WithManagedServiceIdentity {
         }
     }
 
@@ -1850,6 +1923,57 @@ public interface VirtualMachine extends
             @Beta(Beta.SinceVersion.V1_2_0)
             Update withoutBootDiagnostics();
         }
+
+        /**
+         * The stage of the virtual machine update allowing to enable Managed Service Identity.
+         */
+        @Beta(Beta.SinceVersion.V1_2_0)
+        interface WithManagedServiceIdentity {
+            /**
+             * Specifies that Managed Service Identity needs to be enabled in the virtual machine.
+             * The MSI will have "Contributor" access role with scope of access limited to the
+             * resource group that this virtual machine belongs to.
+             *
+             * @return the next stage of the update
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            Update withManagedServiceIdentity();
+
+            /**
+             * Specifies that Managed Service Identity needs to be enabled in the virtual machine.
+             * The MSI will have the given access role and scope of access will be limited to the
+             * resource group that this virtual machine belongs to.
+             *
+             * @param role access role to assigned to the virtual machine.
+             *
+             * @return the next stage of the update
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            Update withManagedServiceIdentity(BuiltInRole role);
+
+            /**
+             * Specifies that Managed Service Identity needs to be enabled in the virtual machine.
+             *
+             * @param role access role to assigned to the virtual machine
+             * @param scope scope of the access represented in arm resource id format
+             *
+             * @return the next stage of the update
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            Update withManagedServiceIdentity(BuiltInRole role, String scope);
+
+            /**
+             * Specifies that Managed Service Identity needs to be enabled in the virtual machine.
+             *
+             * @param role access role to assigned to the virtual machine.
+             * @param scope scope of the access represented in arm resource id format
+             * @param port access token retrieval port in the virtual machine
+             *
+             * @return the next stage of the update
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            Update withManagedServiceIdentity(BuiltInRole role, String scope, int port);
+        }
     }
 
     /**
@@ -1862,7 +1986,8 @@ public interface VirtualMachine extends
             UpdateStages.WithManagedDataDisk,
             UpdateStages.WithSecondaryNetworkInterface,
             UpdateStages.WithExtension,
-            UpdateStages.WithBootDiagnostics {
+            UpdateStages.WithBootDiagnostics,
+            UpdateStages.WithManagedServiceIdentity {
         /**
          * Specifies the encryption settings for the OS Disk.
          *
