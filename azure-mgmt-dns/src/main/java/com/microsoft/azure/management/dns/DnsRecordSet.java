@@ -547,7 +547,7 @@ public interface DnsRecordSet extends
         /**
          * The first stage of an MX record definition.
          *
-         * @@param <ParentT> the stage of the parent definition to return to after attaching this definition
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface MXRecordSetBlank<ParentT> extends WithMXRecordMailExchange<ParentT> {
         }

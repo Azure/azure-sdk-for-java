@@ -124,6 +124,7 @@ public interface PacketCapture extends
              * Required if no local file path is provided.
              *
              * @param storageId The ID of the storage account to save the packet capture session
+             * @return the next stage of the definition
              */
             WithCreateAndStoragePath withStorageAccountId(String storageId);
 
