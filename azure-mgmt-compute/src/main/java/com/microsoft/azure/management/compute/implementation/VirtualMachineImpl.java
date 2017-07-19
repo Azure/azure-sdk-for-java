@@ -1614,7 +1614,7 @@ class VirtualMachineImpl
                                         if (result.isExtensionInstalledOrUpdated) {
                                             return refreshAsync();
                                         } else {
-                                            return Observable.just((VirtualMachine)self);
+                                            return Observable.just((VirtualMachine) self);
                                         }
                                     }
                                 });

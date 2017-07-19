@@ -42,7 +42,7 @@ class VirtualMachineMSIHelper {
      *
      * @param rbacManager the graph rbac manager
      */
-    public VirtualMachineMSIHelper(final GraphRbacManager rbacManager) {
+    VirtualMachineMSIHelper(final GraphRbacManager rbacManager) {
         this.rbacManager = rbacManager;
         clear();
     }
@@ -57,7 +57,7 @@ class VirtualMachineMSIHelper {
      * @param virtualMachineInner the virtual machine to set the identity
      * @return VirtualMachineMSIHelper
      */
-    public VirtualMachineMSIHelper withManagedServiceIdentity(VirtualMachineInner virtualMachineInner) {
+     VirtualMachineMSIHelper withManagedServiceIdentity(VirtualMachineInner virtualMachineInner) {
         return withManagedServiceIdentity(BuiltInRole.CONTRIBUTOR,
                 null,
                 defaultTokenPort,
@@ -76,7 +76,7 @@ class VirtualMachineMSIHelper {
      * @param virtualMachineInner the virtual machine to set the identity
      * @return VirtualMachineMSIHelper
      */
-    public VirtualMachineMSIHelper withManagedServiceIdentity(BuiltInRole role,
+     VirtualMachineMSIHelper withManagedServiceIdentity(BuiltInRole role,
                                                               VirtualMachineInner virtualMachineInner) {
         return withManagedServiceIdentity(role,
                 null,
@@ -97,7 +97,7 @@ class VirtualMachineMSIHelper {
      * @param virtualMachineInner the virtual machine to set the identity
      * @return VirtualMachineMSIHelper
      */
-    public VirtualMachineMSIHelper withManagedServiceIdentity(BuiltInRole role,
+     VirtualMachineMSIHelper withManagedServiceIdentity(BuiltInRole role,
                                                               String scope,
                                                               VirtualMachineInner virtualMachineInner) {
         return withManagedServiceIdentity(role,
@@ -122,7 +122,7 @@ class VirtualMachineMSIHelper {
      * @param virtualMachineInner the virtual machine to set the identity
      * @return VirtualMachineMSIHelper
      */
-    public VirtualMachineMSIHelper withManagedServiceIdentity(BuiltInRole role,
+     VirtualMachineMSIHelper withManagedServiceIdentity(BuiltInRole role,
                                                               String scope,
                                                               int port,
                                                               VirtualMachineInner virtualMachineInner) {
@@ -141,7 +141,7 @@ class VirtualMachineMSIHelper {
      * @param virtualMachine the virtual machine for which the MSI needs to be enabled
      * @return the observable that emits result of MSI resource setup.
      */
-    public Observable<Result> setupVirtualMachineMSIResourcesAsync(final VirtualMachine virtualMachine) {
+     Observable<Result> setupVirtualMachineMSIResourcesAsync(final VirtualMachine virtualMachine) {
         if (!requireSetup) {
             return Observable.just(new Result(false, null));
         }
@@ -195,11 +195,6 @@ class VirtualMachineMSIHelper {
                                 .flatMap(new Func1<String, Observable<RoleAssignment>>() {
                                     @Override
                                     public Observable<RoleAssignment> call(String scope) {
-//                                        for (RoleAssignment roleAssignment : principal.roleAssignments()) {
-//                                            if (roleAssignment.scope() != null && roleAssignment.scope().equalsIgnoreCase(scope)) {
-//                                                if (roleAssignment.roleDefinitionId().)
-//                                            }
-//                                        }
                                         return rbacManager
                                                 .roleAssignments()
                                                 .define(roleAssignmentName)
@@ -216,8 +211,9 @@ class VirtualMachineMSIHelper {
                                                             if (exception.body() != null
                                                                     && exception.body().code() != null
                                                                     && exception.body().code().equalsIgnoreCase("RoleAssignmentExists")) {
-                                                                // NOTE: We are unable to lookup the role assignment from principal.roleAssignments() list because role
-                                                                // assignment object does not contain 'role' name (the roleDefinitionId refer 'role' using id with GUID).
+                                                                // NOTE: We are unable to lookup the role assignment from principal.roleAssignments() list
+                                                                // because role assignment object does not contain 'role' name (the roleDefinitionId refer
+                                                                // 'role' using id with GUID).
                                                                 //
                                                                 return Observable.just(null);
                                                             }

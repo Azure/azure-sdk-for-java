@@ -120,7 +120,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
                 new ComputeManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
         storageManager = StorageManager.authenticate(restClient, subscriptionId);
         networkManager = NetworkManager.authenticate(restClient, subscriptionId);
-        rbacManager = GraphRbacManager.authenticate(restClient, ((AzureTokenCredentials)(restClient.credentials())).domain());
+        rbacManager = GraphRbacManager.authenticate(restClient, ((AzureTokenCredentials) (restClient.credentials())).domain());
     }
 
     /**
