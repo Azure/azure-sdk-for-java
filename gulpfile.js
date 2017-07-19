@@ -87,9 +87,9 @@ var mappings = {
         'args': '-FT 1'
     },
     'iothub': {
-        'dir': 'azure-mgmt-iothub',
+        'dir': 'azure-mgmt-devices',
         'source': 'arm-iothub/2017-01-19/swagger/iothub.json',
-        'package': 'com.microsoft.azure.management.iothub',
+        'package': 'com.microsoft.azure.management.devices',
         'args': '-FT 1'
     },
     'logic': {
