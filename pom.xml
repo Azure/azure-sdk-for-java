@@ -349,26 +349,42 @@
   </profiles>
   <modules>
     <module>./azure</module>
-    <module>./azure-mgmt-documentdb</module>
-    <module>./azure-mgmt-compute</module>
-    <module>./azure-mgmt-containerregistry</module>
-    <module>./azure-mgmt-graph-rbac</module>
-    <module>./azure-mgmt-keyvault</module>
-    <module>./azure-mgmt-resources</module>
-    <module>./azure-mgmt-storage</module>
-    <module>./azure-mgmt-network</module>
+    <module>./azure-samples</module>
     <module>./azure-mgmt-appservice</module>
+    <module>./azure-mgmt-batch</module>
+    <module>./azure-mgmt-billing</module>
+    <module>./azure-mgmt-cdn</module>
+    <module>./azure-mgmt-cognitiveservices</module>
+    <module>./azure-mgmt-compute</module>
+    <module>./azure-mgmt-consumption</module>
+    <module>./azure-mgmt-containerregistry</module>
+    <module>./azure-mgmt-customerinsights</module>
     <module>./azure-mgmt-datalake-analytics</module>
     <module>./azure-mgmt-datalake-store</module>
-    <module>./azure-samples</module>
+    <module>./azure-mgmt-devices</module>
+    <module>./azure-mgmt-devtestlab</module>
+    <module>./azure-mgmt-dns</module>
+    <module>./azure-mgmt-documentdb</module>
+    <module>./azure-mgmt-eventhub</module>
+    <module>./azure-mgmt-graph-rbac</module>
+    <module>./azure-mgmt-insights</module>
+    <module>./azure-mgmt-keyvault</module>
+    <module>./azure-mgmt-logic</module>
+    <module>./azure-mgmt-machinelearning</module>
+    <module>./azure-mgmt-monitor</module>
+    <module>./azure-mgmt-network</module>
+    <module>./azure-mgmt-notificationhubs</module>
+    <module>./azure-mgmt-powerbi</module>
+    <module>./azure-mgmt-recoveryservices</module>
+    <module>./azure-mgmt-redis</module>
+    <module>./azure-mgmt-relay</module>
+    <module>./azure-mgmt-resources</module>
     <module>./azure-mgmt-search</module>
     <module>./azure-mgmt-servicebus</module>
-    <module>./azure-mgmt-batch</module>
-    <module>./azure-mgmt-trafficmanager</module>
-    <module>./azure-mgmt-dns</module>
+    <module>./azure-mgmt-servicefabric</module>
     <module>./azure-mgmt-sql</module>
-    <module>./azure-mgmt-cdn</module>
-    <module>./azure-mgmt-monitor</module>
-    <module>./azure-mgmt-redis</module>
+    <module>./azure-mgmt-storage</module>
+    <module>./azure-mgmt-streamanalytics</module>
+    <module>./azure-mgmt-trafficmanager</module>
   </modules>
 </project>
