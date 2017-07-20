@@ -68,6 +68,8 @@ import com.microsoft.azure.management.network.ApplicationGatewayListener;
 import com.microsoft.azure.management.network.ApplicationGatewayProbe;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
+import com.microsoft.azure.management.network.EffectiveNetworkSecurityRule;
+import com.microsoft.azure.management.network.FlowLogSettings;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
@@ -83,8 +85,18 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
+import com.microsoft.azure.management.network.NetworkWatcher;
+import com.microsoft.azure.management.network.PacketCapture;
+import com.microsoft.azure.management.network.PacketCaptureFilter;
 import com.microsoft.azure.management.network.PublicIPAddress;
+import com.microsoft.azure.management.network.SecurityGroupNetworkInterface;
+import com.microsoft.azure.management.network.SecurityGroupView;
 import com.microsoft.azure.management.network.Subnet;
+import com.microsoft.azure.management.network.Topology;
+import com.microsoft.azure.management.network.TopologyAssociation;
+import com.microsoft.azure.management.network.TopologyResource;
+import com.microsoft.azure.management.network.VerificationIPFlow;
+import com.microsoft.azure.management.network.implementation.SecurityRuleInner;
 import com.microsoft.azure.management.redis.RedisAccessKeys;
 import com.microsoft.azure.management.redis.RedisCache;
 import com.microsoft.azure.management.redis.RedisCachePremium;
@@ -2028,5 +2040,146 @@ public final class Utils {
             builder.append("\n\t\tName: ").append(name);
         }
         System.out.println(builder.toString());
+    }
+
+    /**
+     * Print Network Watcher info.
+     *
+     * @param nw network watcher
+     */
+    public static void print(NetworkWatcher nw) {
+        StringBuilder builder = new StringBuilder()
+                .append("Network Watcher: ").append(nw.id())
+                .append("\n\tName: ").append(nw.name())
+                .append("\n\tResource group name: ").append(nw.resourceGroupName())
+                .append("\n\tRegion name: ").append(nw.regionName());
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print packet capture info.
+     *
+     * @param resource packet capture
+     */
+    public static void print(PacketCapture resource) {
+        StringBuilder sb = new StringBuilder().append("Packet Capture: ").append(resource.id())
+                .append("\n\tName: ").append(resource.name())
+                .append("\n\tTarget id: ").append(resource.targetId())
+                .append("\n\tTime limit in seconds: ").append(resource.timeLimitInSeconds())
+                .append("\n\tBytes to capture per packet: ").append(resource.bytesToCapturePerPacket())
+                .append("\n\tProvisioning state: ").append(resource.provisioningState())
+                .append("\n\tStorage location:")
+                .append("\n\tStorage account id: ").append(resource.storageLocation().storageId())
+                .append("\n\tStorage account path: ").append(resource.storageLocation().storagePath())
+                .append("\n\tFile path: ").append(resource.storageLocation().filePath())
+                .append("\n\t Packet capture filters: ").append(resource.filters().size());
+        for (PacketCaptureFilter filter : resource.filters()) {
+            sb.append("\n\t\tProtocol: ").append(filter.protocol());
+            sb.append("\n\t\tLocal IP address: ").append(filter.localIPAddress());
+            sb.append("\n\t\tRemote IP address: ").append(filter.remoteIPAddress());
+            sb.append("\n\t\tLocal port: ").append(filter.localPort());
+            sb.append("\n\t\tRemote port: ").append(filter.remotePort());
+        }
+        System.out.println(sb.toString());
+    }
+
+    /**
+     * Print verification IP flow info.
+     *
+     * @param resource IP flow verification info
+     */
+    public static void print(VerificationIPFlow resource) {
+        System.out.println(new StringBuilder("IP flow verification: ")
+                .append("\n\tAccess: ").append(resource.access())
+                .append("\n\tRule name: ").append(resource.ruleName())
+                .toString());
+    }
+
+    /**
+     * Print topology info.
+     *
+     * @param resource topology
+     */
+    public static void print(Topology resource) {
+        StringBuilder sb = new StringBuilder().append("Topology: ").append(resource.id())
+                .append("\n\tResource group: ").append(resource.resourceGroupName())
+                .append("\n\tCreated time: ").append(resource.createdTime())
+                .append("\n\tLast modified time: ").append(resource.lastModifiedTime());
+        for (TopologyResource tr : resource.resources().values()) {
+            sb.append("\n\tTopology resource: ").append(tr.id())
+                    .append("\n\t\tName: ").append(tr.name())
+                    .append("\n\t\tLocation: ").append(tr.location())
+                    .append("\n\t\tAssociations:");
+            for (TopologyAssociation association : tr.associations()) {
+                sb.append("\n\t\t\tName:").append(association.name())
+                        .append("\n\t\t\tResource id:").append(association.resourceId())
+                        .append("\n\t\t\tAssociation type:").append(association.associationType());
+            }
+        }
+        System.out.println(sb.toString());
+    }
+
+    /**
+     * Print flow log settings info.
+     *
+     * @param resource flow log settings
+     */
+    public static void print(FlowLogSettings resource) {
+        System.out.println(new StringBuilder().append("Flow log settings: ")
+                .append("Target resource id: ").append(resource.targetResourceId())
+                .append("\n\tFlow log enabled: ").append(resource.enabled())
+                .append("\n\tStorage account id: ").append(resource.storageId())
+                .append("\n\tRetention policy enabled: ").append(resource.isRetentionEnabled())
+                .append("\n\tRetention policy days: ").append(resource.retentionDays())
+                .toString());
+    }
+
+    /**
+     * Print availability set info.
+     *
+     * @param resource an availability set
+     */
+    public static void print(SecurityGroupView resource) {
+        StringBuilder sb = new StringBuilder().append("Security group view: ")
+                .append("\n\tVirtual machine id: ").append(resource.vmId());
+        for (SecurityGroupNetworkInterface sgni : resource.networkInterfaces().values()) {
+            sb.append("\n\tSecurity group network interface:").append(sgni.id())
+                    .append("\n\t\tSecurity group network interface:")
+                    .append("\n\t\tEffective security rules:");
+            for (EffectiveNetworkSecurityRule rule : sgni.securityRuleAssociations().effectiveSecurityRules()) {
+                sb.append("\n\t\t\tName: ").append(rule.name())
+                        .append("\n\t\t\tDirection: ").append(rule.direction())
+                        .append("\n\t\t\tAccess: ").append(rule.access())
+                        .append("\n\t\t\tPriority: ").append(rule.priority())
+                        .append("\n\t\t\tSource address prefix: ").append(rule.sourceAddressPrefix())
+                        .append("\n\t\t\tSource port range: ").append(rule.sourcePortRange())
+                        .append("\n\t\t\tDestination address prefix: ").append(rule.destinationAddressPrefix())
+                        .append("\n\t\t\tDestination port range: ").append(rule.destinationPortRange())
+                        .append("\n\t\t\tProtocol: ").append(rule.protocol());
+            }
+            sb.append("\n\t\tSubnet:").append(sgni.securityRuleAssociations().subnetAssociation().id());
+            printSecurityRule(sb, sgni.securityRuleAssociations().subnetAssociation().securityRules());
+            sb.append("\n\t\tNetwork interface:").append(sgni.securityRuleAssociations().networkInterfaceAssociation().id());
+            printSecurityRule(sb, sgni.securityRuleAssociations().networkInterfaceAssociation().securityRules());
+            sb.append("\n\t\tDefault security rules:");
+            printSecurityRule(sb, sgni.securityRuleAssociations().defaultSecurityRules());
+        }
+        System.out.println(sb.toString());
+    }
+
+    private static void printSecurityRule(StringBuilder sb, List<SecurityRuleInner> rules) {
+        for (SecurityRuleInner rule : rules) {
+            sb.append("\n\t\t\tName: ").append(rule.name())
+                    .append("\n\t\t\tDirection: ").append(rule.direction())
+                    .append("\n\t\t\tAccess: ").append(rule.access())
+                    .append("\n\t\t\tPriority: ").append(rule.priority())
+                    .append("\n\t\t\tSource address prefix: ").append(rule.sourceAddressPrefix())
+                    .append("\n\t\t\tSource port range: ").append(rule.sourcePortRange())
+                    .append("\n\t\t\tDestination address prefix: ").append(rule.destinationAddressPrefix())
+                    .append("\n\t\t\tDestination port range: ").append(rule.destinationPortRange())
+                    .append("\n\t\t\tProtocol: ").append(rule.protocol())
+                    .append("\n\t\t\tDescription: ").append(rule.description())
+                    .append("\n\t\t\tProvisioning state: ").append(rule.provisioningState());
+        }
     }
 }
