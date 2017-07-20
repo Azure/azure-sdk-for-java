@@ -586,11 +586,7 @@ public class TestLoadBalancer {
                         .withProtocol(TransportProtocol.TCP)
                         .fromNewPublicIPAddress(pipDnsLabel)
                         .fromFrontendPort(80)
-                        .toBackend("backend1")
-                        .attach()
-                    // Backend
-                    .defineBackend("backend1")
-                        .withExistingVirtualMachines(existingVMs)
+                        .toExistingVirtualMachines(existingVMs)
                         .attach()
                     .create();
 
@@ -765,11 +761,7 @@ public class TestLoadBalancer {
                         .withProtocol(TransportProtocol.TCP)
                         .fromExistingSubnet(network, "subnet1")
                         .fromFrontendPort(80)
-                        .toBackend("backend1")
-                        .attach()
-                    // Backends
-                    .defineBackend("backend1")
-                        .withExistingVirtualMachines(existingVMs)
+                        .toExistingVirtualMachines(existingVMs)
                         .attach()
                     .create();
 
@@ -800,11 +792,10 @@ public class TestLoadBalancer {
             Assert.assertNull(lbrule.probe());
             Assert.assertEquals(TransportProtocol.TCP, lbrule.protocol());
             Assert.assertNotNull(lbrule.backend());
-            Assert.assertEquals("backend1", lbrule.backend().name());
 
             // Verify backends
             Assert.assertEquals(1, lb.backends().size());
-            LoadBalancerBackend backend = lb.backends().get("backend1");
+            LoadBalancerBackend backend = lb.backends().values().iterator().next();
             Assert.assertNotNull(backend);
 
             Assert.assertEquals(2, backend.backendNicIPConfigurationNames().size());

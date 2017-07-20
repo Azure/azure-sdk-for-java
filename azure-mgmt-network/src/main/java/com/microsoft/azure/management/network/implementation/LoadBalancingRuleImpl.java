@@ -17,6 +17,7 @@ import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.network.LoadBalancerProbe;
 import com.microsoft.azure.management.network.TransportProtocol;
+import com.microsoft.azure.management.network.model.HasNetworkInterfaces;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -213,6 +214,13 @@ class LoadBalancingRuleImpl
     @Override
     public LoadBalancingRuleImpl toBackendPort(int port) {
         this.inner().withBackendPort(port);
+        return this;
+    }
+
+    @Override
+    public LoadBalancingRuleImpl toExistingVirtualMachines(HasNetworkInterfaces... vms) {
+        LoadBalancerBackendImpl backend = this.parent().ensureUniqueBackend().withExistingVirtualMachines(vms);
+        this.toBackend(backend.name());
         return this;
     }
 
