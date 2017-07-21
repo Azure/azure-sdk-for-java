@@ -1,3 +1,4 @@
+var path = require('path');
 var gulp = require('gulp');
 var args = require('yargs').argv;
 var colors = require('colors');
@@ -9,181 +10,181 @@ var mappings = {
         'dir': 'azure-mgmt-compute',
         'source': 'arm-compute/compositeComputeClient.json',
         'package': 'com.microsoft.azure.management.compute',
-        'args': '-FT 1',
+        'args': '--payload-flattening-threshold=1',
         'modeler': 'CompositeSwagger'
     },
     'eventhub': {
         'dir': 'azure-mgmt-eventhub',
         'source': 'arm-eventhub/2015-08-01/swagger/EventHub.json',
         'package': 'com.microsoft.azure.management.eventhub',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'servicefabric': {
         'dir': 'azure-mgmt-servicefabric',
         'source': 'arm-servicefabric/2016-09-01/swagger/servicefabric.json',
         'package': 'com.microsoft.azure.management.servicefabric',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'notificationhubs': {
         'dir': 'azure-mgmt-notificationhubs',
         'source': 'arm-notificationhubs/2017-04-01/swagger/notificationhubs.json',
         'package': 'com.microsoft.azure.management.notificationhubs',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'analysisservices': {
         'dir': 'azure-mgmt-analysisservices',
         'source': 'arm-analysisservices/2016-05-16/swagger/analysisservices.json',
         'package': 'com.microsoft.azure.management.analysisservices',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'automation': {
         'dir': 'azure-mgmt-automation',
         'source': 'arm-automation/compositeAutomation.json',
         'package': 'com.microsoft.azure.management.authorization',
-        'args': '-FT 1',
+        'args': '--payload-flattening-threshold=1',
         'modeler': 'CompositeSwagger'
     },
     'billing': {
         'dir': 'azure-mgmt-billing',
         'source': 'arm-billing/2017-04-24-preview/swagger/billing.json',
         'package': 'com.microsoft.azure.management.billing',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'cognitiveservices': {
         'dir': 'azure-mgmt-cognitiveservices',
         'source': 'arm-cognitiveservices/2017-04-18/swagger/cognitiveservices.json',
         'package': 'com.microsoft.azure.management.cognitiveservices',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'consumption': {
         'dir': 'azure-mgmt-consumption',
         'source': 'arm-consumption/2017-04-24-preview/swagger/consumption.json',
         'package': 'com.microsoft.azure.management.consumption',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'customerinsights': {
         'dir': 'azure-mgmt-customerinsights',
         'source': 'arm-customer-insights/2017-04-26/swagger/customer-insights.json',
         'package': 'com.microsoft.azure.management.customerinsights',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'devtestlab': {
         'dir': 'azure-mgmt-devtestlab',
         'source': 'arm-devtestlabs/2016-05-15/swagger/DTL.json',
         'package': 'com.microsoft.azure.management.devtestlab',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'insights': {
         'dir': 'azure-mgmt-insights',
         'source': 'arm-insights/compositeInsightsManagementClient.json',
         'package': 'com.microsoft.azure.management.gallery',
-        'args': '-FT 1',
+        'args': '--payload-flattening-threshold=1',
         'modeler': 'CompositeSwagger'
     },
     'intune': {
         'dir': 'azure-mgmt-intune',
         'source': 'arm-intune/2015-01-14-preview/swagger/intune.json',
         'package': 'com.microsoft.azure.management.intune',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'iothub': {
         'dir': 'azure-mgmt-devices',
         'source': 'arm-iothub/2017-01-19/swagger/iothub.json',
         'package': 'com.microsoft.azure.management.devices',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'logic': {
         'dir': 'azure-mgmt-logic',
         'source': 'arm-logic/2016-06-01/swagger/logic.json',
         'package': 'com.microsoft.azure.management.logic',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'machinelearning': {
         'dir': 'azure-mgmt-machinelearning',
         'source': 'arm-machinelearning/2017-01-01/swagger/webservices.json',
         'package': 'com.microsoft.azure.management.machinelearning',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'media': {
         'dir': 'azure-mgmt-media',
         'source': 'arm-mediaservices/2015-10-01/swagger/media.json',
         'package': 'com.microsoft.azure.management.media',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'operationalinsights': {
         'dir': 'azure-mgmt-operationalinsights',
         'source': 'arm-operationalinsights/compositeOperationalInsights.json',
         'package': 'com.microsoft.azure.management.operationalinsights',
-        'args': '-FT 1',
+        'args': '--payload-flattening-threshold=1',
         'modeler': 'CompositeSwagger'
     },
     'powerbi': {
         'dir': 'azure-mgmt-powerbi',
         'source': 'arm-powerbiembedded/2016-01-29/swagger/powerbiembedded.json',
         'package': 'com.microsoft.azure.management.powerbi',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'recoveryservices': {
         'dir': 'azure-mgmt-recoveryservices',
         'source': 'arm-recoveryservices/compositeRecoveryServicesClient.json',
         'package': 'com.microsoft.azure.management.recoveryservices',
-        'args': '-FT 1',
+        'args': '--payload-flattening-threshold=1',
         'modeler': 'CompositeSwagger'
     },
     'recoveryservicesbackup': {
         'dir': 'azure-mgmt-recoveryservicesbackup',
         'source': 'arm-recoveryservicesbackup/2016-12-01/swagger/backupManagement.json',
         'package': 'com.microsoft.azure.management.recoveryservicesbackup',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'recoveryservicessiterecovery': {
         'dir': 'azure-mgmt-recoveryservicessiterecovery',
         'source': 'arm-recoveryservicessiterecovery/2016-08-10/swagger/service.json',
         'package': 'com.microsoft.azure.management.recoveryservicessiterecovery',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'relay': {
         'dir': 'azure-mgmt-relay',
         'source': 'arm-relay/2017-04-01/swagger/relay.json',
         'package': 'com.microsoft.azure.management.relay',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'servermanagement': {
         'dir': 'azure-mgmt-servermanagement',
         'source': 'arm-servermanagement/2016-07-01-preview/swagger/servermanagement.json',
         'package': 'com.microsoft.azure.management.servermanagement',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'storsimple8000series': {
         'dir': 'azure-mgmt-storsimple8000series',
         'source': 'arm-storsimple8000series/2017-06-01/swagger/storsimple.json',
         'package': 'com.microsoft.azure.management.storsimple8000series',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'streamanalytics': {
         'dir': 'azure-mgmt-streamanalytics',
         'source': 'arm-streamanalytics/compositeStreamAnalytics.json',
         'package': 'com.microsoft.azure.management.streamanalytics',
-        'args': '-FT 1',
+        'args': '--payload-flattening-threshold=1',
         'modeler': 'CompositeSwagger'
     },
     'graphrbac': {
         'dir': 'azure-mgmt-graph-rbac',
         'source': 'arm-graphrbac/1.6/swagger/graphrbac.json',
         'package': 'com.microsoft.azure.management.graphrbac',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'authorization': {
         'dir': 'azure-mgmt-graph-rbac',
         'source': 'arm-authorization/2015-07-01/swagger/authorization.json',
         'package': 'com.microsoft.azure.management.graphrbac',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'arm-keyvault': {
         'dir': 'azure-mgmt-keyvault',
         'source': 'arm-keyvault/2015-06-01/swagger/keyvault.json',
         'package': 'com.microsoft.azure.management.keyvault',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'storage': {
         'dir': 'azure-mgmt-storage',
@@ -215,33 +216,33 @@ var mappings = {
         'dir': 'azure-mgmt-network',
         'source': 'arm-network/compositeNetworkClient.json',
         'package': 'com.microsoft.azure.management.network',
-        'args': '-FT 1',
+        'args': '--payload-flattening-threshold=1',
         'modeler': 'CompositeSwagger'
     },
     'appservice': {
         'dir': 'azure-mgmt-appservice',
         'source': 'arm-web/compositeWebAppClient.json',
         'package': 'com.microsoft.azure.management.appservice',
-        'args': '-FT 1',
+        'args': '--payload-flattening-threshold=1',
         'modeler': 'CompositeSwagger'
     },
     'redis': {
         'dir': 'azure-mgmt-redis',
         'source': 'arm-redis/2016-04-01/swagger/redis.json',
         'package': 'com.microsoft.azure.management.redis',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'search': {
         'dir': 'azure-mgmt-search',
         'source': 'arm-search/2015-08-19/swagger/search.json',
         'package': 'com.microsoft.azure.management.search',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'trafficmanager': {
         'dir': 'azure-mgmt-trafficmanager',
         'source': 'arm-trafficmanager/2015-11-01/swagger/trafficmanager.json',
         'package': 'com.microsoft.azure.management.trafficmanager',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'datalake.store.account': {
         'dir': 'azure-mgmt-datalake-store',
@@ -272,66 +273,67 @@ var mappings = {
         'source': 'batch/2016-07-01.3.1/swagger/BatchService.json',
         'package': 'com.microsoft.azure.batch.protocol',
         'fluent': false,
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'keyvault': {
         'dir': 'azure-keyvault',
         'source': 'keyvault/2015-06-01/swagger/keyvault.json',
         'package': 'com.microsoft.azure.keyvault',
         'fluent': false,
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'batch': {
         'dir': 'azure-mgmt-batch',
         'source': 'arm-batch/2017-05-01/swagger/BatchManagement.json',
         'package': 'com.microsoft.azure.management.batch',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'sql': {
         'dir': 'azure-mgmt-sql',
         'source': 'arm-sql/compositeSql.json',
         'package': 'com.microsoft.azure.management.sql',
-        'args': '-FT 1',
+        'args': '--payload-flattening-threshold=1',
         'modeler': 'CompositeSwagger'
     },
     'cdn': {
         'dir': 'azure-mgmt-cdn',
         'source': 'arm-cdn/2016-10-02/swagger/cdn.json',
         'package': 'com.microsoft.azure.management.cdn',
-        'args': '-FT 2'
+        'args': '--payload-flattening-threshold=2'
     },
     'dns': {
         'dir': 'azure-mgmt-dns',
         'source': 'arm-dns/2016-04-01/swagger/dns.json',
         'package': 'com.microsoft.azure.management.dns',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'servicebus': {
         'dir': 'azure-mgmt-servicebus',
         'source': 'arm-servicebus/2015-08-01/swagger/servicebus.json',
         'package': 'com.microsoft.azure.management.servicebus',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1'
     },
     'monitor': {
         'dir': 'azure-mgmt-monitor',
         'source': 'arm-monitor/compositeMonitorManagementClient.json',
         'package': 'com.microsoft.azure.management.monitor',
-        'args': '-FT 1',
+        'args': '--payload-flattening-threshold=1',
         'modeler': 'CompositeSwagger'
     },
     'containerregistry': {
         'dir': 'azure-mgmt-containerregistry',
         'source': 'arm-containerregistry/2017-03-01/swagger/containerregistry.json',
         'package': 'com.microsoft.azure.management.containerregistry',
-        'args': '-FT 1',
+        'args': '--payload-flattening-threshold=1',
     },
     'documentdb': {
         'dir': 'azure-mgmt-documentdb',
         'source': 'arm-documentdb/2015-04-08/swagger/documentdb.json',
         'package': 'com.microsoft.azure.management.documentdb',
-        'args': '-FT 1',
+        'args': '--payload-flattening-threshold=1',
     }
 };
+console.log("This many projects: ", mappings.size);
 
 gulp.task('default', function() {
     console.log("Usage: gulp codegen [--spec-root <swagger specs root>] [--projects <project names>] [--autorest <autorest info>] [--autorest-args <AutoRest arguments>]\n");
@@ -357,14 +359,12 @@ var autoRestExe;
 gulp.task('codegen', function(cb) {
     if (autoRestVersion.match(/[0-9]+\.[0-9]+\.[0-9]+.*/) ||
         autoRestVersion == 'latest') {
-        autoRestExe = 'autorest ---version=' + autoRestVersion;
-        handleInput(projects, cb);
+        console.error("The --autorest flag must be used to provide a path to an AutoRest 2.0 repo until AutoRest 2.0 is released.".red);
+        process.exit(1);
     } else {
-        autoRestExe = autoRestVersion + "/src/core/AutoRest/bin/Debug/netcoreapp1.0/AutoRest.dll";
-        autoRestExe = "dotnet " + autoRestExe;
+        autoRestExe = "node " + path.join(autoRestVersion, "src/autorest-core/dist/app.js");
         handleInput(projects, cb);
     }
-
 });
 
 var handleInput = function(projects, cb) {
@@ -388,23 +388,23 @@ var codegen = function(project, cb) {
     var outputDir = mappings[project].dir + '/src/main/java/' + mappings[project].package.replace(/\./g, '/');
     deleteFolderRecursive(outputDir);
     console.log('Generating "' + project + '" from spec file ' + specRoot + '/' + mappings[project].source);
-    var generator = 'Azure.Java.Fluent';
+    var generator = '--fluent';
     if (mappings[project].fluent !== null && mappings[project].fluent === false) {
-        generator = 'Azure.Java';
+        generator = '';
     }
     var modeler = 'Swagger'; // default
     if (mappings[project].modeler !== undefined) {
         modeler = mappings[project].modeler;
     }
-    cmd = autoRestExe + ' -Modeler ' + modeler +
-                        ' -CodeGenerator ' + generator +
-                        ' -Namespace ' + mappings[project].package +
-                        ' -Input ' + specRoot + '/' + mappings[project].source +
-                        ' -outputDirectory ' + mappings[project].dir +
-                        ' -Header MICROSOFT_MIT_NO_CODEGEN' +
-                        ' -skipValidation true' +
-                        ' -RegenerateManager true ' +
-                        ' -' + autoRestArgs;
+    cmd = autoRestExe + ' --java ' +
+                        ' --azure-arm ' +
+                        generator +
+                        ` --namespace=${mappings[project].package} ` +
+                        ` --input-file=${specRoot}/${mappings[project].source} ` +
+                        ` --output-folder=${mappings[project].dir} ` +
+                        ` --license-header=MICROSOFT_MIT_NO_CODEGEN ` +
+                        ` --regenerate-manager=true ` +
+                        autoRestArgs;
     if (mappings[project].args !== undefined) {
         cmd = cmd + ' ' + mappings[project].args;
     }
