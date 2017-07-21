@@ -466,7 +466,7 @@ class LoadBalancerImpl
                 // Reuse frontend already associated with this PIP
                 frontendName = existingPipFrontendName;
             } else {
-                // Auto-named default frontend
+                // Auto-named unique frontend
                 frontendName = ensureUniqueFrontend().name();
             }
         }

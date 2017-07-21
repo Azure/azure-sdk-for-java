@@ -21,7 +21,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
- * An immutable client-side representation of an HTTP load balancing rule.
+ * A client-side representation of an HTTP load balancing rule.
  */
 @Fluent()
 @Beta
@@ -152,7 +152,7 @@ public interface LoadBalancingRule extends
          * The final stage of the load balancing rule definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the load balancing rule definition
-         * can be attached to the parent load balancer definition using {@link WithAttach#attach()}.
+         * can be attached to the parent load balancer definition.
          * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAttach<ReturnT> extends
@@ -436,7 +436,7 @@ public interface LoadBalancingRule extends
          * The final stage of the load balancing rule definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the load balancing rule definition
-         * can be attached to the parent load balancer definition using {@link WithAttach#attach()}.
+         * can be attached to the parent load balancer definition.
          * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAttach<ReturnT> extends

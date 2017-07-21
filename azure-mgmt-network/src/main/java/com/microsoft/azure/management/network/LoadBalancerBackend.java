@@ -20,7 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
- * An immutable client-side representation of a load balancer backend address pool.
+ * A client-side representation of a load balancer backend address pool.
  */
 @Fluent()
 @Beta
@@ -54,7 +54,7 @@ public interface LoadBalancerBackend extends
         interface WithVirtualMachine<ReturnT> {
             /**
              * Adds the specified set of virtual machines, assuming they are from the same
-             * availability set, to this back end address pool.
+             * availability set, to this backend address pool.
              * <p>
              * This will add references to the primary IP configurations of the primary network interfaces of
              * the provided set of virtual machines.
@@ -73,7 +73,7 @@ public interface LoadBalancerBackend extends
         /** The final stage of a load balancer backend definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the definition
-         * can be attached to the parent load balancer definition using {@link WithAttach#attach()}.
+         * can be attached to the parent load balancer definition.
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends
@@ -141,8 +141,8 @@ public interface LoadBalancerBackend extends
         /** The final stage of a load balancer backend definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the definition
-         * can be attached to the parent load balancer definition using {@link WithAttach#attach()}.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * can be attached to the parent load balancer definition.
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends
             Attachable.InUpdate<ParentT>,
@@ -151,7 +151,7 @@ public interface LoadBalancerBackend extends
     }
 
     /** The entirety of a load balancer backend definition as part of a load balancer update.
-     * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
+     * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
     interface UpdateDefinition<ParentT> extends
         UpdateDefinitionStages.Blank<ParentT>,

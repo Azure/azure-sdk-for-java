@@ -154,12 +154,9 @@ public class TestLoadBalancer {
             Assert.assertTrue(lb.httpProbes().containsKey("httpProbe1"));
             Assert.assertEquals(1, lb.tcpProbes().size());
             Assert.assertTrue(lb.tcpProbes().containsKey("tcpProbe1"));
-            Assert.assertTrue(!lb.httpProbes().containsKey("default"));
-            Assert.assertTrue(!lb.tcpProbes().containsKey("default"));
 
             // Verify rules
             Assert.assertTrue(lb.loadBalancingRules().containsKey("rule1"));
-            Assert.assertTrue(!lb.loadBalancingRules().containsKey("default"));
             Assert.assertTrue(lb.loadBalancingRules().values().size() == 1);
             LoadBalancingRule rule = lb.loadBalancingRules().get("rule1");
             Assert.assertNotNull(rule.backend());
@@ -328,13 +325,12 @@ public class TestLoadBalancer {
 
             // Verify probes
             Assert.assertTrue(lb.httpProbes().containsKey("httpProbe1"));
+            Assert.assertEquals(1, lb.httpProbes().size());
             Assert.assertTrue(lb.tcpProbes().containsKey("tcpProbe1"));
-            Assert.assertTrue(!lb.httpProbes().containsKey("default"));
-            Assert.assertTrue(!lb.tcpProbes().containsKey("default"));
+            Assert.assertEquals(1, lb.tcpProbes().size());
 
             // Verify rules
             Assert.assertTrue(lb.loadBalancingRules().containsKey("rule1"));
-            Assert.assertTrue(!lb.loadBalancingRules().containsKey("default"));
             Assert.assertTrue(lb.loadBalancingRules().values().size() == 1);
             LoadBalancingRule rule = lb.loadBalancingRules().get("rule1");
             Assert.assertTrue(rule.backend().name().equalsIgnoreCase(backendName));
