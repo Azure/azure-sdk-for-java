@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.network;
 
+import java.util.Collection;
+
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
@@ -137,6 +139,23 @@ public interface LoadBalancingRule extends
              */
             @Beta(SinceVersion.V1_2_0)
             WithBackendPort<ReturnT> toExistingVirtualMachines(HasNetworkInterfaces...vms);
+
+            /**
+             * Adds the specified set of virtual machines, assuming they are from the same
+             * availability set, to a new back end address pool to be associated with this load balancing rule.
+             * <p>
+             * This will add references to the primary IP configurations of the primary network interfaces of
+             * the provided set of virtual machines.
+             * <p>
+             * If the virtual machines are not in the same availability set, they will not be associated with the backend.
+             * <p>
+             * Only those virtual machines will be associated with the load balancer that already have an existing
+             * network interface. Virtual machines without a network interface will be skipped.
+             * @param vms existing virtual machines
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_2_0)
+            WithBackendPort<ReturnT> toExistingVirtualMachines(Collection<HasNetworkInterfaces> vms);
         }
 
         /**
@@ -388,6 +407,23 @@ public interface LoadBalancingRule extends
              */
             @Beta(SinceVersion.V1_2_0)
             WithBackendPort<ReturnT> toExistingVirtualMachines(HasNetworkInterfaces...vms);
+
+            /**
+             * Adds the specified set of virtual machines, assuming they are from the same
+             * availability set, to a new back end address pool to be associated with this load balancing rule.
+             * <p>
+             * This will add references to the primary IP configurations of the primary network interfaces of
+             * the provided set of virtual machines.
+             * <p>
+             * If the virtual machines are not in the same availability set, they will not be associated with the backend.
+             * <p>
+             * Only those virtual machines will be associated with the load balancer that already have an existing
+             * network interface. Virtual machines without a network interface will be skipped.
+             * @param vms existing virtual machines
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_2_0)
+            WithBackendPort<ReturnT> toExistingVirtualMachines(Collection<HasNetworkInterfaces> vms);
         }
 
         /**

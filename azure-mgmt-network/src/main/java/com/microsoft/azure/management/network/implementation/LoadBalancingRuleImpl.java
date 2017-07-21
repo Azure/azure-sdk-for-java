@@ -5,6 +5,9 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.LoadBalancerBackend;
@@ -219,8 +222,15 @@ class LoadBalancingRuleImpl
 
     @Override
     public LoadBalancingRuleImpl toExistingVirtualMachines(HasNetworkInterfaces... vms) {
-        LoadBalancerBackendImpl backend = this.parent().ensureUniqueBackend().withExistingVirtualMachines(vms);
-        this.toBackend(backend.name());
+        return (vms != null) ? this.toExistingVirtualMachines(Arrays.asList(vms)) : this;
+    }
+
+    @Override
+    public LoadBalancingRuleImpl toExistingVirtualMachines(Collection<HasNetworkInterfaces> vms) {
+        if (vms != null) {
+            LoadBalancerBackendImpl backend = this.parent().ensureUniqueBackend().withExistingVirtualMachines(vms);
+            this.toBackend(backend.name());
+        }
         return this;
     }
 
