@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
+import java.util.Collection;
 import java.util.Set;
 
 import com.microsoft.azure.management.apigeneration.Beta;
@@ -68,6 +69,23 @@ public interface LoadBalancerBackend extends
              */
             @Beta(SinceVersion.V1_2_0)
             WithAttach<ReturnT> withExistingVirtualMachines(HasNetworkInterfaces...vms);
+
+            /**
+             * Adds the specified set of virtual machines, assuming they are from the same
+             * availability set, to this backend address pool.
+             * <p>
+             * This will add references to the primary IP configurations of the primary network interfaces of
+             * the provided set of virtual machines.
+             * <p>
+             * If the virtual machines are not in the same availability set, they will not be associated with this back end.
+             * <p>
+             * Only those virtual machines will be associated with the load balancer that already have an existing
+             * network interface. Virtual machines without a network interface will be skipped.
+             * @param vms existing virtual machines
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_2_0)
+            WithAttach<ReturnT> withExistingVirtualMachines(Collection<HasNetworkInterfaces> vms);
         }
 
         /** The final stage of a load balancer backend definition.
@@ -136,6 +154,23 @@ public interface LoadBalancerBackend extends
              */
             @Beta(SinceVersion.V1_2_0)
             WithAttach<ReturnT> withExistingVirtualMachines(HasNetworkInterfaces...vms);
+
+            /**
+             * Adds the specified set of virtual machines, assuming they are from the same
+             * availability set, to this backend address pool.
+             * <p>
+             * This will add references to the primary IP configurations of the primary network interfaces of
+             * the provided set of virtual machines.
+             * <p>
+             * If the virtual machines are not in the same availability set, they will not be associated with this back end.
+             * <p>
+             * Only those virtual machines will be associated with the load balancer that already have an existing
+             * network interface. Virtual machines without a network interface will be skipped.
+             * @param vms existing virtual machines
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_2_0)
+            WithAttach<ReturnT> withExistingVirtualMachines(Collection<HasNetworkInterfaces> vms);
         }
 
         /** The final stage of a load balancer backend definition.

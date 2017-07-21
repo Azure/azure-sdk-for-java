@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
@@ -110,6 +112,11 @@ class LoadBalancerBackendImpl
     // Withers
     @Override
     public LoadBalancerBackendImpl withExistingVirtualMachines(HasNetworkInterfaces... vms) {
+        return (vms != null) ? this.withExistingVirtualMachines(Arrays.asList(vms)) : this;
+    }
+
+    @Override
+    public LoadBalancerBackendImpl withExistingVirtualMachines(Collection<HasNetworkInterfaces> vms) {
         if (vms != null) {
             for (HasNetworkInterfaces vm : vms) {
                 this.parent().withExistingVirtualMachine(vm, this.name());
