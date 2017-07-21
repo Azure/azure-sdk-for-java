@@ -69,19 +69,20 @@ public final class ManageNetworkWatcher {
 
         final String userName = "tirekicker";
         final String vnetName = SdkContext.randomResourceName("vnet", 20);
+        final String dnsLabel = SdkContext.randomResourceName("pipdns", 20);
         final String subnetName = "subnet1";
         final String nsgName = SdkContext.randomResourceName("nsg", 20);
-        final String publicIPAddressLeafDnsForFrontEndVM = SdkContext.randomResourceName("pip1", 24);
         final String rgName = SdkContext.randomResourceName("rg", 24);
         final String saName = SdkContext.randomResourceName("sa", 24);
         final String vmName = SdkContext.randomResourceName("vm", 24);
         final String packetCaptureName = SdkContext.randomResourceName("pc", 8);
 
+        NetworkWatcher nw = null;
         try {
             //============================================================
             // Create network watcher
             System.out.println("Creating network watcher...");
-            NetworkWatcher nw = azure.networkWatchers().define(nwName)
+            nw = azure.networkWatchers().define(nwName)
                     .withRegion(region)
                     .withNewResourceGroup()
                     .create();
@@ -102,15 +103,7 @@ public final class ManageNetworkWatcher {
                         .fromAddress("INTERNET")
                         .fromAnyPort()
                         .toAnyAddress()
-                        .toAnyPort()
-                        .withAnyProtocol()
-                        .attach()
-                    .defineRule("DenyInternetOutGoing")
-                        .denyOutbound()
-                        .fromAnyAddress()
-                        .fromAnyPort()
-                        .toAddress("INTERNET")
-                        .toAnyPort()
+                        .toPort(443)
                         .withAnyProtocol()
                         .attach()
                     .create();
@@ -119,7 +112,6 @@ public final class ManageNetworkWatcher {
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withAddressSpace("192.168.0.0/16")
-//                    .withSubnet(subnetName, "192.168.1.0/24")
                     .defineSubnet(subnetName)
                         .withAddressPrefix("192.168.2.0/24")
                         .withExistingNetworkSecurityGroup(nsg)
@@ -132,7 +124,7 @@ public final class ManageNetworkWatcher {
                     .withExistingPrimaryNetwork(virtualNetwork)
                     .withSubnet(subnetName)
                     .withPrimaryPrivateIPAddressDynamic()
-                    .withNewPrimaryPublicIPAddress(publicIPAddressLeafDnsForFrontEndVM)
+                    .withNewPrimaryPublicIPAddress(dnsLabel)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
                     .withRootUsername(userName)
                     .withRootPassword("Abcdef.123456")
@@ -187,13 +179,14 @@ public final class ManageNetworkWatcher {
             //============================================================
             // Verify IP flow – verify if traffic is allowed to or from a virtual machine
             // Get the IP address of a NIC on a virtual machine
+            String ipAddress = vm.getPrimaryNetworkInterface().ipConfigurations().values().iterator().next().privateIPAddress();
             // Test IP flow on the NIC
             System.out.println("Verifying IP flow for vm id " + vm.id() + "...");
             VerificationIPFlow verificationIPFlow = nw.verifyIPFlow()
                     .withTargetResourceId(vm.id())
-                    .withDirection(Direction.OUTBOUND)
+                    .withDirection(Direction.INBOUND)
                     .withProtocol(Protocol.TCP)
-                    .withLocalIPAddress("10.0.0.4")
+                    .withLocalIPAddress(ipAddress)
                     .withRemoteIPAddress("8.8.8.8")
                     .withLocalPort("443")
                     .withRemotePort("443")
@@ -204,9 +197,10 @@ public final class ManageNetworkWatcher {
             // Analyze next hop – get the next hop type and IP address for a virtual machine
             System.out.println("Calculating next hop...");
             NextHop nextHop = nw.nextHop().withTargetResourceId(vm.id())
-                    .withSourceIPAddress("10.0.0.4")
+                    .withSourceIPAddress(ipAddress)
                     .withDestinationIPAddress("8.8.8.8")
                     .execute();
+            Utils.print(nextHop);
 
             //============================================================
             // Retrieve network topology for a resource group
@@ -225,7 +219,7 @@ public final class ManageNetworkWatcher {
             // Configure Network Security Group Flow Logs
 
             // Get flow log settings
-            FlowLogSettings flowLogSettings = nw.getFlowLogSettings(vm.getPrimaryNetworkInterface().networkSecurityGroupId());
+            FlowLogSettings flowLogSettings = nw.getFlowLogSettings(nsg.id());
             Utils.print(flowLogSettings);
 
             // Enable NSG flow log
@@ -254,8 +248,13 @@ public final class ManageNetworkWatcher {
             return true;
         } catch (Exception e) {
             System.err.println(e.getMessage());
+            e.printStackTrace();
         } finally {
             try {
+                if (nw != null) {
+                    System.out.println("Deleting network watcher: " + nw.name());
+                    azure.networkWatchers().deleteById(nw.id());
+                }
                 System.out.println("Deleting Resource Group: " + rgName);
                 azure.resourceGroups().deleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);

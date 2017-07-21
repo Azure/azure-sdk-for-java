@@ -86,6 +86,7 @@ import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
 import com.microsoft.azure.management.network.NetworkWatcher;
+import com.microsoft.azure.management.network.NextHop;
 import com.microsoft.azure.management.network.PacketCapture;
 import com.microsoft.azure.management.network.PacketCaptureFilter;
 import com.microsoft.azure.management.network.PublicIPAddress;
@@ -2159,8 +2160,10 @@ public final class Utils {
             }
             sb.append("\n\t\tSubnet:").append(sgni.securityRuleAssociations().subnetAssociation().id());
             printSecurityRule(sb, sgni.securityRuleAssociations().subnetAssociation().securityRules());
-            sb.append("\n\t\tNetwork interface:").append(sgni.securityRuleAssociations().networkInterfaceAssociation().id());
-            printSecurityRule(sb, sgni.securityRuleAssociations().networkInterfaceAssociation().securityRules());
+            if (sgni.securityRuleAssociations().networkInterfaceAssociation() != null) {
+                sb.append("\n\t\tNetwork interface:").append(sgni.securityRuleAssociations().networkInterfaceAssociation().id());
+                printSecurityRule(sb, sgni.securityRuleAssociations().networkInterfaceAssociation().securityRules());
+            }
             sb.append("\n\t\tDefault security rules:");
             printSecurityRule(sb, sgni.securityRuleAssociations().defaultSecurityRules());
         }
@@ -2181,5 +2184,18 @@ public final class Utils {
                     .append("\n\t\t\tDescription: ").append(rule.description())
                     .append("\n\t\t\tProvisioning state: ").append(rule.provisioningState());
         }
+    }
+
+    /**
+     * Print next hop info.
+     *
+     * @param resource an availability set
+     */
+    public static void print(NextHop resource) {
+        System.out.println(new StringBuilder("Next hop: ")
+                .append("Next hop type: ").append(resource.nextHopType())
+                .append("\n\tNext hop ip address: ").append(resource.nextHopIpAddress())
+                .append("\n\tRoute table id: ").append(resource.routeTableId())
+                .toString());
     }
 }
