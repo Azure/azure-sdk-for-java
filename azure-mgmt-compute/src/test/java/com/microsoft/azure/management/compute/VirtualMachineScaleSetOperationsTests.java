@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.network.*;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -466,6 +467,70 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             }
         }
         Assert.assertTrue(nicCount > 0);
+    }
+
+    @Test
+    public void canEnablMSIOnVirtualMachineScaleSetWithRoleAsCurrentResourceGroup() throws Exception {
+        final String vmss_name = generateRandomResourceName("vmss", 10);
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups()
+                .define(RG_NAME)
+                .withRegion(REGION)
+                .create();
+
+        Network network = this.networkManager
+                .networks()
+                .define("vmssvnet")
+                .withRegion(REGION)
+                .withExistingResourceGroup(resourceGroup)
+                .withAddressSpace("10.0.0.0/28")
+                .withSubnet("subnet1", "10.0.0.0/28")
+                .create();
+
+        LoadBalancer publicLoadBalancer = createInternetFacingLoadBalancer(REGION,
+                resourceGroup,
+                "1");
+        List<String> backends = new ArrayList<>();
+        for (String backend : publicLoadBalancer.backends().keySet()) {
+            backends.add(backend);
+        }
+        Assert.assertTrue(backends.size() == 2);
+
+        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
+                .define(vmss_name)
+                .withRegion(REGION)
+                .withExistingResourceGroup(resourceGroup)
+                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+                .withExistingPrimaryNetworkSubnet(network, "subnet1")
+                .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+                .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
+                .withoutPrimaryInternalLoadBalancer()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername("jvuser")
+                .withRootPassword("123OData!@#123")
+                .withManagedServiceIdentity()
+                .create();
+
+        // Validate service created service principal
+        //
+        ServicePrincipal servicePrincipal = rbacManager
+                .servicePrincipals()
+                .getById(virtualMachineScaleSet.managedServiceIdentityPrincipalId());
+
+        Assert.assertNotNull(servicePrincipal);
+        Assert.assertNotNull(servicePrincipal.inner());
+
+        // Ensure the MSI extension is set
+        //
+        Map<String, VirtualMachineScaleSetExtension> extensions = virtualMachineScaleSet.extensions();
+        boolean extensionFound = false;
+        for (VirtualMachineScaleSetExtension extension : extensions.values()) {
+            if (extension.publisherName().equalsIgnoreCase("Microsoft.ManagedIdentity")
+                    && extension.typeName().equalsIgnoreCase("ManagedIdentityExtensionForLinux")) {
+                extensionFound = true;
+                break;
+            }
+        }
+        Assert.assertTrue(extensionFound);
     }
 
     private void checkVMInstances(VirtualMachineScaleSet vmScaleSet) {
