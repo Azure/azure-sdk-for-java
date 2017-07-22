@@ -31,6 +31,7 @@ import java.util.concurrent.Callable;
  */
 class VirtualMachineMsiHelper {
     private final int defaultTokenPort = 50342;
+    private final String msiExtensionPublisher = "Microsoft.ManagedIdentity";
     private final GraphRbacManager rbacManager;
     private BuiltInRole role;
     private String scope;
@@ -52,7 +53,9 @@ class VirtualMachineMsiHelper {
      *
      * Once setupVirtualMachineMSIResourcesAsync is invoked,  applications running on the virtual machine will
      * have "Contributor" access role with scope of access limited to the resource group that this
-     * virtual machine belongs to. The access token will be available in the virtual machine at port 50342.
+     * virtual machine belongs to. If MSI extension is already installed then the access token will be available
+     * in the virtual machine at port specified in the extension public setting, otherwise the port for
+     * new extension will be 50342.
      *
      * @param virtualMachineInner the virtual machine to set the identity
      * @return VirtualMachineMsiHelper
@@ -60,7 +63,7 @@ class VirtualMachineMsiHelper {
      VirtualMachineMsiHelper withManagedServiceIdentity(VirtualMachineInner virtualMachineInner) {
         return withManagedServiceIdentity(BuiltInRole.CONTRIBUTOR,
                 null,
-                defaultTokenPort,
+                null,
                 virtualMachineInner);
     }
 
@@ -69,7 +72,9 @@ class VirtualMachineMsiHelper {
      *
      * Once setupVirtualMachineMSIResourcesAsync is invoked,  applications running on the virtual machine will
      * have the given access role and scope of access will be limited to the resource group that this
-     * virtual machine belongs to. The access token will be available in the virtual machine at port 50342.
+     * virtual machine belongs to. If MSI extension is already installed then the access token will be available
+     * in the virtual machine at port specified in the extension public setting, otherwise
+     * the port for new extension will be 50342.
      *
      *
      * @param role the role
@@ -80,7 +85,7 @@ class VirtualMachineMsiHelper {
                                                         VirtualMachineInner virtualMachineInner) {
         return withManagedServiceIdentity(role,
                 null,
-                defaultTokenPort,
+                null,
                 virtualMachineInner);
     }
 
@@ -89,8 +94,9 @@ class VirtualMachineMsiHelper {
      *
      * Once setupVirtualMachineMSIResourcesAsync is invoked,  applications running on the virtual machine will
      * have the given access role and scope of access will be limited to the arm resource identified by
-     * resource id specified in the scope parameter. The access token will be available in the virtual
-     * machine at port 50342.
+     * resource id specified in the scope parameter. If MSI extension is already installed then the access token
+     * will be available in the virtual machine at port specified in the extension public setting,
+     * otherwise the port for new extension will be 50342.
      *
      * @param role access role to assigned to the virtual machine
      * @param scope scope of the access represented in arm resource id format
@@ -102,7 +108,7 @@ class VirtualMachineMsiHelper {
                                                         VirtualMachineInner virtualMachineInner) {
         return withManagedServiceIdentity(role,
                 scope,
-                defaultTokenPort,
+                null,
                 virtualMachineInner);
     }
 
@@ -124,7 +130,7 @@ class VirtualMachineMsiHelper {
      */
      VirtualMachineMsiHelper withManagedServiceIdentity(BuiltInRole role,
                                                         String scope,
-                                                        int port,
+                                                        Integer port,
                                                         VirtualMachineInner virtualMachineInner) {
         this.requireSetup = true;
         this.role = role;
@@ -270,7 +276,7 @@ class VirtualMachineMsiHelper {
         return virtualMachine.listExtensionsAsync().filter(new Func1<VirtualMachineExtension, Boolean>() {
             @Override
             public Boolean call(VirtualMachineExtension extension) {
-                return extension.publisherName().equalsIgnoreCase("Microsoft.ManagedIdentity")
+                return extension.publisherName().equalsIgnoreCase(msiExtensionPublisher)
                         && extension.typeName().equalsIgnoreCase(typeName);
             }
         });
@@ -287,15 +293,16 @@ class VirtualMachineMsiHelper {
         return  Observable.defer(new Func0<Observable<Boolean>>() {
             @Override
             public Observable<Boolean> call() {
+                Integer tokenPortToUse = tokenPort != null ? tokenPort : defaultTokenPort;
                 VirtualMachineExtensionInner extensionParameter = new VirtualMachineExtensionInner();
                 extensionParameter
-                        .withPublisher("Microsoft.ManagedIdentity")
+                        .withPublisher(msiExtensionPublisher)
                         .withVirtualMachineExtensionType(typeName)
                         .withTypeHandlerVersion("1.0")
                         .withAutoUpgradeMinorVersion(true)
                         .withLocation(virtualMachine.regionName());
                 Map<String, Object> settings = new HashMap<>();
-                settings.put("port", tokenPort);
+                settings.put("port", tokenPortToUse);
                 extensionParameter.withSettings(settings);
                 extensionParameter.withProtectedSettings(null);
 
@@ -320,31 +327,32 @@ class VirtualMachineMsiHelper {
      * @return an observable that emits true if MSI extension updated, false otherwise.
      */
     private Observable<Boolean> updateMSIExtensionAsync(final VirtualMachine virtualMachine, VirtualMachineExtension extension, final String typeName) {
-        Object currentTokenPortObj = extension.publicSettings().get("port");
-        Integer currentTokenPort = null;
-        if (currentTokenPortObj != null) {
-            if (currentTokenPortObj instanceof Integer) {
-                currentTokenPort = (Integer) currentTokenPortObj;
-            } else {
-                currentTokenPort = Integer.valueOf((String) currentTokenPortObj);
-            }
-        }
-        if (this.tokenPort.intValue() != currentTokenPort.intValue()) {
-            Map<String, Object> settings = new HashMap<>();
-            settings.put("port", tokenPort);
-            extension.inner().withSettings(settings);
-
-            return virtualMachine.manager().inner().virtualMachineExtensions()
-                    .createOrUpdateAsync(virtualMachine.resourceGroupName(), virtualMachine.name(), typeName, extension.inner())
-                    .map(new Func1<VirtualMachineExtensionInner, Boolean>() {
-                        @Override
-                        public Boolean call(VirtualMachineExtensionInner extension) {
-                            return true;
-                        }
-                    });
+        Integer currentTokenPort = objectToInteger(extension.publicSettings().get("port"));
+        Integer tokenPortToUse;
+        if (this.tokenPort != null) {
+            // User specified a port
+            tokenPortToUse = this.tokenPort;
+        } else if (currentTokenPort == null) {
+            // User didn't specify a port and port is not already set
+            tokenPortToUse = this.defaultTokenPort;
         } else {
+            // User didn't specify a port and port is already set in the extension
+            // No need to do a PUT on extension
+            //
             return Observable.just(false);
         }
+        Map<String, Object> settings = new HashMap<>();
+        settings.put("port", tokenPortToUse);
+        extension.inner().withSettings(settings);
+
+        return virtualMachine.manager().inner().virtualMachineExtensions()
+                .createOrUpdateAsync(virtualMachine.resourceGroupName(), virtualMachine.name(), typeName, extension.inner())
+                .map(new Func1<VirtualMachineExtensionInner, Boolean>() {
+                    @Override
+                    public Boolean call(VirtualMachineExtensionInner extension) {
+                        return true;
+                    }
+                });
     }
 
     /**
@@ -359,6 +367,25 @@ class VirtualMachineMsiHelper {
         if (virtualMachineInner.identity().type() == null) {
             virtualMachineInner.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED);
         }
+    }
+
+    /**
+     * Given an object holding a numeric in Integer or String format, convert that to
+     * Integer.
+     *
+     * @param obj the object
+     * @return the integer value
+     */
+    private Integer objectToInteger(Object obj) {
+        Integer result = null;
+        if (obj != null) {
+            if (obj instanceof Integer) {
+                result = (Integer) obj;
+            } else {
+                result = Integer.valueOf((String) obj);
+            }
+        }
+        return result;
     }
 
     /**
