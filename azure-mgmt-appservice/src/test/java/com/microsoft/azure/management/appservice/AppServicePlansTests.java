@@ -10,6 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.rest.RestClient;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.Ignore;
 
 import java.util.List;
 
