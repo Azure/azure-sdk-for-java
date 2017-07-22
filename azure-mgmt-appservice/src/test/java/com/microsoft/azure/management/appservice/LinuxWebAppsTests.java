@@ -92,7 +92,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
                     .attach()
                 .apply();
         Assert.assertNotNull(webApp);
-        if (!IS_MOCKED) {
+        if (!isPlaybackMode()) {
             Response response = curl("http://" + webApp1.defaultHostName());
             Assert.assertEquals(200, response.code());
             String body = response.body().string();

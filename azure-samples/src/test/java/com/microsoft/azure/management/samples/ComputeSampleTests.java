@@ -136,7 +136,7 @@ public class ComputeSampleTests extends SamplesTestBase {
 
     @Test
     public void testManageContainerServiceUsingKubernetes() {
-        if (IS_MOCKED) {
+        if (isPlaybackMode()) {
             Assert.assertTrue(ManageContainerServiceUsingKubernetes.runSample(azure, "client id", "secret"));
         } else {
             Assert.assertTrue(ManageContainerServiceUsingKubernetes.runSample(azure, "", ""));
@@ -150,7 +150,7 @@ public class ComputeSampleTests extends SamplesTestBase {
 
     @Test
     public void testDeployImageFromContainerRegistryToKubernetes() {
-        if (!IS_MOCKED) {
+        if (!isPlaybackMode()) {
             Assert.assertTrue(DeployImageFromContainerRegistryToKubernetes.runSample(azure, "", ""));
         }
     }
