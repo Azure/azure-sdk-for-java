@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.storage.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.microsoft.azure.management.storage.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.storage.SkuName;
@@ -19,6 +20,7 @@ import rx.functions.Func1;
 /**
  * The implementation of StorageAccounts and its parent interfaces.
  */
+@LangDefinition
 class StorageAccountsImpl
     extends TopLevelModifiableResourcesImpl<
         StorageAccount,

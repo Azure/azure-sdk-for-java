@@ -48,6 +48,10 @@ class DnsRecordSetsImpl extends
         setDefaults(prepareDefine(recordSet.withTimeToLive(defaultTtlInSeconds)));
     }
 
+    DnsRecordSetImpl defineCNameRecordSet(String name) {
+        return setDefaults(prepareDefine(CNameRecordSetImpl.newRecordSet(name, this.parent())));
+    }
+
     DnsRecordSetImpl defineMXRecordSet(String name) {
         return setDefaults(prepareDefine(MXRecordSetImpl.newRecordSet(name, this.parent())));
     }
@@ -80,6 +84,10 @@ class DnsRecordSetsImpl extends
         return prepareUpdate(MXRecordSetImpl.newRecordSet(name, this.parent()));
     }
 
+    DnsRecordSetImpl updateCNameRecordSet(String name) {
+        return prepareUpdate(CNameRecordSetImpl.newRecordSet(name, this.parent()));
+    }
+
     DnsRecordSetImpl updateNSRecordSet(String name) {
         return prepareUpdate(NSRecordSetImpl.newRecordSet(name, this.parent()));
     }
@@ -100,36 +108,36 @@ class DnsRecordSetsImpl extends
         return prepareUpdate(SoaRecordSetImpl.newRecordSet(this.parent()));
     }
 
-    void withoutARecordSet(String name) {
-        prepareRemove(ARecordSetImpl.newRecordSet(name, this.parent()));
+    void withoutARecordSet(String name, String eTagValue) {
+        prepareRemove(ARecordSetImpl.newRecordSet(name, this.parent()).withETagOnDelete(eTagValue));
     }
 
-    void withoutAaaaRecordSet(String name) {
-        prepareRemove(AaaaRecordSetImpl.newRecordSet(name, this.parent()));
+    void withoutAaaaRecordSet(String name, String eTagValue) {
+        prepareRemove(AaaaRecordSetImpl.newRecordSet(name, this.parent()).withETagOnDelete(eTagValue));
     }
 
-    void withoutCNameRecordSet(String name) {
-        prepareRemove(CNameRecordSetImpl.newRecordSet(name, this.parent()));
+    void withoutCNameRecordSet(String name, String eTagValue) {
+        prepareRemove(CNameRecordSetImpl.newRecordSet(name, this.parent()).withETagOnDelete(eTagValue));
     }
 
-    void withoutMXRecordSet(String name) {
-        prepareRemove(MXRecordSetImpl.newRecordSet(name, this.parent()));
+    void withoutMXRecordSet(String name, String eTagValue) {
+        prepareRemove(MXRecordSetImpl.newRecordSet(name, this.parent()).withETagOnDelete(eTagValue));
     }
 
-    void withoutNSRecordSet(String name) {
-        prepareRemove(NSRecordSetImpl.newRecordSet(name, this.parent()));
+    void withoutNSRecordSet(String name, String eTagValue) {
+        prepareRemove(NSRecordSetImpl.newRecordSet(name, this.parent()).withETagOnDelete(eTagValue));
     }
 
-    void withoutPtrRecordSet(String name) {
-        prepareRemove(PtrRecordSetImpl.newRecordSet(name, this.parent()));
+    void withoutPtrRecordSet(String name, String eTagValue) {
+        prepareRemove(PtrRecordSetImpl.newRecordSet(name, this.parent()).withETagOnDelete(eTagValue));
     }
 
-    void withoutSrvRecordSet(String name) {
-        prepareRemove(SrvRecordSetImpl.newRecordSet(name, this.parent()));
+    void withoutSrvRecordSet(String name, String eTagValue) {
+        prepareRemove(SrvRecordSetImpl.newRecordSet(name, this.parent()).withETagOnDelete(eTagValue));
     }
 
-    void withoutTxtRecordSet(String name) {
-        prepareRemove(TxtRecordSetImpl.newRecordSet(name, this.parent()));
+    void withoutTxtRecordSet(String name, String eTagValue) {
+        prepareRemove(TxtRecordSetImpl.newRecordSet(name, this.parent()).withETagOnDelete(eTagValue));
     }
 
     final void clearPendingOperations() {

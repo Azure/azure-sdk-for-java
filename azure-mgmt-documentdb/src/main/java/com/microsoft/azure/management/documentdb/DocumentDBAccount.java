@@ -141,6 +141,8 @@ public interface DocumentDBAccount extends
         interface WithKind {
             /**
              * The database account kind for the DocumentDB account.
+             *
+             * @param kind the account kind
              * @return the next stage of the definition
              */
             WithConsistencyPolicy withKind(DatabaseAccountKind kind);

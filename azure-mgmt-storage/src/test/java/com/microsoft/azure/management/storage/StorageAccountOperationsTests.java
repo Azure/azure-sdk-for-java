@@ -15,6 +15,7 @@ import org.junit.Test;
 import rx.Observable;
 
 import java.util.List;
+import java.util.Map;
 
 public class StorageAccountOperationsTests extends StorageManagementTest {
     private static String RG_NAME = "";
@@ -86,5 +87,35 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
                 .apply();
         Assert.assertEquals(SkuName.STANDARD_LRS, storageAccount.sku().name());
         Assert.assertEquals(2, storageAccount.tags().size());
+    }
+
+    @Test
+    public void canEnableDisableEncryptionOnStorageAccount() throws Exception {
+        StorageAccount storageAccount = storageManager.storageAccounts()
+                .define(SA_NAME)
+                    .withRegion(Region.US_EAST2)
+                    .withNewResourceGroup(RG_NAME)
+                    .withEncryption()
+                    .create();
+
+        Map<StorageService, StorageAccountEncryptionStatus> statuses = storageAccount.encryptionStatuses();
+        Assert.assertNotNull(statuses);
+        Assert.assertTrue(statuses.size() > 0);
+        StorageAccountEncryptionStatus blobServiceEncryptionStatus = statuses.get(StorageService.BLOB);
+        Assert.assertNotNull(blobServiceEncryptionStatus);
+        Assert.assertTrue(blobServiceEncryptionStatus.isEnabled());
+        Assert.assertNotNull(blobServiceEncryptionStatus.lastEnabledTime());
+        Assert.assertNotNull(storageAccount.encryptionKeySource());
+        Assert.assertTrue(storageAccount.encryptionKeySource().equals(StorageAccountEncryptionKeySource.MICROSOFT_STORAGE));
+
+        storageAccount = storageAccount.update()
+                .withoutEncryption()
+                .apply();
+        statuses = storageAccount.encryptionStatuses();
+        Assert.assertNotNull(statuses);
+        Assert.assertTrue(statuses.size() > 0);
+        blobServiceEncryptionStatus = statuses.get(StorageService.BLOB);
+        Assert.assertNotNull(blobServiceEncryptionStatus);
+        Assert.assertFalse(blobServiceEncryptionStatus.isEnabled());
     }
 }

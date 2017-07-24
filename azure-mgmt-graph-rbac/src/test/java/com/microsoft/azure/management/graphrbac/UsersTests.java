@@ -6,14 +6,13 @@
 
 package com.microsoft.azure.management.graphrbac;
 
+import com.microsoft.azure.management.resources.fluentcore.arm.CountryIsoCode;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
 public class UsersTests extends GraphRbacManagementTest {
-    private static final String RG_NAME = "javacsmrg350";
-    private static final String APP_NAME = "app-javacsm350";
-
     @Test
     @Ignore("Need a specific domain")
     public void canGetUserByEmail() throws Exception {
@@ -33,5 +32,33 @@ public class UsersTests extends GraphRbacManagementTest {
     public void canGetUserByDisplayName() throws Exception {
         ActiveDirectoryUser user = graphRbacManager.users().getByName("Reader zero");
         Assert.assertEquals("Reader zero", user.name());
+    }
+
+    @Test
+    public void canCreateUser() throws Exception {
+        String name = SdkContext.randomResourceName("user", 16);
+        ActiveDirectoryUser user = graphRbacManager.users().define("Automatic " + name)
+                .withEmailAlias(name)
+                .withPassword("StrongPass!123")
+                .withPromptToChangePasswordOnLogin(true)
+                .create();
+
+        Assert.assertNotNull(user);
+        Assert.assertNotNull(user.id());
+    }
+
+    @Test
+    public void canUpdateUser() throws Exception {
+        String name = SdkContext.randomResourceName("user", 16);
+        ActiveDirectoryUser user = graphRbacManager.users().define("Test " + name)
+                .withEmailAlias(name)
+                .withPassword("StrongPass!123")
+                .create();
+
+        user = user.update()
+                .withUsageLocation(CountryIsoCode.AUSTRALIA)
+                .apply();
+
+        Assert.assertEquals(CountryIsoCode.AUSTRALIA, user.usageLocation());
     }
 }

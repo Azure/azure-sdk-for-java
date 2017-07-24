@@ -159,7 +159,7 @@ class ActiveDirectoryApplicationsImpl
 
     @Override
     protected ActiveDirectoryApplicationImpl wrapModel(String name) {
-        return new ActiveDirectoryApplicationImpl(new ApplicationInner().withDisplayName(name), manager());
+        return new ActiveDirectoryApplicationImpl((ApplicationInner) new ApplicationInner().withDisplayName(name), manager());
     }
 
     @Override

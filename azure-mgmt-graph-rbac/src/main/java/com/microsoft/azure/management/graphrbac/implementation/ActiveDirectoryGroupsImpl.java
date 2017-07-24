@@ -11,9 +11,10 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroup;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroups;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -22,10 +23,10 @@ import rx.functions.Func1;
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.Graph.RBAC.Fluent")
 class ActiveDirectoryGroupsImpl
-        extends ReadableWrappersImpl<
-        ActiveDirectoryGroup,
-        ActiveDirectoryGroupImpl,
-            ADGroupInner>
+        extends CreatableWrappersImpl<
+                ActiveDirectoryGroup,
+                ActiveDirectoryGroupImpl,
+                ADGroupInner>
         implements
         ActiveDirectoryGroups {
     private final GraphRbacManager manager;
@@ -105,5 +106,20 @@ class ActiveDirectoryGroupsImpl
     @Override
     public GroupsInner inner() {
         return manager().inner().groups();
+    }
+
+    @Override
+    public ActiveDirectoryGroupImpl define(String name) {
+        return wrapModel(name);
+    }
+
+    @Override
+    protected ActiveDirectoryGroupImpl wrapModel(String name) {
+        return wrapModel(new ADGroupInner().withDisplayName(name));
+    }
+
+    @Override
+    public Completable deleteByIdAsync(String id) {
+        return manager().inner().groups().deleteAsync(id).toCompletable();
     }
 }
