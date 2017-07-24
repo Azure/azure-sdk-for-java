@@ -34,11 +34,13 @@ public class PrefabEventProcessor implements IEventProcessor
 	@Override
 	public void onOpen(PartitionContext context) throws Exception
 	{
+		TestUtilities.log(context.getOwner() + " opening " + context.getPartitionId());
 	}
 
 	@Override
 	public void onClose(PartitionContext context, CloseReason reason) throws Exception
 	{
+		TestUtilities.log(context.getOwner() + " closing " + context.getPartitionId());
 	}
 
 	@Override
@@ -59,7 +61,7 @@ public class PrefabEventProcessor implements IEventProcessor
 			}
 			if (this.logEveryMessage)
 			{
-				TestUtilities.log("P" + context.getPartitionId() + " " + new String(event.getBody()) + " @ " + event.getSystemProperties().getOffset() + "\n");
+				//TestUtilities.log("P" + context.getPartitionId() + " " + new String(event.getBody()) + " @ " + event.getSystemProperties().getOffset() + "\n");
 			}
 			if (Arrays.equals(event.getBody(), this.telltaleBytes))
 			{

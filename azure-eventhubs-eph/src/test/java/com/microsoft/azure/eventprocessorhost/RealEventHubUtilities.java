@@ -18,6 +18,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -157,54 +158,26 @@ class RealEventHubUtilities
 		sender.sendSync(event);
 	}
 	
-    ArrayList<String> getPartitionIdsForTest() throws IllegalEntityException
+    ArrayList<String> getPartitionIdsForTest() throws EventHubException, IOException
     {
     	if (this.cachedPartitionIds == null)
     	{
 	    	this.cachedPartitionIds = new ArrayList<String>();
 	    	ehCacheCheck();
 	    	
+	    	EventHubClient idClient = EventHubClient.createFromConnectionStringSync(this.hubConnectionString.toString());
 	    	try
 	    	{
-	        	String contentEncoding = StandardCharsets.UTF_8.name();
-	        	URI namespaceUri = new URI("https", this.hubConnectionString.getEndpoint().getHost(), null, null);
-	        	String resourcePath = String.join("/", 
-	        			namespaceUri.toString(),
-	        			this.hubConnectionString.getEntityPath(),
-	        			"consumergroups",
-	        			this.consumerGroup,
-	        			"partitions");
-	        	
-	        	final String authorizationToken = SharedAccessSignatureTokenProvider.generateSharedAccessSignature(
-	        			this.hubConnectionString.getSasKeyName(), this.hubConnectionString.getSasKey(), 
-	        			resourcePath, Duration.ofMinutes(20));
-	        	        	
-	            URLConnection connection = new URL(resourcePath).openConnection();
-	        	connection.addRequestProperty("Authorization", authorizationToken);
-	        	connection.setRequestProperty("Content-Type", "application/atom+xml;type=entry");
-	        	connection.setRequestProperty("charset", contentEncoding);
-	        	InputStream responseStream = connection.getInputStream();
-	        	
-	        	DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-	        	DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-	        	Document doc = docBuilder.parse(responseStream);
-	        	
-	        	XPath xpath = XPathFactory.newInstance().newXPath();
-	        	NodeList partitionIdsNodes = (NodeList) xpath.evaluate("//feed/entry/title", doc.getDocumentElement(), XPathConstants.NODESET);
-	        	if (partitionIdsNodes.getLength() == 0)
-	        	{
-	        		throw new IllegalEntityException("EventHub does not exist");
-	        	}
-	        	
-	        	for (int partitionIndex = 0; partitionIndex < partitionIdsNodes.getLength(); partitionIndex++)
-	        	{
-	        		this.cachedPartitionIds.add(partitionIdsNodes.item(partitionIndex).getTextContent());    		
-	        	}
+	    		EventHubRuntimeInformation info = idClient.getRuntimeInformation().get();
+		    	String ids[] = info.getPartitionIds();
+		    	for (String id : ids)
+		    	{
+		    		this.cachedPartitionIds.add(id);
+		    	}
 	    	}
-	    	catch(XPathExpressionException|ParserConfigurationException|IOException|InvalidKeyException|NoSuchAlgorithmException|URISyntaxException|SAXException exception)
+	    	catch (ExecutionException | InterruptedException e)
 	    	{
-	    		final String errorMessage = String.format(Locale.US, "Encountered error while fetching the list of EventHub PartitionIds: %s", exception.getMessage());
-	    		throw new EPHConfigurationException(errorMessage, exception);
+	    		throw new IllegalArgumentException("Error getting partition ids in test framework", e.getCause());
 	    	}
     	}
 

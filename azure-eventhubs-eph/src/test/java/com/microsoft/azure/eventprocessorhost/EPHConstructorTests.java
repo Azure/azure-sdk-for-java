@@ -9,7 +9,7 @@ public class EPHConstructorTests extends TestBase
 	public void conflictingEventHubPathsTest() throws Exception
 	{
 		PerTestSettings settings = new PerTestSettings("ConflictingEventHubPaths");
-		settings.inEntityDoesNotExist = true;
+		settings.inEventHubDoesNotExist = true;
 		settings.inoutEPHConstructorArgs.setEHPath("thisisdifferentfromtheconnectionstring", PerTestSettings.EPHConstructorArgs.EH_PATH_OVERRIDE);
 		try
 		{
@@ -37,7 +37,7 @@ public class EPHConstructorTests extends TestBase
 	public void missingEventHubPathTest() throws Exception
 	{
 		PerTestSettings settings = new PerTestSettings("MissingEventHubPath");
-		settings.inEntityDoesNotExist = true;
+		settings.inEventHubDoesNotExist = true;
 		settings.inoutEPHConstructorArgs.setEHPath("", PerTestSettings.EPHConstructorArgs.EH_PATH_OVERRIDE_AND_REPLACE);
 		try
 		{

@@ -70,6 +70,25 @@ abstract class PartitionPump
         	specializedStartPump();
         }
         
+        if (this.pumpStatus != PartitionPumpStatus.PP_RUNNING)
+        {
+            // There was an error in specialized startup, so clean up the processor.
+            this.pumpStatus = PartitionPumpStatus.PP_CLOSING;
+            try
+            {
+                this.processor.onClose(this.partitionContext, CloseReason.Shutdown);
+            }
+            catch (Exception e)
+            {
+                // If the processor fails on close, just log and notify.
+                this.host.logWithHostAndPartition(Level.SEVERE, this.partitionContext, "Failed " + EventProcessorHostActionStrings.CLOSING_EVENT_PROCESSOR, e);
+                this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, EventProcessorHostActionStrings.CLOSING_EVENT_PROCESSOR,
+                   this.lease.getPartitionId());
+            }
+            this.processor = null;
+            this.pumpStatus = PartitionPumpStatus.PP_CLOSED;
+        }
+
         return null;
     }
 

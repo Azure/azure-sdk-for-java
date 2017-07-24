@@ -9,7 +9,7 @@ public class PerTestSettings
 	private String inTestName;
 	EventProcessorOptions inOptions; // can be null
 	PrefabEventProcessor.CheckpointChoices inDoCheckpoint;
-	boolean inEntityDoesNotExist; // Prevents test code from doing certain checks that would fail on nonexistence before reaching product code.
+	boolean inEventHubDoesNotExist; // Prevents test code from doing certain checks that would fail on nonexistence before reaching product code.
 	boolean inTelltaleOnTimeout; // Generates an empty telltale string, which causes PrefabEventProcessor to trigger telltale on timeout.
 	boolean inHasSenders;
 	
@@ -18,7 +18,7 @@ public class PerTestSettings
 		this.inTestName = testName;
 		this.inOptions = EventProcessorOptions.getDefaultOptions();
 		this.inDoCheckpoint = PrefabEventProcessor.CheckpointChoices.CKP_NONE;
-		this.inEntityDoesNotExist = false;
+		this.inEventHubDoesNotExist = false;
 		this.inTelltaleOnTimeout = false;
 		this.inHasSenders = true;
 		
