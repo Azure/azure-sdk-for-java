@@ -26,6 +26,12 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.azure.management.storage.StorageAccount;
+import com.microsoft.azure.storage.CloudStorageAccount;
+import com.microsoft.azure.storage.blob.CloudBlobClient;
+import com.microsoft.azure.storage.blob.CloudBlobContainer;
+import com.microsoft.azure.storage.blob.CloudBlobDirectory;
+import com.microsoft.azure.storage.blob.CloudBlockBlob;
+import com.microsoft.azure.storage.blob.ListBlobItem;
 import com.microsoft.rest.LogLevel;
 
 import java.io.File;
@@ -40,7 +46,6 @@ import java.util.Arrays;
  *      Stop a packet capture
  *      Get a packet capture
  *      Delete a packet capture
- *      Download a packet capture
  *  - Verify IP flow – verify if traffic is allowed to or from a virtual machine
  *      Get the IP address of a NIC on a virtual machine
  *      Test IP flow on the NIC
@@ -52,7 +57,8 @@ import java.util.Arrays;
  *      Get flow log settings
  *      Enable NSG flow log
  *      Disable NSG flow log
- *      Download a flow log
+ *  - Download a packet capture
+ *  - Download a flow log
  *  - Delete network watcher
  */
 
@@ -76,6 +82,10 @@ public final class ManageNetworkWatcher {
         final String saName = SdkContext.randomResourceName("sa", 24);
         final String vmName = SdkContext.randomResourceName("vm", 24);
         final String packetCaptureName = SdkContext.randomResourceName("pc", 8);
+        // file name to save packet capture log locally
+        final String packetCaptureFile = "packetcapture.cap";
+        // file name to save flow log locally
+        final String flowLogFile = "flowLog.json";
 
         NetworkWatcher nw = null;
         try {
@@ -173,9 +183,6 @@ public final class ManageNetworkWatcher {
             System.out.println("Deleting packet capture");
             nw.packetCaptures().deleteByName(packetCapture.name());
 
-            // Download a packet capture
-
-
             //============================================================
             // Verify IP flow – verify if traffic is allowed to or from a virtual machine
             // Get the IP address of a NIC on a virtual machine
@@ -231,13 +238,48 @@ public final class ManageNetworkWatcher {
                     .apply();
             Utils.print(flowLogSettings);
 
+            // wait for flow log to log an event
+            System.out.println("Waiting for flow log to log an event...");
+            Thread.sleep(250000);
+
             // Disable NSG flow log
+            System.out.println("Disabling flow log...");
             flowLogSettings.update()
                     .withoutLogging()
                     .apply();
             Utils.print(flowLogSettings);
 
+            //============================================================
+            // Download a packet capture
+            String accountKey = storageAccount.getKeys().get(0).value();
+            String connectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s",
+                    storageAccount.name(), accountKey);
+            CloudStorageAccount account = CloudStorageAccount.parse(connectionString);
+            CloudBlobClient cloudBlobClient = account.createCloudBlobClient();
+            CloudBlobContainer container = cloudBlobClient.getContainerReference("network-watcher-logs");
+            // iterate over subfolders structure to get the file
+            ListBlobItem item = container.listBlobs().iterator().next();
+            while (item instanceof CloudBlobDirectory) {
+                item = ((CloudBlobDirectory) item).listBlobs().iterator().next();
+            }
+            // download packet capture file
+            ((CloudBlockBlob) item).downloadToFile(packetCaptureFile);
+            System.out.println("Packet capture log saved to ./" + packetCaptureFile);
+
+            //============================================================
             // Download a flow log
+            container = cloudBlobClient.getContainerReference("insights-logs-networksecuritygroupflowevent");
+            // iterate over subfolders structure to get the file
+            item = container.listBlobs().iterator().next();
+            while (item instanceof CloudBlobDirectory) {
+                item = ((CloudBlobDirectory) item).listBlobs().iterator().next();
+            }
+
+            System.out.println("Flow log:");
+            ((CloudBlockBlob) item).download(System.out);
+            // download flow file; note: this will download only one of the files
+            ((CloudBlockBlob) item).downloadToFile(flowLogFile);
+            System.out.println("Flow log saved to ./" + flowLogFile);
 
             //============================================================
             // Delete network watcher
@@ -251,13 +293,13 @@ public final class ManageNetworkWatcher {
             e.printStackTrace();
         } finally {
             try {
+                System.out.println("Deleting Resource Group: " + rgName);
+                azure.resourceGroups().deleteByName(rgName);
+                System.out.println("Deleted Resource Group: " + rgName);
                 if (nw != null) {
                     System.out.println("Deleting network watcher: " + nw.name());
                     azure.networkWatchers().deleteById(nw.id());
                 }
-                System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().deleteByName(rgName);
-                System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             } catch (Exception g) {
