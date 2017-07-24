@@ -314,6 +314,7 @@ class VirtualMachineScaleSetMsiHelper {
 
     /**
      * Given the OS type, gets the Managed Service Identity extension type.
+     * 
      * @param osType the os type
      *
      * @return the extension type.
@@ -323,7 +324,8 @@ class VirtualMachineScaleSetMsiHelper {
     }
 
     /**
-     * Gets the Managed Service Identity extension from the given extensions
+     * Gets the Managed Service Identity extension from the given extensions.
+     *
      * @param extensions the extensions
      * @param typeName the extension type
      * @return the MSI extension if exists, null otherwise
