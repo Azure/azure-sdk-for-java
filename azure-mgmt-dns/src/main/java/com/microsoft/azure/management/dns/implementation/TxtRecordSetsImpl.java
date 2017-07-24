@@ -10,7 +10,6 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.dns.TxtRecordSet;
 import com.microsoft.azure.management.dns.TxtRecordSets;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import rx.Observable;
 
 /**
@@ -18,44 +17,43 @@ import rx.Observable;
  */
 @LangDefinition
 class TxtRecordSetsImpl
-        extends ReadableWrappersImpl<TxtRecordSet, TxtRecordSetImpl, RecordSetInner>
+        extends DnsRecordSetsBaseImpl<TxtRecordSet, TxtRecordSetImpl>
         implements TxtRecordSets {
 
-    private final DnsZoneImpl dnsZone;
-
     TxtRecordSetsImpl(DnsZoneImpl dnsZone) {
-        this.dnsZone = dnsZone;
+        super(dnsZone, RecordType.TXT);
     }
 
     @Override
     public TxtRecordSetImpl getByName(String name) {
         RecordSetInner inner = this.parent().manager().inner().recordSets().get(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
+                this.dnsZone.resourceGroupName(),
+                this.dnsZone.name(),
                 name,
-                RecordType.TXT);
-        return new TxtRecordSetImpl(this.parent(), inner);
+                recordType);
+        return new TxtRecordSetImpl(this.dnsZone, inner);
     }
 
     @Override
-    public PagedList<TxtRecordSet> list() {
+    protected PagedList<TxtRecordSet> listIntern(String recordSetNameSuffix, Integer pageSize) {
         return super.wrapList(this.parent().manager().inner().recordSets().listByType(
-                this.parent().resourceGroupName(), this.parent().name(), RecordType.TXT));
+                this.dnsZone.resourceGroupName(),
+                this.dnsZone.name(),
+                recordType,
+                pageSize,
+                recordSetNameSuffix));
+    }
+
+    @Override
+    protected Observable<TxtRecordSet> listInternAsync(String recordSetNameSuffix, Integer pageSize) {
+        return wrapPageAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
+                this.dnsZone.resourceGroupName(),
+                this.dnsZone.name(),
+                recordType));
     }
 
     @Override
     protected TxtRecordSetImpl wrapModel(RecordSetInner inner) {
-        return new TxtRecordSetImpl(this.parent(), inner);
-    }
-
-    @Override
-    public DnsZoneImpl parent() {
-        return this.dnsZone;
-    }
-
-    @Override
-    public Observable<TxtRecordSet> listAsync() {
-        return super.wrapPageAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
-                this.parent().resourceGroupName(), this.parent().name(), RecordType.TXT));
+        return new TxtRecordSetImpl(this.dnsZone, inner);
     }
 }

@@ -56,7 +56,8 @@ class TxtRecordSetImpl
             if (resource.txtRecords() != null) {
                 for (TxtRecord recordToRemove : this.recordSetRemoveInfo.txtRecords()) {
                     for (TxtRecord record : resource.txtRecords()) {
-                        if (record.value().size() != 0 && record.value().get(0).equalsIgnoreCase(recordToRemove.value().get(0))) {
+                        boolean exists = record.value().equals(recordToRemove.value());
+                        if (exists) {
                             resource.txtRecords().remove(record);
                             break;
                         }

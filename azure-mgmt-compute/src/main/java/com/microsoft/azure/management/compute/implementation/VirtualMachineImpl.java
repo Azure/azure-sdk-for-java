@@ -50,6 +50,8 @@ import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.WinRMConfiguration;
 import com.microsoft.azure.management.compute.WinRMListener;
 import com.microsoft.azure.management.compute.WindowsConfiguration;
+import com.microsoft.azure.management.graphrbac.BuiltInRole;
+import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIPAddress;
@@ -141,14 +143,17 @@ class VirtualMachineImpl
     private List<VirtualMachineUnmanagedDataDisk> unmanagedDataDisks;
     // To track the managed data disks
     private final ManagedDataDiskCollection managedDataDisks;
-    // unique key of a creatable storage account to be used for boot diagnostics
+    // Unique key of a creatable storage account to be used for boot diagnostics
     private String creatableDiagnosticsStorageAccountKey;
+    // Utility to setup MSI for the virtual machine
+    private VirtualMachineMsiHelper virtualMachineMsiHelper;
 
     VirtualMachineImpl(String name,
                        VirtualMachineInner innerModel,
                        final ComputeManager computeManager,
                        final StorageManager storageManager,
-                       final NetworkManager networkManager) {
+                       final NetworkManager networkManager,
+                       final GraphRbacManager rbacManager) {
         super(name, innerModel, computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
@@ -166,6 +171,7 @@ class VirtualMachineImpl
         this.virtualMachineExtensions = new VirtualMachineExtensionsImpl(computeManager.inner().virtualMachineExtensions(), this);
         this.managedDataDisks = new ManagedDataDiskCollection(this);
         initializeDataDisks();
+        this.virtualMachineMsiHelper = new VirtualMachineMsiHelper(rbacManager);
     }
 
     // Verbs
@@ -176,11 +182,9 @@ class VirtualMachineImpl
             @Override
             public VirtualMachine call(VirtualMachine virtualMachine) {
                 final VirtualMachineImpl impl = (VirtualMachineImpl) virtualMachine;
-                impl.clearCachedRelatedResources();
-                impl.initializeDataDisks();
+                reset(impl.inner());
                 // TODO - ans - We need to call refreshAsync here.
                 impl.virtualMachineExtensions.refresh();
-
                 return impl;
             }
         });
@@ -1261,6 +1265,30 @@ class VirtualMachineImpl
         return this;
     }
 
+    @Override
+    public VirtualMachineImpl withManagedServiceIdentity() {
+        this.virtualMachineMsiHelper.withManagedServiceIdentity(this.inner());
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withManagedServiceIdentity(BuiltInRole role) {
+        this.virtualMachineMsiHelper.withManagedServiceIdentity(role, this.inner());
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withManagedServiceIdentity(BuiltInRole role, String scope) {
+        this.virtualMachineMsiHelper.withManagedServiceIdentity(role, scope, this.inner());
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withManagedServiceIdentity(BuiltInRole role, String scope, int port) {
+        this.virtualMachineMsiHelper.withManagedServiceIdentity(role, scope, port, this.inner());
+        return this;
+    }
+
     // GETTERS
 
     @Override
@@ -1506,6 +1534,28 @@ class VirtualMachineImpl
         return null;
     }
 
+    @Override
+    public boolean isManagedServiceIdentityEnabled() {
+        return this.managedServiceIdentityPrincipalId() != null
+                && this.managedServiceIdentityTenantId() != null;
+    }
+
+    @Override
+    public String managedServiceIdentityTenantId() {
+        if (this.inner().identity() != null) {
+            return this.inner().identity().tenantId();
+        }
+        return null;
+    }
+
+    @Override
+    public String managedServiceIdentityPrincipalId() {
+        if (this.inner().identity() != null) {
+            return this.inner().identity().principalId();
+        }
+        return null;
+    }
+
     // CreateUpdateTaskGroup.ResourceCreator.createResourceAsync implementation
     //
     @Override
@@ -1538,9 +1588,7 @@ class VirtualMachineImpl
                                 .map(new Func1<VirtualMachineInner, VirtualMachine>() {
                                     @Override
                                     public VirtualMachine call(VirtualMachineInner virtualMachineInner) {
-                                        self.setInner(virtualMachineInner);
-                                        clearCachedRelatedResources();
-                                        initializeDataDisks();
+                                        reset(virtualMachineInner);
                                         return self;
                                     }
                                 });
@@ -1556,6 +1604,21 @@ class VirtualMachineImpl
                                     }
                                 });
                     }
+                }).flatMap(new Func1<VirtualMachine, Observable<? extends VirtualMachine>>() {
+                    @Override
+                    public Observable<? extends VirtualMachine> call(VirtualMachine virtualMachine) {
+                        return virtualMachineMsiHelper.setupVirtualMachineMSIResourcesAsync(self)
+                                .flatMap(new Func1<VirtualMachineMsiHelper.Result, Observable<VirtualMachine>>() {
+                                    @Override
+                                    public Observable<VirtualMachine> call(VirtualMachineMsiHelper.Result result) {
+                                        if (result.isExtensionInstalledOrUpdated) {
+                                            return refreshAsync();
+                                        } else {
+                                            return Observable.just((VirtualMachine) self);
+                                        }
+                                    }
+                                });
+                    }
                 });
     }
 
@@ -1563,6 +1626,12 @@ class VirtualMachineImpl
     VirtualMachineImpl withExtension(VirtualMachineExtensionImpl extension) {
         this.virtualMachineExtensions.addExtension(extension);
         return this;
+    }
+
+    private void reset(VirtualMachineInner inner) {
+        this.setInner(inner);
+        clearCachedRelatedResources();
+        initializeDataDisks();
     }
 
     VirtualMachineImpl withUnmanagedDataDisk(UnmanagedDataDiskImpl dataDisk) {

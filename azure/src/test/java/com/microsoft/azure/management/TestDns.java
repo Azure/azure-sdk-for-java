@@ -10,12 +10,14 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.dns.ARecordSet;
 import com.microsoft.azure.management.dns.AaaaRecordSet;
 import com.microsoft.azure.management.dns.CNameRecordSet;
+import com.microsoft.azure.management.dns.DnsRecordSet;
 import com.microsoft.azure.management.dns.DnsZone;
 import com.microsoft.azure.management.dns.DnsZones;
 import com.microsoft.azure.management.dns.MxRecord;
 import com.microsoft.azure.management.dns.MXRecordSet;
 import com.microsoft.azure.management.dns.NSRecordSet;
 import com.microsoft.azure.management.dns.PtrRecordSet;
+import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.dns.SoaRecord;
 import com.microsoft.azure.management.dns.SoaRecordSet;
 import com.microsoft.azure.management.dns.SrvRecord;
@@ -24,6 +26,8 @@ import com.microsoft.azure.management.dns.TxtRecord;
 import com.microsoft.azure.management.dns.TxtRecordSet;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import org.junit.Assert;
+
+import java.util.HashMap;
 
 /**
  * Test of Dns management.
@@ -143,6 +147,78 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
         // Check CNAME records
         PagedList<CNameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
         Assert.assertTrue(cnameRecordSets.size() == 2);
+
+        // Check Generic record set listing
+        PagedList<DnsRecordSet> recordSets = dnsZone.listRecordSets();
+        HashMap<RecordType, Integer> typeToCount = new HashMap<RecordType, Integer>();
+        typeToCount.put(RecordType.A, 0);
+        typeToCount.put(RecordType.AAAA, 0);
+        typeToCount.put(RecordType.CNAME, 0);
+        typeToCount.put(RecordType.MX, 0);
+        typeToCount.put(RecordType.NS, 0);
+        typeToCount.put(RecordType.PTR, 0);
+        typeToCount.put(RecordType.SOA, 0);
+        typeToCount.put(RecordType.SRV, 0);
+        typeToCount.put(RecordType.TXT, 0);
+        for (DnsRecordSet recordSet : recordSets) {
+            Assert.assertNotNull(recordSet);
+            switch (recordSet.recordType()) {
+                case TXT:
+                    TxtRecordSet txtRS = (TxtRecordSet) recordSet;
+                    Assert.assertNotNull(txtRS);
+                    typeToCount.put(RecordType.TXT, typeToCount.get(RecordType.TXT) + 1);
+                    break;
+                case SRV:
+                    SrvRecordSet srvRS = (SrvRecordSet) recordSet;
+                    Assert.assertNotNull(srvRS);
+                    typeToCount.put(RecordType.SRV, typeToCount.get(RecordType.SRV) + 1);
+                    break;
+                case SOA:
+                    SoaRecordSet soaRS = (SoaRecordSet) recordSet;
+                    Assert.assertNotNull(soaRS);
+                    typeToCount.put(RecordType.SOA, typeToCount.get(RecordType.SOA) + 1);
+                    break;
+                case PTR:
+                    PtrRecordSet ptrRS = (PtrRecordSet) recordSet;
+                    Assert.assertNotNull(ptrRS);
+                    typeToCount.put(RecordType.PTR, typeToCount.get(RecordType.PTR) + 1);
+                    break;
+                case A:
+                    ARecordSet aRS = (ARecordSet) recordSet;
+                    Assert.assertNotNull(aRS);
+                    typeToCount.put(RecordType.A, typeToCount.get(RecordType.A) + 1);
+                    break;
+                case AAAA:
+                    AaaaRecordSet aaaaRS = (AaaaRecordSet) recordSet;
+                    Assert.assertNotNull(aaaaRS);
+                    typeToCount.put(RecordType.AAAA, typeToCount.get(RecordType.AAAA) + 1);
+                    break;
+                case CNAME:
+                    CNameRecordSet cnameRS = (CNameRecordSet) recordSet;
+                    Assert.assertNotNull(cnameRS);
+                    typeToCount.put(RecordType.CNAME, typeToCount.get(RecordType.CNAME) + 1);
+                    break;
+                case MX:
+                    MXRecordSet mxRS = (MXRecordSet) recordSet;
+                    Assert.assertNotNull(mxRS);
+                    typeToCount.put(RecordType.MX, typeToCount.get(RecordType.MX) + 1);
+                    break;
+                case NS:
+                    NSRecordSet nsRS = (NSRecordSet) recordSet;
+                    Assert.assertNotNull(nsRS);
+                    typeToCount.put(RecordType.NS, typeToCount.get(RecordType.NS) + 1);
+                    break;
+            }
+        }
+        Assert.assertTrue(typeToCount.get(RecordType.SOA) == 1);
+        Assert.assertTrue(typeToCount.get(RecordType.A) == 1);
+        Assert.assertTrue(typeToCount.get(RecordType.AAAA) == 1);
+        Assert.assertTrue(typeToCount.get(RecordType.MX) == 1);
+        Assert.assertTrue(typeToCount.get(RecordType.NS) == 2);
+        Assert.assertTrue(typeToCount.get(RecordType.TXT) == 2);
+        Assert.assertTrue(typeToCount.get(RecordType.SRV) == 1);
+        Assert.assertTrue(typeToCount.get(RecordType.PTR) == 2);
+        Assert.assertTrue(typeToCount.get(RecordType.CNAME) == 2);
         return dnsZone;
     }
 
