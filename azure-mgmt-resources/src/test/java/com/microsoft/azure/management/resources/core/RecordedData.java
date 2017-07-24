@@ -6,8 +6,6 @@
 
 package com.microsoft.azure.management.resources.core;
 
-import com.microsoft.azure.management.resources.core.NetworkCallRecord;
-
 import java.util.LinkedList;
 
 public class RecordedData {

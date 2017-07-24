@@ -59,10 +59,10 @@ public class DataLakeAnalyticsManagementTestBase extends TestBase {
         // the tests are running in.
         String adlaSuffix = "azuredatalakeanalytics.net";
 
-        addTextReplacementRule("https://(.*)." + adlaSuffix, FAKE_URI);
+        addTextReplacementRule("https://(.*)." + adlaSuffix, playbackUri);
 
         // Generate creds and a set of rest clients for catalog and job
-        ApplicationTokenCredentials credentials = new AzureTestCredentials(FAKE_URI, ZERO_TENANT, isPlaybackMode());
+        ApplicationTokenCredentials credentials = new AzureTestCredentials(playbackUri, ZERO_TENANT, isPlaybackMode());
         if (isRecordMode()) {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
             try {

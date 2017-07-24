@@ -24,7 +24,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.concurrent.TimeUnit;
 
-public abstract class TestBase /*extends MockIntegrationTestBase*/ {
+public abstract class TestBase {
     private PrintStream out;
 
     public static String generateRandomResourceName(String prefix, int maxLen) {
@@ -35,6 +35,11 @@ public abstract class TestBase /*extends MockIntegrationTestBase*/ {
         MOCK_ONLY,
         LIVE_ONLY,
         BOTH
+    }
+
+    public enum TestMode {
+        PLAYBACK,
+        RECORD
     }
 
     private final RunCondition runCondition;
@@ -59,29 +64,43 @@ public abstract class TestBase /*extends MockIntegrationTestBase*/ {
         }
     }
 
-    private static InterceptorManager.TestMode testMode = null;
+    private static TestMode testMode = null;
 
     private static void initTestMode() throws IOException{
         String azureTestMode = System.getenv("AZURE_TEST_MODE");
         if (azureTestMode != null) {
             if (azureTestMode.equalsIgnoreCase("Record")) {
-                testMode = InterceptorManager.TestMode.RECORD;
+                testMode = TestMode.RECORD;
             } else if (azureTestMode.equalsIgnoreCase("Playback")) {
-                testMode = InterceptorManager.TestMode.PLAYBACK;
+                testMode = TestMode.PLAYBACK;
             } else {
                 throw new IOException("Unknown AZURE_TEST_MODE: " + azureTestMode);
             }
         } else {
             System.out.print("Environment variable 'AZURE_TEST_MODE' has not been set yet. Use 'Playback' mode.");
-            testMode = InterceptorManager.TestMode.PLAYBACK;
+            testMode = TestMode.PLAYBACK;
         }
     }
 
 
     protected final static String ZERO_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
     protected final static String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
-    private static final String FAKE_URI_BASE = "http://localhost:";
-    protected static String FAKE_URI;
+    private static final String PLAYBACK_URI_BASE = "http://localhost:";
+    protected static String playbackUri;
+
+    public static boolean isPlaybackMode() {
+        if (testMode == null) try {
+            initTestMode();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Can't init test mode.");
+        }
+        return testMode == TestMode.PLAYBACK;
+    }
+
+    public static boolean isRecordMode() {
+        return  !isPlaybackMode();
+    }
 
     @Rule
     public TestName testName = new TestName();
@@ -89,37 +108,28 @@ public abstract class TestBase /*extends MockIntegrationTestBase*/ {
     protected InterceptorManager interceptorManager = null;
     private static DummyServer dummyServer = null;
 
-    public static boolean isPlaybackMode() {
-        if (testMode == null) try {
-            initTestMode();
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("can't read env var");
-        }
-        return testMode == InterceptorManager.TestMode.PLAYBACK;
-    }
-
-    public static boolean isRecordMode() {
-        return  !isPlaybackMode();
+    private static void printThreadInfo(String what) {
+        long id = Thread.currentThread().getId();
+        String name = Thread.currentThread().getName();
+        System.out.println(String.format("\n***\n*** [%s:%s] - %s\n***\n", name, id, what));
     }
 
     @BeforeClass
     public static void beforeClass() throws Exception {
+        printThreadInfo("beforeClass");
         initTestMode();
         if (isPlaybackMode()) {
             dummyServer = DummyServer.createOnAvailablePort();
-//            FAKE_URI = FAKE_URI_BASE + "8081";
-            FAKE_URI = FAKE_URI_BASE + dummyServer.getPort();
+            playbackUri = PLAYBACK_URI_BASE + dummyServer.getPort();
             dummyServer.start();
-
         } else {
-            FAKE_URI = FAKE_URI_BASE +"1234";
-
+            playbackUri = PLAYBACK_URI_BASE +"1234";
         }
     }
 
     @Before
     public void beforeTest() throws IOException {
+        printThreadInfo(String.format("%s: %s", "beforeTest", testName.getMethodName()));
         final String skipMessage = shouldCancelTest(isPlaybackMode());
         Assume.assumeTrue(skipMessage, skipMessage == null);
 
@@ -130,9 +140,9 @@ public abstract class TestBase /*extends MockIntegrationTestBase*/ {
         String defaultSubscription;
 
         if (isPlaybackMode()) {
-            credentials = new AzureTestCredentials(this.FAKE_URI, ZERO_TENANT, true);
+            credentials = new AzureTestCredentials(this.playbackUri, ZERO_TENANT, true);
             restClient = buildRestClient(new RestClient.Builder()
-                    .withBaseUrl(this.FAKE_URI + "/")
+                    .withBaseUrl(this.playbackUri + "/")
                     .withSerializerAdapter(new AzureJacksonAdapter())
                     .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                     .withCredentials(credentials)
@@ -142,7 +152,7 @@ public abstract class TestBase /*extends MockIntegrationTestBase*/ {
                     ,true);
 
             defaultSubscription = ZERO_SUBSCRIPTION;
-            System.out.println(this.FAKE_URI);
+            System.out.println(this.playbackUri);
             out = System.out;
             System.setOut(new PrintStream(new OutputStream() {
                 public void write(int b) {
@@ -150,7 +160,7 @@ public abstract class TestBase /*extends MockIntegrationTestBase*/ {
                 }
             }));
         }
-        else {
+        else { // Record mode
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
             credentials = ApplicationTokenCredentials.fromFile(credFile);
             restClient = buildRestClient(new RestClient.Builder()
@@ -168,8 +178,8 @@ public abstract class TestBase /*extends MockIntegrationTestBase*/ {
             defaultSubscription = credentials.defaultSubscriptionId();
             interceptorManager.addTextReplacementRule(defaultSubscription, ZERO_SUBSCRIPTION);
             interceptorManager.addTextReplacementRule(credentials.domain(), ZERO_TENANT);
-            interceptorManager.addTextReplacementRule("https://management.azure.com/", FAKE_URI + "/");
-            interceptorManager.addTextReplacementRule("https://graph.windows.net/", FAKE_URI + "/");
+            interceptorManager.addTextReplacementRule("https://management.azure.com/", playbackUri + "/");
+            interceptorManager.addTextReplacementRule("https://graph.windows.net/", playbackUri + "/");
         }
         initializeClients(restClient, defaultSubscription, credentials.domain());
     }
@@ -181,19 +191,6 @@ public abstract class TestBase /*extends MockIntegrationTestBase*/ {
         }
         cleanUpResources();
         interceptorManager.finalizeInterceptor();
-
-//        if (IS_MOCKED) {
-//            if (testRecord.networkCallRecords.size() > 0) {
-//                System.out.println("Remaining records " + testRecord.networkCallRecords.size() + " :");
-//                for (int index = 0; index < testRecord.networkCallRecords.size(); index++) {
-//                    NetworkCallRecord record = testRecord.networkCallRecords.get(index);
-//                    System.out.println(record.Method + " - " + record.Uri);
-//                }
-//                Assert.assertEquals(0, testRecord.networkCallRecords.size());
-//            }
-//            System.setOut(out);
-//        }
-//        resetTest(name.getMethodName());
     }
 
     @AfterClass

@@ -15,7 +15,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -23,9 +26,6 @@ import java.util.zip.GZIPInputStream;
  */
 public class InterceptorManager {
 
-//    private final static String MOCK_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
-//    private final static String MOCK_TENANT = "00000000-0000-0000-0000-000000000000";
-    //private final static String HOST = "localhost";
     private final static String RECORD_FOLDER = "session-records/";
 
     private Map<String, String> textReplacementRules = new HashMap<>();
@@ -36,23 +36,9 @@ public class InterceptorManager {
 
     private final String testName;
 
-    private final TestMode testMode;
+    private final TestBase.TestMode testMode;
 
-    public enum TestMode {
-        PLAYBACK,
-        RECORD
-    }
-
-//    public static InterceptorManager getInstance() throws IOException {
-//        if (instance == null) {
-//            instance = create();
-//        }
-//        return instance;
-//    }
-//
-//    private static InterceptorManager instance = null;
-
-    private InterceptorManager(String testName, TestMode testMode) {
+    private InterceptorManager(String testName, TestBase.TestMode testMode) {
         this.testName = testName;
         this.testMode = testMode;
     }
@@ -62,9 +48,8 @@ public class InterceptorManager {
     }
 
     // factory method
-    public static InterceptorManager create(String testName, TestMode testMode) throws IOException {
+    public static InterceptorManager create(String testName, TestBase.TestMode testMode) throws IOException {
         InterceptorManager interceptorManager = new InterceptorManager(testName, testMode);
-        //interceptorManager.initMode();
         SdkContext.setResourceNamerFactory(new TestResourceNamerFactory(interceptorManager));
         SdkContext.setDelayProvider(new TestDelayProvider(interceptorManager.isRecordMode()));
         SdkContext.setRxScheduler(Schedulers.trampoline());
@@ -73,30 +58,12 @@ public class InterceptorManager {
     }
 
     public boolean isRecordMode() {
-        return testMode == TestMode.RECORD;
+        return testMode == TestBase.TestMode.RECORD;
     }
 
     public boolean isPlaybackMode() {
-        return testMode == TestMode.PLAYBACK;
+        return testMode == TestBase.TestMode.PLAYBACK;
     }
-
-//    private void initMode() throws IOException{
-//        String azureTestMode = System.getenv("AZURE_TEST_MODE");
-//        if (azureTestMode != null) {
-//            if (azureTestMode.equalsIgnoreCase("Record")) {
-//                testMode = TestMode.RECORD;
-//            } else if (azureTestMode.equalsIgnoreCase("Playback")) {
-//                testMode = TestMode.PLAYBACK;
-//            } else {
-//                throw new IOException("Unknown AZURE_TEST_MODE: " + azureTestMode);
-//            }
-//        } else {
-//            System.out.print("Environment variable 'AZURE_TEST_MODE' has not been set yet. Use 'Playback' mode.");
-//            testMode = TestMode.PLAYBACK;
-//        }
-//    }
-
- //   private Map<String, Integer> callList = new HashMap<>();
 
     public Interceptor initInterceptor() throws IOException {
         switch (testMode) {
@@ -110,8 +77,6 @@ public class InterceptorManager {
                 };
             case PLAYBACK:
                 readDataFromFile();
-//                if (callList.size() > 0)
-//                    callList.clear();
                 return new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
@@ -180,29 +145,7 @@ public class InterceptorManager {
         String incomingUrl = applyReplacementRule(request.url().toString());
         String incomingMethod = request.method();
 
-        int index = 0;
         incomingUrl = removeHost(incomingUrl);
-
-
-//        String key = String.format("%s %s", incomingMethod, incomingUrl);
-//        if(callList.containsKey(key)) {
-//            Integer count = callList.get(key);
-//            callList.put(key, count+1);
-//        } else {
-//            callList.put(key, 1);
-//        }
-
-        //List<NetworkCallRecord> rl = new ArrayList<>();
-
-//        NetworkCallRecord networkCallRecord = null;
-//        for (NetworkCallRecord record : recordedData.getNetworkCallRecords()) {
-//            if (record.Method.equalsIgnoreCase(incomingMethod) && removeHost(record.Uri).equalsIgnoreCase(incomingUrl)) {
-//                networkCallRecord = record;
-//                //rl.add(record);
-//                break;
-//            }
-//            index++;
-//        }
         NetworkCallRecord networkCallRecord = null;
         synchronized (recordedData) {
             for (Iterator<NetworkCallRecord> iterator = recordedData.getNetworkCallRecords().iterator(); iterator.hasNext(); ) {
@@ -210,17 +153,10 @@ public class InterceptorManager {
                 if (record.Method.equalsIgnoreCase(incomingMethod) && removeHost(record.Uri).equalsIgnoreCase(incomingUrl)) {
                     networkCallRecord = record;
                     iterator.remove();
-                    //rl.add(record);
                     break;
                 }
             }
         }
-
-
-//        int foundQnty = rl.size();
-//        if (foundQnty > 1) {
-//            int i = 0;
-//        }
 
         if (networkCallRecord == null) {
             System.out.println("NOT FOUND - " + incomingMethod + " " + incomingUrl);
@@ -228,22 +164,10 @@ public class InterceptorManager {
             throw new IOException("==> Unexpected request: " + incomingMethod + " " + incomingUrl);
         }
 
-        //NetworkCallRecord networkCallRecord = recordedData.getNetworkCallRecords().remove(index);
-        //recordedData.getNetworkCallRecords().remove(networkCallRecord);
-        //recordedData.getNetworkCallRecords().remove(index);
-
         String url = removeHost(networkCallRecord.Uri);
         String method = networkCallRecord.Method;
 
-
-
         int recordStatusCode = Integer.parseInt(networkCallRecord.Response.get("StatusCode"));
-
-        //        Response.Builder responseBuilder = new Response.Builder()
-//                .code(recordStatusCode)
-//                .protocol(Protocol.HTTP_1_1)
-//                .request(request);
-
 
         Response originalResponse = chain.proceed(request);
         Response.Builder responseBuilder = originalResponse.newBuilder()
@@ -281,7 +205,6 @@ public class InterceptorManager {
 
         Response newResponce = responseBuilder.build();
 
-        //chain.proceed(request);
         return newResponce;
     }
 
@@ -364,9 +287,6 @@ public class InterceptorManager {
     private String removeHost(String url) {
         URI uri = URI.create(url);
         return String.format("%s?%s", uri.getPath(), uri.getQuery());
-//        url = url.replace(replacementUrl, "");
-//        url = url.substring(url.indexOf("/"));
-//        return url;
     }
 
     public void pushVariable(String variable) {
@@ -382,6 +302,4 @@ public class InterceptorManager {
             return recordedData.getVariables().remove();
         }
     }
-
-
 }
