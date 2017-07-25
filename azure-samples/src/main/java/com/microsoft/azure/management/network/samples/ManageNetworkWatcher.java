@@ -294,11 +294,10 @@ public final class ManageNetworkWatcher {
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().deleteByName(rgName);
-                System.out.println("Deleted Resource Group: " + rgName);
+                azure.resourceGroups().beginDeleteByName(rgName);
                 if (nw != null) {
-                    System.out.println("Deleting network watcher: " + nw.name());
-                    azure.networkWatchers().deleteById(nw.id());
+                    System.out.println("Deleting network watcher resource group: " + nw.name());
+                    azure.resourceGroups().beginDeleteByName(nw.resourceGroupName());
                 }
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
