@@ -61,9 +61,4 @@ public class NetworkSampleTests extends SamplesTestBase {
     public void testManageVirtualNetworkAsync() {
         Assert.assertTrue(ManageVirtualNetworkAsync.runSample(azure));
     }
-
-    @Test
-    public void testManageNetworkWatcher() {
-        Assert.assertTrue(ManageNetworkWatcher.runSample(azure));
-    }
 }

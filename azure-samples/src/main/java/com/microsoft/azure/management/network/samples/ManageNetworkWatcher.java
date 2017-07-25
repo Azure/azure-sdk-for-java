@@ -23,6 +23,7 @@ import com.microsoft.azure.management.network.SecurityGroupView;
 import com.microsoft.azure.management.network.Topology;
 import com.microsoft.azure.management.network.VerificationIPFlow;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.azure.management.storage.StorageAccount;
@@ -35,7 +36,6 @@ import com.microsoft.azure.storage.blob.ListBlobItem;
 import com.microsoft.rest.LogLevel;
 
 import java.io.File;
-import java.util.Arrays;
 
 /**
  * Azure Network sample for managing network watcher -
@@ -118,21 +118,19 @@ public final class ManageNetworkWatcher {
                         .attach()
                     .create();
             System.out.println("Creating virtual network...");
-            Network virtualNetwork = azure.networks().define(vnetName)
+            Creatable<Network> virtualNetworkDefinition = azure.networks().define(vnetName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withAddressSpace("192.168.0.0/16")
                     .defineSubnet(subnetName)
                         .withAddressPrefix("192.168.2.0/24")
                         .withExistingNetworkSecurityGroup(nsg)
-                        .attach()
-                    .create();
+                        .attach();
             System.out.println("Creating virtual machine...");
             VirtualMachine vm = azure.virtualMachines().define(vmName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
-                    .withExistingPrimaryNetwork(virtualNetwork)
-                    .withSubnet(subnetName)
+                    .withNewPrimaryNetwork(virtualNetworkDefinition)
                     .withPrimaryPrivateIPAddressDynamic()
                     .withNewPrimaryPublicIPAddress(dnsLabel)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
@@ -163,7 +161,6 @@ public final class ManageNetworkWatcher {
                     .withTimeLimitInSeconds(1500)
                     .definePacketCaptureFilter()
                         .withProtocol(PcProtocol.TCP)
-                        .withLocalIPAddresses(Arrays.asList("127.0.0.1", "127.0.0.5"))
                         .attach()
                     .create();
             System.out.println("Created packet capture");
@@ -240,7 +237,7 @@ public final class ManageNetworkWatcher {
 
             // wait for flow log to log an event
             System.out.println("Waiting for flow log to log an event...");
-            Thread.sleep(250000);
+            SdkContext.sleep(250000);
 
             // Disable NSG flow log
             System.out.println("Disabling flow log...");
