@@ -392,10 +392,6 @@ var codegen = function(project, cb) {
     if (mappings[project].fluent !== null && mappings[project].fluent === false) {
         generator = '';
     }
-    var modeler = 'Swagger'; // default
-    if (mappings[project].modeler !== undefined) {
-        modeler = mappings[project].modeler;
-    }
     cmd = autoRestExe + ' --java ' +
                         ' --azure-arm ' +
                         generator +
