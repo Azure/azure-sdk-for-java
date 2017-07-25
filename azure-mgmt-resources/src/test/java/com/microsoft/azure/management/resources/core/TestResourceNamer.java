@@ -9,11 +9,11 @@ package com.microsoft.azure.management.resources.core;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 
 public class TestResourceNamer extends ResourceNamer {
-    private final MockIntegrationTestBase mockIntegrationTestBase;
+    private final InterceptorManager interceptorManager;
 
-    public TestResourceNamer(String name, MockIntegrationTestBase mockIntegrationTestBase) {
+    public TestResourceNamer(String name, InterceptorManager interceptorManager) {
         super(name);
-        this.mockIntegrationTestBase = mockIntegrationTestBase;
+        this.interceptorManager = interceptorManager;
     }
 
     /**
@@ -25,24 +25,24 @@ public class TestResourceNamer extends ResourceNamer {
      */
     @Override
     public String randomName(String prefix, int maxLen) {
-        if (MockIntegrationTestBase.IS_MOCKED) {
-            return mockIntegrationTestBase.popVariable();
+        if (interceptorManager.isPlaybackMode()) {
+            return interceptorManager.popVariable();
         }
         String randomName = super.randomName(prefix, maxLen);
 
-        mockIntegrationTestBase.pushVariable(randomName);
+        interceptorManager.pushVariable(randomName);
 
         return randomName;
     }
 
     @Override
     public String randomUuid() {
-        if (MockIntegrationTestBase.IS_MOCKED) {
-            return mockIntegrationTestBase.popVariable();
+        if (interceptorManager.isPlaybackMode()) {
+            return interceptorManager.popVariable();
         }
         String randomName = super.randomUuid();
 
-        mockIntegrationTestBase.pushVariable(randomName);
+        interceptorManager.pushVariable(randomName);
 
         return randomName;
     }

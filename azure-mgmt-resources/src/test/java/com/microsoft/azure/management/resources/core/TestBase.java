@@ -14,17 +14,17 @@ import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.RestClient;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Before;
+import com.microsoft.rest.interceptors.LoggingInterceptor;
+import org.junit.*;
+import org.junit.rules.TestName;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.concurrent.TimeUnit;
 
-public abstract class TestBase extends MockIntegrationTestBase {
+public abstract class TestBase {
     private PrintStream out;
 
     public static String generateRandomResourceName(String prefix, int maxLen) {
@@ -37,6 +37,11 @@ public abstract class TestBase extends MockIntegrationTestBase {
         BOTH
     }
 
+    public enum TestMode {
+        PLAYBACK,
+        RECORD
+    }
+
     private final RunCondition runCondition;
 
     protected TestBase() {
@@ -47,41 +52,107 @@ public abstract class TestBase extends MockIntegrationTestBase {
         this.runCondition = runCondition;
     }
 
-    private String shouldCancelTest() {
+    private String shouldCancelTest(boolean isPlaybackMode) {
         // Determine whether to run the test based on the condition the test has been configured with
         switch (this.runCondition) {
         case MOCK_ONLY:
-            return (!IS_MOCKED) ? "Test configured to run only as mocked, not live." : null;
+            return (!isPlaybackMode) ? "Test configured to run only as mocked, not live." : null;
         case LIVE_ONLY:
-            return (IS_MOCKED) ? "Test configured to run only as live, not mocked." : null;
+            return (isPlaybackMode) ? "Test configured to run only as live, not mocked." : null;
         default:
             return null;
         }
     }
 
+    private static TestMode testMode = null;
+
+    private static void initTestMode() throws IOException{
+        String azureTestMode = System.getenv("AZURE_TEST_MODE");
+        if (azureTestMode != null) {
+            if (azureTestMode.equalsIgnoreCase("Record")) {
+                testMode = TestMode.RECORD;
+            } else if (azureTestMode.equalsIgnoreCase("Playback")) {
+                testMode = TestMode.PLAYBACK;
+            } else {
+                throw new IOException("Unknown AZURE_TEST_MODE: " + azureTestMode);
+            }
+        } else {
+            System.out.print("Environment variable 'AZURE_TEST_MODE' has not been set yet. Use 'Playback' mode.");
+            testMode = TestMode.PLAYBACK;
+        }
+    }
+
+
+    protected final static String ZERO_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
+    protected final static String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
+    private static final String PLAYBACK_URI_BASE = "http://localhost:";
+    protected static String playbackUri;
+
+    public static boolean isPlaybackMode() {
+        if (testMode == null) try {
+            initTestMode();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Can't init test mode.");
+        }
+        return testMode == TestMode.PLAYBACK;
+    }
+
+    public static boolean isRecordMode() {
+        return  !isPlaybackMode();
+    }
+
+    @Rule
+    public TestName testName = new TestName();
+
+    protected InterceptorManager interceptorManager = null;
+    private static DummyServer dummyServer = null;
+
+    private static void printThreadInfo(String what) {
+        long id = Thread.currentThread().getId();
+        String name = Thread.currentThread().getName();
+        System.out.println(String.format("\n***\n*** [%s:%s] - %s\n***\n", name, id, what));
+    }
+
+    @BeforeClass
+    public static void beforeClass() throws Exception {
+        printThreadInfo("beforeClass");
+        initTestMode();
+        if (isPlaybackMode()) {
+            dummyServer = DummyServer.createOnAvailablePort();
+            playbackUri = PLAYBACK_URI_BASE + dummyServer.getPort();
+            dummyServer.start();
+        } else {
+            playbackUri = PLAYBACK_URI_BASE +"1234";
+        }
+    }
+
     @Before
-    public void setup() throws Exception {
-        final String skipMessage = shouldCancelTest();
+    public void beforeTest() throws IOException {
+        printThreadInfo(String.format("%s: %s", "beforeTest", testName.getMethodName()));
+        final String skipMessage = shouldCancelTest(isPlaybackMode());
         Assume.assumeTrue(skipMessage, skipMessage == null);
-        addTextReplacementRule("https://management.azure.com/", this.mockUri() + "/");
-        addTextReplacementRule("https://graph.windows.net/", this.mockUri() + "/");
-        setupTest(name.getMethodName());
+
+        interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
+
         ApplicationTokenCredentials credentials;
         RestClient restClient;
         String defaultSubscription;
 
-        if (IS_MOCKED) {
-            credentials = new AzureTestCredentials(this.mockUri());
+        if (isPlaybackMode()) {
+            credentials = new AzureTestCredentials(this.playbackUri, ZERO_TENANT, true);
             restClient = buildRestClient(new RestClient.Builder()
-                    .withBaseUrl(this.mockUri() + "/")
+                    .withBaseUrl(this.playbackUri + "/")
                     .withSerializerAdapter(new AzureJacksonAdapter())
                     .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                     .withCredentials(credentials)
-                    .withLogLevel(LogLevel.BODY_AND_HEADERS)
-                    .withNetworkInterceptor(this.interceptor()), true);
+                    .withLogLevel(LogLevel.NONE)
+                    .withNetworkInterceptor(new LoggingInterceptor(LogLevel.BODY_AND_HEADERS))
+                    .withNetworkInterceptor(interceptorManager.initInterceptor())
+                    ,true);
 
-            defaultSubscription = MOCK_SUBSCRIPTION;
-            System.out.println(this.mockUri());
+            defaultSubscription = ZERO_SUBSCRIPTION;
+            System.out.println(this.playbackUri);
             out = System.out;
             System.setOut(new PrintStream(new OutputStream() {
                 public void write(int b) {
@@ -89,9 +160,8 @@ public abstract class TestBase extends MockIntegrationTestBase {
                 }
             }));
         }
-        else {
+        else { // Record mode
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
-
             credentials = ApplicationTokenCredentials.fromFile(credFile);
             restClient = buildRestClient(new RestClient.Builder()
                     .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
@@ -99,41 +169,45 @@ public abstract class TestBase extends MockIntegrationTestBase {
                     .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                     .withInterceptor(new ProviderRegistrationInterceptor(credentials))
                     .withCredentials(credentials)
-                    .withLogLevel(LogLevel.BODY_AND_HEADERS)
+                    .withLogLevel(LogLevel.NONE)
                     .withReadTimeout(3, TimeUnit.MINUTES)
-                    .withNetworkInterceptor(this.interceptor()), false);
+                    .withNetworkInterceptor(new LoggingInterceptor(LogLevel.BODY_AND_HEADERS))
+                    .withNetworkInterceptor(interceptorManager.initInterceptor())
+                    ,false);
 
             defaultSubscription = credentials.defaultSubscriptionId();
-            addTextReplacementRule(defaultSubscription, MOCK_SUBSCRIPTION);
-            addTextReplacementRule(credentials.domain(), MOCK_TENANT);
+            interceptorManager.addTextReplacementRule(defaultSubscription, ZERO_SUBSCRIPTION);
+            interceptorManager.addTextReplacementRule(credentials.domain(), ZERO_TENANT);
+            interceptorManager.addTextReplacementRule("https://management.azure.com/", playbackUri + "/");
+            interceptorManager.addTextReplacementRule("https://graph.windows.net/", playbackUri + "/");
         }
         initializeClients(restClient, defaultSubscription, credentials.domain());
     }
 
     @After
-    public void cleanup() throws Exception {
-        if(shouldCancelTest() != null) {
+    public void afterTest() throws IOException {
+        if(shouldCancelTest(isPlaybackMode()) != null) {
             return;
         }
         cleanUpResources();
-        if (IS_MOCKED) {
-            if (testRecord.networkCallRecords.size() > 0) {
-                System.out.println("Remaining records " + testRecord.networkCallRecords.size() + " :");
-                for (int index = 0; index < testRecord.networkCallRecords.size(); index++) {
-                    NetworkCallRecord record = testRecord.networkCallRecords.get(index);
-                    System.out.println(record.Method + " - " + record.Uri);
-                }
-                Assert.assertEquals(0, testRecord.networkCallRecords.size());
-            }
-            System.setOut(out);
+        interceptorManager.finalizeInterceptor();
+    }
+
+    @AfterClass
+    public static void afterClass() {
+        if (isPlaybackMode()) {
+            dummyServer.stop();
         }
-        resetTest(name.getMethodName());
+    }
+
+    protected void addTextReplacementRule(String from, String to ) {
+        interceptorManager.addTextReplacementRule(from, to);
     }
 
     protected RestClient buildRestClient(RestClient.Builder builder, boolean isMocked) {
         return builder.build();
     }
 
-    protected abstract void initializeClients(RestClient restClient, String defaultSubscription, String domain);
+    protected abstract void initializeClients(RestClient restClient, String defaultSubscription, String domain) throws IOException;
     protected abstract void cleanUpResources();
 }

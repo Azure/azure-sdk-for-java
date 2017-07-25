@@ -127,12 +127,6 @@
         <scope>test</scope>
       </dependency>
       <dependency>
-        <groupId>com.github.tomakehurst</groupId>
-        <artifactId>wiremock</artifactId>
-        <version>2.5.1</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>2.4</version>
@@ -143,10 +137,21 @@
         <artifactId>azure-annotations</artifactId>
         <version>1.2.0</version>
       </dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-server</artifactId>
+        <version>9.2.21.v20170120</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
-
-  <build>
+  <dependencies>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+<build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
