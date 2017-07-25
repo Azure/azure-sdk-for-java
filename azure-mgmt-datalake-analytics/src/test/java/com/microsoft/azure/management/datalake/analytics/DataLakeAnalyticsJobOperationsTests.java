@@ -37,7 +37,7 @@ public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManage
         UUID jobId;
         UUID secondJobId;
 
-        if (IS_RECORD) {
+        if (isRecordMode()) {
             jobId = UUID.randomUUID();
             secondJobId = UUID.randomUUID();
             addTextReplacementRule(jobId.toString(), mockedId.toString());

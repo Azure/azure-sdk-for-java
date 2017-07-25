@@ -19,6 +19,7 @@ import com.microsoft.rest.RestClient;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.UUID;
@@ -36,7 +37,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
     protected static String catalogCreationScript;
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) throws IOException {
         super.initializeClients(restClient, defaultSubscription, domain);
         // define catalog items
         dbName = generateRandomResourceName("testdb1", 15);
@@ -144,7 +145,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         try {
             UUID mockId = UUID.fromString("b9e2ef31-a25d-4a8f-be26-f558b823376f");
             UUID idToUse;
-            if(IS_RECORD) {
+            if(isRecordMode()) {
                 idToUse = UUID.randomUUID();
                 addTextReplacementRule(idToUse.toString(), mockId.toString());
             }
@@ -328,7 +329,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         // setup job ids for mocks
         UUID mockedId = UUID.fromString("fa9fa5bf-ff12-48af-8a0b-2800049ef23e");
         UUID toUse;
-        if(IS_RECORD) {
+        if(isRecordMode()) {
             toUse = UUID.randomUUID();
             addTextReplacementRule(toUse.toString(), mockedId.toString());
         }
@@ -364,7 +365,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         // setup job ids for mocks
         UUID mockedId2 = UUID.fromString("54a54b5b-6209-455e-8bd1-832a6fcff3d8");
         UUID toUse2;
-        if(IS_RECORD) {
+        if(isRecordMode()) {
             toUse2 = UUID.randomUUID();
             addTextReplacementRule(toUse2.toString(), mockedId2.toString());
         }

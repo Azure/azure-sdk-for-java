@@ -41,7 +41,7 @@ public class SourceControlTests extends AppServiceTest {
                     .attach()
                 .create();
         Assert.assertNotNull(webApp);
-        if (!IS_MOCKED) {
+        if (!isPlaybackMode()) {
             Response response = curl("http://" + WEBAPP_NAME + "." + "azurewebsites.net");
             Assert.assertEquals(200, response.code());
             String body = response.body().string();
