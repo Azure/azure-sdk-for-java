@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.scheduler;
 
+import com.microsoft.azure.CloudException;
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
@@ -19,6 +21,8 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.scheduler.implementation.JobCollectionsInner;
 import com.microsoft.azure.management.scheduler.implementation.ScheduleServiceManager;
+import rx.Completable;
+import rx.Observable;
 
 /**
  * Entry point to Job Collection management API for Scheduler service in Azure.
@@ -36,4 +40,74 @@ public interface JobCollections extends
     SupportsListingByResourceGroup<JobCollection>,
     SupportsGettingByResourceGroup<JobCollection>,
     SupportsListing<JobCollection> {
+
+    /***********************************************************
+     * Actions
+     ***********************************************************/
+
+    /**
+     * Enables all of the jobs in the job collection.
+     *
+     * @param resourceGroupName the resource group name
+     * @param jobCollectionName the job collection name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void enable(String resourceGroupName, String jobCollectionName);
+
+    /**
+     * Enables all of the jobs in the job collection.
+     *
+     * @param resourceGroupName the resource group name
+     * @param jobCollectionName the job collection name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return a representation of the future computation of this call
+     */
+    Completable enableAsync(String resourceGroupName, String jobCollectionName);
+
+    /**
+     * Disables all of the jobs in the job collection.
+     *
+     * @param resourceGroupName the resource group name
+     * @param jobCollectionName the job collection name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void disable(String resourceGroupName, String jobCollectionName);
+
+    /**
+     * Disables all of the jobs in the job collection.
+     *
+     * @param resourceGroupName the resource group name
+     * @param jobCollectionName the job collection name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return a representation of the future computation of this call
+     */
+    Completable disableAsync(String resourceGroupName, String jobCollectionName);
+
+    /**
+     * Lists job history.
+     *
+     * @param resourceGroupName the resource group name
+     * @param jobCollectionName the job collection name
+     * @param jobName the job name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return a representation of the future computation of this call
+     */
+    PagedList<JobHistory> listJobHistory(String resourceGroupName, String jobCollectionName, String jobName);
+
+    /**
+     * Lists job history.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param jobCollectionName The job collection name.
+     * @param jobName The job name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;JobHistoryDefinitionInner&gt; object
+     */
+    Observable<JobHistory> listJobHistoryAsync(String resourceGroupName, String jobCollectionName, String jobName);
 }

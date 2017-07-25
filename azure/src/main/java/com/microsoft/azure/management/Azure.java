@@ -710,7 +710,7 @@ public final class Azure {
      * @return entry point to managing Search services.
      */
     @Beta(SinceVersion.V1_2_0)
-    public JobCollections jobScheduler() {
+    public JobCollections jobCollections() {
         return schedulerManager.jobCollections();
     }
 

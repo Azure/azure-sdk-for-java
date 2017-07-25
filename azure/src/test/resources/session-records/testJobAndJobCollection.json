@@ -1,0 +1,897 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:12:45 GMT",
+      "content-length" : "1488",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14997",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "62301888-aac7-4a95-a3b8-09f4e6c8ffbc",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201245Z:62301888-aac7-4a95-a3b8-09f4e6c8ffbc",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "62301888-aac7-4a95-a3b8-09f4e6c8ffbc",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Default-Storage-EastUS\",\"name\":\"Default-Storage-EastUS\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg0fb824152\",\"name\":\"javacsmrg0fb824152\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgbb127984f\",\"name\":\"javacsmrgbb127984f\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/linux-rg\",\"name\":\"linux-rg\",\"location\":\"southcentralus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-webapp-170317114541\",\"name\":\"rg-webapp-170317114541\",\"location\":\"eastus2\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc19713b\",\"name\":\"rgjobc19713b\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgtodelete\",\"name\":\"rgtodelete\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/squarerg\",\"name\":\"squarerg\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Default-Storage-EastUS/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:12:46 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "28",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14996",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "3d9571b6-c269-4da8-81a1-53bb89d3c408",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "249",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201246Z:3d9571b6-c269-4da8-81a1-53bb89d3c408",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "e1de1910-c08e-4e65-a181-f21e8d109c4b",
+      "Body" : "{\"value\":[],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg0fb824152/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:12:46 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "28",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14995",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "67630d9c-d38c-4b1d-89df-002933a96f5c",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "248",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201247Z:67630d9c-d38c-4b1d-89df-002933a96f5c",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "2187e1a7-076c-4a3b-8543-75455a239310",
+      "Body" : "{\"value\":[],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgbb127984f/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:12:47 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "28",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14994",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "c9f78f79-55fb-42e9-b917-fcfc56ef505b",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "247",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201247Z:c9f78f79-55fb-42e9-b917-fcfc56ef505b",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "1da94b0b-8482-4666-85be-80212001ff7e",
+      "Body" : "{\"value\":[],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/linux-rg/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:12:47 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "28",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14993",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "6d01a67e-1b23-4680-9483-b0bbf433c737",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "246",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201247Z:6d01a67e-1b23-4680-9483-b0bbf433c737",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "32029bca-9b2a-44b9-bada-f9ada956f2d3",
+      "Body" : "{\"value\":[],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-webapp-170317114541/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:12:47 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "28",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14992",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "154d070b-3799-4a40-8234-754f905e7a68",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "245",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201248Z:154d070b-3799-4a40-8234-754f905e7a68",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "efa01bac-3323-460e-8df3-bb32468a1198",
+      "Body" : "{\"value\":[],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc19713b/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:12:48 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "344",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14991",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "2484013f-bba8-42ad-bce8-773c3179762e",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "244",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201248Z:2484013f-bba8-42ad-bce8-773c3179762e",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "94ca2a31-a9e8-4374-a04a-46b962abd2f5",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc19713b/providers/Microsoft.Scheduler/jobCollections/jobs19713b\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs19713b\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"P10Premium\"},\"state\":\"Disabled\"}}],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgtodelete/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:12:49 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "28",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14990",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "2ad9d386-c55b-4f6c-8008-c449ae2b732b",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "243",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201249Z:2ad9d386-c55b-4f6c-8008-c449ae2b732b",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "4b1d0c3d-9939-4333-b228-a44a2356918a",
+      "Body" : "{\"value\":[],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/squarerg/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:12:51 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "28",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14989",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "07be6f57-54a6-46b9-a5ad-3ce9cf8ee0d1",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "242",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201251Z:07be6f57-54a6-46b9-a5ad-3ce9cf8ee0d1",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "abe0b7ae-0683-4d90-8774-1b9d50d28add",
+      "Body" : "{\"value\":[],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgjobc625446?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:12:52 GMT",
+      "content-length" : "177",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "6096929c-fae7-4dc6-9fe6-c47f3d80cc68",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201252Z:6096929c-fae7-4dc6-9fe6-c47f3d80cc68",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "6096929c-fae7-4dc6-9fe6-c47f3d80cc68",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446\",\"name\":\"rgjobc625446\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446/providers/Microsoft.Scheduler/jobCollections/jobs625446?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:12:54 GMT",
+      "content-length" : "313",
+      "server" : "Microsoft-IIS/8.5",
+      "expires" : "-1",
+      "x-ms-ratelimit-burst-remaining-scheduler-writes" : "59",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "23d9d2ba-b4f4-4da8-b03d-0456a852bce6",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "299",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201255Z:23d9d2ba-b4f4-4da8-b03d-0456a852bce6",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "ef70183e-c3d5-4c05-8648-4811a2541321",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446/providers/Microsoft.Scheduler/jobCollections/jobs625446\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs625446\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"Standard\"},\"state\":\"Enabled\"}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446/providers/Microsoft.Scheduler/jobCollections/jobs625446/jobs/job625446?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:12:56 GMT",
+      "content-length" : "596",
+      "server" : "Microsoft-IIS/8.5",
+      "expires" : "-1",
+      "x-ms-ratelimit-burst-remaining-scheduler-writes" : "58",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "89a11912-3fb0-4d07-bfc9-dffefcc65f73",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "599",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201256Z:89a11912-3fb0-4d07-bfc9-dffefcc65f73",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "75989a2c-61d5-4a01-be1c-b12b23972a05",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446/providers/Microsoft.Scheduler/jobCollections/jobs625446/jobs/job625446\",\"type\":\"Microsoft.Scheduler/jobCollections/jobs\",\"name\":\"jobs625446/job625446\",\"properties\":{\"startTime\":\"2017-07-25T20:12:55.629Z\",\"action\":{\"request\":{\"uri\":\"http://www.bing.com\",\"method\":\"GET\"},\"type\":\"Http\",\"retryPolicy\":{\"retryType\":\"fixed\"}},\"recurrence\":{\"frequency\":\"minute\",\"count\":2,\"interval\":1},\"state\":\"enabled\",\"status\":{\"nextExecutionTime\":\"2017-07-25T20:13:55.629Z\",\"executionCount\":0,\"failureCount\":0,\"faultedCount\":0}}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446/providers/Microsoft.Scheduler/jobCollections/jobs625446/jobs?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:14:01 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "675",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14987",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "cc8cd5b5-17c1-4843-81ad-ae11c280e3ef",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "249",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201402Z:cc8cd5b5-17c1-4843-81ad-ae11c280e3ef",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "bbf995c9-79d3-4ffd-a0d7-4a100e6d94a2",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446/providers/Microsoft.Scheduler/jobCollections/jobs625446/jobs/job625446\",\"type\":\"Microsoft.Scheduler/jobCollections/jobs\",\"name\":\"jobs625446/job625446\",\"properties\":{\"startTime\":\"2017-07-25T20:12:55.629Z\",\"action\":{\"request\":{\"uri\":\"http://www.bing.com\",\"method\":\"GET\"},\"type\":\"Http\",\"retryPolicy\":{\"retryType\":\"fixed\"}},\"recurrence\":{\"frequency\":\"minute\",\"count\":2,\"interval\":1},\"state\":\"enabled\",\"status\":{\"lastExecutionTime\":\"2017-07-25T20:13:56.5792053Z\",\"nextExecutionTime\":\"2017-07-25T20:14:55.629Z\",\"executionCount\":1,\"failureCount\":0,\"faultedCount\":0}}}],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446/providers/Microsoft.Scheduler/jobCollections/jobs625446/jobs/jobs625446%2Fjob625446/history?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:14:01 GMT",
+      "content-length" : "296",
+      "server" : "Microsoft-IIS/8.5",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14986",
+      "StatusCode" : "404",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "b6b63c40-8f73-45bf-bd9a-fcb7fa8714a0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "248",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201402Z:b6b63c40-8f73-45bf-bd9a-fcb7fa8714a0",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "d02da61c-b3c9-4498-a04e-5d93279c9ca5",
+      "Body" : "{\"message\":\"No HTTP resource was found that matches the request URI 'https://schedrp-us1.windows.net/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446/providers/Microsoft.Scheduler/jobCollections/jobs625446/jobs/jobs625446/job625446/history?api-version=2016-03-01'.\"}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:14:01 GMT",
+      "content-length" : "1666",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14985",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "d62017b8-5c59-48b4-88d4-0ab2d590cb0d",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201402Z:d62017b8-5c59-48b4-88d4-0ab2d590cb0d",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "d62017b8-5c59-48b4-88d4-0ab2d590cb0d",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Default-Storage-EastUS\",\"name\":\"Default-Storage-EastUS\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg0fb824152\",\"name\":\"javacsmrg0fb824152\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgbb127984f\",\"name\":\"javacsmrgbb127984f\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/linux-rg\",\"name\":\"linux-rg\",\"location\":\"southcentralus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-webapp-170317114541\",\"name\":\"rg-webapp-170317114541\",\"location\":\"eastus2\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc19713b\",\"name\":\"rgjobc19713b\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446\",\"name\":\"rgjobc625446\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgtodelete\",\"name\":\"rgtodelete\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/squarerg\",\"name\":\"squarerg\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Default-Storage-EastUS/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:14:02 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "28",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14984",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "ea2fd061-c403-4345-8cc6-ef9993492ba8",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "247",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201403Z:ea2fd061-c403-4345-8cc6-ef9993492ba8",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "b0f98594-eb28-4f3e-bcfb-87216dd329ae",
+      "Body" : "{\"value\":[],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg0fb824152/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:14:02 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "28",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14983",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "590f12e8-5d85-483b-a344-2f52a46790d7",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "246",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201403Z:590f12e8-5d85-483b-a344-2f52a46790d7",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "f29ebfb2-f401-45ed-8799-340a638ccd33",
+      "Body" : "{\"value\":[],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgbb127984f/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:14:02 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "28",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14982",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "809d6dcc-5222-4838-810f-cb7cbdef630c",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "245",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201403Z:809d6dcc-5222-4838-810f-cb7cbdef630c",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "661efb78-9acb-4302-a43c-36b8a372974e",
+      "Body" : "{\"value\":[],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/linux-rg/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:14:03 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "28",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14981",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "210a31ad-b527-47e0-a4ca-a42f440cc87c",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "244",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201404Z:210a31ad-b527-47e0-a4ca-a42f440cc87c",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "cd5da13c-111f-41b8-86a4-72899fac6a0f",
+      "Body" : "{\"value\":[],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-webapp-170317114541/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:14:03 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "28",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14980",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "29b21f7b-fd4e-45e0-a2bc-3cafa6c78056",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "243",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201404Z:29b21f7b-fd4e-45e0-a2bc-3cafa6c78056",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "4e3367f9-5b23-40f3-98af-aaa99c0cb726",
+      "Body" : "{\"value\":[],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc19713b/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:14:03 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "344",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14979",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "4f8118bc-300c-4e31-ad71-f0261b1cab5f",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "242",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201404Z:4f8118bc-300c-4e31-ad71-f0261b1cab5f",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "66b3e06f-18b9-47d4-901c-aa653c08e457",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc19713b/providers/Microsoft.Scheduler/jobCollections/jobs19713b\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs19713b\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"P10Premium\"},\"state\":\"Disabled\"}}],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:14:06 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "341",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14978",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "b9195b46-b753-4761-92bf-df942d73ca7a",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "241",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201406Z:b9195b46-b753-4761-92bf-df942d73ca7a",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "71e3fc86-b2ea-4ea2-ba34-3498a03fa52a",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446/providers/Microsoft.Scheduler/jobCollections/jobs625446\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs625446\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"Standard\"},\"state\":\"Enabled\"}}],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgtodelete/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:14:06 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "28",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14977",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "db311f07-cfd8-45ac-88f7-3939a42790fe",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "240",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201406Z:db311f07-cfd8-45ac-88f7-3939a42790fe",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "3c39b972-f8cd-4eb3-897e-7f09b570a775",
+      "Body" : "{\"value\":[],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/squarerg/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:14:09 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "28",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14976",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "c1af1af5-4aab-4777-8776-643f8d3a1802",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "239",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201409Z:c1af1af5-4aab-4777-8776-643f8d3a1802",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "9013ebf1-4e2f-4943-ae1a-60fddc2aae82",
+      "Body" : "{\"value\":[],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446/providers/Microsoft.Scheduler/jobCollections/jobs625446?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:14:09 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "313",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14975",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "343dfd5f-6223-48d2-ab12-8976d906db7e",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "238",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201409Z:343dfd5f-6223-48d2-ab12-8976d906db7e",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "2bdf736c-26e7-4771-839d-dca678fdcdb7",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446/providers/Microsoft.Scheduler/jobCollections/jobs625446\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs625446\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"Standard\"},\"state\":\"Enabled\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446/providers/Microsoft.Scheduler/jobCollections/jobs625446?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:14:10 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "313",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14974",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "85fb058b-3c73-4904-8148-6f641d28eedf",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "237",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201410Z:85fb058b-3c73-4904-8148-6f641d28eedf",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "fd752f33-111b-4be6-9038-0b6d0fe9d32f",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446/providers/Microsoft.Scheduler/jobCollections/jobs625446\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs625446\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"Standard\"},\"state\":\"Enabled\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446/providers/Microsoft.Scheduler/jobCollections/jobs625446/jobs?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:14:11 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "675",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14973",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "1b4e0bbc-f77c-43ee-a38a-35b381d4b2d7",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "236",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201411Z:1b4e0bbc-f77c-43ee-a38a-35b381d4b2d7",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "7cf20883-e563-46eb-899d-f3937316e4c2",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446/providers/Microsoft.Scheduler/jobCollections/jobs625446/jobs/job625446\",\"type\":\"Microsoft.Scheduler/jobCollections/jobs\",\"name\":\"jobs625446/job625446\",\"properties\":{\"startTime\":\"2017-07-25T20:12:55.629Z\",\"action\":{\"request\":{\"uri\":\"http://www.bing.com\",\"method\":\"GET\"},\"type\":\"Http\",\"retryPolicy\":{\"retryType\":\"fixed\"}},\"recurrence\":{\"frequency\":\"minute\",\"count\":2,\"interval\":1},\"state\":\"enabled\",\"status\":{\"lastExecutionTime\":\"2017-07-25T20:13:56.5792053Z\",\"nextExecutionTime\":\"2017-07-25T20:14:55.629Z\",\"executionCount\":1,\"failureCount\":0,\"faultedCount\":0}}}],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446/providers/Microsoft.Scheduler/jobCollections/jobs625446/jobs/jobs625446%2Fjob625446/history?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:14:11 GMT",
+      "content-length" : "296",
+      "server" : "Microsoft-IIS/8.5",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14972",
+      "StatusCode" : "404",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "a0dd4a10-9907-4b59-8c1d-d62e63c20afe",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "235",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201411Z:a0dd4a10-9907-4b59-8c1d-d62e63c20afe",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "ef67c311-dd01-493c-a031-df952fc43abd",
+      "Body" : "{\"message\":\"No HTTP resource was found that matches the request URI 'https://schedrp-us1.windows.net/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446/providers/Microsoft.Scheduler/jobCollections/jobs625446/jobs/jobs625446/job625446/history?api-version=2016-03-01'.\"}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446/providers/Microsoft.Scheduler/jobCollections/jobs625446/jobs?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:14:11 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "675",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14971",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "3121060b-56eb-46c0-b337-8da2be58077f",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "234",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201411Z:3121060b-56eb-46c0-b337-8da2be58077f",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "cd2022c2-dba8-4b4a-aee7-024b93848c91",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446/providers/Microsoft.Scheduler/jobCollections/jobs625446/jobs/job625446\",\"type\":\"Microsoft.Scheduler/jobCollections/jobs\",\"name\":\"jobs625446/job625446\",\"properties\":{\"startTime\":\"2017-07-25T20:12:55.629Z\",\"action\":{\"request\":{\"uri\":\"http://www.bing.com\",\"method\":\"GET\"},\"type\":\"Http\",\"retryPolicy\":{\"retryType\":\"fixed\"}},\"recurrence\":{\"frequency\":\"minute\",\"count\":2,\"interval\":1},\"state\":\"enabled\",\"status\":{\"lastExecutionTime\":\"2017-07-25T20:13:56.5792053Z\",\"nextExecutionTime\":\"2017-07-25T20:14:55.629Z\",\"executionCount\":1,\"failureCount\":0,\"faultedCount\":0}}}],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446/providers/Microsoft.Scheduler/jobCollections/jobs625446/jobs/jobs625446%2Fjob625446/history?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:14:11 GMT",
+      "content-length" : "296",
+      "server" : "Microsoft-IIS/8.5",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14970",
+      "StatusCode" : "404",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "789c8cd8-73e7-4f3b-9098-de0a554eab9e",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "233",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201411Z:789c8cd8-73e7-4f3b-9098-de0a554eab9e",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "6524d482-0e00-4017-a2b0-11274ccb3730",
+      "Body" : "{\"message\":\"No HTTP resource was found that matches the request URI 'https://schedrp-us1.windows.net/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446/providers/Microsoft.Scheduler/jobCollections/jobs625446/jobs/jobs625446/job625446/history?api-version=2016-03-01'.\"}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446/providers/Microsoft.Scheduler/jobCollections/jobs625446?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:14:14 GMT",
+      "content-length" : "0",
+      "server" : "Microsoft-IIS/8.5",
+      "expires" : "-1",
+      "x-ms-ratelimit-burst-remaining-scheduler-writes" : "59",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "0f513744-b68a-43d4-9c5e-733a01d27590",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201414Z:0f513744-b68a-43d4-9c5e-733a01d27590",
+      "x-powered-by" : "ASP.NET",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "3c51d955-9b62-4b7e-b7bd-889a3c50e91a",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgjobc625446?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 25 Jul 2017 20:14:14 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1197",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "1b38707a-666e-4967-bdaa-321f4aff64bf",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170725T201414Z:1b38707a-666e-4967-bdaa-321f4aff64bf",
+      "location" : "http://localhost:50023/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR0pPQkM2MjU0NDYtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "1b38707a-666e-4967-bdaa-321f4aff64bf",
+      "Body" : ""
+    }
+  } ],
+  "variables" : [ "625446" ]
+}

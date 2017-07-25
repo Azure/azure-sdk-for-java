@@ -8,8 +8,6 @@
 
 package com.microsoft.azure.management.scheduler.implementation;
 
-import java.util.Map;
-
 import com.microsoft.azure.Resource;
 import com.microsoft.azure.management.scheduler.JobCollectionProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

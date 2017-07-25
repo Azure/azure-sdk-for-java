@@ -5,14 +5,16 @@
  */
 package com.microsoft.azure.management.scheduler.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
+import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.scheduler.JobCollection;
 import com.microsoft.azure.management.scheduler.JobCollections;
-import com.microsoft.azure.management.scheduler.SkuDefinition;
+import com.microsoft.azure.management.scheduler.JobHistory;
 import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
@@ -102,5 +104,53 @@ public class JobCollectionsImpl
         return new JobCollectionImpl(inner.name(),
             inner,
             this.manager());
+    }
+
+    @Override
+    public void enable(String resourceGroupName, String jobCollectionName) {
+        this.manager().inner().jobCollections().enable(resourceGroupName, jobCollectionName);
+    }
+
+    @Override
+    public Completable enableAsync(String resourceGroupName, String jobCollectionName) {
+        return this.manager().inner().jobCollections().enableAsync(resourceGroupName, jobCollectionName).toCompletable();
+    }
+
+    @Override
+    public void disable(String resourceGroupName, String jobCollectionName) {
+        this.manager().inner().jobCollections().disable(resourceGroupName, jobCollectionName);
+    }
+
+    @Override
+    public Completable disableAsync(String resourceGroupName, String jobCollectionName) {
+        return this.manager().inner().jobCollections().disableAsync(resourceGroupName, jobCollectionName).toCompletable();
+    }
+
+    @Override
+    public PagedList<JobHistory> listJobHistory(String resourceGroupName, String jobCollectionName, String jobName) {
+        PagedListConverter<JobHistoryDefinitionInner, JobHistory> converter
+            = new PagedListConverter<JobHistoryDefinitionInner, JobHistory>() {
+            @Override
+            public JobHistory typeConvert(JobHistoryDefinitionInner jobHistoryDefinitionInner) {
+                return new JobHistoryImpl(jobHistoryDefinitionInner);
+            }
+        };
+        return converter.convert(this.manager().inner().jobs().listJobHistory(resourceGroupName, jobCollectionName, jobName));
+    }
+
+    @Override
+    public Observable<JobHistory> listJobHistoryAsync(String resourceGroupName, String jobCollectionName, String jobName) {
+        return this.manager().inner().jobs().listJobHistoryAsync(resourceGroupName, jobCollectionName, jobName)
+            .flatMap(new Func1<Page<JobHistoryDefinitionInner>, Observable<JobHistory>>() {
+                @Override
+                public Observable<JobHistory> call(Page<JobHistoryDefinitionInner> jobHistoryDefinitionInnerPage) {
+                    return Observable.from(jobHistoryDefinitionInnerPage.items()).map(new Func1<JobHistoryDefinitionInner, JobHistory>() {
+                        @Override
+                        public JobHistory call(JobHistoryDefinitionInner jobHistoryDefinitionInner) {
+                            return new JobHistoryImpl(jobHistoryDefinitionInner);
+                        }
+                    });
+                }
+            });
     }
 }
