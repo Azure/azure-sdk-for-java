@@ -14,7 +14,7 @@ import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.PublicIPAddresses;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
-import com.microsoft.azure.management.resources.core.MockIntegrationTestBase;
+import com.microsoft.azure.management.resources.core.TestBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import org.junit.Assert;
 
@@ -53,7 +53,7 @@ public class TestVirtualMachineSsh extends TestTemplate<VirtualMachine, VirtualM
 
         JSch jsch= new JSch();
         Session session = null;
-        if (!MockIntegrationTestBase.IS_MOCKED) {
+        if (TestBase.isRecordMode()) {
             try {
                 java.util.Properties config = new java.util.Properties();
                 config.put("StrictHostKeyChecking", "no");

@@ -778,7 +778,7 @@ public class AzureTests extends TestBase {
 
     @Test
     public void testDnsZones() throws Exception {
-        addTextReplacementRule("https://management.azure.com:443/", this.mockUri() + "/");
+        addTextReplacementRule("https://management.azure.com:443/", playbackUri + "/");
         new TestDns()
                 .runTest(azure.dnsZones(), azure.resourceGroups());
     }
