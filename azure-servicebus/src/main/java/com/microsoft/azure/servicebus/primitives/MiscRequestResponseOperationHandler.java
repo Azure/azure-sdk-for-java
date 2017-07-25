@@ -1,13 +1,11 @@
 package com.microsoft.azure.servicebus.primitives;
 
 import java.time.ZonedDateTime;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledFuture;
 
+import org.apache.qpid.proton.amqp.DescribedType;
 import org.apache.qpid.proton.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -233,5 +231,52 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
 				return returningFuture;
 			});
 		});		
+	}
+
+	public CompletableFuture<Collection<RuleDescription>> getRulesAsync(int skip, int top)
+	{
+		TRACE_LOGGER.debug("Fetching rules for entity '{}'", this.entityPath);
+		return this.createRequestResponseLink().thenComposeAsync((v) -> {
+			HashMap requestBodyMap = new HashMap();
+			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SKIP, skip);
+			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_TOP, top);
+
+			Message requestMessage = RequestResponseUtils.createRequestMessageFromPropertyBag(
+					ClientConstants.REQUEST_RESPONSE_GET_RULES_OPERATION,
+					requestBodyMap,
+					Util.adjustServerTimeout(this.underlyingFactory.getOperationTimeout()));
+			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.underlyingFactory.getOperationTimeout());
+			return responseFuture.thenComposeAsync((responseMessage) -> {
+				CompletableFuture<Collection<RuleDescription>> returningFuture = new CompletableFuture<>();
+
+				Collection<RuleDescription> rules = new ArrayList<RuleDescription>();
+				int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+				if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
+				{
+					Map responseBodyMap = RequestResponseUtils.getResponseBody(responseMessage);
+					ArrayList<Map> rulesMap = (ArrayList<Map>)responseBodyMap.get(ClientConstants.REQUEST_RESPONSE_RULES);
+					for (Map ruleMap : rulesMap)
+					{
+						DescribedType ruleDescription = (DescribedType) ruleMap.getOrDefault("rule-description", null);
+						rules.add(RequestResponseUtils.decodeRuleDescriptionMap(ruleDescription));
+					}
+
+					TRACE_LOGGER.debug("Fetched {} rules from entity '{}'", rules.size(), this.entityPath);
+					returningFuture.complete(rules);
+				}
+				else if(statusCode == ClientConstants.REQUEST_RESPONSE_NOCONTENT_STATUS_CODE)
+				{
+					returningFuture.complete(rules);
+				}
+				else
+				{
+					// error response
+					TRACE_LOGGER.error("Fetching rules for entity '{}' failed with status code '{}'", this.entityPath, statusCode);
+					returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
+				}
+
+				return returningFuture;
+			});
+		});
 	}
 }

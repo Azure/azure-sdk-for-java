@@ -1,19 +1,17 @@
 package com.microsoft.azure.servicebus.primitives;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.microsoft.azure.servicebus.rules.*;
+import org.apache.qpid.proton.amqp.DescribedType;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.message.Message;
-
-import com.microsoft.azure.servicebus.rules.CorrelationFilter;
-import com.microsoft.azure.servicebus.rules.RuleDescription;
-import com.microsoft.azure.servicebus.rules.SqlFilter;
-import com.microsoft.azure.servicebus.rules.SqlRuleAction;
 
 public class RequestResponseUtils {
 	public static Message createRequestMessageFromPropertyBag(String operation, Map propertyBag, Duration timeout)
@@ -129,7 +127,114 @@ public class RequestResponseUtils {
 		{
 			throw new IllegalArgumentException("This API supports the addition of only filters with SqlRuleActions.");
 		}
+
+		descriptionMap.put(ClientConstants.REQUEST_RESPONSE_RULENAME, ruleDescription.getName());
 		
 		return descriptionMap;
+	}
+
+	static RuleDescription decodeRuleDescriptionMap(DescribedType ruleDescribedType)
+	{
+		if (ruleDescribedType == null) {
+			return null;
+		}
+		if (!(ruleDescribedType.getDescriptor()).equals(ClientConstants.RULE_DESCRIPTION_DESCRIPTOR)) {
+			return null;
+		}
+
+		RuleDescription ruleDescription = new RuleDescription();
+		if (ruleDescribedType.getDescribed() instanceof ArrayList) {
+			ArrayList<Object> describedRule = (ArrayList<Object>) ruleDescribedType.getDescribed();
+			int count = describedRule.size();
+			if (count-- > 0) {
+				ruleDescription.setFilter(decodeFilter(describedRule.get(0)));
+			}
+
+			if (count-- > 0) {
+				ruleDescription.setAction(decodeRuleAction(describedRule.get(1)));
+			}
+
+			if (count > 0) {
+				ruleDescription.setName((String) describedRule.get(2));
+			}
+		}
+
+		return ruleDescription;
+	}
+
+	private static Filter decodeFilter(Object describedFilterObject) {
+		if (describedFilterObject != null && describedFilterObject instanceof DescribedType) {
+			DescribedType describedFilter = (DescribedType) describedFilterObject;
+			if (describedFilter.getDescriptor().equals(ClientConstants.SQL_FILTER_DESCRIPTOR)) {
+				ArrayList<Object> describedSqlFilter = (ArrayList<Object>)describedFilter.getDescribed();
+				if (describedSqlFilter.size() > 0) {
+					return new SqlFilter((String)describedSqlFilter.get(0));
+				}
+			}
+			else if (describedFilter.getDescriptor().equals(ClientConstants.CORRELATION_FILTER_DESCRIPTOR)) {
+				CorrelationFilter correlationFilter = new CorrelationFilter();
+				ArrayList<Object> describedCorrelationFilter = (ArrayList<Object>)describedFilter.getDescribed();
+				int countCorrelationFilter = describedCorrelationFilter.size();
+				if (countCorrelationFilter-- > 0) {
+					correlationFilter.setCorrelationId((String) (describedCorrelationFilter.get(0)));
+				}
+				if (countCorrelationFilter-- > 0) {
+					correlationFilter.setMessageId((String) (describedCorrelationFilter.get(1)));
+				}
+				if (countCorrelationFilter-- > 0) {
+					correlationFilter.setTo((String) (describedCorrelationFilter.get(2)));
+				}
+				if (countCorrelationFilter-- > 0) {
+					correlationFilter.setReplyTo((String) (describedCorrelationFilter.get(3)));
+				}
+				if (countCorrelationFilter-- > 0) {
+					correlationFilter.setLabel((String) (describedCorrelationFilter.get(4)));
+				}
+				if (countCorrelationFilter-- > 0) {
+					correlationFilter.setSessionId((String) (describedCorrelationFilter.get(5)));
+				}
+				if (countCorrelationFilter-- > 0) {
+					correlationFilter.setReplyToSessionId((String) (describedCorrelationFilter.get(6)));
+				}
+				if (countCorrelationFilter-- > 0) {
+					correlationFilter.setContentType((String) (describedCorrelationFilter.get(7)));
+				}
+				if (countCorrelationFilter > 0) {
+					Object properties = describedCorrelationFilter.get(8);
+					if (properties != null && properties instanceof Map) {
+						correlationFilter.setProperties((Map)properties);
+					}
+				}
+
+				return correlationFilter;
+			}
+			else if (describedFilter.getDescriptor().equals(ClientConstants.TRUE_FILTER_DESCRIPTOR)) {
+				return new TrueFilter();
+			}
+			else if (describedFilter.getDescriptor().equals(ClientConstants.FALSE_FILTER_DESCRIPTOR)) {
+				return new FalseFilter();
+			}
+			else {
+				throw new UnsupportedOperationException("This client doesn't support filter with descriptor: " + describedFilter.getDescriptor());
+			}
+		}
+
+		return null;
+	}
+
+	private static RuleAction decodeRuleAction(Object describedActionObject) {
+		if (describedActionObject != null && describedActionObject instanceof DescribedType) {
+			DescribedType describedAction = (DescribedType) describedActionObject;
+			if (describedAction.getDescriptor().equals(ClientConstants.EMPTY_RULE_ACTION_DESCRIPTOR)) {
+				return null;
+			} else if (describedAction.getDescriptor().equals(ClientConstants.SQL_RULE_ACTION_DESCRIPTOR)) {
+				ArrayList<Object> describedSqlAction = (ArrayList<Object>) describedAction.getDescribed();
+				if (describedSqlAction.size() > 0) {
+					return new SqlRuleAction((String) describedSqlAction.get(0));
+				}
+			}
+		}
+
+		return null;
 	}
 }

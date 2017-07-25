@@ -90,6 +90,7 @@ public final class ClientConstants
     public static final String REQUEST_RESPONSE_GET_MESSAGE_SESSIONS_OPERATION = AmqpConstants.VENDOR + ":get-message-sessions";
     public static final String REQUEST_RESPONSE_ADD_RULE_OPERATION = AmqpConstants.VENDOR + ":add-rule";
     public static final String REQUEST_RESPONSE_REMOVE_RULE_OPERATION = AmqpConstants.VENDOR + ":remove-rule";
+    public static final String REQUEST_RESPONSE_GET_RULES_OPERATION = AmqpConstants.VENDOR + ":enumerate-rules";
     public static final String REQUEST_RESPONSE_PUT_TOKEN_OPERATION = "put-token";
     public static final String REQUEST_RESPONSE_PUT_TOKEN_TYPE = "type";
     public static final String REQUEST_RESPONSE_PUT_TOKEN_AUDIENCE = "name";    
@@ -124,6 +125,7 @@ public final class ClientConstants
     public static final String REQUEST_RESPONSE_SKIP = "skip";
     public static final String REQUEST_RESPONSE_TOP = "top";
     public static final String REQUEST_RESPONSE_SESSIONIDS = "sessions-ids";
+    public static final String REQUEST_RESPONSE_RULES = "rules";
     public static final String REQUEST_RESPONSE_RULENAME = "rule-name";
     public static final String REQUEST_RESPONSE_RULEDESCRIPTION = "rule-description";
     public static final String REQUEST_RESPONSE_SQLFILTER = "sql-filter";
@@ -151,7 +153,15 @@ public final class ClientConstants
     public static final int REQUEST_RESPONSE_NOTFOUND_STATUS_CODE = 0x194;
     public static final int REQUEST_RESPONSE_UNDEFINED_STATUS_CODE = -1;
     public static final int REQUEST_RESPONSE_SERVER_BUSY_STATUS_CODE = 0x1f7;
-    
+
+    public static final UnsignedLong RULE_DESCRIPTION_DESCRIPTOR = new UnsignedLong(0x0000013700000004L);
+    public static final UnsignedLong EMPTY_RULE_ACTION_DESCRIPTOR = new UnsignedLong(0x0000013700000005L);
+    public static final UnsignedLong SQL_RULE_ACTION_DESCRIPTOR = new UnsignedLong(0x0000013700000006L);
+    public static final UnsignedLong SQL_FILTER_DESCRIPTOR = new UnsignedLong(0x000001370000006L);
+    public static final UnsignedLong TRUE_FILTER_DESCRIPTOR = new UnsignedLong(0x000001370000007L);
+    public static final UnsignedLong FALSE_FILTER_DESCRIPTOR = new UnsignedLong(0x000001370000008L);
+    public static final UnsignedLong CORRELATION_FILTER_DESCRIPTOR = new UnsignedLong(0x000001370000009L);
+
     static final String SAS_TOKEN_TYPE = "servicebus.windows.net:sastoken";
     static final int DEFAULT_SAS_TOKEN_VALIDITY_IN_SECONDS = 20*60; // 20 minutes
     static final String SAS_TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";

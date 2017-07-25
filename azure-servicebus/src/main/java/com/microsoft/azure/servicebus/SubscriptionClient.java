@@ -29,7 +29,9 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
 	private MessageAndSessionPump messageAndSessionPump;
 	private SessionBrowser sessionBrowser;
 	private MiscRequestResponseOperationHandler miscRequestResponseHandler;
-	
+
+	public static final String DEFAULT_RULE_NAME = "$Default";
+
 	private SubscriptionClient(ReceiveMode receiveMode)
 	{
 		super(StringUtil.getShortRandomString(), null);		
@@ -108,6 +110,20 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
 	@Override
 	public CompletableFuture<Void> removeRuleAsync(String ruleName) {
 		return this.miscRequestResponseHandler.removeRuleAsync(ruleName);
+	}
+
+	@Override
+	public Collection<RuleDescription> getRules() throws ServiceBusException, InterruptedException {
+		return Utils.completeFuture(this.getRulesAsync());
+	}
+
+	@Override
+	public CompletableFuture<Collection<RuleDescription>> getRulesAsync()
+	{
+		// Skip and Top can be used to implement pagination.
+		// In this case, we are trying to fetch all the rules associated with the subscription.
+		int skip = 0, top = Integer.MAX_VALUE;
+		return this.miscRequestResponseHandler.getRulesAsync(skip, top);
 	}
 
 	@Override
