@@ -166,7 +166,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         transparentDataEncryptionActivities = transparentDataEncryption.listActivities();
         Assert.assertNotNull(transparentDataEncryptionActivities);
 
-        TestUtilities.sleep(10000);
+        TestUtilities.sleep(10000, isRecordMode());
         transparentDataEncryption = sqlDatabase.getTransparentDataEncryption().updateStatus(TransparentDataEncryptionStates.DISABLED);
         Assert.assertNotNull(transparentDataEncryption);
         Assert.assertEquals(transparentDataEncryption.status(), TransparentDataEncryptionStates.DISABLED);
@@ -255,7 +255,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 .withSourceDatabase(databaseInServer1.id())
                 .withMode(CreateMode.ONLINE_SECONDARY)
                 .create();
-        TestUtilities.sleep(2000);
+        TestUtilities.sleep(2000, isRecordMode());
         List<ReplicationLink> replicationLinksInDb1 = new ArrayList<>(databaseInServer1.listReplicationLinks().values());
 
         Assert.assertEquals(replicationLinksInDb1.size() , 1);
@@ -273,12 +273,12 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Failover
         replicationLinksInDb2.get(0).failover();
         replicationLinksInDb2.get(0).refresh();
-        TestUtilities.sleep(30000);
+        TestUtilities.sleep(30000, isRecordMode());
         // Force failover
         replicationLinksInDb1.get(0).forceFailoverAllowDataLoss();
         replicationLinksInDb1.get(0).refresh();
 
-        TestUtilities.sleep(30000);
+        TestUtilities.sleep(30000, isRecordMode());
 
         replicationLinksInDb2.get(0).delete();
         Assert.assertEquals(databaseInServer2.listReplicationLinks().size(), 0);

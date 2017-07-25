@@ -11,13 +11,13 @@ import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamerFa
 
 public class TestResourceNamerFactory extends ResourceNamerFactory {
 
-    private final MockIntegrationTestBase mockIntegrationTestBase;
+    private final InterceptorManager interceptorManager;
 
-    TestResourceNamerFactory(MockIntegrationTestBase mockIntegrationTestBase) {
-        this.mockIntegrationTestBase = mockIntegrationTestBase;
+    TestResourceNamerFactory(InterceptorManager mockIntegrationTestBase) {
+        this.interceptorManager = mockIntegrationTestBase;
     }
     @Override
     public ResourceNamer createResourceNamer(String name) {
-        return new TestResourceNamer(name, mockIntegrationTestBase);
+        return new TestResourceNamer(name, interceptorManager);
     }
 }

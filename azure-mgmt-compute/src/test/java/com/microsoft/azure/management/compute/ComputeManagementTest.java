@@ -65,7 +65,7 @@ public abstract class ComputeManagementTest extends TestBase {
     }
 
     protected void deprovisionAgentInLinuxVM(String host, int port, String userName, String password) {
-        if (IS_MOCKED) {
+        if (isPlaybackMode()) {
             return;
         }
         SshShell shell = null;
@@ -90,7 +90,7 @@ public abstract class ComputeManagementTest extends TestBase {
     }
 
     protected void ensureCanDoSsh(String fqdn, int sshPort, String uname, String password) {
-        if (IS_MOCKED) {
+        if (isPlaybackMode()) {
             return;
         }
         JSch jsch = new JSch();
@@ -112,7 +112,7 @@ public abstract class ComputeManagementTest extends TestBase {
     }
 
     protected  void sleep(long milli) {
-        if (IS_MOCKED) {
+        if (isPlaybackMode()) {
             return;
         }
         try {

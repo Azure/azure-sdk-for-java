@@ -90,7 +90,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         // Upload the script file as block blob
         //
         URI fileUri;
-        if (IS_MOCKED) {
+        if (isPlaybackMode()) {
             fileUri = new URI("http://nonexisting.blob.core.windows.net/scripts/install_apache.sh");
         } else {
             CloudStorageAccount account = CloudStorageAccount.parse(storageConnectionString);
@@ -235,7 +235,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         String fqdn = publicIPAddress.fqdn();
         // Assert public load balancing connection
-        if (!IS_MOCKED) {
+        if (!isPlaybackMode()) {
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
                     .url("http://" + fqdn)
