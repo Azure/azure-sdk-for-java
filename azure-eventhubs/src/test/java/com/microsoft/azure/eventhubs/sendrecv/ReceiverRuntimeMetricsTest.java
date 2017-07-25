@@ -64,7 +64,6 @@ public class ReceiverRuntimeMetricsTest  extends ApiTestBase {
             offsets.add(eData.getSystemProperties().getOffset());
         
         Assert.assertTrue(receiverWithOptions.getRuntimeInformation() != null);
-        Assert.assertTrue(receiverWithOptions.getRuntimeInformation().getLastEnqueuedTime().isAfter(beforeTestStart));
         Assert.assertTrue(offsets.contains(receiverWithOptions.getRuntimeInformation().getLastEnqueuedOffset()));
         Assert.assertTrue(receiverWithOptions.getRuntimeInformation().getLastSequenceNumber() >= receivedEventsWithOptions.iterator().next().getSystemProperties().getSequenceNumber());
     }
