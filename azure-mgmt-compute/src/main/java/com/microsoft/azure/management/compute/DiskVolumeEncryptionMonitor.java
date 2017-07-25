@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import rx.Observable;
 
@@ -35,5 +36,6 @@ public interface DiskVolumeEncryptionMonitor
     /**
      * @return a representation of the deferred computation of this call returning the encryption status once the refresh is done
      */
+    @Method
     Observable<DiskVolumeEncryptionMonitor> refreshAsync();
 }

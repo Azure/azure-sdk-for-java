@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.resources.fluentcore.utils;
 
+import com.google.common.primitives.Ints;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
@@ -49,6 +50,21 @@ public final class Utils {
             return 0;
         }
         return value;
+    }
+
+    /**
+     * Converts an object Long to a primitive int.
+     *
+     * @param value the <tt>Long</tt> value
+     * @return <tt>0</tt> if the given Long value is null else <tt>integer value</tt>
+     */
+    public static int toPrimitiveInt(Long value) {
+        if (value == null) {
+            return 0;
+        }
+        // throws IllegalArgumentException - if value is greater than Integer.MAX_VALUE
+        // or less than Integer.MIN_VALUE
+        return Ints.checkedCast(value);
     }
 
     /**

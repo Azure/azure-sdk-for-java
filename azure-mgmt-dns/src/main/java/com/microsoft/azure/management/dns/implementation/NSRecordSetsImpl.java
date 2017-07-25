@@ -10,7 +10,6 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.NSRecordSet;
 import com.microsoft.azure.management.dns.NSRecordSets;
 import com.microsoft.azure.management.dns.RecordType;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import rx.Observable;
 
 /**
@@ -18,44 +17,43 @@ import rx.Observable;
  */
 @LangDefinition
 class NSRecordSetsImpl
-        extends ReadableWrappersImpl<NSRecordSet, NSRecordSetImpl, RecordSetInner>
+        extends DnsRecordSetsBaseImpl<NSRecordSet, NSRecordSetImpl>
         implements NSRecordSets {
 
-    private final DnsZoneImpl dnsZone;
-
     NSRecordSetsImpl(DnsZoneImpl dnsZone) {
-        this.dnsZone = dnsZone;
+        super(dnsZone, RecordType.NS);
     }
 
     @Override
     public NSRecordSetImpl getByName(String name) {
         RecordSetInner inner = this.parent().manager().inner().recordSets().get(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
+                this.dnsZone.resourceGroupName(),
+                this.dnsZone.name(),
                 name,
-                RecordType.NS);
-        return new NSRecordSetImpl(this.parent(), inner);
+                this.recordType);
+        return new NSRecordSetImpl(this.dnsZone, inner);
     }
 
     @Override
-    public PagedList<NSRecordSet> list() {
+    protected PagedList<NSRecordSet> listIntern(String recordSetNameSuffix, Integer pageSize) {
         return super.wrapList(this.parent().manager().inner().recordSets().listByType(
-                this.parent().resourceGroupName(), this.parent().name(), RecordType.NS));
+                this.dnsZone.resourceGroupName(),
+                this.dnsZone.name(),
+                this.recordType,
+                pageSize,
+                recordSetNameSuffix));
+    }
+
+    @Override
+    protected Observable<NSRecordSet> listInternAsync(String recordSetNameSuffix, Integer pageSize) {
+        return wrapPageAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
+                this.dnsZone.resourceGroupName(),
+                this.dnsZone.name(),
+                this.recordType));
     }
 
     @Override
     protected NSRecordSetImpl wrapModel(RecordSetInner inner) {
-        return new NSRecordSetImpl(this.parent(), inner);
-    }
-
-    @Override
-    public DnsZoneImpl parent() {
-        return this.dnsZone;
-    }
-
-    @Override
-    public Observable<NSRecordSet> listAsync() {
-        return wrapPageAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
-                this.parent().resourceGroupName(), this.parent().name(), RecordType.NS));
+        return new NSRecordSetImpl(this.dnsZone, inner);
     }
 }

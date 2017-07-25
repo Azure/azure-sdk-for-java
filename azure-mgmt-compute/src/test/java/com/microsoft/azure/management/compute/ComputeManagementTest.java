@@ -9,6 +9,7 @@ package com.microsoft.azure.management.compute;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
+import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIPAddress;
@@ -39,6 +40,7 @@ public abstract class ComputeManagementTest extends TestBase {
     protected ComputeManager computeManager;
     protected NetworkManager networkManager;
     protected StorageManager storageManager;
+    protected GraphRbacManager rbacManager;
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
@@ -54,6 +56,8 @@ public abstract class ComputeManagementTest extends TestBase {
 
         storageManager = StorageManager
                 .authenticate(restClient, defaultSubscription);
+
+        rbacManager = GraphRbacManager.authenticate(restClient, domain);
     }
 
     @Override
@@ -61,7 +65,7 @@ public abstract class ComputeManagementTest extends TestBase {
     }
 
     protected void deprovisionAgentInLinuxVM(String host, int port, String userName, String password) {
-        if (IS_MOCKED) {
+        if (isPlaybackMode()) {
             return;
         }
         SshShell shell = null;
@@ -86,7 +90,7 @@ public abstract class ComputeManagementTest extends TestBase {
     }
 
     protected void ensureCanDoSsh(String fqdn, int sshPort, String uname, String password) {
-        if (IS_MOCKED) {
+        if (isPlaybackMode()) {
             return;
         }
         JSch jsch = new JSch();
@@ -108,7 +112,7 @@ public abstract class ComputeManagementTest extends TestBase {
     }
 
     protected  void sleep(long milli) {
-        if (IS_MOCKED) {
+        if (isPlaybackMode()) {
             return;
         }
         try {

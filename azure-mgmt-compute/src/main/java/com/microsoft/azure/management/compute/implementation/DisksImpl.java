@@ -11,6 +11,11 @@ import com.microsoft.azure.management.compute.AccessLevel;
 import com.microsoft.azure.management.compute.Disk;
 import com.microsoft.azure.management.compute.Disks;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import rx.Completable;
+import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * The implementation for Disks.
@@ -34,17 +39,43 @@ class DisksImpl
                               String diskName,
                               AccessLevel accessLevel,
                               int accessDuration) {
+        return this.grantAccessAsync(resourceGroupName, diskName, accessLevel, accessDuration)
+                .toBlocking()
+                .last();
+    }
+
+    @Override
+    public Observable<String> grantAccessAsync(String resourceGroupName, String diskName, AccessLevel accessLevel, int accessDuration) {
         GrantAccessDataInner grantAccessDataInner = new GrantAccessDataInner();
         grantAccessDataInner.withAccess(accessLevel)
                 .withDurationInSeconds(accessDuration);
-        AccessUriInner accessUriInner = this.inner().grantAccess(resourceGroupName,
-                diskName, grantAccessDataInner);
-        return accessUriInner.accessSAS();
+        return this.inner().grantAccessAsync(resourceGroupName, diskName, grantAccessDataInner)
+                .map(new Func1<AccessUriInner, String>() {
+                    @Override
+                    public String call(AccessUriInner accessUriInner) {
+                        return accessUriInner.accessSAS();
+                    }
+                });
+    }
+
+    @Override
+    public ServiceFuture<String> grantAccessAsync(String resourceGroupName, String diskName, AccessLevel accessLevel, int accessDuration, ServiceCallback<String> callback) {
+        return ServiceFuture.fromBody(this.grantAccessAsync(resourceGroupName, diskName, accessLevel, accessDuration), callback);
     }
 
     @Override
     public void revokeAccess(String resourceGroupName, String diskName) {
         this.inner().revokeAccess(resourceGroupName, diskName);
+    }
+
+    @Override
+    public Completable revokeAccessAsync(String resourceGroupName, String diskName) {
+        return this.inner().revokeAccessAsync(resourceGroupName, diskName).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> revokeAccessAsync(String resourceGroupName, String diskName, ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.revokeAccessAsync(resourceGroupName, diskName).<Void>toObservable(), callback);
     }
 
     @Override
@@ -54,11 +85,10 @@ class DisksImpl
 
     @Override
     protected DiskImpl wrapModel(DiskInner inner) {
-        if (inner != null) {
-            return new DiskImpl(inner.name(), inner, this.manager());
-        } else {
+        if (inner == null) {
             return null;
         }
+        return new DiskImpl(inner.name(), inner, this.manager());
     }
 
     @Override

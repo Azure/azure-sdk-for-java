@@ -16,6 +16,9 @@ import com.microsoft.azure.management.compute.VirtualMachineScaleSets;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import rx.Completable;
 
 import java.util.ArrayList;
 
@@ -49,8 +52,28 @@ public class VirtualMachineScaleSetsImpl
     }
 
     @Override
+    public Completable deallocateAsync(String groupName, String name) {
+        return this.inner().deallocateAsync(groupName, name).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> deallocateAsync(String groupName, String name, ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(deallocateAsync(groupName, name).<Void>toObservable(), callback);
+    }
+
+    @Override
     public void powerOff(String groupName, String name) {
         this.inner().powerOff(groupName, name);
+    }
+
+    @Override
+    public Completable powerOffAsync(String groupName, String name) {
+        return this.inner().powerOffAsync(groupName, name).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> powerOffAsync(String groupName, String name, ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(powerOffAsync(groupName, name).<Void>toObservable(), callback);
     }
 
     @Override
@@ -59,13 +82,43 @@ public class VirtualMachineScaleSetsImpl
     }
 
     @Override
+    public Completable restartAsync(String groupName, String name) {
+        return this.inner().restartAsync(groupName, name).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> restartAsync(String groupName, String name, ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(restartAsync(groupName, name).<Void>toObservable(), callback);
+    }
+
+    @Override
     public void start(String groupName, String name) {
         this.inner().start(groupName, name);
     }
 
     @Override
+    public Completable startAsync(String groupName, String name) {
+        return this.inner().startAsync(groupName, name).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> startAsync(String groupName, String name, ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(startAsync(groupName, name).<Void>toObservable(), callback);
+    }
+
+    @Override
     public void reimage(String groupName, String name) {
         this.inner().reimage(groupName, name);
+    }
+
+    @Override
+    public Completable reimageAsync(String groupName, String name) {
+       return this.inner().reimageAsync(groupName, name).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> reimageAsync(String groupName, String name, ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(reimageAsync(groupName, name).<Void>toObservable(), callback);
     }
 
     @Override
