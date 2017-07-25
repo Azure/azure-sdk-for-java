@@ -38,10 +38,10 @@ import com.microsoft.rest.LogLevel;
 import java.io.File;
 
 /**
- * Azure Network sample for managing network watcher -
+ * Azure Network sample for managing network watcher.
  *  - Create Network Watcher
- *	- Manage packet capture – track traffic to and from a virtual machine
- *   	Create a VM
+ *  - Manage packet capture – track traffic to and from a virtual machine
+ *      Create a VM
  *      Start a packet capture
  *      Stop a packet capture
  *      Get a packet capture
