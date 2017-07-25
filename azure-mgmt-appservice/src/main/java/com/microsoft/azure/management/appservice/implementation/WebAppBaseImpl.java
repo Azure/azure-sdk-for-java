@@ -12,7 +12,6 @@ import com.google.common.collect.Sets;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.AppServiceCertificate;
 import com.microsoft.azure.management.appservice.AppServiceDomain;
-import com.microsoft.azure.management.appservice.OperatingSystem;
 import com.microsoft.azure.management.appservice.AppSetting;
 import com.microsoft.azure.management.appservice.AzureResourceType;
 import com.microsoft.azure.management.appservice.CloningInfo;
@@ -26,6 +25,7 @@ import com.microsoft.azure.management.appservice.HostNameType;
 import com.microsoft.azure.management.appservice.JavaVersion;
 import com.microsoft.azure.management.appservice.ManagedPipelineMode;
 import com.microsoft.azure.management.appservice.NetFrameworkVersion;
+import com.microsoft.azure.management.appservice.OperatingSystem;
 import com.microsoft.azure.management.appservice.PhpVersion;
 import com.microsoft.azure.management.appservice.PlatformArchitecture;
 import com.microsoft.azure.management.appservice.PythonVersion;
@@ -38,6 +38,7 @@ import com.microsoft.azure.management.appservice.UsageState;
 import com.microsoft.azure.management.appservice.WebAppBase;
 import com.microsoft.azure.management.appservice.WebContainer;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import org.joda.time.DateTime;
 import rx.Observable;
@@ -53,7 +54,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.Callable;
 
 /**
  * The implementation for WebAppBase.
@@ -780,7 +781,18 @@ abstract class WebAppBaseImpl<
                     return createOrUpdateSourceControl(sourceControl.inner());
                 }
             })
-            .delay(30, TimeUnit.SECONDS)
+            .delay(new Func1<SiteSourceControlInner, Observable<Long>>() {
+                @Override
+                public Observable<Long> call(SiteSourceControlInner siteSourceControlInner) {
+                    return Observable.fromCallable(new Callable<Long>() {
+                        @Override
+                        public Long call() throws Exception {
+                            SdkContext.sleep(30000);
+                            return 30000L;
+                        }
+                    });
+                }
+            })
             .map(new Func1<SiteSourceControlInner, SiteInner>() {
                 @Override
                 public SiteInner call(SiteSourceControlInner siteSourceControlInner) {
