@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.network.model;
 
+import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
 
@@ -26,13 +28,20 @@ public interface HasFrontend  {
          * The stage of a definition allowing to specify a load balancer frontend.
          * @param <ReturnT> the next stage of the definition
          */
-        interface WithFrontend<ReturnT> {
+        interface WithFrontend<ReturnT> extends HasPublicIPAddress.DefinitionStages.WithExistingPublicIPAddress<ReturnT> {
             /**
-             * Specifies the frontend to associate.
+             * Specifies the frontend to receive network traffic from.
              * @param frontendName an existing frontend name on this load balancer
              * @return the next stage of the definition
              */
-            ReturnT withFrontend(String frontendName);
+            ReturnT fromFrontend(String frontendName);
+
+            /**
+             * Selects the load balancer's default frontend as the frontend to receive network traffic from.
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_2_0)
+            ReturnT fromDefaultFrontend();
         }
     }
 
@@ -50,7 +59,14 @@ public interface HasFrontend  {
              * @param frontendName an existing frontend name from this load balancer
              * @return the next stage of the update
              */
-            ReturnT withFrontend(String frontendName);
+            ReturnT fromFrontend(String frontendName);
+
+            /**
+             * Associates with the default frontend.
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_2_0)
+            ReturnT fromDefaultFrontend();
         }
     }
 
@@ -62,13 +78,20 @@ public interface HasFrontend  {
          * The stage of a definition allowing to specify a frontend from to associate.
          * @param <ReturnT> the next stage of the definition
          */
-        interface WithFrontend<ReturnT> {
+        interface WithFrontend<ReturnT> extends HasPublicIPAddress.UpdateDefinitionStages.WithExistingPublicIPAddress<ReturnT> {
             /**
              * Specifies the frontend to associate.
              * @param frontendName an existing frontend name
              * @return the next stage of the definition
              */
-            ReturnT withFrontend(String frontendName);
+            ReturnT fromFrontend(String frontendName);
+
+            /**
+             * Associates with the default frontend.
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_2_0)
+            ReturnT fromDefaultFrontend();
         }
     }
 }

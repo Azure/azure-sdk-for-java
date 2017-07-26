@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.monitor;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -22,4 +23,30 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "Microsoft.Azure.Management.Insights.Models.RuleManagementEventDataSource", value = RuleManagementEventDataSource.class)
 })
 public class RuleDataSource {
+    /**
+     * the resource identifier of the resource the rule monitors.
+     */
+    @JsonProperty(value = "resourceUri")
+    private String resourceUri;
+
+    /**
+     * Get the resourceUri value.
+     *
+     * @return the resourceUri value
+     */
+    public String resourceUri() {
+        return this.resourceUri;
+    }
+
+    /**
+     * Set the resourceUri value.
+     *
+     * @param resourceUri the resourceUri value to set
+     * @return the RuleDataSource object itself.
+     */
+    public RuleDataSource withResourceUri(String resourceUri) {
+        this.resourceUri = resourceUri;
+        return this;
+    }
+
 }

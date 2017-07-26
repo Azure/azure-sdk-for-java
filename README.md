@@ -2,9 +2,11 @@
 
 # Azure Management Libraries for Java
 
-This README is based on the released stable version (1.1.0). If you are looking for other releases, see [More Information](#more-information)
+This README is based on the released stable version (1.1.0). If you are looking for other releases, see [More Information](#more-information).
 
-The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources.
+The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources. If you are looking for Java client libraries for Azure services, please see [Azure libraries for Java](https://docs.microsoft.com/en-us/java/azure/java-sdk-azure-install) - this page will be maintained regularly to ensure that it is up to date.
+
+Note: This page will be maintained regularly to ensure that it is up to date.
 
 ## Feature Availability and Road Map as of Version 1.1.0 ##
 
@@ -18,7 +20,7 @@ The Azure Management Libraries for Java is a higher-level, object-oriented API f
   <tr>
     <td>Compute</td>
     <td>Virtual machines and VM extensions<br>Virtual machine scale sets<br>Managed disks</td>
-    <td valign="top">Azure container services<br>Azure container registry</td>
+    <td valign="top">Azure container service and registry</td>
     <td valign="top"></td>
   </tr>
   <tr>
@@ -480,7 +482,7 @@ If you would like to become an active contributor to this project please follow 
 * [http://azure.com/java](http://azure.com/java)
 * If you don't have a Microsoft Azure subscription you can get a FREE trial account [here](http://go.microsoft.com/fwlink/?LinkId=330212)
 
-**Previous Releases and Corresponding Repo Branches**
+### Previous Releases and Corresponding Repo Branches
 
 | Version           | SHA1                                                                                      | Remarks                                               |
 |-------------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------|

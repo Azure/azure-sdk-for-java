@@ -20,13 +20,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition")
 public class ThresholdRuleCondition extends RuleCondition {
     /**
-     * the resource from which the rule collects its data. For this type
-     * dataSource will always be of type RuleMetricDataSource.
-     */
-    @JsonProperty(value = "dataSource")
-    private RuleDataSource dataSource;
-
-    /**
      * the operator used to compare the data and the threshold. Possible values
      * include: 'GreaterThan', 'GreaterThanOrEqual', 'LessThan',
      * 'LessThanOrEqual'.
@@ -56,26 +49,6 @@ public class ThresholdRuleCondition extends RuleCondition {
      */
     @JsonProperty(value = "timeAggregation")
     private TimeAggregationOperator timeAggregation;
-
-    /**
-     * Get the dataSource value.
-     *
-     * @return the dataSource value
-     */
-    public RuleDataSource dataSource() {
-        return this.dataSource;
-    }
-
-    /**
-     * Set the dataSource value.
-     *
-     * @param dataSource the dataSource value to set
-     * @return the ThresholdRuleCondition object itself.
-     */
-    public ThresholdRuleCondition withDataSource(RuleDataSource dataSource) {
-        this.dataSource = dataSource;
-        return this;
-    }
 
     /**
      * Get the operator value.

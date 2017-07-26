@@ -27,13 +27,13 @@ public interface HasBackendPort  {
          */
         interface WithBackendPort<ReturnT> {
             /**
-             * Specifies the backend port.
+             * Specifies a backend port to send network traffic to.
              * <p>
              * If not specified, the same backend port number is assumed as that used by the frontend.
              * @param port a port number
              * @return the next stage of the definition
              */
-            ReturnT withBackendPort(int port);
+            ReturnT toBackendPort(int port);
         }
     }
 
@@ -47,11 +47,11 @@ public interface HasBackendPort  {
          */
         interface WithBackendPort<ReturnT> {
             /**
-             * Specifies the backend port.
+             * Specifies a backend port to send network traffic to.
              * @param port a port number
              * @return the next stage of the update
              */
-            ReturnT withBackendPort(int port);
+            ReturnT toBackendPort(int port);
         }
     }
 
@@ -65,13 +65,13 @@ public interface HasBackendPort  {
          */
         interface WithBackendPort<ReturnT> {
             /**
-             * Specifies the backend port.
+             * Specifies a backend port to send network traffic to.
              * <p>
              * If not specified, the same backend port number is assumed as that used by the frontend.
              * @param port a port number
              * @return the next stage of the definition
              */
-            ReturnT withBackendPort(int port);
+            ReturnT toBackendPort(int port);
         }
     }
 }

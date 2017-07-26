@@ -39,8 +39,8 @@ import com.microsoft.azure.management.compute.WinRMConfiguration;
 import com.microsoft.azure.management.compute.WinRMListener;
 import com.microsoft.azure.management.compute.WindowsConfiguration;
 import com.microsoft.azure.management.network.LoadBalancerBackend;
-import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.LoadBalancerInboundNatPool;
+import com.microsoft.azure.management.network.LoadBalancerPrivateFrontend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
@@ -281,8 +281,8 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public long capacity() {
-        return Utils.toPrimitiveLong(this.inner().sku().capacity());
+    public int capacity() {
+        return Utils.toPrimitiveInt(this.inner().sku().capacity());
     }
 
     @Override
@@ -473,7 +473,7 @@ public class VirtualMachineScaleSetImpl
             throw new IllegalArgumentException("Parameter loadBalancer must be an internal load balancer");
         }
         String lbNetworkId = null;
-        for (LoadBalancerFrontend frontEnd : loadBalancer.frontends().values()) {
+        for (LoadBalancerPrivateFrontend frontEnd : loadBalancer.privateFrontends().values()) {
             if (frontEnd.inner().subnet().id() != null) {
                 lbNetworkId = ResourceUtils.parentResourceIdFromResourceId(frontEnd.inner().subnet().id());
             }

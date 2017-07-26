@@ -10,14 +10,9 @@ import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.graphrbac.implementation.ApplicationInner;
-import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
 import java.net.URL;
@@ -31,11 +26,8 @@ import java.util.Set;
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Graph.RBAC.Fluent")
 @Beta(SinceVersion.V1_1_0)
 public interface ActiveDirectoryApplication extends
-        Indexable,
+        ActiveDirectoryObject,
         HasInner<ApplicationInner>,
-        HasId,
-        HasName,
-        HasManager<GraphRbacManager>,
         Updatable<ActiveDirectoryApplication.Update> {
     /**
      * @return the application ID

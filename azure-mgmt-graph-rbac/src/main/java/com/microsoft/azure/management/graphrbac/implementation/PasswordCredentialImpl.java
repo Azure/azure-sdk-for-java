@@ -34,10 +34,15 @@ class PasswordCredentialImpl<T>
     private String name;
     private HasCredential<?> parent;
     OutputStream authFile;
+    private String subscriptionId;
 
     PasswordCredentialImpl(PasswordCredentialInner passwordCredential) {
         super(passwordCredential);
-        this.name = new String(BaseEncoding.base64().decode(passwordCredential.customKeyIdentifier()));
+        if (passwordCredential.customKeyIdentifier() != null && !passwordCredential.customKeyIdentifier().isEmpty()) {
+            this.name = new String(BaseEncoding.base64().decode(passwordCredential.customKeyIdentifier()));
+        } else {
+            this.name = passwordCredential.keyId();
+        }
     }
 
     PasswordCredentialImpl(String name, HasCredential<?> parent) {
@@ -132,6 +137,7 @@ class PasswordCredentialImpl<T>
             for (AzureEnvironment env : AzureEnvironment.knownEnvironments()) {
                 if (env.resourceManagerEndpoint().toLowerCase().contains(baseUrl.toLowerCase())) {
                     environment = env;
+                    break;
                 }
             }
             if (environment == null) {
@@ -143,7 +149,7 @@ class PasswordCredentialImpl<T>
         builder.append(String.format("client=%s", servicePrincipal.applicationId())).append("\n");
         builder.append(String.format("key=%s", value())).append("\n");
         builder.append(String.format("tenant=%s", servicePrincipal.manager().tenantId())).append("\n");
-        builder.append(String.format("subscription=%s", servicePrincipal.assignedSubscription)).append("\n");
+        builder.append(String.format("subscription=%s", subscriptionId)).append("\n");
         builder.append(String.format("authURL=%s", normalizeAuthFileUrl(environment.activeDirectoryEndpoint()))).append("\n");
         builder.append(String.format("baseURL=%s", normalizeAuthFileUrl(environment.resourceManagerEndpoint()))).append("\n");
         builder.append(String.format("graphURL=%s", normalizeAuthFileUrl(environment.graphEndpoint()))).append("\n");
@@ -160,5 +166,11 @@ class PasswordCredentialImpl<T>
             url = url + "/";
         }
         return url.replace("://", "\\://");
+    }
+
+    @Override
+    public PasswordCredentialImpl<T> withSubscriptionId(String subscriptionId) {
+        this.subscriptionId = subscriptionId;
+        return this;
     }
 }

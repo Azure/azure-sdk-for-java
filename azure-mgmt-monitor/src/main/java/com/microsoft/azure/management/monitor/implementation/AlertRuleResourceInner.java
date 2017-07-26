@@ -10,6 +10,7 @@ package com.microsoft.azure.management.monitor.implementation;
 
 import com.microsoft.azure.management.monitor.RuleCondition;
 import java.util.List;
+import com.microsoft.azure.management.monitor.RuleAction;
 import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -42,7 +43,7 @@ public class AlertRuleResourceInner extends Resource {
     /**
      * the condition that results in the alert rule being activated.
      */
-    @JsonProperty(value = "properties.condition")
+    @JsonProperty(value = "properties.condition", required = true)
     private RuleCondition condition;
 
     /**
@@ -50,7 +51,7 @@ public class AlertRuleResourceInner extends Resource {
      * active, and when an alert condition is resolved.
      */
     @JsonProperty(value = "properties.actions")
-    private List<RuleActionInner> actions;
+    private List<RuleAction> actions;
 
     /**
      * Last time the rule was updated in ISO8601 format.
@@ -143,7 +144,7 @@ public class AlertRuleResourceInner extends Resource {
      *
      * @return the actions value
      */
-    public List<RuleActionInner> actions() {
+    public List<RuleAction> actions() {
         return this.actions;
     }
 
@@ -153,7 +154,7 @@ public class AlertRuleResourceInner extends Resource {
      * @param actions the actions value to set
      * @return the AlertRuleResourceInner object itself.
      */
-    public AlertRuleResourceInner withActions(List<RuleActionInner> actions) {
+    public AlertRuleResourceInner withActions(List<RuleAction> actions) {
         this.actions = actions;
         return this;
     }

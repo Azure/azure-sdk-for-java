@@ -49,6 +49,9 @@ class VirtualMachineScaleSetNetworkInterfacesImpl
 
     @Override
     protected VirtualMachineScaleSetNetworkInterfaceImpl wrapModel(NetworkInterfaceInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new VirtualMachineScaleSetNetworkInterfaceImpl(inner.name(),
                 this.scaleSetName,
                 this.resourceGroupName,

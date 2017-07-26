@@ -11,6 +11,7 @@ package com.microsoft.azure.management.monitor.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.monitor.ErrorResponseException;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -69,7 +70,7 @@ public class AlertRuleIncidentsInner {
      * @param ruleName The name of the rule.
      * @param incidentName The name of the incident to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the IncidentInner object if successful.
      */
@@ -146,10 +147,10 @@ public class AlertRuleIncidentsInner {
             });
     }
 
-    private ServiceResponse<IncidentInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<IncidentInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<IncidentInner> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<IncidentInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<IncidentInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 

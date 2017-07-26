@@ -81,7 +81,7 @@ public class ExecuteTask<ResultT> implements TaskItem<ResultT> {
         boolean isHot();
 
         /**
-         * Execute the work asynchronously asynchronously.
+         * Execute the work asynchronously.
          *
          * @return the observable reference
          */

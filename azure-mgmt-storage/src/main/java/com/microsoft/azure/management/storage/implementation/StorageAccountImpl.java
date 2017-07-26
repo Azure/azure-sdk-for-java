@@ -6,10 +6,15 @@
 
 package com.microsoft.azure.management.storage.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.storage.AccessTier;
 import com.microsoft.azure.management.storage.CustomDomain;
 import com.microsoft.azure.management.storage.Encryption;
+import com.microsoft.azure.management.storage.EncryptionService;
+import com.microsoft.azure.management.storage.EncryptionServices;
+import com.microsoft.azure.management.storage.StorageAccountEncryptionKeySource;
+import com.microsoft.azure.management.storage.StorageAccountEncryptionStatus;
 import com.microsoft.azure.management.storage.Kind;
 import com.microsoft.azure.management.storage.ProvisioningState;
 import com.microsoft.azure.management.storage.PublicEndpoints;
@@ -17,6 +22,7 @@ import com.microsoft.azure.management.storage.Sku;
 import com.microsoft.azure.management.storage.SkuName;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountKey;
+import com.microsoft.azure.management.storage.StorageService;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import org.joda.time.DateTime;
@@ -24,11 +30,14 @@ import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation for StorageAccount and its parent interfaces.
  */
+@LangDefinition
 class StorageAccountImpl
         extends GroupableResourceImpl<
             StorageAccount,
@@ -101,6 +110,30 @@ class StorageAccountImpl
     @Override
     public Encryption encryption() {
         return inner().encryption();
+    }
+
+    @Override
+    public StorageAccountEncryptionKeySource encryptionKeySource() {
+        if (this.inner().encryption() == null
+                || this.inner().encryption().keySource() == null) {
+            return null;
+        }
+        return StorageAccountEncryptionKeySource.fromString(this.inner().encryption().keySource());
+    }
+
+    @Override
+    public Map<StorageService, StorageAccountEncryptionStatus> encryptionStatuses() {
+        HashMap<StorageService, StorageAccountEncryptionStatus> statuses = new HashMap<>();
+        if (this.inner().encryption() != null
+                && this.inner().encryption().services() != null) {
+            // Status of blob service
+            //
+            // Status for other service needs to be added as storage starts supporting it
+            statuses.put(StorageService.BLOB, new BlobServiceEncryptionStatusImpl(this.inner().encryption().services()));
+        } else {
+            statuses.put(StorageService.BLOB, new BlobServiceEncryptionStatusImpl(new EncryptionServices()));
+        }
+        return statuses;
     }
 
     @Override
@@ -196,6 +229,55 @@ class StorageAccountImpl
         } else {
             updateParameters.withEncryption(encryption);
         }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl withEncryption() {
+        Encryption encryption;
+        if (this.inner().encryption() != null) {
+            encryption = this.inner().encryption();
+        } else {
+            encryption = new Encryption();
+        }
+        if (encryption.services() == null) {
+            encryption.withServices(new EncryptionServices());
+        }
+        if (encryption.keySource() == null) {
+            encryption.withKeySource("Microsoft.Storage");
+        }
+        // Enable encryption for blob service
+        //
+        if (encryption.services().blob() == null) {
+            encryption.services().withBlob(new EncryptionService());
+        }
+        encryption.services().blob().withEnabled(true);
+        // Code for enabling encryption for other service will be added as storage start supporting them.
+        //
+        if (isInCreateMode()) {
+            createParameters.withEncryption(encryption);
+        } else {
+            updateParameters.withEncryption(encryption);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl withoutEncryption() {
+        if (this.inner().encryption() == null
+                || this.inner().encryption().services() == null) {
+            return this;
+        }
+        Encryption encryption = this.inner().encryption();
+        // Disable encryption for blob service
+        //
+        if (encryption.services().blob() == null) {
+            return this;
+        }
+        encryption.services().blob().withEnabled(false);
+        // Code for disabling encryption for other service will be added as storage start supporting them.
+        //
+        updateParameters.withEncryption(encryption);
         return this;
     }
 

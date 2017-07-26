@@ -11,20 +11,20 @@ package com.microsoft.azure.management.search.implementation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Response containing the primary and secondary API keys for a given Azure
- * Search service.
+ * Response containing the primary and secondary admin API keys for a given
+ * Azure Search service.
  */
 public class AdminKeyResultInner {
     /**
-     * The primary API key of the Search service.
+     * The primary admin API key of the Search service.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "primaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryKey;
 
     /**
-     * The secondary API key of the Search service.
+     * The secondary admin API key of the Search service.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "secondaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryKey;
 
     /**

@@ -36,6 +36,7 @@ public interface PasswordCredential extends
      */
     interface Definition<ParentT> extends
             DefinitionStages.Blank<ParentT>,
+            DefinitionStages.WithSubscriptionInAuthFile<ParentT>,
             DefinitionStages.WithAttach<ParentT> {
     }
 
@@ -92,6 +93,7 @@ public interface PasswordCredential extends
 
         /**
          * A credential definition stage allowing exporting the auth file for the service principal.
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAuthFile<ParentT> {
             /**
@@ -99,7 +101,20 @@ public interface PasswordCredential extends
              * @param outputStream the output stream to export the file
              * @return the next stage in credential definition
              */
-            WithAttach<ParentT> withAuthFileToExport(OutputStream outputStream);
+            WithSubscriptionInAuthFile<ParentT> withAuthFileToExport(OutputStream outputStream);
+        }
+
+        /**
+         * A credential definition stage allowing the subscription in the auth file to be set.
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
+        interface WithSubscriptionInAuthFile<ParentT> {
+            /**
+             * Specifies the "subscription=" field in the auth file.
+             * @param subscriptionId the UUID of the subscription
+             * @return the next stage in credential definition
+             */
+            WithAttach<ParentT> withSubscriptionId(String subscriptionId);
         }
 
         /** The final stage of the credential definition.
@@ -123,6 +138,7 @@ public interface PasswordCredential extends
      */
     interface UpdateDefinition<ParentT> extends
             UpdateDefinitionStages.Blank<ParentT>,
+            UpdateDefinitionStages.WithSubscriptionInAuthFile<ParentT>,
             UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
@@ -133,14 +149,14 @@ public interface PasswordCredential extends
         /**
          * The first stage of a credential definition.
          *
-         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         * @param <ParentT> the stage of the parent update to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithKey<ParentT> {
         }
 
         /**
          * The credential definition stage allowing the the password or certificate to be set.
-         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         * @param <ParentT> the stage of the parent update to return to after attaching this definition
          */
         interface WithKey<ParentT> {
             /**
@@ -153,7 +169,7 @@ public interface PasswordCredential extends
 
         /**
          * The credential definition stage allowing start date to be set.
-         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         * @param <ParentT> the stage of the parent update to return to after attaching this definition
          */
         interface WithStartDate<ParentT> {
             /**
@@ -166,7 +182,7 @@ public interface PasswordCredential extends
 
         /**
          * The credential definition stage allowing the duration of key validity to be set.
-         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         * @param <ParentT> the stage of the parent update to return to after attaching this definition
          */
         interface WithDuration<ParentT> {
             /**
@@ -179,6 +195,7 @@ public interface PasswordCredential extends
 
         /**
          * A credential definition stage allowing exporting the auth file for the service principal.
+         * @param <ParentT> the stage of the parent update to return to after attaching this definition
          */
         interface WithAuthFile<ParentT> {
             /**
@@ -186,13 +203,26 @@ public interface PasswordCredential extends
              * @param outputStream the output stream to export the file
              * @return the next stage in credential definition
              */
-            WithAttach<ParentT> withAuthFileToExport(OutputStream outputStream);
+            WithSubscriptionInAuthFile<ParentT> withAuthFileToExport(OutputStream outputStream);
+        }
+
+        /**
+         * A credential definition stage allowing the subscription in the auth file to be set.
+         * @param <ParentT> the stage of the parent update to return to after attaching this definition
+         */
+        interface WithSubscriptionInAuthFile<ParentT> {
+            /**
+             * Specifies the "subscription=" field in the auth file.
+             * @param subscriptionId the UUID of the subscription
+             * @return the next stage in credential definition
+             */
+            WithAttach<ParentT> withSubscriptionId(String subscriptionId);
         }
 
         /** The final stage of the credential definition.
          * <p>
          * At this stage, more settings can be specified, or the credential definition can be
-         * attached to the parent application / service principal definition
+         * attached to the parent application / service principal update
          * using {@link WithAttach#attach()}.
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */

@@ -12,7 +12,6 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.microsoft.azure.management.monitor.implementation.RuleActionInner;
 
 /**
  * Specifies the action to send email when the rule condition is evaluated. The
@@ -20,7 +19,7 @@ import com.microsoft.azure.management.monitor.implementation.RuleActionInner;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.RuleEmailAction")
-public class RuleEmailAction extends RuleActionInner {
+public class RuleEmailAction extends RuleAction {
     /**
      * Whether the administrators (service and co-adiminstrators) of the
      * service should be notified when the alert is activated.

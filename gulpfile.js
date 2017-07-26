@@ -12,6 +12,24 @@ var mappings = {
         'args': '-FT 1',
         'modeler': 'CompositeSwagger'
     },
+    'eventhub': {
+        'dir': 'azure-mgmt-eventhub',
+        'source': 'arm-eventhub/2015-08-01/swagger/EventHub.json',
+        'package': 'com.microsoft.azure.management.eventhub',
+        'args': '-FT 1'
+    },
+    'servicefabric': {
+        'dir': 'azure-mgmt-servicefabric',
+        'source': 'arm-servicefabric/2016-09-01/swagger/servicefabric.json',
+        'package': 'com.microsoft.azure.management.servicefabric',
+        'args': '-FT 1'
+    },
+    'notificationhubs': {
+        'dir': 'azure-mgmt-notificationhubs',
+        'source': 'arm-notificationhubs/2017-04-01/swagger/notificationhubs.json',
+        'package': 'com.microsoft.azure.management.notificationhubs',
+        'args': '-FT 1'
+    },
     'graphrbac': {
         'dir': 'azure-mgmt-graph-rbac',
         'source': 'arm-graphrbac/1.6/swagger/graphrbac.json',
@@ -78,7 +96,7 @@ var mappings = {
     },
     'search': {
         'dir': 'azure-mgmt-search',
-        'source': 'arm-search/2015-02-28/swagger/search.json',
+        'source': 'arm-search/2015-08-19/swagger/search.json',
         'package': 'com.microsoft.azure.management.search',
         'args': '-FT 1'
     },
@@ -245,9 +263,10 @@ var codegen = function(project, cb) {
                         ' -CodeGenerator ' + generator +
                         ' -Namespace ' + mappings[project].package +
                         ' -Input ' + specRoot + '/' + mappings[project].source +
-                        ' -outputDirectory ' + mappings[project].dir + '/src/main/java/' + mappings[project].package.replace(/\./g, '/') +
+                        ' -outputDirectory ' + mappings[project].dir +
                         ' -Header MICROSOFT_MIT_NO_CODEGEN' +
                         ' -skipValidation true' +
+                        ' -RegenerateManager true ' +
                         ' -' + autoRestArgs;
     if (mappings[project].args !== undefined) {
         cmd = cmd + ' ' + mappings[project].args;
