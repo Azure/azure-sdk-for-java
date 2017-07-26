@@ -94,13 +94,13 @@ public class CatalogsImpl implements Catalogs {
         @PATCH("catalog/usql/databases/{databaseName}/secrets/{secretName}")
         Observable<Response<ResponseBody>> updateSecret(@Path("databaseName") String databaseName, @Path("secretName") String secretName, @Body DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs getSecret" })
-        @GET("catalog/usql/databases/{databaseName}/secrets/{secretName}")
-        Observable<Response<ResponseBody>> getSecret(@Path("databaseName") String databaseName, @Path("secretName") String secretName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs deleteSecret" })
         @HTTP(path = "catalog/usql/databases/{databaseName}/secrets/{secretName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteSecret(@Path("databaseName") String databaseName, @Path("secretName") String secretName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs getSecret" })
+        @GET("catalog/usql/databases/{databaseName}/secrets/{secretName}")
+        Observable<Response<ResponseBody>> getSecret(@Path("databaseName") String databaseName, @Path("secretName") String secretName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs deleteAllSecrets" })
         @HTTP(path = "catalog/usql/databases/{databaseName}/secrets", method = "DELETE", hasBody = true)
@@ -114,13 +114,13 @@ public class CatalogsImpl implements Catalogs {
         @PATCH("catalog/usql/databases/{databaseName}/credentials/{credentialName}")
         Observable<Response<ResponseBody>> updateCredential(@Path("databaseName") String databaseName, @Path("credentialName") String credentialName, @Body DataLakeAnalyticsCatalogCredentialUpdateParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs getCredential" })
-        @GET("catalog/usql/databases/{databaseName}/credentials/{credentialName}")
-        Observable<Response<ResponseBody>> getCredential(@Path("databaseName") String databaseName, @Path("credentialName") String credentialName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs deleteCredential" })
         @POST("catalog/usql/databases/{databaseName}/credentials/{credentialName}")
         Observable<Response<ResponseBody>> deleteCredential(@Path("databaseName") String databaseName, @Path("credentialName") String credentialName, @Body DataLakeAnalyticsCatalogCredentialDeleteParameters parameters, @Query("cascade") Boolean cascade, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs getCredential" })
+        @GET("catalog/usql/databases/{databaseName}/credentials/{credentialName}")
+        Observable<Response<ResponseBody>> getCredential(@Path("databaseName") String databaseName, @Path("credentialName") String credentialName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listCredentials" })
         @GET("catalog/usql/databases/{databaseName}/credentials")
@@ -148,7 +148,7 @@ public class CatalogsImpl implements Catalogs {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listTables" })
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables")
-        Observable<Response<ResponseBody>> listTables(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listTables(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("basic") Boolean basic, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listTableStatisticsByDatabaseAndSchema" })
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/statistics")
@@ -228,7 +228,7 @@ public class CatalogsImpl implements Catalogs {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listTablesByDatabase" })
         @GET("catalog/usql/databases/{databaseName}/tables")
-        Observable<Response<ResponseBody>> listTablesByDatabase(@Path("databaseName") String databaseName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listTablesByDatabase(@Path("databaseName") String databaseName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("basic") Boolean basic, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.Catalogs listTableValuedFunctionsByDatabase" })
         @GET("catalog/usql/databases/{databaseName}/tablevaluedfunctions")
@@ -527,6 +527,99 @@ public class CatalogsImpl implements Catalogs {
     }
 
     /**
+     * Deletes the specified secret in the specified database. This is deprecated and will be removed in the next release. Please use DeleteCredential instead.
+     *
+     * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
+     * @param databaseName The name of the database containing the secret.
+     * @param secretName The name of the secret to delete
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteSecret(String accountName, String databaseName, String secretName) {
+        deleteSecretWithServiceResponseAsync(accountName, databaseName, secretName).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes the specified secret in the specified database. This is deprecated and will be removed in the next release. Please use DeleteCredential instead.
+     *
+     * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
+     * @param databaseName The name of the database containing the secret.
+     * @param secretName The name of the secret to delete
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteSecretAsync(String accountName, String databaseName, String secretName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteSecretWithServiceResponseAsync(accountName, databaseName, secretName), serviceCallback);
+    }
+
+    /**
+     * Deletes the specified secret in the specified database. This is deprecated and will be removed in the next release. Please use DeleteCredential instead.
+     *
+     * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
+     * @param databaseName The name of the database containing the secret.
+     * @param secretName The name of the secret to delete
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deleteSecretAsync(String accountName, String databaseName, String secretName) {
+        return deleteSecretWithServiceResponseAsync(accountName, databaseName, secretName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes the specified secret in the specified database. This is deprecated and will be removed in the next release. Please use DeleteCredential instead.
+     *
+     * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
+     * @param databaseName The name of the database containing the secret.
+     * @param secretName The name of the secret to delete
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteSecretWithServiceResponseAsync(String accountName, String databaseName, String secretName) {
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.adlaCatalogDnsSuffix() == null) {
+            throw new IllegalArgumentException("Parameter this.client.adlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (secretName == null) {
+            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        return service.deleteSecret(databaseName, secretName, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteSecretDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> deleteSecretDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * Gets the specified secret in the specified database. This is deprecated and will be removed in the next release. Please use GetCredential instead.
      *
      * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
@@ -621,99 +714,6 @@ public class CatalogsImpl implements Catalogs {
     }
 
     /**
-     * Deletes the specified secret in the specified database. This is deprecated and will be removed in the next release. Please use DeleteCredential instead.
-     *
-     * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
-     * @param databaseName The name of the database containing the secret.
-     * @param secretName The name of the secret to delete
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void deleteSecret(String accountName, String databaseName, String secretName) {
-        deleteSecretWithServiceResponseAsync(accountName, databaseName, secretName).toBlocking().single().body();
-    }
-
-    /**
-     * Deletes the specified secret in the specified database. This is deprecated and will be removed in the next release. Please use DeleteCredential instead.
-     *
-     * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
-     * @param databaseName The name of the database containing the secret.
-     * @param secretName The name of the secret to delete
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Void> deleteSecretAsync(String accountName, String databaseName, String secretName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteSecretWithServiceResponseAsync(accountName, databaseName, secretName), serviceCallback);
-    }
-
-    /**
-     * Deletes the specified secret in the specified database. This is deprecated and will be removed in the next release. Please use DeleteCredential instead.
-     *
-     * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
-     * @param databaseName The name of the database containing the secret.
-     * @param secretName The name of the secret to delete
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> deleteSecretAsync(String accountName, String databaseName, String secretName) {
-        return deleteSecretWithServiceResponseAsync(accountName, databaseName, secretName).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Deletes the specified secret in the specified database. This is deprecated and will be removed in the next release. Please use DeleteCredential instead.
-     *
-     * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
-     * @param databaseName The name of the database containing the secret.
-     * @param secretName The name of the secret to delete
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> deleteSecretWithServiceResponseAsync(String accountName, String databaseName, String secretName) {
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (this.client.adlaCatalogDnsSuffix() == null) {
-            throw new IllegalArgumentException("Parameter this.client.adlaCatalogDnsSuffix() is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (secretName == null) {
-            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
-        return service.deleteSecret(databaseName, secretName, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = deleteSecretDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> deleteSecretDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
      * Deletes all secrets in the specified database. This is deprecated and will be removed in the next release. In the future, please only drop individual credentials using DeleteCredential.
      *
      * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
@@ -803,7 +803,7 @@ public class CatalogsImpl implements Catalogs {
      * Creates the specified credential for use with external data sources in the specified database.
      *
      * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
-     * @param databaseName The name of the database in which to create the credential.
+     * @param databaseName The name of the database in which to create the credential. Note: This is NOT an external database name, but the name of an existing U-SQL database that should contain the new credential object.
      * @param credentialName The name of the credential.
      * @param parameters The parameters required to create the credential (name and password)
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -818,7 +818,7 @@ public class CatalogsImpl implements Catalogs {
      * Creates the specified credential for use with external data sources in the specified database.
      *
      * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
-     * @param databaseName The name of the database in which to create the credential.
+     * @param databaseName The name of the database in which to create the credential. Note: This is NOT an external database name, but the name of an existing U-SQL database that should contain the new credential object.
      * @param credentialName The name of the credential.
      * @param parameters The parameters required to create the credential (name and password)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -833,7 +833,7 @@ public class CatalogsImpl implements Catalogs {
      * Creates the specified credential for use with external data sources in the specified database.
      *
      * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
-     * @param databaseName The name of the database in which to create the credential.
+     * @param databaseName The name of the database in which to create the credential. Note: This is NOT an external database name, but the name of an existing U-SQL database that should contain the new credential object.
      * @param credentialName The name of the credential.
      * @param parameters The parameters required to create the credential (name and password)
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -852,7 +852,7 @@ public class CatalogsImpl implements Catalogs {
      * Creates the specified credential for use with external data sources in the specified database.
      *
      * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
-     * @param databaseName The name of the database in which to create the credential.
+     * @param databaseName The name of the database in which to create the credential. Note: This is NOT an external database name, but the name of an existing U-SQL database that should contain the new credential object.
      * @param credentialName The name of the credential.
      * @param parameters The parameters required to create the credential (name and password)
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -997,100 +997,6 @@ public class CatalogsImpl implements Catalogs {
     private ServiceResponse<Void> updateCredentialDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Retrieves the specified credential from the Data Lake Analytics catalog.
-     *
-     * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
-     * @param databaseName The name of the database containing the schema.
-     * @param credentialName The name of the credential.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the USqlCredential object if successful.
-     */
-    public USqlCredential getCredential(String accountName, String databaseName, String credentialName) {
-        return getCredentialWithServiceResponseAsync(accountName, databaseName, credentialName).toBlocking().single().body();
-    }
-
-    /**
-     * Retrieves the specified credential from the Data Lake Analytics catalog.
-     *
-     * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
-     * @param databaseName The name of the database containing the schema.
-     * @param credentialName The name of the credential.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<USqlCredential> getCredentialAsync(String accountName, String databaseName, String credentialName, final ServiceCallback<USqlCredential> serviceCallback) {
-        return ServiceFuture.fromResponse(getCredentialWithServiceResponseAsync(accountName, databaseName, credentialName), serviceCallback);
-    }
-
-    /**
-     * Retrieves the specified credential from the Data Lake Analytics catalog.
-     *
-     * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
-     * @param databaseName The name of the database containing the schema.
-     * @param credentialName The name of the credential.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the USqlCredential object
-     */
-    public Observable<USqlCredential> getCredentialAsync(String accountName, String databaseName, String credentialName) {
-        return getCredentialWithServiceResponseAsync(accountName, databaseName, credentialName).map(new Func1<ServiceResponse<USqlCredential>, USqlCredential>() {
-            @Override
-            public USqlCredential call(ServiceResponse<USqlCredential> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Retrieves the specified credential from the Data Lake Analytics catalog.
-     *
-     * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
-     * @param databaseName The name of the database containing the schema.
-     * @param credentialName The name of the credential.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the USqlCredential object
-     */
-    public Observable<ServiceResponse<USqlCredential>> getCredentialWithServiceResponseAsync(String accountName, String databaseName, String credentialName) {
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (this.client.adlaCatalogDnsSuffix() == null) {
-            throw new IllegalArgumentException("Parameter this.client.adlaCatalogDnsSuffix() is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (credentialName == null) {
-            throw new IllegalArgumentException("Parameter credentialName is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
-        return service.getCredential(databaseName, credentialName, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<USqlCredential>>>() {
-                @Override
-                public Observable<ServiceResponse<USqlCredential>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<USqlCredential> clientResponse = getCredentialDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<USqlCredential> getCredentialDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<USqlCredential, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<USqlCredential>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1281,6 +1187,100 @@ public class CatalogsImpl implements Catalogs {
     private ServiceResponse<Void> deleteCredentialDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Retrieves the specified credential from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
+     * @param databaseName The name of the database containing the schema.
+     * @param credentialName The name of the credential.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the USqlCredential object if successful.
+     */
+    public USqlCredential getCredential(String accountName, String databaseName, String credentialName) {
+        return getCredentialWithServiceResponseAsync(accountName, databaseName, credentialName).toBlocking().single().body();
+    }
+
+    /**
+     * Retrieves the specified credential from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
+     * @param databaseName The name of the database containing the schema.
+     * @param credentialName The name of the credential.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<USqlCredential> getCredentialAsync(String accountName, String databaseName, String credentialName, final ServiceCallback<USqlCredential> serviceCallback) {
+        return ServiceFuture.fromResponse(getCredentialWithServiceResponseAsync(accountName, databaseName, credentialName), serviceCallback);
+    }
+
+    /**
+     * Retrieves the specified credential from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
+     * @param databaseName The name of the database containing the schema.
+     * @param credentialName The name of the credential.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the USqlCredential object
+     */
+    public Observable<USqlCredential> getCredentialAsync(String accountName, String databaseName, String credentialName) {
+        return getCredentialWithServiceResponseAsync(accountName, databaseName, credentialName).map(new Func1<ServiceResponse<USqlCredential>, USqlCredential>() {
+            @Override
+            public USqlCredential call(ServiceResponse<USqlCredential> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Retrieves the specified credential from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account upon which to execute catalog operations.
+     * @param databaseName The name of the database containing the schema.
+     * @param credentialName The name of the credential.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the USqlCredential object
+     */
+    public Observable<ServiceResponse<USqlCredential>> getCredentialWithServiceResponseAsync(String accountName, String databaseName, String credentialName) {
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.adlaCatalogDnsSuffix() == null) {
+            throw new IllegalArgumentException("Parameter this.client.adlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (credentialName == null) {
+            throw new IllegalArgumentException("Parameter credentialName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        return service.getCredential(databaseName, credentialName, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<USqlCredential>>>() {
+                @Override
+                public Observable<ServiceResponse<USqlCredential>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<USqlCredential> clientResponse = getCredentialDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<USqlCredential> getCredentialDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<USqlCredential, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<USqlCredential>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -2544,8 +2544,9 @@ public class CatalogsImpl implements Catalogs {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
+        final Boolean basic = null;
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
-        return service.listTables(databaseName, schemaName, filter, top, skip, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.listTables(databaseName, schemaName, filter, top, skip, select, orderby, count, basic, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<USqlTable>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTable>>> call(Response<ResponseBody> response) {
@@ -2571,13 +2572,14 @@ public class CatalogsImpl implements Catalogs {
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @param basic The basic switch indicates what level of information to return when listing tables. When basic is true, only database_name, schema_name, table_name and version are returned for each table, otherwise all table metadata is returned. By default, it is false. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;USqlTable&gt; object if successful.
      */
-    public PagedList<USqlTable> listTables(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
-        ServiceResponse<Page<USqlTable>> response = listTablesSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count).toBlocking().single();
+    public PagedList<USqlTable> listTables(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final Boolean basic) {
+        ServiceResponse<Page<USqlTable>> response = listTablesSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count, basic).toBlocking().single();
         return new PagedList<USqlTable>(response.body()) {
             @Override
             public Page<USqlTable> nextPage(String nextPageLink) {
@@ -2598,13 +2600,14 @@ public class CatalogsImpl implements Catalogs {
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @param basic The basic switch indicates what level of information to return when listing tables. When basic is true, only database_name, schema_name, table_name and version are returned for each table, otherwise all table metadata is returned. By default, it is false. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<USqlTable>> listTablesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTable> serviceCallback) {
+    public ServiceFuture<List<USqlTable>> listTablesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final Boolean basic, final ListOperationCallback<USqlTable> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listTablesSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count),
+            listTablesSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count, basic),
             new Func1<String, Observable<ServiceResponse<Page<USqlTable>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTable>>> call(String nextPageLink) {
@@ -2626,11 +2629,12 @@ public class CatalogsImpl implements Catalogs {
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @param basic The basic switch indicates what level of information to return when listing tables. When basic is true, only database_name, schema_name, table_name and version are returned for each table, otherwise all table metadata is returned. By default, it is false. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;USqlTable&gt; object
      */
-    public Observable<Page<USqlTable>> listTablesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
-        return listTablesWithServiceResponseAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count)
+    public Observable<Page<USqlTable>> listTablesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final Boolean basic) {
+        return listTablesWithServiceResponseAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count, basic)
             .map(new Func1<ServiceResponse<Page<USqlTable>>, Page<USqlTable>>() {
                 @Override
                 public Page<USqlTable> call(ServiceResponse<Page<USqlTable>> response) {
@@ -2651,11 +2655,12 @@ public class CatalogsImpl implements Catalogs {
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @param basic The basic switch indicates what level of information to return when listing tables. When basic is true, only database_name, schema_name, table_name and version are returned for each table, otherwise all table metadata is returned. By default, it is false. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;USqlTable&gt; object
      */
-    public Observable<ServiceResponse<Page<USqlTable>>> listTablesWithServiceResponseAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
-        return listTablesSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count)
+    public Observable<ServiceResponse<Page<USqlTable>>> listTablesWithServiceResponseAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final Boolean basic) {
+        return listTablesSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, select, orderby, count, basic)
             .concatMap(new Func1<ServiceResponse<Page<USqlTable>>, Observable<ServiceResponse<Page<USqlTable>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTable>>> call(ServiceResponse<Page<USqlTable>> page) {
@@ -2680,10 +2685,11 @@ public class CatalogsImpl implements Catalogs {
     ServiceResponse<PageImpl<USqlTable>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
     ServiceResponse<PageImpl<USqlTable>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
     ServiceResponse<PageImpl<USqlTable>> * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+    ServiceResponse<PageImpl<USqlTable>> * @param basic The basic switch indicates what level of information to return when listing tables. When basic is true, only database_name, schema_name, table_name and version are returned for each table, otherwise all table metadata is returned. By default, it is false. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;USqlTable&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<USqlTable>>> listTablesSinglePageAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
+    public Observable<ServiceResponse<Page<USqlTable>>> listTablesSinglePageAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final Boolean basic) {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
@@ -2700,7 +2706,7 @@ public class CatalogsImpl implements Catalogs {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
-        return service.listTables(databaseName, schemaName, filter, top, skip, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.listTables(databaseName, schemaName, filter, top, skip, select, orderby, count, basic, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<USqlTable>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTable>>> call(Response<ResponseBody> response) {
@@ -6844,8 +6850,9 @@ public class CatalogsImpl implements Catalogs {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
+        final Boolean basic = null;
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
-        return service.listTablesByDatabase(databaseName, filter, top, skip, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.listTablesByDatabase(databaseName, filter, top, skip, select, orderby, count, basic, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<USqlTable>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTable>>> call(Response<ResponseBody> response) {
@@ -6870,13 +6877,14 @@ public class CatalogsImpl implements Catalogs {
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @param basic The basic switch indicates what level of information to return when listing tables. When basic is true, only database_name, schema_name, table_name and version are returned for each table, otherwise all table metadata is returned. By default, it is false
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;USqlTable&gt; object if successful.
      */
-    public PagedList<USqlTable> listTablesByDatabase(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
-        ServiceResponse<Page<USqlTable>> response = listTablesByDatabaseSinglePageAsync(accountName, databaseName, filter, top, skip, select, orderby, count).toBlocking().single();
+    public PagedList<USqlTable> listTablesByDatabase(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final Boolean basic) {
+        ServiceResponse<Page<USqlTable>> response = listTablesByDatabaseSinglePageAsync(accountName, databaseName, filter, top, skip, select, orderby, count, basic).toBlocking().single();
         return new PagedList<USqlTable>(response.body()) {
             @Override
             public Page<USqlTable> nextPage(String nextPageLink) {
@@ -6896,13 +6904,14 @@ public class CatalogsImpl implements Catalogs {
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @param basic The basic switch indicates what level of information to return when listing tables. When basic is true, only database_name, schema_name, table_name and version are returned for each table, otherwise all table metadata is returned. By default, it is false
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<USqlTable>> listTablesByDatabaseAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTable> serviceCallback) {
+    public ServiceFuture<List<USqlTable>> listTablesByDatabaseAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final Boolean basic, final ListOperationCallback<USqlTable> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listTablesByDatabaseSinglePageAsync(accountName, databaseName, filter, top, skip, select, orderby, count),
+            listTablesByDatabaseSinglePageAsync(accountName, databaseName, filter, top, skip, select, orderby, count, basic),
             new Func1<String, Observable<ServiceResponse<Page<USqlTable>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTable>>> call(String nextPageLink) {
@@ -6923,11 +6932,12 @@ public class CatalogsImpl implements Catalogs {
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @param basic The basic switch indicates what level of information to return when listing tables. When basic is true, only database_name, schema_name, table_name and version are returned for each table, otherwise all table metadata is returned. By default, it is false
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;USqlTable&gt; object
      */
-    public Observable<Page<USqlTable>> listTablesByDatabaseAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
-        return listTablesByDatabaseWithServiceResponseAsync(accountName, databaseName, filter, top, skip, select, orderby, count)
+    public Observable<Page<USqlTable>> listTablesByDatabaseAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final Boolean basic) {
+        return listTablesByDatabaseWithServiceResponseAsync(accountName, databaseName, filter, top, skip, select, orderby, count, basic)
             .map(new Func1<ServiceResponse<Page<USqlTable>>, Page<USqlTable>>() {
                 @Override
                 public Page<USqlTable> call(ServiceResponse<Page<USqlTable>> response) {
@@ -6947,11 +6957,12 @@ public class CatalogsImpl implements Catalogs {
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @param basic The basic switch indicates what level of information to return when listing tables. When basic is true, only database_name, schema_name, table_name and version are returned for each table, otherwise all table metadata is returned. By default, it is false
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;USqlTable&gt; object
      */
-    public Observable<ServiceResponse<Page<USqlTable>>> listTablesByDatabaseWithServiceResponseAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
-        return listTablesByDatabaseSinglePageAsync(accountName, databaseName, filter, top, skip, select, orderby, count)
+    public Observable<ServiceResponse<Page<USqlTable>>> listTablesByDatabaseWithServiceResponseAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final Boolean basic) {
+        return listTablesByDatabaseSinglePageAsync(accountName, databaseName, filter, top, skip, select, orderby, count, basic)
             .concatMap(new Func1<ServiceResponse<Page<USqlTable>>, Observable<ServiceResponse<Page<USqlTable>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTable>>> call(ServiceResponse<Page<USqlTable>> page) {
@@ -6975,10 +6986,11 @@ public class CatalogsImpl implements Catalogs {
     ServiceResponse<PageImpl<USqlTable>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
     ServiceResponse<PageImpl<USqlTable>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
     ServiceResponse<PageImpl<USqlTable>> * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+    ServiceResponse<PageImpl<USqlTable>> * @param basic The basic switch indicates what level of information to return when listing tables. When basic is true, only database_name, schema_name, table_name and version are returned for each table, otherwise all table metadata is returned. By default, it is false
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;USqlTable&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<USqlTable>>> listTablesByDatabaseSinglePageAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
+    public Observable<ServiceResponse<Page<USqlTable>>> listTablesByDatabaseSinglePageAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final Boolean basic) {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
@@ -6992,7 +7004,7 @@ public class CatalogsImpl implements Catalogs {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
-        return service.listTablesByDatabase(databaseName, filter, top, skip, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.listTablesByDatabase(databaseName, filter, top, skip, select, orderby, count, basic, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<USqlTable>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<USqlTable>>> call(Response<ResponseBody> response) {

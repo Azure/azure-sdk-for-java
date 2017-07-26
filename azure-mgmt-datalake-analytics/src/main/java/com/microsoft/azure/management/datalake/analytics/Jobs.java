@@ -10,14 +10,18 @@ package com.microsoft.azure.management.datalake.analytics;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.datalake.analytics.models.BuildJobParameters;
+import com.microsoft.azure.management.datalake.analytics.models.CreateJobParameters;
 import com.microsoft.azure.management.datalake.analytics.models.JobDataPath;
 import com.microsoft.azure.management.datalake.analytics.models.JobInformation;
+import com.microsoft.azure.management.datalake.analytics.models.JobInformationBasic;
 import com.microsoft.azure.management.datalake.analytics.models.JobStatistics;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import rx.Observable;
@@ -123,7 +127,7 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the JobInformation object if successful.
      */
-    JobInformation build(String accountName, JobInformation parameters);
+    JobInformation build(String accountName, BuildJobParameters parameters);
 
     /**
      * Builds (compiles) the specified job in the specified Data Lake Analytics account for job correctness and validation.
@@ -134,7 +138,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<JobInformation> buildAsync(String accountName, JobInformation parameters, final ServiceCallback<JobInformation> serviceCallback);
+    ServiceFuture<JobInformation> buildAsync(String accountName, BuildJobParameters parameters, final ServiceCallback<JobInformation> serviceCallback);
 
     /**
      * Builds (compiles) the specified job in the specified Data Lake Analytics account for job correctness and validation.
@@ -144,7 +148,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the JobInformation object
      */
-    Observable<JobInformation> buildAsync(String accountName, JobInformation parameters);
+    Observable<JobInformation> buildAsync(String accountName, BuildJobParameters parameters);
 
     /**
      * Builds (compiles) the specified job in the specified Data Lake Analytics account for job correctness and validation.
@@ -154,7 +158,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the JobInformation object
      */
-    Observable<ServiceResponse<JobInformation>> buildWithServiceResponseAsync(String accountName, JobInformation parameters);
+    Observable<ServiceResponse<JobInformation>> buildWithServiceResponseAsync(String accountName, BuildJobParameters parameters);
 
     /**
      * Cancels the running job specified by the job ID.
@@ -197,6 +201,53 @@ public interface Jobs {
      * @return the {@link ServiceResponse} object if successful.
      */
     Observable<ServiceResponse<Void>> cancelWithServiceResponseAsync(String accountName, UUID jobIdentity);
+
+    /**
+     * Submits a job to the specified Data Lake Analytics account.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity The job ID (a GUID) for the job being submitted.
+     * @param parameters The parameters to submit a job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the JobInformation object if successful.
+     */
+    JobInformation create(String accountName, UUID jobIdentity, CreateJobParameters parameters);
+
+    /**
+     * Submits a job to the specified Data Lake Analytics account.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity The job ID (a GUID) for the job being submitted.
+     * @param parameters The parameters to submit a job.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<JobInformation> createAsync(String accountName, UUID jobIdentity, CreateJobParameters parameters, final ServiceCallback<JobInformation> serviceCallback);
+
+    /**
+     * Submits a job to the specified Data Lake Analytics account.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity The job ID (a GUID) for the job being submitted.
+     * @param parameters The parameters to submit a job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the JobInformation object
+     */
+    Observable<JobInformation> createAsync(String accountName, UUID jobIdentity, CreateJobParameters parameters);
+
+    /**
+     * Submits a job to the specified Data Lake Analytics account.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity The job ID (a GUID) for the job being submitted.
+     * @param parameters The parameters to submit a job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the JobInformation object
+     */
+    Observable<ServiceResponse<JobInformation>> createWithServiceResponseAsync(String accountName, UUID jobIdentity, CreateJobParameters parameters);
 
     /**
      * Gets the job information for the specified job ID.
@@ -242,62 +293,15 @@ public interface Jobs {
     Observable<ServiceResponse<JobInformation>> getWithServiceResponseAsync(String accountName, UUID jobIdentity);
 
     /**
-     * Submits a job to the specified Data Lake Analytics account.
-     *
-     * @param accountName The Azure Data Lake Analytics account to execute job operations on.
-     * @param jobIdentity The job ID (a GUID) for the job being submitted.
-     * @param parameters The parameters to submit a job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the JobInformation object if successful.
-     */
-    JobInformation create(String accountName, UUID jobIdentity, JobInformation parameters);
-
-    /**
-     * Submits a job to the specified Data Lake Analytics account.
-     *
-     * @param accountName The Azure Data Lake Analytics account to execute job operations on.
-     * @param jobIdentity The job ID (a GUID) for the job being submitted.
-     * @param parameters The parameters to submit a job.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<JobInformation> createAsync(String accountName, UUID jobIdentity, JobInformation parameters, final ServiceCallback<JobInformation> serviceCallback);
-
-    /**
-     * Submits a job to the specified Data Lake Analytics account.
-     *
-     * @param accountName The Azure Data Lake Analytics account to execute job operations on.
-     * @param jobIdentity The job ID (a GUID) for the job being submitted.
-     * @param parameters The parameters to submit a job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the JobInformation object
-     */
-    Observable<JobInformation> createAsync(String accountName, UUID jobIdentity, JobInformation parameters);
-
-    /**
-     * Submits a job to the specified Data Lake Analytics account.
-     *
-     * @param accountName The Azure Data Lake Analytics account to execute job operations on.
-     * @param jobIdentity The job ID (a GUID) for the job being submitted.
-     * @param parameters The parameters to submit a job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the JobInformation object
-     */
-    Observable<ServiceResponse<JobInformation>> createWithServiceResponseAsync(String accountName, UUID jobIdentity, JobInformation parameters);
-
-    /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
      *
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;JobInformation&gt; object if successful.
+     * @return the PagedList&lt;JobInformationBasic&gt; object if successful.
      */
-    PagedList<JobInformation> list(final String accountName);
+    PagedList<JobInformationBasic> list(final String accountName);
 
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
@@ -307,25 +311,25 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<List<JobInformation>> listAsync(final String accountName, final ListOperationCallback<JobInformation> serviceCallback);
+    ServiceFuture<List<JobInformationBasic>> listAsync(final String accountName, final ListOperationCallback<JobInformationBasic> serviceCallback);
 
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
      *
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;JobInformation&gt; object
+     * @return the observable to the PagedList&lt;JobInformationBasic&gt; object
      */
-    Observable<Page<JobInformation>> listAsync(final String accountName);
+    Observable<Page<JobInformationBasic>> listAsync(final String accountName);
 
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
      *
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;JobInformation&gt; object
+     * @return the observable to the PagedList&lt;JobInformationBasic&gt; object
      */
-    Observable<ServiceResponse<Page<JobInformation>>> listWithServiceResponseAsync(final String accountName);
+    Observable<ServiceResponse<Page<JobInformationBasic>>> listWithServiceResponseAsync(final String accountName);
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
      *
@@ -339,9 +343,9 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;JobInformation&gt; object if successful.
+     * @return the PagedList&lt;JobInformationBasic&gt; object if successful.
      */
-    PagedList<JobInformation> list(final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count);
+    PagedList<JobInformationBasic> list(final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count);
 
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
@@ -357,7 +361,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<List<JobInformation>> listAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<JobInformation> serviceCallback);
+    ServiceFuture<List<JobInformationBasic>> listAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<JobInformationBasic> serviceCallback);
 
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
@@ -370,9 +374,9 @@ public interface Jobs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;JobInformation&gt; object
+     * @return the observable to the PagedList&lt;JobInformationBasic&gt; object
      */
-    Observable<Page<JobInformation>> listAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count);
+    Observable<Page<JobInformationBasic>> listAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count);
 
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
@@ -385,9 +389,9 @@ public interface Jobs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;JobInformation&gt; object
+     * @return the observable to the PagedList&lt;JobInformationBasic&gt; object
      */
-    Observable<ServiceResponse<Page<JobInformation>>> listWithServiceResponseAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count);
+    Observable<ServiceResponse<Page<JobInformationBasic>>> listWithServiceResponseAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count);
 
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
@@ -396,9 +400,9 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;JobInformation&gt; object if successful.
+     * @return the PagedList&lt;JobInformationBasic&gt; object if successful.
      */
-    PagedList<JobInformation> listNext(final String nextPageLink);
+    PagedList<JobInformationBasic> listNext(final String nextPageLink);
 
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
@@ -409,24 +413,24 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<List<JobInformation>> listNextAsync(final String nextPageLink, final ServiceFuture<List<JobInformation>> serviceFuture, final ListOperationCallback<JobInformation> serviceCallback);
+    ServiceFuture<List<JobInformationBasic>> listNextAsync(final String nextPageLink, final ServiceFuture<List<JobInformationBasic>> serviceFuture, final ListOperationCallback<JobInformationBasic> serviceCallback);
 
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;JobInformation&gt; object
+     * @return the observable to the PagedList&lt;JobInformationBasic&gt; object
      */
-    Observable<Page<JobInformation>> listNextAsync(final String nextPageLink);
+    Observable<Page<JobInformationBasic>> listNextAsync(final String nextPageLink);
 
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;JobInformation&gt; object
+     * @return the observable to the PagedList&lt;JobInformationBasic&gt; object
      */
-    Observable<ServiceResponse<Page<JobInformation>>> listNextWithServiceResponseAsync(final String nextPageLink);
+    Observable<ServiceResponse<Page<JobInformationBasic>>> listNextWithServiceResponseAsync(final String nextPageLink);
 
 }
