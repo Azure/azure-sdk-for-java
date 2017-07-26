@@ -85,27 +85,27 @@ public class JobsImpl
 
     @Override
     public void deleteByName(String name) {
-        this.manager().inner().jobs().delete(resourceGroupName, jobCollectionName, name);
+        this.manager().inner().jobs().delete(this.resourceGroupName, this.jobCollectionName, name);
     }
 
     @Override
     public ServiceFuture<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback) {
-        return this.manager().inner().jobs().deleteAsync(resourceGroupName, jobCollectionName, name, callback);
+        return this.manager().inner().jobs().deleteAsync(this.resourceGroupName, this.jobCollectionName, name, callback);
     }
 
     @Override
     public Completable deleteByNameAsync(String name) {
-        return this.manager().inner().jobs().deleteAsync(resourceGroupName, jobCollectionName, name).toCompletable();
+        return this.manager().inner().jobs().deleteAsync(this.resourceGroupName, this.jobCollectionName, name).toCompletable();
     }
 
     @Override
     public PagedList<Job> list() {
-        return listByParent(resourceGroupName, jobCollectionName);
+        return listByParent(this.resourceGroupName, this.jobCollectionName);
     }
 
     @Override
     public Observable<Job> listAsync() {
-        return this.manager().inner().jobs().listAsync(resourceGroupName, jobCollectionName)
+        return this.manager().inner().jobs().listAsync(this.resourceGroupName, this.jobCollectionName)
             .flatMap(new Func1<Page<JobDefinitionInner>, Observable<Job>>() {
                 @Override
                 public Observable<Job> call(Page<JobDefinitionInner> jobDefinitionInnerPage) {
@@ -121,12 +121,22 @@ public class JobsImpl
 
     @Override
     public Observable<Job> getByNameAsync(String name) {
-        return getByParentAsync(resourceGroupName, jobCollectionName, name);
+        return getByParentAsync(this.resourceGroupName, this.jobCollectionName, name);
     }
 
     @Override
     public JobImpl getByName(String name) {
-        return wrapModel(this.manager().inner().jobs().get(resourceGroupName, jobCollectionName, name));
+        return wrapModel(this.manager().inner().jobs().get(this.resourceGroupName, this.jobCollectionName, name));
+    }
+
+    @Override
+    public void run(String jobName) {
+        manager().inner().jobs().run(this.resourceGroupName, this.jobCollectionName, jobName);
+    }
+
+    @Override
+    public Completable runAsync(String jobName) {
+        return this.manager().inner().jobs().runAsync(this.resourceGroupName, this.jobCollectionName, jobName).toCompletable();
     }
 
     @Override
@@ -138,12 +148,12 @@ public class JobsImpl
                 return new JobHistoryImpl(jobHistoryDefinitionInner);
             }
         };
-        return converter.convert(this.manager().inner().jobs().listJobHistory(resourceGroupName, jobCollectionName, jobName));
+        return converter.convert(this.manager().inner().jobs().listJobHistory(this.resourceGroupName, this.jobCollectionName, jobName));
     }
 
     @Override
     public Observable<JobHistory> listJobHistoryAsync(String jobName) {
-        return this.manager().inner().jobs().listJobHistoryAsync(resourceGroupName, jobCollectionName, jobName)
+        return this.manager().inner().jobs().listJobHistoryAsync(this.resourceGroupName, this.jobCollectionName, jobName)
             .flatMap(new Func1<Page<JobHistoryDefinitionInner>, Observable<JobHistory>>() {
                 @Override
                 public Observable<JobHistory> call(Page<JobHistoryDefinitionInner> jobHistoryDefinitionInnerPage) {

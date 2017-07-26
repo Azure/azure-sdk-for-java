@@ -17,6 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.scheduler.implementation.JobsInner;
 import com.microsoft.azure.management.scheduler.implementation.ScheduleServiceManager;
+import rx.Completable;
 import rx.Observable;
 
 /**
@@ -33,13 +34,32 @@ public interface Jobs extends
     HasInner<JobsInner> {
 
     /**
+     * Runs a job from the current job collection.
+     *
+     * @param jobName the job name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void run(String jobName);
+
+    /**
+     * Runs a job from the current job collection.
+     *
+     * @param jobName the job name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return a representation of the future computation of this call
+     */
+    Completable runAsync(String jobName);
+
+    /**
      * Lists job history.
      *
      * @param jobName the job name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return a representation of the future computation of this call
+     * @return a paged list of all the job history resources
      */
     PagedList<JobHistory> listJobHistory(String jobName);
 
@@ -48,7 +68,7 @@ public interface Jobs extends
      *
      * @param jobName the job name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;JobHistoryDefinitionInner&gt; object
+     * @return a representation of the future computation of this call
      */
     Observable<JobHistory> listJobHistoryAsync(String jobName);
 }

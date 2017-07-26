@@ -12,6 +12,7 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
+import com.microsoft.azure.management.scheduler.Job;
 import com.microsoft.azure.management.scheduler.JobCollection;
 import com.microsoft.azure.management.scheduler.JobCollections;
 import com.microsoft.azure.management.scheduler.JobHistory;
@@ -124,6 +125,50 @@ public class JobCollectionsImpl
     @Override
     public Completable disableAsync(String resourceGroupName, String jobCollectionName) {
         return this.manager().inner().jobCollections().disableAsync(resourceGroupName, jobCollectionName).toCompletable();
+    }
+
+    @Override
+    public void runJobByName(String resourceGroupName, String jobCollectionName, String jobName) {
+        this.manager().inner().jobs().run(resourceGroupName, jobCollectionName, jobName);
+    }
+
+    @Override
+    public Completable runJobByNameAsync(String resourceGroupName, String jobCollectionName, String jobName) {
+        return this.manager().inner().jobs().runAsync(resourceGroupName, jobCollectionName, jobName).toCompletable();
+    }
+
+    @Override
+    public Job getJobByName(String resourceGroupName, String jobCollectionName, String jobName) {
+        return new JobImpl(resourceGroupName,
+            jobCollectionName,
+            jobName,
+            this.manager().inner().jobs().get(resourceGroupName, jobCollectionName, jobName),
+            this.manager());
+    }
+
+    @Override
+    public Observable<Job> getJobByNameAsync(final String resourceGroupName, final String jobCollectionName, final String jobName) {
+        return this.manager().inner().jobs().getAsync(resourceGroupName, jobCollectionName, jobName)
+            .map(new Func1<JobDefinitionInner, Job>() {
+                @Override
+                public Job call(JobDefinitionInner jobDefinitionInner) {
+                    return new JobImpl(resourceGroupName,
+                        jobCollectionName,
+                        jobName,
+                        jobDefinitionInner,
+                        manager());
+                }
+            });
+    }
+
+    @Override
+    public void deleteJobByName(String resourceGroupName, String jobCollectionName, String jobName) {
+        this.manager().inner().jobs().delete(resourceGroupName, jobCollectionName, jobName);
+    }
+
+    @Override
+    public Completable deleteJobByNameAsync(String resourceGroupName, String jobCollectionName, String jobName) {
+        return this.manager().inner().jobs().deleteAsync(resourceGroupName, jobCollectionName, jobName).toCompletable();
     }
 
     @Override

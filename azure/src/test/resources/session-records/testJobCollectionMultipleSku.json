@@ -1,37 +1,66 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups?api-version=2016-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups?api-version=2016-09-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (ResourceManagementClient, 2016-09-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (ResourceManagementClient, 2016-09-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:36 GMT",
-      "content-length" : "1665",
+      "date" : "Wed, 26 Jul 2017 18:49:57 GMT",
+      "content-length" : "1666",
       "expires" : "-1",
       "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14998",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "425d2e4e-f197-4b43-be98-84429cb11dfe",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T184957Z:425d2e4e-f197-4b43-be98-84429cb11dfe",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "425d2e4e-f197-4b43-be98-84429cb11dfe",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Default-Storage-EastUS\",\"name\":\"Default-Storage-EastUS\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg0fb824152\",\"name\":\"javacsmrg0fb824152\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgbb127984f\",\"name\":\"javacsmrgbb127984f\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/linux-rg\",\"name\":\"linux-rg\",\"location\":\"southcentralus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-webapp-170317114541\",\"name\":\"rg-webapp-170317114541\",\"location\":\"eastus2\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc06243f\",\"name\":\"rgjobc06243f\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc19713b\",\"name\":\"rgjobc19713b\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgtodelete\",\"name\":\"rgtodelete\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/squarerg\",\"name\":\"squarerg\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Default-Storage-EastUS/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Wed, 26 Jul 2017 18:49:58 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "28",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "14997",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "8760b4ab-6c7a-4e56-8ea7-1f647a83758e",
+      "x-ms-correlation-request-id" : "d4ed703e-b0a1-4ef9-b40d-52f6d4e0d1f9",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201436Z:8760b4ab-6c7a-4e56-8ea7-1f647a83758e",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "245",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T184958Z:d4ed703e-b0a1-4ef9-b40d-52f6d4e0d1f9",
+      "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "8760b4ab-6c7a-4e56-8ea7-1f647a83758e",
-      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Default-Storage-EastUS\",\"name\":\"Default-Storage-EastUS\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg0fb824152\",\"name\":\"javacsmrg0fb824152\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgbb127984f\",\"name\":\"javacsmrgbb127984f\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/linux-rg\",\"name\":\"linux-rg\",\"location\":\"southcentralus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-webapp-170317114541\",\"name\":\"rg-webapp-170317114541\",\"location\":\"eastus2\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc19713b\",\"name\":\"rgjobc19713b\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446\",\"name\":\"rgjobc625446\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Deleting\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgtodelete\",\"name\":\"rgtodelete\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/squarerg\",\"name\":\"squarerg\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}]}"
+      "x-ms-request-id" : "96726c45-95e1-4e2a-9622-2122c3bd7b26",
+      "Body" : "{\"value\":[],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Default-Storage-EastUS/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg0fb824152/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:37 GMT",
+      "date" : "Wed, 26 Jul 2017 18:49:58 GMT",
       "server" : "Microsoft-IIS/8.5",
       "content-length" : "28",
       "expires" : "-1",
@@ -42,25 +71,25 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14996",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "3ff08bb1-ff95-4002-8d69-2c028abc8192",
+      "x-ms-correlation-request-id" : "095fc328-7501-4477-88ed-9f248a99ee65",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "249",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201437Z:3ff08bb1-ff95-4002-8d69-2c028abc8192",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "244",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T184959Z:095fc328-7501-4477-88ed-9f248a99ee65",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "5cbc199a-63b3-476e-b6ea-376a714f38e5",
+      "x-ms-request-id" : "37590bfb-629d-4d65-bd74-8009d64125f8",
       "Body" : "{\"value\":[],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg0fb824152/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgbb127984f/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:37 GMT",
+      "date" : "Wed, 26 Jul 2017 18:49:59 GMT",
       "server" : "Microsoft-IIS/8.5",
       "content-length" : "28",
       "expires" : "-1",
@@ -71,25 +100,25 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14995",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "35861806-4f48-4dc0-a2ab-802fc67a1b49",
+      "x-ms-correlation-request-id" : "cae1357e-7011-445c-bf5a-9c2a19d0a212",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "248",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201437Z:35861806-4f48-4dc0-a2ab-802fc67a1b49",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "243",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T184959Z:cae1357e-7011-445c-bf5a-9c2a19d0a212",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "18c5b837-6e85-43da-b7e7-b3ef2ce378ca",
+      "x-ms-request-id" : "b2a3b5a6-8082-4dfa-9f44-dfec2242e23d",
       "Body" : "{\"value\":[],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgbb127984f/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/linux-rg/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:38 GMT",
+      "date" : "Wed, 26 Jul 2017 18:49:59 GMT",
       "server" : "Microsoft-IIS/8.5",
       "content-length" : "28",
       "expires" : "-1",
@@ -100,25 +129,25 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14994",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "aca5ec44-7c41-4817-aa0e-6b66f6eb6f76",
+      "x-ms-correlation-request-id" : "1fcd93b5-4cea-41f9-b045-8c3896b2c125",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "247",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201438Z:aca5ec44-7c41-4817-aa0e-6b66f6eb6f76",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "242",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T184959Z:1fcd93b5-4cea-41f9-b045-8c3896b2c125",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "04a6a35e-c29f-44d6-bee4-6c133436d5a6",
+      "x-ms-request-id" : "6490a441-135d-41e1-a4ad-d451691ef4ad",
       "Body" : "{\"value\":[],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/linux-rg/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-webapp-170317114541/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:38 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:00 GMT",
       "server" : "Microsoft-IIS/8.5",
       "content-length" : "28",
       "expires" : "-1",
@@ -129,27 +158,27 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14993",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "689bfbf6-b75a-47f0-89ad-4a56d426aff7",
+      "x-ms-correlation-request-id" : "19bd636d-ddb7-4e74-8edc-876101c0f6a7",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "246",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201438Z:689bfbf6-b75a-47f0-89ad-4a56d426aff7",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "242",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185000Z:19bd636d-ddb7-4e74-8edc-876101c0f6a7",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "a2da6816-ebef-4ca3-8e1a-5ed13aac6185",
+      "x-ms-request-id" : "18ba5af3-30e7-469a-911e-1b850160c476",
       "Body" : "{\"value\":[],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-webapp-170317114541/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc06243f/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:38 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:00 GMT",
       "server" : "Microsoft-IIS/8.5",
-      "content-length" : "28",
+      "content-length" : "341",
       "expires" : "-1",
       "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
@@ -158,25 +187,25 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14992",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "253fbbe2-16e7-43ba-9644-963938e65d1a",
+      "x-ms-correlation-request-id" : "2ff8f006-9ac9-4998-8dce-9ab680f17210",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "245",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201438Z:253fbbe2-16e7-43ba-9644-963938e65d1a",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "241",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185000Z:2ff8f006-9ac9-4998-8dce-9ab680f17210",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "c7fc5d78-5842-4c69-a624-fcca0ebeae39",
-      "Body" : "{\"value\":[],\"nextLink\":null}"
+      "x-ms-request-id" : "e6603f65-15fd-4f8d-84af-f02907edf092",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc06243f/providers/Microsoft.Scheduler/jobCollections/jobs06243f\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs06243f\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"Standard\"},\"state\":\"Enabled\"}}],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc19713b/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc19713b/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:39 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:00 GMT",
       "server" : "Microsoft-IIS/8.5",
       "content-length" : "344",
       "expires" : "-1",
@@ -187,25 +216,25 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14991",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "b40ec938-6759-40b4-8ea1-2fd953b58fab",
+      "x-ms-correlation-request-id" : "2ed960ae-ed33-4654-aa3b-04dfb9a57363",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "244",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201439Z:b40ec938-6759-40b4-8ea1-2fd953b58fab",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "240",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185001Z:2ed960ae-ed33-4654-aa3b-04dfb9a57363",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "0e846aaa-69b4-47e3-a3df-05d720c8b060",
+      "x-ms-request-id" : "cde5532d-07de-42a5-bf6a-7d18eec01fb5",
       "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc19713b/providers/Microsoft.Scheduler/jobCollections/jobs19713b\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs19713b\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"P10Premium\"},\"state\":\"Disabled\"}}],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgtodelete/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:39 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:01 GMT",
       "server" : "Microsoft-IIS/8.5",
       "content-length" : "28",
       "expires" : "-1",
@@ -216,25 +245,25 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14990",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "c100f337-7f4b-4614-ab98-be302b58e3ae",
+      "x-ms-correlation-request-id" : "3648949b-a15d-4d94-a41c-d810ed80b32c",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "243",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201439Z:c100f337-7f4b-4614-ab98-be302b58e3ae",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "239",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185001Z:3648949b-a15d-4d94-a41c-d810ed80b32c",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "d7b9f4ed-1c40-47fd-9d9d-7e3f02bc62d1",
+      "x-ms-request-id" : "d8af3376-71cb-4138-8e95-1d11aa3d8db0",
       "Body" : "{\"value\":[],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgtodelete/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/squarerg/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:40 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:02 GMT",
       "server" : "Microsoft-IIS/8.5",
       "content-length" : "28",
       "expires" : "-1",
@@ -245,77 +274,48 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14989",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "70e409b7-6d4d-477a-8a92-d82e43b37c8c",
+      "x-ms-correlation-request-id" : "3d553700-abf2-4840-a99e-9884ea8a48d0",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "242",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201440Z:70e409b7-6d4d-477a-8a92-d82e43b37c8c",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "238",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185002Z:3d553700-abf2-4840-a99e-9884ea8a48d0",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "af8ab66e-70fd-4d22-94eb-521a1de5f208",
-      "Body" : "{\"value\":[],\"nextLink\":null}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/squarerg/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:40 GMT",
-      "server" : "Microsoft-IIS/8.5",
-      "content-length" : "28",
-      "expires" : "-1",
-      "transfer-encoding" : "chunked",
-      "vary" : "Accept-Encoding",
-      "x-aspnet-version" : "4.0.30319",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14988",
-      "StatusCode" : "200",
-      "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "df088b5e-ccc9-4e85-880e-467c61bf32e6",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "241",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201440Z:df088b5e-ccc9-4e85-880e-467c61bf32e6",
-      "x-powered-by" : "ASP.NET",
-      "content-type" : "application/json; charset=utf-8",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "1d28de25-9848-45ac-b813-fcbedc2c5b33",
+      "x-ms-request-id" : "b710906f-61e6-42c7-90a4-0c00a825334d",
       "Body" : "{\"value\":[],\"nextLink\":null}"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgjobc61809e?api-version=2016-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgjobc00206e?api-version=2016-09-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (ResourceManagementClient, 2016-09-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (ResourceManagementClient, 2016-09-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:41 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:03 GMT",
       "content-length" : "177",
       "expires" : "-1",
       "x-ms-ratelimit-remaining-subscription-writes" : "1199",
       "retry-after" : "0",
       "StatusCode" : "201",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "4f4cfeaf-a4ce-4c5d-ae8c-57a12bacb640",
+      "x-ms-correlation-request-id" : "cd113a95-349a-4231-8f6f-90c527da5b76",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201441Z:4f4cfeaf-a4ce-4c5d-ae8c-57a12bacb640",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185003Z:cd113a95-349a-4231-8f6f-90c527da5b76",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "4f4cfeaf-a4ce-4c5d-ae8c-57a12bacb640",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e\",\"name\":\"rgjobc61809e\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}"
+      "x-ms-request-id" : "cd113a95-349a-4231-8f6f-90c527da5b76",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e\",\"name\":\"rgjobc00206e\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e/providers/Microsoft.Scheduler/jobCollections/jobs61809e?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections/jobs00206e?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:43 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:05 GMT",
       "content-length" : "315",
       "server" : "Microsoft-IIS/8.5",
       "expires" : "-1",
@@ -324,49 +324,78 @@
       "retry-after" : "0",
       "StatusCode" : "201",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "f98c283c-d733-4b7a-a5eb-3925c255ebdb",
+      "x-ms-correlation-request-id" : "7c953d2b-5f85-4be2-816b-01fc9587a30e",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
       "x-ms-ratelimit-remaining-subscription-resource-requests" : "299",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201443Z:f98c283c-d733-4b7a-a5eb-3925c255ebdb",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185005Z:7c953d2b-5f85-4be2-816b-01fc9587a30e",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "84398371-1010-4f30-8f00-3380f7d535ad",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e/providers/Microsoft.Scheduler/jobCollections/jobs61809e\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs61809e\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"P10Premium\"},\"state\":\"Enabled\"}}"
+      "x-ms-request-id" : "6e448d33-b3d4-4c14-8ee0-d6321cbee8c8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections/jobs00206e\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs00206e\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"P10Premium\"},\"state\":\"Enabled\"}}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups?api-version=2016-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups?api-version=2016-09-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (ResourceManagementClient, 2016-09-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (ResourceManagementClient, 2016-09-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:43 GMT",
-      "content-length" : "1843",
+      "date" : "Wed, 26 Jul 2017 18:50:05 GMT",
+      "content-length" : "1844",
       "expires" : "-1",
       "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14988",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "8dccb1e5-6708-4489-8297-3b042eb83c3b",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185006Z:8dccb1e5-6708-4489-8297-3b042eb83c3b",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "8dccb1e5-6708-4489-8297-3b042eb83c3b",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Default-Storage-EastUS\",\"name\":\"Default-Storage-EastUS\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg0fb824152\",\"name\":\"javacsmrg0fb824152\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgbb127984f\",\"name\":\"javacsmrgbb127984f\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/linux-rg\",\"name\":\"linux-rg\",\"location\":\"southcentralus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-webapp-170317114541\",\"name\":\"rg-webapp-170317114541\",\"location\":\"eastus2\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e\",\"name\":\"rgjobc00206e\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc06243f\",\"name\":\"rgjobc06243f\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc19713b\",\"name\":\"rgjobc19713b\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgtodelete\",\"name\":\"rgtodelete\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/squarerg\",\"name\":\"squarerg\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Default-Storage-EastUS/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Wed, 26 Jul 2017 18:50:05 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "28",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "14987",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "9cec389e-1bc4-4801-a107-903fcbb34424",
+      "x-ms-correlation-request-id" : "8026c484-492e-471e-a992-4409cbf3c17a",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201443Z:9cec389e-1bc4-4801-a107-903fcbb34424",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "237",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185006Z:8026c484-492e-471e-a992-4409cbf3c17a",
+      "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "9cec389e-1bc4-4801-a107-903fcbb34424",
-      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Default-Storage-EastUS\",\"name\":\"Default-Storage-EastUS\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg0fb824152\",\"name\":\"javacsmrg0fb824152\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgbb127984f\",\"name\":\"javacsmrgbb127984f\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/linux-rg\",\"name\":\"linux-rg\",\"location\":\"southcentralus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-webapp-170317114541\",\"name\":\"rg-webapp-170317114541\",\"location\":\"eastus2\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc19713b\",\"name\":\"rgjobc19713b\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e\",\"name\":\"rgjobc61809e\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc625446\",\"name\":\"rgjobc625446\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Deleting\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgtodelete\",\"name\":\"rgtodelete\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/squarerg\",\"name\":\"squarerg\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}]}"
+      "x-ms-request-id" : "886d5601-b15e-4e39-8603-0deac78c3069",
+      "Body" : "{\"value\":[],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Default-Storage-EastUS/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg0fb824152/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:44 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:06 GMT",
       "server" : "Microsoft-IIS/8.5",
       "content-length" : "28",
       "expires" : "-1",
@@ -377,25 +406,25 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14986",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "18801d5d-3ebe-49eb-be7b-58d8e940087c",
+      "x-ms-correlation-request-id" : "317c2437-2977-46ea-aa22-91591d8ef54d",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "240",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201444Z:18801d5d-3ebe-49eb-be7b-58d8e940087c",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "236",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185006Z:317c2437-2977-46ea-aa22-91591d8ef54d",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "2eae566a-16a8-4cd7-9f49-025e4e6f6404",
+      "x-ms-request-id" : "396a541a-47d7-4ab6-b3bb-66f845d57d20",
       "Body" : "{\"value\":[],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg0fb824152/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgbb127984f/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:44 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:06 GMT",
       "server" : "Microsoft-IIS/8.5",
       "content-length" : "28",
       "expires" : "-1",
@@ -406,25 +435,25 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14985",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "d2512c4f-c177-48f6-a5e2-35e7b279cd82",
+      "x-ms-correlation-request-id" : "57506784-1e1a-4ad2-a7cf-2cbc41a77ed5",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "239",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201444Z:d2512c4f-c177-48f6-a5e2-35e7b279cd82",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "235",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185007Z:57506784-1e1a-4ad2-a7cf-2cbc41a77ed5",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "6572bca4-c696-4623-bd04-38257d99e57e",
+      "x-ms-request-id" : "c0e12a53-d196-430f-8cb3-50160fdaae71",
       "Body" : "{\"value\":[],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgbb127984f/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/linux-rg/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:44 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:07 GMT",
       "server" : "Microsoft-IIS/8.5",
       "content-length" : "28",
       "expires" : "-1",
@@ -435,25 +464,25 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14984",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "11cec7d9-6390-42b0-b418-172f4f1a8b20",
+      "x-ms-correlation-request-id" : "924fced7-c411-40e6-8c8b-c64d8942a37d",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "238",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201444Z:11cec7d9-6390-42b0-b418-172f4f1a8b20",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "234",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185007Z:924fced7-c411-40e6-8c8b-c64d8942a37d",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "03c6602c-1ea1-4911-af87-9403389a8e73",
+      "x-ms-request-id" : "65d2efb1-795f-4033-96cd-561896c7f076",
       "Body" : "{\"value\":[],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/linux-rg/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-webapp-170317114541/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:44 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:07 GMT",
       "server" : "Microsoft-IIS/8.5",
       "content-length" : "28",
       "expires" : "-1",
@@ -464,27 +493,27 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14983",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "4e4a9463-dd07-4e52-bf75-18150c51aeb3",
+      "x-ms-correlation-request-id" : "52431b74-b308-4719-ac8f-f43f612c16f5",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "237",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201445Z:4e4a9463-dd07-4e52-bf75-18150c51aeb3",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "233",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185007Z:52431b74-b308-4719-ac8f-f43f612c16f5",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "e144ee2b-38cd-44b8-8d6f-f8de22fb28e9",
+      "x-ms-request-id" : "20681701-ca41-4669-95c9-a366f35c37cb",
       "Body" : "{\"value\":[],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-webapp-170317114541/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:45 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:08 GMT",
       "server" : "Microsoft-IIS/8.5",
-      "content-length" : "28",
+      "content-length" : "343",
       "expires" : "-1",
       "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
@@ -493,27 +522,27 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14982",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "3e36c855-53ab-4391-bd71-5861048478b6",
+      "x-ms-correlation-request-id" : "1a1eda62-6270-4345-bb50-6c8b36d74deb",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "236",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201445Z:3e36c855-53ab-4391-bd71-5861048478b6",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "232",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185008Z:1a1eda62-6270-4345-bb50-6c8b36d74deb",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "27e121d8-523a-4754-8725-936306c39ad9",
-      "Body" : "{\"value\":[],\"nextLink\":null}"
+      "x-ms-request-id" : "a5e83924-098c-4f73-bf20-c4e2b1f514b1",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections/jobs00206e\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs00206e\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"P10Premium\"},\"state\":\"Enabled\"}}],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc19713b/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:45 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:08 GMT",
       "server" : "Microsoft-IIS/8.5",
-      "content-length" : "344",
+      "content-length" : "343",
       "expires" : "-1",
       "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
@@ -522,54 +551,25 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14981",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "8d047a11-f2fc-4adf-b289-8594090c31e0",
+      "x-ms-correlation-request-id" : "77ff348d-f299-4ae0-a4d2-9d527a820c78",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "235",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201445Z:8d047a11-f2fc-4adf-b289-8594090c31e0",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "231",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185008Z:77ff348d-f299-4ae0-a4d2-9d527a820c78",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "abab1c7e-87f2-4791-8a97-7f4c82f849b7",
-      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc19713b/providers/Microsoft.Scheduler/jobCollections/jobs19713b\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs19713b\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"P10Premium\"},\"state\":\"Disabled\"}}],\"nextLink\":null}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:46 GMT",
-      "server" : "Microsoft-IIS/8.5",
-      "content-length" : "343",
-      "expires" : "-1",
-      "transfer-encoding" : "chunked",
-      "vary" : "Accept-Encoding",
-      "x-aspnet-version" : "4.0.30319",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14980",
-      "StatusCode" : "200",
-      "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "e65b210a-ea66-4b82-a995-dac2b001605d",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "234",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201446Z:e65b210a-ea66-4b82-a995-dac2b001605d",
-      "x-powered-by" : "ASP.NET",
-      "content-type" : "application/json; charset=utf-8",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "af1f0295-528e-4649-b323-052428880aa0",
-      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e/providers/Microsoft.Scheduler/jobCollections/jobs61809e\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs61809e\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"P10Premium\"},\"state\":\"Enabled\"}}],\"nextLink\":null}"
+      "x-ms-request-id" : "7ceec2ec-98b8-4be3-b676-5f9b2004e050",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections/jobs00206e\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs00206e\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"P10Premium\"},\"state\":\"Enabled\"}}],\"nextLink\":null}"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e/providers/Microsoft.Scheduler/jobCollections/jobs61809e/disable?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections/jobs00206e/disable?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:47 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:09 GMT",
       "content-length" : "0",
       "server" : "Microsoft-IIS/8.5",
       "expires" : "-1",
@@ -579,25 +579,54 @@
       "retry-after" : "0",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "b55009ca-4547-4262-8aab-ee8cd89fc996",
+      "x-ms-correlation-request-id" : "d2174dcb-6560-4b40-ae68-82a4fe187b6a",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201447Z:b55009ca-4547-4262-8aab-ee8cd89fc996",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185010Z:d2174dcb-6560-4b40-ae68-82a4fe187b6a",
       "x-powered-by" : "ASP.NET",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "2f6e5676-5050-4936-882e-25ff568c90d0",
+      "x-ms-request-id" : "d8816b72-728c-4bd5-862e-e70e2348af0f",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e/providers/Microsoft.Scheduler/jobCollections/jobs61809e?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections/jobs00206e?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:47 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:10 GMT",
       "server" : "Microsoft-IIS/8.5",
       "content-length" : "316",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14980",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "f9b95e7a-bc49-4f08-9287-c8b7356eaccb",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "230",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185010Z:f9b95e7a-bc49-4f08-9287-c8b7356eaccb",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "64a4d5f5-a90d-4f28-b9ba-b2609920991f",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections/jobs00206e\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs00206e\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"P10Premium\"},\"state\":\"Disabled\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections/jobs00206e/jobs?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Wed, 26 Jul 2017 18:50:10 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "28",
       "expires" : "-1",
       "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
@@ -606,25 +635,49 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14979",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "ce8db516-c98a-4e15-9d8e-c104751eed45",
+      "x-ms-correlation-request-id" : "c275855d-e2d0-4523-8600-a71545eb9f73",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "249",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201447Z:ce8db516-c98a-4e15-9d8e-c104751eed45",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "229",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185011Z:c275855d-e2d0-4523-8600-a71545eb9f73",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "234c54bf-3b16-4947-a87e-6947789327e8",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e/providers/Microsoft.Scheduler/jobCollections/jobs61809e\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs61809e\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"P10Premium\"},\"state\":\"Disabled\"}}"
+      "x-ms-request-id" : "fb677893-c639-4385-a90b-feec39c3a5f9",
+      "Body" : "{\"value\":[],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e/providers/Microsoft.Scheduler/jobCollections/jobs61809e/jobs?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups?api-version=2016-09-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (ResourceManagementClient, 2016-09-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:48 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:10 GMT",
+      "content-length" : "1844",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14978",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "c1338782-59bb-474f-8592-66221557daa2",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185011Z:c1338782-59bb-474f-8592-66221557daa2",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "c1338782-59bb-474f-8592-66221557daa2",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Default-Storage-EastUS\",\"name\":\"Default-Storage-EastUS\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg0fb824152\",\"name\":\"javacsmrg0fb824152\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgbb127984f\",\"name\":\"javacsmrgbb127984f\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/linux-rg\",\"name\":\"linux-rg\",\"location\":\"southcentralus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-webapp-170317114541\",\"name\":\"rg-webapp-170317114541\",\"location\":\"eastus2\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e\",\"name\":\"rgjobc00206e\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc06243f\",\"name\":\"rgjobc06243f\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc19713b\",\"name\":\"rgjobc19713b\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgtodelete\",\"name\":\"rgtodelete\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/squarerg\",\"name\":\"squarerg\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Default-Storage-EastUS/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Wed, 26 Jul 2017 18:50:11 GMT",
       "server" : "Microsoft-IIS/8.5",
       "content-length" : "28",
       "expires" : "-1",
@@ -632,52 +685,28 @@
       "vary" : "Accept-Encoding",
       "x-aspnet-version" : "4.0.30319",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14978",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14977",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "435a8945-3277-416f-8b65-ac107e7b55fa",
+      "x-ms-correlation-request-id" : "a425662c-8834-462a-8753-b50aeffe4416",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "248",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201448Z:435a8945-3277-416f-8b65-ac107e7b55fa",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "228",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185011Z:a425662c-8834-462a-8753-b50aeffe4416",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "8ccdf0a1-c1fa-46ef-ba7d-f2fd558d61e8",
+      "x-ms-request-id" : "369b8dae-65cd-42e7-a733-660f94f5cc91",
       "Body" : "{\"value\":[],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups?api-version=2016-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg0fb824152/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (ResourceManagementClient, 2016-09-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:48 GMT",
-      "content-length" : "1666",
-      "expires" : "-1",
-      "vary" : "Accept-Encoding",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14977",
-      "StatusCode" : "200",
-      "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "9cb6825b-8c7f-40b7-984b-085add608c1f",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201448Z:9cb6825b-8c7f-40b7-984b-085add608c1f",
-      "content-type" : "application/json; charset=utf-8",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "9cb6825b-8c7f-40b7-984b-085add608c1f",
-      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Default-Storage-EastUS\",\"name\":\"Default-Storage-EastUS\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg0fb824152\",\"name\":\"javacsmrg0fb824152\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgbb127984f\",\"name\":\"javacsmrgbb127984f\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/linux-rg\",\"name\":\"linux-rg\",\"location\":\"southcentralus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-webapp-170317114541\",\"name\":\"rg-webapp-170317114541\",\"location\":\"eastus2\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc19713b\",\"name\":\"rgjobc19713b\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e\",\"name\":\"rgjobc61809e\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgtodelete\",\"name\":\"rgtodelete\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/squarerg\",\"name\":\"squarerg\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}]}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Default-Storage-EastUS/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:48 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:11 GMT",
       "server" : "Microsoft-IIS/8.5",
       "content-length" : "28",
       "expires" : "-1",
@@ -688,25 +717,25 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14976",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "f760e41e-edff-4f73-a302-c2bba91fe7ff",
+      "x-ms-correlation-request-id" : "d1263adb-ba73-4d24-a854-00a664c5855c",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "233",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201449Z:f760e41e-edff-4f73-a302-c2bba91fe7ff",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "227",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185012Z:d1263adb-ba73-4d24-a854-00a664c5855c",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "b0cc28a7-84da-45a6-ad1b-13010180c257",
+      "x-ms-request-id" : "ad19b874-7763-4e64-8d71-10db064691bb",
       "Body" : "{\"value\":[],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg0fb824152/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgbb127984f/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:49 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:12 GMT",
       "server" : "Microsoft-IIS/8.5",
       "content-length" : "28",
       "expires" : "-1",
@@ -717,25 +746,25 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14975",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "a648bf9a-6e22-424b-8117-b7037c86fad6",
+      "x-ms-correlation-request-id" : "4420663f-d2e7-4a24-af2b-03a457e4592f",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "232",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201449Z:a648bf9a-6e22-424b-8117-b7037c86fad6",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "226",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185012Z:4420663f-d2e7-4a24-af2b-03a457e4592f",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "c67fbf82-28dc-490c-9fca-612c91537c1e",
+      "x-ms-request-id" : "7e37947b-8c60-4673-b540-ef5711592321",
       "Body" : "{\"value\":[],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgbb127984f/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/linux-rg/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:49 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:12 GMT",
       "server" : "Microsoft-IIS/8.5",
       "content-length" : "28",
       "expires" : "-1",
@@ -746,25 +775,25 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14974",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "2372da62-f104-4d09-a327-0424e57b9b56",
+      "x-ms-correlation-request-id" : "206262a7-6ba8-420f-a9f5-d9c1d2c6b7fb",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "231",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201450Z:2372da62-f104-4d09-a327-0424e57b9b56",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "225",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185012Z:206262a7-6ba8-420f-a9f5-d9c1d2c6b7fb",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "aee1ca30-a12c-4839-8456-ab59f860c781",
+      "x-ms-request-id" : "1e2db22c-5564-45a6-8ed0-3b8102f357e5",
       "Body" : "{\"value\":[],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/linux-rg/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-webapp-170317114541/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:50 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:12 GMT",
       "server" : "Microsoft-IIS/8.5",
       "content-length" : "28",
       "expires" : "-1",
@@ -775,27 +804,27 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14973",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "9b9960ab-0c28-4fb6-8d7a-032f37d0fd7c",
+      "x-ms-correlation-request-id" : "df2f44f1-256b-4d58-97a1-60b2f1da9b98",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "230",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201450Z:9b9960ab-0c28-4fb6-8d7a-032f37d0fd7c",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "224",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185013Z:df2f44f1-256b-4d58-97a1-60b2f1da9b98",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "709ef78b-5d0f-471f-9ca7-62ef2c288ac3",
+      "x-ms-request-id" : "ab09a9ef-6b65-46e3-b7c9-7d30599ac49c",
       "Body" : "{\"value\":[],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-webapp-170317114541/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:50 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:13 GMT",
       "server" : "Microsoft-IIS/8.5",
-      "content-length" : "28",
+      "content-length" : "344",
       "expires" : "-1",
       "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
@@ -804,27 +833,27 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14972",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "7dcfaa3e-50fd-4eff-bcfc-d2f02c658efc",
+      "x-ms-correlation-request-id" : "247216d8-a0a6-45b9-ba38-e0d481e880ec",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "229",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201451Z:7dcfaa3e-50fd-4eff-bcfc-d2f02c658efc",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "223",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185013Z:247216d8-a0a6-45b9-ba38-e0d481e880ec",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "a34276bd-abb0-4cdd-a583-0395f3bd7912",
-      "Body" : "{\"value\":[],\"nextLink\":null}"
+      "x-ms-request-id" : "2e6ac017-6e11-4a17-b350-674b8c237e2e",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections/jobs00206e\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs00206e\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"P10Premium\"},\"state\":\"Disabled\"}}],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc19713b/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc06243f/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:51 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:13 GMT",
       "server" : "Microsoft-IIS/8.5",
-      "content-length" : "344",
+      "content-length" : "341",
       "expires" : "-1",
       "transfer-encoding" : "chunked",
       "vary" : "Accept-Encoding",
@@ -833,25 +862,25 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14971",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "e771eaf6-3bd0-40ec-a005-c2f415fe7c1d",
+      "x-ms-correlation-request-id" : "1265b280-6ff9-4352-940c-e07e1e184276",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "228",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201451Z:e771eaf6-3bd0-40ec-a005-c2f415fe7c1d",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "222",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185014Z:1265b280-6ff9-4352-940c-e07e1e184276",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "b45552c8-26ee-46ac-b723-708d24f07f6c",
-      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc19713b/providers/Microsoft.Scheduler/jobCollections/jobs19713b\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs19713b\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"P10Premium\"},\"state\":\"Disabled\"}}],\"nextLink\":null}"
+      "x-ms-request-id" : "e0223317-b539-484b-a966-c4c35e070365",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc06243f/providers/Microsoft.Scheduler/jobCollections/jobs06243f\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs06243f\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"Standard\"},\"state\":\"Enabled\"}}],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc19713b/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:51 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:14 GMT",
       "server" : "Microsoft-IIS/8.5",
       "content-length" : "344",
       "expires" : "-1",
@@ -862,25 +891,25 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14970",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "8dc48398-3daf-464f-87a9-d96d218da34c",
+      "x-ms-correlation-request-id" : "0f95c3fd-c757-4177-90f9-e7fc5f01eb13",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "227",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201452Z:8dc48398-3daf-464f-87a9-d96d218da34c",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "221",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185014Z:0f95c3fd-c757-4177-90f9-e7fc5f01eb13",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "4e11d210-45cc-4bde-8668-60e490d9a3f1",
-      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e/providers/Microsoft.Scheduler/jobCollections/jobs61809e\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs61809e\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"P10Premium\"},\"state\":\"Disabled\"}}],\"nextLink\":null}"
+      "x-ms-request-id" : "dab4aa3d-5286-4260-87d6-06c01636aa25",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc19713b/providers/Microsoft.Scheduler/jobCollections/jobs19713b\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs19713b\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"P10Premium\"},\"state\":\"Disabled\"}}],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgtodelete/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgtodelete/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:52 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:14 GMT",
       "server" : "Microsoft-IIS/8.5",
       "content-length" : "28",
       "expires" : "-1",
@@ -891,25 +920,25 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14969",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "5c638574-35ac-49cf-a2a5-fa03f2960daf",
+      "x-ms-correlation-request-id" : "6cc58d94-80e8-4ef2-9dec-616d174c00fd",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "226",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201452Z:5c638574-35ac-49cf-a2a5-fa03f2960daf",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "220",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185014Z:6cc58d94-80e8-4ef2-9dec-616d174c00fd",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "6b039cc3-8aea-423b-bb06-9f15181fd04f",
+      "x-ms-request-id" : "919387f5-92ab-47be-9495-f8eb31f97b64",
       "Body" : "{\"value\":[],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/squarerg/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/squarerg/providers/Microsoft.Scheduler/jobCollections?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:52 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:14 GMT",
       "server" : "Microsoft-IIS/8.5",
       "content-length" : "28",
       "expires" : "-1",
@@ -920,25 +949,25 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14968",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "5bd12fe6-b950-44f9-860f-ee3a94ca283f",
+      "x-ms-correlation-request-id" : "f24cf829-3d66-47b6-a055-3cccd424d3f6",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "225",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201453Z:5bd12fe6-b950-44f9-860f-ee3a94ca283f",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "219",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185015Z:f24cf829-3d66-47b6-a055-3cccd424d3f6",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "3ad3cadb-cd8b-4674-b714-dcbd52050c9b",
+      "x-ms-request-id" : "9827ce05-8c9d-4c59-bc30-489262eadb7c",
       "Body" : "{\"value\":[],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e/providers/Microsoft.Scheduler/jobCollections/jobs61809e?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections/jobs00206e?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:53 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:15 GMT",
       "server" : "Microsoft-IIS/8.5",
       "content-length" : "316",
       "expires" : "-1",
@@ -949,25 +978,25 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14967",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "ba54786d-8ee5-4595-9fa9-7edc59ba82c0",
+      "x-ms-correlation-request-id" : "1ea50fd6-b099-4b2d-bc9a-b05a82aafbc1",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "247",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201453Z:ba54786d-8ee5-4595-9fa9-7edc59ba82c0",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "218",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185015Z:1ea50fd6-b099-4b2d-bc9a-b05a82aafbc1",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "d0de7a16-5662-4181-a90b-ab89c0bd8419",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e/providers/Microsoft.Scheduler/jobCollections/jobs61809e\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs61809e\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"P10Premium\"},\"state\":\"Disabled\"}}"
+      "x-ms-request-id" : "b6ab647b-00b6-4f3d-8548-f5c45b690902",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections/jobs00206e\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs00206e\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"P10Premium\"},\"state\":\"Disabled\"}}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e/providers/Microsoft.Scheduler/jobCollections/jobs61809e?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections/jobs00206e?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:53 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:15 GMT",
       "server" : "Microsoft-IIS/8.5",
       "content-length" : "316",
       "expires" : "-1",
@@ -978,25 +1007,25 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14966",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "240d8e14-4836-4a24-bbb6-59dba4199268",
+      "x-ms-correlation-request-id" : "ae114938-04fd-4ddf-8e32-c83e4b318a0a",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "246",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201453Z:240d8e14-4836-4a24-bbb6-59dba4199268",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "217",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185016Z:ae114938-04fd-4ddf-8e32-c83e4b318a0a",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "716ea1a4-ab41-4c5b-9973-50be71dbb617",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e/providers/Microsoft.Scheduler/jobCollections/jobs61809e\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs61809e\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"P10Premium\"},\"state\":\"Disabled\"}}"
+      "x-ms-request-id" : "1a397e12-60a9-4c76-80ef-598d4c61c19b",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections/jobs00206e\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs00206e\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"P10Premium\"},\"state\":\"Disabled\"}}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e/providers/Microsoft.Scheduler/jobCollections/jobs61809e/jobs?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections/jobs00206e/jobs?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:54 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:16 GMT",
       "server" : "Microsoft-IIS/8.5",
       "content-length" : "28",
       "expires" : "-1",
@@ -1007,25 +1036,25 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14965",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "e77eef22-45eb-4446-a553-a90a5f308908",
+      "x-ms-correlation-request-id" : "5c5fa2ac-1f95-49b6-bc96-3af4a64ce6c1",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "245",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201454Z:e77eef22-45eb-4446-a553-a90a5f308908",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "216",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185016Z:5c5fa2ac-1f95-49b6-bc96-3af4a64ce6c1",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "8c37d274-ef8e-4833-ae24-6130dd84f10f",
+      "x-ms-request-id" : "c404d394-6cbd-400c-9fcd-709ce0196372",
       "Body" : "{\"value\":[],\"nextLink\":null}"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e/providers/Microsoft.Scheduler/jobCollections/jobs61809e/enable?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections/jobs00206e/enable?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:55 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:17 GMT",
       "content-length" : "0",
       "server" : "Microsoft-IIS/8.5",
       "expires" : "-1",
@@ -1035,23 +1064,23 @@
       "retry-after" : "0",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "c1d56bf1-3345-48b4-869b-c20d07465cf8",
+      "x-ms-correlation-request-id" : "5d89e90a-3f59-46e1-941a-494d8aa9b69d",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201455Z:c1d56bf1-3345-48b4-869b-c20d07465cf8",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185018Z:5d89e90a-3f59-46e1-941a-494d8aa9b69d",
       "x-powered-by" : "ASP.NET",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "8853e969-9a88-44c5-865e-2ef9089f6087",
+      "x-ms-request-id" : "daaafc98-2ba9-45e8-940e-686b8cf1833f",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e/providers/Microsoft.Scheduler/jobCollections/jobs61809e?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections/jobs00206e?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:56 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:18 GMT",
       "server" : "Microsoft-IIS/8.5",
       "content-length" : "315",
       "expires" : "-1",
@@ -1062,25 +1091,25 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14964",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "e561ade9-1bc5-4eaa-a9e0-a7db8ccf7daa",
+      "x-ms-correlation-request-id" : "342ecacb-1c71-4899-acab-1d409f4ba990",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "244",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201456Z:e561ade9-1bc5-4eaa-a9e0-a7db8ccf7daa",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "215",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185018Z:342ecacb-1c71-4899-acab-1d409f4ba990",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "67bac569-c188-40a5-8c79-748ce24c4ac4",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e/providers/Microsoft.Scheduler/jobCollections/jobs61809e\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs61809e\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"P10Premium\"},\"state\":\"Enabled\"}}"
+      "x-ms-request-id" : "3573c9ff-d339-4508-818b-cdf8dadda4cf",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections/jobs00206e\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs00206e\",\"location\":\"West US\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"sku\":{\"name\":\"P10Premium\"},\"state\":\"Enabled\"}}"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e/providers/Microsoft.Scheduler/jobCollections/jobs61809e?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections/jobs00206e?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:57 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:19 GMT",
       "content-length" : "331",
       "server" : "Microsoft-IIS/8.5",
       "expires" : "-1",
@@ -1089,25 +1118,25 @@
       "retry-after" : "0",
       "StatusCode" : "201",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "3fee1295-0726-46d5-8064-9ccfe991812f",
+      "x-ms-correlation-request-id" : "24c6b86a-e43f-4f22-922b-c2e56b0dab5d",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
       "x-ms-ratelimit-remaining-subscription-resource-requests" : "298",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201458Z:3fee1295-0726-46d5-8064-9ccfe991812f",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185020Z:24c6b86a-e43f-4f22-922b-c2e56b0dab5d",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "c2951328-0f5e-4e79-99bf-2799dd343f47",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e/providers/Microsoft.Scheduler/jobCollections/jobs61809e\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs61809e\",\"location\":\"West US\",\"tags\":{\"tag2\":\"value2\",\"tag3\":\"value3\"},\"properties\":{\"sku\":{\"name\":\"Standard\"},\"state\":\"Suspended\"}}"
+      "x-ms-request-id" : "dc9442c0-0c0b-4a44-a3a4-022e864095e4",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections/jobs00206e\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs00206e\",\"location\":\"West US\",\"tags\":{\"tag2\":\"value2\",\"tag3\":\"value3\"},\"properties\":{\"sku\":{\"name\":\"Standard\"},\"state\":\"Suspended\"}}"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e/providers/Microsoft.Scheduler/jobCollections/jobs61809e?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections/jobs00206e?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:59 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:21 GMT",
       "content-length" : "406",
       "server" : "Microsoft-IIS/8.5",
       "expires" : "-1",
@@ -1116,25 +1145,25 @@
       "retry-after" : "0",
       "StatusCode" : "201",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "45fdde0d-2a7d-41f7-bd28-76eb92bf0c57",
+      "x-ms-correlation-request-id" : "41c0bc0a-8712-4c48-b74e-0320fd6c09e3",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
       "x-ms-ratelimit-remaining-subscription-resource-requests" : "297",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201459Z:45fdde0d-2a7d-41f7-bd28-76eb92bf0c57",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185021Z:41c0bc0a-8712-4c48-b74e-0320fd6c09e3",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "5c662ff5-6ffc-4460-9fe9-c16f8d1c305a",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e/providers/Microsoft.Scheduler/jobCollections/jobs61809e\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs61809e\",\"location\":\"West US\",\"tags\":{\"tag2\":\"value2\",\"tag3\":\"value3\"},\"properties\":{\"sku\":{\"name\":\"Standard\"},\"state\":\"Disabled\",\"quota\":{\"maxJobCount\":2,\"maxRecurrence\":{\"frequency\":\"hour\",\"interval\":4}}}}"
+      "x-ms-request-id" : "8c702e73-853f-450e-bf50-20bd8d20158b",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections/jobs00206e\",\"type\":\"Microsoft.Scheduler/jobCollections\",\"name\":\"jobs00206e\",\"location\":\"West US\",\"tags\":{\"tag2\":\"value2\",\"tag3\":\"value3\"},\"properties\":{\"sku\":{\"name\":\"Standard\"},\"state\":\"Disabled\",\"quota\":{\"maxJobCount\":2,\"maxRecurrence\":{\"frequency\":\"hour\",\"interval\":4}}}}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e/providers/Microsoft.Scheduler/jobCollections/jobs61809e/jobs?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections/jobs00206e/jobs?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:14:59 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:22 GMT",
       "server" : "Microsoft-IIS/8.5",
       "content-length" : "28",
       "expires" : "-1",
@@ -1145,25 +1174,25 @@
       "x-ms-ratelimit-remaining-subscription-reads" : "14963",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "042da4da-cb3a-4cbd-b57f-f1a3fedfd12e",
+      "x-ms-correlation-request-id" : "fef76719-5784-4ebb-b53c-2762e79da168",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "243",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201459Z:042da4da-cb3a-4cbd-b57f-f1a3fedfd12e",
+      "x-ms-ratelimit-burst-remaining-scheduler-reads" : "214",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185022Z:fef76719-5784-4ebb-b53c-2762e79da168",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "bff8f6e0-efe7-40ec-aa24-361174d15533",
+      "x-ms-request-id" : "2a5820a1-28d3-45b9-906b-184578c59ec5",
       "Body" : "{\"value\":[],\"nextLink\":null}"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc61809e/providers/Microsoft.Scheduler/jobCollections/jobs61809e?api-version=2016-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgjobc00206e/providers/Microsoft.Scheduler/jobCollections/jobs00206e?api-version=2016-03-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (SchedulerManagementClient, 2016-03-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SchedulerManagementClient, 2016-03-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:15:01 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:24 GMT",
       "content-length" : "0",
       "server" : "Microsoft-IIS/8.5",
       "expires" : "-1",
@@ -1173,37 +1202,37 @@
       "retry-after" : "0",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "45d9fdba-62c4-4aad-b641-765f146bc32c",
+      "x-ms-correlation-request-id" : "b7ea2197-5ae9-484f-9bfa-58bb8647aa17",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201501Z:45d9fdba-62c4-4aad-b641-765f146bc32c",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185024Z:b7ea2197-5ae9-484f-9bfa-58bb8647aa17",
       "x-powered-by" : "ASP.NET",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "264c0aa8-93cd-4797-9921-4559c9cc8ea7",
+      "x-ms-request-id" : "889e43ee-32a5-4727-9a46-29b43a3976dc",
       "Body" : ""
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgjobc61809e?api-version=2016-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgjobc00206e?api-version=2016-09-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:ac841e6d04f13bf01300231b6d4606f4cfc3e6b730876654c050e0688a1eee3d (ResourceManagementClient, 2016-09-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (ResourceManagementClient, 2016-09-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 25 Jul 2017 20:15:02 GMT",
+      "date" : "Wed, 26 Jul 2017 18:50:25 GMT",
       "content-length" : "0",
       "expires" : "-1",
       "x-ms-ratelimit-remaining-subscription-writes" : "1195",
       "retry-after" : "0",
       "StatusCode" : "202",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "dfb67fd9-ba2f-4eaf-a49e-6ea45a20fd8d",
+      "x-ms-correlation-request-id" : "671e2532-2284-43e0-98bb-460697bfe24b",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-routing-request-id" : "WESTUS2:20170725T201502Z:dfb67fd9-ba2f-4eaf-a49e-6ea45a20fd8d",
-      "location" : "http://localhost:50048/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR0pPQkM2MTgwOUUtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ?api-version=2016-09-01",
+      "x-ms-routing-request-id" : "WESTUS2:20170726T185025Z:671e2532-2284-43e0-98bb-460697bfe24b",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR0pPQkMwMDIwNkUtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ?api-version=2016-09-01",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "dfb67fd9-ba2f-4eaf-a49e-6ea45a20fd8d",
+      "x-ms-request-id" : "671e2532-2284-43e0-98bb-460697bfe24b",
       "Body" : ""
     }
   } ],
-  "variables" : [ "61809e" ]
+  "variables" : [ "00206e" ]
 }

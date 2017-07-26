@@ -69,7 +69,7 @@ public interface JobCollections extends
     /**
      * Disables all of the jobs in the job collection.
      *
-     * @param resourceGroupName the resource group name
+     * @param resourceGroupName the resource group name containing the job collection
      * @param jobCollectionName the job collection name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -80,18 +80,88 @@ public interface JobCollections extends
     /**
      * Disables all of the jobs in the job collection.
      *
-     * @param resourceGroupName the resource group name
-     * @param jobCollectionName the job collection name
+     * @param resourceGroupName the resource group name containing the job collection
+     * @param jobCollectionName the job collection
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the future computation of this call
      */
     Completable disableAsync(String resourceGroupName, String jobCollectionName);
 
     /**
-     * Lists job history.
+     * Runs a job from the specified job collection.
      *
-     * @param resourceGroupName the resource group name
-     * @param jobCollectionName the job collection name
+     * @param resourceGroupName the resource group name containing the job collection
+     * @param jobCollectionName the job collection name containing the job
+     * @param jobName the job name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void runJobByName(String resourceGroupName, String jobCollectionName, String jobName);
+
+    /**
+     * Runs a job from the specified job collection.
+     *
+     * @param resourceGroupName the resource group name containing the job collection
+     * @param jobCollectionName the job collection name containing the job
+     * @param jobName the job name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return a representation of the future computation of this call
+     */
+    Completable runJobByNameAsync(String resourceGroupName, String jobCollectionName, String jobName);
+
+    /**
+     * Gets a job from the specified job collection.
+     *
+     * @param resourceGroupName the resource group name containing the job collection
+     * @param jobCollectionName the job collection name containing the job
+     * @param jobName the job name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Job object if successful
+     */
+    Job getJobByName(String resourceGroupName, String jobCollectionName, String jobName);
+
+    /**
+     * Gets a job from the specified job collection.
+     *
+     * @param resourceGroupName The resource group name containing the job collection
+     * @param jobCollectionName The job collection name containing the job
+     * @param jobName The job name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Job object
+     */
+    Observable<Job> getJobByNameAsync(String resourceGroupName, String jobCollectionName, String jobName);
+
+    /**
+     * Deletes a job from the specified job collection.
+     *
+     * @param resourceGroupName the resource group name containing the job collection
+     * @param jobCollectionName the job collection name containing the job
+     * @param jobName the job name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void deleteJobByName(String resourceGroupName, String jobCollectionName, String jobName);
+
+    /**
+     * Deletes a job from the specified job collection.
+     *
+     * @param resourceGroupName the resource group name containing the job collection
+     * @param jobCollectionName the job collection name containing the job
+     * @param jobName the job name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return a representation of the future computation of this call
+     */
+    Completable deleteJobByNameAsync(String resourceGroupName, String jobCollectionName, String jobName);
+
+    /**
+     * Lists job history from the specified job collection.
+     *
+     * @param resourceGroupName the resource group name containing the job collection
+     * @param jobCollectionName the job collection name containing the job
      * @param jobName the job name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -101,13 +171,13 @@ public interface JobCollections extends
     PagedList<JobHistory> listJobHistory(String resourceGroupName, String jobCollectionName, String jobName);
 
     /**
-     * Lists job history.
+     * Lists job history from the specified job collection.
      *
-     * @param resourceGroupName The resource group name.
-     * @param jobCollectionName The job collection name.
-     * @param jobName The job name.
+     * @param resourceGroupName the resource group name containing the job collection
+     * @param jobCollectionName the job collection name containing the job
+     * @param jobName the job name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;JobHistoryDefinitionInner&gt; object
+     * @return a representation of the future computation of this call
      */
     Observable<JobHistory> listJobHistoryAsync(String resourceGroupName, String jobCollectionName, String jobName);
 }

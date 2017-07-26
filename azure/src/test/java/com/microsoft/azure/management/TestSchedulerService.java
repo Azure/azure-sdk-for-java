@@ -141,6 +141,8 @@ public class TestSchedulerService {
                 )
                 .create();
 
+            jobCollection.jobs().run(jobName);
+
             SdkContext.sleep(65000);
 
             return jobCollection;
@@ -201,7 +203,7 @@ public class TestSchedulerService {
             .append("\n\t      state: ").append(resource.state())
             .append("\n\t      status: ").append(resource.status())
             .append("\n\t      start time: ").append(resource.startTime())
-            .append("\n\t      action: ")
+            .append("\n\t    Job action: ")
             .append("\n\t      Action type: ").append(resource.action().type().name())
             .append("\n\t      Action URI: ").append(resource.action().request().uri())
             .append("\n\t      Action method: ").append(resource.action().request().method());
