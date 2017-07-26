@@ -13,6 +13,7 @@ import com.microsoft.azure.management.compute.VirtualMachineScaleSetOSProfile;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetStorageProfile;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVMProfile;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSets;
+import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
@@ -36,14 +37,17 @@ public class VirtualMachineScaleSetsImpl
     implements VirtualMachineScaleSets {
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
+    private final GraphRbacManager rbacManager;
 
     VirtualMachineScaleSetsImpl(
             ComputeManager computeManager,
             StorageManager storageManager,
-            NetworkManager networkManager) {
+            NetworkManager networkManager,
+            GraphRbacManager rbacManager) {
         super(computeManager.inner().virtualMachineScaleSets(), computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
+        this.rbacManager = rbacManager;
     }
 
     @Override
@@ -163,7 +167,8 @@ public class VirtualMachineScaleSetsImpl
                 inner,
                 this.manager(),
                 this.storageManager,
-                this.networkManager);
+                this.networkManager,
+                this.rbacManager);
     }
 
     @Override
@@ -175,6 +180,7 @@ public class VirtualMachineScaleSetsImpl
                 inner,
                 this.manager(),
                 this.storageManager,
-                this.networkManager);
+                this.networkManager,
+                this.rbacManager);
     }
 }
