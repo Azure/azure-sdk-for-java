@@ -16,6 +16,7 @@ import com.microsoft.azure.management.scheduler.JobCollectionState;
 import com.microsoft.azure.management.scheduler.JobCollections;
 import com.microsoft.azure.management.scheduler.JobHistory;
 import com.microsoft.azure.management.scheduler.JobRecurrence;
+import com.microsoft.azure.management.scheduler.JobState;
 import com.microsoft.azure.management.scheduler.RecurrenceFrequency;
 import com.microsoft.azure.management.scheduler.RetryPolicy;
 import com.microsoft.azure.management.scheduler.RetryType;
@@ -144,6 +145,9 @@ public class TestSchedulerService {
             jobCollection.jobs().run(jobName);
 
             SdkContext.sleep(65000);
+
+            Job job = jobCollection.jobs().getByName(jobName);
+            job.update().withState(JobState.ENABLED).withRecurrence(job.recurrence().withCount(1).withFrequency(RecurrenceFrequency.HOUR)).apply();
 
             return jobCollection;
         }

@@ -149,10 +149,6 @@ public interface Job extends
      * The template for Azure Scheduler job update operation, containing all the settings that can be modified.
      */
     interface Update extends
-        Appliable<Job>,
-        UpdateStages.WithStartTime,
-        UpdateStages.WithRecurrence,
-        UpdateStages.WithAction,
         UpdateStages.WithState {
     }
 
@@ -160,6 +156,16 @@ public interface Job extends
      * Grouping of Azure Scheduler job update stages.
      */
     interface UpdateStages {
+
+        /**
+         * Grouping of Azure Scheduler job update optionals.
+         */
+        interface UpdateOptionals extends
+            Appliable<Job>,
+            WithStartTime,
+            WithRecurrence,
+            WithAction {
+        }
 
         /**
          * The stage of the job update for an Azure Scheduler allowing to modify the start time.
@@ -171,7 +177,7 @@ public interface Job extends
              * @param startTime the start time
              * @return the next stage of the definition
              */
-            Update withStartTime(DateTime startTime);
+            UpdateOptionals withStartTime(DateTime startTime);
         }
 
         /**
@@ -184,7 +190,7 @@ public interface Job extends
              * @param jobRecurrence the start time
              * @return the next stage of the definition
              */
-            Update withRecurrence(JobRecurrence jobRecurrence);
+            UpdateOptionals withRecurrence(JobRecurrence jobRecurrence);
         }
 
         /**
@@ -197,7 +203,7 @@ public interface Job extends
              * @param jobAction the action details
              * @return the next stage of the definition
              */
-            Update withAction(JobAction jobAction);
+            UpdateOptionals withAction(JobAction jobAction);
         }
 
         /**
@@ -206,11 +212,14 @@ public interface Job extends
         interface WithState {
             /**
              * Specifies the state of the Job.
+             * <p>
+             * Required as part of the update flow because the job's state value can be "COMPLETED",
+             *   in which case the update can not be performed.
              *
              * @param state the job state
              * @return the next stage of the definition
              */
-            Update withState(JobState state);
+            UpdateOptionals withState(JobState state);
         }
     }
 }

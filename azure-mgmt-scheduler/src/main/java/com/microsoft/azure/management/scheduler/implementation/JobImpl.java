@@ -33,6 +33,7 @@ public class JobImpl
             Job,
             Job.Definition,
             Job.Update,
+            Job.UpdateStages.UpdateOptionals,
             IndependentChild.DefinitionStages.WithParentResource<Job, JobCollection> {
 
     /**
@@ -45,6 +46,13 @@ public class JobImpl
     protected JobImpl(String resourceGroupName, String jobCollectionName, String name, JobDefinitionInner innerObject, ScheduleServiceManager manager) {
         super(name, innerObject, manager);
         this.withExistingParentResource(resourceGroupName, jobCollectionName);
+    }
+
+    @Override
+    public String name() {
+        // The service does not return the simple name of the job but the "jobCollectionName/jobName"
+        String[] splitName = super.name().split("/");
+        return splitName[splitName.length - 1];
     }
 
     @Override
