@@ -144,7 +144,7 @@ public final class QueueClient extends InitializableEntity implements IQueueClie
 
 	// No op now
 	@Override
-	CompletableFuture<Void> initializeAsync() throws Exception {
+	CompletableFuture<Void> initializeAsync(){
 		return CompletableFuture.completedFuture(null);
 	}
 

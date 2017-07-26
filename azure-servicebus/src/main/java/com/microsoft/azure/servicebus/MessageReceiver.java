@@ -34,7 +34,8 @@ import com.microsoft.azure.servicebus.primitives.Util;
 class MessageReceiver extends InitializableEntity implements IMessageReceiver, IMessageBrowser
 {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(MessageReceiver.class);
-	private static final int DEFAULT_PREFETCH_COUNT = 100;
+	private static final int DEFAULT_PREFETCH_COUNT_PEEKLOCK = 100;
+	private static final int DEFAULT_PREFETCH_COUNT_RECEIVEANDDELETE = 0;
 	
 	private final ReceiveMode receiveMode;
 	private boolean ownsMessagingFactory;	
@@ -44,7 +45,7 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 	private CoreMessageReceiver internalReceiver = null;
 	private boolean isInitialized = false;
 	private MessageBrowser browser = null;
-	private int messagePrefetchCount = DEFAULT_PREFETCH_COUNT;
+	private int messagePrefetchCount;
 	
 	private final ConcurrentHashMap<UUID, Instant> requestResponseLockTokensToLockTimesMap;
 	
@@ -52,7 +53,15 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 	{
 		super(StringUtil.getShortRandomString(), null);
 		this.receiveMode = receiveMode;
-		this.requestResponseLockTokensToLockTimesMap = new ConcurrentHashMap<>();	
+		this.requestResponseLockTokensToLockTimesMap = new ConcurrentHashMap<>();
+		if(receiveMode == ReceiveMode.PEEKLOCK)
+		{
+		    this.messagePrefetchCount = DEFAULT_PREFETCH_COUNT_PEEKLOCK;
+		}
+		else
+		{
+		    this.messagePrefetchCount = DEFAULT_PREFETCH_COUNT_RECEIVEANDDELETE;
+		}
 	}
 	
 	private MessageReceiver(MessagingFactory messagingFactory, String entityPath, boolean ownsMessagingFactory, ReceiveMode receiveMode)

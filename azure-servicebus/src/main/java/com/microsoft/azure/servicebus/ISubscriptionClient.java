@@ -7,7 +7,7 @@ import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import com.microsoft.azure.servicebus.rules.Filter;
 import com.microsoft.azure.servicebus.rules.RuleDescription;
 
-public interface ISubscriptionClient extends IMessageEntity, IMessageAndSessionPump
+public interface ISubscriptionClient extends IMessageEntityClient, IMessageAndSessionPump
 {
 	public ReceiveMode getReceiveMode();
 	public void addRule(RuleDescription ruleDescription) throws InterruptedException, ServiceBusException;

@@ -403,6 +403,10 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 
 	public void setPrefetchCount(final int value) throws ServiceBusException
 	{
+	    if(value < 0)
+	    {
+	        throw new IllegalArgumentException("Prefetch count cannot be negative.");
+	    }
 	    this.throwIfInUnusableState();
 		final int deltaPrefetchCount;
 		synchronized (this.prefetchCountSync)
@@ -412,21 +416,24 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 			TRACE_LOGGER.info("Setting prefetch count to '{}' on recieve link to '{}'", value, this.receivePath);
 		}
 		
-		try
+		if(deltaPrefetchCount > 0)
 		{
-			this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler()
-			{
-				@Override
-				public void onEvent()
-				{
-					sendFlow(deltaPrefetchCount);
-				}
-			});
-		}
-		catch (IOException ioException)
-		{
-			throw new ServiceBusException(false, "Setting prefetch count failed, see cause for more details", ioException);
-		}
+		    try
+	        {	            
+	            this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler()
+	            {
+	                @Override
+	                public void onEvent()
+	                {
+	                    sendFlow(deltaPrefetchCount);
+	                }
+	            });
+	        }
+	        catch (IOException ioException)
+	        {
+	            throw new ServiceBusException(false, "Setting prefetch count failed, see cause for more details", ioException);
+	        }
+		}		
 	}
 	
 	public CompletableFuture<Collection<MessageWithDeliveryTag>> receiveAsync(final int maxMessageCount)
@@ -438,9 +445,9 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	{
 	    this.throwIfInUnusableState();
 		
-		if (maxMessageCount <= 0 || maxMessageCount > this.prefetchCount)
+		if (maxMessageCount <= 0)
 		{
-			throw new IllegalArgumentException(String.format(Locale.US, "parameter 'maxMessageCount' should be a positive number and should be less than prefetchCount(%s)", this.prefetchCount));
+			throw new IllegalArgumentException("parameter 'maxMessageCount' should be a positive number");
 		}
 		
 		TRACE_LOGGER.debug("Receiving maximum of '{}' messages from '{}'", maxMessageCount, this.receivePath);
@@ -572,7 +579,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 			this.underlyingFactory.getRetryPolicy().resetRetryCount(this.underlyingFactory.getClientId());
 
 			this.nextCreditToFlow = 0;
-			this.sendFlow(this.prefetchCount - this.prefetchedMessages.size());			
+			this.sendFlow(this.prefetchCount - this.prefetchedMessages.size());
 			
 			TRACE_LOGGER.debug("receiverPath:{}, linkname:{}, updated-link-credit:{}, sentCredits:{}",
                     this.receivePath, this.receiveLink.getName(), this.receiveLink.getCredit(), this.prefetchCount);
@@ -818,6 +825,13 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		if (message != null)
 		{			
 			this.sendFlow(1);
+		}
+		else
+		{
+		    if(this.prefetchCount == 0)
+		    {
+		        this.sendFlow(1);
+		    }
 		}
 
 		return message;

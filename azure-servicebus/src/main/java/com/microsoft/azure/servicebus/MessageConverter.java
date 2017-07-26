@@ -20,7 +20,7 @@ import com.microsoft.azure.servicebus.primitives.MessageWithLockToken;
 import com.microsoft.azure.servicebus.primitives.StringUtil;
 import com.microsoft.azure.servicebus.primitives.Util;
 
-public class MessageConverter
+class MessageConverter
 {	
 	public static org.apache.qpid.proton.message.Message convertBrokeredMessageToAmqpMessage(Message brokeredMessage)	
 	{
@@ -144,18 +144,15 @@ public class MessageConverter
 					switch(entryName)
 					{
 						case ClientConstants.ENQUEUEDTIMEUTCNAME:
-							//brokeredMessage.setEnqueuedTimeUtc(Utils.convertDotNetTicksToInstant((long)entry.getValue()));
 							brokeredMessage.setEnqueuedTimeUtc(((Date)entry.getValue()).toInstant());
 							break;
 						case ClientConstants.SCHEDULEDENQUEUETIMENAME:
-	                        //brokeredMessage.setScheduledEnqueuedTimeUtc(Utils.convertDotNetTicksToInstant((long)entry.getValue()));
 	                        brokeredMessage.setScheduledEnqueuedTimeUtc(((Date)entry.getValue()).toInstant());
 	                        break;
 	                    case ClientConstants.SEQUENCENUBMERNAME:
 	                        brokeredMessage.setSequenceNumber((long)entry.getValue());
 	                        break;                    
-	                    case ClientConstants.LOCKEDUNTILNAME:
-	                        //brokeredMessage.setLockedUntilUtc(Utils.convertDotNetTicksToInstant((long)entry.getValue()));
+	                    case ClientConstants.LOCKEDUNTILNAME:	                        
 	                        brokeredMessage.setLockedUntilUtc(((Date)entry.getValue()).toInstant());
 	                        break;                    
 	                    case ClientConstants.PARTITIONKEYNAME:

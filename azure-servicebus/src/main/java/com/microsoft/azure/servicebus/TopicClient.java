@@ -129,7 +129,7 @@ public final class TopicClient extends InitializableEntity implements ITopicClie
 
 	// No Op now
 	@Override
-	CompletableFuture<Void> initializeAsync() throws Exception {
+	CompletableFuture<Void> initializeAsync(){
 		return CompletableFuture.completedFuture(null);
 	}
 

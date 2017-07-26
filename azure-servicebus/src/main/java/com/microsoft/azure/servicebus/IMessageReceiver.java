@@ -9,7 +9,7 @@ import java.util.concurrent.CompletableFuture;
 
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
-public interface IMessageReceiver extends IMessageEntity, IMessageBrowser{
+public interface IMessageReceiver extends IMessageEntityClient, IMessageBrowser{
 	ReceiveMode getReceiveMode();
 
     void abandon(UUID lockToken) throws InterruptedException, ServiceBusException;

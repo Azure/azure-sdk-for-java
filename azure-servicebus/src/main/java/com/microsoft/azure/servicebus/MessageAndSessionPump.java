@@ -791,7 +791,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
 	{
 		if(this.innerReceiver == null)
 		{
-			throw new UnsupportedOperationException("This operation is not supported on a message received from a session. Use the session to perform the operation.");
+			throw new UnsupportedOperationException("Receiver not created. Registering a MessageHandler creates a receiver.");
 		}
 	}
 	
