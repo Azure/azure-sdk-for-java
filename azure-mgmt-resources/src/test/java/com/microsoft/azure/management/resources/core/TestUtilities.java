@@ -14,8 +14,8 @@ public class TestUtilities {
      * Wrapper on the Thread.sleep, in case of record mode will not sleep, otherwise sleep.
      * @param milliseconds time in milliseconds for which to sleep.
      */
-    public static void sleep(int milliseconds) {
-        if (MockIntegrationTestBase.IS_RECORD) {
+    public static void sleep(int milliseconds, boolean isRecordMode) {
+        if (isRecordMode) {
             try {
                 Thread.sleep(milliseconds);
             } catch (InterruptedException e) {
