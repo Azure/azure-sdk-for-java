@@ -470,7 +470,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     }
 
     @Test
-    public void canEnablMSIOnVirtualMachineScaleSetWithRoleAsCurrentResourceGroup() throws Exception {
+    public void canEnableMSIOnVirtualMachineScaleSetWithRoleAsCurrentResourceGroup() throws Exception {
         final String vmss_name = generateRandomResourceName("vmss", 10);
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups()
                 .define(RG_NAME)
