@@ -126,7 +126,7 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-annotations</artifactId>
-        <version>1.0.0</version>
+        <version>1.2.0</version>
       </dependency>
       <dependency>
         <groupId>junit</groupId>

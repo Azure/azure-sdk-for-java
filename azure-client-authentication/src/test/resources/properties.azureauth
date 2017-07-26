@@ -1,0 +1,8 @@
+subscription=test-subscription
+tenant=test-tenant
+client=test-client
+key=test-key!12
+managementURI=https\://testmanagement.com/
+baseURL=https\://testbase.com/
+authURL=https\://testauth.net/
+graphURL=https\://testgraph.net/

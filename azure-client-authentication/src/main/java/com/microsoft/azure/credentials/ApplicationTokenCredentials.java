@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.credentials;
 
+import com.google.common.io.BaseEncoding;
 import com.microsoft.aad.adal4j.AsymmetricKeyCredential;
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationException;
@@ -15,16 +16,23 @@ import com.microsoft.azure.AzureEnvironment;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Token based credentials for use with a REST Service Client.
@@ -35,11 +43,11 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
     /** The active directory application client id. */
     private String clientId;
     /** The authentication secret for the application. */
-    private String secret;
+    private String clientSecret;
     /** The PKCS12 certificate byte array. */
-    private byte[] certificate;
+    private byte[] clientCertificate;
     /** The certificate password. */
-    private String certPassword;
+    private String clientCertificatePassword;
 
     /**
      * Initializes a new instance of the ApplicationTokenCredentials.
@@ -53,7 +61,7 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
     public ApplicationTokenCredentials(String clientId, String domain, String secret, AzureEnvironment environment) {
         super(environment, domain); // defer token acquisition
         this.clientId = clientId;
-        this.secret = secret;
+        this.clientSecret = secret;
         this.tokens = new HashMap<>();
     }
 
@@ -70,49 +78,9 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
     public ApplicationTokenCredentials(String clientId, String domain, byte[] certificate, String password, AzureEnvironment environment) {
         super(environment, domain);
         this.clientId = clientId;
-        this.certificate = certificate;
-        this.certPassword = password;
+        this.clientCertificate = certificate;
+        this.clientCertificatePassword = password;
         this.tokens = new HashMap<>();
-    }
-
-    /**
-     * Contains the keys of the settings in a Properties file to read credentials from.
-     */
-    private enum CredentialSettings {
-        /** The subscription GUID. */
-        SUBSCRIPTION_ID("subscription"),
-        /** The tenant GUID or domain. */
-        TENANT_ID("tenant"),
-        /** The client id for the client application. */
-        CLIENT_ID("client"),
-        /** The client secret for the service principal. */
-        CLIENT_KEY("key"),
-        /** The client certificate for the service principal. */
-        CLIENT_CERT("certificate"),
-        /** The password for the client certificate for the service principal. */
-        CLIENT_CERT_PASS("certificatePassword"),
-        /** The management endpoint. */
-        MANAGEMENT_URI("managementURI"),
-        /** The base URL to the current Azure environment. */
-        BASE_URL("baseURL"),
-        /** The URL to Active Directory authentication. */
-        AUTH_URL("authURL"),
-        /** The URL to Active Directory Graph. */
-        GRAPH_URL("graphURL"),
-        /** The suffix of Key Vaults. */
-        VAULT_SUFFIX("vaultSuffix");
-
-        /** The name of the key in the properties file. */
-        private final String name;
-
-        CredentialSettings(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return this.name;
-        }
     }
 
     /**
@@ -127,71 +95,20 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
      *     managementURI=&lt;management-URI&gt;
      *     baseURL=&lt;base-URL&gt;
      *     authURL=&lt;authentication-URL&gt;
+     * or a JSON format and the following keys
+     * {
+     *     "clientId": "&lt;client-id&gt;",
+     *     "clientSecret": "&lt;client-key&gt;",
+     *     "subscriptionId": "&lt;subscription-id&gt;",
+     *     "tenantId": "&lt;tenant-id&gt;",
+     * }
+     * and any custom endpoints listed in {@link AzureEnvironment}.
      *
      * @return The credentials based on the file.
      * @throws IOException exception thrown from file access errors.
      */
     public static ApplicationTokenCredentials fromFile(File credentialsFile) throws IOException {
-        // Set defaults
-        Properties authSettings = new Properties();
-        authSettings.put(CredentialSettings.AUTH_URL.toString(), AzureEnvironment.AZURE.activeDirectoryEndpoint());
-        authSettings.put(CredentialSettings.BASE_URL.toString(), AzureEnvironment.AZURE.resourceManagerEndpoint());
-        authSettings.put(CredentialSettings.MANAGEMENT_URI.toString(), AzureEnvironment.AZURE.managementEndpoint());
-        authSettings.put(CredentialSettings.GRAPH_URL.toString(), AzureEnvironment.AZURE.graphEndpoint());
-        authSettings.put(CredentialSettings.VAULT_SUFFIX.toString(), AzureEnvironment.AZURE.keyVaultDnsSuffix());
-
-        // Load the credentials from the file
-        FileInputStream credentialsFileStream = new FileInputStream(credentialsFile);
-        authSettings.load(credentialsFileStream);
-        credentialsFileStream.close();
-
-        final String clientId = authSettings.getProperty(CredentialSettings.CLIENT_ID.toString());
-        final String tenantId = authSettings.getProperty(CredentialSettings.TENANT_ID.toString());
-        final String clientKey = authSettings.getProperty(CredentialSettings.CLIENT_KEY.toString());
-        final String certificate = authSettings.getProperty(CredentialSettings.CLIENT_CERT.toString());
-        final String certPasswrod = authSettings.getProperty(CredentialSettings.CLIENT_CERT_PASS.toString());
-        final String mgmtUri = authSettings.getProperty(CredentialSettings.MANAGEMENT_URI.toString());
-        final String authUrl = authSettings.getProperty(CredentialSettings.AUTH_URL.toString());
-        final String baseUrl = authSettings.getProperty(CredentialSettings.BASE_URL.toString());
-        final String graphUrl = authSettings.getProperty(CredentialSettings.GRAPH_URL.toString());
-        final String vaultSuffix = authSettings.getProperty(CredentialSettings.VAULT_SUFFIX.toString());
-        final String defaultSubscriptionId = authSettings.getProperty(CredentialSettings.SUBSCRIPTION_ID.toString());
-
-        if (clientKey != null) {
-            return (ApplicationTokenCredentials) new ApplicationTokenCredentials(
-                    clientId,
-                    tenantId,
-                    clientKey,
-                    new AzureEnvironment(new HashMap<String, String>() {{
-                        put(AzureEnvironment.Endpoint.ACTIVE_DIRECTORY.toString(), authUrl.endsWith("/") ? authUrl : authUrl + "/");
-                        put(AzureEnvironment.Endpoint.MANAGEMENT.toString(), mgmtUri);
-                        put(AzureEnvironment.Endpoint.RESOURCE_MANAGER.toString(), baseUrl);
-                        put(AzureEnvironment.Endpoint.GRAPH.toString(), graphUrl);
-                        put(AzureEnvironment.Endpoint.KEYVAULT.toString(), vaultSuffix);
-                    }}
-                    )).withDefaultSubscriptionId(defaultSubscriptionId);
-        } else if (certificate != null) {
-            byte[] certs;
-            if (new File(certificate).exists()) {
-                certs = Files.readAllBytes(Paths.get(certificate));
-            } else {
-                certs = Files.readAllBytes(Paths.get(credentialsFile.getParent(), certificate));
-            }
-            return (ApplicationTokenCredentials) new ApplicationTokenCredentials(
-                    clientId,
-                    tenantId,
-                    certs,
-                    certPasswrod,
-                    new AzureEnvironment(new HashMap<String, String>() {{
-                        put(AzureEnvironment.Endpoint.ACTIVE_DIRECTORY.toString(), authUrl);
-                        put(AzureEnvironment.Endpoint.MANAGEMENT.toString(), mgmtUri);
-                        put(AzureEnvironment.Endpoint.RESOURCE_MANAGER.toString(), baseUrl);
-                        put(AzureEnvironment.Endpoint.GRAPH.toString(), graphUrl);
-                        put(AzureEnvironment.Endpoint.KEYVAULT.toString(), vaultSuffix);
-                    }})).withDefaultSubscriptionId(defaultSubscriptionId);
-        } else {
-            throw new IllegalArgumentException("Please specify either a client key or a client certificate.");
-        }
+        return AuthFile.parse(credentialsFile).generateCredentials();
     }
 
     /**
@@ -221,15 +138,20 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
             context.setProxy(proxy());
         }
         try {
-            if (secret != null) {
+            if (clientSecret != null) {
                 return context.acquireToken(
                         resource,
-                        new ClientCredential(this.clientId(), secret),
+                        new ClientCredential(this.clientId(), clientSecret),
                         null).get();
-            } else if (certificate != null) {
+            } else if (clientCertificate != null && clientCertificatePassword != null) {
                 return context.acquireToken(
                         resource,
-                        AsymmetricKeyCredential.create(clientId, new ByteArrayInputStream(certificate), certPassword),
+                        AsymmetricKeyCredential.create(clientId, new ByteArrayInputStream(clientCertificate), clientCertificatePassword),
+                        null).get();
+            } else if (clientCertificate != null) {
+                return context.acquireToken(
+                        resource,
+                        AsymmetricKeyCredential.create(clientId(), privateKeyFromPem(new String(clientCertificate)), publicKeyFromPem(new String(clientCertificate))),
                         null).get();
             }
             throw new AuthenticationException("Please provide either a non-null secret or a non-null certificate.");
@@ -237,6 +159,38 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
             throw new IOException(e.getMessage(), e);
         } finally {
             executor.shutdown();
+        }
+    }
+
+    private PrivateKey privateKeyFromPem(String pem) {
+        Pattern pattern = Pattern.compile("(?s)-----BEGIN PRIVATE KEY-----.*-----END PRIVATE KEY-----");
+        Matcher matcher = pattern.matcher(pem);
+        matcher.find();
+        String base64 = matcher.group()
+                .replace("-----BEGIN PRIVATE KEY-----", "")
+                .replace("-----END PRIVATE KEY-----", "")
+                .replace("\n", "")
+                .replace("\r", "");
+        byte[] key = BaseEncoding.base64().decode(base64);
+        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(key);
+        try {
+            KeyFactory kf = KeyFactory.getInstance("RSA");
+            return kf.generatePrivate(spec);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private X509Certificate publicKeyFromPem(String pem) {
+        Pattern pattern = Pattern.compile("(?s)-----BEGIN CERTIFICATE-----.*-----END CERTIFICATE-----");
+        Matcher matcher = pattern.matcher(pem);
+        matcher.find();
+        try {
+            CertificateFactory factory = CertificateFactory.getInstance("X.509");
+            InputStream stream = new ByteArrayInputStream(matcher.group().getBytes());
+            return (X509Certificate) factory.generateCertificate(stream);
+        } catch (CertificateException e) {
+            throw new RuntimeException(e);
         }
     }
 }

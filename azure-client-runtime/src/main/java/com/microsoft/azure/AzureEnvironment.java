@@ -177,7 +177,7 @@ public final class AzureEnvironment implements Environment {
      * @return the Active Directory login endpoint.
      */
     public String activeDirectoryEndpoint() {
-        return endpoints.get("activeDirectoryEndpointUrl");
+        return endpoints.get("activeDirectoryEndpointUrl").replaceAll("/$", "") + "/";
     }
 
     /**
