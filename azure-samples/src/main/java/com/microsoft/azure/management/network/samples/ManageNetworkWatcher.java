@@ -117,7 +117,8 @@ public final class ManageNetworkWatcher {
                         .withAnyProtocol()
                         .attach()
                     .create();
-            System.out.println("Creating virtual network...");
+
+            System.out.println("Defining a virtual network...");
             Creatable<Network> virtualNetworkDefinition = azure.networks().define(vnetName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
@@ -126,7 +127,8 @@ public final class ManageNetworkWatcher {
                         .withAddressPrefix("192.168.2.0/24")
                         .withExistingNetworkSecurityGroup(nsg)
                         .attach();
-            System.out.println("Creating virtual machine...");
+
+            System.out.println("Creating a virtual machine...");
             VirtualMachine vm = azure.virtualMachines().define(vmName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
@@ -137,6 +139,7 @@ public final class ManageNetworkWatcher {
                     .withRootUsername(userName)
                     .withRootPassword("Abcdef.123456")
                     .withSize(VirtualMachineSizeTypes.STANDARD_A1)
+                    // This extension is needed to enable packet capture
                     .defineNewExtension("packetCapture")
                         .withPublisher("Microsoft.Azure.NetworkWatcher")
                         .withType("NetworkWatcherAgentLinux")
@@ -177,15 +180,15 @@ public final class ManageNetworkWatcher {
             Utils.print(packetCapture1);
 
             // Delete a packet capture
-            System.out.println("Deleting packet capture");
+            System.out.println("Deleting packet capture...");
             nw.packetCaptures().deleteByName(packetCapture.name());
 
             //============================================================
             // Verify IP flow – verify if traffic is allowed to or from a virtual machine
             // Get the IP address of a NIC on a virtual machine
-            String ipAddress = vm.getPrimaryNetworkInterface().ipConfigurations().values().iterator().next().privateIPAddress();
+            String ipAddress = vm.getPrimaryNetworkInterface().primaryIPConfiguration().privateIPAddress();
             // Test IP flow on the NIC
-            System.out.println("Verifying IP flow for vm id " + vm.id() + "...");
+            System.out.println("Verifying IP flow for VM ID " + vm.id() + "...");
             VerificationIPFlow verificationIPFlow = nw.verifyIPFlow()
                     .withTargetResourceId(vm.id())
                     .withDirection(Direction.INBOUND)
@@ -215,7 +218,7 @@ public final class ManageNetworkWatcher {
             //============================================================
             // Analyze Virtual Machine Security by examining effective network security rules applied to a VM
             // Get security group view for the VM
-            System.out.println("Getting security group view for a vm");
+            System.out.println("Getting security group view for a VM...");
             SecurityGroupView sgViewResult = nw.getSecurityGroupView(vm.id());
             Utils.print(sgViewResult);
 
@@ -280,7 +283,7 @@ public final class ManageNetworkWatcher {
 
             //============================================================
             // Delete network watcher
-            System.out.println("Deleting network watcher");
+            System.out.println("Deleting network watcher...");
             azure.networkWatchers().deleteById(nw.id());
             System.out.println("Deleted network watcher");
 
