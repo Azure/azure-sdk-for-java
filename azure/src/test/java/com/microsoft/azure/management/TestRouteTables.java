@@ -125,11 +125,11 @@ public class TestRouteTables {
         }
     }
 
-	/**
-	 * Outputs info about a route table
-	 * @param resource a route table
-	 */
-	public static void printRouteTable(RouteTable resource) {
+    /**
+     * Outputs info about a route table
+     * @param resource a route table
+     */
+    public static void printRouteTable(RouteTable resource) {
         StringBuilder info = new StringBuilder();
         info.append("Route table: ").append(resource.id())
                 .append("\n\tName: ").append(resource.name())
@@ -158,5 +158,5 @@ public class TestRouteTables {
         }
 
         System.out.println(info.toString());
-	}
+    }
 }
