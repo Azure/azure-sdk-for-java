@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.trafficmanager;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -156,6 +157,7 @@ public interface TrafficManagerProfile extends
              *
              * @return the next stage of the definition
              */
+            @Beta(Beta.SinceVersion.V1_2_0)
             WithEndpoint withGeographicBasedRouting();
 
             /**
