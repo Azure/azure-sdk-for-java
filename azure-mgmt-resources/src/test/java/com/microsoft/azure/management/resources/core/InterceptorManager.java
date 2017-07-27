@@ -164,14 +164,13 @@ public class InterceptorManager {
             throw new IOException("==> Unexpected request: " + incomingMethod + " " + incomingUrl);
         }
 
-        String url = removeHost(networkCallRecord.Uri);
-        String method = networkCallRecord.Method;
-
         int recordStatusCode = Integer.parseInt(networkCallRecord.Response.get("StatusCode"));
 
         Response originalResponse = chain.proceed(request);
+        originalResponse.body().close();
+
         Response.Builder responseBuilder = originalResponse.newBuilder()
-                .code(recordStatusCode);
+                .code(recordStatusCode).message("-");
 
         for (Map.Entry<String, String> pair : networkCallRecord.Response.entrySet()) {
             if (!pair.getKey().equals("StatusCode") && !pair.getKey().equals("Body") && !pair.getKey().equals("Content-Length")) {
