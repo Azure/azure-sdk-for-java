@@ -15131,9 +15131,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15156,9 +15156,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-43?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-43?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15181,9 +15181,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-33?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-33?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15206,9 +15206,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-48?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-48?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15231,9 +15231,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-30?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-30?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15256,9 +15256,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-28?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-28?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15281,9 +15281,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-16?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-16?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15306,9 +15306,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-39?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-39?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15331,9 +15331,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-20?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-20?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15356,9 +15356,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-36?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-36?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15381,9 +15381,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-29?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-29?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15406,9 +15406,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-6?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-6?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15431,9 +15431,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-24?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-24?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15456,9 +15456,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-5?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-5?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15481,9 +15481,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-4?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-4?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15506,9 +15506,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-45?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-45?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15531,9 +15531,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-35?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-35?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15556,9 +15556,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-19?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-19?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15581,9 +15581,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-25?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-25?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15606,9 +15606,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-17?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-17?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15631,9 +15631,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-38?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-38?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15656,9 +15656,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-42?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-42?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15681,9 +15681,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-10?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-10?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15706,9 +15706,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-3?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-3?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15731,9 +15731,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-11?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-11?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15756,9 +15756,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-18?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-18?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15781,9 +15781,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-26?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-26?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15806,9 +15806,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-40?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-40?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15831,9 +15831,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-47?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-47?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15856,9 +15856,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-41?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-41?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15881,9 +15881,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-7?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-7?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15906,9 +15906,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-12?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-12?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15931,9 +15931,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-2?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-2?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15956,9 +15956,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-32?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-32?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -15981,9 +15981,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-27?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-27?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -16006,9 +16006,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-37?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-37?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -16031,9 +16031,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-13?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-13?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -16056,9 +16056,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-44?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-44?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -16081,9 +16081,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-8?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-8?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -16106,9 +16106,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-23?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-23?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -16131,9 +16131,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-1?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-1?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -16156,9 +16156,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-22?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-22?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -16181,9 +16181,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-46?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-46?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -16206,9 +16206,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-31?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-31?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -16231,9 +16231,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-9?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-9?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -16256,9 +16256,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-34?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-34?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -16281,9 +16281,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-14?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-14?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -16306,9 +16306,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-21?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-21?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -16331,9 +16331,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-15?api-version=2015-11-01",
+    "Uri" : "http://localhost:3059/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcopdad330087e3675/providers/Microsoft.Network/trafficmanagerprofiles/tra5716327951/azureEndpoints/azendpoint-15?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
