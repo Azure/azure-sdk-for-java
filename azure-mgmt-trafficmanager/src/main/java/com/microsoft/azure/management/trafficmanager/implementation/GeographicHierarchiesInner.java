@@ -50,7 +50,7 @@ public class GeographicHierarchiesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface GeographicHierarchiesService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.GeographicHierarchies getDefault" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.GeographicHierarchies getRoot" })
         @GET("providers/Microsoft.Network/trafficManagerGeographicHierarchies/default")
         Observable<Response<ResponseBody>> getDefault(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 

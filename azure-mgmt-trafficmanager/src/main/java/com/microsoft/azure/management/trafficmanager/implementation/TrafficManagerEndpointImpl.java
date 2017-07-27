@@ -10,6 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.trafficmanager.EndpointStatus;
+import com.microsoft.azure.management.trafficmanager.GeographicLocation;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerEndpoint;
 import com.microsoft.azure.management.trafficmanager.EndpointMonitorStatus;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
@@ -18,6 +19,8 @@ import rx.Observable;
 import rx.functions.Func1;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -75,6 +78,14 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
     }
 
     @Override
+    public List<String> geographicLocationCodes() {
+        if (this.inner().geoMapping() == null || this.inner().geoMapping().isEmpty()) {
+            return Collections.unmodifiableList(new ArrayList<String>());
+        }
+        return Collections.unmodifiableList(this.inner().geoMapping());
+    }
+
+    @Override
     public TrafficManagerEndpointImpl toResourceId(String resourceId) {
         this.inner().withTargetResourceId(resourceId);
         return this;
@@ -129,32 +140,58 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
     }
 
     @Override
-    public TrafficManagerEndpointImpl withGeographicLocation(String geographicLocation) {
-        if (this.inner().geoMapping() == null) {
-            this.inner().withGeoMapping(new ArrayList<String>());
-        }
-        boolean notFound = true;
-        for(String location : this.inner().geoMapping()) {
-            if (location.toLowerCase().equalsIgnoreCase(geographicLocation.toLowerCase())) {
-                notFound = false;
-                break;
-            }
-        }
-        if (notFound) {
-            this.inner().geoMapping().add(geographicLocation);
+    public TrafficManagerEndpointImpl withGeographicLocation(GeographicLocation geographicLocation) {
+        return this.withGeographicLocation(geographicLocation.code());
+    }
+
+    @Override
+    public TrafficManagerEndpointImpl withoutGeographicLocation(GeographicLocation geographicLocation) {
+        return this.withoutGeographicLocation(geographicLocation.code());
+    }
+
+    @Override
+    public TrafficManagerEndpointImpl withGeographicLocations(List<GeographicLocation> geographicLocations) {
+        for (GeographicLocation location : geographicLocations) {
+            this.withoutGeographicLocation(location);
         }
         return this;
     }
 
     @Override
-    public TrafficManagerEndpointImpl withoutGeographicLocation(String geographicLocation) {
+    public TrafficManagerEndpointImpl withGeographicLocation(String geographicLocationCode) {
+        if (this.inner().geoMapping() == null) {
+            this.inner().withGeoMapping(new ArrayList<String>());
+        }
+        boolean found = false;
+        for (String locationCode : this.inner().geoMapping()) {
+            if (locationCode.toLowerCase().equalsIgnoreCase(geographicLocationCode.toLowerCase())) {
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            this.inner().geoMapping().add(geographicLocationCode);
+        }
+        return this;
+    }
+
+    @Override
+    public TrafficManagerEndpointImpl withGeographicLocations(Collection<String> geographicLocationCodes) {
+        for (String locationCode : geographicLocationCodes) {
+            this.withoutGeographicLocation(locationCode);
+        }
+        return this;
+    }
+
+    @Override
+    public TrafficManagerEndpointImpl withoutGeographicLocation(String geographicLocationCode) {
         if (this.inner().geoMapping() == null) {
             return this;
         }
         int itemIndex = -1;
         int i = 0;
-        for(String location : this.inner().geoMapping()) {
-            if (location.toLowerCase().equalsIgnoreCase(geographicLocation.toLowerCase())) {
+        for (String locationCode : this.inner().geoMapping()) {
+            if (locationCode.toLowerCase().equalsIgnoreCase(geographicLocationCode.toLowerCase())) {
                 itemIndex = i;
                 break;
             }
@@ -163,12 +200,6 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
         if (itemIndex != -1) {
             this.inner().geoMapping().remove(itemIndex);
         }
-        return this;
-    }
-
-    @Override
-    public TrafficManagerEndpointImpl withGeographicLocations(List<String> geographicLocations) {
-        this.inner().withGeoMapping(geographicLocations);
         return this;
     }
 
