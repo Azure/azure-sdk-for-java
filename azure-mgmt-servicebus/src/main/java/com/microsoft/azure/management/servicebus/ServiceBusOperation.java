@@ -14,7 +14,7 @@ import com.microsoft.azure.management.servicebus.implementation.OperationInner;
  * An immutable client-side representation of an Azure service bus operation description object.
  */
 @Fluent
-@Beta(Beta.SinceVersion.V1_1_0)
+@Beta(Beta.SinceVersion.V1_2_0)
 public interface ServiceBusOperation extends HasInner<OperationInner> {
     /**
      * @return the operation name
