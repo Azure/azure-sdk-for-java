@@ -145,7 +145,7 @@
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
-        <version>9.3.0.v20150612</version>
+        <version>9.2.22.v20170606</version>
         <configuration>
           <scanIntervalSeconds>10</scanIntervalSeconds>
           <stopPort>11079</stopPort>
