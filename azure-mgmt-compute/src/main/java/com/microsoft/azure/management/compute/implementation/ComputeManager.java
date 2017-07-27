@@ -189,7 +189,8 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
             virtualMachineScaleSets = new VirtualMachineScaleSetsImpl(
                     this,
                     storageManager,
-                    networkManager);
+                    networkManager,
+                    this.rbacManager);
         }
         return virtualMachineScaleSets;
     }
