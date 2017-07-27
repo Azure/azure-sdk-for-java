@@ -17,7 +17,7 @@ import com.microsoft.azure.management.servicebus.implementation.ServiceBusManage
  * Entry point for service bus operations management API.
  */
 @Fluent
-@Beta(Beta.SinceVersion.V1_1_0)
+@Beta(Beta.SinceVersion.V1_2_0)
 public interface ServiceBusOperations extends
     SupportsListing<ServiceBusOperation>,
     HasManager<ServiceBusManager>,
