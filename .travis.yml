@@ -6,6 +6,7 @@ jdk:
 script:
 - |-
   if [ ${TRAVIS_EVENT_TYPE} = "push" -o ${TRAVIS_EVENT_TYPE} = "pull_request" ]; then
+   mvn jetty:run & ;
    mvn install -DskipTests=true || travis_terminate 1 ;
    mvn test -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dsurefire.rerunFailingTestsCount=6|| travis_terminate 1 ;
    mvn checkstyle:check || travis_terminate 1 ;
