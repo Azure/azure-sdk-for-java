@@ -16,11 +16,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.CreatedResource
 import org.junit.Assert;
 
 import com.microsoft.azure.management.compute.AvailabilitySet;
-import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
-import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
@@ -66,20 +64,16 @@ public class TestLoadBalancer {
      * Internet-facing LB test with NAT pool test.
      */
     public static class InternetWithNatPool extends TestTemplate<LoadBalancer, LoadBalancers> {
-        private final VirtualMachines vms;
-        private final AvailabilitySets availabilitySets;
+        private final ComputeManager computeManager;
 
         /**
          * Test of a load balancer with a NAT pool.
          * @param vms virtual machines
          * @param availabilitySets availability sets
          */
-        public InternetWithNatPool(
-                VirtualMachines vms,
-                AvailabilitySets availabilitySets) {
+        public InternetWithNatPool(ComputeManager computeManager) {
             initializeResourceNames();
-            this.vms = vms;
-            this.availabilitySets = availabilitySets;
+            this.computeManager = computeManager;
         }
 
         @Override
@@ -89,7 +83,7 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
-            VirtualMachine[] existingVMs = ensureVMs(resources.manager().networks(), this.vms, this.availabilitySets, 2);
+            VirtualMachine[] existingVMs = ensureVMs(resources.manager().networks(), this.computeManager, 2);
             ensurePIPs(resources.manager().publicIPAddresses());
             PublicIPAddress pip0 = resources.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[0]);
 
@@ -217,20 +211,16 @@ public class TestLoadBalancer {
      * Internet-facing LB test with NAT rules.
      */
     public static class InternetWithNatRule extends TestTemplate<LoadBalancer, LoadBalancers> {
-        private final VirtualMachines vms;
-        private final AvailabilitySets availabilitySets;
+        private final ComputeManager computeManager;
 
         /**
          * Tests an Internet-facing load balancer with NAT rules.
          * @param vms virtual machines
          * @param availabilitySets availability sets
          */
-        public InternetWithNatRule(
-                VirtualMachines vms,
-                AvailabilitySets availabilitySets) {
+        public InternetWithNatRule(ComputeManager computeManager) {
             initializeResourceNames();
-            this.vms = vms;
-            this.availabilitySets = availabilitySets;
+            this.computeManager = computeManager;
         }
 
         @Override
@@ -240,7 +230,7 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
-            VirtualMachine[] existingVMs = ensureVMs(resources.manager().networks(), this.vms, this.availabilitySets, 2);
+            VirtualMachine[] existingVMs = ensureVMs(resources.manager().networks(), this.computeManager, 2);
             ensurePIPs(resources.manager().publicIPAddresses());
             PublicIPAddress pip = resources.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[0]);
             NetworkInterface nic1 = existingVMs[0].getPrimaryNetworkInterface();
@@ -423,11 +413,7 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
-            VirtualMachine[] existingVMs = ensureVMs(
-                    resources.manager().networks(),
-                    computeManager.virtualMachines(),
-                    computeManager.availabilitySets(),
-                    2);
+            VirtualMachine[] existingVMs = ensureVMs(resources.manager().networks(), computeManager, 2);
             Creatable<PublicIPAddress> pipDef = resources.manager().publicIPAddresses().define(PIP_NAMES[0])
                     .withRegion(TestLoadBalancer.REGION)
                     .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
@@ -549,18 +535,16 @@ public class TestLoadBalancer {
      * Internet-facing minimalistic LB test.
      */
     public static class InternetMinimal extends TestTemplate<LoadBalancer, LoadBalancers> {
-        private final VirtualMachines vms;
-        private final AvailabilitySets availabilitySets;
+        private final ComputeManager computeManager;
 
         /**
          * Tests an Internet-facing load balancer with minimum inputs.
          * @param vms virtual machines
          * @param availabilitySets availability sets
          */
-        public InternetMinimal(VirtualMachines vms, AvailabilitySets availabilitySets) {
+        public InternetMinimal(ComputeManager computeManager) {
             initializeResourceNames();
-            this.vms = vms;
-            this.availabilitySets = availabilitySets;
+            this.computeManager = computeManager;
         }
 
         @Override
@@ -570,7 +554,7 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
-            VirtualMachine[] existingVMs = ensureVMs(resources.manager().networks(), this.vms, this.availabilitySets, 2);
+            VirtualMachine[] existingVMs = ensureVMs(resources.manager().networks(), this.computeManager, 2);
             String pipDnsLabel = SdkContext.randomResourceName("pip", 20);
 
             // Create a load balancer
@@ -719,8 +703,7 @@ public class TestLoadBalancer {
      * Internal minimalistic LB test.
      */
     public static class InternalMinimal extends TestTemplate<LoadBalancer, LoadBalancers> {
-        private final VirtualMachines vms;
-        private final AvailabilitySets availabilitySets;
+        private final ComputeManager computeManager;
         private Network network;
 
         /**
@@ -728,12 +711,9 @@ public class TestLoadBalancer {
          * @param vms virtual machines
          * @param availabilitySets availability sets
          */
-        public InternalMinimal(
-                VirtualMachines vms,
-                AvailabilitySets availabilitySets) {
+        public InternalMinimal(ComputeManager computeManager) {
             initializeResourceNames();
-            this.vms = vms;
-            this.availabilitySets = availabilitySets;
+            this.computeManager = computeManager;
         }
 
         @Override
@@ -743,7 +723,7 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
-            VirtualMachine[] existingVMs = ensureVMs(resources.manager().networks(), this.vms, this.availabilitySets, 2);
+            VirtualMachine[] existingVMs = ensureVMs(resources.manager().networks(), this.computeManager, 2);
 
             // Must use the same VNet as the VMs
             this.network = existingVMs[0].getPrimaryNetworkInterface().primaryIPConfiguration().getNetwork();
@@ -909,7 +889,7 @@ public class TestLoadBalancer {
     }
 
     // Ensure VMs for the LB
-    private static VirtualMachine[] ensureVMs(Networks networks, VirtualMachines vms, AvailabilitySets availabilitySets, int count) throws Exception {
+    private static VirtualMachine[] ensureVMs(Networks networks, ComputeManager computeManager, int count) throws Exception {
         // Create a network for the VMs
         Network network = networks.define("net" + TEST_ID)
                 .withRegion(REGION)
@@ -919,7 +899,7 @@ public class TestLoadBalancer {
                 .withSubnet("subnet2", "10.0.0.8/29")
                 .create();
 
-        Creatable<AvailabilitySet> availabilitySetDefinition = availabilitySets.define("as" + TEST_ID)
+        Creatable<AvailabilitySet> availabilitySetDefinition = computeManager.availabilitySets().define("as" + TEST_ID)
                 .withRegion(REGION)
                 .withExistingResourceGroup(GROUP_NAME)
                 .withSku(AvailabilitySetSkuTypes.MANAGED);
@@ -930,7 +910,7 @@ public class TestLoadBalancer {
         for (int i = 0; i < count; i++) {
             String vmName = SdkContext.randomResourceName("vm", 15);
 
-            Creatable<VirtualMachine> vm = vms.define(vmName)
+            Creatable<VirtualMachine> vm = computeManager.virtualMachines().define(vmName)
                     .withRegion(REGION)
                     .withExistingResourceGroup(GROUP_NAME)
                     .withExistingPrimaryNetwork(network)
@@ -946,7 +926,7 @@ public class TestLoadBalancer {
             vmDefinitions.add(vm);
         }
 
-        CreatedResources<VirtualMachine> createdVMs2 = vms.create(vmDefinitions);
+        CreatedResources<VirtualMachine> createdVMs2 = computeManager.virtualMachines().create(vmDefinitions);
         VirtualMachine[] array = new VirtualMachine[createdVMs2.size()];
         for (int index = 0; index < createdVMs2.size(); index++) {
             array[index] = createdVMs2.get(vmDefinitions.get(index).key());

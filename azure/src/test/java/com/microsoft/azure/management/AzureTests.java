@@ -278,9 +278,7 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testLoadBalancersNatRules() throws Exception {
-        new TestLoadBalancer.InternetWithNatRule(
-                azure.virtualMachines(),
-                azure.availabilitySets())
+        new TestLoadBalancer.InternetWithNatRule(azure.virtualMachines().manager())
             .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
@@ -290,10 +288,8 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testLoadBalancersNatPools() throws Exception {
-        new TestLoadBalancer.InternetWithNatPool(
-                azure.virtualMachines(),
-                azure.availabilitySets())
-        .runTest(azure.loadBalancers(), azure.resourceGroups());
+        new TestLoadBalancer.InternetWithNatPool(azure.virtualMachines().manager())
+            .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
     /**
@@ -302,9 +298,7 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testLoadBalancersInternetMinimum() throws Exception {
-        new TestLoadBalancer.InternetMinimal(
-                azure.virtualMachines(),
-                azure.availabilitySets())
+        new TestLoadBalancer.InternetMinimal(azure.virtualMachines().manager())
             .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
@@ -324,10 +318,8 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testLoadBalancersInternalMinimum() throws Exception {
-        new TestLoadBalancer.InternalMinimal(
-                azure.virtualMachines(),
-                azure.availabilitySets())
-        .runTest(azure.loadBalancers(), azure.resourceGroups());
+        new TestLoadBalancer.InternalMinimal(azure.virtualMachines().manager())
+            .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
     /**
