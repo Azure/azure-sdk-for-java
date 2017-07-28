@@ -7,9 +7,11 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetInner;
+import com.microsoft.azure.management.graphrbac.BuiltInRole;
 import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.LoadBalancerInboundNatPool;
 import com.microsoft.azure.management.network.LoadBalancer;
@@ -306,6 +308,26 @@ public interface VirtualMachineScaleSet extends
      * @return true if managed disk is used for the virtual machine scale set's disks (os, data)
      */
     boolean isManagedDiskEnabled();
+
+    /**
+     * @return true if Managed Service Identity is enabled for the virtual machine scale set
+     */
+    @Beta(Beta.SinceVersion.V1_2_0)
+    boolean isManagedServiceIdentityEnabled();
+
+    /**
+     * @return the Managed Service Identity specific Active Directory tenant id assigned to the
+     * virtual machine scale set.
+     */
+    @Beta(Beta.SinceVersion.V1_2_0)
+    String managedServiceIdentityTenantId();
+
+    /**
+     * @return the Managed Service Identity specific Active Directory service principal id assigned
+     * to the virtual machine scale set.
+     */
+    @Beta(Beta.SinceVersion.V1_2_0)
+    String managedServiceIdentityPrincipalId();
 
     /**
      * The virtual machine scale set stages shared between managed and unmanaged based
@@ -1266,6 +1288,57 @@ public interface VirtualMachineScaleSet extends
         }
 
         /**
+         * The stage of the virtual machine scale set definition allowing to enable Managed Service Identity.
+         */
+        @Beta(Beta.SinceVersion.V1_2_0)
+        interface WithManagedServiceIdentity {
+            /**
+             * Specifies that Managed Service Identity needs to be enabled in the virtual machine scale set.
+             * The MSI will have "Contributor" access role with scope of access limited to the
+             * resource group that this virtual machine scale set belongs to.
+             *
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            WithCreate withManagedServiceIdentity();
+
+            /**
+             * Specifies that Managed Service Identity needs to be enabled in the virtual machine scale set.
+             * The MSI will have the given access role and scope of access will be limited to the
+             * resource group that this virtual machine scale set belongs to.
+             *
+             * @param role access role to assigned to the virtual machine.
+             *
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            WithCreate withManagedServiceIdentity(BuiltInRole role);
+
+            /**
+             * Specifies that Managed Service Identity needs to be enabled in the virtual machine scale set.
+             *
+             * @param role access role to assigned to the virtual machine scale set
+             * @param scope scope of the access represented in arm resource id format
+             *
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            WithCreate withManagedServiceIdentity(BuiltInRole role, String scope);
+
+            /**
+             * Specifies that Managed Service Identity needs to be enabled in the virtual machine scale set.
+             *
+             * @param role access role to assigned to the virtual machine.
+             * @param scope scope of the access represented in arm resource id format
+             * @param port access token retrieval port in the virtual machine scale set instance
+             *
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            WithCreate withManagedServiceIdentity(BuiltInRole role, String scope, int port);
+        }
+
+        /**
          * The stage of a virtual machine scale set definition containing all the required inputs for the resource
          * to be created, but also allowing for any other optional settings
          * to be specified.
@@ -1280,6 +1353,7 @@ public interface VirtualMachineScaleSet extends
                 DefinitionStages.WithStorageAccount,
                 DefinitionStages.WithCustomData,
                 DefinitionStages.WithExtension,
+                DefinitionStages.WithManagedServiceIdentity,
                 Resource.DefinitionWithTags<VirtualMachineScaleSet.DefinitionStages.WithCreate> {
         }
     }
@@ -1530,6 +1604,59 @@ public interface VirtualMachineScaleSet extends
         }
 
         /**
+         * The stage of the virtual machine update allowing to enable Managed Service Identity.
+         */
+        @Beta(Beta.SinceVersion.V1_2_0)
+        interface WithManagedServiceIdentity {
+            /**
+             * Specifies that Managed Service Identity needs to be enabled in the virtual machine scale set.
+             *
+             * The MSI will have "Contributor" access role with scope of access limited to the
+             * resource group that this virtual machine scale set belongs to.
+             *
+             * @return the next stage of the update
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            WithApply withManagedServiceIdentity();
+
+            /**
+             * Specifies that Managed Service Identity needs to be enabled in the virtual machine scale set.
+             *
+             * The MSI will have the given access role and scope of access will be limited to the
+             * resource group that this virtual machine scale set belongs to.
+             *
+             * @param role access role to assigned to the virtual machine.
+             *
+             * @return the next stage of the update
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            Update withManagedServiceIdentity(BuiltInRole role);
+
+            /**
+             * Specifies that Managed Service Identity needs to be enabled in the virtual machine scale set.
+             *
+             * @param role access role to assigned to the virtual machine scale set
+             * @param scope scope of the access represented in arm resource id format
+             *
+             * @return the next stage of the update
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            WithApply withManagedServiceIdentity(BuiltInRole role, String scope);
+
+            /**
+             * Specifies that Managed Service Identity needs to be enabled in the virtual machine scale set.
+             *
+             * @param role access role to assigned to the virtual machine scale set.
+             * @param scope scope of the access represented in arm resource id format
+             * @param port access token retrieval port in the virtual machine scale set instance
+             *
+             * @return the next stage of the update
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            WithApply withManagedServiceIdentity(BuiltInRole role, String scope, int port);
+        }
+
+        /**
          * The stage of the virtual machine scale set definition allowing to specify unmanaged data disk.
          */
         interface WithUnmanagedDataDisk {
@@ -1628,7 +1755,8 @@ public interface VirtualMachineScaleSet extends
                 UpdateStages.WithExtension,
                 UpdateStages.WithoutPrimaryLoadBalancer,
                 UpdateStages.WithoutPrimaryLoadBalancerBackend,
-                UpdateStages.WithoutPrimaryLoadBalancerNatPool {
+                UpdateStages.WithoutPrimaryLoadBalancerNatPool,
+                UpdateStages.WithManagedServiceIdentity {
         }
     }
 

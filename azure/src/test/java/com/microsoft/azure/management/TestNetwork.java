@@ -97,11 +97,11 @@ public class TestNetwork {
         }
     }
 
-	/**
-	 * Outputs info about a network
-	 * @param resource a network
-	 */
-	public static void printNetwork(Network resource) {
+    /**
+     * Outputs info about a network
+     * @param resource a network
+     */
+    public static void printNetwork(Network resource) {
         StringBuilder info = new StringBuilder();
         info.append("Network: ").append(resource.id())
                 .append("Name: ").append(resource.name())
@@ -141,5 +141,5 @@ public class TestNetwork {
         }
 
         System.out.println(info.toString());
-	}
+    }
 }

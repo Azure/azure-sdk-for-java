@@ -34,10 +34,14 @@ import com.microsoft.azure.management.compute.VirtualMachineScaleSetOSProfile;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetSku;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetSkuTypes;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetStorageProfile;
+import com.microsoft.azure.management.compute.VirtualMachineScaleSetVMProfile;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVMs;
 import com.microsoft.azure.management.compute.WinRMConfiguration;
 import com.microsoft.azure.management.compute.WinRMListener;
 import com.microsoft.azure.management.compute.WindowsConfiguration;
+import com.microsoft.azure.management.graphrbac.BuiltInRole;
+import com.microsoft.azure.management.graphrbac.RoleAssignment;
+import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.LoadBalancerInboundNatPool;
 import com.microsoft.azure.management.network.LoadBalancerPrivateFrontend;
@@ -125,13 +129,16 @@ public class VirtualMachineScaleSetImpl
     private boolean isUnmanagedDiskSelected;
     // To track the managed data disks
     private final ManagedDataDiskCollection managedDataDisks;
+    // Utility to setup MSI for the virtual machine scale set
+    VirtualMachineScaleSetMsiHelper virtualMachineScaleSetMsiHelper;
 
     VirtualMachineScaleSetImpl(
-                        String name,
-                        VirtualMachineScaleSetInner innerModel,
-                        final ComputeManager computeManager,
-                        final StorageManager storageManager,
-                        final NetworkManager networkManager) {
+            String name,
+            VirtualMachineScaleSetInner innerModel,
+            final ComputeManager computeManager,
+            final StorageManager storageManager,
+            final NetworkManager networkManager,
+            final GraphRbacManager rbacManager) {
         super(name, innerModel, computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
@@ -143,6 +150,7 @@ public class VirtualMachineScaleSetImpl
             }
         };
         this.managedDataDisks = new ManagedDataDiskCollection(this);
+        this.virtualMachineScaleSetMsiHelper = new VirtualMachineScaleSetMsiHelper(rbacManager);
     }
 
     @Override
@@ -991,6 +999,28 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
+    public boolean isManagedServiceIdentityEnabled() {
+        return this.managedServiceIdentityPrincipalId() != null
+                && this.managedServiceIdentityTenantId() != null;
+    }
+
+    @Override
+    public String managedServiceIdentityTenantId() {
+        if (this.inner().identity() != null) {
+            return this.inner().identity().tenantId();
+        }
+        return null;
+    }
+
+    @Override
+    public String managedServiceIdentityPrincipalId() {
+        if (this.inner().identity() != null) {
+            return this.inner().identity().principalId();
+        }
+        return null;
+    }
+
+    @Override
     public VirtualMachineScaleSetImpl withUnmanagedDisks() {
         this.isUnmanagedDiskSelected = true;
         return this;
@@ -1153,10 +1183,35 @@ public class VirtualMachineScaleSetImpl
         return this;
     }
 
+    @Override
+    public VirtualMachineScaleSetImpl withManagedServiceIdentity() {
+        this.virtualMachineScaleSetMsiHelper.withManagedServiceIdentity(this.inner());
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withManagedServiceIdentity(BuiltInRole role) {
+        this.virtualMachineScaleSetMsiHelper.withManagedServiceIdentity(role, this.inner());
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withManagedServiceIdentity(BuiltInRole role, String scope) {
+        this.virtualMachineScaleSetMsiHelper.withManagedServiceIdentity(role, scope, this.inner());
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withManagedServiceIdentity(BuiltInRole role, String scope, int port) {
+        this.virtualMachineScaleSetMsiHelper.withManagedServiceIdentity(role, scope, port, this.inner());
+        return this;
+    }
+
     // Create Update specific methods
     //
     @Override
     protected void beforeCreating() {
+        this.virtualMachineScaleSetMsiHelper.addOrUpdateMSIExtension(this);
         if (this.extensions.size() > 0) {
             this.inner()
                     .virtualMachineProfile()
@@ -1184,11 +1239,25 @@ public class VirtualMachineScaleSetImpl
             VirtualMachineScaleSetUnmanagedDataDiskImpl.setDataDisksDefaults(dataDisks, this.name());
         }
         final VirtualMachineScaleSetsInner client = this.manager().inner().virtualMachineScaleSets();
+        final VirtualMachineScaleSet self = this;
         return this.handleOSDiskContainersAsync()
                 .flatMap(new Func1<Void, Observable<VirtualMachineScaleSetInner>>() {
                     @Override
                     public Observable<VirtualMachineScaleSetInner> call(Void aVoid) {
-                        return client.createOrUpdateAsync(resourceGroupName(), name(), inner());
+                        return client.createOrUpdateAsync(resourceGroupName(), name(), inner())
+                                .flatMap(new Func1<VirtualMachineScaleSetInner, Observable<VirtualMachineScaleSetInner>>() {
+                                    @Override
+                                    public Observable<VirtualMachineScaleSetInner> call(final VirtualMachineScaleSetInner scaleSetInner) {
+                                        setInner(scaleSetInner);  // Inner has to be updated so that virtualMachineScaleSetMsiHelper can fetch MSI identity
+                                        return virtualMachineScaleSetMsiHelper.setupVirtualMachineScaleSetMSIResourcesAsync(self)
+                                                .map(new Func1<RoleAssignment, VirtualMachineScaleSetInner>() {
+                                                    @Override
+                                                    public VirtualMachineScaleSetInner call(RoleAssignment roleAssignment) {
+                                                        return scaleSetInner;
+                                                    }
+                                                });
+                                    }
+                                });
                     }
                 });
     }
@@ -1890,6 +1959,29 @@ public class VirtualMachineScaleSetImpl
         if (!this.isManagedDiskEnabled()) {
             throw new UnsupportedOperationException(message);
         }
+    }
+
+
+    OperatingSystemTypes osTypeIntern() {
+        VirtualMachineScaleSetVMProfile vmProfile = this.inner().virtualMachineProfile();
+        if (vmProfile != null
+                && vmProfile.storageProfile() != null
+                && vmProfile.storageProfile().osDisk() != null
+                && vmProfile.storageProfile().osDisk().osType() != null) {
+            return vmProfile.storageProfile().osDisk().osType();
+        }
+        if (vmProfile != null
+                && vmProfile.osProfile() != null) {
+            if (vmProfile.osProfile().linuxConfiguration() != null) {
+                return OperatingSystemTypes.LINUX;
+            }
+            if (vmProfile.osProfile().windowsConfiguration() != null) {
+                return OperatingSystemTypes.WINDOWS;
+            }
+        }
+        // This should never hit
+        //
+        throw new RuntimeException("Unable to resolve the operating system type");
     }
 
     /**
