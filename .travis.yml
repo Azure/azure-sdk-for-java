@@ -8,9 +8,7 @@ script:
   if [ ${TRAVIS_EVENT_TYPE} = "push" -o ${TRAVIS_EVENT_TYPE} = "pull_request" ]; then
    mvn jetty:run & echo "Start a Jetty server on a background" ;
    mvn install -DskipTests=true || travis_terminate 1 ;
-   mvn test -pl azure -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dsurefire.rerunFailingTestsCount=3 || travis_terminate 1 ;
-   mvn test -pl azure-samples -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dsurefire.rerunFailingTestsCount=3 || travis_terminate 1 ;
-   mvn test -pl !azure-samples,!azure -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dsurefire.rerunFailingTestsCount=3 || travis_terminate 1 ;
+   mvn test -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B -Dsurefire.rerunFailingTestsCount=3 || travis_terminate 1 ;
    if [ ${TRAVIS_JDK_VERSION} = "oraclejdk8" ]; then
      mvn checkstyle:check || travis_terminate 1 ;
    fi
