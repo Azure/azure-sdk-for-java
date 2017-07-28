@@ -5,6 +5,7 @@ jdk:
 - openjdk7
 script:
 - |-
+  echo $TRAVIS_JDK_VERSION
   if [ ${TRAVIS_EVENT_TYPE} = "push" -o ${TRAVIS_EVENT_TYPE} = "pull_request" ]; then
    mvn jetty:run & echo "Start a Jetty server on a background" ;
    mvn install -DskipTests=true || travis_terminate 1 ;
