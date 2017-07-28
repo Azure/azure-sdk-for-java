@@ -291,8 +291,8 @@ class LoadBalancerImpl
                 NicIPConfiguration nicIP = nic.primaryIPConfiguration();
                 nic.update()
                     .updateIPConfiguration(nicIP.name())
-                    .withExistingLoadBalancerBackend(this, backendName)
-                    .parent()
+                        .withExistingLoadBalancerBackend(this, backendName)
+                        .parent()
                     .apply();
             } catch (Exception e) {
                 nicExceptions.add(e);
@@ -390,17 +390,15 @@ class LoadBalancerImpl
     }
 
     LoadBalancerImpl withFrontend(LoadBalancerFrontendImpl frontend) {
-        if (frontend == null) {
-            return null;
-        } else {
+        if (frontend != null) {
             this.frontends.put(frontend.name(), frontend);
-            return this;
         }
+        return this;
     }
 
     LoadBalancerImpl withProbe(LoadBalancerProbeImpl probe) {
         if (probe == null) {
-            return null;
+            return this;
         } else if (probe.protocol() == ProbeProtocol.HTTP) {
             httpProbes.put(probe.name(), probe);
         } else if (probe.protocol() == ProbeProtocol.TCP) {
@@ -410,39 +408,31 @@ class LoadBalancerImpl
     }
 
     LoadBalancerImpl withLoadBalancingRule(LoadBalancingRuleImpl loadBalancingRule) {
-        if (loadBalancingRule == null) {
-            return null;
-        } else {
+        if (loadBalancingRule != null) {
             this.loadBalancingRules.put(loadBalancingRule.name(), loadBalancingRule);
-            return this;
         }
+        return this;
     }
 
     LoadBalancerImpl withInboundNatRule(LoadBalancerInboundNatRuleImpl inboundNatRule) {
-        if (inboundNatRule == null) {
-            return null;
-        } else {
+        if (inboundNatRule != null) {
             this.inboundNatRules.put(inboundNatRule.name(), inboundNatRule);
-            return this;
         }
+        return this;
     }
 
     LoadBalancerImpl withInboundNatPool(LoadBalancerInboundNatPoolImpl inboundNatPool) {
-        if (inboundNatPool == null) {
-            return null;
-        } else {
+        if (inboundNatPool != null) {
             this.inboundNatPools.put(inboundNatPool.name(), inboundNatPool);
-            return this;
         }
+        return this;
     }
 
     LoadBalancerImpl withBackend(LoadBalancerBackendImpl backend) {
-        if (backend == null) {
-            return null;
-        } else {
+        if (backend != null) {
             this.backends.put(backend.name(), backend);
-            return this;
         }
+        return this;
     }
 
     // Withers (fluent)
@@ -496,16 +486,12 @@ class LoadBalancerImpl
     }
 
     LoadBalancerImpl withExistingVirtualMachine(HasNetworkInterfaces vm, String backendName) {
-        if (backendName == null) {
-            backendName = this.ensureUniqueBackend().name();
-        } else {
+        if (backendName != null) {
             this.defineBackend(backendName).attach();
+            if (vm.primaryNetworkInterfaceId() != null) {
+                this.nicsInBackends.put(vm.primaryNetworkInterfaceId(), backendName.toLowerCase());
+            }
         }
-
-        if (vm.primaryNetworkInterfaceId() != null) {
-            this.nicsInBackends.put(vm.primaryNetworkInterfaceId(), backendName.toLowerCase());
-        }
-
         return this;
     }
 
