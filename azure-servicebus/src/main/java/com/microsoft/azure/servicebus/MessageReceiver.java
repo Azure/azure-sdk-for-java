@@ -374,8 +374,8 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 	}
 
 	@Override
-	public IMessage receiveBySequenceNumber(long sequenceNumber) throws InterruptedException, ServiceBusException{
-		return Utils.completeFuture(this.receiveBySequenceNumberAsync(sequenceNumber));
+	public IMessage receiveDeferredMessage(long sequenceNumber) throws InterruptedException, ServiceBusException{
+		return Utils.completeFuture(this.receiveDeferredMessageAsync(sequenceNumber));
 	}
 
 	@Override
@@ -389,9 +389,8 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 	}
 
 	@Override
-	public Collection<IMessage> receiveBatch(Collection<Long> sequenceNumbers) {
-		// TODO Auto-generated method stub
-		return null;
+	public Collection<IMessage> receiveDeferredMessageBatch(Collection<Long> sequenceNumbers) throws ServiceBusException, InterruptedException {
+		return Utils.completeFuture(this.receiveDeferredMessageBatchAsync(sequenceNumbers));
 	}
 
 	@Override
@@ -447,10 +446,10 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 	}
 	
 	@Override
-	public CompletableFuture<IMessage> receiveBySequenceNumberAsync(long sequenceNumber) {	    
+	public CompletableFuture<IMessage> receiveDeferredMessageAsync(long sequenceNumber) {
 		ArrayList<Long> list = new ArrayList<>();
 		list.add(sequenceNumber);
-		return  this.receiveBatchAsync(list).thenApplyAsync(c -> 
+		return  this.receiveDeferredMessageBatchAsync(list).thenApplyAsync(c ->
 		{	
 			if(c == null)
 				return null;
@@ -462,9 +461,9 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 	}
 
 	@Override
-	public CompletableFuture<Collection<IMessage>> receiveBatchAsync(Collection<Long> sequenceNumbers) {
+	public CompletableFuture<Collection<IMessage>> receiveDeferredMessageBatchAsync(Collection<Long> sequenceNumbers) {
 	    TRACE_LOGGER.debug("Receiving messages by sequence numbers '{}' from entity '{}'", sequenceNumbers, this.entityPath);
-		return this.internalReceiver.receiveBySequenceNumbersAsync(sequenceNumbers.toArray(new Long[0])).thenApplyAsync(c -> 
+		return this.internalReceiver.receiveDeferredMessageBatchAsync(sequenceNumbers.toArray(new Long[0])).thenApplyAsync(c ->
 		{	
 			if(c == null)
 				return null;

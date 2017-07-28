@@ -1188,12 +1188,12 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		});					
 	}
 	
-	public CompletableFuture<Collection<MessageWithLockToken>> receiveBySequenceNumbersAsync(Long[] sequenceNumbers)
+	public CompletableFuture<Collection<MessageWithLockToken>> receiveDeferredMessageBatchAsync(Long[] sequenceNumbers)
 	{
 	    this.throwIfInUnusableState();
 	    if(TRACE_LOGGER.isDebugEnabled())
         {
-            TRACE_LOGGER.debug("Receiving messges for sequence numbers '{}' from entity '{}', sesion '{}'", Arrays.toString(sequenceNumbers), this.receivePath, this.isSessionReceiver ? this.getSessionId() : "");
+            TRACE_LOGGER.debug("Receiving messages for sequence numbers '{}' from entity '{}', sesion '{}'", Arrays.toString(sequenceNumbers), this.receivePath, this.isSessionReceiver ? this.getSessionId() : "");
         }
 		return this.createRequestResponseLinkAsync().thenComposeAsync((v) -> {
 			HashMap requestBodyMap = new HashMap();

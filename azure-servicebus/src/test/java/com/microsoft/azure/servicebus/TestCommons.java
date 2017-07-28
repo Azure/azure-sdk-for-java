@@ -394,7 +394,7 @@ public class TestCommons {
 		receiver.defer(receivedMessage.getLockToken());
 		
 		// Now receive by sequence number
-		receivedMessage = receiver.receiveBySequenceNumber(sequenceNumber);
+		receivedMessage = receiver.receiveDeferredMessage(sequenceNumber);
 		Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", sequenceNumber, receivedMessage.getSequenceNumber());
 		Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", messageId, receivedMessage.getMessageId());		
 		receiver.complete(receivedMessage.getLockToken());
@@ -402,7 +402,7 @@ public class TestCommons {
 		// Try to receive by sequence number again
 		try
 		{
-			receivedMessage = receiver.receiveBySequenceNumber(sequenceNumber);
+			receivedMessage = receiver.receiveDeferredMessage(sequenceNumber);
 			Assert.fail("Message recieved by sequnce number was not properly completed.");
 		}
 		catch(MessageNotFoundException e)
@@ -426,14 +426,14 @@ public class TestCommons {
 		receiver.defer(receivedMessage.getLockToken());
 		
 		// Now receive by sequence number
-		receivedMessage = receiver.receiveBySequenceNumber(sequenceNumber);
+		receivedMessage = receiver.receiveDeferredMessage(sequenceNumber);
 		Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", sequenceNumber, receivedMessage.getSequenceNumber());
 		Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", messageId, receivedMessage.getMessageId());
 		long deliveryCount = receivedMessage.getDeliveryCount();
 		receiver.abandon(receivedMessage.getLockToken());
 		
 		// Try to receive by sequence number again
-		receivedMessage = receiver.receiveBySequenceNumber(sequenceNumber);
+		receivedMessage = receiver.receiveDeferredMessage(sequenceNumber);
 		Assert.assertEquals("Abandon didn't increase the delivery count for the message received by sequence number.", deliveryCount + 1, receivedMessage.getDeliveryCount());
 		receiver.complete(receivedMessage.getLockToken());
 	}
@@ -463,7 +463,7 @@ public class TestCommons {
 		receiver.defer(receivedMessage.getLockToken(), customProperties);
 		
 		// Now receive by sequence number
-		receivedMessage = receiver.receiveBySequenceNumber(sequenceNumber);
+		receivedMessage = receiver.receiveDeferredMessage(sequenceNumber);
 		Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", sequenceNumber, receivedMessage.getSequenceNumber());
 		Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", messageId, receivedMessage.getMessageId());
 		Assert.assertEquals("Defer didn't update properties of the message received by sequence number", firstDeferredPhase, receivedMessage.getProperties().get(phaseKey));
@@ -471,7 +471,7 @@ public class TestCommons {
 		receiver.defer(receivedMessage.getLockToken(), customProperties);
 		
 		// Try to receive by sequence number again
-		receivedMessage = receiver.receiveBySequenceNumber(sequenceNumber);
+		receivedMessage = receiver.receiveDeferredMessage(sequenceNumber);
 		Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message after deferrring", sequenceNumber, receivedMessage.getSequenceNumber());
 		Assert.assertEquals("Defer didn't update properties of the message received by sequence number", secondDeferredPhase, receivedMessage.getProperties().get(phaseKey));
 		receiver.complete(receivedMessage.getLockToken());
@@ -492,7 +492,7 @@ public class TestCommons {
 		receiver.defer(receivedMessage.getLockToken());		
 		
 		// Now receive by sequence number
-		receivedMessage = receiver.receiveBySequenceNumber(sequenceNumber);
+		receivedMessage = receiver.receiveDeferredMessage(sequenceNumber);
 		Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", sequenceNumber, receivedMessage.getSequenceNumber());
 		Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", messageId, receivedMessage.getMessageId());
 		String deadLetterReason = "java client deadletter test";		
@@ -501,7 +501,7 @@ public class TestCommons {
 		// Try to receive by sequence number again
 		try
 		{
-			receivedMessage = receiver.receiveBySequenceNumber(sequenceNumber);
+			receivedMessage = receiver.receiveDeferredMessage(sequenceNumber);
 			Assert.fail("Message received by sequence number was not properly deadlettered");
 		}
 		catch(MessageNotFoundException e)
@@ -590,7 +590,7 @@ public class TestCommons {
 			{
 				try
 				{
-					IMessage message = receiver.receiveBySequenceNumber(peekedMessage.getSequenceNumber());
+					IMessage message = receiver.receiveDeferredMessage(peekedMessage.getSequenceNumber());
 					if(receiver.getReceiveMode() == ReceiveMode.PEEKLOCK)
 					{
 						receiver.complete(message.getLockToken());

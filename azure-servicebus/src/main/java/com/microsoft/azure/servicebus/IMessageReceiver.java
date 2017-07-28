@@ -56,25 +56,25 @@ public interface IMessageReceiver extends IMessageEntityClient, IMessageBrowser{
     
     IMessage receive(Duration serverWaitTime) throws InterruptedException, ServiceBusException;
 
-    IMessage receiveBySequenceNumber(long sequenceNumber) throws InterruptedException, ServiceBusException;
+    IMessage receiveDeferredMessage(long sequenceNumber) throws InterruptedException, ServiceBusException;
 
     Collection<IMessage> receiveBatch(int maxMessageCount) throws InterruptedException, ServiceBusException;
     
     Collection<IMessage> receiveBatch(int maxMessageCount, Duration serverWaitTime) throws InterruptedException, ServiceBusException;
     
-    Collection<IMessage> receiveBatch(Collection<Long> sequenceNumbers) throws InterruptedException, ServiceBusException;
+    Collection<IMessage> receiveDeferredMessageBatch(Collection<Long> sequenceNumbers) throws InterruptedException, ServiceBusException;
 
     CompletableFuture<IMessage> receiveAsync();
 
     CompletableFuture<IMessage> receiveAsync(Duration serverWaitTime);
 
-    CompletableFuture<IMessage> receiveBySequenceNumberAsync(long sequenceNumber);
+    CompletableFuture<IMessage> receiveDeferredMessageAsync(long sequenceNumber);
 
     CompletableFuture<Collection<IMessage>> receiveBatchAsync(int maxMessageCount);
 
     CompletableFuture<Collection<IMessage>> receiveBatchAsync(int maxMessageCount, Duration serverWaitTime);
 
-    CompletableFuture<Collection<IMessage>> receiveBatchAsync(Collection<Long> sequenceNumbers);
+    CompletableFuture<Collection<IMessage>> receiveDeferredMessageBatchAsync(Collection<Long> sequenceNumbers);
     
     CompletableFuture<Instant> renewMessageLockAsync(IMessage message);
     
