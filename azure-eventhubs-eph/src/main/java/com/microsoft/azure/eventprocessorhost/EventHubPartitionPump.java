@@ -145,6 +145,7 @@ class EventHubPartitionPump extends PartitionPump
 			// Fortunately this is idempotent -- setting the handler to null when it's already been
 			// nulled by code elsewhere is harmless!
 			// Setting to null also waits for the in-progress calls to complete
+			this.host.logWithHostAndPartition(Level.FINER, this.partitionContext, "Setting receive handler to null");
 			try
 			{
 				this.partitionReceiver.setReceiveHandler(null).get();
@@ -178,6 +179,10 @@ class EventHubPartitionPump extends PartitionPump
 				this.host.logWithHostAndPartition(Level.FINE, this.partitionContext,"Closing EH receiver failed.", exception);
 			}
         }
+        else
+        {
+            this.host.logWithHostAndPartition(Level.FINER, this.partitionContext, "partitionReceiver is null in cleanup");
+        }
 
         if (this.eventHubClient != null)
 		{
@@ -194,6 +199,10 @@ class EventHubPartitionPump extends PartitionPump
 				this.host.logWithHostAndPartition(Level.FINE, this.partitionContext, "Closing EH client failed.", exception);
 			}
 		}
+        else
+        {
+            this.host.logWithHostAndPartition(Level.FINER, this.partitionContext, "eventHubClient is null in cleanup");
+        }
     }
 
     @Override
@@ -269,7 +278,13 @@ class EventHubPartitionPump extends PartitionPump
 					EventHubPartitionPump.this.host.logWithHostAndPartition(Level.SEVERE, EventHubPartitionPump.this.partitionContext, "EventHub client error continued", (Exception)error);
 				}
 			}
-			EventHubPartitionPump.this.onError(error);
+
+			// It is vital to perform the rest of cleanup in a separate thread and not block this one. This thread is the client's
+			// receive pump thread, and blocking it means that the receive pump never completes its CompletableFuture, which in turn
+			// blocks other client calls that we would like to make during cleanup. Specifically, this issue was found when
+			// PartitionReceiver.setReceiveHandler(null).get() was called and never returned.
+			final Throwable capturedError = error;
+			EventProcessorHost.getExecutorService().submit(() -> EventHubPartitionPump.this.onError(capturedError));
 		}
     }
 }

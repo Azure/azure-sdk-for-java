@@ -192,7 +192,8 @@ abstract class PartitionPump
         }
 	}
     
-    protected void onError(Throwable error)
+    // Returns Void so it can be called from a lambda.
+    protected Void onError(Throwable error)
     {
     	// How this method gets called:
     	// 1) JavaClient calls an error handler installed by EventHubPartitionPump.
@@ -209,5 +210,7 @@ abstract class PartitionPump
     	// Notify upstream that this pump is dead so that cleanup will occur.
     	// Failing to do so results in reactor threads leaking.
     	this.pump.onPumpError(this.partitionContext.getPartitionId());
+
+        return null;
     }
 }
