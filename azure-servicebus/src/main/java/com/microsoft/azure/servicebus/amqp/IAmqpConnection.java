@@ -9,7 +9,7 @@ import org.apache.qpid.proton.engine.Link;
 
 public interface IAmqpConnection
 {
-	void onOpenComplete();
+	void onConnectionOpen();
 
 	void onConnectionError(ErrorCondition error);
 

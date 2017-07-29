@@ -98,7 +98,7 @@ public final class ConnectionHandler extends BaseHandler
 	public void onConnectionRemoteOpen(Event event)
 	{		
 		TRACE_LOGGER.debug("Connection.onConnectionRemoteOpen: hostname:{}, remotecontainer:{}", event.getConnection().getHostname(), event.getConnection().getRemoteContainer());
-		this.messagingFactory.onOpenComplete();
+		this.messagingFactory.onConnectionOpen();
 	}
 
 	@Override

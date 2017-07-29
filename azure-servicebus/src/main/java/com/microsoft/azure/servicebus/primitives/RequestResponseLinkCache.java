@@ -156,7 +156,7 @@ class RequestResponseLinkcache
         
         public CompletableFuture<Void> forceCloseAsync()
         {
-            TRACE_LOGGER.info("Closing requestresponselink to '{}'", this.requestResponseLink.getLinkPath());
+            TRACE_LOGGER.info("Force closing requestresponselink to '{}'", this.requestResponseLink.getLinkPath());
             return this.requestResponseLink.closeAsync();
         }
     }    

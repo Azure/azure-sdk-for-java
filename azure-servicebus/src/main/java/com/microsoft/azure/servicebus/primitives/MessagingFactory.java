@@ -10,6 +10,7 @@ import java.security.InvalidKeyException;
 import java.time.Duration;
 import java.util.LinkedList;
 import java.util.Locale;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledFuture;
@@ -45,7 +46,8 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(MessagingFactory.class);
 	
-	private static final int MAX_CBS_LINK_CREATION_ATTEMPTS = 3;	
+    private static final String REACTOR_THREAD_NAME_PREFIX = "ReactorThread";
+	private static final int MAX_CBS_LINK_CREATION_ATTEMPTS = 3;
 	private final ConnectionStringBuilder builder;
 	private final String hostName;
 	private final CompletableFuture<Void> connetionCloseFuture;
@@ -122,14 +124,15 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 	private void startReactor(ReactorHandler reactorHandler) throws IOException
 	{
 	    TRACE_LOGGER.info("Creating and starting reactor");
-		final Reactor newReactor = ProtonUtil.reactor(reactorHandler);
+		Reactor newReactor = ProtonUtil.reactor(reactorHandler);
 		synchronized (this.reactorLock)
 		{
 			this.reactor = newReactor;
 			this.reactorScheduler = new ReactorDispatcher(newReactor);
 		}
 		
-		final Thread reactorThread = new Thread(new RunReactor());
+		String reactorThreadName = REACTOR_THREAD_NAME_PREFIX + UUID.randomUUID().toString();
+		Thread reactorThread = new Thread(new RunReactor(), reactorThreadName);
 		reactorThread.start();
 		TRACE_LOGGER.info("Started reactor");
 	}
@@ -227,7 +230,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
      * Internal method.&nbsp;Clients should not use this method.
      */
 	@Override
-	public void onOpenComplete()
+	public void onConnectionOpen()
 	{
 	    if(!factoryOpenFuture.isDone())
 	    {
@@ -237,7 +240,10 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 	    
 	    // Connection opened. Initiate new cbs link creation
 	    TRACE_LOGGER.info("Connection opened to host.");
-	    this.createCBSLinkAsync();
+	    if(this.cbsLink == null)
+	    {
+	        this.createCBSLinkAsync();
+	    }	    
 	}
 
 	/**
@@ -436,7 +442,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 				    // If factory is closed, stop reactor too
 				    if(MessagingFactory.this.getIsClosed())
 				    {
-				        TRACE_LOGGER.info("Gracefull releasing reactor thread as messaging factory is closed");
+				        TRACE_LOGGER.info("Gracefully releasing reactor thread as messaging factory is closed");
 				        break;
 				    }
 				    continuteProcessing = this.rctr.process();
