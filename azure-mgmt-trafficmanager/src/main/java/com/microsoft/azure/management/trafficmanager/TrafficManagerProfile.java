@@ -320,6 +320,7 @@ public interface TrafficManagerProfile extends
              *
              * @return the next stage of the update
              */
+            @Beta(Beta.SinceVersion.V1_2_0)
             Update withGeographicBasedRouting();
 
             /**

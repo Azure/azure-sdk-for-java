@@ -152,7 +152,7 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
     @Override
     public TrafficManagerEndpointImpl withGeographicLocations(List<GeographicLocation> geographicLocations) {
         for (GeographicLocation location : geographicLocations) {
-            this.withoutGeographicLocation(location);
+            this.withGeographicLocation(location);
         }
         return this;
     }
@@ -178,7 +178,7 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
     @Override
     public TrafficManagerEndpointImpl withGeographicLocations(Collection<String> geographicLocationCodes) {
         for (String locationCode : geographicLocationCodes) {
-            this.withoutGeographicLocation(locationCode);
+            this.withGeographicLocation(locationCode);
         }
         return this;
     }

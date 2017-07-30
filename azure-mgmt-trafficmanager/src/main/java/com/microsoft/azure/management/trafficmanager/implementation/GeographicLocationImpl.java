@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.trafficmanager.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.trafficmanager.GeographicLocation;
 import com.microsoft.azure.management.trafficmanager.Region;
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  * Implementation for GeographicLocation.
  */
+@LangDefinition
 class GeographicLocationImpl extends WrapperImpl<com.microsoft.azure.management.trafficmanager.Region> implements GeographicLocation {
     protected GeographicLocationImpl(com.microsoft.azure.management.trafficmanager.Region innerRegion) {
         super(innerRegion);
