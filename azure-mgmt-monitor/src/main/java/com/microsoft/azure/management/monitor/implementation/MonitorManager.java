@@ -24,7 +24,7 @@ import com.microsoft.rest.RestClient;
  */
 @Beta(SinceVersion.V1_2_0)
 public final class MonitorManager extends Manager<MonitorManager, MonitorManagementClientImpl> {
-    private final MonitorClientImpl innerClient;
+    private final MonitorClientImpl innerEx;
 
     /**
      * @return wrapped inner object providing direct access to the underlying
@@ -35,7 +35,7 @@ public final class MonitorManager extends Manager<MonitorManager, MonitorManagem
      * @return Auto-generated client for additional methods in the Azure Monitor API.
      */
     public MonitorClientImpl innerEx() {
-        return innerClient;
+        return innerEx;
     }
 
     /**
@@ -100,6 +100,6 @@ public final class MonitorManager extends Manager<MonitorManager, MonitorManagem
                 subscriptionId,
                 new MonitorManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
 
-        innerClient = new MonitorClientImpl(restClient).withSubscriptionId(subscriptionId);
+        innerEx = new MonitorClientImpl(restClient).withSubscriptionId(subscriptionId);
     }
 }
