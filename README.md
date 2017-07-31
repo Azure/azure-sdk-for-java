@@ -1,24 +1,33 @@
 ﻿[![Build Status](https://travis-ci.org/Azure/azure-batch-sdk-for-java.svg?style=flat-square&label=build)](https://travis-ci.org/Azure/azure-batch-sdk-for-java)
 
-#Azure Batch Libraries for Java
+## Azure Batch Libraries for Java
 
-This README is based on the latest released version Azure Batch SDK (1.0.0). If you are looking for other releases, see [More Information](#more-information)
+This README is based on the latest released version Azure Batch SDK (2.1.0). If you are looking for other releases, see [More Information](#more-information)
 
 The Azure Batch Libraries for Java is a higher-level, object-oriented API for interacting with the Azure Batch service.
 
 
-> **1.0.0** is a release that supports all features of Azure Batch service with API version "2017-01-01.4.0". We will be adding support for more new features and tweaking the API associated with Azure Batch service newer release.
+> **2.1.0** is a release that supports all features of Azure Batch service with API version "2017-06-01.5.1". We will be adding support for more new features and tweaking the API associated with Azure Batch service newer release.
 
 **Azure Batch Authentication**
 
-You need to create a Batch account through the [Azure portal](https://portal.azure.com) or Azure cli. Use the account name, key, and URL to create a `BatchSharedKeyCredentials` instance for authentication with the Azure Batch service.
+You need to create a Batch account through the [Azure portal](https://portal.azure.com) or Azure cli. 
+
+* Use the account name, key, and URL to create a `BatchSharedKeyCredentials` instance for authentication with the Azure Batch service.
 The `BatchClient` class is the simplest entry point for creating and interacting with Azure Batch objects.
 
 ```java
 BatchSharedKeyCredentials cred = new BatchSharedKeyCredentials(batchUri, batchAccount, batchKey);
 BatchClient client = BatchClient.open(cred);
 ```
- 
+
+* The other way is using AAD (Azure Active Directory) authentication to create the client. See this [document](https://docs.microsoft.com/en-us/azure/batch/batch-aad-auth) for detail.
+
+```java
+BatchApplicationTokenCredentials cred = new BatchApplicationTokenCredentials(batchEndpoint, clientId, applicationSecret, applicationDomain, null, null);
+BatchClient client = BatchClient.open(cred);
+```
+
 **Create a pool using an Azure Marketplace image**
 
 You can create a pool of Azure virtual machines which can be used to execute tasks.
@@ -51,25 +60,25 @@ You can find sample code that illustrates Batch usage scenarios in https://githu
 # Download
 
 
-**1.0.0**
+**2.1.0**
 
-If you are using released builds from 1.0.0, add the following to your POM file:
+If you are using released builds from 2.1.0, add the following to your POM file:
 
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-batch</artifactId>
-    <version>1.0.0</version>
+    <version>2.1.0</version>
 </dependency>
 <dependency>
     <groupId>com.microsoft.rest</groupId>
     <artifactId>client-runtime</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.4</version>
 </dependency>
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-client-runtime</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.4</version>
 </dependency>
 ```
 
@@ -103,7 +112,9 @@ If you would like to become an active contributor to this project please follow 
 
 | Version           | SHA1                                                                                      | Remarks                                               |
 |-------------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------|
-| 1.0.0             | [1.0.0](https://github.com/Azure/azure-sdk-for-java/tree/master)                          | Tagged release for 1.0.0 version of Azure Batch libraries |
+| 2.1.0             | [2.1.0](https://github.com/Azure/azure-sdk-for-java/tree/master)                          | Tagged release for 2.1.0 version of Azure Batch libraries |
+| 2.0.0             | [2.0.0](https://github.com/Azure/azure-batch-sdk-for-java/releases/tag/v2.0.0)                          | Tagged release for 2.0.0 version of Azure Batch libraries |
+| 1.0.0             | [1.0.0](https://github.com/Azure/azure-batch-sdk-for-java/releases/tag/v1.0.0)                          | Tagged release for 1.0.0 version of Azure Batch libraries |
 | 1.0.0-beta2       | [1.0.0-beta2](https://github.com/Azure/azure-sdk-for-java/tree/1.0.0-beta2)               | Tagged release for 1.0.0-beta2 version of Azure Batch libraries |
 
 ---

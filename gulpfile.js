@@ -6,7 +6,7 @@ var fs = require('fs');
 
 var mappings = {
     'batchService': {
-        'source': 'batch/2017-05-01.5.0/swagger/BatchService.json',
+        'source': 'specification/batch/data-plane/Microsoft.Batch/2017-06-01.5.1/BatchService.json',
         'package': 'com.microsoft.azure.batch.protocol',
         'fluent': false,
         'args': '-FT 1'
@@ -22,9 +22,9 @@ gulp.task('default', function() {
     console.log("--autorest-args\n\tPasses additional argument to AutoRest generator");
 });
 
-var specRoot = args['spec-root'] || "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master";
+var specRoot = args['spec-root'] || "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/current";
 var projects = 'batchService'; // default
-var autoRestVersion = '1.0.1-20170329-2300-nightly'; // default
+var autoRestVersion = '1.2.2'; // default
 if (args['autorest'] !== undefined) {
     autoRestVersion = args['autorest'];
 }
@@ -36,16 +36,8 @@ var autoRestArgs = args['autorest-args'];
 var autoRestExe;
 
 gulp.task('codegen', function(cb) {
-    if (autoRestVersion.match(/[0-9]+\.[0-9]+\.[0-9]+.*/) ||
-        autoRestVersion == 'latest') {
-        autoRestExe = 'autorest ---version=' + autoRestVersion;
-        handleInput(projects, cb);
-    } else {
-        autoRestExe = autoRestVersion + "/src/core/AutoRest/bin/Debug/netcoreapp1.0/AutoRest.dll";
-        autoRestExe = "dotnet " + autoRestExe;
-        handleInput(projects, cb);
-    }
-
+    autoRestExe = 'autorest';
+    handleInput(projects, cb);
 });
 
 var handleInput = function(projects, cb) {

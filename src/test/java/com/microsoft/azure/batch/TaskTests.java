@@ -176,7 +176,7 @@ public class TaskTests  extends BatchTestBase {
     @Test
     public void testOutputFiles() throws Exception {
         int TASK_COMPLETE_TIMEOUT_IN_SECONDS = 60; // 60 seconds timeout
-        String jobId = getStringWithUserNamePrefix("-Job-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringWithUserNamePrefix("-Job1-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
         String taskId = "mytask";
         String badTaskId = "mytask1";
         String storageAccountName = System.getenv("STORAGE_ACCOUNT_NAME");
@@ -254,6 +254,7 @@ public class TaskTests  extends BatchTestBase {
             }
         }
     }
+
     @Test
     public void testAddMultiTasks() throws Exception {
         String jobId = getStringWithUserNamePrefix("-Job1-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
@@ -282,7 +283,52 @@ public class TaskTests  extends BatchTestBase {
             // LIST
             List<CloudTask> tasks = batchClient.taskOperations().listTasks(jobId);
             Assert.assertNotNull(tasks);
-            Assert.assertTrue(tasks.size() == 1000);
+            Assert.assertTrue(tasks.size() == TASK_COUNT);
+        } finally {
+            try {
+                batchClient.jobOperations().deleteJob(jobId);
+            } catch (Exception e) {
+                // Ignore here
+            }
+        }
+    }
+
+    @Test
+    public void testGetTaskCounts() throws Exception {
+        String jobId = getStringWithUserNamePrefix("-Job1-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+
+        PoolInformation poolInfo = new PoolInformation();
+        poolInfo.withPoolId(livePool.id());
+        batchClient.jobOperations().createJob(jobId, poolInfo);
+
+
+        int TASK_COUNT=1000;
+
+        try {
+            // Test Job count
+            TaskCounts counts = batchClient.jobOperations().getTaskCounts(jobId);
+            int all = counts.active() + counts.completed() + counts.running();
+            Assert.assertEquals(counts.validationStatus(), TaskCountValidationStatus.VALIDATED);
+            Assert.assertEquals(all, 0);
+
+            // CREATE
+            List<TaskAddParameter> tasksToAdd = new ArrayList<>();
+            for (int i=0; i<TASK_COUNT; i++)
+            {
+                TaskAddParameter addParameter = new TaskAddParameter();
+                addParameter.withId(String.format("mytask%d", i)).withCommandLine(String.format("cmd /c echo hello %d",i));
+                tasksToAdd.add(addParameter);
+            }
+            BatchClientParallelOptions option = new BatchClientParallelOptions(10);
+            Collection<BatchClientBehavior> behaviors = new HashSet<>();
+            behaviors.add(option);
+            batchClient.taskOperations().createTasks(jobId, tasksToAdd, behaviors);
+
+            // Test Job count
+            counts = batchClient.jobOperations().getTaskCounts(jobId);
+            all = counts.active() + counts.completed() + counts.running();
+            Assert.assertEquals(counts.validationStatus(), TaskCountValidationStatus.VALIDATED);
+            Assert.assertEquals(all, TASK_COUNT);
         } finally {
             try {
                 batchClient.jobOperations().deleteJob(jobId);

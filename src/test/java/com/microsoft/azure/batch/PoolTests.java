@@ -68,7 +68,26 @@ public class PoolTests extends BatchTestBase {
             VirtualMachineConfiguration configuration = new VirtualMachineConfiguration();
             configuration.withNodeAgentSKUId("batch.node.ubuntu 16.04").withImageReference(imgRef);
 
-            batchClient.poolOperations().createPool(poolId, POOL_VM_SIZE, configuration, POOL_VM_COUNT, POOL_LOW_PRI_VM_COUNT);
+            NetworkConfiguration netConfig = new NetworkConfiguration();
+            PoolEndpointConfiguration endpointConfig = new PoolEndpointConfiguration();
+            List<InboundNATPool> inbounds = new ArrayList<>();
+            inbounds.add(new InboundNATPool()
+                    .withName("testinbound")
+                    .withProtocol(InboundEndpointProtocol.TCP)
+                    .withBackendPort(5000)
+                    .withFrontendPortRangeStart(60000)
+                    .withFrontendPortRangeEnd(60040));
+            endpointConfig.withInboundNATPools(inbounds);
+            netConfig.withEndpointConfiguration(endpointConfig);
+
+            PoolAddParameter addParameter = new PoolAddParameter()
+                    .withId(poolId)
+                    .withTargetDedicatedNodes(POOL_VM_COUNT)
+                    .withTargetLowPriorityNodes(POOL_LOW_PRI_VM_COUNT)
+                    .withVmSize(POOL_VM_SIZE)
+                    .withVirtualMachineConfiguration(configuration)
+                    .withNetworkConfiguration(netConfig);
+            batchClient.poolOperations().createPool(addParameter);
         }
 
         try {
@@ -97,6 +116,15 @@ public class PoolTests extends BatchTestBase {
             Assert.assertTrue("The pool did not reach a steady state in the allotted time", steady);
             Assert.assertEquals((long)pool.currentDedicatedNodes(), POOL_VM_COUNT);
             Assert.assertEquals((long)pool.currentLowPriorityNodes(), POOL_LOW_PRI_VM_COUNT);
+
+            List<ComputeNode> computeNodes = batchClient.computeNodeOperations().listComputeNodes(poolId);
+            List<InboundEndpoint> inboundEndpoints = computeNodes.get(0).endpointConfiguration().inboundEndpoints();
+            Assert.assertEquals(inboundEndpoints.size(), 1);
+            InboundEndpoint inboundEndpoint = inboundEndpoints.get(0);
+            Assert.assertEquals(inboundEndpoint.backendPort(), 5000);
+            Assert.assertTrue(inboundEndpoint.frontendPort() >= 60000);
+            Assert.assertTrue(inboundEndpoint.frontendPort() <= 60040);
+            Assert.assertTrue(inboundEndpoint.name().startsWith("testinbound."));
 
             // RESIZE
             batchClient.poolOperations().resizePool(poolId, 1, 1);
@@ -188,17 +216,8 @@ public class PoolTests extends BatchTestBase {
             // Use PaaS VM with Windows
             CloudServiceConfiguration configuration = new CloudServiceConfiguration();
             configuration.withOsFamily(POOL_OS_FAMILY).withTargetOSVersion(POOL_OS_VERSION);
-            List<String> licenses = new ArrayList<>();
-            licenses.add("maya");
 
-            PoolAddParameter addParameter = new PoolAddParameter()
-                    .withId(poolId)
-                    .withTargetDedicatedNodes(POOL_VM_COUNT)
-                    .withTargetLowPriorityNodes(POOL_LOW_PRI_VM_COUNT)
-                    .withVmSize(POOL_VM_SIZE)
-                    .withCloudServiceConfiguration(configuration)
-                    .withApplicationLicenses(licenses);
-            batchClient.poolOperations().createPool(addParameter);
+            batchClient.poolOperations().createPool(poolId, POOL_VM_SIZE, configuration, POOL_VM_COUNT, POOL_LOW_PRI_VM_COUNT);
         }
 
         try {

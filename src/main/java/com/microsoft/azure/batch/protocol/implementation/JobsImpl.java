@@ -29,6 +29,8 @@ import com.microsoft.azure.batch.protocol.models.JobGetAllLifetimeStatisticsHead
 import com.microsoft.azure.batch.protocol.models.JobGetAllLifetimeStatisticsOptions;
 import com.microsoft.azure.batch.protocol.models.JobGetHeaders;
 import com.microsoft.azure.batch.protocol.models.JobGetOptions;
+import com.microsoft.azure.batch.protocol.models.JobGetTaskCountsHeaders;
+import com.microsoft.azure.batch.protocol.models.JobGetTaskCountsOptions;
 import com.microsoft.azure.batch.protocol.models.JobListFromJobScheduleHeaders;
 import com.microsoft.azure.batch.protocol.models.JobListFromJobScheduleNextOptions;
 import com.microsoft.azure.batch.protocol.models.JobListFromJobScheduleOptions;
@@ -50,6 +52,7 @@ import com.microsoft.azure.batch.protocol.models.JobUpdateHeaders;
 import com.microsoft.azure.batch.protocol.models.JobUpdateOptions;
 import com.microsoft.azure.batch.protocol.models.JobUpdateParameter;
 import com.microsoft.azure.batch.protocol.models.PageImpl;
+import com.microsoft.azure.batch.protocol.models.TaskCounts;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
@@ -151,6 +154,10 @@ public class JobsImpl implements Jobs {
         @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs listPreparationAndReleaseTaskStatus" })
         @GET("jobs/{jobId}/jobpreparationandreleasetaskstatus")
         Observable<Response<ResponseBody>> listPreparationAndReleaseTaskStatus(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs getTaskCounts" })
+        @GET("jobs/{jobId}/taskcounts")
+        Observable<Response<ResponseBody>> getTaskCounts(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs listNext" })
         @GET
@@ -3005,6 +3012,193 @@ public class JobsImpl implements Jobs {
                 .register(200, new TypeToken<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobListPreparationAndReleaseTaskStatusHeaders.class);
+    }
+
+    /**
+     * Gets the task counts for the specified job.
+     * Task counts provide a count of the tasks by active, running or completed task state, and a count of tasks which succeeded or failed. Tasks in the preparing state are counted as running. If the validationStatus is unvalidated, then the Batch service has not been able to check state counts against the task states as reported in the List Tasks API. The validationStatus may be unvalidated if the job contains more than 200,000 tasks.
+     *
+     * @param jobId The ID of the job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the TaskCounts object if successful.
+     */
+    public TaskCounts getTaskCounts(String jobId) {
+        return getTaskCountsWithServiceResponseAsync(jobId).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the task counts for the specified job.
+     * Task counts provide a count of the tasks by active, running or completed task state, and a count of tasks which succeeded or failed. Tasks in the preparing state are counted as running. If the validationStatus is unvalidated, then the Batch service has not been able to check state counts against the task states as reported in the List Tasks API. The validationStatus may be unvalidated if the job contains more than 200,000 tasks.
+     *
+     * @param jobId The ID of the job.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<TaskCounts> getTaskCountsAsync(String jobId, final ServiceCallback<TaskCounts> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(getTaskCountsWithServiceResponseAsync(jobId), serviceCallback);
+    }
+
+    /**
+     * Gets the task counts for the specified job.
+     * Task counts provide a count of the tasks by active, running or completed task state, and a count of tasks which succeeded or failed. Tasks in the preparing state are counted as running. If the validationStatus is unvalidated, then the Batch service has not been able to check state counts against the task states as reported in the List Tasks API. The validationStatus may be unvalidated if the job contains more than 200,000 tasks.
+     *
+     * @param jobId The ID of the job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TaskCounts object
+     */
+    public Observable<TaskCounts> getTaskCountsAsync(String jobId) {
+        return getTaskCountsWithServiceResponseAsync(jobId).map(new Func1<ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders>, TaskCounts>() {
+            @Override
+            public TaskCounts call(ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the task counts for the specified job.
+     * Task counts provide a count of the tasks by active, running or completed task state, and a count of tasks which succeeded or failed. Tasks in the preparing state are counted as running. If the validationStatus is unvalidated, then the Batch service has not been able to check state counts against the task states as reported in the List Tasks API. The validationStatus may be unvalidated if the job contains more than 200,000 tasks.
+     *
+     * @param jobId The ID of the job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TaskCounts object
+     */
+    public Observable<ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders>> getTaskCountsWithServiceResponseAsync(String jobId) {
+        if (jobId == null) {
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final JobGetTaskCountsOptions jobGetTaskCountsOptions = null;
+        Integer timeout = null;
+        UUID clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        return service.getTaskCounts(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders> clientResponse = getTaskCountsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Gets the task counts for the specified job.
+     * Task counts provide a count of the tasks by active, running or completed task state, and a count of tasks which succeeded or failed. Tasks in the preparing state are counted as running. If the validationStatus is unvalidated, then the Batch service has not been able to check state counts against the task states as reported in the List Tasks API. The validationStatus may be unvalidated if the job contains more than 200,000 tasks.
+     *
+     * @param jobId The ID of the job.
+     * @param jobGetTaskCountsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the TaskCounts object if successful.
+     */
+    public TaskCounts getTaskCounts(String jobId, JobGetTaskCountsOptions jobGetTaskCountsOptions) {
+        return getTaskCountsWithServiceResponseAsync(jobId, jobGetTaskCountsOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the task counts for the specified job.
+     * Task counts provide a count of the tasks by active, running or completed task state, and a count of tasks which succeeded or failed. Tasks in the preparing state are counted as running. If the validationStatus is unvalidated, then the Batch service has not been able to check state counts against the task states as reported in the List Tasks API. The validationStatus may be unvalidated if the job contains more than 200,000 tasks.
+     *
+     * @param jobId The ID of the job.
+     * @param jobGetTaskCountsOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<TaskCounts> getTaskCountsAsync(String jobId, JobGetTaskCountsOptions jobGetTaskCountsOptions, final ServiceCallback<TaskCounts> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(getTaskCountsWithServiceResponseAsync(jobId, jobGetTaskCountsOptions), serviceCallback);
+    }
+
+    /**
+     * Gets the task counts for the specified job.
+     * Task counts provide a count of the tasks by active, running or completed task state, and a count of tasks which succeeded or failed. Tasks in the preparing state are counted as running. If the validationStatus is unvalidated, then the Batch service has not been able to check state counts against the task states as reported in the List Tasks API. The validationStatus may be unvalidated if the job contains more than 200,000 tasks.
+     *
+     * @param jobId The ID of the job.
+     * @param jobGetTaskCountsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TaskCounts object
+     */
+    public Observable<TaskCounts> getTaskCountsAsync(String jobId, JobGetTaskCountsOptions jobGetTaskCountsOptions) {
+        return getTaskCountsWithServiceResponseAsync(jobId, jobGetTaskCountsOptions).map(new Func1<ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders>, TaskCounts>() {
+            @Override
+            public TaskCounts call(ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the task counts for the specified job.
+     * Task counts provide a count of the tasks by active, running or completed task state, and a count of tasks which succeeded or failed. Tasks in the preparing state are counted as running. If the validationStatus is unvalidated, then the Batch service has not been able to check state counts against the task states as reported in the List Tasks API. The validationStatus may be unvalidated if the job contains more than 200,000 tasks.
+     *
+     * @param jobId The ID of the job.
+     * @param jobGetTaskCountsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TaskCounts object
+     */
+    public Observable<ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders>> getTaskCountsWithServiceResponseAsync(String jobId, JobGetTaskCountsOptions jobGetTaskCountsOptions) {
+        if (jobId == null) {
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(jobGetTaskCountsOptions);
+        Integer timeout = null;
+        if (jobGetTaskCountsOptions != null) {
+            timeout = jobGetTaskCountsOptions.timeout();
+        }
+        UUID clientRequestId = null;
+        if (jobGetTaskCountsOptions != null) {
+            clientRequestId = jobGetTaskCountsOptions.clientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (jobGetTaskCountsOptions != null) {
+            returnClientRequestId = jobGetTaskCountsOptions.returnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobGetTaskCountsOptions != null) {
+            ocpDate = jobGetTaskCountsOptions.ocpDate();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        return service.getTaskCounts(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders> clientResponse = getTaskCountsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders> getTaskCountsDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<TaskCounts, BatchErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<TaskCounts>() { }.getType())
+                .registerError(BatchErrorException.class)
+                .buildWithHeaders(response, JobGetTaskCountsHeaders.class);
     }
 
     /**

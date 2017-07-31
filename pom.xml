@@ -44,7 +44,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-runtime</artifactId>
-      <version>1.0.1</version>
+      <version>1.0.4</version>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>

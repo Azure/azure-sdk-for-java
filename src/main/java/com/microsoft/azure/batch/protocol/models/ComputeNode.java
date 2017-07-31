@@ -178,6 +178,12 @@ public class ComputeNode {
     private Boolean isDedicated;
 
     /**
+     * The endpoint configuration for the compute node.
+     */
+    @JsonProperty(value = "endpointConfiguration")
+    private ComputeNodeEndpointConfiguration endpointConfiguration;
+
+    /**
      * Get the id value.
      *
      * @return the id value
@@ -554,6 +560,26 @@ public class ComputeNode {
      */
     public ComputeNode withIsDedicated(Boolean isDedicated) {
         this.isDedicated = isDedicated;
+        return this;
+    }
+
+    /**
+     * Get the endpointConfiguration value.
+     *
+     * @return the endpointConfiguration value
+     */
+    public ComputeNodeEndpointConfiguration endpointConfiguration() {
+        return this.endpointConfiguration;
+    }
+
+    /**
+     * Set the endpointConfiguration value.
+     *
+     * @param endpointConfiguration the endpointConfiguration value to set
+     * @return the ComputeNode object itself.
+     */
+    public ComputeNode withEndpointConfiguration(ComputeNodeEndpointConfiguration endpointConfiguration) {
+        this.endpointConfiguration = endpointConfiguration;
         return this;
     }
 

@@ -119,10 +119,7 @@ public class JobManagerTask {
      * existing copy on the compute node is used. If a referenced application
      * package cannot be installed, for example because the package has been
      * deleted or because download failed, the task fails with a scheduling
-     * error. This property is currently not supported on jobs running on pools
-     * created using the virtualMachineConfiguration (IaaS) property. If a task
-     * specifying applicationPackageReferences runs on such a pool, it fails
-     * with a scheduling error with code TaskSchedulingConstraintFailed.
+     * error.
      */
     @JsonProperty(value = "applicationPackageReferences")
     private List<ApplicationPackageReference> applicationPackageReferences;

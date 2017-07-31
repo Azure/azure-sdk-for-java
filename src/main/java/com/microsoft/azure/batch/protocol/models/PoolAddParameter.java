@@ -177,8 +177,6 @@ public class PoolAddParameter {
     /**
      * The list of application packages to be installed on each compute node in
      * the pool.
-     * This property is currently not supported on pools created using the
-     * virtualMachineConfiguration (IaaS) property.
      */
     @JsonProperty(value = "applicationPackageReferences")
     private List<ApplicationPackageReference> applicationPackageReferences;

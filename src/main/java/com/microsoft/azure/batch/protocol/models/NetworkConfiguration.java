@@ -38,6 +38,14 @@ public class NetworkConfiguration {
     private String subnetId;
 
     /**
+     * The configuration for endpoints on compute nodes in the Batch pool.
+     * Pool endpoint configuration is only supported on pools with the
+     * virtualMachineConfiguration property.
+     */
+    @JsonProperty(value = "endpointConfiguration")
+    private PoolEndpointConfiguration endpointConfiguration;
+
+    /**
      * Get the subnetId value.
      *
      * @return the subnetId value
@@ -54,6 +62,26 @@ public class NetworkConfiguration {
      */
     public NetworkConfiguration withSubnetId(String subnetId) {
         this.subnetId = subnetId;
+        return this;
+    }
+
+    /**
+     * Get the endpointConfiguration value.
+     *
+     * @return the endpointConfiguration value
+     */
+    public PoolEndpointConfiguration endpointConfiguration() {
+        return this.endpointConfiguration;
+    }
+
+    /**
+     * Set the endpointConfiguration value.
+     *
+     * @param endpointConfiguration the endpointConfiguration value to set
+     * @return the NetworkConfiguration object itself.
+     */
+    public NetworkConfiguration withEndpointConfiguration(PoolEndpointConfiguration endpointConfiguration) {
+        this.endpointConfiguration = endpointConfiguration;
         return this;
     }
 
