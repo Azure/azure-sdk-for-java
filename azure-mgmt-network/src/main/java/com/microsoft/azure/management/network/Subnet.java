@@ -7,6 +7,8 @@ package com.microsoft.azure.management.network;
 
 import java.util.Set;
 
+import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.SubnetInner;
@@ -184,6 +186,12 @@ public interface Subnet extends
              * @return the next stage of the update
              */
             Update withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg);
+
+            /**
+             * Removes the association of this subnet with any network security group.
+             * @return the next stage of the update
+             */
+            Update withoutNetworkSecurityGroup();
         }
 
         /**

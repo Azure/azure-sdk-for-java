@@ -49,13 +49,20 @@ public class TestNetwork {
                     .create();
 
             // Verify subnets
-            List<Subnet> subnets = nsg.refresh().listAssociatedSubnets();
-            Assert.assertTrue(subnets.size() == 1);
-            Subnet subnet = subnets.get(0);
-            Assert.assertTrue(subnet.name().equalsIgnoreCase("subnetB"));
-            Assert.assertTrue(subnet.parent().name().equalsIgnoreCase(newName));
+            Assert.assertEquals(2, network.subnets().size());
+            Subnet subnet = network.subnets().get("subnetA");
+            Assert.assertEquals("10.0.0.0/29", subnet.addressPrefix());
+
+            subnet = network.subnets().get("subnetB");
+            Assert.assertEquals("10.0.0.8/29", subnet.addressPrefix());
+            Assert.assertTrue(nsg.id().equalsIgnoreCase(subnet.networkSecurityGroupId()));
 
             // Verify NSG
+            List<Subnet> subnets = nsg.refresh().listAssociatedSubnets();
+            Assert.assertTrue(subnets.size() == 1);
+            subnet = subnets.get(0);
+            Assert.assertTrue(subnet.name().equalsIgnoreCase("subnetB"));
+            Assert.assertTrue(subnet.parent().name().equalsIgnoreCase(newName));
             Assert.assertTrue(subnet.networkSecurityGroupId() != null);
             NetworkSecurityGroup nsg2 = subnet.getNetworkSecurityGroup();
             Assert.assertTrue(nsg2 != null);
@@ -79,7 +86,7 @@ public class TestNetwork {
                     .withoutSubnet("subnetA")
                     .updateSubnet("subnetB")
                         .withAddressPrefix("141.25.0.8/29")
-                        .withExistingNetworkSecurityGroup(nsg)
+                        .withoutNetworkSecurityGroup()
                         .parent()
                     .defineSubnet("subnetD")
                         .withAddressPrefix("141.25.0.16/29")
@@ -87,6 +94,25 @@ public class TestNetwork {
                         .attach()
                     .apply();
             Assert.assertTrue(resource.tags().containsKey("tag1"));
+
+            // Verify subnets
+            Assert.assertEquals(3, resource.subnets().size());
+            Assert.assertFalse(resource.subnets().containsKey("subnetA"));
+
+            Subnet subnet = resource.subnets().get("subnetB");
+            Assert.assertNotNull(subnet);
+            Assert.assertEquals("141.25.0.8/29", subnet.addressPrefix());
+            Assert.assertNull(subnet.networkSecurityGroupId());
+
+            subnet = resource.subnets().get("subnetC");
+            Assert.assertNotNull(subnet);
+            Assert.assertEquals("141.25.0.0/29", subnet.addressPrefix());
+            Assert.assertNull(subnet.networkSecurityGroupId());
+
+            subnet = resource.subnets().get("subnetD");
+            Assert.assertNotNull(subnet);
+            Assert.assertEquals("141.25.0.16/29", subnet.addressPrefix());
+            Assert.assertTrue(nsg.id().equalsIgnoreCase(subnet.networkSecurityGroupId()));
 
             return resource;
         }
