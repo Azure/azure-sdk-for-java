@@ -14,7 +14,7 @@ import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.microsoft.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
+import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
@@ -23,20 +23,18 @@ import com.microsoft.rest.RestClient;
  * Entry point to Azure Monitor.
  */
 @Beta(SinceVersion.V1_2_0)
-public final class MonitorManager extends ManagerBase {
-    private final MonitorManagementClientImpl innerManagementClient;
-    /**
-     * @return An auto-generated client for the Azure Monitoring Resource Management API.
-     */
-    public MonitorManagementClientImpl innerManagementClient() {
-        return innerManagementClient;
-    }
-
+public final class MonitorManager extends Manager<MonitorManager, MonitorManagementClientImpl> {
     private final MonitorClientImpl innerClient;
+
     /**
-     * @return An auto-generated client for the Azure Monitoring Data Plane API.
+     * @return wrapped inner object providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API
      */
-    public MonitorClientImpl innerClient() {
+
+    /**
+     * @return Auto-generated client for additional methods in the Azure Monitor API.
+     */
+    public MonitorClientImpl innerEx() {
         return innerClient;
     }
 
@@ -97,8 +95,11 @@ public final class MonitorManager extends ManagerBase {
     }
 
     private MonitorManager(RestClient restClient, String subscriptionId) {
-        super(restClient, subscriptionId);
-        innerManagementClient = new MonitorManagementClientImpl(restClient).withSubscriptionId(subscriptionId);
+        super(
+                restClient,
+                subscriptionId,
+                new MonitorManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
+
         innerClient = new MonitorClientImpl(restClient).withSubscriptionId(subscriptionId);
     }
 }
