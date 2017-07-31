@@ -69,7 +69,7 @@ public final class ServiceFabricManager extends Manager<ServiceFabricManager, Se
         *
         * @param credentials the credentials to use
         * @param subscriptionId the subscription UUID
-        * @return the interface exposing storage management API entry points that work across subscriptions
+        * @return the interface exposing ServiceFabric management API entry points that work across subscriptions
         */
         ServiceFabricManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
     }

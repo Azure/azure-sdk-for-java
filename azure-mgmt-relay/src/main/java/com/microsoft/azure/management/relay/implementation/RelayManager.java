@@ -69,7 +69,7 @@ public final class RelayManager extends Manager<RelayManager, RelayManagementCli
         *
         * @param credentials the credentials to use
         * @param subscriptionId the subscription UUID
-        * @return the interface exposing storage management API entry points that work across subscriptions
+        * @return the interface exposing Relay management API entry points that work across subscriptions
         */
         RelayManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
     }
