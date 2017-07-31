@@ -6,8 +6,11 @@
 
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -34,10 +37,18 @@ public interface NicIPConfigurationBase {
     /**
      * @return the load balancer backends associated with this network interface IP configuration
      */
+    // TODO: This should be a Collection
     List<LoadBalancerBackend> listAssociatedLoadBalancerBackends();
 
     /**
      * @return the load balancer inbound NAT rules associated with this network interface IP configuration
      */
+    // TODO This should be a Collection
     List<LoadBalancerInboundNatRule> listAssociatedLoadBalancerInboundNatRules();
+
+    /**
+     * @return the application gateway backends associated with this network IP configuration
+     */
+    @Beta(SinceVersion.V1_2_0)
+    Collection<ApplicationGatewayBackend> listAssociatedApplicationGatewayBackends();
 }
