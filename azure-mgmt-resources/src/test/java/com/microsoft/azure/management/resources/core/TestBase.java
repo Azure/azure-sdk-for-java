@@ -10,6 +10,7 @@ import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.LogLevel;
@@ -151,6 +152,7 @@ public abstract class TestBase {
                     .withLogLevel(LogLevel.NONE)
                     .withNetworkInterceptor(new LoggingInterceptor(LogLevel.BODY_AND_HEADERS))
                     .withNetworkInterceptor(interceptorManager.initInterceptor())
+                    .withInterceptor(new ResourceManagerThrottlingInterceptor())
                     ,true);
 
             defaultSubscription = ZERO_SUBSCRIPTION;
@@ -175,6 +177,7 @@ public abstract class TestBase {
                     .withReadTimeout(3, TimeUnit.MINUTES)
                     .withNetworkInterceptor(new LoggingInterceptor(LogLevel.BODY_AND_HEADERS))
                     .withNetworkInterceptor(interceptorManager.initInterceptor())
+                    .withInterceptor(new ResourceManagerThrottlingInterceptor())
                     ,false);
 
             defaultSubscription = credentials.defaultSubscriptionId();
