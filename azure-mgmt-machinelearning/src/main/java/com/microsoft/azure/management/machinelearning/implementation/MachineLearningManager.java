@@ -69,7 +69,7 @@ public final class MachineLearningManager extends Manager<MachineLearningManager
         *
         * @param credentials the credentials to use
         * @param subscriptionId the subscription UUID
-        * @return the interface exposing storage management API entry points that work across subscriptions
+        * @return the interface exposing MachineLearning management API entry points that work across subscriptions
         */
         MachineLearningManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
     }

@@ -69,7 +69,7 @@ public final class StreamAnalyticsManager extends Manager<StreamAnalyticsManager
         *
         * @param credentials the credentials to use
         * @param subscriptionId the subscription UUID
-        * @return the interface exposing storage management API entry points that work across subscriptions
+        * @return the interface exposing StreamAnalytics management API entry points that work across subscriptions
         */
         StreamAnalyticsManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
     }

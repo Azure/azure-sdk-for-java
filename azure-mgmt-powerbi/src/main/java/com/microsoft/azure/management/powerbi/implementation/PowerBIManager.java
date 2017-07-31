@@ -69,7 +69,7 @@ public final class PowerBIManager extends Manager<PowerBIManager, PowerBIEmbedde
         *
         * @param credentials the credentials to use
         * @param subscriptionId the subscription UUID
-        * @return the interface exposing storage management API entry points that work across subscriptions
+        * @return the interface exposing PowerBI management API entry points that work across subscriptions
         */
         PowerBIManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
     }
