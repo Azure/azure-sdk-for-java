@@ -90,6 +90,9 @@ public abstract class TestBase {
         if (isPlaybackMode()) {
             Properties mavenProps = new Properties();
             InputStream in = TestBase.class.getResourceAsStream("/maven.properties");
+            if (in == null) {
+                throw new IOException("The file \"maven.properties\" has not been generated yet. Please execute \"mvn compile\" to generate the file.");
+            }
             mavenProps.load(in);
             String port = mavenProps.getProperty("playbackServerPort");
             playbackUri = PLAYBACK_URI_BASE + port;
