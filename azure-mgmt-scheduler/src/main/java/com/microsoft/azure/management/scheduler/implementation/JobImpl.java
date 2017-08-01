@@ -437,7 +437,25 @@ public class JobImpl
             .schedule().withMonthlyOccurrences(new ArrayList<JobRecurrenceScheduleMonthlyOccurrence>());
         for (JobScheduleDay day : weekDays) {
             this.inner().properties().recurrence().schedule()
-                .monthlyOccurrences().add(new JobRecurrenceScheduleMonthlyOccurrence().withDay(day));
+                .monthlyOccurrences().add(new JobRecurrenceScheduleMonthlyOccurrence()
+                            .withDay(day)
+                            .withOccurrence(-1));
+            this.inner().properties().recurrence().schedule()
+                .monthlyOccurrences().add(new JobRecurrenceScheduleMonthlyOccurrence()
+                .withDay(day)
+                .withOccurrence(1));
+            this.inner().properties().recurrence().schedule()
+                .monthlyOccurrences().add(new JobRecurrenceScheduleMonthlyOccurrence()
+                .withDay(day)
+                .withOccurrence(2));
+            this.inner().properties().recurrence().schedule()
+                .monthlyOccurrences().add(new JobRecurrenceScheduleMonthlyOccurrence()
+                .withDay(day)
+                .withOccurrence(3));
+            this.inner().properties().recurrence().schedule()
+                .monthlyOccurrences().add(new JobRecurrenceScheduleMonthlyOccurrence()
+                .withDay(day)
+                .withOccurrence(4));
         }
 
         return this;

@@ -161,27 +161,175 @@ public class TestSchedulerService {
 
         @Override
         public JobCollection updateResource(JobCollection jobCollection) throws Exception {
-            final String job2 = "job2-" + this.testId;
+            final String jobName2 = "job2-" + this.testId;
+            final String jobName3 = "job3-" + this.testId;
+            final String jobName4 = "job4-" + this.testId;
+            final String jobName5 = "job5-" + this.testId;
+            final String jobName6 = "job6-" + this.testId;
+            final String jobName7 = "job7-" + this.testId;
+            final String jobName8 = "job8-" + this.testId;
+            Job job;
 
-            jobCollection.jobs().define("someJob")
+            // create a simple job that runs immediately
+            jobCollection.jobs().define(jobName2)
+                .startingNow()
+                .withAction(new JobAction()
+                        .withType(JobActionType.HTTP)
+                        .withRequest(new HttpRequest()
+                            .withMethod("GET")
+                            .withUri("http://www.bing.com"))
+                        .withRetryPolicy(new RetryPolicy()
+                            .withRetryType(RetryType.FIXED)))
+                .create();
+            job = jobCollection.jobs().getByName(jobName2);
+            Assert.assertEquals(jobName2, job.name());
+            Assert.assertNull(job.startTime());
+            Assert.assertNull(job.recurrence());
+            Assert.assertNotNull(job.action());
+            Assert.assertEquals(JobActionType.HTTP, job.action().type());
+            Assert.assertEquals("GET", job.action().request().method());
+            Assert.assertEquals("http://www.bing.com", job.action().request().uri());
+            Assert.assertNull(job.action().request().authentication());
+            Assert.assertNull(job.action().request().body());
+            Assert.assertNull(job.action().request().headers());
+            Assert.assertEquals(JobState.ENABLED, job.state());
+
+            // create a simple job that runs every 3 hours ending after 5 runs
+            jobCollection.jobs().define(jobName3)
                 .startingAt(new DateTime())
                 .runningEvery(3)
                 .hours()
                 .endingAfterOccurrence(5)
-                .withAction(new JobAction())
-                .create();
-
-            jobCollection.jobs().define(job2)
-                .startingAt(new DateTime())
                 .withAction(new JobAction()
                     .withType(JobActionType.HTTP)
                     .withRequest(new HttpRequest()
                         .withMethod("GET")
                         .withUri("http://www.bing.com"))
                     .withRetryPolicy(new RetryPolicy()
-                        .withRetryType(RetryType.FIXED))
-                )
+                        .withRetryType(RetryType.FIXED)))
                 .create();
+            job = jobCollection.jobs().getByName(jobName3);
+            Assert.assertEquals(jobName3, job.name());
+            Assert.assertNotNull(job.startTime());
+            Assert.assertNotNull(job.recurrence());
+            Assert.assertEquals(RecurrenceFrequency.HOUR, job.recurrence().frequency());
+            Assert.assertEquals(3, job.recurrence().interval().intValue());
+            Assert.assertEquals(5, job.recurrence().count().intValue());
+            Assert.assertNull(job.recurrence().endTime());
+            Assert.assertNotNull(job.action());
+            Assert.assertEquals(JobActionType.HTTP, job.action().type());
+            Assert.assertEquals("GET", job.action().request().method());
+            Assert.assertEquals("http://www.bing.com", job.action().request().uri());
+            Assert.assertNull(job.action().request().authentication());
+            Assert.assertNull(job.action().request().body());
+            Assert.assertNull(job.action().request().headers());
+            Assert.assertEquals(JobState.ENABLED, job.state());
+
+
+            // create a simple job that runs every day at given hours and minutes with no ending
+            jobCollection.jobs().define(jobName4)
+                .startingAt(new DateTime())
+                .runningDaily()
+                .atTheseHours(10, 22)
+                .atTheseMinutes(0, 30)
+                .endingNever()
+                .withAction(new JobAction()
+                    .withType(JobActionType.HTTP)
+                    .withRequest(new HttpRequest()
+                        .withMethod("GET")
+                        .withUri("http://www.bing.com"))
+                    .withRetryPolicy(new RetryPolicy()
+                        .withRetryType(RetryType.FIXED)))
+                .create();
+            job = jobCollection.jobs().getByName(jobName4);
+            Assert.assertEquals(jobName4, job.name());
+            Assert.assertNotNull(job.startTime());
+            Assert.assertNotNull(job.recurrence());
+            Assert.assertEquals(RecurrenceFrequency.DAY, job.recurrence().frequency());
+            Assert.assertEquals(1, job.recurrence().interval().intValue());
+            Assert.assertNotNull(job.recurrence().schedule());
+            Assert.assertNotNull(job.recurrence().schedule().hours());
+            Assert.assertNotNull(job.recurrence().schedule().minutes());
+            Assert.assertNull(job.recurrence().count());
+            Assert.assertNull(job.recurrence().endTime());
+            Assert.assertNotNull(job.action());
+            Assert.assertEquals(JobActionType.HTTP, job.action().type());
+            Assert.assertEquals("GET", job.action().request().method());
+            Assert.assertEquals("http://www.bing.com", job.action().request().uri());
+            Assert.assertNull(job.action().request().authentication());
+            Assert.assertNull(job.action().request().body());
+            Assert.assertNull(job.action().request().headers());
+            Assert.assertEquals(JobState.ENABLED, job.state());
+
+            // create a simple job that runs every month on a given day at given hours and minutes with end time
+            jobCollection.jobs().define(jobName5)
+                .startingAt(new DateTime())
+                .runningMonthly().recurringEvery(JobScheduleMonthlyWeekDay.FIRST_MONDAY)
+                .atTheseHours(10, 22)
+                .atTheseMinutes(0, 30)
+                .endingBy(new DateTime().plusMonths(5))
+                .withAction(new JobAction()
+                    .withType(JobActionType.HTTP)
+                    .withRequest(new HttpRequest()
+                        .withMethod("GET")
+                        .withUri("http://www.bing.com"))
+                    .withRetryPolicy(new RetryPolicy()
+                        .withRetryType(RetryType.FIXED)))
+                .create();
+            job = jobCollection.jobs().getByName(jobName5);
+            Assert.assertEquals(jobName5, job.name());
+            Assert.assertNotNull(job.startTime());
+            Assert.assertNotNull(job.recurrence());
+            Assert.assertEquals(RecurrenceFrequency.MONTH, job.recurrence().frequency());
+            Assert.assertEquals(1, job.recurrence().interval().intValue());
+            Assert.assertNotNull(job.recurrence().schedule());
+            Assert.assertNotNull(job.recurrence().schedule().monthlyOccurrences());
+            Assert.assertNotNull(job.recurrence().schedule().hours());
+            Assert.assertNotNull(job.recurrence().schedule().minutes());
+            Assert.assertNull(job.recurrence().count());
+            Assert.assertNotNull(job.recurrence().endTime());
+            Assert.assertNotNull(job.action());
+            Assert.assertEquals(JobActionType.HTTP, job.action().type());
+            Assert.assertEquals("GET", job.action().request().method());
+            Assert.assertEquals("http://www.bing.com", job.action().request().uri());
+            Assert.assertNull(job.action().request().authentication());
+            Assert.assertNull(job.action().request().body());
+            Assert.assertNull(job.action().request().headers());
+            Assert.assertEquals(JobState.ENABLED, job.state());
+
+            // create a simple job that runs month on a given day of the week
+            jobCollection.jobs().define(jobName6)
+                .startingAt(new DateTime())
+                .runningMonthly().recurringEvery(JobScheduleDay.SUNDAY)
+                .endingBy(new DateTime().plusMonths(2))
+                .withAction(new JobAction()
+                    .withType(JobActionType.HTTP)
+                    .withRequest(new HttpRequest()
+                        .withMethod("GET")
+                        .withUri("http://www.bing.com"))
+                    .withRetryPolicy(new RetryPolicy()
+                        .withRetryType(RetryType.FIXED)))
+                .create();
+            job = jobCollection.jobs().getByName(jobName6);
+            Assert.assertEquals(jobName6, job.name());
+            Assert.assertNotNull(job.startTime());
+            Assert.assertNotNull(job.recurrence());
+            Assert.assertEquals(RecurrenceFrequency.MONTH, job.recurrence().frequency());
+            Assert.assertEquals(1, job.recurrence().interval().intValue());
+            Assert.assertNotNull(job.recurrence().schedule());
+            Assert.assertNotNull(job.recurrence().schedule().monthlyOccurrences());
+            Assert.assertNull(job.recurrence().schedule().hours());
+            Assert.assertNull(job.recurrence().schedule().minutes());
+            Assert.assertNull(job.recurrence().count());
+            Assert.assertNotNull(job.recurrence().endTime());
+            Assert.assertNotNull(job.action());
+            Assert.assertEquals(JobActionType.HTTP, job.action().type());
+            Assert.assertEquals("GET", job.action().request().method());
+            Assert.assertEquals("http://www.bing.com", job.action().request().uri());
+            Assert.assertNull(job.action().request().authentication());
+            Assert.assertNull(job.action().request().body());
+            Assert.assertNull(job.action().request().headers());
+            Assert.assertEquals(JobState.ENABLED, job.state());
 
             return jobCollection;
         }
