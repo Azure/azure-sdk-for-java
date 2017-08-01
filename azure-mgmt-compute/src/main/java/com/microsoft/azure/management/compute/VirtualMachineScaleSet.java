@@ -1294,48 +1294,60 @@ public interface VirtualMachineScaleSet extends
         interface WithManagedServiceIdentity {
             /**
              * Specifies that Managed Service Identity needs to be enabled in the virtual machine scale set.
-             * The MSI will have "Contributor" access role with scope of access limited to the
-             * resource group that this virtual machine scale set belongs to.
              *
              * @return the next stage of the definition
              */
             @Beta(Beta.SinceVersion.V1_2_0)
-            WithCreate withManagedServiceIdentity();
+            WithRoleAndScopeOrCreate withManagedServiceIdentity();
 
             /**
              * Specifies that Managed Service Identity needs to be enabled in the virtual machine scale set.
-             * The MSI will have the given access role and scope of access will be limited to the
-             * resource group that this virtual machine scale set belongs to.
              *
-             * @param role access role to assigned to the virtual machine.
-             *
+             * @param tokenPort the port on the virtual machine scale set instance where access token is available
              * @return the next stage of the definition
              */
             @Beta(Beta.SinceVersion.V1_2_0)
-            WithCreate withManagedServiceIdentity(BuiltInRole role);
+            WithRoleAndScopeOrCreate withManagedServiceIdentity(int tokenPort);
+        }
 
+        /**
+         * The stage of the Managed Service Identity enabled virtual machine scale set allowing to set role
+         * assignment for a scope.
+         */
+        @Beta(Beta.SinceVersion.V1_2_0)
+        interface WithRoleAndScopeOrCreate extends WithCreate {
             /**
-             * Specifies that Managed Service Identity needs to be enabled in the virtual machine scale set.
+             * Specifies that applications running on the virtual machine scale set instance requires the given
+             * access role with scope of access limited to the arm resource identified by the resource id
+             * specified in the scope parameter.
              *
-             * @param role access role to assigned to the virtual machine scale set
              * @param scope scope of the access represented in arm resource id format
-             *
+             * @param asRole access role to assigned to the virtual machine scale set
              * @return the next stage of the definition
              */
             @Beta(Beta.SinceVersion.V1_2_0)
-            WithCreate withManagedServiceIdentity(BuiltInRole role, String scope);
+            WithRoleAndScopeOrCreate withAccessTo(String scope, BuiltInRole asRole);
 
             /**
-             * Specifies that Managed Service Identity needs to be enabled in the virtual machine scale set.
+             * Specifies that applications running on the virtual machine scale set instance requires the given access
+             * role with scope of access limited to the current resource group that the virtual machine scale set resides.
              *
-             * @param role access role to assigned to the virtual machine.
-             * @param scope scope of the access represented in arm resource id format
-             * @param port access token retrieval port in the virtual machine scale set instance
-             *
+             * @param asRole access role to assigned to the virtual machine scale set
              * @return the next stage of the definition
              */
             @Beta(Beta.SinceVersion.V1_2_0)
-            WithCreate withManagedServiceIdentity(BuiltInRole role, String scope, int port);
+            WithRoleAndScopeOrCreate withAccessToCurrentResourceGroup(BuiltInRole asRole);
+
+            /**
+             * Specifies that applications running on the virtual machine scale set instance requires contributor access
+             * with scope of access limited to the arm resource identified by the resource id specified
+             * in the scope parameter.
+             *
+             * @param scope scope of the access represented in arm resource id format
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            WithRoleAndScopeOrCreate withContributorAccessTo(String scope);
         }
 
         /**
@@ -1604,56 +1616,67 @@ public interface VirtualMachineScaleSet extends
         }
 
         /**
-         * The stage of the virtual machine update allowing to enable Managed Service Identity.
+         * The stage of the virtual machine scale set update allowing to enable Managed Service Identity.
          */
         @Beta(Beta.SinceVersion.V1_2_0)
         interface WithManagedServiceIdentity {
             /**
              * Specifies that Managed Service Identity needs to be enabled in the virtual machine scale set.
              *
-             * The MSI will have "Contributor" access role with scope of access limited to the
-             * resource group that this virtual machine scale set belongs to.
-             *
              * @return the next stage of the update
              */
             @Beta(Beta.SinceVersion.V1_2_0)
-            WithApply withManagedServiceIdentity();
+            WithRoleAndScopeOrApply withManagedServiceIdentity();
 
             /**
              * Specifies that Managed Service Identity needs to be enabled in the virtual machine scale set.
              *
-             * The MSI will have the given access role and scope of access will be limited to the
-             * resource group that this virtual machine scale set belongs to.
-             *
-             * @param role access role to assigned to the virtual machine.
-             *
+             * @param tokenPort the port on the virtual machine scale set instance where access token is available
              * @return the next stage of the update
              */
             @Beta(Beta.SinceVersion.V1_2_0)
-            Update withManagedServiceIdentity(BuiltInRole role);
+            WithRoleAndScopeOrApply withManagedServiceIdentity(int tokenPort);
+        }
 
+        /**
+         * The stage of the Managed Service Identity enabled virtual machine allowing to set role
+         * assignment for a scope.
+         */
+        @Beta(Beta.SinceVersion.V1_2_0)
+        interface WithRoleAndScopeOrApply extends WithApply {
             /**
-             * Specifies that Managed Service Identity needs to be enabled in the virtual machine scale set.
+             * Specifies that applications running on the virtual machine scale set instance requires
+             * the given access role with scope of access limited to the arm resource identified by
+             * the resource id specified in the scope parameter.
              *
-             * @param role access role to assigned to the virtual machine scale set
              * @param scope scope of the access represented in arm resource id format
-             *
+             * @param asRole access role to assigned to the virtual machine scale set
              * @return the next stage of the update
              */
             @Beta(Beta.SinceVersion.V1_2_0)
-            WithApply withManagedServiceIdentity(BuiltInRole role, String scope);
+            WithRoleAndScopeOrApply withAccessTo(String scope, BuiltInRole asRole);
 
             /**
-             * Specifies that Managed Service Identity needs to be enabled in the virtual machine scale set.
+             * Specifies that applications running on the virtual machine scale set instance requires
+             * the given access role with scope of access limited to the current resource group that
+             * the virtual machine scale set resides.
              *
-             * @param role access role to assigned to the virtual machine scale set.
-             * @param scope scope of the access represented in arm resource id format
-             * @param port access token retrieval port in the virtual machine scale set instance
-             *
+             * @param asRole access role to assigned to the virtual machine scale set
              * @return the next stage of the update
              */
             @Beta(Beta.SinceVersion.V1_2_0)
-            WithApply withManagedServiceIdentity(BuiltInRole role, String scope, int port);
+            WithRoleAndScopeOrApply withAccessToCurrentResourceGroup(BuiltInRole asRole);
+
+            /**
+             * Specifies that applications running on the virtual machine scale set instance requires
+             * contributor access with scope of access limited to the arm resource identified by the
+             * resource id specified in the scope parameter.
+             *
+             * @param scope scope of the access represented in arm resource id format
+             * @return the next stage of the update
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            WithRoleAndScopeOrApply withContributorAccessTo(String scope);
         }
 
         /**
