@@ -18,6 +18,7 @@ import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
+import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import org.apache.commons.lang3.tuple.Pair;
 import rx.Observable;
 import rx.functions.Action0;
@@ -46,6 +47,7 @@ class VirtualMachineScaleSetMsiHelper {
     private Integer tokenPort;
     private boolean requireSetup;
     private HashMap<String, Pair<String, BuiltInRole>> rolesToAssign;
+    private HashMap<String, Pair<String, String>> roleDefinitionsToAssign;
 
     /**
      * Creates VirtualMachineScaleSetMsiHelper.
@@ -55,6 +57,7 @@ class VirtualMachineScaleSetMsiHelper {
     VirtualMachineScaleSetMsiHelper(GraphRbacManager rbacManager) {
         this.rbacManager = rbacManager;
         this.rolesToAssign = new HashMap<>();
+        this.roleDefinitionsToAssign = new HashMap<>();
         this.clear();
     }
 
@@ -101,20 +104,8 @@ class VirtualMachineScaleSetMsiHelper {
      * @param asRole access role to assigned to the virtual machine
      * @return VirtualMachineScaleSetMsiHelper
      */
-    VirtualMachineScaleSetMsiHelper withAccessToCurrentResourceGroup(BuiltInRole asRole) {
-        return this.withAccessTo(CURRENT_RESOURCE_GROUP_SCOPE, asRole);
-    }
-
-    /**
-     * Specifies that applications running on the virtual machine scale set instance requires
-     * contributor access with scope of access limited to the arm resource identified by the
-     * resource id specified in the scope parameter.
-     *
-     * @param scope scope of the access represented in arm resource id format
-     * @return VirtualMachineScaleSetMsiHelper
-     */
-    VirtualMachineScaleSetMsiHelper withContributorAccessTo(String scope) {
-        return this.withAccessTo(scope, BuiltInRole.CONTRIBUTOR);
+    VirtualMachineScaleSetMsiHelper withRoleBasedAccessToCurrentResourceGroup(BuiltInRole asRole) {
+        return this.withRoleBasedAccessTo(CURRENT_RESOURCE_GROUP_SCOPE, asRole);
     }
 
     /**
@@ -126,10 +117,38 @@ class VirtualMachineScaleSetMsiHelper {
      * @param asRole access role to assigned to the virtual machine scale set
      * @return VirtualMachineScaleSetMsiHelper
      */
-    VirtualMachineScaleSetMsiHelper withAccessTo(String scope, BuiltInRole asRole) {
+    VirtualMachineScaleSetMsiHelper withRoleBasedAccessTo(String scope, BuiltInRole asRole) {
         this.requireSetup = true;
         String key = scope.toLowerCase() + "_" + asRole.toString().toLowerCase();
         this.rolesToAssign.put(key, Pair.of(scope, asRole));
+        return this;
+    }
+
+    /**
+     * Specifies that applications running on the virtual machine scale set instance requires
+     * the access described in the given role definition with scope of access limited to the
+     * current resource group that the virtual machine resides.
+     *
+     * @param roleDefintionId the role definition to assigned to the virtual machine
+     * @return VirtualMachineScaleSetMsiHelper
+     */
+    VirtualMachineScaleSetMsiHelper withRoleDefinitionBasedAccessToCurrentResourceGroup(String roleDefintionId) {
+        return this.withRoleDefinitionBasedAccessTo(CURRENT_RESOURCE_GROUP_SCOPE, roleDefintionId);
+    }
+
+    /**
+     * Specifies that applications running on the virtual machine scale set instance requires
+     * the access described in the given role definition with scope of access limited to the
+     * arm resource identified by the resource id specified in the scope parameter.
+     *
+     * @param scope scope of the access represented in arm resource id format
+     * @param roleDefinition access role definition to assigned to the virtual machine scale set
+     * @return VirtualMachineMsiHelper
+     */
+    VirtualMachineScaleSetMsiHelper withRoleDefinitionBasedAccessTo(String scope, String roleDefinition) {
+        this.requireSetup = true;
+        String key = scope.toLowerCase() + "_" + roleDefinition.toLowerCase();
+        this.roleDefinitionsToAssign.put(key, Pair.of(scope, roleDefinition));
         return this;
     }
 
@@ -214,7 +233,8 @@ class VirtualMachineScaleSetMsiHelper {
         } else if (!scaleSet.isManagedServiceIdentityEnabled()) {
             // The principal id and tenant id needs to be set before performing role assignment
             return empty.call();
-        } else if (this.rolesToAssign.isEmpty()) {
+        } else if (this.rolesToAssign.isEmpty()
+                && this.roleDefinitionsToAssign.isEmpty()) {
             return empty.call();
         } else {
             return rbacManager
@@ -229,16 +249,25 @@ class VirtualMachineScaleSetMsiHelper {
                     .flatMap(new Func1<ServicePrincipal, Observable<RoleAssignment>>() {
                         @Override
                         public Observable<RoleAssignment> call(final ServicePrincipal servicePrincipal) {
-                            return
-                                Observable.from(rolesToAssign.values())
-                                        .flatMap(new Func1<Pair<String, BuiltInRole>, Observable<RoleAssignment>>() {
-                                            @Override
-                                            public Observable<RoleAssignment> call(Pair<String, BuiltInRole> scopeAndRole) {
-                                            final BuiltInRole role = scopeAndRole.getRight();
+                        Observable<RoleAssignment> observable1 = Observable.from(rolesToAssign.values())
+                                            .flatMap(new Func1<Pair<String, BuiltInRole>, Observable<RoleAssignment>>() {
+                                                @Override
+                                                public Observable<RoleAssignment> call(Pair<String, BuiltInRole> scopeAndRole) {
+                                                final BuiltInRole role = scopeAndRole.getRight();
+                                                final String scope = scopeAndRole.getLeft();
+                                                return createRbacRoleAssignmentIfNotExistsAsync(servicePrincipal, role.toString(), scope, true);
+                                                }
+                                            });
+                            Observable<RoleAssignment> observable2 = Observable.from(roleDefinitionsToAssign.values())
+                                    .flatMap(new Func1<Pair<String, String>, Observable<RoleAssignment>>() {
+                                        @Override
+                                        public Observable<RoleAssignment> call(Pair<String, String> scopeAndRole) {
+                                            final String roleDefinition = scopeAndRole.getRight();
                                             final String scope = scopeAndRole.getLeft();
-                                            return createRbacRoleAssignmentIfNotExistsAsync(servicePrincipal, role, scope);
-                                            }
-                                        });
+                                            return createRbacRoleAssignmentIfNotExistsAsync(servicePrincipal, roleDefinition, scope, false);
+                                        }
+                                    });
+                            return Observable.mergeDelayError(observable1, observable2);
                         }
                     })
                     .doAfterTerminate(new Action0() {
@@ -258,13 +287,20 @@ class VirtualMachineScaleSetMsiHelper {
      * @return an observable that emits true once if there was a scope to resolve, otherwise emits false once.
      */
     private Observable<Boolean> resolveCurrentResourceGroupScopeAsync(final VirtualMachineScaleSet scaleSet) {
-        final List<String> entryKeysWithCurrentResourceGroupScope = new ArrayList<>();
+        final List<String> keysWithCurrentResourceGroupScopeForRoles = new ArrayList<>();
         for (Map.Entry<String, Pair<String, BuiltInRole>> entrySet : this.rolesToAssign.entrySet()) {
             if (entrySet.getValue().getLeft().equals(CURRENT_RESOURCE_GROUP_SCOPE)) {
-                entryKeysWithCurrentResourceGroupScope.add(entrySet.getKey());
+                keysWithCurrentResourceGroupScopeForRoles.add(entrySet.getKey());
             }
         }
-        if (entryKeysWithCurrentResourceGroupScope.isEmpty()) {
+        final List<String> keysWithCurrentResourceGroupScopeForRoleDefinitions = new ArrayList<>();
+        for (Map.Entry<String, Pair<String, String>> entrySet : this.roleDefinitionsToAssign.entrySet()) {
+            if (entrySet.getValue().getLeft().equals(CURRENT_RESOURCE_GROUP_SCOPE)) {
+                keysWithCurrentResourceGroupScopeForRoleDefinitions.add(entrySet.getKey());
+            }
+        }
+        if (keysWithCurrentResourceGroupScopeForRoles.isEmpty()
+                && keysWithCurrentResourceGroupScopeForRoleDefinitions.isEmpty()) {
             return Observable.just(false);
         } else {
             // TODO: Remove fromCallable wrapper once we have resourceGroups.getByNameAsync implemented.
@@ -272,7 +308,8 @@ class VirtualMachineScaleSetMsiHelper {
             return Observable.fromCallable(new Callable<String>() {
                 @Override
                 public String call() throws Exception {
-                    return scaleSet.manager().resourceManager()
+                    ResourceManager resourceManager = scaleSet.manager().resourceManager();
+                    return resourceManager
                             .resourceGroups()
                             .getByName(scaleSet.resourceGroupName())
                             .id();
@@ -281,8 +318,11 @@ class VirtualMachineScaleSetMsiHelper {
                 .map(new Func1<String, Boolean>() {
                     @Override
                     public Boolean call(String resourceGroupScope) {
-                        for (String key : entryKeysWithCurrentResourceGroupScope) {
+                        for (String key : keysWithCurrentResourceGroupScopeForRoles) {
                             rolesToAssign.put(key, Pair.of(resourceGroupScope, rolesToAssign.get(key).getRight()));
+                        }
+                        for (String key : keysWithCurrentResourceGroupScopeForRoleDefinitions) {
+                            roleDefinitionsToAssign.put(key, Pair.of(resourceGroupScope, roleDefinitionsToAssign.get(key).getRight()));
                         }
                         return true;
                     }
@@ -291,49 +331,69 @@ class VirtualMachineScaleSetMsiHelper {
     }
 
     /**
-     * Creates a RBAC role assignment for the given service principal.
+     * Creates a RBAC role assignment (using role or role definition) for the given service principal.
      *
      * @param servicePrincipal the service principal
-     * @param role the role
+     * @param roleOrRoleDefinition the role or role definition
      * @param scope the scope for the role assignment
      * @return an observable that emits the role assignment if it is created, null if assignment already exists.
      */
     private Observable<RoleAssignment> createRbacRoleAssignmentIfNotExistsAsync(final ServicePrincipal servicePrincipal,
-                                                                                final BuiltInRole role,
-                                                                                final String scope) {
+                                                                                final String roleOrRoleDefinition,
+                                                                                final String scope,
+                                                                                final boolean isRole) {
+        Func1<Throwable, Observable<? extends Indexable>> onErrorResumeNext = new Func1<Throwable, Observable<? extends Indexable>>() {
+            @Override
+            public Observable<? extends Indexable> call(Throwable throwable) {
+                if (throwable instanceof CloudException) {
+                    CloudException exception = (CloudException) throwable;
+                    if (exception.body() != null
+                            && exception.body().code() != null
+                            && exception.body().code().equalsIgnoreCase("RoleAssignmentExists")) {
+                        // NOTE: We are unable to lookup the role assignment from principal.roleAssignments() list
+                        // because role assignment object does not contain 'role' name (the roleDefinitionId refer
+                        // 'role' using id with GUID).
+                        //
+                        return Observable.empty();
+                    }
+                }
+                return Observable.<Indexable>error(throwable);
+            }
+        };
         final String roleAssignmentName = SdkContext.randomUuid();
-        return rbacManager
-                .roleAssignments()
-                .define(roleAssignmentName)
-                .forServicePrincipal(servicePrincipal)
-                .withBuiltInRole(role)
-                .withScope(scope)
-                .createAsync()
-                .last()
-                .onErrorResumeNext(new Func1<Throwable, Observable<? extends Indexable>>() {
-                    @Override
-                    public Observable<? extends Indexable> call(Throwable throwable) {
-                        if (throwable instanceof CloudException) {
-                            CloudException exception = (CloudException) throwable;
-                            if (exception.body() != null
-                                    && exception.body().code() != null
-                                    && exception.body().code().equalsIgnoreCase("RoleAssignmentExists")) {
-                                // NOTE: We are unable to lookup the role assignment from principal.roleAssignments() list
-                                // because role assignment object does not contain 'role' name (the roleDefinitionId refer
-                                // 'role' using id with GUID).
-                                //
-                                return Observable.empty();
-                            }
+        if (isRole) {
+            return rbacManager
+                    .roleAssignments()
+                    .define(roleAssignmentName)
+                    .forServicePrincipal(servicePrincipal)
+                    .withBuiltInRole(BuiltInRole.fromString(roleOrRoleDefinition))
+                    .withScope(scope)
+                    .createAsync()
+                    .last()
+                    .onErrorResumeNext(onErrorResumeNext)
+                    .map(new Func1<Indexable, RoleAssignment>() {
+                        @Override
+                        public RoleAssignment call(Indexable indexable) {
+                            return (RoleAssignment) indexable;
                         }
-                        return Observable.<Indexable>error(throwable);
-                    }
-                })
-                .map(new Func1<Indexable, RoleAssignment>() {
-                    @Override
-                    public RoleAssignment call(Indexable indexable) {
-                        return (RoleAssignment) indexable;
-                    }
-                });
+                    });
+        } else {
+            return rbacManager
+                    .roleAssignments()
+                    .define(roleAssignmentName)
+                    .forServicePrincipal(servicePrincipal)
+                    .withRoleDefinition(roleOrRoleDefinition)
+                    .withScope(scope)
+                    .createAsync()
+                    .last()
+                    .onErrorResumeNext(onErrorResumeNext)
+                    .map(new Func1<Indexable, RoleAssignment>() {
+                        @Override
+                        public RoleAssignment call(Indexable indexable) {
+                            return (RoleAssignment) indexable;
+                        }
+                    });
+        }
     }
 
     /**
@@ -391,5 +451,6 @@ class VirtualMachineScaleSetMsiHelper {
         this.requireSetup = false;
         this.tokenPort = null;
         this.rolesToAssign.clear();
+        this.roleDefinitionsToAssign.clear();
     }
 }

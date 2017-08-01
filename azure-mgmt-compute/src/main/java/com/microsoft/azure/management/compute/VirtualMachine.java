@@ -1533,7 +1533,7 @@ public interface VirtualMachine extends
              * @return the next stage of the definition
              */
             @Beta(Beta.SinceVersion.V1_2_0)
-            WithRoleAndScopeOrCreate withAccessTo(String scope, BuiltInRole asRole);
+            WithRoleAndScopeOrCreate withRoleBasedAccessTo(String scope, BuiltInRole asRole);
 
             /**
              * Specifies that applications running on the virtual machine requires the given access role
@@ -1544,18 +1544,30 @@ public interface VirtualMachine extends
              * @return the next stage of the definition
              */
             @Beta(Beta.SinceVersion.V1_2_0)
-            WithRoleAndScopeOrCreate withAccessToCurrentResourceGroup(BuiltInRole asRole);
+            WithRoleAndScopeOrCreate withRoleBasedAccessToCurrentResourceGroup(BuiltInRole asRole);
 
             /**
-             * Specifies that applications running on the virtual machine requires contributor access
-             * with scope of access limited to the arm resource identified by the resource id specified
-             * in the scope parameter.
+             * Specifies that applications running on the virtual machine requires the access described
+             * in the given role definition with scope of access limited to the arm resource identified
+             * by the resource id specified in the scope parameter.
              *
              * @param scope scope of the access represented in arm resource id format
+             * @param roleDefinitionId access role definition to assigned to the virtual machine
              * @return the next stage of the definition
              */
             @Beta(Beta.SinceVersion.V1_2_0)
-            WithRoleAndScopeOrCreate withContributorAccessTo(String scope);
+            WithRoleAndScopeOrCreate withRoleDefinitionBasedAccessTo(String scope, String roleDefinitionId);
+
+            /**
+             * Specifies that applications running on the virtual machine requires the access described
+             * in the given role definition with scope of access limited to the current resource group that
+             * the virtual machine resides.
+             *
+             * @param roleDefinitionId access role definition to assigned to the virtual machine
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            WithRoleAndScopeOrCreate withRoleDefinitionBasedAccessToCurrentResourceGroup(String roleDefinitionId);
         }
 
         /**
@@ -1976,7 +1988,7 @@ public interface VirtualMachine extends
              * @return the next stage of the update
              */
             @Beta(Beta.SinceVersion.V1_2_0)
-            WithRoleAndScopeOrUpdate withAccessTo(String scope, BuiltInRole asRole);
+            WithRoleAndScopeOrUpdate withRoleBasedAccessTo(String scope, BuiltInRole asRole);
 
             /**
              * Specifies that applications running on the virtual machine requires the given access role
@@ -1987,18 +1999,30 @@ public interface VirtualMachine extends
              * @return the next stage of the update
              */
             @Beta(Beta.SinceVersion.V1_2_0)
-            WithRoleAndScopeOrUpdate withAccessToCurrentResourceGroup(BuiltInRole asRole);
+            WithRoleAndScopeOrUpdate withRoleBasedAccessToCurrentResourceGroup(BuiltInRole asRole);
 
             /**
-             * Specifies that applications running on the virtual machine requires contributor access
-             * with scope of access limited to the arm resource identified by the resource id specified
-             * in the scope parameter.
+             * Specifies that applications running on the virtual machine requires the given access role
+             * definition with scope of access limited to the arm resource identified by the resource id
+             * specified in the scope parameter.
              *
              * @param scope scope of the access represented in arm resource id format
+             * @param roleDefinitionId access role definition to assigned to the virtual machine
              * @return the next stage of the update
              */
             @Beta(Beta.SinceVersion.V1_2_0)
-            WithRoleAndScopeOrUpdate withContributorAccessTo(String scope);
+            WithRoleAndScopeOrUpdate withRoleDefinitionBasedAccessTo(String scope, String roleDefinitionId);
+
+            /**
+             * Specifies that applications running on the virtual machine requires the given access role
+             * definition with scope of access limited to the current resource group that the virtual
+             * machine resides.
+             *
+             * @param roleDefinitionId access role definition to assigned to the virtual machine
+             * @return the next stage of the update
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            WithRoleAndScopeOrUpdate withRoleDefinitionBasedAccessToCurrentResourceGroup(String roleDefinitionId);
         }
     }
 

@@ -497,12 +497,6 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         }
         Assert.assertTrue(backends.size() == 2);
 
-        StorageAccount storageAccount = this.storageManager.storageAccounts()
-                .define(generateRandomResourceName("javacsmrg", 15).replace("-", ""))
-                .withRegion(REGION)
-                .withExistingResourceGroup(resourceGroup)
-                .create();
-
         VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
                 .define(vmss_name)
                 .withRegion(REGION)
@@ -599,8 +593,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withRootUsername("jvuser")
                 .withRootPassword("123OData!@#123")
                 .withManagedServiceIdentity()
-                .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
-                .withAccessTo(storageAccount.id(), BuiltInRole.CONTRIBUTOR)
+                .withRoleBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
+                .withRoleBasedAccessTo(storageAccount.id(), BuiltInRole.CONTRIBUTOR)
                 .create();
 
         // Validate service created service principal

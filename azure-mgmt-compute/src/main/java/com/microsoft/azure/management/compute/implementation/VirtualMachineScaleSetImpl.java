@@ -568,25 +568,25 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withoutPrimaryInternetFacingLoadBalancerBackends(String ...backendNames) {
+    public VirtualMachineScaleSetImpl withoutPrimaryInternetFacingLoadBalancerBackends(String...backendNames) {
         addToList(this.primaryInternetFacingLBBackendsToRemoveOnUpdate, backendNames);
         return this;
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withoutPrimaryInternalLoadBalancerBackends(String ...backendNames) {
+    public VirtualMachineScaleSetImpl withoutPrimaryInternalLoadBalancerBackends(String...backendNames) {
         addToList(this.primaryInternalLBBackendsToRemoveOnUpdate, backendNames);
         return this;
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withoutPrimaryInternetFacingLoadBalancerNatPools(String ...natPoolNames) {
+    public VirtualMachineScaleSetImpl withoutPrimaryInternetFacingLoadBalancerNatPools(String...natPoolNames) {
         addToList(this.primaryInternetFacingLBInboundNatPoolsToRemoveOnUpdate, natPoolNames);
         return this;
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withoutPrimaryInternalLoadBalancerNatPools(String ...natPoolNames) {
+    public VirtualMachineScaleSetImpl withoutPrimaryInternalLoadBalancerNatPools(String...natPoolNames) {
         addToList(this.primaryInternalLBInboundNatPoolsToRemoveOnUpdate, natPoolNames);
         return this;
     }
@@ -1197,22 +1197,27 @@ public class VirtualMachineScaleSetImpl
         return this;
     }
 
-
     @Override
-    public VirtualMachineScaleSetImpl withAccessTo(String scope, BuiltInRole asRole) {
-        this.virtualMachineScaleSetMsiHelper.withAccessTo(scope, asRole);
+    public VirtualMachineScaleSetImpl withRoleBasedAccessTo(String scope, BuiltInRole asRole) {
+        this.virtualMachineScaleSetMsiHelper.withRoleBasedAccessTo(scope, asRole);
         return this;
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withAccessToCurrentResourceGroup(BuiltInRole asRole) {
-        this.virtualMachineScaleSetMsiHelper.withAccessToCurrentResourceGroup(asRole);
+    public VirtualMachineScaleSetImpl withRoleBasedAccessToCurrentResourceGroup(BuiltInRole asRole) {
+        this.virtualMachineScaleSetMsiHelper.withRoleBasedAccessToCurrentResourceGroup(asRole);
         return this;
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withContributorAccessTo(String scope) {
-        this.virtualMachineScaleSetMsiHelper.withContributorAccessTo(scope);
+    public VirtualMachineScaleSetImpl withRoleDefinitionBasedAccessTo(String scope, String roleDefinitionId) {
+        this.virtualMachineScaleSetMsiHelper.withRoleDefinitionBasedAccessTo(scope, roleDefinitionId);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withRoleDefinitionBasedAccessToCurrentResourceGroup(String roleDefinitionId) {
+        this.virtualMachineScaleSetMsiHelper.withRoleDefinitionBasedAccessToCurrentResourceGroup(roleDefinitionId);
         return this;
     }
 

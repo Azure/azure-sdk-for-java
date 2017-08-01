@@ -155,7 +155,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
                 .withSize(VirtualMachineSizeTypes.STANDARD_DS2_V2)
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .withManagedServiceIdentity()
-                .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
+                .withRoleBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
                 .create();
 
         Assert.assertNotNull(virtualMachine);
@@ -225,8 +225,8 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
                 .withSize(VirtualMachineSizeTypes.STANDARD_DS2_V2)
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .withManagedServiceIdentity()
-                .withAccessTo(resourceGroup.id(), BuiltInRole.CONTRIBUTOR)
-                .withAccessTo(storageAccount.id(), BuiltInRole.CONTRIBUTOR)
+                .withRoleBasedAccessTo(resourceGroup.id(), BuiltInRole.CONTRIBUTOR)
+                .withRoleBasedAccessTo(storageAccount.id(), BuiltInRole.CONTRIBUTOR)
                 .create();
 
         // Validate service created service principal
@@ -330,7 +330,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
 
         virtualMachine.update()
                 .withManagedServiceIdentity()
-                .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
+                .withRoleBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
                 .apply();
 
         // Ensure role assigned for resource group

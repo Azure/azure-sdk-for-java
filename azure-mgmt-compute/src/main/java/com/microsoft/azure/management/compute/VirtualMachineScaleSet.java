@@ -1326,7 +1326,7 @@ public interface VirtualMachineScaleSet extends
              * @return the next stage of the definition
              */
             @Beta(Beta.SinceVersion.V1_2_0)
-            WithRoleAndScopeOrCreate withAccessTo(String scope, BuiltInRole asRole);
+            WithRoleAndScopeOrCreate withRoleBasedAccessTo(String scope, BuiltInRole asRole);
 
             /**
              * Specifies that applications running on the virtual machine scale set instance requires the given access
@@ -1336,18 +1336,30 @@ public interface VirtualMachineScaleSet extends
              * @return the next stage of the definition
              */
             @Beta(Beta.SinceVersion.V1_2_0)
-            WithRoleAndScopeOrCreate withAccessToCurrentResourceGroup(BuiltInRole asRole);
+            WithRoleAndScopeOrCreate withRoleBasedAccessToCurrentResourceGroup(BuiltInRole asRole);
 
             /**
-             * Specifies that applications running on the virtual machine scale set instance requires contributor access
-             * with scope of access limited to the arm resource identified by the resource id specified
-             * in the scope parameter.
+             * Specifies that applications running on the virtual machine scale set instance requires the access
+             * described in the given role definition with scope of access limited to the arm resource identified by
+             * the resource id specified in the scope parameter.
              *
              * @param scope scope of the access represented in arm resource id format
+             * @param roleDefinitionId role definition to assigned to the virtual machine scale set
              * @return the next stage of the definition
              */
             @Beta(Beta.SinceVersion.V1_2_0)
-            WithRoleAndScopeOrCreate withContributorAccessTo(String scope);
+            WithRoleAndScopeOrCreate withRoleDefinitionBasedAccessTo(String scope, String roleDefinitionId);
+
+            /**
+             * Specifies that applications running on the virtual machine scale set instance requires the access
+             * described in the given role definition with scope of access limited to the current resource group
+             * that the virtual machine scale set resides.
+             *
+             * @param roleDefinitionId role definition to assigned to the virtual machine scale set
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            WithRoleAndScopeOrCreate withRoleDefinitionBasedAccessToCurrentResourceGroup(String roleDefinitionId);
         }
 
         /**
@@ -1654,7 +1666,7 @@ public interface VirtualMachineScaleSet extends
              * @return the next stage of the update
              */
             @Beta(Beta.SinceVersion.V1_2_0)
-            WithRoleAndScopeOrApply withAccessTo(String scope, BuiltInRole asRole);
+            WithRoleAndScopeOrApply withRoleBasedAccessTo(String scope, BuiltInRole asRole);
 
             /**
              * Specifies that applications running on the virtual machine scale set instance requires
@@ -1665,18 +1677,30 @@ public interface VirtualMachineScaleSet extends
              * @return the next stage of the update
              */
             @Beta(Beta.SinceVersion.V1_2_0)
-            WithRoleAndScopeOrApply withAccessToCurrentResourceGroup(BuiltInRole asRole);
+            WithRoleAndScopeOrApply withRoleBasedAccessToCurrentResourceGroup(BuiltInRole asRole);
 
             /**
-             * Specifies that applications running on the virtual machine scale set instance requires
-             * contributor access with scope of access limited to the arm resource identified by the
-             * resource id specified in the scope parameter.
+             * Specifies that applications running on the virtual machine scale set instance requires the access
+             * described in the given role definition with scope of access limited to the arm resource identified by
+             * the resource id specified in the scope parameter.
              *
              * @param scope scope of the access represented in arm resource id format
+             * @param roleDefinitionId role definition to assigned to the virtual machine scale set
              * @return the next stage of the update
              */
             @Beta(Beta.SinceVersion.V1_2_0)
-            WithRoleAndScopeOrApply withContributorAccessTo(String scope);
+            WithRoleAndScopeOrApply withRoleDefinitionBasedAccessTo(String scope, String roleDefinitionId);
+
+            /**
+             * Specifies that applications running on the virtual machine scale set instance requires the access
+             * described in the given role definition with scope of access limited to the current resource group
+             * that the virtual machine scale set resides.
+             *
+             * @param roleDefinitionId role definition to assigned to the virtual machine scale set
+             * @return the next stage of the update
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
+            WithRoleAndScopeOrApply withRoleDefinitionBasedAccessToCurrentResourceGroup(String roleDefinitionId);
         }
 
         /**

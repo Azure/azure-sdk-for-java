@@ -1281,20 +1281,26 @@ class VirtualMachineImpl
 
 
     @Override
-    public VirtualMachineImpl withAccessTo(String scope, BuiltInRole asRole) {
-        this.virtualMachineMsiHelper.withAccessTo(scope, asRole);
+    public VirtualMachineImpl withRoleBasedAccessTo(String scope, BuiltInRole asRole) {
+        this.virtualMachineMsiHelper.withRoleBasedAccessTo(scope, asRole);
         return this;
     }
 
     @Override
-    public VirtualMachineImpl withAccessToCurrentResourceGroup(BuiltInRole asRole) {
-        this.virtualMachineMsiHelper.withAccessToCurrentResourceGroup(asRole);
+    public VirtualMachineImpl withRoleBasedAccessToCurrentResourceGroup(BuiltInRole asRole) {
+        this.virtualMachineMsiHelper.withRoleBasedAccessToCurrentResourceGroup(asRole);
         return this;
     }
 
     @Override
-    public VirtualMachineImpl withContributorAccessTo(String scope) {
-        this.virtualMachineMsiHelper.withContributorAccessTo(scope);
+    public VirtualMachineImpl withRoleDefinitionBasedAccessTo(String scope, String roleDefinitionId) {
+        this.virtualMachineMsiHelper.withRoleDefinitionBasedAccessTo(scope, roleDefinitionId);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withRoleDefinitionBasedAccessToCurrentResourceGroup(String roleDefinitionId) {
+        this.virtualMachineMsiHelper.withRoleDefinitionBasedAccessToCurrentResourceGroup(roleDefinitionId);
         return this;
     }
 
