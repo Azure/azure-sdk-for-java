@@ -15,7 +15,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.rest.RestClient;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Map;
@@ -202,7 +201,6 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
     }
 
     @Test
-    @Ignore("Working fine in live mode, but failing consistently in playback mode, require investigation")
     public void canSetMSIOnNewVMWithMultipleRoleAssignments() throws Exception {
         String storageAccountName = generateRandomResourceName("javacsrg", 15).replace("-", "");
 
