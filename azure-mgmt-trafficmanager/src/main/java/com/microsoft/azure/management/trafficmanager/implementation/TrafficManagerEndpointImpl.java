@@ -21,7 +21,9 @@ import rx.functions.Func1;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Implementation for {@link TrafficManagerEndpoint}.
@@ -78,11 +80,11 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
     }
 
     @Override
-    public List<String> geographicLocationCodes() {
-        if (this.inner().geoMapping() == null || this.inner().geoMapping().isEmpty()) {
-            return Collections.unmodifiableList(new ArrayList<String>());
+    public Set<String> geographicLocationCodes() {
+        if (this.inner().geoMapping() == null) {
+            return Collections.unmodifiableSet(new HashSet<String>());
         }
-        return Collections.unmodifiableList(this.inner().geoMapping());
+        return Collections.unmodifiableSet(new HashSet<String>(this.inner().geoMapping()));
     }
 
     @Override

@@ -16,6 +16,7 @@ import com.microsoft.azure.management.trafficmanager.implementation.EndpointInne
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * An immutable client-side representation of an Azure traffic manager profile endpoint.
@@ -55,7 +56,7 @@ public interface TrafficManagerEndpoint extends
      * @return the geographic location codes indicating the locations to which traffic will be distributed.
      */
     @Beta(Beta.SinceVersion.V1_2_0)
-    List<String> geographicLocationCodes();
+    Set<String> geographicLocationCodes();
 
     /**
      * The entirety of a traffic manager profile endpoint definition as a part of parent definition.
@@ -243,7 +244,7 @@ public interface TrafficManagerEndpoint extends
         interface WithGeographicLocation<ParentT> {
             /**
              * Specifies the geographic location for the endpoint that will be used when the parent profile is configured
-             * with Geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
+             * with geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
              *
              * @param geographicLocation the geographic location
              * @return the next stage of the definition
@@ -253,7 +254,7 @@ public interface TrafficManagerEndpoint extends
 
             /**
              * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
-             * configured with Geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
+             * configured with geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
              *
              * @param geographicLocations the geographic locations
              * @return the next stage of the definition
@@ -262,7 +263,7 @@ public interface TrafficManagerEndpoint extends
             WithAttach<ParentT> withGeographicLocations(List<GeographicLocation> geographicLocations);
             /**
              * Specifies the geographic location for the endpoint that will be used when the parent profile is configured
-             * with Geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
+             * with geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
              *
              * @param geographicLocationCode the geographic location code
              * @return the next stage of the definition
@@ -271,7 +272,7 @@ public interface TrafficManagerEndpoint extends
             WithAttach<ParentT>  withGeographicLocation(String geographicLocationCode);
             /**
              * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
-             * configured with Geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
+             * configured with geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
              *
              * @param geographicLocationCodes the geographic location codes
              * @return the next stage of the definition
@@ -496,7 +497,7 @@ public interface TrafficManagerEndpoint extends
         interface WithGeographicLocation<ParentT> {
             /**
              * Specifies the geographic location for the endpoint that will be used when the parent profile is configured
-             * with Geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
+             * with geographic based routing method.
              *
              * @param geographicLocation the geographic location
              * @return the next stage of the definition
@@ -505,7 +506,7 @@ public interface TrafficManagerEndpoint extends
             WithAttach<ParentT>  withGeographicLocation(GeographicLocation geographicLocation);
             /**
              * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
-             * configured with Geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
+             * configured with geographic based routing method.
              *
              * @param geographicLocations the geographic locations
              * @return the next stage of the definition
@@ -514,7 +515,7 @@ public interface TrafficManagerEndpoint extends
             WithAttach<ParentT> withGeographicLocations(List<GeographicLocation> geographicLocations);
             /**
              * Specifies the geographic location for the endpoint that will be used when the parent profile is configured
-             * with Geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
+             * with geographic based routing method.
              *
              * @param geographicLocationCode the geographic location code
              * @return the next stage of the definition
@@ -523,7 +524,7 @@ public interface TrafficManagerEndpoint extends
             WithAttach<ParentT>  withGeographicLocation(String geographicLocationCode);
             /**
              * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
-             * configured with Geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
+             * configured with geographic based routing method.
              *
              * @param geographicLocationCodes the geographic location codes
              * @return the next stage of the definition
@@ -702,7 +703,7 @@ public interface TrafficManagerEndpoint extends
         interface WithGeographicLocation {
             /**
              * Specifies the geographic location for the endpoint that will be used when the parent profile is configured
-             * with Geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
+             * with geographic based routing method.
              *
              * @param geographicLocation the geographic location
              * @return the next stage of the update
@@ -711,7 +712,7 @@ public interface TrafficManagerEndpoint extends
             Update withGeographicLocation(GeographicLocation geographicLocation);
             /**
              * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
-             * configured with Geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
+             * configured with geographic based routing method.
              *
              * @param geographicLocations the geographic locations
              * @return the next stage of the update
@@ -728,7 +729,7 @@ public interface TrafficManagerEndpoint extends
             Update withoutGeographicLocation(GeographicLocation geographicLocation);
             /**
              * Specifies the geographic location for the endpoint that will be used when the parent profile is configured
-             * with Geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
+             * with geographic based routing method.
              *
              * @param geographicLocationCode the geographic location code
              * @return the next stage of the update
@@ -738,7 +739,7 @@ public interface TrafficManagerEndpoint extends
 
             /**
              * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
-             * configured with Geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
+             * configured with geographic based routing method.
              *
              * @param geographicLocationCodes the geographic location codes
              * @return the next stage of the update
