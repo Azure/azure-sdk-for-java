@@ -159,6 +159,19 @@ public class TrafficManagerManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The GeographicHierarchiesInner object to access its operations.
+     */
+    private GeographicHierarchiesInner geographicHierarchies;
+
+    /**
+     * Gets the GeographicHierarchiesInner object to access its operations.
+     * @return the GeographicHierarchiesInner object.
+     */
+    public GeographicHierarchiesInner geographicHierarchies() {
+        return this.geographicHierarchies;
+    }
+
+    /**
      * Initializes an instance of TrafficManagerManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -189,12 +202,13 @@ public class TrafficManagerManagementClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2015-11-01";
+        this.apiVersion = "2017-05-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
         this.endpoints = new EndpointsInner(restClient().retrofit(), this);
         this.profiles = new ProfilesInner(restClient().retrofit(), this);
+        this.geographicHierarchies = new GeographicHierarchiesInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
@@ -205,6 +219,6 @@ public class TrafficManagerManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "TrafficManagerManagementClient", "2015-11-01");
+        return String.format("%s (%s, %s)", super.userAgent(), "TrafficManagerManagementClient", "2017-05-01");
     }
 }

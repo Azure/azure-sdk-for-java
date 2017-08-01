@@ -21,7 +21,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 
 /**
- *  Implementation for {@link LoadBalancerTcpProbe} and its create and update interfaces.
+ *  Implementation for LoadBalancerTcpProbe and its create and update interfaces.
  */
 @LangDefinition
 class LoadBalancerProbeImpl

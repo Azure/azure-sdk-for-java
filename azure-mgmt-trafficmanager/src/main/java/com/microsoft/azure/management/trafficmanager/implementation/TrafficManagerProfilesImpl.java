@@ -9,6 +9,8 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.microsoft.azure.management.trafficmanager.CheckProfileDnsNameAvailabilityResult;
 import com.microsoft.azure.management.trafficmanager.DnsConfig;
+import com.microsoft.azure.management.trafficmanager.GeographicHierarchies;
+import com.microsoft.azure.management.trafficmanager.GeographicLocation;
 import com.microsoft.azure.management.trafficmanager.MonitorConfig;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfiles;
@@ -31,9 +33,11 @@ class TrafficManagerProfilesImpl
         ProfilesInner,
         TrafficManager>
     implements TrafficManagerProfiles {
+    private GeographicHierarchies geographicHierarchies;
 
     TrafficManagerProfilesImpl(final TrafficManager trafficManager) {
         super(trafficManager.inner().profiles(), trafficManager);
+        this.geographicHierarchies = new GeographicHierarchiesImpl(trafficManager, trafficManager.inner().geographicHierarchies());
     }
 
     @Override
@@ -59,6 +63,11 @@ class TrafficManagerProfilesImpl
     @Override
     public ServiceFuture<CheckProfileDnsNameAvailabilityResult> checkDnsNameAvailabilityAsync(String dnsNameLabel, ServiceCallback<CheckProfileDnsNameAvailabilityResult> callback) {
         return ServiceFuture.fromBody(this.checkDnsNameAvailabilityAsync(dnsNameLabel), callback);
+    }
+
+    @Override
+    public GeographicLocation getGeographicHierarchyRoot() {
+        return this.geographicHierarchies.getRoot();
     }
 
     @Override

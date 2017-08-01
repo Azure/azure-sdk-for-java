@@ -147,7 +147,7 @@
         <artifactId>jetty-maven-plugin</artifactId>
         <version>9.2.22.v20170606</version>
         <configuration>
-          <scanIntervalSeconds>10</scanIntervalSeconds>
+          <scanIntervalSeconds>0</scanIntervalSeconds>
           <stopPort>11079</stopPort>
           <stopKey>STOP</stopKey>
           <httpConnector>

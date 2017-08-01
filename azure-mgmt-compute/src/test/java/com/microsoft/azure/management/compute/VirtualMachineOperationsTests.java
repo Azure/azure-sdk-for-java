@@ -7,7 +7,12 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.network.Network;
+import com.microsoft.azure.management.network.NetworkInterface;
+import com.microsoft.azure.management.network.NetworkSecurityGroup;
+import com.microsoft.azure.management.network.NicIPConfiguration;
 import com.microsoft.azure.management.network.PublicIPAddress;
+import com.microsoft.azure.management.network.SecurityRuleProtocol;
+import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -32,7 +37,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class VirtualMachineOperationsTests extends ComputeManagementTest {
     private static String RG_NAME = "";
-    private static final Region REGION = Region.US_SOUTH_CENTRAL;
+    private static final Region REGION = Region.US_EAST;
     private static final String VMNAME = "javavm";
 
     @Override
@@ -43,14 +48,72 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
+        resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
+    }
+
+    @Test
+    public void canCreateVirtualMachineWithNetworking() throws Exception {
+        NetworkSecurityGroup nsg = this.networkManager.networkSecurityGroups().define("nsg")
+            .withRegion(REGION)
+            .withNewResourceGroup(RG_NAME)
+            .defineRule("rule1")
+                .allowInbound()
+                .fromAnyAddress()
+                .fromPort(80)
+                .toAnyAddress()
+                .toPort(80)
+                .withProtocol(SecurityRuleProtocol.TCP)
+                .attach()
+            .create();
+
+        Creatable<Network> networkDefinition = this.networkManager.networks().define("network1")
+            .withRegion(REGION)
+            .withNewResourceGroup(RG_NAME)
+            .withAddressSpace("10.0.0.0/28")
+            .defineSubnet("subnet1")
+                .withAddressPrefix("10.0.0.0/29")
+                .withExistingNetworkSecurityGroup(nsg)
+                .attach();
+
+        // Create
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(VMNAME)
+                .withRegion(REGION)
+                .withNewResourceGroup(RG_NAME)
+                .withNewPrimaryNetwork(networkDefinition)
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername("Foo12")
+                .withRootPassword("abc!@#F0orL")
+            .create();
+
+        NetworkInterface primaryNic = vm.getPrimaryNetworkInterface();
+        Assert.assertNotNull(primaryNic);
+        NicIPConfiguration primaryIpConfig = primaryNic.primaryIPConfiguration();
+        Assert.assertNotNull(primaryIpConfig);
+
+        // Fetch the NSG the way before v1.2
+        Assert.assertNotNull(primaryIpConfig.networkId());
+        Network network = primaryIpConfig.getNetwork();
+        Assert.assertNotNull(primaryIpConfig.subnetName());
+        Subnet subnet = network.subnets().get(primaryIpConfig.subnetName());
+        Assert.assertNotNull(subnet);
+        nsg = subnet.getNetworkSecurityGroup();
+        Assert.assertNotNull(nsg);
+        Assert.assertEquals("nsg", nsg.name());
+        Assert.assertEquals(1, nsg.securityRules().size());
+
+        // Fetch the NSG the v1.2 way
+        nsg = primaryIpConfig.getNetworkSecurityGroup();
+        Assert.assertEquals("nsg", nsg.name());
     }
 
     @Test
     public void canCreateVirtualMachine() throws Exception {
         // Create
         computeManager.virtualMachines()
-                .define(VMNAME)
+            .define(VMNAME)
                 .withRegion(REGION)
                 .withNewResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork("10.0.0.0/28")
@@ -63,7 +126,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withSize(VirtualMachineSizeTypes.STANDARD_D3)
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .withOSDiskName("javatest")
-                .create();
+            .create();
 
         VirtualMachine foundVM = null;
         List<VirtualMachine> vms = computeManager.virtualMachines().listByResourceGroup(RG_NAME);

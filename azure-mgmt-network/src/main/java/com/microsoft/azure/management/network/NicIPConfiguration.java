@@ -11,7 +11,6 @@ import com.microsoft.azure.management.network.implementation.NetworkInterfaceIPC
 import com.microsoft.azure.management.network.model.HasPrivateIPAddress;
 import com.microsoft.azure.management.network.model.HasPublicIPAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasSubnet;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
@@ -25,9 +24,8 @@ public interface NicIPConfiguration extends
         NicIPConfigurationBase,
         HasInner<NetworkInterfaceIPConfigurationInner>,
         ChildResource<NetworkInterface>,
-        HasPrivateIPAddress,
-        HasPublicIPAddress,
-        HasSubnet {
+        HasPublicIPAddress {
+
     /**
      * The entirety of the network interface IP configuration definition.
      * @param <ParentT> the return type of the final {@link Attachable#attach()}

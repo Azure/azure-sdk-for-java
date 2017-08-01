@@ -11,6 +11,7 @@ import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.RestClient;
@@ -105,6 +106,7 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
                 .withBaseUrl(credentials.environment(), endpoint)
                 .withCredentials(credentials)
                 .withInterceptor(new ProviderRegistrationInterceptor(credentials))
+                .withInterceptor(new ResourceManagerThrottlingInterceptor())
                 .build();
         if (client.httpClient().proxy() != null) {
             credentials.withProxy(client.httpClient().proxy());
