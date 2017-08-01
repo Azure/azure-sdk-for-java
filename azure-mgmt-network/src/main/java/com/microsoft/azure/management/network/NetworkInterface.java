@@ -526,8 +526,6 @@ public interface NetworkInterface extends
     /**
      * The template for an update operation, containing all the settings that
      * can be modified.
-     * <p>
-     * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
     interface Update extends
             Appliable<NetworkInterface>,
