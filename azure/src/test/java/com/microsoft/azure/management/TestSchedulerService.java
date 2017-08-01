@@ -16,6 +16,8 @@ import com.microsoft.azure.management.scheduler.JobCollectionState;
 import com.microsoft.azure.management.scheduler.JobCollections;
 import com.microsoft.azure.management.scheduler.JobHistory;
 import com.microsoft.azure.management.scheduler.JobRecurrence;
+import com.microsoft.azure.management.scheduler.JobScheduleDay;
+import com.microsoft.azure.management.scheduler.JobScheduleMonthlyWeekDay;
 import com.microsoft.azure.management.scheduler.JobState;
 import com.microsoft.azure.management.scheduler.RecurrenceFrequency;
 import com.microsoft.azure.management.scheduler.RetryPolicy;
@@ -110,7 +112,7 @@ public class TestSchedulerService {
         @Override
         public JobCollection createResource(JobCollections jobCollections) throws Exception {
             final String jobCollectionName = "jobs" + this.testId;
-            final String jobName = "job" + this.testId;
+            final String job1 = "job1-" + this.testId;
             String rgName = "rgjobc" + this.testId;
 
             JobCollection jobCollection = jobCollections.define(jobCollectionName)
@@ -127,8 +129,8 @@ public class TestSchedulerService {
             Assert.assertTrue(jobCollection.maxRecurrenceFrequency() == RecurrenceFrequency.MINUTE);
             Assert.assertTrue(jobCollection.state() == JobCollectionState.ENABLED);
 
-            jobCollection.jobs().define(jobName)
-                .withStartTime(new DateTime())
+            jobCollection.jobs().define(job1)
+                .startingAt(new DateTime())
                 .withRecurrence(new JobRecurrence()
                     .withFrequency(RecurrenceFrequency.MINUTE)
                     .withCount(2))
@@ -142,19 +144,46 @@ public class TestSchedulerService {
                 )
                 .create();
 
-            jobCollection.jobs().run(jobName);
+            jobCollection.jobs().run(job1);
 
             SdkContext.sleep(65000);
 
-            Job job = jobCollection.jobs().getByName(jobName);
-            job.update().withState(JobState.ENABLED).withRecurrence(job.recurrence().withCount(1).withFrequency(RecurrenceFrequency.HOUR)).apply();
+            Job job = jobCollection.jobs().getByName(job1);
+            job.update()
+                .withState(JobState.ENABLED)
+                .withRecurrence(job.recurrence()
+                    .withCount(1)
+                    .withFrequency(RecurrenceFrequency.HOUR))
+                .apply();
 
             return jobCollection;
         }
 
         @Override
-        public JobCollection updateResource(JobCollection resource) throws Exception {
-            return resource;
+        public JobCollection updateResource(JobCollection jobCollection) throws Exception {
+            final String job2 = "job2-" + this.testId;
+
+            jobCollection.jobs().define("someJob")
+                .startingAt(new DateTime())
+                .runningEvery(3)
+                .hours()
+                .endingAfterOccurrence(5)
+                .withAction(new JobAction())
+                .create();
+
+            jobCollection.jobs().define(job2)
+                .startingAt(new DateTime())
+                .withAction(new JobAction()
+                    .withType(JobActionType.HTTP)
+                    .withRequest(new HttpRequest()
+                        .withMethod("GET")
+                        .withUri("http://www.bing.com"))
+                    .withRetryPolicy(new RetryPolicy()
+                        .withRetryType(RetryType.FIXED))
+                )
+                .create();
+
+            return jobCollection;
         }
 
         @Override
