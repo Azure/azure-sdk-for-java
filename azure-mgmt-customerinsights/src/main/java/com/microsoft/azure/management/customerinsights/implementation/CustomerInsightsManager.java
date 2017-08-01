@@ -68,7 +68,7 @@ public final class CustomerInsightsManager extends Manager<CustomerInsightsManag
         *
         * @param credentials the credentials to use
         * @param subscriptionId the subscription UUID
-        * @return the interface exposing storage management API entry points that work across subscriptions
+        * @return the interface exposing CustomerInsights management API entry points that work across subscriptions
         */
         CustomerInsightsManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
     }

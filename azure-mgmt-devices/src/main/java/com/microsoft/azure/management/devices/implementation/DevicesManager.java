@@ -69,7 +69,7 @@ public final class DevicesManager extends Manager<DevicesManager, IotHubClientIm
         *
         * @param credentials the credentials to use
         * @param subscriptionId the subscription UUID
-        * @return the interface exposing storage management API entry points that work across subscriptions
+        * @return the interface exposing Devices management API entry points that work across subscriptions
         */
         DevicesManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
     }

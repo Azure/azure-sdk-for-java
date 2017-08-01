@@ -69,7 +69,7 @@ public final class RecoveryServicesManager extends Manager<RecoveryServicesManag
         *
         * @param credentials the credentials to use
         * @param subscriptionId the subscription UUID
-        * @return the interface exposing storage management API entry points that work across subscriptions
+        * @return the interface exposing RecoveryServices management API entry points that work across subscriptions
         */
         RecoveryServicesManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
     }

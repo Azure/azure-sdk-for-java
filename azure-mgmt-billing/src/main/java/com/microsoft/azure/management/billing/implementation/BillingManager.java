@@ -68,7 +68,7 @@ public final class BillingManager extends Manager<BillingManager, BillingManagem
         *
         * @param credentials the credentials to use
         * @param subscriptionId the subscription UUID
-        * @return the interface exposing storage management API entry points that work across subscriptions
+        * @return the interface exposing Billing management API entry points that work across subscriptions
         */
         BillingManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
     }

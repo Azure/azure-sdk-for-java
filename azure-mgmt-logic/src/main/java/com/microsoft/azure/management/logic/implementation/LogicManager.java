@@ -69,7 +69,7 @@ public final class LogicManager extends Manager<LogicManager, LogicManagementCli
         *
         * @param credentials the credentials to use
         * @param subscriptionId the subscription UUID
-        * @return the interface exposing storage management API entry points that work across subscriptions
+        * @return the interface exposing Logic management API entry points that work across subscriptions
         */
         LogicManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
     }

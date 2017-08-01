@@ -160,32 +160,22 @@ class CertificateCredentialImpl<T>
             }
         }
 
-        StringBuilder builder = new StringBuilder();
-        builder.append(String.format("client=%s", servicePrincipal.applicationId())).append("\n");
-        builder.append(String.format("certificate=%s", normalizeAuthFilePath(privateKeyPath))).append("\n");
-        builder.append(String.format("certificatePassword=%s", privateKeyPassword)).append("\n");
-        builder.append(String.format("tenant=%s", servicePrincipal.manager().tenantId())).append("\n");
-        builder.append(String.format("subscription=%s", servicePrincipal.assignedSubscription)).append("\n");
-        builder.append(String.format("authURL=%s", normalizeAuthFileUrl(environment.activeDirectoryEndpoint()))).append("\n");
-        builder.append(String.format("baseURL=%s", normalizeAuthFileUrl(environment.resourceManagerEndpoint()))).append("\n");
-        builder.append(String.format("graphURL=%s", normalizeAuthFileUrl(environment.graphEndpoint()))).append("\n");
-        builder.append(String.format("managementURI=%s", normalizeAuthFileUrl(environment.managementEndpoint())));
+        StringBuilder builder = new StringBuilder("{\n");
+        builder.append("  ").append(String.format("\"clientId\": \"%s\",", servicePrincipal.applicationId())).append("\n");
+        builder.append("  ").append(String.format("\"clientCertificate\": \"%s\",", privateKeyPath.replace("\\", "\\\\"))).append("\n");
+        builder.append("  ").append(String.format("\"clientCertificatePassword\": \"%s\",", privateKeyPassword)).append("\n");
+        builder.append("  ").append(String.format("\"tenantId\": \"%s\",", servicePrincipal.manager().tenantId())).append("\n");
+        builder.append("  ").append(String.format("\"subscriptionId\": \"%s\",", servicePrincipal.assignedSubscription)).append("\n");
+        builder.append("  ").append(String.format("\"activeDirectoryEndpointUrl\": \"%s\",", environment.activeDirectoryEndpoint())).append("\n");
+        builder.append("  ").append(String.format("\"resourceManagerEndpointUrl\": \"%s\",", environment.resourceManagerEndpoint())).append("\n");
+        builder.append("  ").append(String.format("\"activeDirectoryGraphResourceId\": \"%s\",", environment.graphEndpoint())).append("\n");
+        builder.append("  ").append(String.format("\"managementEndpointUrl\": \"%s\"", environment.managementEndpoint())).append("\n");
+        builder.append("}");
         try {
             authFile.write(builder.toString().getBytes());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private String normalizeAuthFileUrl(String url) {
-        if (!url.endsWith("/")) {
-            url = url + "/";
-        }
-        return url.replace("://", "\\://");
-    }
-
-    private String normalizeAuthFilePath(String path) {
-        return path.replace("\\", "\\\\").replace(":", "\\:");
     }
 
     @Override

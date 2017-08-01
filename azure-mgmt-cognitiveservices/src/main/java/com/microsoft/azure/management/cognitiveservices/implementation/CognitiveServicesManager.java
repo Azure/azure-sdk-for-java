@@ -68,7 +68,7 @@ public final class CognitiveServicesManager extends Manager<CognitiveServicesMan
         *
         * @param credentials the credentials to use
         * @param subscriptionId the subscription UUID
-        * @return the interface exposing storage management API entry points that work across subscriptions
+        * @return the interface exposing CognitiveServices management API entry points that work across subscriptions
         */
         CognitiveServicesManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
     }
