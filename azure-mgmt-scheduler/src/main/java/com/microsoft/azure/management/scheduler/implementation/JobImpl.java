@@ -328,9 +328,9 @@ public class JobImpl
 
     private void resetJobScheduleDaysList() {
         // Only one days list can be specified, other scheduler lists need to be set to null
-        if (this.inner().properties() != null &&
-            inner().properties().recurrence() != null &&
-            inner().properties().recurrence().schedule() != null) {
+        if (this.inner().properties() != null
+            && inner().properties().recurrence() != null
+            && inner().properties().recurrence().schedule() != null) {
             this.inner().properties()
                 .recurrence()
                 .schedule()
