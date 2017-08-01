@@ -28,6 +28,7 @@ import rx.functions.Func2;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -46,8 +47,8 @@ class VirtualMachineMsiHelper {
 
     private Integer tokenPort;
     private boolean requireSetup;
-    private HashMap<String, Pair<String, BuiltInRole>> rolesToAssign;
-    private HashMap<String, Pair<String, String>> roleDefinitionsToAssign;
+    private LinkedHashMap<String, Pair<String, BuiltInRole>> rolesToAssign;
+    private LinkedHashMap<String, Pair<String, String>> roleDefinitionsToAssign;
 
     /**
      * Creates VirtualMachineMsiHelper.
@@ -56,8 +57,8 @@ class VirtualMachineMsiHelper {
      */
     VirtualMachineMsiHelper(final GraphRbacManager rbacManager) {
         this.rbacManager = rbacManager;
-        this.rolesToAssign = new HashMap<>();
-        this.roleDefinitionsToAssign = new HashMap<>();
+        this.rolesToAssign = new LinkedHashMap<>();
+        this.roleDefinitionsToAssign = new LinkedHashMap<>();
         clear();
     }
 
