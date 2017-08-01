@@ -202,7 +202,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
 
     @Test
     public void canSetMSIOnNewVMWithMultipleRoleAssignments() throws Exception {
-        String storageAccountName = generateRandomResourceName("javacsrg", 15).replace("-", "");
+        String storageAccountName = generateRandomResourceName("javacsrg", 15);
 
         StorageAccount storageAccount = storageManager.storageAccounts()
                 .define(storageAccountName)
