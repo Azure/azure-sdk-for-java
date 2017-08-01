@@ -15,11 +15,11 @@ import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
 import com.microsoft.azure.management.network.Network;
+import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NicIPConfigurationBase;
-import com.microsoft.azure.management.network.model.HasPrivateIPAddress;
+import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasSubnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 
@@ -41,7 +41,7 @@ abstract class NicIPConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
     extends
         ChildResourceImpl<NetworkInterfaceIPConfigurationInner, ParentImplT, ParentT>
     implements
-        NicIPConfigurationBase, HasSubnet, HasPrivateIPAddress {
+        NicIPConfigurationBase {
     /**
      * the network client.
      */
@@ -62,14 +62,37 @@ abstract class NicIPConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
         return Utils.toPrimitiveBoolean(this.inner().primary());
     }
 
+    @Override
+    public NetworkSecurityGroup getNetworkSecurityGroup() {
+        Network network = this.getNetwork();
+        if (network == null) {
+            return null;
+        }
+
+        String subnetName = this.subnetName();
+        if (subnetName == null) {
+            return null;
+        }
+
+        Subnet subnet = network.subnets().get(subnetName);
+        if (subnet == null) {
+            return null;
+        }
+
+        return subnet.getNetworkSecurityGroup();
+    }
+
+    @Override
     public String privateIPAddress() {
         return this.inner().privateIPAddress();
     }
 
+    @Override
     public IPAllocationMethod privateIPAllocationMethod() {
         return this.inner().privateIPAllocationMethod();
     }
 
+    @Override
     public IPVersion privateIPAddressVersion() {
         return this.inner().privateIPAddressVersion();
     }
@@ -90,6 +113,7 @@ abstract class NicIPConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
         return this.networkManager.networks().getById(id);
     }
 
+    @Override
     public String subnetName() {
         SubResource subnetRef = this.inner().subnet();
         if (subnetRef == null) {

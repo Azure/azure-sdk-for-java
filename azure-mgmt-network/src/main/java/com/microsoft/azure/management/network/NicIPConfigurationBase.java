@@ -9,6 +9,8 @@ package com.microsoft.azure.management.network;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.network.model.HasPrivateIPAddress;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasSubnet;
 
 import java.util.Collection;
 import java.util.List;
@@ -18,9 +20,9 @@ import java.util.List;
  * network interface.
  */
 @Fluent
-public interface NicIPConfigurationBase {
+public interface NicIPConfigurationBase extends HasSubnet, HasPrivateIPAddress {
     /**
-     * @return true if this is the primary ip configuration
+     * @return true if this is the primary IP configuration
      */
     boolean isPrimary();
 
@@ -28,6 +30,13 @@ public interface NicIPConfigurationBase {
      * @return the virtual network associated with this IP configuration
      */
     Network getNetwork();
+
+    /**
+     * @return the network security group, if any, associated with the subnet, if any, assigned to this network interface IP configuration
+     * <p>
+     * (Note that this results in additional calls to Azure.)
+     */
+    NetworkSecurityGroup getNetworkSecurityGroup();
 
     /**
      * @return private IP address version
