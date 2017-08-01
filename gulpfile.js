@@ -319,6 +319,13 @@ var mappings = {
         'args': '-FT 1',
         'modeler': 'CompositeSwagger'
     },
+    'monitor-dataplane': {
+        'dir': 'azure-mgmt-monitor',
+        'source': 'monitor/compositeMonitorClient.json',
+        'package': 'com.microsoft.azure.management.monitor',
+        'args': '-FT 1 -ServiceName Monitor',
+        'modeler': 'CompositeSwagger'
+    },
     'containerregistry': {
         'dir': 'azure-mgmt-containerregistry',
         'source': 'arm-containerregistry/2017-03-01/swagger/containerregistry.json',
@@ -386,7 +393,9 @@ var handleInput = function(projects, cb) {
 
 var codegen = function(project, cb) {
     var outputDir = mappings[project].dir + '/src/main/java/' + mappings[project].package.replace(/\./g, '/');
-    deleteFolderRecursive(outputDir);
+    if (!args['preserve']) {
+        deleteFolderRecursive(outputDir);
+    }
     console.log('Generating "' + project + '" from spec file ' + specRoot + '/' + mappings[project].source);
     var generator = 'Azure.Java.Fluent';
     if (mappings[project].fluent !== null && mappings[project].fluent === false) {
