@@ -316,14 +316,14 @@ public interface VirtualMachineScaleSet extends
     boolean isManagedServiceIdentityEnabled();
 
     /**
-     * @return the Managed Service Identity specific Active Directory tenant id assigned to the
+     * @return the Managed Service Identity specific Active Directory tenant ID assigned to the
      * virtual machine scale set.
      */
     @Beta(Beta.SinceVersion.V1_2_0)
     String managedServiceIdentityTenantId();
 
     /**
-     * @return the Managed Service Identity specific Active Directory service principal id assigned
+     * @return the Managed Service Identity specific Active Directory service principal ID assigned
      * to the virtual machine scale set.
      */
     @Beta(Beta.SinceVersion.V1_2_0)
@@ -1318,10 +1318,10 @@ public interface VirtualMachineScaleSet extends
         interface WithRoleAndScopeOrCreate extends WithCreate {
             /**
              * Specifies that applications running on the virtual machine scale set instance requires the given
-             * access role with scope of access limited to the arm resource identified by the resource id
+             * access role with scope of access limited to the ARM resource identified by the resource id
              * specified in the scope parameter.
              *
-             * @param scope scope of the access represented in arm resource id format
+             * @param scope scope of the access represented in ARM resource ID format
              * @param asRole access role to assigned to the virtual machine scale set
              * @return the next stage of the definition
              */
@@ -1340,10 +1340,10 @@ public interface VirtualMachineScaleSet extends
 
             /**
              * Specifies that applications running on the virtual machine scale set instance requires the access
-             * described in the given role definition with scope of access limited to the arm resource identified by
-             * the resource id specified in the scope parameter.
+             * described in the given role definition with scope of access limited to the ARM resource identified by
+             * the resource ID specified in the scope parameter.
              *
-             * @param scope scope of the access represented in arm resource id format
+             * @param scope scope of the access represented in ARM resource ID format
              * @param roleDefinitionId role definition to assigned to the virtual machine scale set
              * @return the next stage of the definition
              */
@@ -1658,10 +1658,10 @@ public interface VirtualMachineScaleSet extends
         interface WithRoleAndScopeOrApply extends WithApply {
             /**
              * Specifies that applications running on the virtual machine scale set instance requires
-             * the given access role with scope of access limited to the arm resource identified by
-             * the resource id specified in the scope parameter.
+             * the given access role with scope of access limited to the ARM resource identified by
+             * the resource ID specified in the scope parameter.
              *
-             * @param scope scope of the access represented in arm resource id format
+             * @param scope scope of the access represented in ARM resource ID format
              * @param asRole access role to assigned to the virtual machine scale set
              * @return the next stage of the update
              */
@@ -1681,10 +1681,10 @@ public interface VirtualMachineScaleSet extends
 
             /**
              * Specifies that applications running on the virtual machine scale set instance requires the access
-             * described in the given role definition with scope of access limited to the arm resource identified by
-             * the resource id specified in the scope parameter.
+             * described in the given role definition with scope of access limited to the ARM resource identified by
+             * the resource ID specified in the scope parameter.
              *
-             * @param scope scope of the access represented in arm resource id format
+             * @param scope scope of the access represented in ARM resource ID format
              * @param roleDefinitionId role definition to assigned to the virtual machine scale set
              * @return the next stage of the update
              */
