@@ -1,6 +1,6 @@
-/**
- * 
- */
+// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
 package com.microsoft.azure.servicebus;
 
 import java.io.Serializable;
@@ -10,11 +10,6 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
 
-
-/**
- * 
- * 
- */
 final public class Message implements Serializable, IMessage {
 	private static final long serialVersionUID = 7849508139219590863L;
 	

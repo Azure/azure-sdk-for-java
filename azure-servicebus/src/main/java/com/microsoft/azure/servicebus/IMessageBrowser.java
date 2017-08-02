@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
 package com.microsoft.azure.servicebus;
 
 import java.util.Collection;
@@ -5,6 +8,9 @@ import java.util.concurrent.CompletableFuture;
 
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
+/**
+ * Represents a message browser that can browse messages from Azure Service Bus.
+ */
 public interface IMessageBrowser {
 	
 	IMessage peek() throws InterruptedException, ServiceBusException;

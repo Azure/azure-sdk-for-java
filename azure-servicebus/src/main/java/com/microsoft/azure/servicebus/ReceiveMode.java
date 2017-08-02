@@ -1,9 +1,12 @@
+// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
 package com.microsoft.azure.servicebus;
 
 /**
  * Enumeration to represent the two receive modes Azure Service Bus supports.
- * @since 1.0
  *
+ * @since 1.0
  */
 public enum ReceiveMode {
     /**
@@ -16,10 +19,10 @@ public enum ReceiveMode {
      * <li>If the receiver calls neither of these methods within a configurable period of time (by default, 60 seconds), the service assumes the receiver has failed. In this case, it behaves as if the receiver had called <code>abandon</code>, making the message available to other receivers</li>
      * </ul>
      */
-	PEEKLOCK,
-	/**
-	 * In this mode, received message is removed from the queue or subscription and immediately deleted. This option is simple, but if the receiver crashes
-	 *  before it finishes processing the message, the message is lost. Because it's been removed from the queue, no other receiver can access it.
-	 */
-	RECEIVEANDDELETE
+    PEEKLOCK,
+    /**
+     * In this mode, received message is removed from the queue or subscription and immediately deleted. This option is simple, but if the receiver crashes
+     * before it finishes processing the message, the message is lost. Because it's been removed from the queue, no other receiver can access it.
+     */
+    RECEIVEANDDELETE
 }
