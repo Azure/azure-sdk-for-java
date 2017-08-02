@@ -133,7 +133,7 @@ public interface Job extends
              * <p>
              * For example, if interval is 3 and frequency is "week", the job recurs every 3 weeks. Azure Scheduler
              *   supports a maximum interval of 18 months for monthly frequency, 78 weeks for weekly frequency,
-             *   or 548 days for daily frequency. For hour and minute frequency, the supported range is 1 <= interval <= 1000.
+             *   or 548 days for daily frequency. For hour and minute frequency, the supported range is between 1 and 1000.
              *
              * @param interval a positive integer and denotes the interval for the frequency that determines how often the job will run
              * @return the next stage of the definition

@@ -298,7 +298,6 @@ public final class Utils {
      * Print network info.
      *
      * @param resource a network
-     * @throws IOException    IO errors
      * @throws CloudException Cloud errors
      */
     public static void print(Network resource) {

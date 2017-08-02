@@ -69,7 +69,7 @@ public interface TrafficManagerProfiles extends
     ServiceFuture<CheckProfileDnsNameAvailabilityResult> checkDnsNameAvailabilityAsync(String dnsNameLabel, ServiceCallback<CheckProfileDnsNameAvailabilityResult> callback);
 
     /**
-     * @return @return the default geographic hierarchy used by the Geographic traffic routing method.
+     * @return the default geographic hierarchy used by the Geographic traffic routing method.
      */
     @Beta(Beta.SinceVersion.V1_2_0)
     GeographicLocation getGeographicHierarchyRoot();
