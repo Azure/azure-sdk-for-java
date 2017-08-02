@@ -17,6 +17,8 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import rx.Observable;
 import rx.functions.Func1;
 
+import java.util.List;
+
 /**
  * The implementation for {@link VirtualMachineImages}.
  */
@@ -33,6 +35,13 @@ class VirtualMachineImagesImpl
 
     @Override
     public VirtualMachineImage getImage(Region region, String publisherName, String offerName, String skuName, String version) {
+        if (version.equalsIgnoreCase("latest")) {
+            List<VirtualMachineImageResourceInner> innerImages = this.client.list(region.name(), publisherName, offerName, skuName, null, 1, "name desc");
+            if (innerImages != null && !innerImages.isEmpty()) {
+                VirtualMachineImageResourceInner innerImageResource = innerImages.get(0);
+                version = innerImageResource.name();
+            }
+        }
         VirtualMachineImageInner innerImage = this.client.get(region.name(),
                 publisherName,
                 offerName,
@@ -43,12 +52,19 @@ class VirtualMachineImagesImpl
 
   @Override
   public VirtualMachineImage getImage(String region, String publisherName, String offerName, String skuName, String version) {
-    VirtualMachineImageInner innerImage = this.client.get(region,
-        publisherName,
-        offerName,
-        skuName,
-        version);
-    return (innerImage != null) ? new VirtualMachineImageImpl(Region.fromName(region), publisherName, offerName, skuName, version, innerImage) : null;
+      if (version.equalsIgnoreCase("latest")) {
+          List<VirtualMachineImageResourceInner> innerImages = this.client.list(region, publisherName, offerName, skuName, null, 1, "name desc");
+          if (innerImages != null && !innerImages.isEmpty()) {
+              VirtualMachineImageResourceInner innerImageResource = innerImages.get(0);
+              version = innerImageResource.name();
+          }
+      }
+      VirtualMachineImageInner innerImage = this.client.get(region,
+              publisherName,
+              offerName,
+              skuName,
+              version);
+      return (innerImage != null) ? new VirtualMachineImageImpl(Region.fromName(region), publisherName, offerName, skuName, version, innerImage) : null;
   }
 
   @Override
