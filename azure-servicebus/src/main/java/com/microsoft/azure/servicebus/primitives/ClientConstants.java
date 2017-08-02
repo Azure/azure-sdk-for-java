@@ -164,6 +164,7 @@ public final class ClientConstants
 
     static final String SAS_TOKEN_TYPE = "servicebus.windows.net:sastoken";
     static final int DEFAULT_SAS_TOKEN_VALIDITY_IN_SECONDS = 20*60; // 20 minutes
+    static final int DEFAULT_SAS_TOKEN_SEND_RETRY_INTERVAL_IN_SECONDS = 5;
     static final String SAS_TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
     
     private static String getPlatformInfo() {

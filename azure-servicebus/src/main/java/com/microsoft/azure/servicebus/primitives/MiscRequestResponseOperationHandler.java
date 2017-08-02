@@ -37,7 +37,7 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
 	{
 	    CompletableFuture<MiscRequestResponseOperationHandler> creationFuture = new CompletableFuture<MiscRequestResponseOperationHandler>();
 	    MiscRequestResponseOperationHandler requestResponseOperationHandler = new MiscRequestResponseOperationHandler(factory, StringUtil.getShortRandomString(), entityPath);
-	    requestResponseOperationHandler.sendSASTokenAndSetRenewTimer().handleAsync((v, ex) -> {
+	    requestResponseOperationHandler.sendSASTokenAndSetRenewTimer(false).handleAsync((v, ex) -> {
 	        if(ex == null)
 	        {
 	            TRACE_LOGGER.info("Opened MiscRequestResponseOperationHandler");
@@ -80,7 +80,7 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
 	    return CompletableFuture.completedFuture(null);
 	}
 	
-	private CompletableFuture<Void> sendSASTokenAndSetRenewTimer()
+	private CompletableFuture<Void> sendSASTokenAndSetRenewTimer(boolean retryOnFailure)
     {
         if(this.getIsClosingOrClosed())
         {
@@ -88,7 +88,8 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
         }
         else
         {
-            CompletableFuture<ScheduledFuture<?>> sendTokenFuture = this.underlyingFactory.sendSASTokenAndSetRenewTimer(this.sasTokenAudienceURI, () -> this.sendSASTokenAndSetRenewTimer());
+            this.cancelSASTokenRenewTimer();
+            CompletableFuture<ScheduledFuture<?>> sendTokenFuture = this.underlyingFactory.sendSASTokenAndSetRenewTimer(this.sasTokenAudienceURI, retryOnFailure, () -> this.sendSASTokenAndSetRenewTimer(true));
             return sendTokenFuture.thenAccept((f) -> {this.sasTokenRenewTimerFuture = f; TRACE_LOGGER.debug("Set SAS Token renew timer");});
         }
     }

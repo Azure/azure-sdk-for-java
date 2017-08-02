@@ -59,6 +59,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 {
 	private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(CoreMessageSender.class);
 	private static final String SEND_TIMED_OUT = "Send operation timed out";
+	private static final Duration LINK_REOPEN_TIMEOUT = Duration.ofMinutes(5); // service closes link long before this timeout expires
 
 	private final Object requestResonseLinkCreationLock = new Object();
 	private final MessagingFactory underlyingFactory;
@@ -80,6 +81,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 	private Instant lastKnownErrorReportedAt;
 	private ScheduledFuture<?> sasTokenRenewTimerFuture;
 	private CompletableFuture<Void> requestResponseLinkCreationFuture;
+	private CompletableFuture<Void> sendLinkReopenFuture;
 
 	public static CompletableFuture<CoreMessageSender> create(
 			final MessagingFactory factory,
@@ -91,7 +93,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		TimeoutTracker openLinkTracker = TimeoutTracker.create(factory.getOperationTimeout());
 		msgSender.initializeLinkOpen(openLinkTracker);
 		
-		msgSender.sendSASTokenAndSetRenewTimer().handleAsync((v, sasTokenEx) -> {
+		msgSender.sendSASTokenAndSetRenewTimer(false).handleAsync((v, sasTokenEx) -> {
 		    if(sasTokenEx != null)
 		    {
 		        Throwable cause = ExceptionUtil.extractAsyncCompletionCause(sasTokenEx);
@@ -176,6 +178,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		this.linkCredit = 0;
 
 		this.linkClose = new CompletableFuture<Void>();
+		this.sendLinkReopenFuture = null;
 		
 		this.sendWork = new DispatchHandler()
 		{ 
@@ -337,13 +340,19 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 			this.lastKnownLinkError = null;
 			this.retryPolicy.resetRetryCount(this.getClientId());
 
+			if(this.sendLinkReopenFuture != null && !this.sendLinkReopenFuture.isDone())
+            {
+                AsyncUtil.completeFuture(this.sendLinkReopenFuture, null);
+                this.sendLinkReopenFuture = null;
+            }
+			
 			if (!this.linkFirstOpen.isDone())
 			{
 			    TRACE_LOGGER.info("Opened send link to '{}'", this.sendPath);
 				AsyncUtil.completeFuture(this.linkFirstOpen, this);				
 			}
 			else
-			{
+			{ 
 				synchronized (this.pendingSendLock)
 				{
 					if (!this.pendingSendsData.isEmpty())
@@ -370,14 +379,20 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 			}
 		}
 		else
-		{	
+		{
+		    TRACE_LOGGER.error("Opending send link to '{}' failed", this.sendPath, completionException);
+		    this.cancelSASTokenRenewTimer();
 			if (!this.linkFirstOpen.isDone())
-			{
-			    TRACE_LOGGER.error("Opending send link to '{}' failed", this.sendPath, completionException);
-				this.setClosed();
-				this.cancelSASTokenRenewTimer();
+			{			    
+				this.setClosed();				
 				ExceptionUtil.completeExceptionally(this.linkFirstOpen, completionException, this, true);
 			}
+			
+			if(this.sendLinkReopenFuture != null && !this.sendLinkReopenFuture.isDone())
+            {
+                AsyncUtil.completeFutureExceptionally(this.sendLinkReopenFuture, completionException);
+                this.sendLinkReopenFuture = null;
+            }
 		}
 	}
 
@@ -449,23 +464,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 						if (nextRetryInterval != null)
 						{
 						    TRACE_LOGGER.warn("Send link to '{}' closed. Will retry link creation after '{}'.", this.sendPath, nextRetryInterval);
-							try
-							{
-								this.underlyingFactory.scheduleOnReactorThread((int) nextRetryInterval.toMillis(), new DispatchHandler()
-								{
-									@Override
-									public void onEvent()
-									{
-										if (sendLink.getLocalState() == EndpointState.CLOSED || sendLink.getRemoteState() == EndpointState.CLOSED)
-										{
-										    CoreMessageSender.this.recreateSendLink();
-										}
-									}
-								});
-							}
-							catch (IOException ignore)
-							{
-							}
+						    Timer.schedule(() -> {CoreMessageSender.this.ensureLinkIsOpen();}, nextRetryInterval, TimerType.OneTimeRun);							
 						}
 					}
 				}
@@ -616,7 +615,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		this.sendLink = sender;
 	}
 	
-	CompletableFuture<Void> sendSASTokenAndSetRenewTimer()
+	CompletableFuture<Void> sendSASTokenAndSetRenewTimer(boolean retryOnFailure)
 	{
 	    if(this.getIsClosingOrClosed())
         {
@@ -624,7 +623,8 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
         }
         else
         {
-            CompletableFuture<ScheduledFuture<?>> sendTokenFuture = this.underlyingFactory.sendSASTokenAndSetRenewTimer(this.sasTokenAudienceURI, () -> this.sendSASTokenAndSetRenewTimer());
+            this.cancelSASTokenRenewTimer();
+            CompletableFuture<ScheduledFuture<?>> sendTokenFuture = this.underlyingFactory.sendSASTokenAndSetRenewTimer(this.sasTokenAudienceURI, retryOnFailure, () -> this.sendSASTokenAndSetRenewTimer(true));
             return sendTokenFuture.thenAccept((f) -> {this.sasTokenRenewTimerFuture = f; TRACE_LOGGER.debug("Sent SAS Token and set renew timer");});
         }
 	}
@@ -696,26 +696,79 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		this.linkCredit = this.linkCredit + creditIssued;
 		this.sendWork.onEvent();
 	}
-
-	private void recreateSendLink()
-	{
-	    TRACE_LOGGER.info("Recreating send link to '{}'", this.sendPath);
-		this.createSendLink();
-		this.retryPolicy.incrementRetryCount(CoreMessageSender.this.getClientId());
-	}
+	
+	private synchronized CompletableFuture<Void> ensureLinkIsOpen()
+    {
+        // Send SAS token before opening a link as connection might have been closed and reopened
+        if (this.sendLink.getLocalState() == EndpointState.CLOSED || this.sendLink.getRemoteState() == EndpointState.CLOSED)
+        {
+            if(this.sendLinkReopenFuture == null)
+            {
+                TRACE_LOGGER.info("Recreating send link to '{}'", this.sendPath);
+                this.retryPolicy.incrementRetryCount(CoreMessageSender.this.getClientId());
+                this.sendLinkReopenFuture = new CompletableFuture<Void>();
+                // Variable just to closed over by the scheduled runnable. The runnable should cancel only the closed over future, not the parent's instance variable which can change
+                final CompletableFuture<Void> linkReopenFutureThatCanBeCancelled = this.sendLinkReopenFuture;
+                Timer.schedule(
+                        () -> {
+                            if (!linkReopenFutureThatCanBeCancelled.isDone())
+                            {
+                                CoreMessageSender.this.cancelSASTokenRenewTimer();
+                                Exception operationTimedout = new TimeoutException(
+                                        String.format(Locale.US, "%s operation on SendLink(%s) to path(%s) timed out at %s.", "Open", CoreMessageSender.this.sendLink.getName(), CoreMessageSender.this.sendPath, ZonedDateTime.now()));                           
+                                
+                                TRACE_LOGGER.warn(operationTimedout.getMessage());
+                                linkReopenFutureThatCanBeCancelled.completeExceptionally(operationTimedout);
+                            }
+                        }                       
+                        , CoreMessageSender.LINK_REOPEN_TIMEOUT
+                        , TimerType.OneTimeRun);
+                this.sendSASTokenAndSetRenewTimer(false).handleAsync((v, sendTokenEx) -> {
+                    if(sendTokenEx != null)
+                    {
+                        this.sendLinkReopenFuture.completeExceptionally(sendTokenEx);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler()
+                            {
+                                @Override
+                                public void onEvent()
+                                {
+                                    CoreMessageSender.this.createSendLink();
+                                }
+                            });
+                        }
+                        catch (IOException ioEx)
+                        {
+                            this.sendLinkReopenFuture.completeExceptionally(ioEx);
+                        }
+                    }
+                    return null;
+                });
+            }
+            
+            return this.sendLinkReopenFuture;
+        }
+        else
+        {
+            return CompletableFuture.completedFuture(null);
+        }
+    }
 	
 	// actual send on the SenderLink should happen only in this method & should run on Reactor Thread
 	private void processSendWork()
 	{
 	    TRACE_LOGGER.debug("Processing pending sends to '{}'. Available link credit '{}'", this.sendPath, this.linkCredit);
-		final Sender sendLinkCurrent = this.sendLink;
-		
-		if (sendLinkCurrent.getLocalState() == EndpointState.CLOSED || sendLinkCurrent.getRemoteState() == EndpointState.CLOSED)
-		{
-			this.recreateSendLink();
-			return;
-		}
-		
+	    if(!this.ensureLinkIsOpen().isDone())
+	    {
+	        // Link recreation is pending
+	        return;
+	    }
+	    
+		final Sender sendLinkCurrent = this.sendLink;		
 		while (sendLinkCurrent != null
 				&& sendLinkCurrent.getLocalState() == EndpointState.ACTIVE && sendLinkCurrent.getRemoteState() == EndpointState.ACTIVE
 				&& this.linkCredit > 0)

@@ -186,12 +186,11 @@ public class TestCommons {
 				
 		ArrayList<IMessage> totalReceivedMessages = new ArrayList<>();		
 		
-		Collection<IMessage> receivedMessages = receiver.receiveBatch(numMessages);
-		totalReceivedMessages.addAll(receivedMessages);		
+		Collection<IMessage> receivedMessages = receiver.receiveBatch(numMessages);				
 		while(receivedMessages != null && receivedMessages.size() > 0 && totalReceivedMessages.size() < numMessages)
-		{						
+		{
+		    totalReceivedMessages.addAll(receivedMessages);
 			receivedMessages = receiver.receiveBatch(numMessages);
-			totalReceivedMessages.addAll(receivedMessages);	
 		}
 		Assert.assertEquals("All messages not received", numMessages, totalReceivedMessages.size());
 		

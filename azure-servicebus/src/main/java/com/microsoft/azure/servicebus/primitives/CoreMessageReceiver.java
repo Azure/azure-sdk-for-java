@@ -65,6 +65,7 @@ import com.microsoft.azure.servicebus.amqp.SessionHandler;
 public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, IErrorContextProvider
 {
 	private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(CoreMessageReceiver.class);
+	private static final Duration LINK_REOPEN_TIMEOUT = Duration.ofMinutes(5); // service closes link long before this timeout expires
 	
 	private final Object requestResonseLinkCreationLock = new Object();
 	private final List<ReceiveWorkItem> pendingReceives;
@@ -96,6 +97,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	private int nextCreditToFlow;
 	private ScheduledFuture<?> sasTokenRenewTimerFuture;
 	private CompletableFuture<Void> requestResponseLinkCreationFuture;
+	private CompletableFuture<Void> receiveLinkReopenFuture;
 		
 	private final Runnable timedOutUpdateStateRequestsDaemon;
 	
@@ -129,6 +131,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		this.pendingUpdateStateRequests = new ConcurrentHashMap<>();
 		this.tagsToDeliveriesMap = new ConcurrentHashMap<>();
 		this.lastKnownErrorReportedAt = Instant.now();
+		this.receiveLinkReopenFuture = null;
 		
 		this.timedOutUpdateStateRequestsDaemon = new Runnable() {
 			@Override
@@ -200,7 +203,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	{
 		this.linkOpen = new WorkItem<CoreMessageReceiver>(new CompletableFuture<CoreMessageReceiver>(), this.operationTimeout);
 		this.scheduleLinkOpenTimeout(this.linkOpen.getTimeoutTracker());
-		this.sendSASTokenAndSetRenewTimer().handleAsync((v, sasTokenEx) -> {
+		this.sendSASTokenAndSetRenewTimer(false).handleAsync((v, sasTokenEx) -> {
             if(sasTokenEx != null)
             {
                 Throwable cause = ExceptionUtil.extractAsyncCompletionCause(sasTokenEx);
@@ -318,7 +321,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		this.receiveLink = receiver;
 	}
 	
-	CompletableFuture<Void> sendSASTokenAndSetRenewTimer()
+	CompletableFuture<Void> sendSASTokenAndSetRenewTimer(boolean retryOnFailure)
     {
         if(this.getIsClosingOrClosed())
         {
@@ -326,7 +329,8 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
         }
         else
         {
-            CompletableFuture<ScheduledFuture<?>> sendTokenFuture = this.underlyingFactory.sendSASTokenAndSetRenewTimer(this.sasTokenAudienceURI, () -> this.sendSASTokenAndSetRenewTimer());
+            this.cancelSASTokenRenewTimer();
+            CompletableFuture<ScheduledFuture<?>> sendTokenFuture = this.underlyingFactory.sendSASTokenAndSetRenewTimer(this.sasTokenAudienceURI, retryOnFailure, () -> this.sendSASTokenAndSetRenewTimer(true));
             return sendTokenFuture.thenAccept((f) -> {this.sasTokenRenewTimerFuture = f;TRACE_LOGGER.debug("Sent SAS Token and set renew timer");});
         }
     }
@@ -451,92 +455,98 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		}
 		
 		TRACE_LOGGER.debug("Receiving maximum of '{}' messages from '{}'", maxMessageCount, this.receivePath);
-		CompletableFuture<Collection<MessageWithDeliveryTag>> onReceive = new CompletableFuture<Collection<MessageWithDeliveryTag>>();
-		
-		try
-		{
-			this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler()
-			{
-				@Override
-				public void onEvent()
-				{
-					CoreMessageReceiver.this.ensureLinkIsOpen();
-
-					final List<MessageWithDeliveryTag> messages = receiveCore(maxMessageCount);
-					if (messages != null)
-					{
-					    TRACE_LOGGER.debug("Returning '{}' prefetched messages from '{}'", messages.size(), CoreMessageReceiver.this.receivePath);
-						AsyncUtil.completeFuture(onReceive, messages);
-					}
-					else
-					{
-					    if(timeout == Duration.ZERO)
-					    {
-					        TRACE_LOGGER.debug("Timeout is zero. Returning null as there are no prefetched messages from '{}'", CoreMessageReceiver.this.receivePath);
-					        AsyncUtil.completeFuture(onReceive, null);
-					    }
-					    else
-					    {
-					        TRACE_LOGGER.debug("There are no prefetched messages. Waiting for messages from '{}'", CoreMessageReceiver.this.receivePath);
-	                        final ReceiveWorkItem receiveWorkItem = new ReceiveWorkItem(onReceive, timeout, maxMessageCount);
-	                        Timer.schedule(
-	                                new Runnable()
-	                                {
-	                                    public void run()
-	                                    {
-	                                        if( CoreMessageReceiver.this.pendingReceives.remove(receiveWorkItem))
-	                                        {
-	                                            // TODO: can we do it better?
-	                                            // workaround to push the sendflow-performative to reactor
-	                                            // this sets the receiveLink endpoint to modified state
-	                                            // (and increment the unsentCredits in proton by 0)
-	                                            try
-	                                            {
-	                                                CoreMessageReceiver.this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler()
-	                                                {
-	                                                    @Override
-	                                                    public void onEvent()
-	                                                    {
-	                                                        //TODO: not working
-	                                                        // Make credit 0, to stop further receiving on this link
-	                                                        //MessageReceiver.this.receiveLink.flow(-1 * MessageReceiver.this.receiveLink.getCredit());
-	                                                        CoreMessageReceiver.this.receiveLink.flow(0);
-	                                                        
-	                                                        // See if detach stops
-//	                                                      MessageReceiver.this.receiveLink.detach();
-//	                                                      MessageReceiver.this.receiveLink.close();
-//	                                                      MessageReceiver.this.underlyingFactory.deregisterForConnectionError(MessageReceiver.this.receiveLink);
-	                                                    }
-	                                                });
-	                                            }
-	                                            catch (IOException ignore)
-	                                            {
-	                                            }
-	                                            
-	                                            TRACE_LOGGER.warn("No messages received from '{}'. Pending receive request timed out. Returning null to the client.", CoreMessageReceiver.this.receivePath);
-	                                            receiveWorkItem.getWork().complete(null);
-	                                        }
-	                                    }
-	                                },
-	                                timeout,
-	                                TimerType.OneTimeRun);
-	                        pendingReceives.add(receiveWorkItem);
-	                    }
-					}
-				}
-			});
-		}
-		catch (IOException ioException)
-		{
-			onReceive.completeExceptionally(generateDispatacherSchedulingFailedException("Receive", ioException));	
-		}
+		CompletableFuture<Collection<MessageWithDeliveryTag>> onReceive = new CompletableFuture<Collection<MessageWithDeliveryTag>>();		
+		final ReceiveWorkItem receiveWorkItem = new ReceiveWorkItem(onReceive, timeout, maxMessageCount);
+		this.pendingReceives.add(receiveWorkItem);
+        Timer.schedule(
+                new Runnable()
+                {
+                    public void run()
+                    {
+                        if( CoreMessageReceiver.this.pendingReceives.remove(receiveWorkItem))
+                        {
+                            // TODO: can we do it better?
+                            // workaround to push the sendflow-performative to reactor
+                            // this sets the receiveLink endpoint to modified state
+                            // (and increment the unsentCredits in proton by 0)
+//                            try
+//                            {
+//                                CoreMessageReceiver.this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler()
+//                                {
+//                                    @Override
+//                                    public void onEvent()
+//                                    {
+//                                        //TODO: not working
+//                                        // Make credit 0, to stop further receiving on this link
+//                                        //MessageReceiver.this.receiveLink.flow(-1 * MessageReceiver.this.receiveLink.getCredit());
+//                                        CoreMessageReceiver.this.receiveLink.flow(0);
+//                                        
+//                                        // See if detach stops
+////                                    MessageReceiver.this.receiveLink.detach();
+////                                    MessageReceiver.this.receiveLink.close();
+////                                    MessageReceiver.this.underlyingFactory.deregisterForConnectionError(MessageReceiver.this.receiveLink);
+//                                    }
+//                                });
+//                            }
+//                            catch (IOException ignore)
+//                            {
+//                            }
+                            
+                            TRACE_LOGGER.warn("No messages received from '{}'. Pending receive request timed out. Returning null to the client.", CoreMessageReceiver.this.receivePath);
+                            receiveWorkItem.getWork().complete(null);
+                        }
+                    }
+                },
+                timeout,
+                TimerType.OneTimeRun);
+        
+        this.ensureLinkIsOpen().thenRunAsync(() -> {
+            try
+            {
+                this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler()
+                {
+                    @Override
+                    public void onEvent()
+                    {
+                        final List<MessageWithDeliveryTag> messages = receiveCore(maxMessageCount);
+                        if (messages != null)
+                        {
+                            TRACE_LOGGER.debug("Returning '{}' prefetched messages from '{}'", messages.size(), CoreMessageReceiver.this.receivePath);
+                            if(CoreMessageReceiver.this.pendingReceives.remove(receiveWorkItem))
+                            {
+                                AsyncUtil.completeFuture(onReceive, messages);
+                            }
+                        }
+                        else
+                        {
+                            if(timeout == Duration.ZERO)
+                            {
+                                TRACE_LOGGER.debug("Timeout is zero. Returning null as there are no prefetched messages from '{}'", CoreMessageReceiver.this.receivePath);
+                                if(CoreMessageReceiver.this.pendingReceives.remove(receiveWorkItem))
+                                {
+                                    AsyncUtil.completeFuture(onReceive, null);
+                                }          
+                            }
+                            else
+                            {
+                                TRACE_LOGGER.debug("There are no prefetched messages. Waiting for messages from '{}'", CoreMessageReceiver.this.receivePath);
+                            }
+                        }
+                    }
+                });
+            }
+            catch (IOException ioException)
+            {
+                onReceive.completeExceptionally(generateDispatacherSchedulingFailedException("Receive", ioException));  
+            }
+        });
 
 		return onReceive;
 	}
 
 	@Override
 	public void onOpenComplete(Exception exception)
-	{		
+	{
 		if (exception == null)
 		{
 		    TRACE_LOGGER.info("Receive link to '{}' opened.", this.receivePath);
@@ -573,6 +583,12 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 			{				
 				AsyncUtil.completeFuture(this.linkOpen.getWork(), this);
 			}
+			
+			if(this.receiveLinkReopenFuture != null && !this.receiveLinkReopenFuture.isDone())
+			{
+			    AsyncUtil.completeFuture(this.receiveLinkReopenFuture, null);
+			    this.receiveLinkReopenFuture = null;
+			}
 
 			this.lastKnownLinkError = null;
 			
@@ -586,13 +602,20 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		}
 		else
 		{
+		    TRACE_LOGGER.error("Opening receive link to '{}' failed.", this.receivePath, exception);
+            this.cancelSASTokenRenewTimer();
+            
 			if (this.linkOpen != null && !this.linkOpen.getWork().isDone())
-			{
-			    TRACE_LOGGER.error("Opening receive link to '{}' failed.", this.receivePath, exception);
-			    this.cancelSASTokenRenewTimer();
+			{  
 				this.setClosed();
 				ExceptionUtil.completeExceptionally(this.linkOpen.getWork(), exception, this, true);
 			}
+			
+			if(this.receiveLinkReopenFuture != null && !this.receiveLinkReopenFuture.isDone())
+            {
+			    AsyncUtil.completeFutureExceptionally(this.receiveLinkReopenFuture, exception);
+			    this.receiveLinkReopenFuture = null;
+            }
 
 			this.lastKnownLinkError = exception;
 		}
@@ -607,45 +630,47 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		if(deliveryTag == null || deliveryTag.length == 0 || !this.tagsToDeliveriesMap.containsKey(deliveryTagAsString))
 		{
 		    TRACE_LOGGER.debug("Received a message from '{}'. Adding to prefecthed messages.", this.receivePath);
-			Message message = null;
-			
-			int msgSize = delivery.pending();
-			byte[] buffer = new byte[msgSize];
-			
-			int read = receiveLink.recv(buffer, 0, msgSize);
-			
-			message = Proton.message();
-			message.decode(buffer, 0, read);
-			
-			if(this.settleModePair.getSenderSettleMode() == SenderSettleMode.SETTLED)
-			{
-				// No op. Delivery comes settled from the sender
-				delivery.disposition(Accepted.getInstance());
-				delivery.settle();
-			}
-			else
-			{
-				this.tagsToDeliveriesMap.put(StringUtil.convertBytesToString(delivery.getTag()), delivery);
-				receiveLink.advance();
-			}
+		    try
+		    {
+		        Message message = Util.readMessageFromDelivery(receiveLink, delivery);
+	            
+	            if(this.settleModePair.getSenderSettleMode() == SenderSettleMode.SETTLED)
+	            {
+	                // No op. Delivery comes settled from the sender
+	                delivery.disposition(Accepted.getInstance());
+	                delivery.settle();
+	            }
+	            else
+	            {
+	                this.tagsToDeliveriesMap.put(StringUtil.convertBytesToString(delivery.getTag()), delivery);
+	                receiveLink.advance();
+	            }
 
-			this.prefetchedMessages.add(new MessageWithDeliveryTag(message, delivery.getTag()));
-			this.underlyingFactory.getRetryPolicy().resetRetryCount(this.getClientId());
-			
-			if(!this.pendingReceives.isEmpty())
-			{
-				final ReceiveWorkItem currentReceive = this.pendingReceives.remove(0);
-				if (currentReceive != null && !currentReceive.getWork().isDone())
-				{
-				    TRACE_LOGGER.debug("Returning the message received from '{}' to a pending receive request", this.receivePath);
-					currentReceive.cancelTimeoutTask(false);
-					
-					List<MessageWithDeliveryTag> messages = this.receiveCore(currentReceive.getMaxMessageCount());
+	            this.prefetchedMessages.add(new MessageWithDeliveryTag(message, delivery.getTag()));
+	            this.underlyingFactory.getRetryPolicy().resetRetryCount(this.getClientId());
+	            
+	            if(!this.pendingReceives.isEmpty())
+	            {
+	                final ReceiveWorkItem currentReceive = this.pendingReceives.remove(0);
+	                if (currentReceive != null && !currentReceive.getWork().isDone())
+	                {
+	                    TRACE_LOGGER.debug("Returning the message received from '{}' to a pending receive request", this.receivePath);
+	                    currentReceive.cancelTimeoutTask(false);
+	                    
+	                    List<MessageWithDeliveryTag> messages = this.receiveCore(currentReceive.getMaxMessageCount());
 
-					CompletableFuture<Collection<MessageWithDeliveryTag>> future = currentReceive.getWork();
-					AsyncUtil.completeFuture(future, messages);
-				}
-			}
+	                    CompletableFuture<Collection<MessageWithDeliveryTag>> future = currentReceive.getWork();
+	                    AsyncUtil.completeFuture(future, messages);
+	                }
+	            }
+		    }
+		    catch(Exception e)
+		    {
+		        TRACE_LOGGER.error("Reading message from delivery failed with unexpected exception.", e);
+		        delivery.disposition(Released.getInstance());
+                delivery.settle();
+                return;
+		    }
 		}
 		else
 		{
@@ -747,6 +772,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	@Override
 	public void onError(Exception exception)
 	{
+	    this.cancelSASTokenRenewTimer();
 		this.prefetchedMessages.clear();
 
 		if (this.getIsClosingOrClosed())
@@ -759,7 +785,8 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		{
 		    TRACE_LOGGER.error("Receive link to '{}' closed with error.", this.receivePath, exception);
 			this.lastKnownLinkError = exception;
-			if (this.linkOpen != null && !this.linkOpen.getWork().isDone())
+			if ((this.linkOpen != null && !this.linkOpen.getWork().isDone()) ||
+			     (this.receiveLinkReopenFuture !=null && !receiveLinkReopenFuture.isDone()))
 			{
 			    this.onOpenComplete(exception);
 			}
@@ -775,12 +802,12 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	                    // No point in retrying to establish a link.. SessionLock is lost
 	                    TRACE_LOGGER.warn("Session '{}' lock lost. Closing receiver.", this.sessionId);
 	                    this.isSessionLockLost = true;
-	                    this.closeAsync();         
+	                    this.closeAsync();
 	                }
 	            }
 	            else
 	            {               
-	                // TODO change it. Why recreating link needs to wait for retry interval of pending receive?
+	                // TODO Why recreating link needs to wait for retry interval of pending receive?
 	                ReceiveWorkItem workItem = null;
 	                if(!this.pendingReceives.isEmpty())
 	                {
@@ -794,23 +821,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	                    if (nextRetryInterval != null)
 	                    {
 	                        TRACE_LOGGER.error("Receive link to '{}' will be reopened after '{}'", this.receivePath, nextRetryInterval);
-	                        try
-	                        {
-	                            this.underlyingFactory.scheduleOnReactorThread((int) nextRetryInterval.toMillis(), new DispatchHandler()
-	                            {
-	                                @Override
-	                                public void onEvent()
-	                                {
-	                                    if (receiveLink.getLocalState() == EndpointState.CLOSED || receiveLink.getRemoteState() == EndpointState.CLOSED)
-	                                    {
-	                                        createReceiveLink();
-	                                    }
-	                                }
-	                            });
-	                        }
-	                        catch (IOException ignore)
-	                        {
-	                        }
+	                        Timer.schedule(() -> {CoreMessageReceiver.this.ensureLinkIsOpen();}, nextRetryInterval, TimerType.OneTimeRun);
 	                    }
 	                }
 	            }
@@ -1044,45 +1055,99 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	    this.throwIfInUnusableState();
 		CompletableFuture<Void> completeMessageFuture = new CompletableFuture<Void>();
 		
-		try
-		{
-			this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler()
-			{
-				@Override
-				public void onEvent()
-				{
-					CoreMessageReceiver.this.ensureLinkIsOpen();
-					
-					String deliveryTagAsString = StringUtil.convertBytesToString(deliveryTag);
-					TRACE_LOGGER.debug("Updating message state of delivery '{}' to '{}'", deliveryTagAsString, outcome);
-					Delivery delivery = CoreMessageReceiver.this.tagsToDeliveriesMap.get(deliveryTagAsString);
-					if(delivery == null)
-					{
-					    TRACE_LOGGER.error("Delivery not found for delivery tag '{}'", deliveryTagAsString);
-						AsyncUtil.completeFutureExceptionally(completeMessageFuture, generateDeliveryNotFoundException());
-					}
-					else
-					{
-						final UpdateStateWorkItem workItem = new UpdateStateWorkItem(completeMessageFuture, outcome, CoreMessageReceiver.this.factoryRceiveTimeout);
-						CoreMessageReceiver.this.pendingUpdateStateRequests.put(deliveryTagAsString, workItem);
-						delivery.disposition((DeliveryState)outcome);
-					}						
-				}
-			});
-		}
-		catch (IOException ioException)
-		{
-			completeMessageFuture.completeExceptionally(generateDispatacherSchedulingFailedException("completeMessage", ioException));					
-		}
+		String deliveryTagAsString = StringUtil.convertBytesToString(deliveryTag);
+        TRACE_LOGGER.debug("Updating message state of delivery '{}' to '{}'", deliveryTagAsString, outcome);
+        Delivery delivery = CoreMessageReceiver.this.tagsToDeliveriesMap.get(deliveryTagAsString);
+        if(delivery == null)
+        {
+            TRACE_LOGGER.error("Delivery not found for delivery tag '{}'", deliveryTagAsString);
+            AsyncUtil.completeFutureExceptionally(completeMessageFuture, generateDeliveryNotFoundException());
+        }
+        else
+        {
+            final UpdateStateWorkItem workItem = new UpdateStateWorkItem(completeMessageFuture, outcome, CoreMessageReceiver.this.factoryRceiveTimeout);
+            CoreMessageReceiver.this.pendingUpdateStateRequests.put(deliveryTagAsString, workItem);
+            
+            CoreMessageReceiver.this.ensureLinkIsOpen().thenRunAsync(() -> {
+                try
+                {
+                    this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler()
+                    {
+                        @Override
+                        public void onEvent()
+                        { 
+                            delivery.disposition((DeliveryState)outcome);
+                        }
+                    });
+                }
+                catch (IOException ioException)
+                {
+                    completeMessageFuture.completeExceptionally(generateDispatacherSchedulingFailedException("completeMessage", ioException));                  
+                }
+            });            
+        }		
 
 		return completeMessageFuture;
 	}
 	
-	private void ensureLinkIsOpen()
+	private synchronized CompletableFuture<Void> ensureLinkIsOpen()
 	{
+	    // Send SAS token before opening a link as connection might have been closed and reopened
 		if (this.receiveLink.getLocalState() == EndpointState.CLOSED || this.receiveLink.getRemoteState() == EndpointState.CLOSED)
 		{
-			this.createReceiveLink();
+		    if(this.receiveLinkReopenFuture == null)
+		    {
+		        TRACE_LOGGER.info("Recreating receive link to '{}'", this.receivePath);
+	            this.retryPolicy.incrementRetryCount(this.getClientId());
+	            this.receiveLinkReopenFuture = new CompletableFuture<Void>();
+	            // Variable just to be closed over by the scheduled runnable. The runnable should cancel only the closed over future, not the parent's instance variable which can change
+	            final CompletableFuture<Void> linkReopenFutureThatCanBeCancelled = this.receiveLinkReopenFuture;
+	            Timer.schedule(
+	                    () -> {
+	                        if (!linkReopenFutureThatCanBeCancelled.isDone())
+                            {
+                                CoreMessageReceiver.this.cancelSASTokenRenewTimer();
+                                Exception operationTimedout = new TimeoutException(
+                                        String.format(Locale.US, "%s operation on ReceiveLink(%s) to path(%s) timed out at %s.", "Open", CoreMessageReceiver.this.receiveLink.getName(), CoreMessageReceiver.this.receivePath, ZonedDateTime.now()));                           
+                                
+                                TRACE_LOGGER.warn(operationTimedout.getMessage());
+                                linkReopenFutureThatCanBeCancelled.completeExceptionally(operationTimedout);
+                            }
+	                    }	                    
+	                    , CoreMessageReceiver.LINK_REOPEN_TIMEOUT
+	                    , TimerType.OneTimeRun);
+	            this.sendSASTokenAndSetRenewTimer(false).handleAsync((v, sendTokenEx) -> {
+	                if(sendTokenEx != null)
+	                {
+	                    this.receiveLinkReopenFuture.completeExceptionally(sendTokenEx);
+	                }
+	                else
+	                {
+	                    try
+	                    {
+	                        this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler()
+	                        {
+	                            @Override
+	                            public void onEvent()
+	                            {
+	                                CoreMessageReceiver.this.createReceiveLink();
+	                            }
+	                        });
+	                    }
+	                    catch (IOException ioEx)
+	                    {
+	                        this.receiveLinkReopenFuture.completeExceptionally(ioEx);
+	                    }
+	                }
+	                return null;
+	            });
+		    }
+		    
+		    return this.receiveLinkReopenFuture;
+		}
+		else
+		{
+		    return CompletableFuture.completedFuture(null);
 		}
 	}
 	

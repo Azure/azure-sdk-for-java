@@ -437,16 +437,16 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 				this.rctr.setTimeout(3141);
 				this.rctr.start();
 				boolean continuteProcessing = true;
-				while(!Thread.interrupted() && continuteProcessing)
-				{
-				    // If factory is closed, stop reactor too
-				    if(MessagingFactory.this.getIsClosed())
-				    {
-				        TRACE_LOGGER.info("Gracefully releasing reactor thread as messaging factory is closed");
-				        break;
-				    }
-				    continuteProcessing = this.rctr.process();
-				}
+                while(!Thread.interrupted() && continuteProcessing)
+                {
+                    // If factory is closed, stop reactor too
+                    if(MessagingFactory.this.getIsClosed())
+                    {
+                        TRACE_LOGGER.info("Gracefully releasing reactor thread as messaging factory is closed");
+                        break;
+                    }
+                    continuteProcessing = this.rctr.process();
+                }				
 				TRACE_LOGGER.info("Stopping reactor");
 				this.rctr.stop();
 			}
@@ -514,7 +514,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 		this.getReactorScheduler().invoke(delay, handler);
 	}
 	
-	CompletableFuture<ScheduledFuture<?>> sendSASTokenAndSetRenewTimer(String sasTokenAudienceURI, Runnable validityRenewer)
+	CompletableFuture<ScheduledFuture<?>> sendSASTokenAndSetRenewTimer(String sasTokenAudienceURI, boolean retryOnFailure, Runnable validityRenewer)
     {
 	    TRACE_LOGGER.debug("Sending CBS Token for {}", sasTokenAudienceURI);
 	    boolean isSasTokenGenerated = false;
@@ -538,21 +538,47 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
         CompletableFuture<Void> sendTokenFuture = this.cbsLinkCreationFuture.thenComposeAsync((v) -> {
             return CommonRequestResponseOperations.sendCBSTokenAsync(this.cbsLink, Util.adjustServerTimeout(this.operationTimeout), finalSasToken, ClientConstants.SAS_TOKEN_TYPE, sasTokenAudienceURI);
         });
-        return sendTokenFuture.thenApplyAsync((v) -> {
-            TRACE_LOGGER.debug("Sent CBS Token for {}", sasTokenAudienceURI);
-            if(finalIsSasTokenGenerated)
-            {
-                // It will eventually expire. Renew it
-                int renewInterval = SASUtil.getCBSTokenRenewIntervalInSeconds(ClientConstants.DEFAULT_SAS_TOKEN_VALIDITY_IN_SECONDS);
-                return Timer.schedule(validityRenewer, Duration.ofSeconds(renewInterval), TimerType.OneTimeRun);
-            }
-            else
-            {
-                // User provided signature. We can't renew it.
-                return null;
-            }
-        });
+        
+        
+        if(retryOnFailure)
+        {
+            return sendTokenFuture.handleAsync((v, sendTokenEx) -> {
+                if(sendTokenEx == null)
+                {
+                    return MessagingFactory.scheduleRenewTimer(finalIsSasTokenGenerated, sasTokenAudienceURI, validityRenewer);
+                }
+                else
+                {
+                    TRACE_LOGGER.error("Sending CBS Token for {} failed.", sasTokenAudienceURI, sendTokenEx);
+                    TRACE_LOGGER.info("Will retry sending CBS Token for {} after {} seconds.", sasTokenAudienceURI, ClientConstants.DEFAULT_SAS_TOKEN_SEND_RETRY_INTERVAL_IN_SECONDS);
+                    return Timer.schedule(validityRenewer, Duration.ofSeconds(ClientConstants.DEFAULT_SAS_TOKEN_SEND_RETRY_INTERVAL_IN_SECONDS), TimerType.OneTimeRun);                
+                }            
+            });
+        }
+        else
+        {
+            // Let the exception of the sendToken state pass up to caller
+            return sendTokenFuture.thenApply((v) -> {
+                return MessagingFactory.scheduleRenewTimer(finalIsSasTokenGenerated, sasTokenAudienceURI, validityRenewer);
+            });
+        }        
     }
+	
+	private static ScheduledFuture<?> scheduleRenewTimer(boolean isSasTokenGenerated, String sasTokenAudienceURI, Runnable validityRenewer)
+	{
+	    TRACE_LOGGER.debug("Sent CBS Token for {}", sasTokenAudienceURI);
+        if(isSasTokenGenerated)
+        {
+            // It will eventually expire. Renew it
+            int renewInterval = SASUtil.getCBSTokenRenewIntervalInSeconds(ClientConstants.DEFAULT_SAS_TOKEN_VALIDITY_IN_SECONDS);
+            return Timer.schedule(validityRenewer, Duration.ofSeconds(renewInterval), TimerType.OneTimeRun);
+        }
+        else
+        {
+            // User provided signature. We can't renew it.
+            return null;
+        }
+	}
 	
 	CompletableFuture<RequestResponseLink> obtainRequestResponseLinkAsync(String entityPath)
 	{

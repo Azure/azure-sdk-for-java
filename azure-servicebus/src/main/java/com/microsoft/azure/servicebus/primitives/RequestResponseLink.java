@@ -10,13 +10,13 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
+import org.apache.qpid.proton.amqp.messaging.Released;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -33,6 +33,7 @@ import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.apache.qpid.proton.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
 import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 import com.microsoft.azure.servicebus.amqp.DispatchHandler;
@@ -477,15 +478,22 @@ class RequestResponseLink extends ClientEntity{
 		@Override
 		public void onReceiveComplete(Delivery delivery)
 		{
-			Message responseMessage = null;			
-			int msgSize = delivery.pending();
-			byte[] buffer = new byte[msgSize];			
-			int read = this.receiveLink.recv(buffer, 0, msgSize);			
-			responseMessage = Proton.message();
-			responseMessage.decode(buffer, 0, read);
-			
-			delivery.disposition(Accepted.getInstance());
-			delivery.settle();
+		    Message responseMessage = null;
+		    try
+		    {
+		        responseMessage = Util.readMessageFromDelivery(this.receiveLink, delivery);
+		        delivery.disposition(Accepted.getInstance());
+		        delivery.settle();
+		    }
+			catch(Exception e)
+		    {			    
+			    TRACE_LOGGER.error("Reading message from delivery failed with unexpected exception.", e);
+			    
+			    // release the delivery ??
+			    delivery.disposition(Released.getInstance());
+                delivery.settle();
+			    return;
+		    }
 			
 			String requestMessageId = (String)responseMessage.getCorrelationId();
 			if(requestMessageId != null)

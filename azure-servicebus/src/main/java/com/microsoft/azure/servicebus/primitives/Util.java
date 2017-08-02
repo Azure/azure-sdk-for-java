@@ -15,6 +15,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Decimal128;
 import org.apache.qpid.proton.amqp.Decimal32;
@@ -30,6 +31,8 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Section;
+import org.apache.qpid.proton.engine.Delivery;
+import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.Message;
 
 public class Util
@@ -375,5 +378,18 @@ public class Util
 	static Duration adjustServerTimeout(Duration clientTimeout)
 	{
 		return clientTimeout.minusMillis(100);
+	}
+	
+	// This is not super stable for some reason
+	static Message readMessageFromDelivery(Receiver receiveLink, Delivery delivery)
+	{
+	    int msgSize = delivery.pending();
+        byte[] buffer = new byte[msgSize];
+        
+        int read = receiveLink.recv(buffer, 0, msgSize);
+        
+        Message message = Proton.message();
+        message.decode(buffer, 0, read);
+        return message;	    
 	}
 }
