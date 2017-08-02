@@ -95,7 +95,7 @@ class DeploymentSlotImpl
     }
 
     public Observable<PublishingProfile> getPublishingProfileAsync() {
-        return manager().inner().webApps().listPublishingProfileXmlWithSecretsSlotAsync(resourceGroupName(), this.parent().name(), name())
+        return manager().inner().webApps().listPublishingProfileXmlWithSecretsSlotAsync(resourceGroupName(), this.parent().name(), name(), new CsmPublishingProfileOptionsInner())
                 .map(new Func1<InputStream, PublishingProfile>() {
                     @Override
                     public PublishingProfile call(InputStream stream) {

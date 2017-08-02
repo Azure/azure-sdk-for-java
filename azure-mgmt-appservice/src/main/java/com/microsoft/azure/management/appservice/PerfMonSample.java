@@ -34,6 +34,12 @@ public class PerfMonSample {
     private Double value;
 
     /**
+     * Core Count of worker. Not a data member.
+     */
+    @JsonProperty(value = "coreCount")
+    private Integer coreCount;
+
+    /**
      * Get the time value.
      *
      * @return the time value
@@ -90,6 +96,26 @@ public class PerfMonSample {
      */
     public PerfMonSample withValue(Double value) {
         this.value = value;
+        return this;
+    }
+
+    /**
+     * Get the coreCount value.
+     *
+     * @return the coreCount value
+     */
+    public Integer coreCount() {
+        return this.coreCount;
+    }
+
+    /**
+     * Set the coreCount value.
+     *
+     * @param coreCount the coreCount value to set
+     * @return the PerfMonSample object itself.
+     */
+    public PerfMonSample withCoreCount(Integer coreCount) {
+        this.coreCount = coreCount;
         return this;
     }
 
