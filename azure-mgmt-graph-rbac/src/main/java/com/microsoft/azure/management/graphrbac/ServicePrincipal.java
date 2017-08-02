@@ -195,7 +195,7 @@ public interface ServicePrincipal extends
              * @return the first stage in certificate credential update
              */
             @Beta(SinceVersion.V1_2_0)
-            CertificateCredential.DefinitionStages.Blank<Update> defineCertificateCredential(String name);
+            CertificateCredential.UpdateDefinitionStages.Blank<Update> defineCertificateCredential(String name);
 
             /**
              * Starts the definition of a password credential.
@@ -203,7 +203,7 @@ public interface ServicePrincipal extends
              * @return the first stage in password credential update
              */
             @Beta(SinceVersion.V1_2_0)
-            PasswordCredential.DefinitionStages.Blank<Update> definePasswordCredential(String name);
+            PasswordCredential.UpdateDefinitionStages.Blank<Update> definePasswordCredential(String name);
 
             /**
              * Removes a credential.
