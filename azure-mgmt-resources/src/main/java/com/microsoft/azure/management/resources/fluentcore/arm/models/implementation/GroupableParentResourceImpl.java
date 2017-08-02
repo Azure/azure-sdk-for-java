@@ -14,7 +14,7 @@ import rx.Observable;
 import rx.functions.Func1;
 
 /**
- * The implementation for {@link GroupableResource}.
+ * The implementation for GroupableResource.
  * (Internal use only)
  *
  * @param <FluentModelT> The fluent model type

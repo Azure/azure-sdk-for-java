@@ -15,11 +15,12 @@ import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 
 /**
- * Entry point to Azure storage resource management.
+ * Entry point to Azure KeyVault resource management.
  */
 public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultManagementClientImpl> {
     // Service managers
@@ -30,7 +31,7 @@ public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultMana
     private final String tenantId;
 
     /**
-     * Get a Configurable instance that can be used to create StorageManager with optional configuration.
+     * Get a Configurable instance that can be used to create KeyVaultManager with optional configuration.
      *
      * @return the instance allowing configurations
      */
@@ -39,11 +40,11 @@ public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultMana
     }
 
     /**
-     * Creates an instance of StorageManager that exposes storage resource management API entry points.
+     * Creates an instance of KeyVaultManager that exposes KeyVault resource management API entry points.
      *
      * @param credentials the credentials to use
      * @param subscriptionId the subscription UUID
-     * @return the StorageManager
+     * @return the KeyVaultManager
      */
     public static KeyVaultManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
         return new KeyVaultManager(new RestClient.Builder()
@@ -52,16 +53,17 @@ public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultMana
                 .withSerializerAdapter(new AzureJacksonAdapter())
                 .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                 .withInterceptor(new ProviderRegistrationInterceptor(credentials))
+                .withInterceptor(new ResourceManagerThrottlingInterceptor())
                 .build(), credentials.domain(), subscriptionId);
     }
 
     /**
-     * Creates an instance of StorageManager that exposes storage resource management API entry points.
+     * Creates an instance of KeyVaultManager that exposes KeyVault resource management API entry points.
      *
      * @param restClient the RestClient to be used for API calls
      * @param tenantId the tenant UUID
      * @param subscriptionId the subscription UUID
-     * @return the StorageManager
+     * @return the KeyVaultManager
      */
     public static KeyVaultManager authenticate(RestClient restClient, String tenantId, String subscriptionId) {
         return new KeyVaultManager(restClient, tenantId, subscriptionId);
@@ -72,12 +74,12 @@ public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultMana
      */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
-         * Creates an instance of StorageManager that exposes storage management API entry points.
+         * Creates an instance of KeyVaultManager that exposes KeyVault management API entry points.
          *
          * @param credentials the credentials to use
          * @param tenantId the tenant UUID
          * @param subscriptionId the subscription UUID
-         * @return the interface exposing storage management API entry points that work across subscriptions
+         * @return the interface exposing KeyVault management API entry points that work across subscriptions
          */
         KeyVaultManager authenticate(AzureTokenCredentials credentials, String tenantId, String subscriptionId);
     }
@@ -103,7 +105,7 @@ public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultMana
     }
 
     /**
-     * @return the storage account management API entry point
+     * @return the KeyVault account management API entry point
      */
     public Vaults vaults() {
         if (vaults == null) {

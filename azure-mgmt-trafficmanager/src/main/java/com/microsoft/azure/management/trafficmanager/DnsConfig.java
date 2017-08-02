@@ -15,26 +15,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class DnsConfig {
     /**
-     * Gets or sets the relative DNS name provided by this Traffic Manager
-     * profile.  This value is combined with the DNS domain name used by Azure
-     * Traffic Manager to form the fully-qualified domain name (FQDN) of the
-     * profile.
+     * The relative DNS name provided by this Traffic Manager profile. This
+     * value is combined with the DNS domain name used by Azure Traffic Manager
+     * to form the fully-qualified domain name (FQDN) of the profile.
      */
     @JsonProperty(value = "relativeName")
     private String relativeName;
 
     /**
-     * Gets or sets the fully-qualified domain name (FQDN) of the Traffic
-     * Manager profile.  This is formed from the concatenation of the
-     * RelativeName with the DNS domain used by Azure Traffic Manager.
+     * The fully-qualified domain name (FQDN) of the Traffic Manager profile.
+     * This is formed from the concatenation of the RelativeName with the DNS
+     * domain used by Azure Traffic Manager.
      */
-    @JsonProperty(value = "fqdn")
+    @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdn;
 
     /**
-     * Gets or sets the DNS Ttime-To-Live (TTL), in seconds.  This informs the
-     * local DNS resolvers and DNS clients how long to cache DNS responses
-     * provided by this Traffic Manager profile.
+     * The DNS Time-To-Live (TTL), in seconds. This informs the local DNS
+     * resolvers and DNS clients how long to cache DNS responses provided by
+     * this Traffic Manager profile.
      */
     @JsonProperty(value = "ttl")
     private Long ttl;
@@ -66,17 +65,6 @@ public class DnsConfig {
      */
     public String fqdn() {
         return this.fqdn;
-    }
-
-    /**
-     * Set the fqdn value.
-     *
-     * @param fqdn the fqdn value to set
-     * @return the DnsConfig object itself.
-     */
-    public DnsConfig withFqdn(String fqdn) {
-        this.fqdn = fqdn;
-        return this;
     }
 
     /**

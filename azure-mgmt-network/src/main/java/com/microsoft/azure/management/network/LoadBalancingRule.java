@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.network;
 
+import java.util.Collection;
+
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
@@ -13,6 +15,7 @@ import com.microsoft.azure.management.network.model.HasBackendPort;
 import com.microsoft.azure.management.network.model.HasFloatingIP;
 import com.microsoft.azure.management.network.model.HasFrontend;
 import com.microsoft.azure.management.network.model.HasFrontendPort;
+import com.microsoft.azure.management.network.model.HasNetworkInterfaces;
 import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
@@ -20,7 +23,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
- * An immutable client-side representation of an HTTP load balancing rule.
+ * A client-side representation of an HTTP load balancing rule.
  */
 @Fluent()
 @Beta
@@ -103,7 +106,7 @@ public interface LoadBalancingRule extends
         /** The stage of a load balancing rule definition allowing to specify the backend to associate the rule with.
          * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithBackend<ReturnT> {
+        interface WithBackend<ReturnT> extends WithVirtualMachine<ReturnT> {
             /**
              * Specifies a backend on this load balancer to send network traffic to.
              * <p>
@@ -112,13 +115,47 @@ public interface LoadBalancingRule extends
              * @return the next stage of the definition
              */
             WithBackendPort<ReturnT> toBackend(String backendName);
+        }
 
+        /**
+         * The stage of a load balancing rule definition allowing to select a set of virtual machines to load balance
+         * the network traffic among.
+         * @param <ReturnT> the next stage of the definition
+         */
+        interface WithVirtualMachine<ReturnT> {
             /**
-             * Selects the load balancer's default backend as the backend to send network traffic to.
+             * Adds the specified set of virtual machines, assuming they are from the same
+             * availability set, to a new back end address pool to be associated with this load balancing rule.
+             * <p>
+             * This will add references to the primary IP configurations of the primary network interfaces of
+             * the provided set of virtual machines.
+             * <p>
+             * If the virtual machines are not in the same availability set, they will not be associated with the backend.
+             * <p>
+             * Only those virtual machines will be associated with the load balancer that already have an existing
+             * network interface. Virtual machines without a network interface will be skipped.
+             * @param vms existing virtual machines
              * @return the next stage of the definition
              */
             @Beta(SinceVersion.V1_2_0)
-            WithBackendPort<ReturnT> toDefaultBackend();
+            WithBackendPort<ReturnT> toExistingVirtualMachines(HasNetworkInterfaces...vms);
+
+            /**
+             * Adds the specified set of virtual machines, assuming they are from the same
+             * availability set, to a new back end address pool to be associated with this load balancing rule.
+             * <p>
+             * This will add references to the primary IP configurations of the primary network interfaces of
+             * the provided set of virtual machines.
+             * <p>
+             * If the virtual machines are not in the same availability set, they will not be associated with the backend.
+             * <p>
+             * Only those virtual machines will be associated with the load balancer that already have an existing
+             * network interface. Virtual machines without a network interface will be skipped.
+             * @param vms existing virtual machines
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_2_0)
+            WithBackendPort<ReturnT> toExistingVirtualMachines(Collection<HasNetworkInterfaces> vms);
         }
 
         /**
@@ -134,7 +171,7 @@ public interface LoadBalancingRule extends
          * The final stage of the load balancing rule definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the load balancing rule definition
-         * can be attached to the parent load balancer definition using {@link WithAttach#attach()}.
+         * can be attached to the parent load balancer definition.
          * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAttach<ReturnT> extends
@@ -337,7 +374,7 @@ public interface LoadBalancingRule extends
         /** The stage of a load balancing rule definition allowing to specify the backend to associate the rule with.
          * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithBackend<ReturnT> {
+        interface WithBackend<ReturnT> extends WithVirtualMachine<ReturnT> {
             /**
              * Specifies a backend on this load balancer to send network traffic to.
              * <p>
@@ -346,13 +383,47 @@ public interface LoadBalancingRule extends
              * @return the next stage of the definition
              */
             WithBackendPort<ReturnT> toBackend(String backendName);
+        }
 
+        /**
+         * The stage of a load balancing rule definition allowing to select a set of virtual machines to load balance
+         * the network traffic among.
+         * @param <ReturnT> the next stage of the definition
+         */
+        interface WithVirtualMachine<ReturnT> {
             /**
-             * Selects the load balancer's default backend as the backend to send network traffic to.
+             * Adds the specified set of virtual machines, assuming they are from the same
+             * availability set, to a new back end address pool to be associated with this load balancing rule.
+             * <p>
+             * This will add references to the primary IP configurations of the primary network interfaces of
+             * the provided set of virtual machines.
+             * <p>
+             * If the virtual machines are not in the same availability set, they will not be associated with the backend.
+             * <p>
+             * Only those virtual machines will be associated with the load balancer that already have an existing
+             * network interface. Virtual machines without a network interface will be skipped.
+             * @param vms existing virtual machines
              * @return the next stage of the definition
              */
             @Beta(SinceVersion.V1_2_0)
-            WithBackendPort<ReturnT> toDefaultBackend();
+            WithBackendPort<ReturnT> toExistingVirtualMachines(HasNetworkInterfaces...vms);
+
+            /**
+             * Adds the specified set of virtual machines, assuming they are from the same
+             * availability set, to a new back end address pool to be associated with this load balancing rule.
+             * <p>
+             * This will add references to the primary IP configurations of the primary network interfaces of
+             * the provided set of virtual machines.
+             * <p>
+             * If the virtual machines are not in the same availability set, they will not be associated with the backend.
+             * <p>
+             * Only those virtual machines will be associated with the load balancer that already have an existing
+             * network interface. Virtual machines without a network interface will be skipped.
+             * @param vms existing virtual machines
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_2_0)
+            WithBackendPort<ReturnT> toExistingVirtualMachines(Collection<HasNetworkInterfaces> vms);
         }
 
         /**
@@ -401,7 +472,7 @@ public interface LoadBalancingRule extends
          * The final stage of the load balancing rule definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the load balancing rule definition
-         * can be attached to the parent load balancer definition using {@link WithAttach#attach()}.
+         * can be attached to the parent load balancer definition.
          * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAttach<ReturnT> extends

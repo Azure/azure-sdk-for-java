@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 
 /**
- * An immutable client-side representation of a public frontend of an Internet-facing load balancer.
+ * A client-side representation of a public frontend of an Internet-facing load balancer.
  */
 @Fluent()
 @Beta
@@ -35,15 +35,15 @@ public interface LoadBalancerPublicFrontend extends
          * The stage of a public frontend definition allowing to specify an existing public IP address.
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithPublicIPAddress<ParentT> extends HasPublicIPAddress.DefinitionStages.WithExistingPublicIPAddress<WithAttach<ParentT>> {
+        interface WithPublicIPAddress<ParentT> extends HasPublicIPAddress.DefinitionStages.WithPublicIPAddress<WithAttach<ParentT>> {
         }
 
         /**
          * The final stage of a public frontend definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the frontend definition
-         * can be attached to the parent load balancer definition using {@link WithAttach#attach()}.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * can be attached to the parent load balancer definition.
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends
             Attachable.InDefinition<ParentT> {
@@ -51,7 +51,7 @@ public interface LoadBalancerPublicFrontend extends
     }
 
     /** The entirety of a public frontend definition.
-     * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
+     * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
@@ -66,7 +66,7 @@ public interface LoadBalancerPublicFrontend extends
         /**
          * The stage of a public frontend update allowing to specify an existing public IP address.
          */
-        interface WithPublicIPAddress extends HasPublicIPAddress.UpdateStages.WithExistingPublicIPAddress<Update> {
+        interface WithPublicIPAddress extends HasPublicIPAddress.UpdateStages.WithPublicIPAddress<Update> {
         }
     }
 
@@ -93,14 +93,14 @@ public interface LoadBalancerPublicFrontend extends
          * The stage of a public frontend definition allowing to specify an existing public IP address.
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithPublicIPAddress<ParentT> extends HasPublicIPAddress.UpdateDefinitionStages.WithExistingPublicIPAddress<WithAttach<ParentT>> {
+        interface WithPublicIPAddress<ParentT> extends HasPublicIPAddress.UpdateDefinitionStages.WithPublicIPAddress<WithAttach<ParentT>> {
         }
 
         /** The final stage of the public frontend definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the frontend definition
-         * can be attached to the parent load balancer definition using {@link WithAttach#attach()}.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * can be attached to the parent load balancer definition.
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends
             Attachable.InUpdate<ParentT> {
@@ -108,7 +108,7 @@ public interface LoadBalancerPublicFrontend extends
     }
 
     /** The entirety of a public frontend definition as part of an Internet-facing load balancer update.
-     * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
+     * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
     interface UpdateDefinition<ParentT> extends
         UpdateDefinitionStages.Blank<ParentT>,

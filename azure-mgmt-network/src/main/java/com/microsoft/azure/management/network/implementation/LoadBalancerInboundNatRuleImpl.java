@@ -9,11 +9,15 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
+import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIPAddress;
+import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 
 /**
@@ -153,17 +157,55 @@ class LoadBalancerInboundNatRuleImpl
     }
 
     @Override
-    public LoadBalancerInboundNatRuleImpl withExistingPublicIPAddress(PublicIPAddress publicIPAddress) {
-        return (publicIPAddress != null) ? this.withExistingPublicIPAddress(publicIPAddress.id()) : this;
+    public LoadBalancerInboundNatRuleImpl fromExistingPublicIPAddress(PublicIPAddress publicIPAddress) {
+        return (publicIPAddress != null) ? this.fromExistingPublicIPAddress(publicIPAddress.id()) : this;
     }
 
     @Override
-    public LoadBalancerInboundNatRuleImpl withExistingPublicIPAddress(String resourceId) {
+    public LoadBalancerInboundNatRuleImpl fromExistingPublicIPAddress(String resourceId) {
         return (null != resourceId) ? this.fromFrontend(this.parent().ensurePublicFrontendWithPip(resourceId).name()) : this;
     }
 
     @Override
-    public LoadBalancerInboundNatRuleImpl fromDefaultFrontend() {
-        return this.fromFrontend(this.parent().ensureDefaultFrontend().name());
+    public LoadBalancerInboundNatRuleImpl fromNewPublicIPAddress(String leafDnsLabel) {
+        String frontendName = SdkContext.randomResourceName("fe", 20);
+        this.parent().withNewPublicIPAddress(leafDnsLabel, frontendName);
+        this.fromFrontend(frontendName);
+        return this;
+    }
+
+    @Override
+    public LoadBalancerInboundNatRuleImpl fromNewPublicIPAddress(Creatable<PublicIPAddress> pipDefinition) {
+        String frontendName = SdkContext.randomResourceName("fe", 20);
+        this.parent().withNewPublicIPAddress(pipDefinition, frontendName);
+        this.fromFrontend(frontendName);
+        return this;
+    }
+
+    @Override
+    public LoadBalancerInboundNatRuleImpl fromNewPublicIPAddress() {
+        String dnsLabel = SdkContext.randomResourceName("fe", 20);
+        return this.fromNewPublicIPAddress(dnsLabel);
+    }
+
+    @Override
+    public LoadBalancerInboundNatRuleImpl fromExistingSubnet(String networkResourceId, String subnetName) {
+        return (null != networkResourceId && null != subnetName)
+                ? this.fromFrontend(this.parent().ensurePrivateFrontendWithSubnet(networkResourceId, subnetName).name())
+                : this;
+    }
+
+    @Override
+    public LoadBalancerInboundNatRuleImpl fromExistingSubnet(Network network, String subnetName) {
+        return (null != network && null != subnetName)
+                ? this.fromExistingSubnet(network.id(), subnetName)
+                : this;
+    }
+
+    @Override
+    public LoadBalancerInboundNatRuleImpl fromExistingSubnet(Subnet subnet) {
+        return (null != subnet)
+                ? this.fromExistingSubnet(subnet.parent().id(), subnet.name())
+                : this;
     }
 }

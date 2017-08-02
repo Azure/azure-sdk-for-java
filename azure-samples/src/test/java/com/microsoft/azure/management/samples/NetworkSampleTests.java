@@ -23,6 +23,11 @@ public class NetworkSampleTests extends SamplesTestBase {
     }
 
     @Test
+    public void testCreateSimpleInternetFacingLoadBalancer() {
+        Assert.assertTrue(CreateSimpleInternetFacingLoadBalancer.runSample(azure));
+    }
+
+    @Test
     public void testManageInternetFacingLoadBalancer() {
         Assert.assertTrue(ManageInternetFacingLoadBalancer.runSample(azure));
     }

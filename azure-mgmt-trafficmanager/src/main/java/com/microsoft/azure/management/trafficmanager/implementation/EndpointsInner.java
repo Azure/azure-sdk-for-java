@@ -401,9 +401,10 @@ public class EndpointsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the DeleteOperationResultInner object if successful.
      */
-    public void delete(String resourceGroupName, String profileName, String endpointType, String endpointName) {
-        deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName).toBlocking().single().body();
+    public DeleteOperationResultInner delete(String resourceGroupName, String profileName, String endpointType, String endpointName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName).toBlocking().single().body();
     }
 
     /**
@@ -417,7 +418,7 @@ public class EndpointsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<DeleteOperationResultInner> deleteAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, final ServiceCallback<DeleteOperationResultInner> serviceCallback) {
         return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName), serviceCallback);
     }
 
@@ -429,12 +430,12 @@ public class EndpointsInner {
      * @param endpointType The type of the Traffic Manager endpoint to be deleted.
      * @param endpointName The name of the Traffic Manager endpoint to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable to the DeleteOperationResultInner object
      */
-    public Observable<Void> deleteAsync(String resourceGroupName, String profileName, String endpointType, String endpointName) {
-        return deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<DeleteOperationResultInner> deleteAsync(String resourceGroupName, String profileName, String endpointType, String endpointName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName).map(new Func1<ServiceResponse<DeleteOperationResultInner>, DeleteOperationResultInner>() {
             @Override
-            public Void call(ServiceResponse<Void> response) {
+            public DeleteOperationResultInner call(ServiceResponse<DeleteOperationResultInner> response) {
                 return response.body();
             }
         });
@@ -448,9 +449,9 @@ public class EndpointsInner {
      * @param endpointType The type of the Traffic Manager endpoint to be deleted.
      * @param endpointName The name of the Traffic Manager endpoint to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable to the DeleteOperationResultInner object
      */
-    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String profileName, String endpointType, String endpointName) {
+    public Observable<ServiceResponse<DeleteOperationResultInner>> deleteWithServiceResponseAsync(String resourceGroupName, String profileName, String endpointType, String endpointName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -470,11 +471,11 @@ public class EndpointsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.delete(resourceGroupName, profileName, endpointType, endpointName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DeleteOperationResultInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<DeleteOperationResultInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
+                        ServiceResponse<DeleteOperationResultInner> clientResponse = deleteDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -483,9 +484,9 @@ public class EndpointsInner {
             });
     }
 
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
+    private ServiceResponse<DeleteOperationResultInner> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<DeleteOperationResultInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<DeleteOperationResultInner>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

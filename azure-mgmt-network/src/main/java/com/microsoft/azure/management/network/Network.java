@@ -244,8 +244,6 @@ public interface Network extends
     /**
      * The template for a virtual network update operation, containing all the settings that
      * can be modified.
-     * <p>
-     * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
     interface Update extends
         Appliable<Network>,

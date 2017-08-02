@@ -73,6 +73,12 @@ class SubnetImpl
     // Fluent setters
 
     @Override
+    public SubnetImpl withoutNetworkSecurityGroup() {
+        this.inner().withNetworkSecurityGroup(null);
+        return this;
+    }
+
+    @Override
     public SubnetImpl withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg) {
         return withExistingNetworkSecurityGroup(nsg.id());
     }
