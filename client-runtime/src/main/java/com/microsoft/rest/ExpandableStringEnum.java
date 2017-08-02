@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.azure;
+package com.microsoft.rest;
 
 import java.util.ArrayList;
 import java.util.Collection;
