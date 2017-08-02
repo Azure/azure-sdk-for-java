@@ -223,7 +223,11 @@ class RequestResponseLink extends ClientEntity{
         {
             this.recreateInternalLinks().handleAsync((v, recreationEx) ->
             {
-                this.closeAsync();
+                if(recreationEx != null)
+                {
+                    this.closeAsync();
+                }
+                
                 return null;
             });
         }
