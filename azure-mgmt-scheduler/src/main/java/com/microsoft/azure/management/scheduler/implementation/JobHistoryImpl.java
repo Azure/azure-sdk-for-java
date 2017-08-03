@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.scheduler.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.scheduler.JobExecutionStatus;
 import com.microsoft.azure.management.scheduler.JobHistory;
@@ -14,6 +15,7 @@ import org.joda.time.DateTime;
 /**
  * Describes a job history object for a given job in Azure Scheduler service.
  */
+@LangDefinition
 public class JobHistoryImpl extends WrapperImpl<JobHistoryDefinitionInner> implements JobHistory {
     protected JobHistoryImpl(JobHistoryDefinitionInner innerObject) {
         super(innerObject);
