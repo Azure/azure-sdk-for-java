@@ -43,6 +43,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .withPrimaryPrivateIPAddressDynamic()
                 .withNewPrimaryPublicIPAddress(pipName)
                 .withIPForwarding()
+                .withAcceleratedNetworking()
                 .create();
 
         // Verifications
@@ -58,6 +59,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
         Assert.assertEquals(1, ipConfigs.size());
         NicIPConfiguration ipConfig2 = ipConfigs.iterator().next();
         Assert.assertEquals(ipConfig.name().toLowerCase(), ipConfig2.name().toLowerCase());
+        Assert.assertTrue(nic.isAcceleratedNetworkingEnabled());
         return nic;
     }
 
@@ -65,6 +67,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
     public NetworkInterface updateResource(NetworkInterface resource) throws Exception {
         resource =  resource.update()
                 .withoutIPForwarding()
+                .withoutAcceleratedNetworking()
                 .withSubnet("subnet2")
                 .updateIPConfiguration("primary") // Updating the primary ip configuration
                     .withPrivateIPAddressDynamic() // Equivalent to ..update().withPrimaryPrivateIPAddressDynamic()
@@ -75,7 +78,8 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .apply();
 
         // Verifications
-        Assert.assertTrue(!resource.isIPForwardingEnabled());
+        Assert.assertFalse(resource.isAcceleratedNetworkingEnabled());
+        Assert.assertFalse(resource.isIPForwardingEnabled());
         NicIPConfiguration primaryIpConfig = resource.primaryIPConfiguration();
         Assert.assertNotNull(primaryIpConfig);
         Assert.assertTrue(primaryIpConfig.isPrimary());
@@ -104,7 +108,8 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
             info.append("\n\t\t").append(dnsServerIp);
         }
 
-        info.append("\n\tIP forwarding enabled: ").append(resource.isIPForwardingEnabled())
+        info.append("\n\tIP forwarding enabled? ").append(resource.isIPForwardingEnabled())
+                .append("\n\tAccelerated networking enabled? ").append(resource.isAcceleratedNetworkingEnabled())
                 .append("\n\tMAC Address:").append(resource.macAddress())
                 .append("\n\tPrivate IP:").append(resource.primaryPrivateIP())
                 .append("\n\tPrivate allocation method:").append(resource.primaryPrivateIPAllocationMethod())
