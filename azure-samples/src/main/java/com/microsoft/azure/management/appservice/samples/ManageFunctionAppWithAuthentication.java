@@ -26,11 +26,8 @@ import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Azure App Service basic sample for managing function apps.
@@ -143,14 +140,7 @@ public final class ManageFunctionAppWithAuthentication {
             Utils.print(app2);
 
 
-            String masterKey = app2.getMasterKey();
-            Map<String, String> functionsHeader = new HashMap<>();
-            functionsHeader.put("x-functions-key", masterKey);
-            String response = curl("http://" + app2Url + "/admin/functions/square/keys", functionsHeader);
-            Pattern pattern = Pattern.compile("\"name\":\"default\",\"value\":\"([\\w=/]+)\"");
-            Matcher matcher = pattern.matcher(response);
-            matcher.find();
-            String functionKey = matcher.group(1);
+            String functionKey = app2.listFunctionKeys("square").values().iterator().next();
 
             // warm up
             System.out.println("Warming up " + app2Url + "/api/square...");

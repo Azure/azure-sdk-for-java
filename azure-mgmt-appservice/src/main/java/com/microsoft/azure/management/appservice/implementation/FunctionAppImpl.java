@@ -6,10 +6,12 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.AppServicePlan;
 import com.microsoft.azure.management.appservice.FunctionApp;
+import com.microsoft.azure.management.appservice.NameValuePair;
 import com.microsoft.azure.management.appservice.OperatingSystem;
 import com.microsoft.azure.management.appservice.PricingTier;
 import com.microsoft.azure.management.appservice.SkuDescription;
@@ -24,11 +26,13 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import rx.Completable;
 import rx.Observable;
 import rx.functions.Action0;
 import rx.functions.Func1;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -187,6 +191,36 @@ class FunctionAppImpl
     }
 
     @Override
+    public Map<String, String> listFunctionKeys(String functionName) {
+        return listFunctionKeysAsync(functionName).toBlocking().single();
+    }
+
+    @Override
+    public Observable<Map<String, String>> listFunctionKeysAsync(final String functionName) {
+        return manager().inner().webApps().getFunctionsAdminTokenAsync(resourceGroupName(), name())
+                .flatMap(new Func1<String, Observable<FunctionKeyListResult>>() {
+                    @Override
+                    public Observable<FunctionKeyListResult> call(String s) {
+                        String functionUrl = String.format("https://%s/admin/functions/%s/keys",
+                                inner().defaultHostName(), functionName);
+                        return functionAppKeyService.getFunctionKey(functionUrl, "Bearer " + s);
+                    }
+                })
+                .map(new Func1<FunctionKeyListResult, Map<String, String>>() {
+                    @Override
+                    public Map<String, String> call(FunctionKeyListResult result) {
+                        Map<String, String> keys = new HashMap<String, String>();
+                        if (result.keys != null) {
+                            for (NameValuePair pair : result.keys) {
+                                keys.put(pair.name(), pair.value());
+                            }
+                        }
+                        return keys;
+                    }
+                });
+    }
+
+    @Override
     public void syncTriggers() {
         syncTriggersAsync().toObservable().toBlocking().subscribe();
     }
@@ -218,9 +252,17 @@ class FunctionAppImpl
     }
 
     private interface FunctionAppKeyService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getByResourceGroup" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getMasterKey" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/admin/masterkey")
         Observable<Map<String, String>> getMasterKey(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getFunctionKey" })
+        @GET
+        Observable<FunctionKeyListResult> getFunctionKey(@Url String functionKeyUrl, @Header("Authorization") String functionKeyToken);
+    }
+
+    private static class FunctionKeyListResult {
+        @JsonProperty("keys")
+        private List<NameValuePair> keys;
     }
 }

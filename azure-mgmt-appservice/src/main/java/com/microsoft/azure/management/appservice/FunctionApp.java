@@ -17,6 +17,8 @@ import com.microsoft.azure.management.storage.StorageAccount;
 import rx.Completable;
 import rx.Observable;
 
+import java.util.Map;
+
 /**
  * An immutable client-side representation of an Azure Function App.
  */
@@ -41,6 +43,20 @@ public interface FunctionApp extends
      * @return the master key for the function app
      */
     Observable<String> getMasterKeyAsync();
+
+    /**
+     * Retrieve the function key for a specific function.
+     * @param functionName the name of the function
+     * @return the function key
+     */
+    Map<String, String> listFunctionKeys(String functionName);
+
+    /**
+     * Retrieve the function key for a specific function.
+     * @param functionName the name of the function
+     * @return the function key
+     */
+    Observable<Map<String, String>> listFunctionKeysAsync(String functionName);
 
     /**
      * Syncs the triggers on the function app.
