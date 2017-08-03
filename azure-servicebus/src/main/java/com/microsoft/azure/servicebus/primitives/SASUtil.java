@@ -70,15 +70,15 @@ public class SASUtil {
     {
         if(tokenValidityInSeconds >= 300)
         {
-            return 30;
+            return tokenValidityInSeconds - 30;
         }
         else if(tokenValidityInSeconds >= 60)
         {
-            return 10;
+            return tokenValidityInSeconds - 10;
         }
         else
-        {
-            return 1;
+        {            
+            return (tokenValidityInSeconds - 1) > 0 ? tokenValidityInSeconds - 1 : 0;
         }
     }    
 }

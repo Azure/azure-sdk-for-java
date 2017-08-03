@@ -87,8 +87,7 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
             return CompletableFuture.completedFuture(null);
         }
         else
-        {
-            this.cancelSASTokenRenewTimer();
+        {            
             CompletableFuture<ScheduledFuture<?>> sendTokenFuture = this.underlyingFactory.sendSASTokenAndSetRenewTimer(this.sasTokenAudienceURI, retryOnFailure, () -> this.sendSASTokenAndSetRenewTimer(true));
             return sendTokenFuture.thenAccept((f) -> {this.sasTokenRenewTimerFuture = f; TRACE_LOGGER.debug("Set SAS Token renew timer");});
         }

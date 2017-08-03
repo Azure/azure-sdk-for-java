@@ -32,7 +32,7 @@ public class MessageAndSessionPumpTests {
 		messagePump.registerMessageHandler(messageHandler, new MessageHandlerOptions(DEFAULT_MAX_CONCURRENT_CALLS, autoComplete, Duration.ofMinutes(10)));
 		if(!messageHandler.getMessageCountDownLatch().await(2, TimeUnit.MINUTES))
 		{
-			Assert.assertEquals("All messages not pumped even after waiting for 2 minutes.", numMessages, messageHandler.getMessageCountDownLatch().getCount());
+			Assert.assertEquals("All messages not pumped even after waiting for 2 minutes.", numMessages, numMessages - messageHandler.getMessageCountDownLatch().getCount());
 		}
 		
 		Assert.assertTrue("OnMessage called by maximum of one concurrent thread.", messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() > 1);
@@ -54,7 +54,7 @@ public class MessageAndSessionPumpTests {
 		messagePump.registerMessageHandler(messageHandler, new MessageHandlerOptions(DEFAULT_MAX_CONCURRENT_CALLS, autoComplete, Duration.ofMinutes(10)));
 		if(!messageHandler.getMessageCountDownLatch().await(2, TimeUnit.MINUTES))
 		{
-			Assert.assertEquals("All messages not pumped even after waiting for 2 minutes.", numMessages, messageHandler.getMessageCountDownLatch().getCount());
+			Assert.assertEquals("All messages not pumped even after waiting for 2 minutes.", numMessages, numMessages - messageHandler.getMessageCountDownLatch().getCount());
 		}
 		Assert.assertTrue("OnMessage called by maximum of one concurrent thread.", messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() > 1);
 		Assert.assertTrue("OnMessage called by more than maxconcurrentcalls threads.", messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() <= DEFAULT_MAX_CONCURRENT_CALLS);
@@ -70,9 +70,9 @@ public class MessageAndSessionPumpTests {
 		boolean autoComplete = false;
 		CountingMessageHandler messageHandler = new CountingMessageHandler(messagePump, !autoComplete, numMessages, true);
 		messagePump.registerMessageHandler(messageHandler, new MessageHandlerOptions(DEFAULT_MAX_CONCURRENT_CALLS, autoComplete, Duration.ofMinutes(10)));
-		if(!messageHandler.getMessageCountDownLatch().await(2, TimeUnit.MINUTES))
+		if(!messageHandler.getMessageCountDownLatch().await(4, TimeUnit.MINUTES))
 		{
-			Assert.assertEquals("All messages not pumped even after waiting for 2 minutes.", numMessages * 2, messageHandler.getMessageCountDownLatch().getCount());
+			Assert.assertEquals("All messages not pumped even after waiting for 4 minutes.", numMessages * 2, numMessages * 2 - messageHandler.getMessageCountDownLatch().getCount());
 		}
 		Assert.assertTrue("OnMessage called by maximum of one concurrent thread.", messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() > 1);
 		Assert.assertTrue("OnMessage called by more than maxconcurrentcalls threads.", messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() <= DEFAULT_MAX_CONCURRENT_CALLS);
@@ -92,7 +92,7 @@ public class MessageAndSessionPumpTests {
 		int waitMinutes = 2 * sleepMinutes;
 		if(!messageHandler.getMessageCountDownLatch().await(waitMinutes, TimeUnit.MINUTES))
 		{
-			Assert.assertEquals("All messages not pumped even after waiting for " + waitMinutes + " minutes.", numMessages, messageHandler.getMessageCountDownLatch().getCount());
+			Assert.assertEquals("All messages not pumped even after waiting for " + waitMinutes + " minutes.", numMessages, numMessages - messageHandler.getMessageCountDownLatch().getCount());
 		}
 		Assert.assertTrue("OnMessage called by maximum of one concurrent thread.", messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() > 1);
 		Assert.assertTrue("OnMessage called by more than maxconcurrentcalls threads.", messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() <= numMessages);
@@ -184,7 +184,7 @@ public class MessageAndSessionPumpTests {
 		sessionPump.registerSessionHandler(sessionHandler, new SessionHandlerOptions(DEFAULT_MAX_CONCURRENT_SESSIONS, maxConcurrentCallsPerSession, autoComplete, Duration.ofMinutes(10)));
 		if(!sessionHandler.getMessageCountDownLatch().await(5, TimeUnit.MINUTES))
 		{
-			Assert.assertEquals("All messages not pumped even after waiting for 5 minutes.", numSessions * numMessagePerSession, sessionHandler.getMessageCountDownLatch().getCount());
+			Assert.assertEquals("All messages not pumped even after waiting for 5 minutes.", numSessions * numMessagePerSession, numSessions * numMessagePerSession - sessionHandler.getMessageCountDownLatch().getCount());
 		}
 		
 		Assert.assertTrue("All sessions not received by session pump", sessionHandler.getReceivedSessions().containsAll(sessionIds));
@@ -217,7 +217,7 @@ public class MessageAndSessionPumpTests {
 		sessionPump.registerSessionHandler(sessionHandler, new SessionHandlerOptions(DEFAULT_MAX_CONCURRENT_SESSIONS, DEFAULT_MAX_CONCURRENT_CALLS_PER_SESSION, autoComplete, Duration.ofMinutes(10)));
 		if(!sessionHandler.getMessageCountDownLatch().await(5, TimeUnit.MINUTES))
 		{			
-			Assert.assertEquals("All messages not pumped even after waiting for 5 minutes.", numSessions * numMessagePerSession, sessionHandler.getMessageCountDownLatch().getCount());
+			Assert.assertEquals("All messages not pumped even after waiting for 5 minutes.", numSessions * numMessagePerSession, numSessions * numMessagePerSession - sessionHandler.getMessageCountDownLatch().getCount());
 		}
 		
 		Assert.assertTrue("All sessions not received by session pump", sessionHandler.getReceivedSessions().containsAll(sessionIds));
@@ -248,7 +248,7 @@ public class MessageAndSessionPumpTests {
 		sessionPump.registerSessionHandler(sessionHandler, new SessionHandlerOptions(DEFAULT_MAX_CONCURRENT_SESSIONS, DEFAULT_MAX_CONCURRENT_CALLS_PER_SESSION, autoComplete, Duration.ofMinutes(10)));
 		if(!sessionHandler.getMessageCountDownLatch().await(5, TimeUnit.MINUTES))
 		{			
-			Assert.assertEquals("All messages not pumped even after waiting for 5 minutes.", 2 * numSessions * numMessagePerSession, sessionHandler.getMessageCountDownLatch().getCount());
+			Assert.assertEquals("All messages not pumped even after waiting for 5 minutes.", 2 * numSessions * numMessagePerSession, 2 * numSessions * numMessagePerSession - sessionHandler.getMessageCountDownLatch().getCount());
 		}
 		
 		Assert.assertTrue("All sessions not received by session pump", sessionHandler.getReceivedSessions().containsAll(sessionIds));
@@ -283,7 +283,7 @@ public class MessageAndSessionPumpTests {
 		int waitMinutes = 5 * sleepMinutes;
 		if(!sessionHandler.getMessageCountDownLatch().await(waitMinutes, TimeUnit.MINUTES))
 		{			
-			Assert.assertEquals("All messages not pumped even after waiting for" + waitMinutes + " minutes.", numSessions * numMessagePerSession, sessionHandler.getMessageCountDownLatch().getCount());
+			Assert.assertEquals("All messages not pumped even after waiting for" + waitMinutes + " minutes.", numSessions * numMessagePerSession, numSessions * numMessagePerSession - sessionHandler.getMessageCountDownLatch().getCount());
 		}
 		
 		Assert.assertTrue("All sessions not received by session pump", sessionHandler.getReceivedSessions().containsAll(sessionIds));

@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>com.microsoft.azure</groupId>
 		<artifactId>azure-servicebus-parent</artifactId>
-		<version>1.0.0-PREVIEW</version>
+		<version>1.0.0-RC</version>
 	</parent>
 	
 	<build>

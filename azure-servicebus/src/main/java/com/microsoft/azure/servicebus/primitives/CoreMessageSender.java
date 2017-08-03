@@ -622,8 +622,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
             return CompletableFuture.completedFuture(null);
         }
         else
-        {
-            this.cancelSASTokenRenewTimer();
+        {            
             CompletableFuture<ScheduledFuture<?>> sendTokenFuture = this.underlyingFactory.sendSASTokenAndSetRenewTimer(this.sasTokenAudienceURI, retryOnFailure, () -> this.sendSASTokenAndSetRenewTimer(true));
             return sendTokenFuture.thenAccept((f) -> {this.sasTokenRenewTimerFuture = f; TRACE_LOGGER.debug("Sent SAS Token and set renew timer");});
         }
@@ -723,6 +722,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
                         }                       
                         , CoreMessageSender.LINK_REOPEN_TIMEOUT
                         , TimerType.OneTimeRun);
+                this.cancelSASTokenRenewTimer();
                 this.sendSASTokenAndSetRenewTimer(false).handleAsync((v, sendTokenEx) -> {
                     if(sendTokenEx != null)
                     {
