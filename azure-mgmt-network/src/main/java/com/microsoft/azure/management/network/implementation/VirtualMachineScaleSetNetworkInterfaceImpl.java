@@ -32,7 +32,7 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
                 NetworkInterfaceInner,
                 VirtualMachineScaleSetNetworkInterfaceImpl>
         implements
-        VirtualMachineScaleSetNetworkInterface {
+            VirtualMachineScaleSetNetworkInterface {
     /**
      * the network client.
      */
@@ -196,5 +196,10 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
     @Override
     public NetworkManager manager() {
         return this.networkManager;
+    }
+
+    @Override
+    public boolean isAcceleratedNetworkingEnabled() {
+        return Utils.toPrimitiveBoolean(this.inner().enableAcceleratedNetworking());
     }
 }

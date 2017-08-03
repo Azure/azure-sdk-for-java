@@ -88,7 +88,9 @@ public class VirtualMachineScaleSetImpl
         VirtualMachineScaleSet.DefinitionManagedOrUnmanaged,
         VirtualMachineScaleSet.DefinitionManaged,
         VirtualMachineScaleSet.DefinitionUnmanaged,
-        VirtualMachineScaleSet.Update {
+        VirtualMachineScaleSet.Update,
+        VirtualMachineScaleSet.DefinitionStages.WithRoleAndScopeOrCreate,
+        VirtualMachineScaleSet.UpdateStages.WithRoleAndScopeOrApply {
     // Clients
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
@@ -566,25 +568,25 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withoutPrimaryInternetFacingLoadBalancerBackends(String ...backendNames) {
+    public VirtualMachineScaleSetImpl withoutPrimaryInternetFacingLoadBalancerBackends(String...backendNames) {
         addToList(this.primaryInternetFacingLBBackendsToRemoveOnUpdate, backendNames);
         return this;
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withoutPrimaryInternalLoadBalancerBackends(String ...backendNames) {
+    public VirtualMachineScaleSetImpl withoutPrimaryInternalLoadBalancerBackends(String...backendNames) {
         addToList(this.primaryInternalLBBackendsToRemoveOnUpdate, backendNames);
         return this;
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withoutPrimaryInternetFacingLoadBalancerNatPools(String ...natPoolNames) {
+    public VirtualMachineScaleSetImpl withoutPrimaryInternetFacingLoadBalancerNatPools(String...natPoolNames) {
         addToList(this.primaryInternetFacingLBInboundNatPoolsToRemoveOnUpdate, natPoolNames);
         return this;
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withoutPrimaryInternalLoadBalancerNatPools(String ...natPoolNames) {
+    public VirtualMachineScaleSetImpl withoutPrimaryInternalLoadBalancerNatPools(String...natPoolNames) {
         addToList(this.primaryInternalLBInboundNatPoolsToRemoveOnUpdate, natPoolNames);
         return this;
     }
@@ -1190,20 +1192,32 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withManagedServiceIdentity(BuiltInRole role) {
-        this.virtualMachineScaleSetMsiHelper.withManagedServiceIdentity(role, this.inner());
+    public VirtualMachineScaleSetImpl withManagedServiceIdentity(int tokenPort) {
+        this.virtualMachineScaleSetMsiHelper.withManagedServiceIdentity(tokenPort, this.inner());
         return this;
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withManagedServiceIdentity(BuiltInRole role, String scope) {
-        this.virtualMachineScaleSetMsiHelper.withManagedServiceIdentity(role, scope, this.inner());
+    public VirtualMachineScaleSetImpl withRoleBasedAccessTo(String scope, BuiltInRole asRole) {
+        this.virtualMachineScaleSetMsiHelper.withRoleBasedAccessTo(scope, asRole);
         return this;
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withManagedServiceIdentity(BuiltInRole role, String scope, int port) {
-        this.virtualMachineScaleSetMsiHelper.withManagedServiceIdentity(role, scope, port, this.inner());
+    public VirtualMachineScaleSetImpl withRoleBasedAccessToCurrentResourceGroup(BuiltInRole asRole) {
+        this.virtualMachineScaleSetMsiHelper.withRoleBasedAccessToCurrentResourceGroup(asRole);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withRoleDefinitionBasedAccessTo(String scope, String roleDefinitionId) {
+        this.virtualMachineScaleSetMsiHelper.withRoleDefinitionBasedAccessTo(scope, roleDefinitionId);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withRoleDefinitionBasedAccessToCurrentResourceGroup(String roleDefinitionId) {
+        this.virtualMachineScaleSetMsiHelper.withRoleDefinitionBasedAccessToCurrentResourceGroup(roleDefinitionId);
         return this;
     }
 
@@ -1249,7 +1263,9 @@ public class VirtualMachineScaleSetImpl
                                     @Override
                                     public Observable<VirtualMachineScaleSetInner> call(final VirtualMachineScaleSetInner scaleSetInner) {
                                         setInner(scaleSetInner);  // Inner has to be updated so that virtualMachineScaleSetMsiHelper can fetch MSI identity
-                                        return virtualMachineScaleSetMsiHelper.setupVirtualMachineScaleSetMSIResourcesAsync(self)
+                                        return virtualMachineScaleSetMsiHelper.createMSIRbacRoleAssignmentsAsync(self)
+                                                .switchIfEmpty(Observable.<RoleAssignment>just(null))
+                                                .last()
                                                 .map(new Func1<RoleAssignment, VirtualMachineScaleSetInner>() {
                                                     @Override
                                                     public VirtualMachineScaleSetInner call(RoleAssignment roleAssignment) {

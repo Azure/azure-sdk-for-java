@@ -346,7 +346,9 @@ public final class Utils {
         for (String dnsServerIp : resource.dnsServers()) {
             info.append("\n\t\t").append(dnsServerIp);
         }
-        info.append("\n\t IP forwarding enabled: ").append(resource.isIPForwardingEnabled())
+
+        info.append("\n\tIP forwarding enabled? ").append(resource.isIPForwardingEnabled())
+            .append("\n\tAccelerated networking enabled? ").append(resource.isAcceleratedNetworkingEnabled())
             .append("\n\tMAC Address:").append(resource.macAddress())
             .append("\n\tPrivate IP:").append(resource.primaryPrivateIP())
             .append("\n\tPrivate allocation method:").append(resource.primaryPrivateIPAllocationMethod())
