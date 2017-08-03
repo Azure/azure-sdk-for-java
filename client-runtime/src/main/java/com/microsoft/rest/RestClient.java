@@ -6,6 +6,8 @@
 
 package com.microsoft.rest;
 
+import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.interceptors.BaseUrlHandler;
 import com.microsoft.rest.interceptors.CustomHeadersInterceptor;
@@ -22,6 +24,7 @@ import okhttp3.ConnectionPool;
 import okhttp3.Interceptor;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
+import okio.AsyncTimeout;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 
@@ -131,6 +134,34 @@ public final class RestClient {
      */
     public RestClient.Builder newBuilder() {
         return new Builder(this);
+    }
+
+    /**
+     * Closes the HTTP client and recycles the resources associated. The threads will
+     * be recycled after 60 seconds of inactivity.
+     */
+    @Beta(SinceVersion.V1_1_0)
+    public void close() {
+        httpClient.dispatcher().executorService().shutdown();
+        httpClient.connectionPool().evictAll();
+        synchronized (httpClient.connectionPool()) {
+            httpClient.connectionPool().notifyAll();
+        }
+        synchronized (AsyncTimeout.class) {
+            AsyncTimeout.class.notifyAll();
+        }
+    }
+
+    /**
+     * Closes the HTTP client, recycles the resources associated, and waits
+     * for 60 seconds for all the threads to be recycled.
+     *
+     * @throws InterruptedException thrown when the 60-sec wait is interrupted
+     */
+    @Beta(SinceVersion.V1_1_0)
+    public void closeAndWait() throws InterruptedException {
+        close();
+        Thread.sleep(60000);
     }
 
     /**

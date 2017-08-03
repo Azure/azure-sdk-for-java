@@ -209,7 +209,7 @@ public final class ServiceResponseBuilder<T, E extends RestException> implements
         }
         // Deserialize
         else {
-            String responseContent = responseBody.source().buffer().clone().readUtf8();
+            String responseContent = responseBody.source().buffer().readUtf8();
             if (responseContent.length() <= 0) {
                 return null;
             }
