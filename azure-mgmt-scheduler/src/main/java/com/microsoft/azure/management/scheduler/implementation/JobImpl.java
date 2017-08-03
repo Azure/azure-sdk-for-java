@@ -116,166 +116,138 @@ public class JobImpl
             });
     }
 
-    @Override
-    public JobImpl startingNow() {
+    private JobPropertiesInner ensureProperties() {
         if (this.inner().properties() == null) {
             this.inner().withProperties(new JobPropertiesInner());
         }
-        this.inner().properties().withStartTime(null);
+
+        return this.inner().properties();
+    }
+
+    private JobRecurrence ensureRecurrence() {
+        if (this.ensureProperties().recurrence() == null) {
+            this.inner().properties()
+                .withRecurrence(new JobRecurrence()
+                    .withInterval(1));
+        }
+
+        return this.inner().properties().recurrence();
+    }
+
+    private JobRecurrenceSchedule ensureRecurrenceScheduler() {
+        if (this.ensureRecurrence().schedule() == null) {
+            this.inner().properties().recurrence()
+                .withSchedule(new JobRecurrenceSchedule());
+        }
+
+        return this.inner().properties().recurrence().schedule();
+    }
+
+    @Override
+    public JobImpl startingNow() {
+        this.ensureProperties().withStartTime(null);
 
         return this;
     }
 
     @Override
     public JobImpl startingAt(DateTime startTime) {
-        if (this.inner().properties() == null) {
-            this.inner().withProperties(new JobPropertiesInner());
-        }
-        this.inner().properties().withStartTime(startTime);
+        this.ensureProperties().withStartTime(startTime);
 
         return this;
     }
 
     @Override
     public JobImpl withStartTime(DateTime startTime) {
-        if (this.inner().properties() == null) {
-            this.inner().withProperties(new JobPropertiesInner());
-        }
-        this.inner().properties().withStartTime(startTime);
+        this.ensureProperties().withStartTime(startTime);
 
         return this;
     }
 
     @Override
     public JobImpl withRecurrence(JobRecurrence jobRecurrence) {
-        if (this.inner().properties() == null) {
-            this.inner().withProperties(new JobPropertiesInner());
-        }
-        this.inner().properties().withRecurrence(jobRecurrence);
+        this.ensureProperties().withRecurrence(jobRecurrence);
 
         return this;
     }
 
     @Override
     public JobImpl runningEvery(int interval) {
-        if (this.inner().properties() == null) {
-            this.inner().withProperties(new JobPropertiesInner());
-        }
-        this.inner().properties().withRecurrence(new JobRecurrence().withInterval(interval));
+        this.ensureProperties().withRecurrence(new JobRecurrence().withInterval(interval));
 
         return this;
     }
 
     @Override
     public JobImpl runningEveryMinute() {
-        if (this.inner().properties() == null) {
-            this.inner().withProperties(new JobPropertiesInner());
-        }
-        this.inner().properties()
-            .withRecurrence(new JobRecurrence()
-                .withInterval(1)
-                .withFrequency(RecurrenceFrequency.MINUTE));
+        this.ensureRecurrence()
+            .withInterval(1)
+            .withFrequency(RecurrenceFrequency.MINUTE);
 
         return this;
     }
 
     @Override
     public JobImpl runningHourly() {
-        if (this.inner().properties() == null) {
-            this.inner().withProperties(new JobPropertiesInner());
-        }
-        this.inner().properties()
-            .withRecurrence(new JobRecurrence()
-                .withInterval(1)
-                .withFrequency(RecurrenceFrequency.HOUR));
+        this.ensureRecurrence()
+            .withInterval(1)
+            .withFrequency(RecurrenceFrequency.HOUR);
 
         return this;
     }
 
     @Override
     public JobImpl runningDaily() {
-        if (this.inner().properties() == null) {
-            this.inner().withProperties(new JobPropertiesInner());
-        }
-        this.inner().properties()
-            .withRecurrence(new JobRecurrence()
-                .withInterval(1)
-                .withFrequency(RecurrenceFrequency.DAY));
+        this.ensureRecurrence()
+            .withInterval(1)
+            .withFrequency(RecurrenceFrequency.DAY);
 
         return this;
     }
 
     @Override
     public JobImpl runningWeekly() {
-        if (this.inner().properties() == null) {
-            this.inner().withProperties(new JobPropertiesInner());
-        }
-        this.inner().properties()
-            .withRecurrence(new JobRecurrence()
-                .withInterval(1)
-                .withFrequency(RecurrenceFrequency.WEEK));
+        this.ensureRecurrence()
+            .withInterval(1)
+            .withFrequency(RecurrenceFrequency.WEEK);
 
         return this;
     }
 
     @Override
     public JobImpl runningMonthly() {
-        if (this.inner().properties() == null) {
-            this.inner().withProperties(new JobPropertiesInner());
-        }
-        this.inner().properties()
-            .withRecurrence(new JobRecurrence()
-                .withInterval(1)
-                .withFrequency(RecurrenceFrequency.MONTH));
+        this.ensureRecurrence()
+            .withInterval(1)
+            .withFrequency(RecurrenceFrequency.MONTH);
 
         return this;
     }
 
     @Override
     public JobImpl withAction(JobAction jobAction) {
-        if (this.inner().properties() == null) {
-            this.inner().withProperties(new JobPropertiesInner());
-        }
-        this.inner().properties().withAction(jobAction);
+        this.ensureProperties().withAction(jobAction);
 
         return this;
     }
 
     @Override
     public JobImpl withState(JobState state) {
-        if (this.inner().properties() == null) {
-            this.inner().withProperties(new JobPropertiesInner());
-        }
-        this.inner().properties().withState(state);
+        this.ensureProperties().withState(state);
 
         return this;
     }
 
     @Override
     public JobImpl minutes() {
-        if (this.inner().properties() == null) {
-            this.inner().withProperties(new JobPropertiesInner());
-            this.inner().properties()
-                .withRecurrence(new JobRecurrence()
-                    .withInterval(1));
-        }
-        this.inner().properties()
-            .recurrence()
-                .withFrequency(RecurrenceFrequency.MINUTE);
+        this.ensureRecurrence()
+            .withFrequency(RecurrenceFrequency.MINUTE);
 
         return this;
     }
 
     @Override
     public JobImpl hours() {
-        if (this.inner().properties() == null) {
-            this.inner().withProperties(new JobPropertiesInner());
-            this.inner().properties()
-                .withRecurrence(new JobRecurrence()
-                    .withInterval(1));
-        }
-        this.inner().properties()
-            .recurrence()
+        this.ensureRecurrence()
             .withFrequency(RecurrenceFrequency.HOUR);
 
         return this;
@@ -283,14 +255,7 @@ public class JobImpl
 
     @Override
     public JobImpl days() {
-        if (this.inner().properties() == null) {
-            this.inner().withProperties(new JobPropertiesInner());
-            this.inner().properties()
-                .withRecurrence(new JobRecurrence()
-                    .withInterval(1));
-        }
-        this.inner().properties()
-            .recurrence()
+        this.ensureRecurrence()
             .withFrequency(RecurrenceFrequency.DAY);
 
         return this;
@@ -298,14 +263,7 @@ public class JobImpl
 
     @Override
     public JobImpl weeks() {
-        if (this.inner().properties() == null) {
-            this.inner().withProperties(new JobPropertiesInner());
-            this.inner().properties()
-                .withRecurrence(new JobRecurrence()
-                    .withInterval(1));
-        }
-        this.inner().properties()
-            .recurrence()
+        this.ensureRecurrence()
             .withFrequency(RecurrenceFrequency.WEEK);
 
         return this;
@@ -313,14 +271,7 @@ public class JobImpl
 
     @Override
     public JobImpl months() {
-        if (this.inner().properties() == null) {
-            this.inner().withProperties(new JobPropertiesInner());
-            this.inner().properties()
-                .withRecurrence(new JobRecurrence()
-                    .withInterval(1));
-        }
-        this.inner().properties()
-            .recurrence()
+        this.ensureRecurrence()
             .withFrequency(RecurrenceFrequency.MONTH);
 
         return this;
@@ -334,31 +285,16 @@ public class JobImpl
             this.inner().properties()
                 .recurrence()
                 .schedule()
-                .withWeekDays(null);
-            this.inner().properties()
-                .recurrence()
-                .schedule()
-                .withMonthDays(null);
-            this.inner().properties()
-                .recurrence()
-                .schedule()
+                .withWeekDays(null)
+                .withMonthDays(null)
                 .withMonthlyOccurrences(null);
         }
     }
 
     @Override
     public JobImpl onTheseDays(DayOfWeek... days) {
-        if (this.inner().properties() == null) {
-            this.inner().withProperties(new JobPropertiesInner());
-            this.inner().properties()
-                .withRecurrence(new JobRecurrence());
-        }
-        if (this.inner().properties().recurrence().schedule() == null) {
-            this.inner().properties()
-                .recurrence()
-                .withSchedule(new JobRecurrenceSchedule());
-        }
-        resetJobScheduleDaysList();
+        this.ensureRecurrenceScheduler();
+        this.resetJobScheduleDaysList();
 
         this.inner().properties()
             .recurrence()
@@ -372,17 +308,8 @@ public class JobImpl
 
     @Override
     public JobImpl onTheseDaysOfMonth(int... days) {
-        if (this.inner().properties() == null) {
-            this.inner().withProperties(new JobPropertiesInner());
-            this.inner().properties()
-                .withRecurrence(new JobRecurrence());
-        }
-        if (this.inner().properties().recurrence().schedule() == null) {
-            this.inner().properties()
-                .recurrence()
-                .withSchedule(new JobRecurrenceSchedule());
-        }
-        resetJobScheduleDaysList();
+        this.ensureRecurrenceScheduler();
+        this.resetJobScheduleDaysList();
 
         this.inner().properties()
             .recurrence()
@@ -396,17 +323,8 @@ public class JobImpl
 
     @Override
     public JobImpl recurringEvery(JobScheduleMonthlyWeekDay... weekDays) {
-        if (this.inner().properties() == null) {
-            this.inner().withProperties(new JobPropertiesInner());
-            this.inner().properties()
-                .withRecurrence(new JobRecurrence());
-        }
-        if (this.inner().properties().recurrence().schedule() == null) {
-            this.inner().properties()
-                .recurrence()
-                .withSchedule(new JobRecurrenceSchedule());
-        }
-        resetJobScheduleDaysList();
+        this.ensureRecurrenceScheduler();
+        this.resetJobScheduleDaysList();
 
         this.inner().properties()
             .recurrence()
@@ -420,42 +338,38 @@ public class JobImpl
 
     @Override
     public JobImpl recurringEvery(JobScheduleDay... weekDays) {
-        if (this.inner().properties() == null) {
-            this.inner().withProperties(new JobPropertiesInner());
-            this.inner().properties()
-                .withRecurrence(new JobRecurrence());
-        }
-        if (this.inner().properties().recurrence().schedule() == null) {
-            this.inner().properties()
-                .recurrence()
-                .withSchedule(new JobRecurrenceSchedule());
-        }
-        resetJobScheduleDaysList();
+        this.ensureRecurrenceScheduler();
+        this.resetJobScheduleDaysList();
 
         this.inner().properties()
             .recurrence()
             .schedule().withMonthlyOccurrences(new ArrayList<JobRecurrenceScheduleMonthlyOccurrence>());
         for (JobScheduleDay day : weekDays) {
             this.inner().properties().recurrence().schedule()
-                .monthlyOccurrences().add(new JobRecurrenceScheduleMonthlyOccurrence()
-                            .withDay(day)
-                            .withOccurrence(-1));
+                .monthlyOccurrences().add(
+                    new JobRecurrenceScheduleMonthlyOccurrence()
+                        .withDay(day)
+                        .withOccurrence(-1));
             this.inner().properties().recurrence().schedule()
-                .monthlyOccurrences().add(new JobRecurrenceScheduleMonthlyOccurrence()
-                .withDay(day)
-                .withOccurrence(1));
+                .monthlyOccurrences().add(
+                    new JobRecurrenceScheduleMonthlyOccurrence()
+                        .withDay(day)
+                        .withOccurrence(1));
             this.inner().properties().recurrence().schedule()
-                .monthlyOccurrences().add(new JobRecurrenceScheduleMonthlyOccurrence()
-                .withDay(day)
-                .withOccurrence(2));
+                .monthlyOccurrences().add(
+                    new JobRecurrenceScheduleMonthlyOccurrence()
+                        .withDay(day)
+                        .withOccurrence(2));
             this.inner().properties().recurrence().schedule()
-                .monthlyOccurrences().add(new JobRecurrenceScheduleMonthlyOccurrence()
-                .withDay(day)
-                .withOccurrence(3));
+                .monthlyOccurrences().add(
+                    new JobRecurrenceScheduleMonthlyOccurrence()
+                        .withDay(day)
+                        .withOccurrence(3));
             this.inner().properties().recurrence().schedule()
-                .monthlyOccurrences().add(new JobRecurrenceScheduleMonthlyOccurrence()
-                .withDay(day)
-                .withOccurrence(4));
+                .monthlyOccurrences().add(
+                    new JobRecurrenceScheduleMonthlyOccurrence()
+                        .withDay(day)
+                        .withOccurrence(4));
         }
 
         return this;
@@ -463,16 +377,8 @@ public class JobImpl
 
     @Override
     public JobImpl atTheseMinutes(int... minutes) {
-        if (this.inner().properties() == null) {
-            this.inner().withProperties(new JobPropertiesInner());
-            this.inner().properties()
-                .withRecurrence(new JobRecurrence());
-        }
-        if (this.inner().properties().recurrence().schedule() == null) {
-            this.inner().properties()
-                .recurrence()
-                .withSchedule(new JobRecurrenceSchedule());
-        }
+        this.ensureRecurrenceScheduler();
+
         if (this.inner().properties().recurrence().schedule().minutes() == null) {
             this.inner().properties()
                 .recurrence()
@@ -487,16 +393,8 @@ public class JobImpl
 
     @Override
     public JobImpl atTheseHours(int... hours) {
-        if (this.inner().properties() == null) {
-            this.inner().withProperties(new JobPropertiesInner());
-            this.inner().properties()
-                .withRecurrence(new JobRecurrence());
-        }
-        if (this.inner().properties().recurrence().schedule() == null) {
-            this.inner().properties()
-                .recurrence()
-                .withSchedule(new JobRecurrenceSchedule());
-        }
+        this.ensureRecurrenceScheduler();
+
         if (this.inner().properties().recurrence().schedule().hours() == null) {
             this.inner().properties()
                 .recurrence()
@@ -511,13 +409,7 @@ public class JobImpl
 
     @Override
     public JobImpl endingNever() {
-        if (this.inner().properties() == null) {
-            this.inner().withProperties(new JobPropertiesInner());
-            this.inner().properties()
-                .withRecurrence(new JobRecurrence());
-        }
-        this.inner().properties()
-            .recurrence()
+        this.ensureRecurrence()
             .withCount(null) // only count or endTime or none are valid combination
             .withEndTime(null);
 
@@ -526,13 +418,7 @@ public class JobImpl
 
     @Override
     public JobImpl endingBy(DateTime endTime) {
-        if (this.inner().properties() == null) {
-            this.inner().withProperties(new JobPropertiesInner());
-            this.inner().properties()
-                .withRecurrence(new JobRecurrence());
-        }
-        this.inner().properties()
-            .recurrence()
+        this.ensureRecurrence()
             .withCount(null) // only count or endTime or none are valid combination
             .withEndTime(endTime);
 
@@ -541,13 +427,7 @@ public class JobImpl
 
     @Override
     public JobImpl endingAfterOccurrence(int countTimes) {
-        if (this.inner().properties() == null) {
-            this.inner().withProperties(new JobPropertiesInner());
-            this.inner().properties()
-                .withRecurrence(new JobRecurrence());
-        }
-        this.inner().properties()
-            .recurrence()
+        this.ensureRecurrence()
             .withEndTime(null) // only count or endTime or none are valid combination
             .withCount(countTimes);
 

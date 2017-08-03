@@ -9,7 +9,7 @@ import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 
 /**
- * The day of the week the job will run each month on weekly bases.
+ * Days of the week relative to the beginning of the month for scheduling a job.
  */
 @Fluent
 @Beta(Beta.SinceVersion.V1_2_0)

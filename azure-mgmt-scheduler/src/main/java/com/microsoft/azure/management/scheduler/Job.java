@@ -98,7 +98,7 @@ public interface Job extends
          */
         interface WithStartTime {
             /**
-             * A job which will start right away.
+             * Specifies that the job should be started right away.
              *
              * @return the next stage of the definition
              */
@@ -120,8 +120,9 @@ public interface Job extends
             /**
              * The recurrence object specifies recurrence rules for the job and the recurrence the job will execute with.
              * <p>
-             * The recurrence object supports the elements frequency, interval, endTime, count, and schedule. If recurrence
-             *   is defined, frequency is required; the other elements of recurrence are optional.
+             * The recurrent object allows the frequency, the end time, the number of occurrences and the schedule
+             *   to be specified. If a recurrence is defined, at least the frequency should be specified,
+             *   the rest is optional.
              *
              * @param jobRecurrence the reccurence object
              * @return the next stage of the definition
@@ -181,14 +182,14 @@ public interface Job extends
          */
         interface WithRecurrenceFrequencyAndSchedule {
             /**
-             * Specifies the recurrence of the job to be every minute.
+             * Selects minutes as the time unit for the number of occurrences.
              *
              * @return the next stage of the definition
              */
             WithEndTime minutes();
 
             /**
-             * Specifies the recurrence of the job to be every hour.
+             * Selects hours as the time unit for the number of occurrences.
              *
              * @return the next stage of the definition
              */
@@ -202,14 +203,14 @@ public interface Job extends
             WithAdvanceMinutesAndHoursSchedule days();
 
             /**
-             * Specifies the recurrence of the job to be every week.
+             * Selects weeks as the time unit for the number of occurrences.
              *
              * @return the next stage of the definition
              */
             WithAdvanceDaysOfWeekSchedule weeks();
 
             /**
-             * Specifies the recurrence  of the job to be every month.
+             * Selects months as the time unit for the number of occurrences.
              *
              * @return the next stage of the definition
              */
@@ -295,7 +296,7 @@ public interface Job extends
             WithAction endingNever();
 
             /**
-             * Specifies the job to complete at a given time.
+             * Specifies the time after which the job will no longer run recurrently.
              *
              * @param endTime number of times the job will run
              * @return the next stage of the definition
@@ -303,7 +304,7 @@ public interface Job extends
             WithAction endingBy(DateTime endTime);
 
             /**
-             * Specifies the job to complete after the specified number of runs.
+             * Specifies the specified number of runs after which the job will no longer run recurrently.
              *
              * @param numberOfOccurences number of times the job will run
              * @return the next stage of the definition
