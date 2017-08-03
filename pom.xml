@@ -404,6 +404,7 @@
     <module>./azure-mgmt-redis</module>
     <module>./azure-mgmt-relay</module>
     <module>./azure-mgmt-resources</module>
+    <module>./azure-mgmt-scheduler</module>
     <module>./azure-mgmt-search</module>
     <module>./azure-mgmt-servicebus</module>
     <module>./azure-mgmt-servicefabric</module>

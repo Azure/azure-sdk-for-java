@@ -30,10 +30,10 @@ import java.io.File;
  *    Backend server pool 1 settings = HTTP:8080
  *    Front end port 1 = HTTP:80
  *    Listener 1 = HTTP
- *    Routing rule 1 = HTTP listener 1 => backend server pool 1
+ *    Routing rule 1 = HTTP listener 1 =&gt; backend server pool 1
  *    (round-robin load distribution)
  *
- *  - MODIFY the application gateway - re-configure the Routing Rule 1 for SSL offload &
+ *  - MODIFY the application gateway - re-configure the Routing Rule 1 for SSL offload and
  *    add a host name, www.contoso.com
  *
  *    Change listener 1 from HTTP to HTTPS
@@ -48,7 +48,7 @@ import java.io.File;
  *    Backend server pool 1 settings = HTTP:8080
  *    Front end port 1 = HTTPS:1443
  *    Listener 1 = HTTPS
- *    Routing rule 1 = HTTPS listener 1 => backend server pool 1
+ *    Routing rule 1 = HTTPS listener 1 =&gt; backend server pool 1
  *    (round-robin load distribution)
  *
  */
