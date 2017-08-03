@@ -130,11 +130,12 @@ public interface Job extends
             WithAction withRecurrence(JobRecurrence jobRecurrence);
 
             /**
-             * Specifies the interval for the frequency that determines how often the job will run.
+             * Specifies the number of time units between consecutive occurrences. The exact time unit to use is specified at the next stage.
              * <p>
-             * For example, if interval is 3 and frequency is "week", the job recurs every 3 weeks. Azure Scheduler
-             *   supports a maximum interval of 18 months for monthly frequency, 78 weeks for weekly frequency,
-             *   or 548 days for daily frequency. For hour and minute frequency, the supported range is between 1 and 1000.
+             * For example, if 3 is specified here and "week" is selected at the next stage, the job will recur every 3 weeks.
+             * <p>
+             * Different time units support different maximum numbers of occurrences.
+             *   Those maximum combinations are: 18 months, 78 weeks, 548 days, 1000 hours or minutes.
              *
              * @param interval a positive integer and denotes the interval for the frequency that determines how often the job will run
              * @return the next stage of the definition
@@ -296,7 +297,7 @@ public interface Job extends
             WithAction endingNever();
 
             /**
-             * Specifies the time after which the job will no longer run recurrently.
+             * Specifies the time after which the job will no longer be started automatically.
              *
              * @param endTime number of times the job will run
              * @return the next stage of the definition
@@ -304,7 +305,7 @@ public interface Job extends
             WithAction endingBy(DateTime endTime);
 
             /**
-             * Specifies the specified number of runs after which the job will no longer run recurrently.
+             * Specifies the specified number of runs after which the job will no longer be started automatically.
              *
              * @param numberOfOccurences number of times the job will run
              * @return the next stage of the definition
