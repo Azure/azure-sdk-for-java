@@ -349,6 +349,11 @@ class DeploymentSlotImpl
                 });
     }
 
+    public Observable<MSDeployStatusInner> msDeployAsync(String blobUri) {
+        return manager().inner().webApps().createMSDeployOperationSlotAsync(resourceGroupName(), parent().name(), name(),
+                new MSDeployInner().withPackageUri(blobUri));
+    }
+
     @Override
     public void verifyDomainOwnership(String certificateOrderName, String domainVerificationToken) {
         verifyDomainOwnershipAsync(certificateOrderName, domainVerificationToken).toObservable().toBlocking().subscribe();

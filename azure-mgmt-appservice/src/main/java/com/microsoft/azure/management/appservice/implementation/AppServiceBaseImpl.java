@@ -202,6 +202,11 @@ abstract class AppServiceBaseImpl<
                 });
     }
 
+    public Observable<MSDeployStatusInner> msDeployAsync(String blobUri) {
+        return manager().inner().webApps().createMSDeployOperationAsync(resourceGroupName(), name(),
+                new MSDeployInner().withPackageUri(blobUri));
+    }
+
     @Override
     public void verifyDomainOwnership(String certificateOrderName, String domainVerificationToken) {
         verifyDomainOwnershipAsync(certificateOrderName, domainVerificationToken).toObservable().toBlocking().subscribe();
