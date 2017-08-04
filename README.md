@@ -19,13 +19,15 @@ Refer to [azure.com](https://azure.microsoft.com/services/service-bus/) to learn
 See our [Contribution Guidelines](./.github/CONTRIBUTING.md).
 
 ## FAQ
+### Where is the API document?
+Click [here](https://docs.microsoft.com/en-us/java/api/overview/azure/servicebus/clientlibrary).
 
 ### Where can I find examples that use this library?
 
-To get started *sending* messages to Service Bus refer to [Get started sending to Service Bus queues](https://github.com/Azure/azure-service-bus/blob/master/samples/Java/src/main/java/com/microsoft/azure/servicebus/samples/SendSample.java).
-
-To get started *receiving* messages with Service Bus refer to [Get started receiving from Service Bus queues](https://github.com/Azure/azure-service-bus/blob/master/samples/Java/src/main/java/com/microsoft/azure/servicebus/samples/ReceiveSample.java).  
+The samples are located in this repo. [Java Samples](https://github.com/Azure/azure-service-bus/tree/master/samples/Java).
 
 ### Can I manage Service Bus entities with this library?
 
-The standard way to manage Azure resources is by using [Azure Resource Manager](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview). In order to use functionality that previously existed in the azure-servicebus Java library, there will be a new Java specific library before this library becomes generally available. This will enable use cases that dynamically create/read/update/delete resources, and will be similar to the currently available [.NET management library](https://www.nuget.org/packages/Microsoft.WindowsAzure.Management.ServiceBus/).
+The standard way to manage Azure resources is by using [Azure Resource Manager](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview). In order to use functionality that previously existed in the azure-servicebus Java library, there will be a new Java specific library before this library becomes generally available. This will enable use cases that dynamically create/read/update/delete resources.
+
+[Azure Service Bus Management Library](https://mvnrepository.com/artifact/com.microsoft.azure/azure-mgmt-servicebus) is available on Maven. And this is the [API document](https://docs.microsoft.com/en-us/java/api/com.microsoft.azure.management.servicebus).
