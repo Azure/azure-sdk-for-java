@@ -454,6 +454,34 @@ If you are using released builds from 1.1.0, add the following to your POM file:
 </dependency>
 ```
 
+**Latest snapshots**
+
+If you are using snapshots builds for this repo, add the following repository and dependency to your POM file:
+
+```xml
+  <repositories>
+    <repository>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
+```
+
+```xml
+<dependency>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure</artifactId>
+    <version>1.1.3-SNAPSHOT</version>
+</dependency>
+```
+
+
 # Pre-requisites
 
 - A Java Developer Kit (JDK), v 1.7 or later
