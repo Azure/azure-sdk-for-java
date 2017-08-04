@@ -59,6 +59,36 @@ public interface FunctionApp extends
     Observable<Map<String, String>> listFunctionKeysAsync(String functionName);
 
     /**
+     * Adds a key to a function in this function app.
+     * @param functionName the name of the function
+     * @param keyName the name of the key to add
+     * @param keyValue optional. If not provided, a value will be generated.
+     */
+    NameValuePair addFunctionKey(String functionName, String keyName, String keyValue);
+
+    /**
+     * Adds a key to a function in this function app.
+     * @param functionName the name of the function
+     * @param keyName the name of the key to add
+     * @param keyValue optional. If not provided, a value will be generated.
+     */
+    Observable<NameValuePair> addFunctionKeyAsync(String functionName, String keyName, String keyValue);
+
+    /**
+     * Removes a key to a function in this function app.
+     * @param functionName the name of the function
+     * @param keyName the name of the key to remove
+     */
+    void removeFunctionKey(String functionName, String keyName);
+
+    /**
+     * Removes a key to a function in this function app.
+     * @param functionName the name of the function
+     * @param keyName the name of the key to remove
+     */
+    Completable removeFunctionKeyAsync(String functionName, String keyName);
+
+    /**
      * Syncs the triggers on the function app.
      */
     void syncTriggers();
