@@ -14,7 +14,7 @@ script:
    mvn -pl !azure-samples package javadoc:aggregate -DskipTests=true $LOG_PARAMS || travis_terminate 1 ;
    mvn install -DskipTests=true $LOG_PARAMS || travis_terminate 1 ;
    echo '==> Starting mvn test ===' ;
-   mvn test -Dsurefire.rerunFailingTestsCount=3 $LOG_PARAMS || travis_terminate 1 ;
+   mvn test -Dsurefire.rerunFailingTestsCount=3 $LOG_PARAMS -Dparallel=classes -DthreadCount=2 -DforkCount=1C || travis_terminate 1 ;
   else
    openssl aes-256-cbc -K $encrypted_25450b691aae_key -iv $encrypted_25450b691aae_iv -in my.azureauth.txt.enc -out my.azureauth.txt -d;
    export AZURE_TEST_MODE=RECORD || travis_terminate 1 ;
