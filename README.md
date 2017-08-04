@@ -479,8 +479,22 @@ If you are using snapshots builds for this repo, add the following repository an
     <artifactId>azure</artifactId>
     <version>1.1.3-SNAPSHOT</version>
 </dependency>
+<dependency>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-client-runtime</artifactId>
+    <version>1.0.5-SNAPSHOT</version>
+</dependency>
+<dependency>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-client-authentication</artifactId>
+    <version>1.0.5-SNAPSHOT</version>
+</dependency>
+<dependency>
+    <groupId>com.microsoft.rest</groupId>
+    <artifactId>client-runtime</artifactId>
+    <version>1.0.5-SNAPSHOT</version>
+</dependency>
 ```
-
 
 # Pre-requisites
 
