@@ -120,16 +120,14 @@ class LoadBalancerInboundNatPoolImpl
     public LoadBalancerInboundNatPoolImpl fromNewPublicIPAddress(String leafDnsLabel) {
         String frontendName = SdkContext.randomResourceName("fe", 20);
         this.parent().withNewPublicIPAddress(leafDnsLabel, frontendName);
-        this.fromFrontend(frontendName);
-        return this;
+        return fromFrontend(frontendName);
     }
 
     @Override
     public LoadBalancerInboundNatPoolImpl fromNewPublicIPAddress(Creatable<PublicIPAddress> pipDefinition) {
         String frontendName = SdkContext.randomResourceName("fe", 20);
         this.parent().withNewPublicIPAddress(pipDefinition, frontendName);
-        this.fromFrontend(frontendName);
-        return this;
+        return fromFrontend(frontendName);
     }
 
     @Override
