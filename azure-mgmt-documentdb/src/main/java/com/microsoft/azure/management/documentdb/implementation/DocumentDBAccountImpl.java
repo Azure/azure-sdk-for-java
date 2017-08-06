@@ -230,13 +230,13 @@ class DocumentDBAccountImpl
 
     private void setConsistencyPolicy(
             DefaultConsistencyLevel level,
-            int maxIntervalInSeconds,
-            long maxStalenessPrefix) {
+            long maxStalenessPrefix,
+            int maxIntervalInSeconds) {
         ConsistencyPolicy policy = new ConsistencyPolicy();
         policy.withDefaultConsistencyLevel(level);
         if (level == DefaultConsistencyLevel.BOUNDED_STALENESS) {
+            policy.withMaxStalenessPrefix(maxStalenessPrefix);
             policy.withMaxIntervalInSeconds(maxIntervalInSeconds);
-            policy.withMaxStalenessPrefix((long) maxStalenessPrefix);
         }
 
         this.inner().withConsistencyPolicy(policy);
