@@ -34,8 +34,8 @@ import com.microsoft.azure.management.containerregistry.Registries;
 import com.microsoft.azure.management.containerregistry.implementation.ContainerRegistryManager;
 import com.microsoft.azure.management.dns.DnsZones;
 import com.microsoft.azure.management.dns.implementation.DnsZoneManager;
-import com.microsoft.azure.management.documentdb.DocumentDBAccounts;
-import com.microsoft.azure.management.documentdb.implementation.DocumentDBManager;
+import com.microsoft.azure.management.cosmosdb.CosmosDBAccounts;
+import com.microsoft.azure.management.cosmosdb.implementation.CosmosDBManager;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroups;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryUsers;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryApplications;
@@ -109,7 +109,7 @@ public final class Azure {
     private final ServiceBusManager serviceBusManager;
     private final ContainerRegistryManager containerRegistryManager;
     private final SearchServiceManager searchServiceManager;
-    private final DocumentDBManager documentDBManager;
+    private final CosmosDBManager cosmosDBManager;
     private final String subscriptionId;
     private final Authenticated authenticated;
 
@@ -382,7 +382,7 @@ public final class Azure {
         this.sqlServerManager = SqlServerManager.authenticate(restClient, subscriptionId);
         this.serviceBusManager = ServiceBusManager.authenticate(restClient, subscriptionId);
         this.containerRegistryManager = ContainerRegistryManager.authenticate(restClient, subscriptionId);
-        this.documentDBManager = DocumentDBManager.authenticate(restClient, subscriptionId);
+        this.cosmosDBManager = CosmosDBManager.authenticate(restClient, subscriptionId);
         this.searchServiceManager = SearchServiceManager.authenticate(restClient, subscriptionId);
         this.subscriptionId = subscriptionId;
         this.authenticated = authenticated;
@@ -693,8 +693,8 @@ public final class Azure {
      * @return entry point to managing Container Regsitries.
      */
     @Beta(SinceVersion.V1_1_0)
-    public DocumentDBAccounts documentDBAccounts() {
-        return documentDBManager.databaseAccounts();
+    public CosmosDBAccounts cosmosDBAccounts() {
+        return cosmosDBManager.databaseAccounts();
     }
 
     /**
