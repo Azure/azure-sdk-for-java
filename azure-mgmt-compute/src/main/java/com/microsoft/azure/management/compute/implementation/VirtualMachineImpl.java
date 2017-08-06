@@ -98,7 +98,9 @@ class VirtualMachineImpl
             VirtualMachine.DefinitionManagedOrUnmanaged,
             VirtualMachine.DefinitionManaged,
             VirtualMachine.DefinitionUnmanaged,
-            VirtualMachine.Update {
+            VirtualMachine.Update,
+            VirtualMachine.DefinitionStages.WithRoleAndScopeOrCreate,
+            VirtualMachine.UpdateStages.WithRoleAndScopeOrUpdate {
     // Clients
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
@@ -1272,20 +1274,33 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withManagedServiceIdentity(BuiltInRole role) {
-        this.virtualMachineMsiHelper.withManagedServiceIdentity(role, this.inner());
+    public VirtualMachineImpl withManagedServiceIdentity(int tokenPort) {
+        this.virtualMachineMsiHelper.withManagedServiceIdentity(tokenPort, this.inner());
+        return this;
+    }
+
+
+    @Override
+    public VirtualMachineImpl withRoleBasedAccessTo(String scope, BuiltInRole asRole) {
+        this.virtualMachineMsiHelper.withRoleBasedAccessTo(scope, asRole);
         return this;
     }
 
     @Override
-    public VirtualMachineImpl withManagedServiceIdentity(BuiltInRole role, String scope) {
-        this.virtualMachineMsiHelper.withManagedServiceIdentity(role, scope, this.inner());
+    public VirtualMachineImpl withRoleBasedAccessToCurrentResourceGroup(BuiltInRole asRole) {
+        this.virtualMachineMsiHelper.withRoleBasedAccessToCurrentResourceGroup(asRole);
         return this;
     }
 
     @Override
-    public VirtualMachineImpl withManagedServiceIdentity(BuiltInRole role, String scope, int port) {
-        this.virtualMachineMsiHelper.withManagedServiceIdentity(role, scope, port, this.inner());
+    public VirtualMachineImpl withRoleDefinitionBasedAccessTo(String scope, String roleDefinitionId) {
+        this.virtualMachineMsiHelper.withRoleDefinitionBasedAccessTo(scope, roleDefinitionId);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withRoleDefinitionBasedAccessToCurrentResourceGroup(String roleDefinitionId) {
+        this.virtualMachineMsiHelper.withRoleDefinitionBasedAccessToCurrentResourceGroup(roleDefinitionId);
         return this;
     }
 
@@ -1608,9 +1623,9 @@ class VirtualMachineImpl
                     @Override
                     public Observable<? extends VirtualMachine> call(VirtualMachine virtualMachine) {
                         return virtualMachineMsiHelper.setupVirtualMachineMSIResourcesAsync(self)
-                                .flatMap(new Func1<VirtualMachineMsiHelper.Result, Observable<VirtualMachine>>() {
+                                .flatMap(new Func1<VirtualMachineMsiHelper.MSIResourcesSetupResult, Observable<VirtualMachine>>() {
                                     @Override
-                                    public Observable<VirtualMachine> call(VirtualMachineMsiHelper.Result result) {
+                                    public Observable<VirtualMachine> call(VirtualMachineMsiHelper.MSIResourcesSetupResult result) {
                                         if (result.isExtensionInstalledOrUpdated) {
                                             return refreshAsync();
                                         } else {

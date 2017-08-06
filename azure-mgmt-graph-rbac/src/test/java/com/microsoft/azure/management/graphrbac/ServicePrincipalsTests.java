@@ -119,7 +119,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
                     .withNewRoleInResourceGroup(BuiltInRole.CONTRIBUTOR, group)
                     .apply();
 
-            Thread.sleep(120000);
+            SdkContext.sleep(120000);
             Assert.assertNotNull(resourceManager.resourceGroups().getByName(group.name()));
             try {
                 resourceManager.resourceGroups().define(rgName + "2")

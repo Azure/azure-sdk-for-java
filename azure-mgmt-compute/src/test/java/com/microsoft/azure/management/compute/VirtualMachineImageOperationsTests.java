@@ -45,6 +45,7 @@ public class VirtualMachineImageOperationsTests extends ComputeManagementTest {
         for (VirtualMachineOffer offer : canonicalPublisher.offers().list()) {
             for (VirtualMachineSku sku: offer.skus().list()) {
                 for (VirtualMachineImage image : sku.images().list()) {
+                    System.out.println(image.version());
                     firstVMImage = image;
                     break;
                 }
@@ -52,7 +53,6 @@ public class VirtualMachineImageOperationsTests extends ComputeManagementTest {
                     break;
                 }
             }
-
             if (firstVMImage != null) {
                 break;
             }
@@ -70,84 +70,9 @@ public class VirtualMachineImageOperationsTests extends ComputeManagementTest {
         vmImage = computeManager.virtualMachineImages()
             .getImage("eastus", firstVMImage.publisherName(), firstVMImage.offer(), firstVMImage.sku(), firstVMImage.version());
         Assert.assertNotNull(vmImage);
+
+        vmImage = computeManager.virtualMachineImages()
+                .getImage("eastus", firstVMImage.publisherName(), firstVMImage.offer(), firstVMImage.sku(), "latest");
+        Assert.assertNotNull(vmImage);
     }
-
-
-    private void foo() {
-        computeManager.virtualMachineCustomImages()
-                .define("myimage")
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup("rg")
-                .fromVirtualMachine("")
-                .createAsync();
-
-        // withWindowsFromDisk(Disk, OperatingSystemStateTypes)
-        // withWindowsFromSnapshot(Snapshot, OperatingSystemStateTypes)
-        // withWindowsFromVhd(string vhdUrl, OperatingSystemStateTypes)
-
-        // .defineDataDiskImage(void)
-        //        .withLun(int)
-        //        .withSizeInGB(int)
-
-
-//        computeManager.disks()
-//                .define("")
-//                .withRegion(Region.US_EAST)
-//                .withNewResourceGroup("")
-//                .withWindowsFromDisk | withLinuxFromDisk |
-
-        // Operating System short form is "OS" not 'Os'
-
-//        computeManager.disks()
-//                .define("")
-//                .withRegion(Region.US_EAST)
-//                .withNewResourceGroup("")
-//                .withWindowsFromSnapshot()
-//                .create();
-//
-//
-//        computeManager.disks()
-//                .define("")
-//                .withRegion(Region.US_EAST)
-//                .withNewResourceGroup("")
-//                .withData()
-//                .withSize(100)
-//                // Optionals
-//                .create();
-//                // Optionals
-//
-//
-//
-//        computeManager.disks()
-//                .define("")
-//                .withRegion(Region.US_EAST)
-//                .withNewResourceGroup("")
-//                .withDataFromSnapshot(id)
-//                // Optionals
-//                .withSize()
-//                .create();
-//                // Optionals
-//
-//
-//
-//
-//        // withSpecializedLinuxOSDisk() -> for native
-//
-//        computeManager.virtualMachines()
-//                .define("")
-//                .withRegion(Region.US_EAST)
-//                .withNewResourceGroup("")
-//                .withNewPrimaryNetwork("111")
-//                .withPrimaryPrivateIPAddressDynamic()
-//                .withoutPrimaryPublicIPAddress()
-//                .withStoredLinuxImage()
-//                .withRootUsername()
-//                .withRootPassword()
-//                .
-
-
-
-
-    }
-
 }

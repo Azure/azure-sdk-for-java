@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- *  Implementation for {@link NetworkInterface} and its create and update interfaces.
+ *  Implementation for NetworkInterface and its create and update interfaces.
  */
 @LangDefinition
 class NetworkInterfaceImpl
@@ -105,6 +105,18 @@ class NetworkInterfaceImpl
     }
 
     // Setters (fluent)
+
+    @Override
+    public NetworkInterfaceImpl withAcceleratedNetworking() {
+        this.inner().withEnableAcceleratedNetworking(true);
+        return this;
+    }
+
+    @Override
+    public NetworkInterfaceImpl withoutAcceleratedNetworking() {
+        this.inner().withEnableAcceleratedNetworking(false);
+        return this;
+    }
 
     @Override
     public NetworkInterfaceImpl withNewPrimaryNetwork(Creatable<Network> creatable) {
@@ -282,6 +294,11 @@ class NetworkInterfaceImpl
     }
 
     // Getters
+
+    @Override
+    public boolean isAcceleratedNetworkingEnabled() {
+        return Utils.toPrimitiveBoolean(this.inner().enableAcceleratedNetworking());
+    }
 
     @Override
     public String virtualMachineId() {

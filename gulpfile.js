@@ -332,6 +332,12 @@ var mappings = {
         'package': 'com.microsoft.azure.management.containerregistry',
         'args': '-FT 1',
     },
+    'scheduler': {
+        'dir': 'azure-mgmt-scheduler',
+        'source': 'arm-scheduler/2016-03-01/swagger/scheduler.json',
+        'package': 'com.microsoft.azure.management.scheduler',
+        'args': '-FT 1'
+    },
     'cosmosdb': {
         'dir': 'azure-mgmt-cosmosdb',
         'source': 'arm-documentdb/2015-04-08/swagger/documentdb.json',
