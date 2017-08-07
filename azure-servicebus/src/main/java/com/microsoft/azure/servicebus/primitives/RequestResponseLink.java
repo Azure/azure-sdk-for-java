@@ -11,10 +11,8 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Released;
 import org.apache.qpid.proton.amqp.messaging.Source;
@@ -33,7 +31,6 @@ import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.apache.qpid.proton.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MarkerFactory;
 
 import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 import com.microsoft.azure.servicebus.amqp.DispatchHandler;
@@ -49,7 +46,7 @@ class RequestResponseLink extends ClientEntity{
 	private MessagingFactory underlyingFactory;
 	private String linkPath;
 	private InternalReceiver amqpReceiver;
-	private InternalSender amqpSender;	
+	private InternalSender amqpSender;
 	private CompletableFuture<RequestResponseLink> createFuture;
 	private String replyTo;
 	private ConcurrentHashMap<String, RequestResponseWorkItem> pendingRequests;
@@ -84,7 +81,7 @@ class RequestResponseLink extends ClientEntity{
 				@Override
 				public void onEvent()
 				{
-					requestReponseLink.createInternalLinks();					
+					requestReponseLink.createInternalLinks();
 					requestReponseLink.amqpSender.openFuture.runAfterBothAsync(requestReponseLink.amqpReceiver.openFuture, () -> 
 					{
 					    TRACE_LOGGER.info("Opened requestresponselink to {}", requestReponseLink.linkPath);
@@ -157,7 +154,7 @@ class RequestResponseLink extends ClientEntity{
 		Source senderSource = new Source();
 		senderSource.setAddress(this.replyTo);
 		sender.setSource(senderSource);
-		sender.setSenderSettleMode(SenderSettleMode.SETTLED);		
+		sender.setSenderSettleMode(SenderSettleMode.SETTLED);
 		sender.setProperties(commonLinkProperties);
 		SendLinkHandler sendLinkHandler = new SendLinkHandler(this.amqpSender);
 		BaseHandler.setHandler(sender, sendLinkHandler);
@@ -192,13 +189,13 @@ class RequestResponseLink extends ClientEntity{
 	
 	private CompletableFuture<Void> recreateInternalLinks()
 	{
-	    TRACE_LOGGER.info("RequestResponseLink - recreating internal send and receive links to {}", this.linkPath);		
+	    TRACE_LOGGER.info("RequestResponseLink - recreating internal send and receive links to {}", this.linkPath);
 		CompletableFuture<Void> closeFuture = CompletableFuture.allOf(this.amqpSender.closeAsync(), this.amqpReceiver.closeAsync());
 		return closeFuture.handleAsync((closeResult, closeEx) -> 
 		{
 		    // Ignore exception in closing
 		    this.createInternalLinks();
-		    return null;		    
+		    return null;
 		}).thenCompose((v) -> CompletableFuture.allOf(this.amqpSender.openFuture, this.amqpReceiver.openFuture));
 	}
 	
@@ -252,7 +249,7 @@ class RequestResponseLink extends ClientEntity{
 				    TRACE_LOGGER.error("Request with id:{} timed out", requestId);
 					RequestResponseWorkItem completedWorkItem = RequestResponseLink.this.exceptionallyCompleteRequest(requestId, new TimeoutException("Request timed out."), true);
 					boolean isRetriedWorkItem = completedWorkItem.getLastKnownException() != null;
-					RequestResponseLink.this.amqpSender.removeEnqueuedRequest(completedWorkItem.request, isRetriedWorkItem);					
+					RequestResponseLink.this.amqpSender.removeEnqueuedRequest(completedWorkItem.request, isRetriedWorkItem);
 				}
 			}, timeout, TimerType.OneTimeRun);
 	}
@@ -267,7 +264,7 @@ class RequestResponseLink extends ClientEntity{
 			if(useLastKnownException && workItem.getLastKnownException() != null)
 			{
 				exceptionToReport = workItem.getLastKnownException();
-			}		
+			}
 			
 			workItem.getWork().completeExceptionally(exceptionToReport);
 			workItem.cancelTimeoutTask(true);
@@ -286,10 +283,11 @@ class RequestResponseLink extends ClientEntity{
 			// Retry on server busy and other retry-able status codes (what are other codes??)
 			if(statusCode == ClientConstants.REQUEST_RESPONSE_SERVER_BUSY_STATUS_CODE)
 			{
-			    TRACE_LOGGER.warn("Request with id:{} received ServerBusy response", requestId);
+			    TRACE_LOGGER.warn("Request with id:{} received ServerBusy response from '{}'", requestId, this.linkPath);
 				// error response
 				Exception responseException = RequestResponseUtils.genereateExceptionFromResponse(responseMessage);
-				Duration retryInterval = this.underlyingFactory.getRetryPolicy().getNextRetryInterval(requestId, responseException, workItem.getTimeoutTracker().remaining());
+				this.underlyingFactory.getRetryPolicy().incrementRetryCount(this.getClientId());
+				Duration retryInterval = this.underlyingFactory.getRetryPolicy().getNextRetryInterval(this.getClientId(), responseException, workItem.getTimeoutTracker().remaining());
 				if (retryInterval == null)
 				{
 					// Either not retry-able or not enough time to retry
@@ -319,6 +317,7 @@ class RequestResponseLink extends ClientEntity{
 			else
 			{
 			    TRACE_LOGGER.debug("Completing request with id:{}", requestId);
+				this.underlyingFactory.getRetryPolicy().resetRetryCount(this.getClientId());
 				this.pendingRequests.remove(requestId);
 				workItem.getWork().complete(responseMessage);
 				workItem.cancelTimeoutTask(true);
@@ -347,7 +346,7 @@ class RequestResponseLink extends ClientEntity{
 					{
 						if (!closeFuture.isDone())
 						{
-							Exception operationTimedout = new TimeoutException(String.format(Locale.US, "%s operation on Link(%s) timed out at %s", "Close", linkName, ZonedDateTime.now()));							
+							Exception operationTimedout = new TimeoutException(String.format(Locale.US, "%s operation on Link(%s) timed out at %s", "Close", linkName, ZonedDateTime.now()));
 							TRACE_LOGGER.error("Closing link timed out", operationTimedout);
 							
 							closeFuture.completeExceptionally(operationTimedout);
@@ -373,7 +372,7 @@ class RequestResponseLink extends ClientEntity{
 		}		
 
 		@Override		
-		protected CompletableFuture<Void> onClose() {					
+		protected CompletableFuture<Void> onClose() {
 			if (!this.getIsClosed())
 			{				
 				if (this.receiveLink != null && this.receiveLink.getLocalState() != EndpointState.CLOSED)
@@ -389,7 +388,7 @@ class RequestResponseLink extends ClientEntity{
 									InternalReceiver.this.receiveLink.close();
 									InternalReceiver.this.parent.underlyingFactory.deregisterForConnectionError(InternalReceiver.this.receiveLink);
 									RequestResponseLink.scheduleLinkCloseTimeout(InternalReceiver.this.closeFuture, InternalReceiver.this.parent.underlyingFactory.getOperationTimeout(), InternalReceiver.this.receiveLink.getName());
-								}							
+								}
 							}
 						});
 					} catch (IOException e) {
@@ -476,7 +475,7 @@ class RequestResponseLink extends ClientEntity{
 					    this.parent.completeAllPendingRequestsWithException(exception);
 					}
 				}
-			}						
+			}
 		}
 
 		@Override
@@ -509,7 +508,7 @@ class RequestResponseLink extends ClientEntity{
 			{
 				TRACE_LOGGER.warn("RequestRespnseLink received a message with null correlationId");
 			}
-		}		
+		}
 
 		public void setReceiveLink(Receiver receiveLink) {
 			if (this.receiveLink != null)
@@ -532,15 +531,15 @@ class RequestResponseLink extends ClientEntity{
 		private AtomicInteger availableCredit;
 		private LinkedList<Message> pendingFreshSends;
 		private LinkedList<Message> pendingRetrySends;
-		private Object syncLock;
-		private AtomicBoolean isSendLoopRunning;
+		private Object pendingSendsSyncLock;
+		private boolean isSendLoopRunning;
 
 		protected InternalSender(String clientId, RequestResponseLink parent) {
 			super(clientId, parent);			
 			this.parent = parent;
 			this.availableCredit = new AtomicInteger(0);
-			this.syncLock = new Object();
-			this.isSendLoopRunning = new AtomicBoolean(false);
+			this.pendingSendsSyncLock = new Object();
+			this.isSendLoopRunning = false;
 			this.pendingFreshSends = new LinkedList<>();
 			this.pendingRetrySends = new LinkedList<>();
 			this.openFuture = new CompletableFuture<Void>();
@@ -564,7 +563,7 @@ class RequestResponseLink extends ClientEntity{
 									InternalSender.this.sendLink.close();
 									InternalSender.this.parent.underlyingFactory.deregisterForConnectionError(InternalSender.this.sendLink);
 									RequestResponseLink.scheduleLinkCloseTimeout(InternalSender.this.closeFuture, InternalSender.this.parent.underlyingFactory.getOperationTimeout(), InternalSender.this.sendLink.getName());
-								}								
+								}
 							}
 						});
 					} catch (IOException e) {
@@ -584,7 +583,7 @@ class RequestResponseLink extends ClientEntity{
 		public void onOpenComplete(Exception completionException) {
 			if(completionException == null)
 			{
-			    TRACE_LOGGER.debug("Opened internal send link of requestresponselink to {}", parent.linkPath);			    
+			    TRACE_LOGGER.debug("Opened internal send link of requestresponselink to {}", parent.linkPath);
 				this.openFuture.complete(null);	
 				this.runSendLoop();
 			}
@@ -592,7 +591,7 @@ class RequestResponseLink extends ClientEntity{
 			{
 			    TRACE_LOGGER.error("Opening internal send link of requestresponselink to {} failed.", parent.linkPath, completionException);
 				this.openFuture.completeExceptionally(completionException);
-			}			
+			}
 		}
 
 		@Override
@@ -654,7 +653,7 @@ class RequestResponseLink extends ClientEntity{
 		
 		public void sendRequest(Message requestMessage, boolean isRetry)
 		{
-			synchronized(this.syncLock)
+			synchronized(this.pendingSendsSyncLock)
 			{
 				if(isRetry)
 				{
@@ -663,27 +662,30 @@ class RequestResponseLink extends ClientEntity{
 				else
 				{
 					this.pendingFreshSends.add(requestMessage);
-				}				
-			}
-							
-			if(!this.isSendLoopRunning.get())
-			{
-				try {
-					this.parent.underlyingFactory.scheduleOnReactorThread(new DispatchHandler() {						
-						@Override
-						public void onEvent() {
-							InternalSender.this.runSendLoop();							
-						}
-					});
-				} catch (IOException e) {
-					this.parent.exceptionallyCompleteRequest((String)requestMessage.getMessageId(), e, true);
 				}
-			}			
+				
+				// This check must be done inside lock
+				if(this.isSendLoopRunning)
+	            {
+	                return;
+	            }
+			}
+			
+			try {
+                this.parent.underlyingFactory.scheduleOnReactorThread(new DispatchHandler() {
+                    @Override
+                    public void onEvent() {
+                        InternalSender.this.runSendLoop();
+                    }
+                });
+            } catch (IOException e) {
+                this.parent.exceptionallyCompleteRequest((String)requestMessage.getMessageId(), e, true);
+            }
 		}
 		
 		public void removeEnqueuedRequest(Message requestMessage, boolean isRetry)
 		{
-			synchronized(this.syncLock)
+			synchronized(this.pendingSendsSyncLock)
 			{
 				// Collections are more likely to be very small. So remove() shouldn't be a problem.
 				if(isRetry)
@@ -707,7 +709,7 @@ class RequestResponseLink extends ClientEntity{
 
 		@Override
 		public void onSendComplete(Delivery delivery) {
-			// Doesn't happen as sends are settled on send			
+			// Doesn't happen as sends are settled on send
 		}		
 
 		public void setSendLink(Sender sendLink) {
@@ -724,63 +726,81 @@ class RequestResponseLink extends ClientEntity{
 		
 		private void runSendLoop()
 		{
-			if(this.isSendLoopRunning.compareAndSet(false, true))	
-			{
-			    TRACE_LOGGER.debug("Staring requestResponseLink {} internal sender send loop", this.parent.linkPath);
-			    
-				try
-				{				    
-					while(this.sendLink.getLocalState() == EndpointState.ACTIVE && this.sendLink.getRemoteState() == EndpointState.ACTIVE && this.availableCredit.get() > 0)
-					{
-						Message requestToBeSent = null;
-						synchronized(syncLock)
-						{
-							// First send retries and then fresh ones
-							requestToBeSent = this.pendingRetrySends.poll();
-							if(requestToBeSent == null)
-							{
-								requestToBeSent = this.pendingFreshSends.poll();
-								if(requestToBeSent == null)
-								{
-								    TRACE_LOGGER.debug("RequestResponseLink {} internal sender send loop ending as there are no more requests enqueued.", this.parent.linkPath);
-									break;
-								}
-							}							
-						}
-						
-						Delivery delivery = this.sendLink.delivery(UUID.randomUUID().toString().getBytes());
-						delivery.setMessageFormat(DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
-						
-						Pair<byte[], Integer> encodedPair = null;
-						try
-						{
-							encodedPair = Util.encodeMessageToOptimalSizeArray(requestToBeSent);						
-						}
-						catch(PayloadSizeExceededException exception)
-						{
-							this.parent.exceptionallyCompleteRequest((String)requestToBeSent.getMessageId(), new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s kb", ClientConstants.MAX_MESSAGE_LENGTH_BYTES / 1024), exception), false);
-						}
-						
-						try
-						{
-							int sentMsgSize = this.sendLink.send(encodedPair.getFirstItem(), 0, encodedPair.getSecondItem());
-							assert sentMsgSize == encodedPair.getSecondItem() : "Contract of the ProtonJ library for Sender.Send API changed";
-							delivery.settle();
-							this.availableCredit.decrementAndGet();
-							TRACE_LOGGER.debug("RequestResonseLink {} internal sender sent a request. available credit :{}", this.parent.linkPath, this.availableCredit.get());
-						}
-						catch(Exception e)
-						{
-						    TRACE_LOGGER.error("RequestResonseLink {} failed to request with request id:{}.", this.parent.linkPath, requestToBeSent.getMessageId(), e);
-							this.parent.exceptionallyCompleteRequest((String)requestToBeSent.getMessageId(), e, false);
-						}						
-					}
-				}
-				finally
-				{
-					this.isSendLoopRunning.set(false);
-				}
-			}			
+		    synchronized(this.pendingSendsSyncLock)
+		    {
+		        if(this.isSendLoopRunning)
+		        {
+		            return;
+		        }
+		        else
+		        {
+		            this.isSendLoopRunning = true;
+		        }
+		    }
+		    
+		    TRACE_LOGGER.debug("Staring requestResponseLink {} internal sender send loop", this.parent.linkPath);
+		    
+		    try
+            {
+                while(this.sendLink.getLocalState() == EndpointState.ACTIVE && this.sendLink.getRemoteState() == EndpointState.ACTIVE && this.availableCredit.get() > 0)
+                {
+                    Message requestToBeSent = null;
+                    synchronized(pendingSendsSyncLock)
+                    {
+                        // First send retries and then fresh ones
+                        requestToBeSent = this.pendingRetrySends.poll();
+                        if(requestToBeSent == null)
+                        {
+                            requestToBeSent = this.pendingFreshSends.poll();
+                            if(requestToBeSent == null)
+                            {
+                                // Set to false inside the synchronized block to avoid race condition
+                                this.isSendLoopRunning = false;
+                                TRACE_LOGGER.debug("RequestResponseLink {} internal sender send loop ending as there are no more requests enqueued.", this.parent.linkPath);
+                                break;
+                            }
+                        }
+                    }
+                    
+                    Delivery delivery = this.sendLink.delivery(UUID.randomUUID().toString().getBytes());
+                    delivery.setMessageFormat(DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
+                    
+                    Pair<byte[], Integer> encodedPair = null;
+                    try
+                    {
+                        encodedPair = Util.encodeMessageToOptimalSizeArray(requestToBeSent);
+                    }
+                    catch(PayloadSizeExceededException exception)
+                    {
+                        this.parent.exceptionallyCompleteRequest((String)requestToBeSent.getMessageId(), new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s kb", ClientConstants.MAX_MESSAGE_LENGTH_BYTES / 1024), exception), false);
+                    }
+                    
+                    try
+                    {
+                        int sentMsgSize = this.sendLink.send(encodedPair.getFirstItem(), 0, encodedPair.getSecondItem());
+                        assert sentMsgSize == encodedPair.getSecondItem() : "Contract of the ProtonJ library for Sender.Send API changed";
+                        delivery.settle();
+                        this.availableCredit.decrementAndGet();
+                        TRACE_LOGGER.debug("RequestResonseLink {} internal sender sent a request. available credit :{}", this.parent.linkPath, this.availableCredit.get());
+                    }
+                    catch(Exception e)
+                    {
+                        TRACE_LOGGER.error("RequestResonseLink {} failed to request with request id:{}.", this.parent.linkPath, requestToBeSent.getMessageId(), e);
+                        this.parent.exceptionallyCompleteRequest((String)requestToBeSent.getMessageId(), e, false);
+                    }
+                }
+            }
+            finally
+            {
+                synchronized (this.pendingSendsSyncLock) {
+                    if(this.isSendLoopRunning)
+                    {
+                        this.isSendLoopRunning = false;
+                    }
+                }
+                
+                TRACE_LOGGER.debug("RequestResponseLink {} internal sender send loop stopped.", this.parent.linkPath);
+            }
 		}
-	}	 
+	}
 }

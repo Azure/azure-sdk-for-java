@@ -47,10 +47,14 @@ class WorkItem<T>
 		this.timeoutTask = timeoutTask;
 	}
 	
-	public void cancelTimeoutTask(boolean mayInterruptIfRunning)
+	public boolean cancelTimeoutTask(boolean mayInterruptIfRunning)
 	{
 		if(this.timeoutTask != null)
-			this.timeoutTask.cancel(mayInterruptIfRunning);
+		{
+		    return this.timeoutTask.cancel(mayInterruptIfRunning);
+		}
+		
+		return false;
 	}
 	
 	public Exception getLastKnownException()

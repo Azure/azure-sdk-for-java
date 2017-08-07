@@ -72,6 +72,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 	private final ConcurrentHashMap<String, SendWorkItem<Void>> pendingSendsData;
 	private final PriorityQueue<WeightedDeliveryTag> pendingSends;
 	private final DispatchHandler sendWork;
+	private boolean isSendLoopRunning;
 
 	private Sender sendLink;
 	private RequestResponseLink requestResponseLink;
@@ -124,7 +125,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
         });
 		
 		
-		return msgSender.linkFirstOpen;		
+		return msgSender.linkFirstOpen;
 	}
 	
 	private CompletableFuture<Void> createRequestResponseLink()
@@ -132,7 +133,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		synchronized (this.requestResonseLinkCreationLock) {
             if(this.requestResponseLinkCreationFuture == null)
             {
-                this.requestResponseLinkCreationFuture = new CompletableFuture<Void>();                
+                this.requestResponseLinkCreationFuture = new CompletableFuture<Void>();
                 this.underlyingFactory.obtainRequestResponseLinkAsync(this.sendPath).handleAsync((rrlink, ex) ->
                 {
                     if(ex == null)
@@ -142,13 +143,13 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
                     }
                     else
                     {
-                        Throwable cause = ExceptionUtil.extractAsyncCompletionCause(ex);                        
+                        Throwable cause = ExceptionUtil.extractAsyncCompletionCause(ex);
                         this.requestResponseLinkCreationFuture.completeExceptionally(cause);
                         // Set it to null so next call will retry rr link creation
                         synchronized (this.requestResonseLinkCreationLock)
                         {
                             this.requestResponseLinkCreationFuture = null;
-                        }                        
+                        }
                     }
                     return null;
                 });
@@ -179,7 +180,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 
 		this.linkClose = new CompletableFuture<Void>();
 		this.sendLinkReopenFuture = null;
-		
+		this.isSendLoopRunning = false;
 		this.sendWork = new DispatchHandler()
 		{ 
 			@Override
@@ -194,78 +195,88 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 	{
 		return this.sendPath;
 	}
-
-	private CompletableFuture<Void> sendAsync(byte[] bytes, int arrayOffset, int messageFormat)
+	
+	private static String generateRandomDeliveryTag()
 	{
-		return this.sendAsync(bytes, arrayOffset, messageFormat, null, null);
+	    return UUID.randomUUID().toString().replace("-", StringUtil.EMPTY);
 	}
 	
-	private CompletableFuture<Void> sendAsync(
-			final byte[] bytes,
-			final int arrayOffset,
-			final int messageFormat,
-			final CompletableFuture<Void> onSend,
-			final TimeoutTracker tracker)
-	{
-		return this.sendCoreAsync(bytes, arrayOffset, messageFormat, onSend, tracker, null, null, null);
-	}
-
 	private CompletableFuture<Void> sendCoreAsync(
 			final byte[] bytes,
 			final int arrayOffset,
-			final int messageFormat,
-			final CompletableFuture<Void> onSend,
-			final TimeoutTracker tracker,
-			final String deliveryTag,
-			final Exception lastKnownError,
-			final ScheduledFuture<?> timeoutTask)
+			final int messageFormat)
 	{
-		this.throwIfClosed(this.lastKnownLinkError);
+	    this.throwIfClosed(this.lastKnownLinkError);
 		TRACE_LOGGER.debug("Sending message to '{}'", this.sendPath);
-		if (tracker != null && onSend != null && (tracker.remaining().isNegative() || tracker.remaining().isZero()))
-		{			
-			TRACE_LOGGER.warn("path:{}, linkName:{}, deliveryTag:{} - timed out at sendCore", this.sendPath, this.sendLink.getName(), deliveryTag);
-
-			if (timeoutTask != null)
-			{
-				timeoutTask.cancel(false);
-			}
-			
-			this.throwSenderTimeout(onSend, null);
-			return onSend;
-		}
-
-		final boolean isRetrySend = (onSend != null);
-		final String tag = (deliveryTag == null) ? UUID.randomUUID().toString().replace("-", StringUtil.EMPTY) : deliveryTag;
-		
-		final CompletableFuture<Void> onSendFuture = (onSend == null) ? new CompletableFuture<Void>() : onSend;
-		
-		final SendWorkItem<Void> sendWaiterData = (tracker == null) ?
-				new SendWorkItem<Void>(bytes, arrayOffset, messageFormat, onSendFuture, this.operationTimeout) : 
-				new SendWorkItem<Void>(bytes, arrayOffset, messageFormat, onSendFuture, tracker);
-
-		if (lastKnownError != null)
-		{
-			sendWaiterData.setLastKnownException(lastKnownError);
-		}
-
-		synchronized (this.pendingSendLock)
-		{
-			this.pendingSendsData.put(tag, sendWaiterData);
-			this.pendingSends.offer(new WeightedDeliveryTag(tag, isRetrySend ? 1 : 0));
-		}
-		
-		try
-		{
-			this.underlyingFactory.scheduleOnReactorThread(this.sendWork);
-		}
-		catch (IOException ioException)
-		{			
-			AsyncUtil.completeFutureExceptionally(onSendFuture, new ServiceBusException(false, "Send failed while dispatching to Reactor, see cause for more details.", ioException));
-		}
-
+		String deliveryTag = CoreMessageSender.generateRandomDeliveryTag();
+		CompletableFuture<Void> onSendFuture = new CompletableFuture<Void>();
+		SendWorkItem<Void> sendWorkItem = new SendWorkItem<Void>(bytes, arrayOffset, messageFormat, deliveryTag, onSendFuture, this.operationTimeout);
+		this.enlistSendRequest(deliveryTag, sendWorkItem, false);
+		this.scheduleSendTimeout(sendWorkItem);
 		return onSendFuture;
-	}	
+	}
+	
+	private void scheduleSendTimeout(SendWorkItem<Void> sendWorkItem)
+	{
+	    // Timer to timeout the request
+        ScheduledFuture<?> timeoutTask = Timer.schedule(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                if (!sendWorkItem.getWork().isDone())
+                {
+                    TRACE_LOGGER.error("Delivery '{}' to '{}' did not receive ack from service. Throwing timeout.", sendWorkItem.getDeliveryTag(), CoreMessageSender.this.sendPath);
+                    CoreMessageSender.this.pendingSendsData.remove(sendWorkItem.getDeliveryTag());
+                    CoreMessageSender.this.throwSenderTimeout(sendWorkItem.getWork(), sendWorkItem.getLastKnownException());
+                    // Weighted delivery tag not removed from the pending sends queue, but send loop will ignore it anyway if it is present
+                }
+            }
+        },
+        sendWorkItem.getTimeoutTracker().remaining(),
+        TimerType.OneTimeRun);
+        sendWorkItem.setTimeoutTask(timeoutTask);
+	}
+	
+	private void enlistSendRequest(String deliveryTag, SendWorkItem<Void> sendWorkItem, boolean isRetrySend)
+	{
+	    synchronized (this.pendingSendLock)
+        {
+	        this.pendingSendsData.put(deliveryTag, sendWorkItem);
+            this.pendingSends.offer(new WeightedDeliveryTag(deliveryTag, isRetrySend ? 1 : 0));
+            
+            if(!this.isSendLoopRunning)
+            {
+                try
+                {
+                    this.underlyingFactory.scheduleOnReactorThread(this.sendWork);
+                }
+                catch (IOException ioException)
+                {
+                    AsyncUtil.completeFutureExceptionally(sendWorkItem.getWork(), new ServiceBusException(false, "Send failed while dispatching to Reactor, see cause for more details.", ioException));
+                }
+            }
+        }
+	}
+	
+	private void reSendAsync(String deliveryTag, SendWorkItem<Void> retryingSendWorkItem, boolean reuseDeliveryTag)
+    {
+	    if(!retryingSendWorkItem.getWork().isDone() && retryingSendWorkItem.cancelTimeoutTask(false))
+        {
+	        Duration remainingTime = retryingSendWorkItem.getTimeoutTracker().remaining();
+	        if(!remainingTime.isNegative() && !remainingTime.isZero())
+	        {
+	            if(!reuseDeliveryTag)
+	            {
+	                deliveryTag = CoreMessageSender.generateRandomDeliveryTag();
+	                retryingSendWorkItem.setDeliveryTag(deliveryTag);
+	            }
+	            
+	            this.enlistSendRequest(deliveryTag, retryingSendWorkItem, true);
+	            this.scheduleSendTimeout(retryingSendWorkItem);
+	        }
+        }
+    }
 
 	public CompletableFuture<Void> sendAsync(final Iterable<Message> messages)
 	{
@@ -276,7 +287,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		
 		TRACE_LOGGER.debug("Sending a batch of messages to '{}'", this.sendPath);
 
-		Message firstMessage = messages.iterator().next();			
+		Message firstMessage = messages.iterator().next();
 		if (IteratorUtil.sizeEquals(messages, 1))
 		{
 			return this.sendAsync(firstMessage);
@@ -313,7 +324,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 			return sendTask;
 		}
 
-		return this.sendAsync(bytes, byteArrayOffset, AmqpConstants.AMQP_BATCH_MESSAGE_FORMAT);
+		return this.sendCoreAsync(bytes, byteArrayOffset, AmqpConstants.AMQP_BATCH_MESSAGE_FORMAT);
 	}
 
 	public CompletableFuture<Void> sendAsync(Message msg)
@@ -321,7 +332,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		try
 		{
 			Pair<byte[], Integer> encodedPair = Util.encodeMessageToOptimalSizeArray(msg);
-			return this.sendAsync(encodedPair.getFirstItem(), encodedPair.getSecondItem(), DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
+			return this.sendCoreAsync(encodedPair.getFirstItem(), encodedPair.getSecondItem(), DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
 		}
 		catch(PayloadSizeExceededException exception)
 		{
@@ -411,20 +422,10 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		this.linkCredit = 0;
 		if (this.getIsClosingOrClosed())
 		{
-			synchronized (this.pendingSendLock)
-			{
-				for (Map.Entry<String, SendWorkItem<Void>> pendingSend: this.pendingSendsData.entrySet())
-				{
-					ExceptionUtil.completeExceptionally(pendingSend.getValue().getWork(),
-							completionException == null
-								? new OperationCancelledException("Send cancelled as the Sender instance is Closed before the sendOperation completed.")
-								: completionException,
-							this, true);					
-				}
-	
-				this.pendingSendsData.clear();
-				this.pendingSends.clear();
-			}
+		    Exception failureException = completionException == null
+                    ? new OperationCancelledException("Send cancelled as the Sender instance is Closed before the sendOperation completed.")
+                    : completionException;
+			this.clearAllPendingSendsWithException(failureException);
 			
 			TRACE_LOGGER.info("Send link to '{}' closed", this.sendPath);
 			AsyncUtil.completeFuture(this.linkClose, null);
@@ -441,16 +442,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 					(!(completionException instanceof ServiceBusException) || !((ServiceBusException) completionException).getIsTransient()))
 			{
 			    TRACE_LOGGER.warn("Send link to '{}' closed. Failing all pending send requests.", this.sendPath);
-				synchronized (this.pendingSendLock)
-				{
-					for (Map.Entry<String, SendWorkItem<Void>> pendingSend: this.pendingSendsData.entrySet())
-					{
-						this.cleanupFailedSend(pendingSend.getValue(), completionException);					
-					}
-		
-					this.pendingSendsData.clear();
-					this.pendingSends.clear();
-				}
+				this.clearAllPendingSendsWithException(completionException);
 			}
 			else
 			{			    
@@ -464,7 +456,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 						if (nextRetryInterval != null)
 						{
 						    TRACE_LOGGER.warn("Send link to '{}' closed. Will retry link creation after '{}'.", this.sendPath, nextRetryInterval);
-						    Timer.schedule(() -> {CoreMessageSender.this.ensureLinkIsOpen();}, nextRetryInterval, TimerType.OneTimeRun);							
+						    Timer.schedule(() -> {CoreMessageSender.this.ensureLinkIsOpen();}, nextRetryInterval, TimerType.OneTimeRun);
 						}
 					}
 				}
@@ -488,7 +480,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 				this.lastKnownLinkError = null;
 				this.retryPolicy.resetRetryCount(this.getClientId());
 
-				pendingSendWorkItem.cancelTimeoutTask(false);				
+				pendingSendWorkItem.cancelTimeoutTask(false);
 				AsyncUtil.completeFuture(pendingSendWorkItem.getWork(), null);
 			}
 			else if (outcome instanceof Rejected)
@@ -513,25 +505,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 				{
 				    TRACE_LOGGER.warn("Send failed for delivery '{}'. Will retry after '{}'", deliveryTag, retryInterval);
 					pendingSendWorkItem.setLastKnownException(exception);
-					try
-					{
-						this.underlyingFactory.scheduleOnReactorThread((int) retryInterval.toMillis(),
-								new DispatchHandler()
-								{
-									@Override
-									public void onEvent()
-									{
-										CoreMessageSender.this.reSendAsync(deliveryTag, pendingSendWorkItem, false);
-									}
-								});
-					}
-					catch (IOException ioException)
-					{
-						exception.initCause(ioException);
-						this.cleanupFailedSend(
-								pendingSendWorkItem,
-								new ServiceBusException(false, "Send operation failed while scheduling a retry on Reactor, see cause for more details.", ioException));
-					}
+					Timer.schedule(() -> {CoreMessageSender.this.reSendAsync(deliveryTag, pendingSendWorkItem, false);}, retryInterval, TimerType.OneTimeRun);
 				}
 			}
 			else if (outcome instanceof Released)
@@ -548,20 +522,19 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 			TRACE_LOGGER.warn("Delivery mismatch. path:{}, linkName:{}, delivery:{}", this.sendPath, this.sendLink.getName(), deliveryTag);
 		}
 	}
-
-	private void reSendAsync(final String deliveryTag, final SendWorkItem<Void> pendingSend, boolean reuseDeliveryTag)
+	
+	private void clearAllPendingSendsWithException(Exception failureException)
 	{
-		if (pendingSend != null)
-		{
-			this.sendCoreAsync(pendingSend.getMessage(), 
-					pendingSend.getEncodedMessageSize(), 
-					pendingSend.getMessageFormat(),
-					pendingSend.getWork(),
-					pendingSend.getTimeoutTracker(),
-					reuseDeliveryTag ? deliveryTag : null,
-					pendingSend.getLastKnownException(),
-					pendingSend.getTimeoutTask());
-		}
+	    synchronized (this.pendingSendLock)
+        {
+            for (Map.Entry<String, SendWorkItem<Void>> pendingSend: this.pendingSendsData.entrySet())
+            {
+                this.cleanupFailedSend(pendingSend.getValue(), failureException);
+            }
+
+            this.pendingSendsData.clear();
+            this.pendingSends.clear();
+        }
 	}
 	
 	private void cleanupFailedSend(final SendWorkItem<Void> failedSend, final Exception exception)
@@ -719,7 +692,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
                                 TRACE_LOGGER.warn(operationTimedout.getMessage());
                                 linkReopenFutureThatCanBeCancelled.completeExceptionally(operationTimedout);
                             }
-                        }                       
+                        }
                         , CoreMessageSender.LINK_REOPEN_TIMEOUT
                         , TimerType.OneTimeRun);
                 this.cancelSASTokenRenewTimer();
@@ -761,110 +734,114 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 	// actual send on the SenderLink should happen only in this method & should run on Reactor Thread
 	private void processSendWork()
 	{
-	    TRACE_LOGGER.debug("Processing pending sends to '{}'. Available link credit '{}'", this.sendPath, this.linkCredit);
-	    if(!this.ensureLinkIsOpen().isDone())
+	    synchronized (this.pendingSendLock)
 	    {
-	        // Link recreation is pending
-	        return;
+	        if(!this.isSendLoopRunning)
+	        {
+	            this.isSendLoopRunning = true;
+	        }
+	        else
+	        {
+	            return;
+	        }
 	    }
 	    
-		final Sender sendLinkCurrent = this.sendLink;		
-		while (sendLinkCurrent != null
-				&& sendLinkCurrent.getLocalState() == EndpointState.ACTIVE && sendLinkCurrent.getRemoteState() == EndpointState.ACTIVE
-				&& this.linkCredit > 0)
-		{
-			final WeightedDeliveryTag deliveryTag;
-			final SendWorkItem<Void> sendData;
-			synchronized (this.pendingSendLock)
-			{
-				deliveryTag = this.pendingSends.poll();
-				sendData = deliveryTag != null 
-						? this.pendingSendsData.get(deliveryTag.getDeliveryTag())
-						: null;
-			}
-			
-			if (sendData != null)
-			{
-				if (sendData.getWork() != null && sendData.getWork().isDone())
-				{
-					// CoreSend could enqueue Sends into PendingSends Queue and can fail the SendCompletableFuture
-					// (when It fails to schedule the ProcessSendWork on reactor Thread)
-					this.pendingSendsData.remove(sendData);
-					continue;
-				}
-				
-				Delivery delivery = null;
-				boolean linkAdvance = false;
-				int sentMsgSize = 0;
-				Exception sendException = null;
-				
-				try
-				{
-					delivery = sendLinkCurrent.delivery(deliveryTag.getDeliveryTag().getBytes());
-					delivery.setMessageFormat(sendData.getMessageFormat());
-					TRACE_LOGGER.debug("Sending message delivery '{}' to '{}'", deliveryTag.getDeliveryTag(), this.sendPath);
-					sentMsgSize = sendLinkCurrent.send(sendData.getMessage(), 0, sendData.getEncodedMessageSize());
-					assert sentMsgSize == sendData.getEncodedMessageSize() : "Contract of the ProtonJ library for Sender.Send API changed";
-	
-					linkAdvance = sendLinkCurrent.advance();
-				}
-				catch(Exception exception)
-				{
-					sendException = exception;
-				}
-				
-				if (linkAdvance)
-				{
-					this.linkCredit--;
-					
-					ScheduledFuture<?> timeoutTask = Timer.schedule(new Runnable()
-					{
-						@Override
-						public void run()
-						{
-							if (!sendData.getWork().isDone())
-							{
-							    TRACE_LOGGER.error("Delivery '{}' to '{}' did not receive ack from service. Throwing timeout.", deliveryTag.getDeliveryTag(), CoreMessageSender.this.sendPath);
-								CoreMessageSender.this.pendingSendsData.remove(deliveryTag);
-								CoreMessageSender.this.throwSenderTimeout(sendData.getWork(), sendData.getLastKnownException());
-							}
-						}
-					},
-					this.operationTimeout, 
-					TimerType.OneTimeRun);
-					
-					sendData.setTimeoutTask(timeoutTask);
-					sendData.setWaitingForAck();
-				}
-				else
-				{					
-					TRACE_LOGGER.warn("Sendlink advance failed. path:{}, linkName:{}, deliveryTag:{}, sentMessageSize:{}, payloadActualSiz:{}",
-					        this.sendPath, this.sendLink.getName(), deliveryTag, sentMsgSize, sendData.getEncodedMessageSize());
+	    TRACE_LOGGER.debug("Processing pending sends to '{}'. Available link credit '{}'", this.sendPath, this.linkCredit);
+        try
+        {
+            if(!this.ensureLinkIsOpen().isDone())
+            {
+                // Link recreation is pending
+                return;
+            }
+            
+            final Sender sendLinkCurrent = this.sendLink;       
+            while (sendLinkCurrent != null
+                    && sendLinkCurrent.getLocalState() == EndpointState.ACTIVE && sendLinkCurrent.getRemoteState() == EndpointState.ACTIVE
+                    && this.linkCredit > 0)
+            {
+                final WeightedDeliveryTag deliveryTag;
+                final SendWorkItem<Void> sendData;
+                synchronized (this.pendingSendLock)
+                {
+                    deliveryTag = this.pendingSends.poll();
+                    if (deliveryTag == null)
+                    {
+                        TRACE_LOGGER.debug("There are no pending sends to '{}'.", this.sendPath);
+                        // Must be done inside this synchronized block
+                        this.isSendLoopRunning = false;
+                        break;
+                    }
+                    else
+                    {
+                        sendData = this.pendingSendsData.get(deliveryTag.getDeliveryTag());
+                        if(sendData == null)
+                        {
+                            TRACE_LOGGER.error("SendData not found for this delivery. path:{}, linkName:{}, deliveryTag:{}", this.sendPath, this.sendLink.getName(), deliveryTag);
+                            continue;
+                        }
+                    }
+                }
+                
+                if (sendData.getWork() != null && sendData.getWork().isDone())
+                {
+                    // CoreSend could enqueue Sends into PendingSends Queue and can fail the SendCompletableFuture
+                    // (when It fails to schedule the ProcessSendWork on reactor Thread)
+                    this.pendingSendsData.remove(sendData);
+                    continue;
+                }
+                
+                Delivery delivery = null;
+                boolean linkAdvance = false;
+                int sentMsgSize = 0;
+                Exception sendException = null;
+                
+                try
+                {
+                    delivery = sendLinkCurrent.delivery(deliveryTag.getDeliveryTag().getBytes());
+                    delivery.setMessageFormat(sendData.getMessageFormat());
+                    TRACE_LOGGER.debug("Sending message delivery '{}' to '{}'", deliveryTag.getDeliveryTag(), this.sendPath);
+                    sentMsgSize = sendLinkCurrent.send(sendData.getMessage(), 0, sendData.getEncodedMessageSize());
+                    assert sentMsgSize == sendData.getEncodedMessageSize() : "Contract of the ProtonJ library for Sender.Send API changed";
+    
+                    linkAdvance = sendLinkCurrent.advance();
+                }
+                catch(Exception exception)
+                {
+                    sendException = exception;
+                }
+                
+                if (linkAdvance)
+                {
+                    this.linkCredit--;
+                    sendData.setWaitingForAck();
+                }
+                else
+                {                   
+                    TRACE_LOGGER.warn("Sendlink advance failed. path:{}, linkName:{}, deliveryTag:{}, sentMessageSize:{}, payloadActualSiz:{}",
+                            this.sendPath, this.sendLink.getName(), deliveryTag, sentMsgSize, sendData.getEncodedMessageSize());
 
-					if (delivery != null)
-					{
-						delivery.free();
-					}
-					
-					Exception completionException = sendException != null ? new OperationCancelledException("Send operation failed. Please see cause for more details", sendException)
-							: new OperationCancelledException(String.format(Locale.US, "Send operation failed while advancing delivery(tag: %s) on SendLink(path: %s).", this.sendPath, deliveryTag));
-					AsyncUtil.completeFutureExceptionally(sendData.getWork(), completionException);					
-				}
-			}
-			else
-			{
-				if (deliveryTag != null)
-				{					
-					TRACE_LOGGER.error("SendData not found for this delivery. path:{}, linkName:{}, deliveryTag:{}", this.sendPath, this.sendLink.getName(), deliveryTag);
-				}
-				else
-				{
-				    TRACE_LOGGER.debug("There are no pending sends to '{}'.", this.sendPath);
-				}
-
-				break;
-			}
-		}
+                    if (delivery != null)
+                    {
+                        delivery.free();
+                    }
+                    
+                    Exception completionException = sendException != null ? new OperationCancelledException("Send operation failed. Please see cause for more details", sendException)
+                            : new OperationCancelledException(String.format(Locale.US, "Send operation failed while advancing delivery(tag: %s) on SendLink(path: %s).", this.sendPath, deliveryTag));
+                    AsyncUtil.completeFutureExceptionally(sendData.getWork(), completionException);
+                }
+            }
+        }
+        finally
+        {
+            synchronized (this.pendingSendLock)
+            {
+                if(this.isSendLoopRunning)
+                {
+                    this.isSendLoopRunning = false;
+                }
+            }
+        }
 	}
 
 	private void throwSenderTimeout(CompletableFuture<Void> pendingSendWork, Exception lastKnownException)
@@ -1024,19 +1001,19 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 					{
 					    TRACE_LOGGER.debug("Scheduled messages sent. Received sequence numbers '{}'", Arrays.toString(sequenceNumbers));
 					}
-									    
+
 					returningFuture.complete(sequenceNumbers);
 				}
 				else
 				{
 					// error response
 				    Exception scheduleException = RequestResponseUtils.genereateExceptionFromResponse(responseMessage);
-				    TRACE_LOGGER.error("Sending scheduled messages to '{}' failed.", this.sendPath, scheduleException);				    
+				    TRACE_LOGGER.error("Sending scheduled messages to '{}' failed.", this.sendPath, scheduleException);
 					returningFuture.completeExceptionally(scheduleException);
 				}
 				return returningFuture;
 			});
-		});		
+		});
 	}
 	
 	public CompletableFuture<Void> cancelScheduledMessageAsync(Long[] sequenceNumbers, Duration timeout)
@@ -1079,6 +1056,6 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		return this.createRequestResponseLink().thenComposeAsync((v) ->
 		{
 			return CommonRequestResponseOperations.peekMessagesAsync(this.requestResponseLink, this.operationTimeout, fromSequenceNumber, messageCount, null);
-		});		
+		});
 	}
 }

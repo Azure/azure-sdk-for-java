@@ -523,7 +523,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
         {
             if(sasToken == null)
             {
-                sasToken = SASUtil.generateSharedAccessSignatureToken(builder.getSasKeyName(), builder.getSasKey(), sasTokenAudienceURI, ClientConstants.DEFAULT_SAS_TOKEN_VALIDITY_IN_SECONDS);;
+                sasToken = SASUtil.generateSharedAccessSignatureToken(builder.getSasKeyName(), builder.getSasKey(), sasTokenAudienceURI, ClientConstants.DEFAULT_SAS_TOKEN_VALIDITY_IN_SECONDS);
                 isSasTokenGenerated = true;
             }
         } catch (InvalidKeyException e) {
