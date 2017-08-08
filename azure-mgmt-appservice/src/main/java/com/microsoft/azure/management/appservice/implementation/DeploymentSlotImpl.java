@@ -334,6 +334,12 @@ class DeploymentSlotImpl
     }
 
     @Override
+    Observable<MSDeployStatusInner> createMSDeploy(MSDeployInner msDeployInner) {
+        return parent().manager().inner().webApps()
+                .createMSDeployOperationAsync(parent().resourceGroupName(), parent().name(), msDeployInner);
+    }
+
+    @Override
     public WebAppSourceControl getSourceControl() {
         return getSourceControlAsync().toBlocking().single();
     }
@@ -347,11 +353,6 @@ class DeploymentSlotImpl
                         return new WebAppSourceControlImpl<>(siteSourceControlInner, DeploymentSlotImpl.this);
                     }
                 });
-    }
-
-    public Observable<MSDeployStatusInner> msDeployAsync(String blobUri) {
-        return manager().inner().webApps().createMSDeployOperationSlotAsync(resourceGroupName(), parent().name(), name(),
-                new MSDeployInner().withPackageUri(blobUri));
     }
 
     @Override

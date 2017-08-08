@@ -498,6 +498,8 @@ abstract class WebAppBaseImpl<
 
     abstract Observable<SiteAuthSettingsInner> getAuthentication();
 
+    abstract Observable<MSDeployStatusInner> createMSDeploy(MSDeployInner msDeployInner);
+
     @Override
     public Observable<FluentT> createResourceAsync() {
         if (hostNameSslStateMap.size() > 0) {
@@ -824,6 +826,11 @@ abstract class WebAppBaseImpl<
                 return site;
             }
         });
+    }
+
+    @Override
+    public WebDeploymentImpl<FluentT, FluentImplT> deploy() {
+        return new WebDeploymentImpl<>(this);
     }
 
     WebAppBaseImpl<FluentT, FluentImplT> withNewHostNameSslBinding(final HostNameSslBindingImpl<FluentT, FluentImplT> hostNameSslBinding) {

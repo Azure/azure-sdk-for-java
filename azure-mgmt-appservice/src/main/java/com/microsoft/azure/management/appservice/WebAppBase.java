@@ -10,7 +10,6 @@ import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
-import com.microsoft.azure.management.appservice.implementation.MSDeployStatusInner;
 import com.microsoft.azure.management.appservice.implementation.SiteInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
@@ -291,8 +290,12 @@ public interface WebAppBase extends
     @Method
     Observable<WebAppSourceControl> getSourceControlAsync();
 
+    /**
+     * First step specifying the parameters to make a web deployment (MS Deploy) to the web app.
+     * @return a stage to create web deployment
+     */
     @Method
-    Observable<MSDeployStatusInner> msDeployAsync(String blobUri);
+    WebDeployment.DefinitionStages.WithPackageUri deploy();
 
     /**
      * Verifies the ownership of the domain for a certificate order by verifying a hostname

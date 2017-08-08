@@ -63,6 +63,7 @@ public interface FunctionApp extends
      * @param functionName the name of the function
      * @param keyName the name of the key to add
      * @param keyValue optional. If not provided, a value will be generated.
+     * @return the added function key
      */
     NameValuePair addFunctionKey(String functionName, String keyName, String keyValue);
 
@@ -71,6 +72,7 @@ public interface FunctionApp extends
      * @param functionName the name of the function
      * @param keyName the name of the key to add
      * @param keyValue optional. If not provided, a value will be generated.
+     * @return the added function key
      */
     Observable<NameValuePair> addFunctionKeyAsync(String functionName, String keyName, String keyValue);
 
@@ -85,6 +87,7 @@ public interface FunctionApp extends
      * Removes a key to a function in this function app.
      * @param functionName the name of the function
      * @param keyName the name of the key to remove
+     * @return the completable of the operation
      */
     Completable removeFunctionKeyAsync(String functionName, String keyName);
 

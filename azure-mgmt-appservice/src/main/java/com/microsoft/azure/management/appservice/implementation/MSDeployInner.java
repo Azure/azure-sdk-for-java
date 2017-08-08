@@ -8,51 +8,54 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.management.appservice.MSDeployCore;
 import com.microsoft.azure.management.appservice.MSDeployParameterEntry;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
+
+import java.util.List;
 
 /**
  * MSDeploy ARM PUT information.
  */
+@JsonFlatten
 public class MSDeployInner {
     /**
      * List of Add-On packages. Add-On packages implicitly enable the Do Not
      * Delete MSDeploy rule.
      */
-    @JsonProperty(value = "addOnPackages")
+    @JsonProperty(value = "properties.addOnPackages")
     private List<MSDeployCore> addOnPackages;
 
     /**
      * Package URI.
      */
-    @JsonProperty(value = "packageUri")
+    @JsonProperty(value = "properties.packageUri")
     private String packageUri;
 
     /**
      * SQL Connection String.
      */
-    @JsonProperty(value = "connectionString")
+    @JsonProperty(value = "properties.connectionString")
     private String connectionString;
 
     /**
      * Database Type.
      */
-    @JsonProperty(value = "dbType")
+    @JsonProperty(value = "properties.dbType")
     private String dbType;
 
     /**
      * URI of MSDeploy Parameters file. Must not be set if SetParameters is
      * used.
      */
-    @JsonProperty(value = "setParametersXmlFileUri")
+    @JsonProperty(value = "properties.setParametersXmlFileUri")
     private String setParametersXmlFileUri;
 
     /**
      * MSDeploy Parameters. Must not be set if SetParametersXmlFileUri is used.
      */
-    @JsonProperty(value = "setParameters")
+    @JsonProperty(value = "properties.setParameters")
     private List<MSDeployParameterEntry> setParameters;
 
     /**
@@ -60,13 +63,13 @@ public class MSDeployInner {
      * set to true, the existing AppData directory on the destination will not
      * be deleted and overwritten.
      */
-    @JsonProperty(value = "skipAppData")
+    @JsonProperty(value = "properties.skipAppData")
     private Boolean skipAppData;
 
     /**
      * Sets the AppOffline rule while the MSDeploy operation executes.
      */
-    @JsonProperty(value = "appOffline")
+    @JsonProperty(value = "properties.appOffline")
     private Boolean appOffline;
 
     /**

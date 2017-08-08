@@ -202,9 +202,10 @@ abstract class AppServiceBaseImpl<
                 });
     }
 
-    public Observable<MSDeployStatusInner> msDeployAsync(String blobUri) {
-        return manager().inner().webApps().createMSDeployOperationAsync(resourceGroupName(), name(),
-                new MSDeployInner().withPackageUri(blobUri));
+    @Override
+    Observable<MSDeployStatusInner> createMSDeploy(MSDeployInner msDeployInner) {
+        return manager().inner().webApps()
+                .createMSDeployOperationAsync(resourceGroupName(), name(), msDeployInner);
     }
 
     @Override
