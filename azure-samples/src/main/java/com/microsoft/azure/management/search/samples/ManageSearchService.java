@@ -34,7 +34,7 @@ public class ManageSearchService {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
-        final String rgName = SdkContext.randomResourceName("rgACR", 15);
+        final String rgName = SdkContext.randomResourceName("rgSearch", 15);
         final String searchServiceName = SdkContext.randomResourceName("search", 20);
         final Region region = Region.US_EAST;
 

@@ -38,7 +38,7 @@ public class TestSearchService {
             AdminKeys adminKeys = searchService.getAdminKeys();
             Assert.assertNotNull(adminKeys);
             Assert.assertNotNull(adminKeys.primaryKey());
-            Assert.assertNotNull(adminKeys.primaryKey());
+            Assert.assertNotNull(adminKeys.secondaryKey());
 
             List<QueryKey> queryKeys = searchService.listQueryKeys();
             Assert.assertNotNull(queryKeys);
