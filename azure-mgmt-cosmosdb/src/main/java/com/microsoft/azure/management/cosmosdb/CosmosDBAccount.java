@@ -24,10 +24,10 @@ import rx.Observable;
 import java.util.List;
 
 /**
- * An immutable client-side representation of an Azure cosmos db.
+ * An immutable client-side representation of an Azure Cosmos DB.
  */
 @Fluent
-@Beta(SinceVersion.V1_1_0)
+@Beta(SinceVersion.V1_2_0)
 public interface CosmosDBAccount extends
     GroupableResource<CosmosDBManager, DatabaseAccountInner>,
     Refreshable<CosmosDBAccount>,

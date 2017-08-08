@@ -23,7 +23,7 @@ import com.microsoft.rest.RestClient;
 /**
  * Entry point to Azure compute resource management.
  */
-@Beta(SinceVersion.V1_1_0)
+@Beta(SinceVersion.V1_2_0)
 public final class CosmosDBManager extends Manager<CosmosDBManager, DocumentDBImpl> {
     private CosmosDBAccountsImpl databaseAccounts;
     /**

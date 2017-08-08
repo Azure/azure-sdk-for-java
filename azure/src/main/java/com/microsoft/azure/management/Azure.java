@@ -696,7 +696,7 @@ public final class Azure {
     /**
      * @return entry point to managing Container Regsitries.
      */
-    @Beta(SinceVersion.V1_1_0)
+    @Beta(SinceVersion.V1_2_0)
     public CosmosDBAccounts cosmosDBAccounts() {
         return cosmosDBManager.databaseAccounts();
     }
