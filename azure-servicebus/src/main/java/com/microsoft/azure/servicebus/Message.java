@@ -1,6 +1,6 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
-
+/**
+ *
+ */
 package com.microsoft.azure.servicebus;
 
 import java.io.Serializable;
@@ -10,6 +10,11 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
 
+
+/**
+ *
+ *
+ */
 final public class Message implements Serializable, IMessage {
 	private static final long serialVersionUID = 7849508139219590863L;
 	
@@ -67,7 +72,7 @@ final public class Message implements Serializable, IMessage {
 	public Message(String content)
 	{
 		this(content.getBytes(DEFAULT_CHAR_SET));
-	}	
+	}
 	
 	public Message(byte[] content)
 	{
@@ -88,7 +93,7 @@ final public class Message implements Serializable, IMessage {
 	{
 		this(messageId, content.getBytes(DEFAULT_CHAR_SET), contentType);
 	}
-	
+
 	public Message(String messageId, byte[] content, String contentType)
 	{
 		this.messageId = messageId;

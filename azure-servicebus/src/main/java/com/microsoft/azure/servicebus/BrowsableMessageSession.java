@@ -78,7 +78,7 @@ final class BrowsableMessageSession extends MessageSession {
         throw new UnsupportedOperationException(INVALID_OPERATION_ERROR_MESSAGE);
     }
 
-    @Override
+    // @Override
     public CompletableFuture<Void> completeBatchAsync(Collection<? extends IMessage> messages) {
         throw new UnsupportedOperationException(INVALID_OPERATION_ERROR_MESSAGE);
     }

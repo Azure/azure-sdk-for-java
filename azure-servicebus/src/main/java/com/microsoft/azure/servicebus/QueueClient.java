@@ -122,12 +122,6 @@ public final class QueueClient extends InitializableEntity implements IQueueClie
 		return this.sender.getEntityPath();
 	}
 
-	/**
-	 * Register the {@link IMessageHandler} for processing received messages.
-	 * @param handler
-	 * @throws InterruptedException
-	 * @throws ServiceBusException
-	 */
 	@Override
 	public void registerMessageHandler(IMessageHandler handler) throws InterruptedException, ServiceBusException {
 		this.messageAndSessionPump.registerMessageHandler(handler);		
