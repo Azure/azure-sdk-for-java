@@ -28,6 +28,6 @@ The samples are located in this repo. [Java Samples](https://github.com/Azure/az
 
 ### Can I manage Service Bus entities with this library?
 
-The standard way to manage Azure resources is by using [Azure Resource Manager](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview). In order to use functionality that previously existed in the azure-servicebus Java library, there will be a new Java specific library before this library becomes generally available. This will enable use cases that dynamically create/read/update/delete resources.
+Only rules management of subscription will be supported in this client library. This library focuses on Azure Service Bus Data Plane functionalities (e.g. send, receive).
 
-[Azure Service Bus Management Library](https://mvnrepository.com/artifact/com.microsoft.azure/azure-mgmt-servicebus) is available on Maven. And this is the [API document](https://docs.microsoft.com/en-us/java/api/com.microsoft.azure.management.servicebus).
+The standard way to manage Azure resources is by using [Azure Resource Manager](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview). In order to use functionality that previously existed in the azure-servicebus Java library, this is [Azure Service Bus Management Library](https://mvnrepository.com/artifact/com.microsoft.azure/azure-mgmt-servicebus) which is available on Maven. And this is the [API document](https://docs.microsoft.com/en-us/java/api/com.microsoft.azure.management.servicebus). This management library will enable use cases that dynamically create/read/update/delete resources.
