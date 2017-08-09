@@ -484,8 +484,8 @@ public class VirtualMachineScaleSetImpl
         }
         String lbNetworkId = null;
         for (LoadBalancerPrivateFrontend frontEnd : loadBalancer.privateFrontends().values()) {
-            if (frontEnd.inner().subnet().id() != null) {
-                lbNetworkId = ResourceUtils.parentResourceIdFromResourceId(frontEnd.inner().subnet().id());
+            if (frontEnd.networkId() != null) {
+                lbNetworkId = frontEnd.networkId();
             }
         }
 
