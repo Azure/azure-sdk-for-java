@@ -799,9 +799,9 @@ public class AzureTests extends TestBase {
 
     @Test
     @Ignore("Runs locally find but fails for unknown reason on check in.")
-    public void testDocumentDB() throws Exception {
-        new TestDocumentDB()
-                .runTest(azure.documentDBAccounts(), azure.resourceGroups());
+    public void testCosmosDB() throws Exception {
+        new TestCosmosDB()
+                .runTest(azure.cosmosDBAccounts(), azure.resourceGroups());
     }
 
     @Test

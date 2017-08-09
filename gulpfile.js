@@ -338,10 +338,10 @@ var mappings = {
         'package': 'com.microsoft.azure.management.scheduler',
         'args': '-FT 1'
     },
-    'documentdb': {
-        'dir': 'azure-mgmt-documentdb',
+    'cosmosdb': {
+        'dir': 'azure-mgmt-cosmosdb',
         'source': 'arm-documentdb/2015-04-08/swagger/documentdb.json',
-        'package': 'com.microsoft.azure.management.documentdb',
+        'package': 'com.microsoft.azure.management.cosmosdb',
         'args': '-FT 1',
     }
 };
