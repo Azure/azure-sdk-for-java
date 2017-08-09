@@ -36,7 +36,7 @@ public class ManagementChannel {
 
         RequestResponseCloser closer = new RequestResponseCloser();
         this.innerChannel = new FaultTolerantObject<>(
-        		new RequestResponseOpener(sessionProvider, "path", "mgmt", ClientConstants.MANAGEMENT_ADDRESS, connection),
+        		new RequestResponseOpener(sessionProvider, "mgmt-session", "mgmt", ClientConstants.MANAGEMENT_ADDRESS, connection),
                 closer);
         closer.setInnerChannel(this.innerChannel);
     }

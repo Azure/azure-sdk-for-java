@@ -101,8 +101,38 @@ public final class ConnectionHandler extends BaseHandler {
             }
         }
 
-        this.messagingFactory.onConnectionError(condition);
+        if (connection != null && connection.getRemoteState() != EndpointState.CLOSED) {
+            // if the remote-peer abruptly closes the connection without issuing close frame
+            // issue one
+            this.messagingFactory.onConnectionError(condition);
+        }
+
+        // onTransportError event is not handled by the global IO Handler for cleanup
         transport.unbind();
+    }
+
+    @Override
+    public void onTransportClosed(Event event) {
+
+        final Connection connection = event.getConnection();
+        final Transport transport = event.getTransport();
+        final ErrorCondition condition = transport.getCondition();
+
+        if (condition != null) {
+            if (TRACE_LOGGER.isLoggable(Level.WARNING)) {
+                TRACE_LOGGER.log(Level.WARNING, "Connection.onTransportClosed: hostname[" + connection.getHostname() + "], error[" + condition.getDescription() + "]");
+            }
+        } else {
+            if (TRACE_LOGGER.isLoggable(Level.WARNING)) {
+                TRACE_LOGGER.log(Level.WARNING, "Connection.onTransportClosed: hostname[" + connection != null ? connection.getHostname() : "n/a" + "], error[no description returned]");
+            }
+        }
+
+        if (connection != null && connection.getRemoteState() != EndpointState.CLOSED) {
+            // if the remote-peer abruptly closes the connection without issuing close frame
+            // issue one
+            this.messagingFactory.onConnectionError(condition);
+        }
     }
 
     @Override
@@ -132,7 +162,7 @@ public final class ConnectionHandler extends BaseHandler {
             // This means that the CLOSE origin is Service
             final Transport transport = connection.getTransport();
             if (transport != null) {
-                transport.unbind();
+                transport.unbind(); // we proactively dispose IO even if service fails to close
             }
         }
     }
