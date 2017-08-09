@@ -42,52 +42,36 @@ public final class RestClient {
     private final OkHttpClient httpClient;
     /** The {@link retrofit2.Retrofit} object. */
     private final Retrofit retrofit;
-    /** The credentials to authenticate. */
-    private final ServiceClientCredentials credentials;
-    /** The interceptor to handle custom headers. */
-    private final CustomHeadersInterceptor customHeadersInterceptor;
-    /** The adapter for a serializer. */
-    private final SerializerAdapter<?> serializerAdapter;
-    /** The builder factory for response builders. */
-    private final ResponseBuilder.Factory responseBuilderFactory;
-    /** The logging interceptor to use. */
-    private final LoggingInterceptor loggingInterceptor;
+    /** The original builder for this rest client. */
+    private final RestClient.Builder builder;
 
     private RestClient(OkHttpClient httpClient,
                        Retrofit retrofit,
-                       ServiceClientCredentials credentials,
-                       CustomHeadersInterceptor customHeadersInterceptor,
-                       LoggingInterceptor loggingInterceptor,
-                       SerializerAdapter<?> serializerAdapter,
-                       ResponseBuilder.Factory responseBuilderFactory) {
+                       RestClient.Builder builder) {
         this.httpClient = httpClient;
         this.retrofit = retrofit;
-        this.credentials = credentials;
-        this.customHeadersInterceptor = customHeadersInterceptor;
-        this.serializerAdapter = serializerAdapter;
-        this.responseBuilderFactory = responseBuilderFactory;
-        this.loggingInterceptor = loggingInterceptor;
+        this.builder = builder;
     }
 
     /**
      * @return the headers interceptor.
      */
     public CustomHeadersInterceptor headers() {
-        return customHeadersInterceptor;
+        return builder.customHeadersInterceptor;
     }
 
     /**
      * @return the current serializer adapter.
      */
     public SerializerAdapter<?> serializerAdapter() {
-        return serializerAdapter;
+        return builder.serializerAdapter;
     }
 
     /**
      * @return the current respnose builder factory.
      */
     public ResponseBuilder.Factory responseBuilderFactory() {
-        return responseBuilderFactory;
+        return builder.responseBuilderFactory;
     }
 
     /**
@@ -108,14 +92,14 @@ public final class RestClient {
      * @return the credentials attached to this REST client
      */
     public ServiceClientCredentials credentials() {
-        return this.credentials;
+        return builder.credentials;
     }
 
     /**
      * @return the current HTTP traffic logging level
      */
     public LogLevel logLevel() {
-        return loggingInterceptor.logLevel();
+        return builder.loggingInterceptor.logLevel();
     }
 
     /**
@@ -124,7 +108,7 @@ public final class RestClient {
      * @return the RestClient itself
      */
     public RestClient withLogLevel(LogLevel logLevel) {
-        this.loggingInterceptor.withLogLevel(logLevel);
+        builder.loggingInterceptor.withLogLevel(logLevel);
         return this;
     }
 
@@ -176,6 +160,8 @@ public final class RestClient {
         private Retrofit.Builder retrofitBuilder;
         /** The credentials to authenticate. */
         private ServiceClientCredentials credentials;
+        /** The credentials interceptor. */
+        private Interceptor credentialsInterceptor;
         /** The interceptor to handle custom headers. */
         private CustomHeadersInterceptor customHeadersInterceptor;
         /** The value for 'User-Agent' header. */
@@ -201,10 +187,10 @@ public final class RestClient {
             this.httpClientBuilder.interceptors().clear();
             this.httpClientBuilder.networkInterceptors().clear();
             this.baseUrl = restClient.retrofit.baseUrl().toString();
-            this.responseBuilderFactory = restClient.responseBuilderFactory;
-            this.serializerAdapter = restClient.serializerAdapter;
-            if (restClient.credentials != null) {
-                this.credentials = restClient.credentials;
+            this.responseBuilderFactory = restClient.builder.responseBuilderFactory;
+            this.serializerAdapter = restClient.builder.serializerAdapter;
+            if (restClient.builder.credentials != null) {
+                this.credentials = restClient.builder.credentials;
             }
             if (restClient.retrofit.callbackExecutor() != null) {
                 this.withCallbackExecutor(restClient.retrofit.callbackExecutor());
@@ -217,7 +203,7 @@ public final class RestClient {
                 } else if (interceptor instanceof CustomHeadersInterceptor) {
                     this.customHeadersInterceptor = new CustomHeadersInterceptor();
                     this.customHeadersInterceptor.addHeaderMultimap(((CustomHeadersInterceptor) interceptor).headers());
-                } else {
+                } else if (interceptor != restClient.builder.credentialsInterceptor) {
                     this.withInterceptor(interceptor);
                 }
             }
@@ -313,8 +299,6 @@ public final class RestClient {
                 throw new NullPointerException("credentials == null");
             }
             this.credentials = credentials;
-            credentials.applyCredentialsFilter(httpClientBuilder);
-
             return this;
         }
 
@@ -468,6 +452,16 @@ public final class RestClient {
             if (serializerAdapter == null) {
                 throw new IllegalArgumentException("Please set serializer adapter.");
             }
+
+            if (this.credentials != null) {
+                int interceptorCount = httpClientBuilder.interceptors().size();
+                this.credentials.applyCredentialsFilter(httpClientBuilder);
+                // store the interceptor
+                if (httpClientBuilder.interceptors().size() > interceptorCount) {
+                    credentialsInterceptor = httpClientBuilder.interceptors().get(interceptorCount);
+                }
+            }
+
             RetryHandler retryHandler;
             if (retryStrategy == null) {
                 retryHandler = new RetryHandler();
@@ -488,11 +482,7 @@ public final class RestClient {
                             .addConverterFactory(serializerAdapter.converterFactory())
                             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                             .build(),
-                    credentials,
-                    customHeadersInterceptor,
-                    loggingInterceptor,
-                    serializerAdapter,
-                    responseBuilderFactory);
+                    this);
         }
     }
 }
