@@ -311,12 +311,12 @@ class FunctionAppImpl
         private List<NameValuePair> keys;
     }
 
-    private static class KuduCredentials extends TokenCredentials {
+    private static final class KuduCredentials extends TokenCredentials {
         private String token;
         private long expire;
         private final FunctionAppImpl functionApp;
 
-        public KuduCredentials(FunctionAppImpl functionApp) {
+        private KuduCredentials(FunctionAppImpl functionApp) {
             super("Bearer", null);
             this.functionApp = functionApp;
         }
