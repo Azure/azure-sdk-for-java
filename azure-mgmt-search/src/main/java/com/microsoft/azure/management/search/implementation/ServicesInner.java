@@ -65,6 +65,10 @@ public class ServicesInner implements InnerSupportsGet<SearchServiceInner>, Inne
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("searchServiceName") String searchServiceName, @Path("subscriptionId") String subscriptionId, @Body SearchServiceInner service, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-client-request-id") UUID clientRequestId, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.search.Services beginCreateOrUpdate" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}")
+        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("searchServiceName") String searchServiceName, @Path("subscriptionId") String subscriptionId, @Body SearchServiceInner service, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-client-request-id") UUID clientRequestId, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.search.Services getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}")
         Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("searchServiceName") String searchServiceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-client-request-id") UUID clientRequestId, @Header("User-Agent") String userAgent);
@@ -95,7 +99,7 @@ public class ServicesInner implements InnerSupportsGet<SearchServiceInner>, Inne
      * @return the SearchServiceInner object if successful.
      */
     public SearchServiceInner createOrUpdate(String resourceGroupName, String searchServiceName, SearchServiceInner service) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, searchServiceName, service).toBlocking().single().body();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, searchServiceName, service).toBlocking().last().body();
     }
 
     /**
@@ -119,7 +123,7 @@ public class ServicesInner implements InnerSupportsGet<SearchServiceInner>, Inne
      * @param searchServiceName The name of the Azure Search service to create or update. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the service name after the service is created.
      * @param service The definition of the Search service to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SearchServiceInner object
+     * @return the observable for the request
      */
     public Observable<SearchServiceInner> createOrUpdateAsync(String resourceGroupName, String searchServiceName, SearchServiceInner service) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, searchServiceName, service).map(new Func1<ServiceResponse<SearchServiceInner>, SearchServiceInner>() {
@@ -135,11 +139,11 @@ public class ServicesInner implements InnerSupportsGet<SearchServiceInner>, Inne
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the Azure Search service to create or update. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the service name after the service is created.
-     * @param serviceParameter The definition of the Search service to create or update.
+     * @param service The definition of the Search service to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SearchServiceInner object
+     * @return the observable for the request
      */
-    public Observable<ServiceResponse<SearchServiceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String searchServiceName, SearchServiceInner serviceParameter) {
+    public Observable<ServiceResponse<SearchServiceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String searchServiceName, SearchServiceInner service) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -149,29 +153,18 @@ public class ServicesInner implements InnerSupportsGet<SearchServiceInner>, Inne
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (serviceParameter == null) {
+        if (service == null) {
             throw new IllegalArgumentException("Parameter service is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(serviceParameter);
+        Validator.validate(service);
         final SearchManagementRequestOptionsInner searchManagementRequestOptions = null;
         UUID clientRequestId = null;
-        return service.createOrUpdate(resourceGroupName, searchServiceName, this.client.subscriptionId(), serviceParameter, this.client.apiVersion(), this.client.acceptLanguage(), clientRequestId, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SearchServiceInner>>>() {
-                @Override
-                public Observable<ServiceResponse<SearchServiceInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<SearchServiceInner> clientResponse = createOrUpdateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, searchServiceName, this.client.subscriptionId(), service, this.client.apiVersion(), this.client.acceptLanguage(), clientRequestId, this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<SearchServiceInner>() { }.getType());
     }
-
     /**
      * Creates or updates a Search service in the given resource group. If the Search service already exists, all properties will be updated with the given values.
      *
@@ -185,7 +178,7 @@ public class ServicesInner implements InnerSupportsGet<SearchServiceInner>, Inne
      * @return the SearchServiceInner object if successful.
      */
     public SearchServiceInner createOrUpdate(String resourceGroupName, String searchServiceName, SearchServiceInner service, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, searchServiceName, service, searchManagementRequestOptions).toBlocking().single().body();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, searchServiceName, service, searchManagementRequestOptions).toBlocking().last().body();
     }
 
     /**
@@ -211,7 +204,7 @@ public class ServicesInner implements InnerSupportsGet<SearchServiceInner>, Inne
      * @param service The definition of the Search service to create or update.
      * @param searchManagementRequestOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SearchServiceInner object
+     * @return the observable for the request
      */
     public Observable<SearchServiceInner> createOrUpdateAsync(String resourceGroupName, String searchServiceName, SearchServiceInner service, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, searchServiceName, service, searchManagementRequestOptions).map(new Func1<ServiceResponse<SearchServiceInner>, SearchServiceInner>() {
@@ -227,12 +220,12 @@ public class ServicesInner implements InnerSupportsGet<SearchServiceInner>, Inne
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the Azure Search service to create or update. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the service name after the service is created.
-     * @param serviceParameter The definition of the Search service to create or update.
+     * @param service The definition of the Search service to create or update.
      * @param searchManagementRequestOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SearchServiceInner object
+     * @return the observable for the request
      */
-    public Observable<ServiceResponse<SearchServiceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String searchServiceName, SearchServiceInner serviceParameter, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+    public Observable<ServiceResponse<SearchServiceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String searchServiceName, SearchServiceInner service, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -242,24 +235,103 @@ public class ServicesInner implements InnerSupportsGet<SearchServiceInner>, Inne
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (serviceParameter == null) {
+        if (service == null) {
             throw new IllegalArgumentException("Parameter service is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(serviceParameter);
+        Validator.validate(service);
         Validator.validate(searchManagementRequestOptions);
         UUID clientRequestId = null;
         if (searchManagementRequestOptions != null) {
             clientRequestId = searchManagementRequestOptions.clientRequestId();
         }
-        return service.createOrUpdate(resourceGroupName, searchServiceName, this.client.subscriptionId(), serviceParameter, this.client.apiVersion(), this.client.acceptLanguage(), clientRequestId, this.client.userAgent())
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, searchServiceName, this.client.subscriptionId(), service, this.client.apiVersion(), this.client.acceptLanguage(), clientRequestId, this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<SearchServiceInner>() { }.getType());
+    }
+
+    /**
+     * Creates or updates a Search service in the given resource group. If the Search service already exists, all properties will be updated with the given values.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service to create or update. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the service name after the service is created.
+     * @param service The definition of the Search service to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SearchServiceInner object if successful.
+     */
+    public SearchServiceInner beginCreateOrUpdate(String resourceGroupName, String searchServiceName, SearchServiceInner service) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, searchServiceName, service).toBlocking().single().body();
+    }
+
+    /**
+     * Creates or updates a Search service in the given resource group. If the Search service already exists, all properties will be updated with the given values.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service to create or update. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the service name after the service is created.
+     * @param service The definition of the Search service to create or update.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SearchServiceInner> beginCreateOrUpdateAsync(String resourceGroupName, String searchServiceName, SearchServiceInner service, final ServiceCallback<SearchServiceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, searchServiceName, service), serviceCallback);
+    }
+
+    /**
+     * Creates or updates a Search service in the given resource group. If the Search service already exists, all properties will be updated with the given values.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service to create or update. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the service name after the service is created.
+     * @param service The definition of the Search service to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SearchServiceInner object
+     */
+    public Observable<SearchServiceInner> beginCreateOrUpdateAsync(String resourceGroupName, String searchServiceName, SearchServiceInner service) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, searchServiceName, service).map(new Func1<ServiceResponse<SearchServiceInner>, SearchServiceInner>() {
+            @Override
+            public SearchServiceInner call(ServiceResponse<SearchServiceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Creates or updates a Search service in the given resource group. If the Search service already exists, all properties will be updated with the given values.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service to create or update. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the service name after the service is created.
+     * @param service The definition of the Search service to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SearchServiceInner object
+     */
+    public Observable<ServiceResponse<SearchServiceInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String searchServiceName, SearchServiceInner service) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (searchServiceName == null) {
+            throw new IllegalArgumentException("Parameter searchServiceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (service == null) {
+            throw new IllegalArgumentException("Parameter service is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(service);
+        final SearchManagementRequestOptionsInner searchManagementRequestOptions = null;
+        UUID clientRequestId = null;
+        return service.beginCreateOrUpdate(resourceGroupName, searchServiceName, this.client.subscriptionId(), service, this.client.apiVersion(), this.client.acceptLanguage(), clientRequestId, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SearchServiceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<SearchServiceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<SearchServiceInner> clientResponse = createOrUpdateDelegate(response);
+                        ServiceResponse<SearchServiceInner> clientResponse = beginCreateOrUpdateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -268,7 +340,103 @@ public class ServicesInner implements InnerSupportsGet<SearchServiceInner>, Inne
             });
     }
 
-    private ServiceResponse<SearchServiceInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    /**
+     * Creates or updates a Search service in the given resource group. If the Search service already exists, all properties will be updated with the given values.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service to create or update. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the service name after the service is created.
+     * @param service The definition of the Search service to create or update.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SearchServiceInner object if successful.
+     */
+    public SearchServiceInner beginCreateOrUpdate(String resourceGroupName, String searchServiceName, SearchServiceInner service, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, searchServiceName, service, searchManagementRequestOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Creates or updates a Search service in the given resource group. If the Search service already exists, all properties will be updated with the given values.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service to create or update. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the service name after the service is created.
+     * @param service The definition of the Search service to create or update.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SearchServiceInner> beginCreateOrUpdateAsync(String resourceGroupName, String searchServiceName, SearchServiceInner service, SearchManagementRequestOptionsInner searchManagementRequestOptions, final ServiceCallback<SearchServiceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, searchServiceName, service, searchManagementRequestOptions), serviceCallback);
+    }
+
+    /**
+     * Creates or updates a Search service in the given resource group. If the Search service already exists, all properties will be updated with the given values.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service to create or update. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the service name after the service is created.
+     * @param service The definition of the Search service to create or update.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SearchServiceInner object
+     */
+    public Observable<SearchServiceInner> beginCreateOrUpdateAsync(String resourceGroupName, String searchServiceName, SearchServiceInner service, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, searchServiceName, service, searchManagementRequestOptions).map(new Func1<ServiceResponse<SearchServiceInner>, SearchServiceInner>() {
+            @Override
+            public SearchServiceInner call(ServiceResponse<SearchServiceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Creates or updates a Search service in the given resource group. If the Search service already exists, all properties will be updated with the given values.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure Search service to create or update. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the service name after the service is created.
+     * @param service The definition of the Search service to create or update.
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SearchServiceInner object
+     */
+    public Observable<ServiceResponse<SearchServiceInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String searchServiceName, SearchServiceInner service, SearchManagementRequestOptionsInner searchManagementRequestOptions) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (searchServiceName == null) {
+            throw new IllegalArgumentException("Parameter searchServiceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (service == null) {
+            throw new IllegalArgumentException("Parameter service is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(service);
+        Validator.validate(searchManagementRequestOptions);
+        UUID clientRequestId = null;
+        if (searchManagementRequestOptions != null) {
+            clientRequestId = searchManagementRequestOptions.clientRequestId();
+        }
+        return service.beginCreateOrUpdate(resourceGroupName, searchServiceName, this.client.subscriptionId(), service, this.client.apiVersion(), this.client.acceptLanguage(), clientRequestId, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SearchServiceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SearchServiceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SearchServiceInner> clientResponse = beginCreateOrUpdateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SearchServiceInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<SearchServiceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SearchServiceInner>() { }.getType())
                 .register(201, new TypeToken<SearchServiceInner>() { }.getType())
