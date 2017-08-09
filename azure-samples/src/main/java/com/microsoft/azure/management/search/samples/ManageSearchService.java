@@ -12,10 +12,12 @@ import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.azure.management.search.AdminKeyKind;
 import com.microsoft.azure.management.search.SearchService;
+import com.microsoft.azure.management.search.SkuName;
 import com.microsoft.rest.LogLevel;
 
 import java.io.File;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Azure Search sample for managing search service.
@@ -35,7 +37,7 @@ public class ManageSearchService {
      */
     public static boolean runSample(Azure azure) {
         final String rgName = SdkContext.randomResourceName("rgSearch", 15);
-        final String searchServiceName = SdkContext.randomResourceName("search", 20);
+        final String searchServiceName = SdkContext.randomResourceName("ssrv", 20);
         final Region region = Region.US_EAST;
 
         try {
@@ -46,25 +48,37 @@ public class ManageSearchService {
             if (!azure.searchServices().checkNameAvailability(searchServiceName).isAvailable()) {
                 return false;
             }
+            Date t1, t2;
 
+            // Azure limits the number of free Search service resource to one per subscription
+            // List all Search services in the subscription and skip if there is already one resource of type free SKU
+            boolean createFreeService = true;
+            List<SearchService> resources = azure.searchServices().list();
+            for (SearchService item : resources) {
+                if (item.sku().name() == SkuName.FREE) {
+                    createFreeService = false;
+                    break;
+                }
+            }
 
-            //=============================================================
-            // Create a Azure Search service resource with a "free" SKU
+            if (createFreeService) {
+                //=============================================================
+                // Create a Azure Search service resource with a "free" SKU
 
-            System.out.println("Creating an Azure Search service using \"free\" SKU");
+                System.out.println("Creating an Azure Search service using \"free\" SKU");
 
-            Date t1 = new Date();
+                t1 = new Date();
 
-            SearchService searchServiceFree = azure.searchServices().define(searchServiceName + "free")
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .withFreeSku()
-                .create();
+                SearchService searchServiceFree = azure.searchServices().define(searchServiceName + "free")
+                    .withRegion(region)
+                    .withNewResourceGroup(rgName)
+                    .withFreeSku()
+                    .create();
 
-            Date t2 = new Date();
-            System.out.println("Created Azure Search service: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + searchServiceFree.id());
-            Utils.print(searchServiceFree);
-
+                t2 = new Date();
+                System.out.println("Created Azure Search service: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + searchServiceFree.id());
+                Utils.print(searchServiceFree);
+            }
 
             //=============================================================
             // Create an Azure Search service resource

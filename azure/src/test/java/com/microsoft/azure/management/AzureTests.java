@@ -817,6 +817,24 @@ public class AzureTests extends TestBase {
     }
 
     @Test
+    public void testSearchServiceFreeSku() throws Exception {
+        new TestSearchService.SearchServiceFreeSku()
+            .runTest(azure.searchServices(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testSearchServiceBasicSku() throws Exception {
+        new TestSearchService.SearchServiceBasicSku()
+            .runTest(azure.searchServices(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testSearchServiceStandardSku() throws Exception {
+        new TestSearchService.SearchServiceStandardSku()
+            .runTest(azure.searchServices(), azure.resourceGroups());
+    }
+
+    @Test
     public void testSearchServiceAnySku() throws Exception {
         new TestSearchService.SearchServiceAnySku()
             .runTest(azure.searchServices(), azure.resourceGroups());

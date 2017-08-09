@@ -20,8 +20,8 @@ public class TestSearchService {
 
         @Override
         public SearchService createResource(SearchServices searchServices) throws Exception {
-            final String newName = "search" + this.testId;
-            String rgName = "rg" + this.testId;
+            final String newName = "ssrv" + this.testId;
+            String rgName = "rgSearch" + this.testId;
 
             Assert.assertTrue(searchServices.checkNameAvailability(newName).isAvailable());
 
@@ -90,8 +90,8 @@ public class TestSearchService {
 
         @Override
         public SearchService createResource(SearchServices searchServices) throws Exception {
-            final String newName = "search" + this.testId;
-            String rgName = "rg" + this.testId;
+            final String newName = "ssrv" + this.testId;
+            String rgName = "rgSearch" + this.testId;
             SearchService searchService = searchServices.define(newName)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup()
@@ -130,8 +130,8 @@ public class TestSearchService {
 
         @Override
         public SearchService createResource(SearchServices searchServices) throws Exception {
-            final String newName = "search" + this.testId;
-            String rgName = "rg" + this.testId;
+            final String newName = "ssrv" + this.testId;
+            String rgName = "rgSearch" + this.testId;
             SearchService searchService = searchServices.define(newName)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup()
@@ -171,8 +171,8 @@ public class TestSearchService {
 
         @Override
         public SearchService createResource(SearchServices searchServices) throws Exception {
-            final String newName = "search" + this.testId;
-            String rgName = "rg" + this.testId;
+            final String newName = "ssrv" + this.testId;
+            String rgName = "rgSearch" + this.testId;
             SearchService searchService = searchServices.define(newName)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup()
