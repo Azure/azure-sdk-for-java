@@ -34,6 +34,7 @@ import com.microsoft.azure.management.compute.VirtualMachineCustomImage;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.containerregistry.Registry;
 import com.microsoft.azure.management.containerregistry.implementation.RegistryListCredentials;
+import com.microsoft.azure.management.cosmosdb.CosmosDBAccount;
 import com.microsoft.azure.management.dns.ARecordSet;
 import com.microsoft.azure.management.dns.AaaaRecordSet;
 import com.microsoft.azure.management.dns.CNameRecordSet;
@@ -49,7 +50,6 @@ import com.microsoft.azure.management.dns.SrvRecordSet;
 import com.microsoft.azure.management.dns.TxtRecord;
 import com.microsoft.azure.management.dns.TxtRecordSet;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryApplication;
-import com.microsoft.azure.management.documentdb.DocumentDBAccount;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroup;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryUser;
 import com.microsoft.azure.management.graphrbac.RoleAssignment;
@@ -1904,25 +1904,25 @@ public final class Utils {
     }
 
     /**
-     * Print DocumentDB info.
-     * @param documentDBAccount a DocumentDB
+     * Print CosmosDB info.
+     * @param cosmosDBAccount a CosmosDB
      */
-    public static void print(DocumentDBAccount documentDBAccount) {
+    public static void print(CosmosDBAccount cosmosDBAccount) {
         StringBuilder builder = new StringBuilder()
-                .append("DocumentDB: ").append(documentDBAccount.id())
-                .append("\n\tName: ").append(documentDBAccount.name())
-                .append("\n\tResourceGroupName: ").append(documentDBAccount.resourceGroupName())
-                .append("\n\tKind: ").append(documentDBAccount.kind().toString())
-                .append("\n\tDefault consistency level: ").append(documentDBAccount.consistencyPolicy().defaultConsistencyLevel())
-                .append("\n\tIP range filter: ").append(documentDBAccount.ipRangeFilter());
+                .append("CosmosDB: ").append(cosmosDBAccount.id())
+                .append("\n\tName: ").append(cosmosDBAccount.name())
+                .append("\n\tResourceGroupName: ").append(cosmosDBAccount.resourceGroupName())
+                .append("\n\tKind: ").append(cosmosDBAccount.kind().toString())
+                .append("\n\tDefault consistency level: ").append(cosmosDBAccount.consistencyPolicy().defaultConsistencyLevel())
+                .append("\n\tIP range filter: ").append(cosmosDBAccount.ipRangeFilter());
 
-        for (com.microsoft.azure.management.documentdb.Location writeReplica : documentDBAccount.writableReplications()) {
+        for (com.microsoft.azure.management.cosmosdb.Location writeReplica : cosmosDBAccount.writableReplications()) {
             builder.append("\n\t\tWrite replication: ")
                     .append("\n\t\t\tName :").append(writeReplica.locationName());
         }
 
-        builder.append("\n\tNumber of read replications: ").append(documentDBAccount.readableReplications().size());
-        for (com.microsoft.azure.management.documentdb.Location readReplica : documentDBAccount.readableReplications()) {
+        builder.append("\n\tNumber of read replications: ").append(cosmosDBAccount.readableReplications().size());
+        for (com.microsoft.azure.management.cosmosdb.Location readReplica : cosmosDBAccount.readableReplications()) {
             builder.append("\n\t\tRead replication: ")
                     .append("\n\t\t\tName :").append(readReplica.locationName());
         }

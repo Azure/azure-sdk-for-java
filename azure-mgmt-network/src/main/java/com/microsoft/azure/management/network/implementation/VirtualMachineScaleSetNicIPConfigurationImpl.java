@@ -9,10 +9,9 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
 import com.microsoft.azure.management.network.VirtualMachineScaleSetNicIPConfiguration;
-import com.microsoft.azure.management.network.NicIPConfiguration;
 
 /**
- *  Implementation for {@link NicIPConfiguration} for network interfaces associated
+ *  Implementation for NicIPConfiguration for network interfaces associated
  *  with virtual machine scale set.
  */
 @LangDefinition

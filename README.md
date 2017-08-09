@@ -44,7 +44,7 @@ Note: This page will be maintained regularly to ensure that it is up to date.
   <tr>
     <td>More services</td>
     <td>Resource Manager<br>Key Vault<br>Redis<br>CDN<br>Batch</td>
-    <td valign="top">Web apps<br>Function Apps<br>Service bus<br>Graph RBAC<br>DocumentDB</td>
+    <td valign="top">Web apps<br>Function Apps<br>Service bus<br>Graph RBAC<br>ComsosDB</td>
     <td valign="top">Monitor<br>Scheduler<br>Functions management<br>Search<br>More Graph RBAC features</td>
   </tr>
   <tr>
@@ -65,12 +65,12 @@ The `Azure` class is the simplest entry point for creating and interacting with 
 
 `Azure azure = Azure.authenticate(credFile).withDefaultSubscription();` 
 
-#### Create a Cosmos DB with DocumentDB Programming Model
+#### Create a Cosmos DB with CosmosDB Programming Model
 
 You can create a Cosmos DB account by using a `define() … create()` method chain.
 
 ```java
-DocumentDBAccount documentDBAccount = azure.documentDBs().define(docDBName)
+CosmosAccount cosmosDBAccount = azure.cosmosDBs().define(cosmosDBName)
 	.withRegion(Region.US_EAST)
 	.withNewResourceGroup(rgName)
 	.withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
@@ -383,10 +383,10 @@ You can find plenty of sample code that illustrates management scenarios (80+ en
 <tr>
     <td>Cosmos DB</td>
     <td><ul style="list-style-type:circle">
-<li><a href="https://github.com/Azure-Samples/cosmosdb-java-create-documentdb-and-configure-for-high-availability">Create a DocumentDB and configure it for high availability</a></li>
-<li><a href="https://github.com/Azure-Samples/cosmosdb-java-create-documentdb-and-configure-for-eventual-consistency">Create a DocumentDB and configure it with eventual consistency</a></li>
-<li><a href="https://github.com/Azure-Samples/cosmosdb-java-create-documentdb-and-configure-firewall">Create a DocumentDB, configure it for high availability and create a firewall to limit access from an approved set of IP addresses</li>
-<li><a href="https://github.com/Azure-Samples/cosmosdb-java-create-documentdb-and-get-mongodb-connection-string">Create a DocumentDB and get MongoDB connection string</li>
+<li><a href="https://github.com/Azure-Samples/cosmosdb-java-create-cosmosdb-and-configure-for-high-availability">Create a CosmosDB and configure it for high availability</a></li>
+<li><a href="https://github.com/Azure-Samples/cosmosdb-java-create-cosmosdb-and-configure-for-eventual-consistency">Create a CosmosDB and configure it with eventual consistency</a></li>
+<li><a href="https://github.com/Azure-Samples/cosmosdb-java-create-cosmosdb-and-configure-firewall">Create a CosmosDB, configure it for high availability and create a firewall to limit access from an approved set of IP addresses</li>
+<li><a href="https://github.com/Azure-Samples/cosmosdb-java-create-cosmosdb-and-get-mongodb-connection-string">Create a CosmosDB and get MongoDB connection string</li>
 </ul></td>
   </tr>
 
