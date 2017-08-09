@@ -184,13 +184,15 @@ class LoadBalancerImpl
     @Override
     protected void beforeCreating() {
         // Account for the newly created public IPs
-        for (Entry<String, String> pipFrontendAssociation : this.creatablePIPKeys.entrySet()) {
-            PublicIPAddress pip = (PublicIPAddress) this.createdResource(pipFrontendAssociation.getKey());
-            if (pip != null) {
-                withExistingPublicIPAddress(pip.id(), pipFrontendAssociation.getValue());
+        if (this.creatablePIPKeys != null) {
+            for (Entry<String, String> pipFrontendAssociation : this.creatablePIPKeys.entrySet()) {
+                PublicIPAddress pip = (PublicIPAddress) this.createdResource(pipFrontendAssociation.getKey());
+                if (pip != null) {
+                    withExistingPublicIPAddress(pip.id(), pipFrontendAssociation.getValue());
+                }
             }
+            this.creatablePIPKeys.clear();
         }
-        this.creatablePIPKeys.clear();
 
         // Reset and update probes
         List<ProbeInner> innerProbes = innersFromWrappers(this.httpProbes.values());
@@ -280,31 +282,33 @@ class LoadBalancerImpl
 
     @Override
     protected void afterCreating() {
-        List<Exception> nicExceptions = new ArrayList<>();
+        if (this.nicsInBackends != null) {
+            List<Exception> nicExceptions = new ArrayList<>();
 
-        // Update the NICs to point to the backend pool
-        for (Entry<String, String> nicInBackend : this.nicsInBackends.entrySet()) {
-            String nicId = nicInBackend.getKey();
-            String backendName = nicInBackend.getValue();
-            try {
-                NetworkInterface nic = this.manager().networkInterfaces().getById(nicId);
-                NicIPConfiguration nicIP = nic.primaryIPConfiguration();
-                nic.update()
-                    .updateIPConfiguration(nicIP.name())
-                        .withExistingLoadBalancerBackend(this, backendName)
-                        .parent()
-                    .apply();
-            } catch (Exception e) {
-                nicExceptions.add(e);
+            // Update the NICs to point to the backend pool
+            for (Entry<String, String> nicInBackend : this.nicsInBackends.entrySet()) {
+                String nicId = nicInBackend.getKey();
+                String backendName = nicInBackend.getValue();
+                try {
+                    NetworkInterface nic = this.manager().networkInterfaces().getById(nicId);
+                    NicIPConfiguration nicIP = nic.primaryIPConfiguration();
+                    nic.update()
+                        .updateIPConfiguration(nicIP.name())
+                            .withExistingLoadBalancerBackend(this, backendName)
+                            .parent()
+                        .apply();
+                } catch (Exception e) {
+                    nicExceptions.add(e);
+                }
             }
-        }
 
-        if (!nicExceptions.isEmpty()) {
-            throw new CompositeException(nicExceptions);
-        }
+            if (!nicExceptions.isEmpty()) {
+                throw new CompositeException(nicExceptions);
+            }
 
-        this.nicsInBackends.clear();
-        this.refresh();
+            this.nicsInBackends.clear();
+            this.refresh();
+        }
     }
 
     @Override
@@ -751,27 +755,23 @@ class LoadBalancerImpl
     public LoadBalancerPublicFrontend findFrontendByPublicIPAddress(String pipId) {
         if (pipId == null) {
             return null;
-        } else {
-            // Use existing frontend already pointing at this PIP, if any
-            for (LoadBalancerPublicFrontend frontend : this.publicFrontends().values()) {
-                if (frontend.publicIPAddressId() == null) {
-                    continue;
-                }
-                else if (pipId.equalsIgnoreCase(frontend.publicIPAddressId())) {
-                    return frontend;
-                }
-            }
-
-            return null;
         }
+
+        // Use existing frontend already pointing at this PIP, if any
+        for (LoadBalancerPublicFrontend frontend : this.publicFrontends().values()) {
+            if (frontend.publicIPAddressId() == null) {
+                continue;
+            }
+            else if (pipId.equalsIgnoreCase(frontend.publicIPAddressId())) {
+                return frontend;
+            }
+        }
+
+        return null;
     }
 
     @Override
     public LoadBalancerPublicFrontend findFrontendByPublicIPAddress(PublicIPAddress publicIPAddress) {
-        if (publicIPAddress == null) {
-            return null;
-        } else {
-            return this.findFrontendByPublicIPAddress(publicIPAddress.id());
-        }
+        return (publicIPAddress != null) ? this.findFrontendByPublicIPAddress(publicIPAddress.id()) : null;
     }
 }
