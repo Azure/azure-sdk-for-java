@@ -54,7 +54,7 @@ public class ManagementChannel {
                 new IOperationResult<RequestResponseChannel, Exception>() {
                     @Override
                     public void onComplete(final RequestResponseChannel result) {
-                        result.request(dispatcher, requestMessage,
+                        result.request(requestMessage,
                                 new IOperationResult<Message, Exception>() {
                                     @Override
                                     public void onComplete(final Message response) {

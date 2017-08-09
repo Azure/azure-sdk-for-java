@@ -61,7 +61,7 @@ public class CBSChannel {
                 new IOperationResult<RequestResponseChannel, Exception>() {
                     @Override
                     public void onComplete(final RequestResponseChannel result) {
-                        result.request(dispatcher, request,
+                        result.request(request,
                                 new IOperationResult<Message, Exception>() {
                                     @Override
                                     public void onComplete(final Message response) {

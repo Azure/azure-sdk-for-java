@@ -124,7 +124,7 @@ public class RequestResponseTest  extends ApiTestBase {
                 new IOperationResult<RequestResponseChannel, Exception>() {
                     @Override
                     public void onComplete(RequestResponseChannel result) {
-                        result.request(dispatcher, request,
+                        result.request(request,
                             new IOperationResult<Message, Exception>() {
                                 @Override
                                 public void onComplete(Message response) {

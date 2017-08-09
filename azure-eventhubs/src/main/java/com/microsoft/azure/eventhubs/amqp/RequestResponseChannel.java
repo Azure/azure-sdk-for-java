@@ -4,11 +4,10 @@
  */
 package com.microsoft.azure.eventhubs.amqp;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.HashMap;
+import java.util.UUID;
 
 import org.apache.qpid.proton.amqp.UnsignedLong;
 import org.apache.qpid.proton.amqp.messaging.Source;
@@ -25,6 +24,7 @@ import org.apache.qpid.proton.message.Message;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.engine.EndpointState;
 
+import com.microsoft.azure.eventhubs.OperationCancelledException;
 import com.microsoft.azure.eventhubs.StringUtil;
 
 public class RequestResponseChannel implements IIOObject {
@@ -97,8 +97,10 @@ public class RequestResponseChannel implements IIOObject {
         return this.receiveLink;
     }
 
+    // not thread-safe
+    // this must be invoked from reactor/dispatcher thread
+    // & assumes that this is run on Opened Object
     public void request(
-            final ReactorDispatcher dispatcher,
             final Message message,
             final IOperationResult<Message, Exception> onResponse) {
 
@@ -116,27 +118,15 @@ public class RequestResponseChannel implements IIOObject {
 
         this.inflightRequests.put(message.getMessageId(), onResponse);
 
-        try {
-            dispatcher.invoke(new DispatchHandler() {
-                @Override
-                public void onEvent() {
+        sendLink.delivery(UUID.randomUUID().toString().replace("-", StringUtil.EMPTY).getBytes());
+        final int payloadSize = AmqpUtil.getDataSerializedSize(message) + 512; // need buffer for headers
 
-                    final Delivery delivery = sendLink.delivery(UUID.randomUUID().toString().replace("-", StringUtil.EMPTY).getBytes());
-                    final int payloadSize = AmqpUtil.getDataSerializedSize(message) + 512; // need buffer for headers
+        final byte[] bytes = new byte[payloadSize];
+        final int encodedSize = message.encode(bytes, 0, payloadSize);
 
-                    delivery.setContext(onResponse);
-
-                    final byte[] bytes = new byte[payloadSize];
-                    final int encodedSize = message.encode(bytes, 0, payloadSize);
-
-                    receiveLink.flow(1);
-                    sendLink.send(bytes, 0, encodedSize);
-                    sendLink.advance();
-                }
-            });
-        } catch (IOException ioException) {
-            onResponse.onError(ioException);
-        }
+        receiveLink.flow(1);
+        sendLink.send(bytes, 0, encodedSize);
+        sendLink.advance();
     }
 
     private void onLinkOpenComplete(final Exception exception) {
@@ -248,10 +238,7 @@ public class RequestResponseChannel implements IIOObject {
         @Override
         public void onError(Exception exception) {
 
-            for (IOperationResult<Message, Exception> responseCallback : inflightRequests.values())
-                responseCallback.onError(exception);
-
-            inflightRequests.clear();
+            this.cancelPendingRequests(exception);
 
             if (onClose != null)
                 onLinkCloseComplete(exception);
@@ -260,10 +247,23 @@ public class RequestResponseChannel implements IIOObject {
         @Override
         public void onClose(ErrorCondition condition) {
 
-            if (condition == null || condition.getCondition() == null)
-                onLinkCloseComplete(null);
-            else
-                onError(new AmqpException(condition));
+            if (condition == null || condition.getCondition() == null) {
+                this.cancelPendingRequests(new OperationCancelledException(
+                        "Operation cancelled as the underlying request-response link closed"));
+
+                if (onClose != null)
+                    onLinkCloseComplete(null);
+            }
+            else {
+                this.onError(new AmqpException(condition));
+            }
+        }
+
+        private void cancelPendingRequests(final Exception exception) {
+            for (IOperationResult<Message, Exception> responseCallback : inflightRequests.values())
+                responseCallback.onError(exception);
+
+            inflightRequests.clear();
         }
     }
 }
