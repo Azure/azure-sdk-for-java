@@ -29,11 +29,12 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Azure App Service basic sample for managing function apps.
- *  - Create 4 function apps under the same new app service plan:
+ *  - Create 5 function apps under the same new app service plan:
  *    - Deploy to 1 using FTP
  *    - Deploy to 2 using local Git repository
  *    - Deploy to 3 using a publicly available Git repository
  *    - Deploy to 4 using a GitHub repository with continuous integration
+ *    - Deploy to 5 using web deploy
  */
 public final class ManageFunctionAppSourceControl {
 
@@ -51,10 +52,12 @@ public final class ManageFunctionAppSourceControl {
         final String app2Name       = SdkContext.randomResourceName("webapp2-", 20);
         final String app3Name       = SdkContext.randomResourceName("webapp3-", 20);
         final String app4Name       = SdkContext.randomResourceName("webapp4-", 20);
+        final String app5Name       = SdkContext.randomResourceName("webapp5-", 20);
         final String app1Url        = app1Name + suffix;
         final String app2Url        = app2Name + suffix;
         final String app3Url        = app3Name + suffix;
         final String app4Url        = app4Name + suffix;
+        final String app5Url        = app5Name + suffix;
         final String rgName         = SdkContext.randomResourceName("rg1NEMV_", 24);
 
         try {
@@ -189,6 +192,32 @@ public final class ManageFunctionAppSourceControl {
             Thread.sleep(5000);
             System.out.println("CURLing " + app4Url + "...");
             System.out.println(curl("http://" + app4Url));
+
+            //============================================================
+            // Create a 5th function app with web deploy
+
+            System.out.println("Creating another function app " + app5Name + "...");
+            FunctionApp app5 = azure.appServices().functionApps()
+                    .define(app5Name)
+                    .withExistingAppServicePlan(plan)
+                    .withExistingResourceGroup(rgName)
+                    .withExistingStorageAccount(app3.storageAccount())
+                    .create();
+
+            System.out.println("Created function app " + app5.name());
+
+            System.out.println("Deploy to " + app5Name + " through web deploy...");
+            app5.deploy()
+                    .withPackageUri("https://github.com/Azure/azure-sdk-for-java/raw/master/azure-mgmt-appservice/src/test/resources/webapps.zip")
+                    .withExistingDeploymentsDeleted(true)
+                    .execute();
+
+            // warm up
+            System.out.println("Warming up " + app5Url + "/api/square...");
+            post("http://" + app5Url + "/api/square", "925");
+            Thread.sleep(5000);
+            System.out.println("CURLing " + app5Url + "/api/square...");
+            System.out.println("Square of 925 is " + post("http://" + app5Url + "/api/square", "925"));
 
             return true;
         } catch (Exception e) {

@@ -9,6 +9,7 @@ package com.microsoft.azure.management.appservice.samples;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.AppServicePlan;
 import com.microsoft.azure.management.appservice.FunctionApp;
+import com.microsoft.azure.management.appservice.NameValuePair;
 import com.microsoft.azure.management.appservice.PublishingProfile;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
@@ -148,6 +149,13 @@ public final class ManageFunctionAppWithAuthentication {
             Thread.sleep(5000);
             System.out.println("CURLing " + app2Url + "/api/square...");
             System.out.println("Square of 725 is " + post("http://" + app2Url + "/api/square?code=" + functionKey, "725"));
+
+            System.out.println("Adding a new key to function app " + app2.name() + "...");
+
+            NameValuePair newKey = app2.addFunctionKey("square", "newkey", null);
+
+            System.out.println("CURLing " + app2Url + "/api/square...");
+            System.out.println("Square of 825 is " + post("http://" + app2Url + "/api/square?code=" + newKey.value(), "825"));
 
             return true;
         } catch (Exception e) {

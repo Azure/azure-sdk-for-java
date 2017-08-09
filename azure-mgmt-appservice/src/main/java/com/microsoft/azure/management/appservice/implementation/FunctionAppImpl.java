@@ -66,24 +66,10 @@ class FunctionAppImpl
         super(name, innerObject, configObject, manager);
         innerObject.withKind("functionapp");
         functionAppKeyService = manager.restClient().retrofit().create(FunctionAppKeyService.class);
+        String defaultHostName = defaultHostName().startsWith("http") ? defaultHostName() : "http://" + defaultHostName();
         functionKuduService = manager.restClient().newBuilder()
-                .withBaseUrl(defaultHostName())
-                .withCredentials(new TokenCredentials("Bearer ", null) {
-                    private String token;
-                    private long expire;
-                    @Override
-                    public String getToken(Request request) {
-                        if (token == null || expire < DateTime.now().getMillis()) {
-                            token = manager().inner().webApps().getFunctionsAdminToken(resourceGroupName(), name);
-                            String jwt = new String(BaseEncoding.base64Url().decode(token.split("\\.")[1]));
-                            Pattern pattern = Pattern.compile("\"exp\": *([0-9]+),");
-                            Matcher matcher = pattern.matcher(jwt);
-                            matcher.find();
-                            expire = Long.parseLong(matcher.group(1));
-                        }
-                        return token;
-                    }
-                })
+                .withBaseUrl(defaultHostName)
+                .withCredentials(new KuduCredentials(this))
                 .build()
                 .retrofit().create(FunctionKuduService.class);
     }
@@ -323,5 +309,30 @@ class FunctionAppImpl
     private static class FunctionKeyListResult {
         @JsonProperty("keys")
         private List<NameValuePair> keys;
+    }
+
+    private static class KuduCredentials extends TokenCredentials {
+        private String token;
+        private long expire;
+        private final FunctionAppImpl functionApp;
+
+        public KuduCredentials(FunctionAppImpl functionApp) {
+            super("Bearer", null);
+            this.functionApp = functionApp;
+        }
+
+        @Override
+        public String getToken(Request request) {
+            if (token == null || expire < DateTime.now().getMillis()) {
+                token = functionApp.manager().inner().webApps()
+                        .getFunctionsAdminToken(functionApp.resourceGroupName(), functionApp.name());
+                String jwt = new String(BaseEncoding.base64Url().decode(token.split("\\.")[1]));
+                Pattern pattern = Pattern.compile("\"exp\": *([0-9]+),");
+                Matcher matcher = pattern.matcher(jwt);
+                matcher.find();
+                expire = Long.parseLong(matcher.group(1));
+            }
+            return token;
+        }
     }
 }

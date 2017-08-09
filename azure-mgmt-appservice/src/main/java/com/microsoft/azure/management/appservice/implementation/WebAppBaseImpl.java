@@ -277,7 +277,11 @@ abstract class WebAppBaseImpl<
 
     @Override
     public String defaultHostName() {
-        return inner().defaultHostName();
+        if (inner().defaultHostName() != null) {
+            return inner().defaultHostName();
+        } else {
+            return "http://" + name() + ".azurewebsites.net";
+        }
     }
 
     @Override
