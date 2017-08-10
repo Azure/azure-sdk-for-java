@@ -16,7 +16,7 @@ import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import com.microsoft.azure.servicebus.primitives.StringUtil;
 
 /**
- *
+ * The topic client that interacts with service bus topic.
  */
 public final class TopicClient extends InitializableEntity implements ITopicClient {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(TopicClient.class);
