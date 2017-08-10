@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
 package com.microsoft.azure.servicebus;
 
 import java.time.Duration;
@@ -228,7 +231,7 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
     }
 
 	/*
-	@Override
+    @Override
 	public CompletableFuture<Void> completeBatchAsync(Collection<? extends IMessage> messages) {
 		// TODO Auto-generated method stub
 		return null;
