@@ -108,7 +108,7 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-client-runtime</artifactId>
-        <version>[1.0.1,2.0.0)</version>
+        <version>1.0.4-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
@@ -389,7 +389,7 @@
     <module>./azure-mgmt-devices</module>
     <module>./azure-mgmt-devtestlab</module>
     <module>./azure-mgmt-dns</module>
-    <module>./azure-mgmt-documentdb</module>
+    <module>./azure-mgmt-cosmosdb</module>
     <module>./azure-mgmt-eventhub</module>
     <module>./azure-mgmt-graph-rbac</module>
     <module>./azure-mgmt-insights</module>
@@ -404,6 +404,7 @@
     <module>./azure-mgmt-redis</module>
     <module>./azure-mgmt-relay</module>
     <module>./azure-mgmt-resources</module>
+    <module>./azure-mgmt-scheduler</module>
     <module>./azure-mgmt-search</module>
     <module>./azure-mgmt-servicebus</module>
     <module>./azure-mgmt-servicefabric</module>

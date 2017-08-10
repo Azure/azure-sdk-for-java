@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Base class implementation for various network interface ip configurations.
+ * Base class implementation for various network interface IP configurations.
  *
  * @param <ParentImplT> parent implementation
  * @param <ParentT> parent interface

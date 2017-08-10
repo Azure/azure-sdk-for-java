@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Implementation for Foo and its create and update interfaces.
+ * Implementation for Search service and its create and update interfaces.
  */
 @LangDefinition
 class SearchServiceImpl
@@ -35,9 +35,9 @@ class SearchServiceImpl
         SearchServiceImpl,
         SearchServiceManager>
     implements
-    SearchService,
-    SearchService.Definition,
-    SearchService.Update {
+        SearchService,
+        SearchService.Definition,
+        SearchService.Update {
 
   SearchServiceImpl(String name,
                        final SearchServiceInner innerModel,

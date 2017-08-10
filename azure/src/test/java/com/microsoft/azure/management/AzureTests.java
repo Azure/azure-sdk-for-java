@@ -799,9 +799,21 @@ public class AzureTests extends TestBase {
 
     @Test
     @Ignore("Runs locally find but fails for unknown reason on check in.")
-    public void testDocumentDB() throws Exception {
-        new TestDocumentDB()
-                .runTest(azure.documentDBAccounts(), azure.resourceGroups());
+    public void testCosmosDB() throws Exception {
+        new TestCosmosDB()
+                .runTest(azure.cosmosDBAccounts(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testJobCollectionMultipleSku() throws Exception {
+        new TestSchedulerService.JobCollectionMultipleSkuTest()
+            .runTest(azure.jobCollections(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testJobAndJobCollection() throws Exception {
+        new TestSchedulerService.JobAndJobCollectionTest()
+            .runTest(azure.jobCollections(), azure.resourceGroups());
     }
 
     @Test
