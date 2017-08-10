@@ -12,7 +12,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Defines the parametrized relative path for an HTTP GET method.
+ * Defines the parametrized relative path for an HTTP HEAD method.
  *
  * The required value can be either a relative path or an absolute path. When it's
  * an absolute path, it must start with a protocol or a parametrized segment.
@@ -22,16 +22,16 @@ import java.lang.annotation.Target;
  *
  * Example 1: relative path segments
  *
- *  {@literal @}GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
- *  VirtualMachine getByResourceGroup(@PathParam("resourceGroupName") String rgName, @PathParam("vmName") String vmName, @PathParam("subscriptionId") String subscriptionId);
+ *  {@literal @}HEAD("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
+ *  boolean checkNameAvailability(@PathParam("resourceGroupName") String rgName, @PathParam("vmName") String vmName, @PathParam("subscriptionId") String subscriptionId);
  *
  * Example 2: absolute path segment
  *
- *  {@literal @}GET({nextLink})
- *  List<VirtualMachine> listNext(@PathParam("nextLink") String nextLink);
+ *  {@literal @}HEAD(https://management.azure.com/{storageAccountId})
+ *  boolean checkNameAvailability(@PathParam("nextLink") String storageAccountId);
  */
-@Target({ElementType.METHOD})            // The context in which annotation is applicable i.e. this annotation (GET) can be applied only to methods
+@Target({ElementType.METHOD})            // The context in which annotation is applicable i.e. this annotation (HEAD) can be applied only to methods
 @Retention(RetentionPolicy.RUNTIME)      // Record this annotation in the class file and make it available during runtime.
-public @interface GET {
+public @interface HEAD {
     String value();
 }

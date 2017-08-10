@@ -36,7 +36,7 @@ public interface Doc_Http_Verb_Annotation_Value_URI_Template {
  *  The name of these parameters are predefined, if they are present then they must be present exactly in places where they are suppose to present in a valid URI.
  *
  *  Value of {protocol} is derived from {@link EndpointProtocol} annotation. Refer documentation of {@link EndpointProtocol} for more details.
- *  Value of {host} is derived from {@link EndpointHost} annotation. Refer documentation of {@link EndpointHost} for more details.
+ *  Value of {host} is derived from {@link Host} annotation. Refer documentation of {@link Host} for more details.
  *  Value of {port} is derived from {@link EndpointPort} annotation. Refer documentation of {@link EndpointPort} for more details.
  *
  *  Resolving variables in uri template:

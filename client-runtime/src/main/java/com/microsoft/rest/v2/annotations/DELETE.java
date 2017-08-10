@@ -12,7 +12,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Defines the parametrized relative path for an HTTP GET method.
+ * Defines the parametrized relative path for an HTTP DELETE method.
  *
  * The required value can be either a relative path or an absolute path. When it's
  * an absolute path, it must start with a protocol or a parametrized segment.
@@ -22,16 +22,16 @@ import java.lang.annotation.Target;
  *
  * Example 1: relative path segments
  *
- *  {@literal @}GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
- *  VirtualMachine getByResourceGroup(@PathParam("resourceGroupName") String rgName, @PathParam("vmName") String vmName, @PathParam("subscriptionId") String subscriptionId);
+ *  {@literal @}DELETE("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
+ *  void delete(@PathParam("resourceGroupName") String rgName, @PathParam("vmName") String vmName, @PathParam("subscriptionId") String subscriptionId);
  *
  * Example 2: absolute path segment
  *
- *  {@literal @}GET({nextLink})
- *  List<VirtualMachine> listNext(@PathParam("nextLink") String nextLink);
+ *  {@literal @}DELETE({vaultBaseUrl}/secrets/{secretName})
+ *  void delete(@PathParam("vaultBaseUrl" encoded = true) String vaultBaseUrl, @PathParam("secretName") String secretName);
  */
 @Target({ElementType.METHOD})            // The context in which annotation is applicable i.e. this annotation (GET) can be applied only to methods
 @Retention(RetentionPolicy.RUNTIME)      // Record this annotation in the class file and make it available during runtime.
-public @interface GET {
+public @interface DELETE {
     String value();
 }
