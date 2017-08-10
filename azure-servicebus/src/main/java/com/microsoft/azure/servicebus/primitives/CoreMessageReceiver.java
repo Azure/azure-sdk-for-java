@@ -1245,7 +1245,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 				{
 					// error response
 				    Exception failureException = RequestResponseUtils.genereateExceptionFromResponse(responseMessage);
-				    TRACE_LOGGER.error("Renewing message locks on entity '{}' failed", this.receivePath, failureException);
+				    TRACE_LOGGER.error("Renewing message locks for lock tokens '{}' on entity '{}' failed", Arrays.toString(lockTokens), this.receivePath, failureException);
 					returningFuture.completeExceptionally(failureException);
 				}
 				return returningFuture;
@@ -1311,7 +1311,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 				{
 					// error response
 				    Exception failureException = RequestResponseUtils.genereateExceptionFromResponse(responseMessage);
-                    TRACE_LOGGER.error("Receiving messages by sequence number from entity '{}' failed", this.receivePath, failureException);
+                    TRACE_LOGGER.error("Receiving messages by sequence numbers '{}' from entity '{}' failed", Arrays.toString(sequenceNumbers), this.receivePath, failureException);
 					returningFuture.completeExceptionally(failureException);
 				}
 				return returningFuture;
