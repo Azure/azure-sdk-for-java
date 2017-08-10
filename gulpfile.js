@@ -415,7 +415,7 @@ var codegen = function(project, cb) {
                         ' -CodeGenerator ' + generator +
                         ' -Namespace ' + mappings[project].package +
                         ' -Input ' + specRoot + '/' + mappings[project].source +
-                        ' -outputDirectory ' + mappings[project].dir +
+                        ' -outputDirectory ' + outputDir +
                         ' -Header MICROSOFT_MIT_NO_CODEGEN' +
                         ' -skipValidation true' +
                         ' -RegenerateManager true ' +
