@@ -89,7 +89,7 @@ public class ManageSearchService {
 
             SearchService searchService = azure.searchServices().define(searchServiceName)
                     .withRegion(region)
-                    .withExistingResourceGroup(rgName)
+                    .withNewResourceGroup(rgName)
                     .withStandardSku()
                     .withPartitionCount(1)
                     .withReplicaCount(1)
@@ -136,8 +136,8 @@ public class ManageSearchService {
                     .withTag("tag2", "value2")
                     .withTag("tag3", "value3")
                     .withoutTag("tag1")
-                    .withReplicaCount(3)
-                    .withPartitionCount(3)
+                    .withReplicaCount(2)
+                    .withPartitionCount(2)
                     .apply();
 
             Utils.print(searchService);
