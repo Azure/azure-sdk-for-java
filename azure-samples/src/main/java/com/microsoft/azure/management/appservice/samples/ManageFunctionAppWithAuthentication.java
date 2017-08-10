@@ -32,12 +32,15 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Azure App Service basic sample for managing function apps.
- *  - Create 2 function apps under the same new app service plan and with the same storage account
- *    - Deploy both via Git a function that calculates the square of a number
+ *  - Create 3 function apps under the same new app service plan and with the same storage account
+ *    - Deploy 1 & 2 via Git a function that calculates the square of a number
+ *    - Deploy 3 via Web Deploy
  *    - Enable app level authentication for the 1st function app
  *    - Verify the 1st function app can be accessed with the admin key
  *    - Enable function level authentication for the 2nd function app
  *    - Verify the 2nd function app can be accessed with the function key
+ *    - Enable function level authentication for the 3rd function app
+ *    - Verify the 3rd function app can be accessed with the function key
  */
 public final class ManageFunctionAppWithAuthentication {
 
@@ -53,8 +56,10 @@ public final class ManageFunctionAppWithAuthentication {
         final String suffix         = ".azurewebsites.net";
         final String app1Name       = SdkContext.randomResourceName("webapp1-", 20);
         final String app2Name       = SdkContext.randomResourceName("webapp2-", 20);
+        final String app3Name       = SdkContext.randomResourceName("webapp3-", 20);
         final String app1Url        = app1Name + suffix;
         final String app2Url        = app2Name + suffix;
+        final String app3Url        = app3Name + suffix;
         final String rgName         = SdkContext.randomResourceName("rg1NEMV_", 24);
 
         try {
@@ -88,6 +93,20 @@ public final class ManageFunctionAppWithAuthentication {
 
             System.out.println("Created function app " + app2.name());
             Utils.print(app2);
+
+            //============================================================
+            // Create a thrid function app with function level auth
+
+            System.out.println("Creating another function app " + app3Name + " in resource group " + rgName + " with function level auth...");
+            FunctionApp app3 = azure.appServices().functionApps().define(app3Name)
+                    .withExistingAppServicePlan(plan)
+                    .withExistingResourceGroup(rgName)
+                    .withExistingStorageAccount(app1.storageAccount())
+                    .withLocalGitSourceControl()
+                    .create();
+
+            System.out.println("Created function app " + app3.name());
+            Utils.print(app3);
 
             //============================================================
             // Deploy to app 1 through Git
@@ -156,6 +175,30 @@ public final class ManageFunctionAppWithAuthentication {
 
             System.out.println("CURLing " + app2Url + "/api/square...");
             System.out.println("Square of 825 is " + post("http://" + app2Url + "/api/square?code=" + newKey.value(), "825"));
+
+            //============================================================
+            // Deploy to app 3 through Git
+
+            System.out.println("Deploying a local function app to " + app3Name + " through web deploy...");
+
+            app3.deploy()
+                    .withPackageUri("https://github.com/Azure/azure-sdk-for-java/raw/master/azure-samples/src/main/resources/square-function-app-function-auth.zip")
+                    .withExistingDeploymentsDeleted(false)
+                    .execute();
+
+            System.out.println("Deployment to function app " + app3.name() + " completed");
+            Utils.print(app3);
+
+            System.out.println("Adding a new key to function app " + app3.name() + "...");
+
+            app3.addFunctionKey("square", "newkey", "mysecretkey");
+
+            // warm up
+            System.out.println("Warming up " + app3Url + "/api/square...");
+            post("http://" + app3Url + "/api/square", "925");
+            Thread.sleep(5000);
+            System.out.println("CURLing " + app3Url + "/api/square...");
+            System.out.println("Square of 925 is " + post("http://" + app3Url + "/api/square?code=mysecretkey", "925"));
 
             return true;
         } catch (Exception e) {
