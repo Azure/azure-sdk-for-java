@@ -55,7 +55,12 @@ final class CloudErrorDeserializer extends JsonDeserializer<CloudError> {
         if (errorNode.get("error") != null) {
             errorNode = errorNode.get("error");
         }
-        JsonParser parser = new JsonFactory().createParser(errorNode.toString());
+        String nodeContent = errorNode.toString();
+        nodeContent = nodeContent.replaceFirst("(?i)\"code\"", "\"code\"")
+                .replaceFirst("(?i)\"message\"", "\"message\"")
+                .replaceFirst("(?i)\"target\"", "\"target\"")
+                .replaceFirst("(?i)\"details\"", "\"details\"");
+        JsonParser parser = new JsonFactory().createParser(nodeContent);
         parser.setCodec(mapper);
         return parser.readValueAs(CloudError.class);
     }
