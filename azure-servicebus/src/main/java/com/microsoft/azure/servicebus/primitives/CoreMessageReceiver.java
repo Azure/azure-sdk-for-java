@@ -665,7 +665,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		    }
 		    catch(Exception e)
 		    {
-		        TRACE_LOGGER.error("Reading message from delivery failed with unexpected exception.", e);
+		        TRACE_LOGGER.error("Reading message from delivery '{}' from '{}', session '{}' failed with unexpected exception.", deliveryTagAsString, this.receivePath, this.sessionId, e);
 		        delivery.disposition(Released.getInstance());
                 delivery.settle();
                 return;
