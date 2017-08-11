@@ -463,7 +463,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		final int deltaPrefetchCount;
 		synchronized (this.prefetchCountSync)
 		{
-			deltaPrefetchCount = this.prefetchCount - value;
+			deltaPrefetchCount = value - this.prefetchCount;
 			this.prefetchCount = value;
 			TRACE_LOGGER.info("Setting prefetch count to '{}' on recieve link to '{}'", value, this.receivePath);
 		}
