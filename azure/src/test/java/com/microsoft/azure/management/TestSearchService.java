@@ -55,13 +55,13 @@ public class TestSearchService {
                 .withTag("tag2", "value2")
                 .withTag("tag3", "value3")
                 .withoutTag("tag1")
-                .withReplicaCount(2)
-                .withPartitionCount(2)
+                .withReplicaCount(1)
+                .withPartitionCount(1)
                 .apply();
             Assert.assertTrue(resource.tags().containsKey("tag2"));
             Assert.assertTrue(!resource.tags().containsKey("tag1"));
-            Assert.assertEquals(2, resource.replicaCount());
-            Assert.assertEquals(2, resource.partitionCount());
+            Assert.assertEquals(1, resource.replicaCount());
+            Assert.assertEquals(1, resource.partitionCount());
             Assert.assertEquals(2, resource.listQueryKeys().size());
 
             String adminKeyPrimary = resource.getAdminKeys().primaryKey();
@@ -136,11 +136,11 @@ public class TestSearchService {
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup()
                 .withBasicSku()
-                .withReplicaCount(2)
+                .withReplicaCount(1)
                 .create();
 
             Assert.assertEquals(SkuName.BASIC, searchService.sku().name());
-            Assert.assertEquals(2, searchService.replicaCount());
+            Assert.assertEquals(1, searchService.replicaCount());
             Assert.assertEquals(1, searchService.partitionCount());
 
             return searchService;
@@ -178,11 +178,11 @@ public class TestSearchService {
                 .withNewResourceGroup()
                 .withStandardSku()
                 .withPartitionCount(2)
-                .withReplicaCount(2)
+                .withReplicaCount(1)
                 .create();
 
             Assert.assertEquals(SkuName.STANDARD, searchService.sku().name());
-            Assert.assertEquals(2, searchService.replicaCount());
+            Assert.assertEquals(1, searchService.replicaCount());
             Assert.assertEquals(2, searchService.partitionCount());
 
             return searchService;
@@ -190,6 +190,19 @@ public class TestSearchService {
 
         @Override
         public SearchService updateResource(SearchService resource) throws Exception {
+            resource = resource.update()
+                .withPartitionCount(1)
+                .withReplicaCount(1)
+                .withTag("tag2", "value2")
+                .withTag("tag3", "value3")
+                .withoutTag("tag1")
+                .apply();
+            Assert.assertTrue(resource.tags().containsKey("tag2"));
+            Assert.assertTrue(!resource.tags().containsKey("tag1"));
+            Assert.assertEquals(SkuName.STANDARD, resource.sku().name());
+            Assert.assertEquals(1, resource.replicaCount());
+            Assert.assertEquals(1, resource.partitionCount());
+
             return resource;
         }
 
