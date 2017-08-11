@@ -37,9 +37,20 @@ import static java.lang.annotation.ElementType.TYPE;
  *     Secret getSecret(@HostParam String vaultName, @PathParam("secretName") String secretName);
  *   }
  */
-@Target(value={TYPE})
+@Target(value = {TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AzureHost {
+    /**
+     * The endpoint that all REST APIs within the Swagger interface will send their requests to.
+     * @return The endpoint that all REST APIs within the Swagger interface will send their requests
+     *      to.
+     */
     String value() default "";
+
+    /**
+     * The endpoint that all REST APIs within the Swagger interface will send their requests to.
+     * @return The endpoint that all REST APIs within the Swagger interface will send their requests
+     *      to.
+     */
     AzureEnvironment.Endpoint endpoint() default Endpoint.RESOURCE_MANAGER;
 }

@@ -36,8 +36,10 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-// TODO: Convert this to RxNetty and finish
-public class RestProxy implements InvocationHandler {
+/**
+ * TODO: Convert this to RxNetty and finish.
+ */
+public final class RestProxy implements InvocationHandler {
     private final String host;
     private final RestClient restClient;
 
@@ -120,6 +122,14 @@ public class RestProxy implements InvocationHandler {
         }
     }
 
+    /**
+     * Create a proxy implementation for the provided Swagger interface using the provided HTTP
+     * client.
+     * @param actionable The Swagger interface.
+     * @param restClient The HTTP client.
+     * @param <A> The type of the generated proxy.
+     * @return The generated proxy.
+     */
     @SuppressWarnings("unchecked")
     public static <A> A create(Class<A> actionable, RestClient restClient) {
         String host = restClient.retrofit().baseUrl().host();
@@ -132,7 +142,7 @@ public class RestProxy implements InvocationHandler {
         }
         RestProxy restProxy = new RestProxy(host, restClient);
         restProxy.matrix = populateMethodMatrix(actionable);
-        return (A) Proxy.newProxyInstance(actionable.getClassLoader(), new Class[] { actionable }, restProxy);
+        return (A) Proxy.newProxyInstance(actionable.getClassLoader(), new Class[] {actionable }, restProxy);
     }
 
     private static Map<String, MethodInfo> populateMethodMatrix(Class<?> service) {

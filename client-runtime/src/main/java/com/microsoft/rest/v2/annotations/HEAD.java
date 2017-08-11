@@ -33,5 +33,9 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})            // The context in which annotation is applicable i.e. this annotation (HEAD) can be applied only to methods
 @Retention(RetentionPolicy.RUNTIME)      // Record this annotation in the class file and make it available during runtime.
 public @interface HEAD {
+    /**
+     * Get the relative path of the annotated method's HEAD URL.
+     * @return The relative path of the annotated method's HEAD URL.
+     */
     String value();
 }

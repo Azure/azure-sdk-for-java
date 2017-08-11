@@ -46,11 +46,14 @@ public @interface QueryParam {
     /**
      * The name of the variable in the endpoint uri template which will be replaced with the value
      * of the parameter annotated with this annotation.
+     * @return The name of the variable in the endpoint uri template which will be replaced with the
+     * value of the parameter annotated with this annotation.
      */
     String value();
     /**
      * A value true for this argument indicates that value of {@link QueryParam#value()} is already encoded
      * hence engine should not encode it, by default value will be encoded.
+     * @return Whether or not this query parameter is already encoded.
      */
     boolean encoded() default false;
 }
