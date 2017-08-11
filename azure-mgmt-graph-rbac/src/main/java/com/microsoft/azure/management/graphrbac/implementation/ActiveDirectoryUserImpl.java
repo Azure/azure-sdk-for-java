@@ -122,6 +122,7 @@ class ActiveDirectoryUserImpl
                             if (inner.isVerified() && inner.isDefault()) {
                                 if (emailAlias != null) {
                                     withUserPrincipalName(emailAlias + "@" + inner.name());
+                                    break;
                                 }
                             }
                         }

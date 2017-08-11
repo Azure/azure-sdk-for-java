@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.trafficmanager;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
@@ -66,4 +67,10 @@ public interface TrafficManagerProfiles extends
      * @return a handle to cancel the request
      */
     ServiceFuture<CheckProfileDnsNameAvailabilityResult> checkDnsNameAvailabilityAsync(String dnsNameLabel, ServiceCallback<CheckProfileDnsNameAvailabilityResult> callback);
+
+    /**
+     * @return the default geographic hierarchy used by the Geographic traffic routing method.
+     */
+    @Beta(Beta.SinceVersion.V1_2_0)
+    GeographicLocation getGeographicHierarchyRoot();
 }

@@ -15,7 +15,7 @@ import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.PublicIPAddresses;
-import com.microsoft.azure.management.resources.core.MockIntegrationTestBase;
+import com.microsoft.azure.management.resources.core.TestBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.apache.commons.codec.binary.Base64;
@@ -68,7 +68,7 @@ public class TestVirtualMachineCustomData extends TestTemplate<VirtualMachine, V
         pip.refresh();
         Assert.assertTrue(pip.hasAssignedNetworkInterface());
 
-        if (!MockIntegrationTestBase.IS_MOCKED) {
+        if (TestBase.isRecordMode()) {
             JSch jsch = new JSch();
             Session session = null;
             ChannelExec channel = null;

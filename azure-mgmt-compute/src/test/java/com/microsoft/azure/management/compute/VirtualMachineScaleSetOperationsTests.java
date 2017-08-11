@@ -7,6 +7,9 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.graphrbac.BuiltInRole;
+import com.microsoft.azure.management.graphrbac.RoleAssignment;
+import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.network.*;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -90,7 +93,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         // Upload the script file as block blob
         //
         URI fileUri;
-        if (IS_MOCKED) {
+        if (isPlaybackMode()) {
             fileUri = new URI("http://nonexisting.blob.core.windows.net/scripts/install_apache.sh");
         } else {
             CloudStorageAccount account = CloudStorageAccount.parse(storageConnectionString);
@@ -235,7 +238,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         String fqdn = publicIPAddress.fqdn();
         // Assert public load balancing connection
-        if (!IS_MOCKED) {
+        if (!isPlaybackMode()) {
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
                     .url("http://" + fqdn)
@@ -466,6 +469,181 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             }
         }
         Assert.assertTrue(nicCount > 0);
+    }
+
+    @Test
+    public void canEnableMSIOnVirtualMachineScaleSetWithoutRoleAssignment() throws Exception {
+        final String vmss_name = generateRandomResourceName("vmss", 10);
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups()
+                .define(RG_NAME)
+                .withRegion(REGION)
+                .create();
+
+        Network network = this.networkManager
+                .networks()
+                .define("vmssvnet")
+                .withRegion(REGION)
+                .withExistingResourceGroup(resourceGroup)
+                .withAddressSpace("10.0.0.0/28")
+                .withSubnet("subnet1", "10.0.0.0/28")
+                .create();
+
+        LoadBalancer publicLoadBalancer = createInternetFacingLoadBalancer(REGION,
+                resourceGroup,
+                "1");
+        List<String> backends = new ArrayList<>();
+        for (String backend : publicLoadBalancer.backends().keySet()) {
+            backends.add(backend);
+        }
+        Assert.assertTrue(backends.size() == 2);
+
+        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
+                .define(vmss_name)
+                .withRegion(REGION)
+                .withExistingResourceGroup(resourceGroup)
+                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+                .withExistingPrimaryNetworkSubnet(network, "subnet1")
+                .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+                .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
+                .withoutPrimaryInternalLoadBalancer()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername("jvuser")
+                .withRootPassword("123OData!@#123")
+                .withManagedServiceIdentity()
+                .create();
+
+        // Validate service created service principal
+        //
+        ServicePrincipal servicePrincipal = rbacManager
+                .servicePrincipals()
+                .getById(virtualMachineScaleSet.managedServiceIdentityPrincipalId());
+
+        Assert.assertNotNull(servicePrincipal);
+        Assert.assertNotNull(servicePrincipal.inner());
+
+        // Ensure the MSI extension is set
+        //
+        Map<String, VirtualMachineScaleSetExtension> extensions = virtualMachineScaleSet.extensions();
+        boolean extensionFound = false;
+        for (VirtualMachineScaleSetExtension extension : extensions.values()) {
+            if (extension.publisherName().equalsIgnoreCase("Microsoft.ManagedIdentity")
+                    && extension.typeName().equalsIgnoreCase("ManagedIdentityExtensionForLinux")) {
+                extensionFound = true;
+                break;
+            }
+        }
+        Assert.assertTrue(extensionFound);
+
+        // Ensure role assigned for resource group
+        //
+        PagedList<RoleAssignment> rgRoleAssignments = rbacManager.roleAssignments().listByScope(resourceGroup.id());
+        Assert.assertNotNull(rgRoleAssignments);
+        boolean found = false;
+        for (RoleAssignment roleAssignment : rgRoleAssignments) {
+            if (roleAssignment.principalId() != null && roleAssignment.principalId().equalsIgnoreCase(virtualMachineScaleSet.managedServiceIdentityPrincipalId())) {
+                found = true;
+                break;
+            }
+        }
+        Assert.assertFalse("Resource group should not have a role assignment with virtual machine scale set MSI principal", found);
+    }
+
+    @Test
+    public void canEnableMSIOnVirtualMachineScaleSetWithMultipleRoleAssignment() throws Exception {
+        final String vmss_name = generateRandomResourceName("vmss", 10);
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups()
+                .define(RG_NAME)
+                .withRegion(REGION)
+                .create();
+
+        Network network = this.networkManager
+                .networks()
+                .define("vmssvnet")
+                .withRegion(REGION)
+                .withExistingResourceGroup(resourceGroup)
+                .withAddressSpace("10.0.0.0/28")
+                .withSubnet("subnet1", "10.0.0.0/28")
+                .create();
+
+        LoadBalancer publicLoadBalancer = createInternetFacingLoadBalancer(REGION,
+                resourceGroup,
+                "1");
+        List<String> backends = new ArrayList<>();
+        for (String backend : publicLoadBalancer.backends().keySet()) {
+            backends.add(backend);
+        }
+        Assert.assertTrue(backends.size() == 2);
+
+        StorageAccount storageAccount = this.storageManager.storageAccounts()
+                .define(generateRandomResourceName("jvcsrg", 10))
+                .withRegion(REGION)
+                .withExistingResourceGroup(resourceGroup)
+                .create();
+
+        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
+                .define(vmss_name)
+                .withRegion(REGION)
+                .withExistingResourceGroup(resourceGroup)
+                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+                .withExistingPrimaryNetworkSubnet(network, "subnet1")
+                .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+                .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
+                .withoutPrimaryInternalLoadBalancer()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername("jvuser")
+                .withRootPassword("123OData!@#123")
+                .withManagedServiceIdentity()
+                .withRoleBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
+                .withRoleBasedAccessTo(storageAccount.id(), BuiltInRole.CONTRIBUTOR)
+                .create();
+
+        // Validate service created service principal
+        //
+        ServicePrincipal servicePrincipal = rbacManager
+                .servicePrincipals()
+                .getById(virtualMachineScaleSet.managedServiceIdentityPrincipalId());
+
+        Assert.assertNotNull(servicePrincipal);
+        Assert.assertNotNull(servicePrincipal.inner());
+
+        // Ensure the MSI extension is set
+        //
+        Map<String, VirtualMachineScaleSetExtension> extensions = virtualMachineScaleSet.extensions();
+        boolean extensionFound = false;
+        for (VirtualMachineScaleSetExtension extension : extensions.values()) {
+            if (extension.publisherName().equalsIgnoreCase("Microsoft.ManagedIdentity")
+                    && extension.typeName().equalsIgnoreCase("ManagedIdentityExtensionForLinux")) {
+                extensionFound = true;
+                break;
+            }
+        }
+        Assert.assertTrue(extensionFound);
+
+        // Ensure role assigned for resource group
+        //
+        PagedList<RoleAssignment> rgRoleAssignments = rbacManager.roleAssignments().listByScope(resourceGroup.id());
+        Assert.assertNotNull(rgRoleAssignments);
+        boolean found = false;
+        for (RoleAssignment roleAssignment : rgRoleAssignments) {
+            if (roleAssignment.principalId() != null && roleAssignment.principalId().equalsIgnoreCase(virtualMachineScaleSet.managedServiceIdentityPrincipalId())) {
+                found = true;
+                break;
+            }
+        }
+        Assert.assertTrue("Resource group should have a role assignment with virtual machine scale set MSI principal", found);
+
+        // Ensure role assigned for storage account
+        //
+        PagedList<RoleAssignment> stgRoleAssignments = rbacManager.roleAssignments().listByScope(storageAccount.id());
+        Assert.assertNotNull(stgRoleAssignments);
+        found = false;
+        for (RoleAssignment roleAssignment : stgRoleAssignments) {
+            if (roleAssignment.principalId() != null && roleAssignment.principalId().equalsIgnoreCase(virtualMachineScaleSet.managedServiceIdentityPrincipalId())) {
+                found = true;
+                break;
+            }
+        }
+        Assert.assertTrue("Storage account should have a role assignment with virtual machine scale set MSI principal", found);
     }
 
     private void checkVMInstances(VirtualMachineScaleSet vmScaleSet) {

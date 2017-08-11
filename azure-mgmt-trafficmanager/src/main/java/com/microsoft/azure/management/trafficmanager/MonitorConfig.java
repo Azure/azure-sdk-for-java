@@ -15,38 +15,63 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class MonitorConfig {
     /**
-     * Gets or sets the profile-level monitoring status of the Traffic Manager
-     * profile.
+     * The profile-level monitoring status of the Traffic Manager profile.
+     * Possible values include: 'CheckingEndpoints', 'Online', 'Degraded',
+     * 'Disabled', 'Inactive'.
      */
     @JsonProperty(value = "profileMonitorStatus")
-    private String profileMonitorStatus;
+    private ProfileMonitorStatus profileMonitorStatus;
 
     /**
-     * Gets or sets the protocol (HTTP or HTTPS) used to probe for endpoint
-     * health.
+     * The protocol (HTTP, HTTPS or TCP) used to probe for endpoint health.
+     * Possible values include: 'HTTP', 'HTTPS', 'TCP'.
      */
     @JsonProperty(value = "protocol")
-    private String protocol;
+    private MonitorProtocol protocol;
 
     /**
-     * Gets or sets the TCP port used to probe for endpoint health.
+     * The TCP port used to probe for endpoint health.
      */
     @JsonProperty(value = "port")
     private Long port;
 
     /**
-     * Gets or sets the path relative to the endpoint domain name used to probe
-     * for endpoint health.
+     * The path relative to the endpoint domain name used to probe for endpoint
+     * health.
      */
     @JsonProperty(value = "path")
     private String path;
+
+    /**
+     * The monitor interval for endpoints in this profile. This is the interval
+     * at which Traffic Manager will check the health of each endpoint in this
+     * profile.
+     */
+    @JsonProperty(value = "intervalInSeconds")
+    private Long intervalInSeconds;
+
+    /**
+     * The monitor timeout for endpoints in this profile. This is the time that
+     * Traffic Manager allows endpoints in this profile to response to the
+     * health check.
+     */
+    @JsonProperty(value = "timeoutInSeconds")
+    private Long timeoutInSeconds;
+
+    /**
+     * The number of consecutive failed health check that Traffic Manager
+     * tolerates before declaring an endpoint in this profile Degraded after
+     * the next failed health check.
+     */
+    @JsonProperty(value = "toleratedNumberOfFailures")
+    private Long toleratedNumberOfFailures;
 
     /**
      * Get the profileMonitorStatus value.
      *
      * @return the profileMonitorStatus value
      */
-    public String profileMonitorStatus() {
+    public ProfileMonitorStatus profileMonitorStatus() {
         return this.profileMonitorStatus;
     }
 
@@ -56,7 +81,7 @@ public class MonitorConfig {
      * @param profileMonitorStatus the profileMonitorStatus value to set
      * @return the MonitorConfig object itself.
      */
-    public MonitorConfig withProfileMonitorStatus(String profileMonitorStatus) {
+    public MonitorConfig withProfileMonitorStatus(ProfileMonitorStatus profileMonitorStatus) {
         this.profileMonitorStatus = profileMonitorStatus;
         return this;
     }
@@ -66,7 +91,7 @@ public class MonitorConfig {
      *
      * @return the protocol value
      */
-    public String protocol() {
+    public MonitorProtocol protocol() {
         return this.protocol;
     }
 
@@ -76,7 +101,7 @@ public class MonitorConfig {
      * @param protocol the protocol value to set
      * @return the MonitorConfig object itself.
      */
-    public MonitorConfig withProtocol(String protocol) {
+    public MonitorConfig withProtocol(MonitorProtocol protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -118,6 +143,66 @@ public class MonitorConfig {
      */
     public MonitorConfig withPath(String path) {
         this.path = path;
+        return this;
+    }
+
+    /**
+     * Get the intervalInSeconds value.
+     *
+     * @return the intervalInSeconds value
+     */
+    public Long intervalInSeconds() {
+        return this.intervalInSeconds;
+    }
+
+    /**
+     * Set the intervalInSeconds value.
+     *
+     * @param intervalInSeconds the intervalInSeconds value to set
+     * @return the MonitorConfig object itself.
+     */
+    public MonitorConfig withIntervalInSeconds(Long intervalInSeconds) {
+        this.intervalInSeconds = intervalInSeconds;
+        return this;
+    }
+
+    /**
+     * Get the timeoutInSeconds value.
+     *
+     * @return the timeoutInSeconds value
+     */
+    public Long timeoutInSeconds() {
+        return this.timeoutInSeconds;
+    }
+
+    /**
+     * Set the timeoutInSeconds value.
+     *
+     * @param timeoutInSeconds the timeoutInSeconds value to set
+     * @return the MonitorConfig object itself.
+     */
+    public MonitorConfig withTimeoutInSeconds(Long timeoutInSeconds) {
+        this.timeoutInSeconds = timeoutInSeconds;
+        return this;
+    }
+
+    /**
+     * Get the toleratedNumberOfFailures value.
+     *
+     * @return the toleratedNumberOfFailures value
+     */
+    public Long toleratedNumberOfFailures() {
+        return this.toleratedNumberOfFailures;
+    }
+
+    /**
+     * Set the toleratedNumberOfFailures value.
+     *
+     * @param toleratedNumberOfFailures the toleratedNumberOfFailures value to set
+     * @return the MonitorConfig object itself.
+     */
+    public MonitorConfig withToleratedNumberOfFailures(Long toleratedNumberOfFailures) {
+        this.toleratedNumberOfFailures = toleratedNumberOfFailures;
         return this;
     }
 

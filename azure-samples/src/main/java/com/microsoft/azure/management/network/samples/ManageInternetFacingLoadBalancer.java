@@ -154,7 +154,7 @@ public final class ManageInternetFacingLoadBalancer {
             //  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23
 
             System.out.println("Creating a Internet facing load balancer with ...");
-            System.out.println("- A frontend IP address");
+            System.out.println("- A frontend public IP address");
             System.out.println("- Two backend address pools which contain network interfaces for the virtual\n"
                     + "  machines to receive HTTP and HTTPS network traffic from the load balancer");
             System.out.println("- Two load balancing rules for HTTP and HTTPS to map public ports on the load\n"

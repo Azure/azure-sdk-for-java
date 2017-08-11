@@ -1,16 +1,20 @@
 language: java
-sudo: false
+sudo: required
 jdk:
-- oraclejdk7
 - oraclejdk8
 - openjdk7
 script:
 - |-
   if [ ${TRAVIS_EVENT_TYPE} = "push" -o ${TRAVIS_EVENT_TYPE} = "pull_request" ]; then
-   mvn install -DskipTests=true || travis_terminate 1 ;
-   mvn test -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dsurefire.rerunFailingTestsCount=6|| travis_terminate 1 ;
-   mvn checkstyle:check || travis_terminate 1 ;
-   mvn -pl !azure-samples package javadoc:aggregate -DskipTests=true || travis_terminate 1 ;
+   LOG_PARAMS='-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn --batch-mode' ;
+   mvn jetty:run & echo "==> Starting a Jetty server on the background ==" ;
+   if [ ${TRAVIS_JDK_VERSION} = "oraclejdk8" ]; then
+     mvn checkstyle:check || travis_terminate 1 ;
+   fi
+   mvn -pl !azure-samples package javadoc:aggregate -DskipTests=true $LOG_PARAMS || travis_terminate 1 ;
+   mvn install -DskipTests=true $LOG_PARAMS || travis_terminate 1 ;
+   echo '==> Starting mvn test ===' ;
+   mvn test -Dsurefire.rerunFailingTestsCount=3 $LOG_PARAMS -Dparallel=classes -DthreadCount=2 -DforkCount=1C || travis_terminate 1 ;
   else
    openssl aes-256-cbc -K $encrypted_25450b691aae_key -iv $encrypted_25450b691aae_iv -in my.azureauth.txt.enc -out my.azureauth.txt -d;
    export AZURE_TEST_MODE=RECORD || travis_terminate 1 ;

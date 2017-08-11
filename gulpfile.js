@@ -240,7 +240,7 @@ var mappings = {
     },
     'trafficmanager': {
         'dir': 'azure-mgmt-trafficmanager',
-        'source': 'arm-trafficmanager/2015-11-01/swagger/trafficmanager.json',
+        'source': 'arm-trafficmanager/2017-05-01/swagger/trafficmanager.json',
         'package': 'com.microsoft.azure.management.trafficmanager',
         'args': '--payload-flattening-threshold=1'
     },
@@ -320,16 +320,29 @@ var mappings = {
         'args': '--payload-flattening-threshold=1',
         'modeler': 'CompositeSwagger'
     },
+    'monitor-dataplane': {
+        'dir': 'azure-mgmt-monitor',
+        'source': 'monitor/compositeMonitorClient.json',
+        'package': 'com.microsoft.azure.management.monitor',
+        'args': '-FT 1 -ServiceName Monitor',
+        'modeler': 'CompositeSwagger'
+    },
     'containerregistry': {
         'dir': 'azure-mgmt-containerregistry',
         'source': 'arm-containerregistry/2017-03-01/swagger/containerregistry.json',
         'package': 'com.microsoft.azure.management.containerregistry',
         'args': '--payload-flattening-threshold=1',
     },
-    'documentdb': {
-        'dir': 'azure-mgmt-documentdb',
+    'scheduler': {
+        'dir': 'azure-mgmt-scheduler',
+        'source': 'arm-scheduler/2016-03-01/swagger/scheduler.json',
+        'package': 'com.microsoft.azure.management.scheduler',
+        'args': '-FT 1'
+    },
+    'cosmosdb': {
+        'dir': 'azure-mgmt-cosmosdb',
         'source': 'arm-documentdb/2015-04-08/swagger/documentdb.json',
-        'package': 'com.microsoft.azure.management.documentdb',
+        'package': 'com.microsoft.azure.management.cosmosdb',
         'args': '--payload-flattening-threshold=1',
     }
 };
@@ -386,7 +399,9 @@ var handleInput = function(projects, cb) {
 
 var codegen = function(project, cb) {
     var outputDir = mappings[project].dir + '/src/main/java/' + mappings[project].package.replace(/\./g, '/');
-    deleteFolderRecursive(outputDir);
+    if (!args['preserve']) {
+        deleteFolderRecursive(outputDir);
+    }
     console.log('Generating "' + project + '" from spec file ' + specRoot + '/' + mappings[project].source);
     var generator = '--fluent';
     if (mappings[project].fluent !== null && mappings[project].fluent === false) {

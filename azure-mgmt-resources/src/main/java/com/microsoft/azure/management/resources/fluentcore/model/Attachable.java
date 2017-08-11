@@ -10,9 +10,9 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.apigeneration.Method;
 
 /**
- * The final stage of the child object definition, at which it can be attached to the parent, using {@link Attachable#attach()}.
+ * The final stage of the child object definition, at which it can be attached to the parent.
  *
- * @param <ParentT> the parent definition {@link Attachable#attach()} returns to
+ * @param <ParentT> the stage of the parent definition to return to after attaching this definition.
  */
 @LangDefinition(ContainerName = "ChildResourceActions")
 public interface Attachable<ParentT> {
@@ -27,7 +27,7 @@ public interface Attachable<ParentT> {
      * The final stage of the child object definition, as which it can be attached to the parent.
      * @param <ParentT> the parent definition
      */
-    @LangDefinition(ContainerName = "~/ChildResource.Definition", ContainerFileName = "IDefinition")
+    @LangDefinition(ContainerName = "/Microsoft.Azure.Management.ResourceManager.Fluent.Core.ChildResource.Definition", ContainerFileName = "IDefinition")
     interface InDefinition<ParentT> {
         /**
          * Attaches the child definition to the parent resource definiton.
@@ -54,7 +54,7 @@ public interface Attachable<ParentT> {
      * The final stage of the child object definition, as which it can be attached to the parent.
      * @param <ParentT> the parent definition
      */
-    @LangDefinition(ContainerName = "~/ChildResource.Update", ContainerFileName = "IUpdate")
+    @LangDefinition(ContainerName = "/Microsoft.Azure.Management.ResourceManager.Fluent.Core.ChildResource.Update", ContainerFileName = "IUpdate")
     interface InUpdate<ParentT> {
         /**
          * Attaches the child definition to the parent resource update.

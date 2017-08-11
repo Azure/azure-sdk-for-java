@@ -8,14 +8,14 @@
 
 package com.microsoft.azure.management.trafficmanager.implementation;
 
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.Page;
-import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -41,7 +41,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Profiles.
  */
-public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSupportsDelete<Void>, InnerSupportsListing<ProfileInner> {
+public class ProfilesInner implements InnerSupportsListing<ProfileInner>, InnerSupportsGet<ProfileInner>, InnerSupportsDelete<DeleteOperationResultInner> {
     /** The Retrofit service to perform REST calls. */
     private ProfilesService service;
     /** The service client containing this operation class. */
@@ -65,7 +65,7 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
     interface ProfilesService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.Profiles checkTrafficManagerRelativeDnsNameAvailability" })
         @POST("providers/Microsoft.Network/checkTrafficManagerNameAvailability")
-        Observable<Response<ResponseBody>> checkTrafficManagerRelativeDnsNameAvailability(@Path("subscriptionId") String subscriptionId, @Body CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> checkTrafficManagerRelativeDnsNameAvailability(@Body CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.Profiles listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles")
@@ -142,9 +142,6 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
      * @return the observable to the TrafficManagerNameAvailabilityInner object
      */
     public Observable<ServiceResponse<TrafficManagerNameAvailabilityInner>> checkTrafficManagerRelativeDnsNameAvailabilityWithServiceResponseAsync(CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner parameters) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
@@ -152,7 +149,7 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        return service.checkTrafficManagerRelativeDnsNameAvailability(this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.checkTrafficManagerRelativeDnsNameAvailability(parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TrafficManagerNameAvailabilityInner>>>() {
                 @Override
                 public Observable<ServiceResponse<TrafficManagerNameAvailabilityInner>> call(Response<ResponseBody> response) {
@@ -177,7 +174,10 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
      * Lists all Traffic Manager profiles within a resource group.
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
-     * @return the PagedList<ProfileInner> object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;ProfileInner&gt; object if successful.
      */
     public PagedList<ProfileInner> listByResourceGroup(String resourceGroupName) {
         PageImpl<ProfileInner> page = new PageImpl<>();
@@ -196,6 +196,7 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ProfileInner>> listByResourceGroupAsync(String resourceGroupName, final ServiceCallback<List<ProfileInner>> serviceCallback) {
@@ -206,6 +207,7 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
      * Lists all Traffic Manager profiles within a resource group.
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ProfileInner&gt; object
      */
     public Observable<Page<ProfileInner>> listByResourceGroupAsync(String resourceGroupName) {
@@ -223,6 +225,7 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
      * Lists all Traffic Manager profiles within a resource group.
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ProfileInner&gt; object
      */
     public Observable<ServiceResponse<List<ProfileInner>>> listByResourceGroupWithServiceResponseAsync(String resourceGroupName) {
@@ -260,7 +263,10 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
     /**
      * Lists all Traffic Manager profiles within a subscription.
      *
-     * @return the PagedList<ProfileInner> object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;ProfileInner&gt; object if successful.
      */
     public PagedList<ProfileInner> list() {
         PageImpl<ProfileInner> page = new PageImpl<>();
@@ -278,6 +284,7 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
      * Lists all Traffic Manager profiles within a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ProfileInner>> listAsync(final ServiceCallback<List<ProfileInner>> serviceCallback) {
@@ -287,6 +294,7 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
     /**
      * Lists all Traffic Manager profiles within a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ProfileInner&gt; object
      */
     public Observable<Page<ProfileInner>> listAsync() {
@@ -303,6 +311,7 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
     /**
      * Lists all Traffic Manager profiles within a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ProfileInner&gt; object
      */
     public Observable<ServiceResponse<List<ProfileInner>>> listWithServiceResponseAsync() {
@@ -523,9 +532,10 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the DeleteOperationResultInner object if successful.
      */
-    public void delete(String resourceGroupName, String profileName) {
-        deleteWithServiceResponseAsync(resourceGroupName, profileName).toBlocking().single().body();
+    public DeleteOperationResultInner delete(String resourceGroupName, String profileName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, profileName).toBlocking().single().body();
     }
 
     /**
@@ -537,7 +547,7 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String profileName, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<DeleteOperationResultInner> deleteAsync(String resourceGroupName, String profileName, final ServiceCallback<DeleteOperationResultInner> serviceCallback) {
         return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
     }
 
@@ -547,12 +557,12 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
      * @param profileName The name of the Traffic Manager profile to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable to the DeleteOperationResultInner object
      */
-    public Observable<Void> deleteAsync(String resourceGroupName, String profileName) {
-        return deleteWithServiceResponseAsync(resourceGroupName, profileName).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<DeleteOperationResultInner> deleteAsync(String resourceGroupName, String profileName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, profileName).map(new Func1<ServiceResponse<DeleteOperationResultInner>, DeleteOperationResultInner>() {
             @Override
-            public Void call(ServiceResponse<Void> response) {
+            public DeleteOperationResultInner call(ServiceResponse<DeleteOperationResultInner> response) {
                 return response.body();
             }
         });
@@ -564,9 +574,9 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
      * @param profileName The name of the Traffic Manager profile to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable to the DeleteOperationResultInner object
      */
-    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String profileName) {
+    public Observable<ServiceResponse<DeleteOperationResultInner>> deleteWithServiceResponseAsync(String resourceGroupName, String profileName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -580,11 +590,11 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.delete(resourceGroupName, profileName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DeleteOperationResultInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<DeleteOperationResultInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
+                        ServiceResponse<DeleteOperationResultInner> clientResponse = deleteDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -593,9 +603,9 @@ public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSuppo
             });
     }
 
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
+    private ServiceResponse<DeleteOperationResultInner> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<DeleteOperationResultInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<DeleteOperationResultInner>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

@@ -32,6 +32,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <testMode>playback</testMode>
+    <playbackServerPort>11080</playbackServerPort>
   </properties>
 
   <developers>
@@ -107,7 +108,7 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-client-runtime</artifactId>
-        <version>[1.0.1,2.0.0)</version>
+        <version>1.0.4-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
@@ -127,12 +128,6 @@
         <scope>test</scope>
       </dependency>
       <dependency>
-        <groupId>com.github.tomakehurst</groupId>
-        <artifactId>wiremock</artifactId>
-        <version>2.5.1</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>2.4</version>
@@ -145,9 +140,39 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>9.2.22.v20170606</version>
+        <configuration>
+          <scanIntervalSeconds>0</scanIntervalSeconds>
+          <stopPort>11079</stopPort>
+          <stopKey>STOP</stopKey>
+          <httpConnector>
+            <port>${playbackServerPort}</port>
+          </httpConnector>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>properties-maven-plugin</artifactId>
+        <version>1.0.0</version>
+        <executions>
+          <execution>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>write-project-properties</goal>
+            </goals>
+            <configuration>
+              <outputFile>
+                ${project.build.outputDirectory}/maven.properties
+              </outputFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
@@ -364,7 +389,7 @@
     <module>./azure-mgmt-devices</module>
     <module>./azure-mgmt-devtestlab</module>
     <module>./azure-mgmt-dns</module>
-    <module>./azure-mgmt-documentdb</module>
+    <module>./azure-mgmt-cosmosdb</module>
     <module>./azure-mgmt-eventhub</module>
     <module>./azure-mgmt-graph-rbac</module>
     <module>./azure-mgmt-insights</module>
@@ -379,6 +404,7 @@
     <module>./azure-mgmt-redis</module>
     <module>./azure-mgmt-relay</module>
     <module>./azure-mgmt-resources</module>
+    <module>./azure-mgmt-scheduler</module>
     <module>./azure-mgmt-search</module>
     <module>./azure-mgmt-servicebus</module>
     <module>./azure-mgmt-servicefabric</module>

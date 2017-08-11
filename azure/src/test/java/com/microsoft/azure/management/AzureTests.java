@@ -278,9 +278,7 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testLoadBalancersNatRules() throws Exception {
-        new TestLoadBalancer.InternetWithNatRule(
-                azure.virtualMachines(),
-                azure.availabilitySets())
+        new TestLoadBalancer.InternetWithNatRule(azure.virtualMachines().manager())
             .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
@@ -290,10 +288,8 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testLoadBalancersNatPools() throws Exception {
-        new TestLoadBalancer.InternetWithNatPool(
-                azure.virtualMachines(),
-                azure.availabilitySets())
-        .runTest(azure.loadBalancers(), azure.resourceGroups());
+        new TestLoadBalancer.InternetWithNatPool(azure.virtualMachines().manager())
+            .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
     /**
@@ -302,9 +298,7 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testLoadBalancersInternetMinimum() throws Exception {
-        new TestLoadBalancer.InternetMinimal(
-                azure.virtualMachines(),
-                azure.availabilitySets())
+        new TestLoadBalancer.InternetMinimal(azure.virtualMachines().manager())
             .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
@@ -324,10 +318,8 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testLoadBalancersInternalMinimum() throws Exception {
-        new TestLoadBalancer.InternalMinimal(
-                azure.virtualMachines(),
-                azure.availabilitySets())
-        .runTest(azure.loadBalancers(), azure.resourceGroups());
+        new TestLoadBalancer.InternalMinimal(azure.virtualMachines().manager())
+            .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
     /**
@@ -778,11 +770,10 @@ public class AzureTests extends TestBase {
 
     @Test
     public void testDnsZones() throws Exception {
-        addTextReplacementRule("https://management.azure.com:443/", this.mockUri() + "/");
+        addTextReplacementRule("https://management.azure.com:443/", playbackUri + "/");
         new TestDns()
                 .runTest(azure.dnsZones(), azure.resourceGroups());
     }
-
 
     @Test
     public void testSqlServer() throws Exception {
@@ -808,10 +799,23 @@ public class AzureTests extends TestBase {
 
     @Test
     @Ignore("Runs locally find but fails for unknown reason on check in.")
-    public void testDocumentDB() throws Exception {
-        new TestDocumentDB()
-                .runTest(azure.documentDBAccounts(), azure.resourceGroups());
+    public void testCosmosDB() throws Exception {
+        new TestCosmosDB()
+                .runTest(azure.cosmosDBAccounts(), azure.resourceGroups());
     }
+
+    @Test
+    public void testJobCollectionMultipleSku() throws Exception {
+        new TestSchedulerService.JobCollectionMultipleSkuTest()
+            .runTest(azure.jobCollections(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testJobAndJobCollection() throws Exception {
+        new TestSchedulerService.JobAndJobCollectionTest()
+            .runTest(azure.jobCollections(), azure.resourceGroups());
+    }
+
     @Test
     public void testSearchServiceAnySku() throws Exception {
         new TestSearchService.SearchServiceAnySku()

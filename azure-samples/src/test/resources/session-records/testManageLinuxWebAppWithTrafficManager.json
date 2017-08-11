@@ -2635,9 +2635,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3264/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_e8b543733a70/providers/Microsoft.Network/trafficmanagerprofiles/jsdktm-2d64376461?api-version=2015-11-01",
+    "Uri" : "http://localhost:3264/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_e8b543733a70/providers/Microsoft.Network/trafficmanagerprofiles/jsdktm-2d64376461?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -2660,9 +2660,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3264/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_e8b543733a70/providers/Microsoft.Network/trafficmanagerprofiles/jsdktm-2d64376461/azureEndpoints/endpoint1?api-version=2015-11-01",
+    "Uri" : "http://localhost:3264/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_e8b543733a70/providers/Microsoft.Network/trafficmanagerprofiles/jsdktm-2d64376461/azureEndpoints/endpoint1?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -2685,9 +2685,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3264/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_e8b543733a70/providers/Microsoft.Network/trafficmanagerprofiles/jsdktm-2d64376461/azureEndpoints/endpoint2?api-version=2015-11-01",
+    "Uri" : "http://localhost:3264/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_e8b543733a70/providers/Microsoft.Network/trafficmanagerprofiles/jsdktm-2d64376461/azureEndpoints/endpoint2?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
@@ -2710,9 +2710,9 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:3264/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_e8b543733a70/providers/Microsoft.Network/trafficmanagerprofiles/jsdktm-2d64376461/azureEndpoints/endpoint3?api-version=2015-11-01",
+    "Uri" : "http://localhost:3264/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_e8b543733a70/providers/Microsoft.Network/trafficmanagerprofiles/jsdktm-2d64376461/azureEndpoints/endpoint3?api-version=2017-05-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (TrafficManagerManagementClient, 2015-11-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:98b1122c240e763384ff56b08ec99bae13f0d58536c3ee36bd48831d17679106 (TrafficManagerManagementClient, 2017-05-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {

@@ -10,6 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.rest.RestClient;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.Ignore;
 
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class AppServicePlansTests extends AppServiceTest {
     }
 
     @Test
+    @Ignore("Permanent server side issue: Cannot modify this web hosting plan because another operation is in progress")
     public void canCRUDAppServicePlan() throws Exception {
         // CREATE
         AppServicePlan appServicePlan = appServiceManager.appServicePlans()

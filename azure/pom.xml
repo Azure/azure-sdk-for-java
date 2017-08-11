@@ -143,7 +143,7 @@
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-mgmt-documentdb</artifactId>
+      <artifactId>azure-mgmt-cosmosdb</artifactId>
       <version>1.1.3-SNAPSHOT</version>
     </dependency>
     <dependency>
@@ -151,13 +151,16 @@
       <artifactId>azure-mgmt-search</artifactId>
       <version>1.1.3-SNAPSHOT</version>
     </dependency>
-    <!--
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-scheduler</artifactId>
+      <version>1.1.3-SNAPSHOT</version>
+    </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-mgmt-monitor</artifactId>
-      <version>1.1.1-SNAPSHOT</version>
+      <version>1.1.3-SNAPSHOT</version>
     </dependency>
-    -->
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-mgmt-servicebus</artifactId>
@@ -168,11 +171,6 @@
       <artifactId>azure-mgmt-resources</artifactId>
       <version>1.1.3-SNAPSHOT</version>
       <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.github.tomakehurst</groupId>
-      <artifactId>wiremock</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

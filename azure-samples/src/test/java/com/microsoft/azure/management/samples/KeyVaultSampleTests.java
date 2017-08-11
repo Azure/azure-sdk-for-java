@@ -20,7 +20,7 @@ public class KeyVaultSampleTests extends SamplesTestBase {
     @Ignore("Some RBAC related issue with current credentials")
     public void testManageKeyVault() {
         String clientId = "";
-        if (!IS_MOCKED) {
+        if (!isPlaybackMode()) {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
             try {
                 clientId = ApplicationTokenCredentials.fromFile(credFile).clientId();

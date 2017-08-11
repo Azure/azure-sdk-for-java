@@ -78,7 +78,7 @@ public class AlertRulesInner implements InnerSupportsGet<AlertRuleResourceInner>
 
     /**
      * Creates or updates an alert rule.
-     Request method: PUT		Request URI: https://management.azure.com/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/microsoft.insights/alertRules/{alert-rule-name}?api-version={api-version}.
+     Request method: PUT        Request URI: https://management.azure.com/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/microsoft.insights/alertRules/{alert-rule-name}?api-version={api-version}.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
@@ -94,7 +94,7 @@ public class AlertRulesInner implements InnerSupportsGet<AlertRuleResourceInner>
 
     /**
      * Creates or updates an alert rule.
-     Request method: PUT		Request URI: https://management.azure.com/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/microsoft.insights/alertRules/{alert-rule-name}?api-version={api-version}.
+     Request method: PUT        Request URI: https://management.azure.com/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/microsoft.insights/alertRules/{alert-rule-name}?api-version={api-version}.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
@@ -109,7 +109,7 @@ public class AlertRulesInner implements InnerSupportsGet<AlertRuleResourceInner>
 
     /**
      * Creates or updates an alert rule.
-     Request method: PUT		Request URI: https://management.azure.com/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/microsoft.insights/alertRules/{alert-rule-name}?api-version={api-version}.
+     Request method: PUT        Request URI: https://management.azure.com/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/microsoft.insights/alertRules/{alert-rule-name}?api-version={api-version}.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
@@ -128,7 +128,7 @@ public class AlertRulesInner implements InnerSupportsGet<AlertRuleResourceInner>
 
     /**
      * Creates or updates an alert rule.
-     Request method: PUT		Request URI: https://management.azure.com/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/microsoft.insights/alertRules/{alert-rule-name}?api-version={api-version}.
+     Request method: PUT        Request URI: https://management.azure.com/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/microsoft.insights/alertRules/{alert-rule-name}?api-version={api-version}.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.

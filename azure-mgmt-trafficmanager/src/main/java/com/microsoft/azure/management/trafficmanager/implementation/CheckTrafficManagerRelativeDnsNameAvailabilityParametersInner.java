@@ -15,13 +15,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner {
     /**
-     * Gets or sets the name of the resource.
+     * The name of the resource.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /**
-     * Gets or sets the type of the resource.
+     * The type of the resource.
      */
     @JsonProperty(value = "type")
     private String type;
