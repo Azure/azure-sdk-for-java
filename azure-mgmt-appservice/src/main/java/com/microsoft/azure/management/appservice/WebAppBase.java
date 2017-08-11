@@ -291,6 +291,13 @@ public interface WebAppBase extends
     Observable<WebAppSourceControl> getSourceControlAsync();
 
     /**
+     * First step specifying the parameters to make a web deployment (MS Deploy) to the web app.
+     * @return a stage to create web deployment
+     */
+    @Method
+    WebDeployment.DefinitionStages.WithPackageUri deploy();
+
+    /**
      * Verifies the ownership of the domain for a certificate order by verifying a hostname
      * of the domain is bound to this web app.
      * @param certificateOrderName the name of the certificate order

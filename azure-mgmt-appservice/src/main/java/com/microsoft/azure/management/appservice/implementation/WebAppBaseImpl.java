@@ -97,6 +97,7 @@ abstract class WebAppBaseImpl<
     private Map<String, Boolean> connectionStringStickiness;
     private WebAppSourceControlImpl<FluentT, FluentImplT> sourceControl;
     private boolean sourceControlToDelete;
+    private MSDeployInner msDeploy;
     private WebAppAuthenticationImpl<FluentT, FluentImplT> authentication;
     private boolean authenticationToUpdate;
 
@@ -276,7 +277,11 @@ abstract class WebAppBaseImpl<
 
     @Override
     public String defaultHostName() {
-        return inner().defaultHostName();
+        if (inner().defaultHostName() != null) {
+            return inner().defaultHostName();
+        } else {
+            return "http://" + name() + ".azurewebsites.net";
+        }
     }
 
     @Override
@@ -496,6 +501,8 @@ abstract class WebAppBaseImpl<
     abstract Observable<SiteAuthSettingsInner> updateAuthentication(SiteAuthSettingsInner inner);
 
     abstract Observable<SiteAuthSettingsInner> getAuthentication();
+
+    abstract Observable<MSDeployStatusInner> createMSDeploy(MSDeployInner msDeployInner);
 
     @Override
     public Observable<FluentT> createResourceAsync() {
@@ -823,6 +830,11 @@ abstract class WebAppBaseImpl<
                 return site;
             }
         });
+    }
+
+    @Override
+    public WebDeploymentImpl<FluentT, FluentImplT> deploy() {
+        return new WebDeploymentImpl<>(this);
     }
 
     WebAppBaseImpl<FluentT, FluentImplT> withNewHostNameSslBinding(final HostNameSslBindingImpl<FluentT, FluentImplT> hostNameSslBinding) {

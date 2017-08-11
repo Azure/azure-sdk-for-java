@@ -95,7 +95,7 @@ class DeploymentSlotImpl
     }
 
     public Observable<PublishingProfile> getPublishingProfileAsync() {
-        return manager().inner().webApps().listPublishingProfileXmlWithSecretsSlotAsync(resourceGroupName(), this.parent().name(), name())
+        return manager().inner().webApps().listPublishingProfileXmlWithSecretsSlotAsync(resourceGroupName(), this.parent().name(), name(), new CsmPublishingProfileOptionsInner())
                 .map(new Func1<InputStream, PublishingProfile>() {
                     @Override
                     public PublishingProfile call(InputStream stream) {
@@ -331,6 +331,12 @@ class DeploymentSlotImpl
     @Override
     Observable<SiteAuthSettingsInner> getAuthentication() {
         return manager().inner().webApps().getAuthSettingsSlotAsync(resourceGroupName(), parent().name(), name());
+    }
+
+    @Override
+    Observable<MSDeployStatusInner> createMSDeploy(MSDeployInner msDeployInner) {
+        return parent().manager().inner().webApps()
+                .createMSDeployOperationAsync(parent().resourceGroupName(), parent().name(), msDeployInner);
     }
 
     @Override

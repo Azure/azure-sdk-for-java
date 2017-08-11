@@ -164,45 +164,6 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The AppServiceEnvironmentsInner object to access its operations.
-     */
-    private AppServiceEnvironmentsInner appServiceEnvironments;
-
-    /**
-     * Gets the AppServiceEnvironmentsInner object to access its operations.
-     * @return the AppServiceEnvironmentsInner object.
-     */
-    public AppServiceEnvironmentsInner appServiceEnvironments() {
-        return this.appServiceEnvironments;
-    }
-
-    /**
-     * The AppServicePlansInner object to access its operations.
-     */
-    private AppServicePlansInner appServicePlans;
-
-    /**
-     * Gets the AppServicePlansInner object to access its operations.
-     * @return the AppServicePlansInner object.
-     */
-    public AppServicePlansInner appServicePlans() {
-        return this.appServicePlans;
-    }
-
-    /**
-     * The CertificatesInner object to access its operations.
-     */
-    private CertificatesInner certificates;
-
-    /**
-     * Gets the CertificatesInner object to access its operations.
-     * @return the CertificatesInner object.
-     */
-    public CertificatesInner certificates() {
-        return this.certificates;
-    }
-
-    /**
      * The DomainsInner object to access its operations.
      */
     private DomainsInner domains;
@@ -213,19 +174,6 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      */
     public DomainsInner domains() {
         return this.domains;
-    }
-
-    /**
-     * The RecommendationsInner object to access its operations.
-     */
-    private RecommendationsInner recommendations;
-
-    /**
-     * Gets the RecommendationsInner object to access its operations.
-     * @return the RecommendationsInner object.
-     */
-    public RecommendationsInner recommendations() {
-        return this.recommendations;
     }
 
     /**
@@ -242,16 +190,16 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The WebAppsInner object to access its operations.
+     * The CertificatesInner object to access its operations.
      */
-    private WebAppsInner webApps;
+    private CertificatesInner certificates;
 
     /**
-     * Gets the WebAppsInner object to access its operations.
-     * @return the WebAppsInner object.
+     * Gets the CertificatesInner object to access its operations.
+     * @return the CertificatesInner object.
      */
-    public WebAppsInner webApps() {
-        return this.webApps;
+    public CertificatesInner certificates() {
+        return this.certificates;
     }
 
     /**
@@ -278,6 +226,58 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      */
     public ProvidersInner providers() {
         return this.providers;
+    }
+
+    /**
+     * The RecommendationsInner object to access its operations.
+     */
+    private RecommendationsInner recommendations;
+
+    /**
+     * Gets the RecommendationsInner object to access its operations.
+     * @return the RecommendationsInner object.
+     */
+    public RecommendationsInner recommendations() {
+        return this.recommendations;
+    }
+
+    /**
+     * The WebAppsInner object to access its operations.
+     */
+    private WebAppsInner webApps;
+
+    /**
+     * Gets the WebAppsInner object to access its operations.
+     * @return the WebAppsInner object.
+     */
+    public WebAppsInner webApps() {
+        return this.webApps;
+    }
+
+    /**
+     * The AppServiceEnvironmentsInner object to access its operations.
+     */
+    private AppServiceEnvironmentsInner appServiceEnvironments;
+
+    /**
+     * Gets the AppServiceEnvironmentsInner object to access its operations.
+     * @return the AppServiceEnvironmentsInner object.
+     */
+    public AppServiceEnvironmentsInner appServiceEnvironments() {
+        return this.appServiceEnvironments;
+    }
+
+    /**
+     * The AppServicePlansInner object to access its operations.
+     */
+    private AppServicePlansInner appServicePlans;
+
+    /**
+     * Gets the AppServicePlansInner object to access its operations.
+     * @return the AppServicePlansInner object.
+     */
+    public AppServicePlansInner appServicePlans() {
+        return this.appServicePlans;
     }
 
     /**
@@ -315,15 +315,15 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
         this.appServiceCertificateOrders = new AppServiceCertificateOrdersInner(restClient().retrofit(), this);
-        this.appServiceEnvironments = new AppServiceEnvironmentsInner(restClient().retrofit(), this);
-        this.appServicePlans = new AppServicePlansInner(restClient().retrofit(), this);
-        this.certificates = new CertificatesInner(restClient().retrofit(), this);
         this.domains = new DomainsInner(restClient().retrofit(), this);
-        this.recommendations = new RecommendationsInner(restClient().retrofit(), this);
         this.topLevelDomains = new TopLevelDomainsInner(restClient().retrofit(), this);
-        this.webApps = new WebAppsInner(restClient().retrofit(), this);
+        this.certificates = new CertificatesInner(restClient().retrofit(), this);
         this.deletedWebApps = new DeletedWebAppsInner(restClient().retrofit(), this);
         this.providers = new ProvidersInner(restClient().retrofit(), this);
+        this.recommendations = new RecommendationsInner(restClient().retrofit(), this);
+        this.webApps = new WebAppsInner(restClient().retrofit(), this);
+        this.appServiceEnvironments = new AppServiceEnvironmentsInner(restClient().retrofit(), this);
+        this.appServicePlans = new AppServicePlansInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
         initializeService();
     }

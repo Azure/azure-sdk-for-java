@@ -6,6 +6,6 @@
 
 /**
  * This package contains the classes for WebSiteManagementClient.
- * Composite Swagger for WebSite Management Client.
+ * WebSite Management Client.
  */
 package com.microsoft.azure.management.appservice;
