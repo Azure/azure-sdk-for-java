@@ -40,17 +40,17 @@ import java.util.Map;
 public class RestProxy implements InvocationHandler {
     private final String host;
     private final RestClient restClient;
+    private final Map<String, SwaggerProxyDetails> matrix;
 
-    private Map<String, MethodInfo> matrix;
-
-    private RestProxy(String host, RestClient restClient) {
+    private RestProxy(String host, RestClient restClient, Map<String, SwaggerProxyDetails> matrix) {
         this.host = host;
         this.restClient = restClient;
+        this.matrix = matrix;
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        final MethodInfo info = matrix.get(method.getName());
+        final SwaggerProxyDetails info = matrix.get(method.getName());
         RequestBody requestBody = null;
         if (info.bodyArg != null) {
             if (args[info.bodyArg] != null) {
@@ -121,24 +121,18 @@ public class RestProxy implements InvocationHandler {
     }
 
     @SuppressWarnings("unchecked")
-    public static <A> A create(Class<A> actionable, RestClient restClient) {
+    public static <A> A create(Class<A> swaggerInterface, RestClient restClient) {
         String host = restClient.retrofit().baseUrl().host();
         String protocol = restClient.retrofit().baseUrl().scheme();
-        if (actionable.isAnnotationPresent(Host.class)) {
-            host = actionable.getAnnotation(Host.class).value();
+        if (swaggerInterface.isAnnotationPresent(Host.class)) {
+            host = swaggerInterface.getAnnotation(Host.class).value();
             if (!host.contains("://")) {
                 host = protocol + "://" + host;
             }
         }
-        RestProxy restProxy = new RestProxy(host, restClient);
-        restProxy.matrix = populateMethodMatrix(actionable);
-        return (A) Proxy.newProxyInstance(actionable.getClassLoader(), new Class[] { actionable }, restProxy);
-    }
-
-    private static Map<String, MethodInfo> populateMethodMatrix(Class<?> service) {
-        Map<String, MethodInfo> matrix = new HashMap<>();
-        for (Method method : service.getDeclaredMethods()) {
-            MethodInfo info = new MethodInfo();
+        Map<String, SwaggerProxyDetails> matrix = new HashMap<>();
+        for (Method method : swaggerInterface.getDeclaredMethods()) {
+            SwaggerProxyDetails info = new SwaggerProxyDetails();
             matrix.put(method.getName(), info);
 
             for (int i = 0; i != method.getParameterAnnotations().length; i++) {
@@ -192,10 +186,11 @@ public class RestProxy implements InvocationHandler {
                 info.relativePath = method.getAnnotation(PATCH.class).value();
             }
         }
-        return matrix;
+        RestProxy restProxy = new RestProxy(host, restClient, matrix);
+        return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class[] { swaggerInterface }, restProxy);
     }
 
-    private static final class MethodInfo {
+    private static final class SwaggerProxyDetails {
         private String method;
         private String relativePath;
         private Map<String, Integer> hostArgs;
@@ -204,7 +199,7 @@ public class RestProxy implements InvocationHandler {
         private Map<String, Integer> headerArgs;
         private Integer bodyArg;
 
-        private MethodInfo() {
+        private SwaggerProxyDetails() {
             hostArgs = new HashMap<>();
             pathArgs = new HashMap<>();
             queryArgs = new HashMap<>();
