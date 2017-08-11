@@ -471,7 +471,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		if(deltaPrefetchCount > 0)
 		{
 		    try
-	        {	            
+	        {
 	            this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler()
 	            {
 	                @Override

@@ -32,6 +32,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
     private static final Duration MINIMUM_MESSAGE_LOCK_VALIDITY = Duration.ofSeconds(4);
     private static final Duration MAXIMUM_RENEW_LOCK_BUFFER = Duration.ofSeconds(10);
     private static final Duration SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION = Duration.ofMinutes(1);
+    private static final int UNSET_PREFETCH_COUNT = -1; // Means prefetch count not set
 
     private final ConcurrentHashMap<String, IMessageSession> openSessions;
     private final MessagingFactory factory;
@@ -44,6 +45,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
     private ISessionHandler sessionHandler;
     private MessageHandlerOptions messageHandlerOptions;
     private SessionHandlerOptions sessionHandlerOptions;
+    private int prefetchCount;
 
     public MessageAndSessionPump(MessagingFactory factory, String entityPath, ReceiveMode receiveMode) {
         super(StringUtil.getShortRandomString(), null);
@@ -51,6 +53,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
         this.entityPath = entityPath;
         this.receiveMode = receiveMode;
         this.openSessions = new ConcurrentHashMap<>();
+        this.prefetchCount = UNSET_PREFETCH_COUNT;
     }
 
     @Override
@@ -67,6 +70,10 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
 
         this.innerReceiver = ClientFactory.createMessageReceiverFromEntityPath(this.factory, this.entityPath, this.receiveMode);
         TRACE_LOGGER.info("Created MessageReceiver to entity '{}'", this.entityPath);
+        if(this.prefetchCount != UNSET_PREFETCH_COUNT)
+        {
+            this.innerReceiver.setPrefetchCount(this.prefetchCount);
+        }
         for (int i = 0; i < handlerOptions.getMaxConcurrentCalls(); i++) {
             this.receiveAndPumpMessage();
         }
@@ -221,6 +228,14 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
                 } else {
                     // Received a session.. Now pump messages..
                     TRACE_LOGGER.debug("Accepted a session '{}' from entity '{}'", session.getSessionId(), this.entityPath);
+                    if(this.prefetchCount != UNSET_PREFETCH_COUNT)
+                    {
+                        try {
+                            session.setPrefetchCount(this.prefetchCount);
+                        } catch (ServiceBusException e) {
+                            // Should not happen as long as reactor is running. So ignoring
+                        }
+                    }
                     this.openSessions.put(session.getSessionId(), session);
                     SessionRenewLockLoop sessionRenewLockLoop = new SessionRenewLockLoop(session, this);
                     sessionRenewLockLoop.startLoop();
@@ -713,13 +728,34 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
 
     @Override
     public int getPrefetchCount() {
-        this.checkInnerReceiveCreated();
-        return this.innerReceiver.getPrefetchCount();
+        return this.prefetchCount;
     }
 
     @Override
     public void setPrefetchCount(int prefetchCount) throws ServiceBusException {
-        this.checkInnerReceiveCreated();
-        this.innerReceiver.setPrefetchCount(prefetchCount);
+        if(prefetchCount < 0)
+        {
+            throw new IllegalArgumentException("Prefetch count cannot be negative.");
+        }
+        
+        this.prefetchCount = prefetchCount;
+        if(this.innerReceiver != null)
+        {
+            this.innerReceiver.setPrefetchCount(prefetchCount);
+        }
+
+        // For accepted session receivers also
+        IMessageSession[] currentAcceptedSessions = this.openSessions.values().toArray(new IMessageSession[0]);
+        for(IMessageSession session : currentAcceptedSessions)
+        {
+            try
+            {
+                session.setPrefetchCount(prefetchCount);
+            }
+            catch(IllegalStateException ise)
+            {
+                // Session might have been closed.. Ignore the exception as this is a best effort setter on already accepted sessions
+            }
+        }
     }
 }
