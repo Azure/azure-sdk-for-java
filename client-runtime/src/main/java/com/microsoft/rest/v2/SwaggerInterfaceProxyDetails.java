@@ -1,0 +1,23 @@
+package com.microsoft.rest.v2;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class SwaggerInterfaceProxyDetails {
+    public final Map<String, SwaggerMethodProxyDetails> methodDetails = new HashMap<>();
+
+    /**
+     * Create and return a SwaggerMethodProxyDetails object that is associated with the provided
+     * methodName. If a SwaggerMethodProxyDetails object is already associated with the provided
+     * methodName, then the existing object will be returned.
+     * @param methodName The name of the method.
+     * @return The SwaggerMethodProxyDetails object that is associated with the provided methodName.
+     */
+    public SwaggerMethodProxyDetails createMethodDetails(String methodName) {
+        SwaggerMethodProxyDetails result = methodDetails.get(methodName);
+        if (result == null) {
+            result = methodDetails.put(methodName, new SwaggerMethodProxyDetails());
+        }
+        return result;
+    }
+}
