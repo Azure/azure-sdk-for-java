@@ -132,15 +132,10 @@ public final class RestProxy implements InvocationHandler {
      */
     @SuppressWarnings("unchecked")
     public static <A> A create(Class<A> actionable, RestClient restClient) {
-        String host = restClient.retrofit().baseUrl().host();
-        String protocol = restClient.retrofit().baseUrl().scheme();
-        if (actionable.isAnnotationPresent(Host.class)) {
-            host = actionable.getAnnotation(Host.class).value();
-            if (!host.contains("://")) {
-                host = protocol + "://" + host;
-            }
-        }
-        RestProxy restProxy = new RestProxy(host, restClient);
+        final Host hostAnnotation = actionable.getAnnotation(Host.class);
+        final String baseUrl = (hostAnnotation != null ? hostAnnotation.value() : restClient.retrofit().baseUrl().toString());
+
+        RestProxy restProxy = new RestProxy(baseUrl, restClient);
         restProxy.matrix = populateMethodMatrix(actionable);
         return (A) Proxy.newProxyInstance(actionable.getClassLoader(), new Class[] {actionable }, restProxy);
     }
