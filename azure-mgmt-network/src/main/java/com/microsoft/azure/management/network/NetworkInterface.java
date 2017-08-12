@@ -29,7 +29,7 @@ public interface NetworkInterface extends
         Refreshable<NetworkInterface>,
         Updatable<NetworkInterface.Update> {
     /**
-     * @return the IP configurations of this network interface, indexed by their names
+     * @return the IP configurations of this network interface, indexed by their names.
      */
     Map<String, NicIPConfiguration> ipConfigurations();
 
@@ -508,7 +508,7 @@ public interface NetworkInterface extends
             NicIPConfiguration.Update updateIPConfiguration(String name);
 
             /**
-             * Removes the specified IP configuration
+             * Removes the specified IP configuration.
              * @param name the name of an existing IP configuration
              * @return the next stage of the update
              */
