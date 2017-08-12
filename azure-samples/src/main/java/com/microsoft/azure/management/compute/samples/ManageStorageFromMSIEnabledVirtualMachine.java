@@ -85,7 +85,8 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
 
             // Update the VM by installing custom script extension.
             //
-            System.out.println("Installing custom script extension to install az cli");
+            System.out.println("Installing custom script extension to configure az cli in the virtual machine");
+            System.out.println("az cli will use MSI credentials to create storage account");
 
             virtualMachine.update()
                     .defineNewExtension("CustomScriptForLinux")
@@ -98,12 +99,12 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
                     .attach()
                     .apply();
 
-            // Retrieve the storage account created using MSI credentials
+            // Retrieve the storage account created by az cli using MSI credentials
             //
             StorageAccount storageAccount = azure.storageAccounts()
-                    .getByResourceGroup(stgName, rgName);
+                    .getByResourceGroup(rgName, stgName);
 
-            System.out.println("Storage account created using MSI credential");
+            System.out.println("Storage account created by az cli using MSI credential");
             Utils.print(storageAccount);
             return true;
         } catch (Exception f) {
