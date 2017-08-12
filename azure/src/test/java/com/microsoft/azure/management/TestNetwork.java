@@ -59,13 +59,13 @@ public class TestNetwork {
 
             // Verify NSG
             List<Subnet> subnets = nsg.refresh().listAssociatedSubnets();
-            Assert.assertTrue(subnets.size() == 1);
+            Assert.assertEquals(1, subnets.size());
             subnet = subnets.get(0);
             Assert.assertTrue(subnet.name().equalsIgnoreCase("subnetB"));
             Assert.assertTrue(subnet.parent().name().equalsIgnoreCase(newName));
-            Assert.assertTrue(subnet.networkSecurityGroupId() != null);
+            Assert.assertNotNull(subnet.networkSecurityGroupId());
             NetworkSecurityGroup nsg2 = subnet.getNetworkSecurityGroup();
-            Assert.assertTrue(nsg2 != null);
+            Assert.assertNotNull(nsg2);
             Assert.assertTrue(nsg2.id().equalsIgnoreCase(nsg.id()));
 
             return network;

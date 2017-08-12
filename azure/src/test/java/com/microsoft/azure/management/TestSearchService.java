@@ -20,8 +20,8 @@ public class TestSearchService {
 
         @Override
         public SearchService createResource(SearchServices searchServices) throws Exception {
-            final String newName = "search" + this.testId;
-            String rgName = "rg" + this.testId;
+            final String newName = "ssrv" + this.testId;
+            String rgName = "rgSearch" + this.testId;
 
             Assert.assertTrue(searchServices.checkNameAvailability(newName).isAvailable());
 
@@ -38,7 +38,7 @@ public class TestSearchService {
             AdminKeys adminKeys = searchService.getAdminKeys();
             Assert.assertNotNull(adminKeys);
             Assert.assertNotNull(adminKeys.primaryKey());
-            Assert.assertNotNull(adminKeys.primaryKey());
+            Assert.assertNotNull(adminKeys.secondaryKey());
 
             List<QueryKey> queryKeys = searchService.listQueryKeys();
             Assert.assertNotNull(queryKeys);
@@ -55,13 +55,13 @@ public class TestSearchService {
                 .withTag("tag2", "value2")
                 .withTag("tag3", "value3")
                 .withoutTag("tag1")
-                .withReplicaCount(2)
-                .withPartitionCount(2)
+                .withReplicaCount(1)
+                .withPartitionCount(1)
                 .apply();
             Assert.assertTrue(resource.tags().containsKey("tag2"));
             Assert.assertTrue(!resource.tags().containsKey("tag1"));
-            Assert.assertEquals(2, resource.replicaCount());
-            Assert.assertEquals(2, resource.partitionCount());
+            Assert.assertEquals(1, resource.replicaCount());
+            Assert.assertEquals(1, resource.partitionCount());
             Assert.assertEquals(2, resource.listQueryKeys().size());
 
             String adminKeyPrimary = resource.getAdminKeys().primaryKey();
@@ -90,8 +90,8 @@ public class TestSearchService {
 
         @Override
         public SearchService createResource(SearchServices searchServices) throws Exception {
-            final String newName = "search" + this.testId;
-            String rgName = "rg" + this.testId;
+            final String newName = "ssrv" + this.testId;
+            String rgName = "rgSearch" + this.testId;
             SearchService searchService = searchServices.define(newName)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup()
@@ -130,17 +130,17 @@ public class TestSearchService {
 
         @Override
         public SearchService createResource(SearchServices searchServices) throws Exception {
-            final String newName = "search" + this.testId;
-            String rgName = "rg" + this.testId;
+            final String newName = "ssrv" + this.testId;
+            String rgName = "rgSearch" + this.testId;
             SearchService searchService = searchServices.define(newName)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup()
                 .withBasicSku()
-                .withReplicaCount(2)
+                .withReplicaCount(1)
                 .create();
 
             Assert.assertEquals(SkuName.BASIC, searchService.sku().name());
-            Assert.assertEquals(2, searchService.replicaCount());
+            Assert.assertEquals(1, searchService.replicaCount());
             Assert.assertEquals(1, searchService.partitionCount());
 
             return searchService;
@@ -171,18 +171,18 @@ public class TestSearchService {
 
         @Override
         public SearchService createResource(SearchServices searchServices) throws Exception {
-            final String newName = "search" + this.testId;
-            String rgName = "rg" + this.testId;
+            final String newName = "ssrv" + this.testId;
+            String rgName = "rgSearch" + this.testId;
             SearchService searchService = searchServices.define(newName)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup()
                 .withStandardSku()
                 .withPartitionCount(2)
-                .withReplicaCount(2)
+                .withReplicaCount(1)
                 .create();
 
             Assert.assertEquals(SkuName.STANDARD, searchService.sku().name());
-            Assert.assertEquals(2, searchService.replicaCount());
+            Assert.assertEquals(1, searchService.replicaCount());
             Assert.assertEquals(2, searchService.partitionCount());
 
             return searchService;
@@ -190,6 +190,19 @@ public class TestSearchService {
 
         @Override
         public SearchService updateResource(SearchService resource) throws Exception {
+            resource = resource.update()
+                .withPartitionCount(1)
+                .withReplicaCount(1)
+                .withTag("tag2", "value2")
+                .withTag("tag3", "value3")
+                .withoutTag("tag1")
+                .apply();
+            Assert.assertTrue(resource.tags().containsKey("tag2"));
+            Assert.assertTrue(!resource.tags().containsKey("tag1"));
+            Assert.assertEquals(SkuName.STANDARD, resource.sku().name());
+            Assert.assertEquals(1, resource.replicaCount());
+            Assert.assertEquals(1, resource.partitionCount());
+
             return resource;
         }
 

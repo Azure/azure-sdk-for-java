@@ -22,7 +22,10 @@ public enum BackupRestoreOperationType {
     CLONE("Clone"),
 
     /** Enum value Relocation. */
-    RELOCATION("Relocation");
+    RELOCATION("Relocation"),
+
+    /** Enum value Snapshot. */
+    SNAPSHOT("Snapshot");
 
     /** The actual serialized value for a BackupRestoreOperationType instance. */
     private String value;

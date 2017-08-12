@@ -12,10 +12,12 @@ import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.azure.management.search.AdminKeyKind;
 import com.microsoft.azure.management.search.SearchService;
+import com.microsoft.azure.management.search.SkuName;
 import com.microsoft.rest.LogLevel;
 
 import java.io.File;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Azure Search sample for managing search service.
@@ -34,8 +36,8 @@ public class ManageSearchService {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
-        final String rgName = SdkContext.randomResourceName("rgACR", 15);
-        final String searchServiceName = SdkContext.randomResourceName("search", 20);
+        final String rgName = SdkContext.randomResourceName("rgSearch", 15);
+        final String searchServiceName = SdkContext.randomResourceName("ssrv", 20);
         final Region region = Region.US_EAST;
 
         try {
@@ -46,25 +48,37 @@ public class ManageSearchService {
             if (!azure.searchServices().checkNameAvailability(searchServiceName).isAvailable()) {
                 return false;
             }
+            Date t1, t2;
 
+            // Azure limits the number of free Search service resource to one per subscription
+            // List all Search services in the subscription and skip if there is already one resource of type free SKU
+            boolean createFreeService = true;
+            List<SearchService> resources = azure.searchServices().list();
+            for (SearchService item : resources) {
+                if (item.sku().name() == SkuName.FREE) {
+                    createFreeService = false;
+                    break;
+                }
+            }
 
-            //=============================================================
-            // Create a Azure Search service resource with a "free" SKU
+            if (createFreeService) {
+                //=============================================================
+                // Create a Azure Search service resource with a "free" SKU
 
-            System.out.println("Creating an Azure Search service using \"free\" SKU");
+                System.out.println("Creating an Azure Search service using \"free\" SKU");
 
-            Date t1 = new Date();
+                t1 = new Date();
 
-            SearchService searchServiceFree = azure.searchServices().define(searchServiceName + "free")
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .withFreeSku()
-                .create();
+                SearchService searchServiceFree = azure.searchServices().define(searchServiceName + "free")
+                    .withRegion(region)
+                    .withNewResourceGroup(rgName)
+                    .withFreeSku()
+                    .create();
 
-            Date t2 = new Date();
-            System.out.println("Created Azure Search service: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + searchServiceFree.id());
-            Utils.print(searchServiceFree);
-
+                t2 = new Date();
+                System.out.println("Created Azure Search service: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + searchServiceFree.id());
+                Utils.print(searchServiceFree);
+            }
 
             //=============================================================
             // Create an Azure Search service resource
@@ -75,7 +89,7 @@ public class ManageSearchService {
 
             SearchService searchService = azure.searchServices().define(searchServiceName)
                     .withRegion(region)
-                    .withExistingResourceGroup(rgName)
+                    .withNewResourceGroup(rgName)
                     .withStandardSku()
                     .withPartitionCount(1)
                     .withReplicaCount(1)
@@ -122,8 +136,8 @@ public class ManageSearchService {
                     .withTag("tag2", "value2")
                     .withTag("tag3", "value3")
                     .withoutTag("tag1")
-                    .withReplicaCount(3)
-                    .withPartitionCount(3)
+                    .withReplicaCount(2)
+                    .withPartitionCount(2)
                     .apply();
 
             Utils.print(searchService);

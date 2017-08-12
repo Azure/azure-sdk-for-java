@@ -63,6 +63,13 @@ public class HybridConnectionInner extends Resource {
     private String sendKeyValue;
 
     /**
+     * The suffix for the service bus endpoint. By default this is
+     * .servicebus.windows.net.
+     */
+    @JsonProperty(value = "properties.serviceBusSuffix")
+    private String serviceBusSuffix;
+
+    /**
      * Get the serviceBusNamespace value.
      *
      * @return the serviceBusNamespace value
@@ -199,6 +206,26 @@ public class HybridConnectionInner extends Resource {
      */
     public HybridConnectionInner withSendKeyValue(String sendKeyValue) {
         this.sendKeyValue = sendKeyValue;
+        return this;
+    }
+
+    /**
+     * Get the serviceBusSuffix value.
+     *
+     * @return the serviceBusSuffix value
+     */
+    public String serviceBusSuffix() {
+        return this.serviceBusSuffix;
+    }
+
+    /**
+     * Set the serviceBusSuffix value.
+     *
+     * @param serviceBusSuffix the serviceBusSuffix value to set
+     * @return the HybridConnectionInner object itself.
+     */
+    public HybridConnectionInner withServiceBusSuffix(String serviceBusSuffix) {
+        this.serviceBusSuffix = serviceBusSuffix;
         return this;
     }
 

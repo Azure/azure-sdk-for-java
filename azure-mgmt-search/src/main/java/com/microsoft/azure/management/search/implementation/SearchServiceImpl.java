@@ -41,8 +41,8 @@ class SearchServiceImpl
 
   SearchServiceImpl(String name,
                        final SearchServiceInner innerModel,
-                       final SearchServiceManager networkManager) {
-    super(name, innerModel, networkManager);
+                       final SearchServiceManager searchManager) {
+    super(name, innerModel, searchManager);
   }
 
   @Override
@@ -75,9 +75,6 @@ class SearchServiceImpl
     if (isInCreateMode()) {
       // TODO something
     }
-
-//    // Reset and update subnets
-//    this.inner().withSubnets(innersFromWrappers(this.childModels.values()));
   }
 
   @Override
