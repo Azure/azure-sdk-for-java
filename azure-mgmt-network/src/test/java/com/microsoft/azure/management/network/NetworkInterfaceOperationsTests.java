@@ -189,8 +189,8 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
 
                 secondaryIPConfig = nic.ipConfigurations().get("nicip3");
                 Assert.assertNotNull(secondaryIPConfig);
-                Assert.assertTrue("subnet1".equalsIgnoreCase(primaryIPConfig.subnetName()));
-                Assert.assertTrue(network.id().equalsIgnoreCase(primaryIPConfig.networkId()));
+                Assert.assertTrue("subnet1".equalsIgnoreCase(secondaryIPConfig.subnetName()));
+                Assert.assertTrue(network.id().equalsIgnoreCase(secondaryIPConfig.networkId()));
             } else {
                 Assert.assertTrue("Unrecognized NIC ID", false);
             }

@@ -84,7 +84,6 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                     .withPrivateIPAddressDynamic() // Equivalent to ..update().withPrimaryPrivateIPAddressDynamic()
                     .withoutPublicIPAddress()      // Equivalent to ..update().withoutPrimaryPublicIPAddress()
                     .parent()
-                .withoutIPConfiguration("nicip2")
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
                 .apply();
