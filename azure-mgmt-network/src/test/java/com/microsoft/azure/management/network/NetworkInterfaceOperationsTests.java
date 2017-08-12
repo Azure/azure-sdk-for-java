@@ -19,6 +19,7 @@ import rx.Observable;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -31,9 +32,10 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
     @Test
     public void canUseMultipleIPConfigs() throws Exception {
         String networkName = SdkContext.randomResourceName("net", 15);
-        String nic1Name = SdkContext.randomResourceName("nic", 15);
-        String nic2Name = SdkContext.randomResourceName("nic", 15);
-        String nic3Name = SdkContext.randomResourceName("nic", 15);
+        String[] nicNames = new String[3];
+        for (int i = 0; i < nicNames.length; i++) {
+            nicNames[i] = SdkContext.randomResourceName("nic", 15);
+        }
 
         Network network = networkManager.networks().define(networkName)
                 .withRegion(Region.US_EAST)
@@ -43,151 +45,165 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
                 .withSubnet("subnet2", "10.0.0.16/28")
                 .create();
 
-        // NIC that starts with one IP config and ends with two
-        Creatable<NetworkInterface> nic1Definition = networkManager.networkInterfaces().define(nic1Name)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(RG_NAME)
-                .withExistingPrimaryNetwork(network)
-                .withSubnet("subnet1")
-                .withPrimaryPrivateIPAddressDynamic();
-
-        // NIC that starts with two IP configs and ends with one
-        Creatable<NetworkInterface> nic2Definition = networkManager.networkInterfaces().define(nic2Name)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(RG_NAME)
-                .withExistingPrimaryNetwork(network)
-                .withSubnet("subnet1")
-                .withPrimaryPrivateIPAddressDynamic()
-                .defineSecondaryIPConfiguration("nicip2")
-                    .withExistingNetwork(network)
+        List<Creatable<NetworkInterface>> nicDefinitions = Arrays.asList(
+            // 0 - NIC that starts with one IP config and ends with two
+            (Creatable<NetworkInterface>)(networkManager.networkInterfaces().define(nicNames[0])
+                    .withRegion(Region.US_EAST)
+                    .withNewResourceGroup(RG_NAME)
+                    .withExistingPrimaryNetwork(network)
                     .withSubnet("subnet1")
-                    .withPrivateIPAddressDynamic()
-                    .attach();
-
-        // NIC that starts with two IP configs and ends with two
-        Creatable<NetworkInterface> nic3Definition = networkManager.networkInterfaces().define(nic3Name)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(RG_NAME)
-                .withExistingPrimaryNetwork(network)
-                .withSubnet("subnet1")
-                .withPrimaryPrivateIPAddressDynamic()
-                .defineSecondaryIPConfiguration("nicip2")
-                    .withExistingNetwork(network)
+                    .withPrimaryPrivateIPAddressDynamic()),
+    
+            // 1 - NIC that starts with two IP configs and ends with one
+            networkManager.networkInterfaces().define(nicNames[1])
+                    .withRegion(Region.US_EAST)
+                    .withNewResourceGroup(RG_NAME)
+                    .withExistingPrimaryNetwork(network)
                     .withSubnet("subnet1")
-                    .withPrivateIPAddressDynamic()
-                    .attach();
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .defineSecondaryIPConfiguration("nicip2")
+                        .withExistingNetwork(network)
+                        .withSubnet("subnet1")
+                        .withPrivateIPAddressDynamic()
+                        .attach(),
+    
+            // 2 - NIC that starts with two IP configs and ends with two
+            networkManager.networkInterfaces().define(nicNames[2])
+                    .withRegion(Region.US_EAST)
+                    .withNewResourceGroup(RG_NAME)
+                    .withExistingPrimaryNetwork(network)
+                    .withSubnet("subnet1")
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .defineSecondaryIPConfiguration("nicip2")
+                        .withExistingNetwork(network)
+                        .withSubnet("subnet1")
+                        .withPrivateIPAddressDynamic()
+                        .attach()
+            );
 
         // Create the NICs in parallel
-        CreatedResources<NetworkInterface> createdNics = networkManager.networkInterfaces().create(nic1Definition, nic2Definition, nic3Definition);
+        CreatedResources<NetworkInterface> createdNics = networkManager.networkInterfaces().create(nicDefinitions);
 
-        NetworkInterface nic1 = createdNics.get(nic1Definition.key());
-        NetworkInterface nic2 = createdNics.get(nic2Definition.key());
-        NetworkInterface nic3 = createdNics.get(nic3Definition.key());
+        NetworkInterface[] nics = new NetworkInterface[nicDefinitions.size()];
+        for (int i = 0; i < nicDefinitions.size(); i++) {
+            nics[i] = createdNics.get(nicDefinitions.get(i).key());
+        }
 
         NicIPConfiguration primaryIPConfig, secondaryIPConfig;
+        NetworkInterface nic;
+
+        // Verify NIC0
+        nic = nics[0];
+        Assert.assertNotNull(nic);
+        primaryIPConfig = nic.primaryIPConfiguration();
+        Assert.assertNotNull(primaryIPConfig);
+        Assert.assertTrue("subnet1".equalsIgnoreCase(primaryIPConfig.subnetName()));
+        Assert.assertTrue(network.id().equalsIgnoreCase(primaryIPConfig.networkId()));
 
         // Verify NIC1
-        Assert.assertNotNull(nic1);
-        primaryIPConfig = nic1.primaryIPConfiguration();
+        nic = nics[1];
+        Assert.assertNotNull(nic);
+        Assert.assertEquals(2, nic.ipConfigurations().size());
+
+        primaryIPConfig = nic.primaryIPConfiguration();
         Assert.assertNotNull(primaryIPConfig);
         Assert.assertTrue("subnet1".equalsIgnoreCase(primaryIPConfig.subnetName()));
         Assert.assertTrue(network.id().equalsIgnoreCase(primaryIPConfig.networkId()));
 
-        // Verify NIC2
-        Assert.assertNotNull(nic2);
-        Assert.assertEquals(2, nic2.ipConfigurations().size());
-
-        primaryIPConfig = nic2.primaryIPConfiguration();
-        Assert.assertNotNull(primaryIPConfig);
-        Assert.assertTrue("subnet1".equalsIgnoreCase(primaryIPConfig.subnetName()));
-        Assert.assertTrue(network.id().equalsIgnoreCase(primaryIPConfig.networkId()));
-
-        secondaryIPConfig = nic2.ipConfigurations().get("nicip2");
+        secondaryIPConfig = nic.ipConfigurations().get("nicip2");
         Assert.assertNotNull(secondaryIPConfig);
         Assert.assertTrue("subnet1".equalsIgnoreCase(primaryIPConfig.subnetName()));
         Assert.assertTrue(network.id().equalsIgnoreCase(secondaryIPConfig.networkId()));
 
-        // Verify NIC3
-        Assert.assertNotNull(nic3);
-        Assert.assertEquals(2,  nic3.ipConfigurations().size());
+        // Verify NIC2
+        nic = nics[2];
+        Assert.assertNotNull(nic);
+        Assert.assertEquals(2,  nic.ipConfigurations().size());
 
-        primaryIPConfig = nic3.primaryIPConfiguration();
+        primaryIPConfig = nic.primaryIPConfiguration();
         Assert.assertNotNull(primaryIPConfig);
         Assert.assertTrue("subnet1".equalsIgnoreCase(primaryIPConfig.subnetName()));
         Assert.assertTrue(network.id().equalsIgnoreCase(primaryIPConfig.networkId()));
 
-        secondaryIPConfig = nic2.ipConfigurations().get("nicip2");
+        secondaryIPConfig = nic.ipConfigurations().get("nicip2");
         Assert.assertNotNull(secondaryIPConfig);
         Assert.assertTrue("subnet1".equalsIgnoreCase(secondaryIPConfig.subnetName()));
         Assert.assertTrue(network.id().equalsIgnoreCase(secondaryIPConfig.networkId()));
 
-        // Update NIC1
-        Observable<NetworkInterface> nic1Update = nic1.update()
-            .defineSecondaryIPConfiguration("nicip2")
+        nic = null;
+
+        List<Observable<NetworkInterface>> nicUpdates = Arrays.asList(
+            // Update NIC0
+            nics[0].update()
+                .defineSecondaryIPConfiguration("nicip2")
                 .withExistingNetwork(network)
                 .withSubnet("subnet1")
                 .withPrivateIPAddressDynamic()
                 .attach()
-            .applyAsync();
+                .applyAsync(),
 
-        // Update NIC2
-        Observable<NetworkInterface> nic2Update = nic2.update()
-            .withoutIPConfiguration("nicip2")
-            .updateIPConfiguration("primary")
-                .withSubnet("subnet2")
-                .parent()
-            .applyAsync();
+            // Update NIC2
+            nics[1].update()
+                .withoutIPConfiguration("nicip2")
+                .updateIPConfiguration("primary")
+                    .withSubnet("subnet2")
+                    .parent()
+                .applyAsync(),
 
-        // Update NIC3
-        Observable<NetworkInterface> nic3Update = nic3.update()
-            .withoutIPConfiguration("nicip2")
-            .defineSecondaryIPConfiguration("nicip3")
-                .withExistingNetwork(network)
-                .withSubnet("subnet1")
-                .withPrivateIPAddressDynamic()
-                .attach()
-            .applyAsync();
+            // Update NIC3
+            nics[2].update()
+                .withoutIPConfiguration("nicip2")
+                .defineSecondaryIPConfiguration("nicip3")
+                    .withExistingNetwork(network)
+                    .withSubnet("subnet1")
+                    .withPrivateIPAddressDynamic()
+                    .attach()
+                .applyAsync()
+            );
 
-        List<NetworkInterface> updatedNics = Observable.mergeDelayError(nic1Update, nic2Update, nic3Update).toList().toBlocking().single();
+        List<NetworkInterface> updatedNics = Observable.mergeDelayError(nicUpdates)
+                .toList()
+                .toBlocking()
+                .single();
 
         // Verify updated NICs
-        for (NetworkInterface nic : updatedNics) {
-            Assert.assertNotNull(nic);
-            if (nic.id().equalsIgnoreCase(nic1.id())) {
-                // Verify NIC1
-                Assert.assertEquals(2, nic.ipConfigurations().size());
+        for (NetworkInterface n : updatedNics) {
+            Assert.assertNotNull(n);
+            if (n.id().equalsIgnoreCase(nics[0].id())) {
+                // Verify NIC0
+                Assert.assertEquals(2, n.ipConfigurations().size());
 
-                primaryIPConfig = nic.primaryIPConfiguration();
+                primaryIPConfig = n.primaryIPConfiguration();
                 Assert.assertNotNull(primaryIPConfig);
                 Assert.assertTrue("subnet1".equalsIgnoreCase(primaryIPConfig.subnetName()));
                 Assert.assertTrue(network.id().equalsIgnoreCase(primaryIPConfig.networkId()));
 
-                secondaryIPConfig = nic.ipConfigurations().get("nicip2");
+                secondaryIPConfig = n.ipConfigurations().get("nicip2");
                 Assert.assertNotNull(secondaryIPConfig);
                 Assert.assertTrue("subnet1".equalsIgnoreCase(secondaryIPConfig.subnetName()));
                 Assert.assertTrue(network.id().equalsIgnoreCase(secondaryIPConfig.networkId()));
 
-            } else if (nic.id().equals(nic2.id())) {
-                // Verify NIC2
-                Assert.assertEquals(1, nic.ipConfigurations().size());
-                primaryIPConfig = nic.primaryIPConfiguration();
+            } else if (n.id().equals(nics[1].id())) {
+                // Verify NIC1
+                Assert.assertEquals(1, n.ipConfigurations().size());
+                primaryIPConfig = n.primaryIPConfiguration();
                 Assert.assertNotNull(primaryIPConfig);
                 Assert.assertNotEquals("nicip2", primaryIPConfig.name());
                 Assert.assertTrue("subnet2".equalsIgnoreCase(primaryIPConfig.subnetName()));
                 Assert.assertTrue(network.id().equalsIgnoreCase(primaryIPConfig.networkId()));
 
-            } else if (nic.id().equals(nic3.id())) {
-                // Verify NIC3
-                Assert.assertEquals(2, nic.ipConfigurations().size());
+            } else if (n.id().equals(nics[2].id())) {
+                // Verify NIC
+                Assert.assertEquals(2, n.ipConfigurations().size());
 
-                primaryIPConfig = nic.primaryIPConfiguration();
+                primaryIPConfig = n.primaryIPConfiguration();
                 Assert.assertNotNull(primaryIPConfig);
                 Assert.assertNotEquals("nicip2", primaryIPConfig.name());
                 Assert.assertNotEquals("nicip3", primaryIPConfig.name());
                 Assert.assertTrue("subnet1".equalsIgnoreCase(primaryIPConfig.subnetName()));
                 Assert.assertTrue(network.id().equalsIgnoreCase(primaryIPConfig.networkId()));
 
-                secondaryIPConfig = nic.ipConfigurations().get("nicip3");
+                secondaryIPConfig = n.ipConfigurations().get("nicip3");
                 Assert.assertNotNull(secondaryIPConfig);
                 Assert.assertTrue("subnet1".equalsIgnoreCase(secondaryIPConfig.subnetName()));
                 Assert.assertTrue(network.id().equalsIgnoreCase(secondaryIPConfig.networkId()));
