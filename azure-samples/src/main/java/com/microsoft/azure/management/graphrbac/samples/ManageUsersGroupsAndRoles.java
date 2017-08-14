@@ -18,7 +18,6 @@ import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 
 import java.io.File;
-import java.util.List;
 
 /**
  * Azure Users, Groups and Roles sample.
