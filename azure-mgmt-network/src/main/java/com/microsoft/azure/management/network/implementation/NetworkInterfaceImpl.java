@@ -55,10 +55,6 @@ class NetworkInterfaceImpl
      */
     protected final ResourceNamer namer;
     /**
-     * reference to the primary ip configuration.
-     */
-    private NicIPConfigurationImpl nicPrimaryIPConfiguration;
-    /**
      * references to all ip configuration.
      */
     private Map<String, NicIPConfiguration> nicIPConfigurations;
@@ -251,7 +247,7 @@ class NetworkInterfaceImpl
         return this;
     }
 
-    //TODO: Networking doesn't support this yet, even though it exposes the API; so we have the impl but not exposed via the interface yet.
+    @Override
     public NetworkInterfaceImpl withoutIPConfiguration(String name) {
         this.nicIPConfigurations.remove(name);
         return this;
@@ -386,24 +382,30 @@ class NetworkInterfaceImpl
     /**
      * @return the primary IP configuration of the network interface
      */
+    @Override
     public NicIPConfigurationImpl primaryIPConfiguration() {
-        if (this.nicPrimaryIPConfiguration != null) {
-            return this.nicPrimaryIPConfiguration;
+        NicIPConfigurationImpl primaryIPConfig = null;
+        if (this.nicIPConfigurations.size() == 0) {
+            // If no primary IP config found yet, then create one automatically, otherwise the NIC is in a bad state
+            primaryIPConfig = prepareNewNicIPConfiguration("primary");
+            primaryIPConfig.inner().withPrimary(true);
+            withIPConfiguration(primaryIPConfig);
+        } else if (this.nicIPConfigurations.size() == 1) {
+            // If there is only one IP config, assume it is primary, regardless of the Primary flag
+            primaryIPConfig = (NicIPConfigurationImpl) this.nicIPConfigurations.values().iterator().next();
+        } else {
+            // If multiple IP configs, then find the one marked as primary
+            for (NicIPConfiguration ipConfig : this.nicIPConfigurations.values()) {
+                if (ipConfig.isPrimary()) {
+                    primaryIPConfig = (NicIPConfigurationImpl) ipConfig;
+                    break;
+                }
+            }
         }
 
-        if (isInCreateMode()) {
-            this.nicPrimaryIPConfiguration = prepareNewNicIPConfiguration("primary");
-            withIPConfiguration(this.nicPrimaryIPConfiguration);
-        } else {
-            // TODO: Currently Azure supports only one IP configuration and that is the primary
-            // hence we pick the first one here.
-            // when Azure support multiple IP configurations then there will be a flag in
-            // the IPConfiguration or a property in the network interface to identify the
-            // primary so below logic will be changed.
-            this.nicPrimaryIPConfiguration = (NicIPConfigurationImpl) new ArrayList<NicIPConfiguration>(
-                    this.nicIPConfigurations.values()).get(0);
-        }
-        return this.nicPrimaryIPConfiguration;
+        // Return the found primary IP config, including null, if no primary IP config can be identified
+        // in which case the NIC is in a bad state anyway
+        return primaryIPConfig;
     }
 
     /**
@@ -449,7 +451,6 @@ class NetworkInterfaceImpl
 
     private void clearCachedRelatedResources() {
         this.networkSecurityGroup = null;
-        this.nicPrimaryIPConfiguration = null;
     }
 
     NetworkInterfaceImpl withIPConfiguration(NicIPConfigurationImpl nicIPConfiguration) {
