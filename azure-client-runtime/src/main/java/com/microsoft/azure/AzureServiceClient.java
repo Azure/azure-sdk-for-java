@@ -57,14 +57,16 @@ public abstract class AzureServiceClient extends ServiceClient {
      * @return the user agent string.
      */
     public String userAgent() {
-        return String.format("Azure-SDK-For-Java/%s OS:%s MacAddressHash:%s",
+        return String.format("Azure-SDK-For-Java/%s OS:%s MacAddressHash:%s Java:%s",
                 getClass().getPackage().getImplementationVersion(),
                 OS,
-                MAC_ADDRESS_HASH);
+                MAC_ADDRESS_HASH,
+                JAVA_VERSION);
     }
 
     private static final String MAC_ADDRESS_HASH;
     private static final String OS;
+    private static final String JAVA_VERSION;
 
     static {
         OS = System.getProperty("os.name") + "/" + System.getProperty("os.version");
@@ -84,5 +86,7 @@ public abstract class AzureServiceClient extends ServiceClient {
             // It's okay ignore mac address hash telemetry
         }
         MAC_ADDRESS_HASH = macAddress;
+        String version = System.getProperty("java.version");
+        JAVA_VERSION = version != null ? version : "Unknown";
     }
 }

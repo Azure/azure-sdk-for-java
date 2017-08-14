@@ -27,6 +27,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface Contexts {
     /**
      * List of static contexts.
+     * @return An array of context strings, such as "logging: com.microsoft.azure.management.customerinsights.Images getUploadUrlForEntityType".
      */
     String[] value();
 }

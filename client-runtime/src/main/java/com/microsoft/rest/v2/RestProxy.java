@@ -36,8 +36,10 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-// TODO: Convert this to RxNetty and finish
-public class RestProxy implements InvocationHandler {
+/**
+ * TODO: Convert this to RxNetty and finish.
+ */
+public final class RestProxy implements InvocationHandler {
     private final String host;
     private final RestClient restClient;
 
@@ -120,19 +122,22 @@ public class RestProxy implements InvocationHandler {
         }
     }
 
+    /**
+     * Create a proxy implementation for the provided Swagger interface using the provided HTTP
+     * client.
+     * @param actionable The Swagger interface.
+     * @param restClient The HTTP client.
+     * @param <A> The type of the generated proxy.
+     * @return The generated proxy.
+     */
     @SuppressWarnings("unchecked")
     public static <A> A create(Class<A> actionable, RestClient restClient) {
-        String host = restClient.retrofit().baseUrl().host();
-        String protocol = restClient.retrofit().baseUrl().scheme();
-        if (actionable.isAnnotationPresent(Host.class)) {
-            host = actionable.getAnnotation(Host.class).value();
-            if (!host.contains("://")) {
-                host = protocol + "://" + host;
-            }
-        }
-        RestProxy restProxy = new RestProxy(host, restClient);
+        final Host hostAnnotation = actionable.getAnnotation(Host.class);
+        final String baseUrl = (hostAnnotation != null ? hostAnnotation.value() : restClient.retrofit().baseUrl().toString());
+
+        RestProxy restProxy = new RestProxy(baseUrl, restClient);
         restProxy.matrix = populateMethodMatrix(actionable);
-        return (A) Proxy.newProxyInstance(actionable.getClassLoader(), new Class[] { actionable }, restProxy);
+        return (A) Proxy.newProxyInstance(actionable.getClassLoader(), new Class[] {actionable }, restProxy);
     }
 
     private static Map<String, MethodInfo> populateMethodMatrix(Class<?> service) {

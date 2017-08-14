@@ -33,5 +33,9 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})            // The context in which annotation is applicable i.e. this annotation (POST) can be applied only to methods
 @Retention(RetentionPolicy.RUNTIME)      // Record this annotation in the class file and make it available during runtime.
 public @interface POST {
+    /**
+     * Get the relative path of the annotated method's POST URL.
+     * @return The relative path of the annotated method's POST URL.
+     */
     String value();
 }

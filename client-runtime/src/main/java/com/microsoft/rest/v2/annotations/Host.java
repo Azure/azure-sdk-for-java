@@ -24,12 +24,12 @@ import static java.lang.annotation.ElementType.TYPE;
  * provided. See Java docs in {@link HostParam} for directions for host
  * parameters.
  *
- * The host is allowed to contain the protocol and the port number. If provided,
- * these information will override the setting in RestClient.
+ * The host's value must contain the scheme/protocol and the host. The host's value may contain the
+ * port number.
  *
  * Example 1: Static annotation.
  *
- *   {@literal @}Host("management.azure.com")
+ *   {@literal @}Host("https://management.azure.com")
  *   interface VirtualMachinesService {
  *     {@literal @}GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
  *     VirtualMachine getByResourceGroup(@PathParam("resourceGroupName") String rgName, @PathParam("vmName") String vmName, @PathParam("subscriptionId") String subscriptionId);
@@ -44,8 +44,12 @@ import static java.lang.annotation.ElementType.TYPE;
  *    }
 
  */
-@Target(value={TYPE})
+@Target(value = {TYPE})
 @Retention(RetentionPolicy.RUNTIME)        // Record this annotation in the class file and make it available during runtime.
 public @interface Host {
+    /**
+     * Get the protocol/scheme, host, and optional port number in a single string.
+     * @return The protocol/scheme, host, and optional port number in a single string.
+     */
     String value() default "";
 }

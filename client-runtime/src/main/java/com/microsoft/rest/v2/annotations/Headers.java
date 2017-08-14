@@ -29,6 +29,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface Headers {
     /**
      * List of static headers.
+     * @return List of static headers.
      */
     String[] value();
 }
