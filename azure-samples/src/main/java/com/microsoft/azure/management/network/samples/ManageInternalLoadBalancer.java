@@ -151,10 +151,6 @@ public final class ManageInternalLoadBalancer {
             LoadBalancer loadBalancer3 = azure.loadBalancers().define(loadBalancerName3)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
-                    .definePrivateFrontend(privateFrontEndName)
-                        .withExistingSubnet(network, "Back-end")
-                        .withPrivateIPAddressStatic("172.16.3.5")
-                        .attach()
 
                     // Add one rule that uses above backend and probe
                     .defineLoadBalancingRule(tcpLoadBalancingRule)
@@ -195,7 +191,13 @@ public final class ManageInternalLoadBalancer {
                         .toBackendPort(23)
                         .attach()
 
-                    // Add one probes - one per rule
+                    // Explicitly define the frontend
+                    .definePrivateFrontend(privateFrontEndName)
+                        .withExistingSubnet(network, "Back-end")
+                        .withPrivateIPAddressStatic("172.16.3.5")
+                        .attach()
+
+                     // Add one probes - one per rule
                     .defineHttpProbe("httpProbe")
                         .withRequestPath("/")
                         .attach()
@@ -330,10 +332,6 @@ public final class ManageInternalLoadBalancer {
             LoadBalancer loadBalancer4 = azure.loadBalancers().define(loadBalancerName4)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
-                    .definePrivateFrontend(privateFrontEndName)
-                        .withExistingSubnet(network, "Back-end")
-                        .withPrivateIPAddressStatic("172.16.3.15")
-                        .attach()
 
                     // Add one rule that uses above backend and probe
                     .defineLoadBalancingRule(tcpLoadBalancingRule)
@@ -372,6 +370,12 @@ public final class ManageInternalLoadBalancer {
                         .fromFrontend(privateFrontEndName)
                         .fromFrontendPort(6003)
                         .toBackendPort(23)
+                        .attach()
+
+                    // Explicitly define the frontend
+                    .definePrivateFrontend(privateFrontEndName)
+                        .withExistingSubnet(network, "Back-end")
+                        .withPrivateIPAddressStatic("172.16.3.15")
                         .attach()
 
                     // Add one probes - one per rule
