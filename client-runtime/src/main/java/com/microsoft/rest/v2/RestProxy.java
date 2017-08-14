@@ -20,15 +20,11 @@ import com.microsoft.rest.v2.annotations.POST;
 import com.microsoft.rest.v2.annotations.PUT;
 import com.microsoft.rest.v2.annotations.PathParam;
 import com.microsoft.rest.v2.annotations.QueryParam;
-import okhttp3.Call;
-import okhttp3.HttpUrl;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Request.Builder;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
+import com.microsoft.rest.v2.http.HttpClient;
+import com.microsoft.rest.v2.http.HttpRequest;
+import com.microsoft.rest.v2.http.HttpResponse;
+import com.microsoft.rest.v2.http.OkHttpClient;
+import com.microsoft.rest.v2.http.UrlBuilder;
 
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
@@ -43,12 +39,14 @@ import java.lang.reflect.Proxy;
  */
 public final class RestProxy implements InvocationHandler {
     private final String host;
-    private final RestClient restClient;
+    private final HttpClient httpClient;
+    private final SerializerAdapter<?> serializer;
     private final SwaggerInterfaceProxyDetails interfaceDetails;
 
-    private RestProxy(String host, RestClient restClient, SwaggerInterfaceProxyDetails interfaceDetails) {
+    private RestProxy(String host, HttpClient httpClient, SerializerAdapter<?> serializer, SwaggerInterfaceProxyDetails interfaceDetails) {
         this.host = host;
-        this.restClient = restClient;
+        this.httpClient = httpClient;
+        this.serializer = serializer;
         this.interfaceDetails = interfaceDetails;
     }
 
@@ -57,60 +55,46 @@ public final class RestProxy implements InvocationHandler {
         final String methodName = method.getName();
         final SwaggerMethodProxyDetails methodDetails = interfaceDetails.getMethodProxyDetails(methodName);
 
-        RequestBody requestBody = null;
+        final String actualHost = methodDetails.applyHostSubstitutions(host, args);
+        final String[] hostParts = actualHost.split("://");
+        final String actualPath = methodDetails.getSubstitutedPath(args);
+
+        final UrlBuilder urlBuilder = new UrlBuilder()
+                .setScheme(hostParts[0])
+                .setHost(hostParts[1])
+                .setPath(actualPath);
+
+        for (EncodedParameter queryParameter : methodDetails.getEncodedQueryParameters(args)) {
+            urlBuilder.addQueryParameter(queryParameter.getName(), queryParameter.getEncodedValue());
+        }
+
+        final String url = urlBuilder.toString();
+        final HttpRequest request = new HttpRequest(methodDetails.getMethod(), url);
+
+        for (final EncodedParameter headerParameter : methodDetails.getEncodedHeaderParameters(args)) {
+            request.addHeader(headerParameter.getName(), headerParameter.getEncodedValue());
+        }
+
         final Integer bodyContentMethodParameterIndex = methodDetails.getBodyContentMethodParameterIndex();
         if (bodyContentMethodParameterIndex != null) {
             final Object bodyContentObject = args[bodyContentMethodParameterIndex];
             if (bodyContentObject != null) {
-                // TODO: what's the actual media type?
-                final MediaType mediaType = MediaType.parse("application/json");
-
-                final SerializerAdapter<?> serializer = restClient.serializerAdapter();
                 final String bodyContentString = serializer.serialize(bodyContentObject);
-
-                requestBody = RequestBody.create(mediaType, bodyContentString);
+                request.setBody(bodyContentString, "application/json");
             }
         }
 
-        final String actualHost = methodDetails.applyHostSubstitutions(host, args);
-        final String actualPath = methodDetails.getSubstitutedPath(args);
-
-        String[] parts = actualHost.split("://");
-        HttpUrl.Builder urlBuilder = new HttpUrl.Builder()
-                .scheme(parts[0])
-                .host(parts[1])
-                .addEncodedPathSegments(actualPath);
-
-        for (EncodedParameter queryParameter : methodDetails.getEncodedQueryParameters(args)) {
-            urlBuilder.addEncodedQueryParameter(queryParameter.getName(), queryParameter.getEncodedValue());
-        }
-
-        final String httpMethod = methodDetails.getMethod();
-        final Request.Builder requestBuilder = new Builder()
-                .method(httpMethod, requestBody)
-                .url(urlBuilder.build());
-
-        for (final EncodedParameter headerParameter : methodDetails.getEncodedHeaderParameters(args)) {
-            requestBuilder.header(headerParameter.getName(), headerParameter.getEncodedValue());
-        }
-
-        final Request request = requestBuilder.build();
-        final OkHttpClient httpClient = restClient.httpClient();
-        final Call call = httpClient.newCall(request);
-
-        final Response response = call.execute();
+        final HttpResponse response = httpClient.sendRequest(request);
 
         final Class<?> returnType = method.getReturnType();
-        final ResponseBody responseBody = response.body();
-        if (returnType.equals(Void.TYPE) || responseBody == null) {
+        if (returnType.equals(Void.TYPE) || !response.hasBody()) {
             return null;
         } else if (returnType.isAssignableFrom(InputStream.class)) {
-            return responseBody.byteStream();
+            return response.getBodyAsInputStream();
         } else if (returnType.isAssignableFrom(byte[].class)) {
-            return responseBody.bytes();
+            return response.getBodyAsByteArray();
         } else {
-            final String responseBodyString = responseBody.string();
-            final SerializerAdapter<?> serializer = restClient.serializerAdapter();
+            final String responseBodyString = response.getBodyAsString();
             return serializer.deserialize(responseBodyString, returnType);
         }
     }
@@ -124,10 +108,30 @@ public final class RestProxy implements InvocationHandler {
      */
     @SuppressWarnings("unchecked")
     public static <A> A create(Class<A> swaggerInterface, RestClient restClient) {
-        final Host hostAnnotation = swaggerInterface.getAnnotation(Host.class);
-        final String baseUrl = (hostAnnotation != null ? hostAnnotation.value() : restClient.retrofit().baseUrl().toString());
+        final HttpClient httpClient = new OkHttpClient(restClient.httpClient());
+        final SerializerAdapter<?> serializer = restClient.serializerAdapter();
+        return create(swaggerInterface, httpClient, serializer);
+    }
 
+    /**
+     * Create a proxy implementation of the provided Swagger interface.
+     * @param swaggerInterface The Swagger interface to provide a proxy implementation for.
+     * @param httpClient The internal HTTP client that will be used to make REST calls.
+     * @param serializer The serializer that will be used to convert POJOs to and from request and
+     *                   response bodies.
+     * @param <A> The type of the Swagger interface.
+     * @return A proxy implementation of the provided Swagger interface.
+     */
+    @SuppressWarnings("unchecked")
+    public static <A> A create(Class<A> swaggerInterface, HttpClient httpClient, SerializerAdapter<?> serializer) {
         final SwaggerInterfaceProxyDetails interfaceProxyDetails = new SwaggerInterfaceProxyDetails();
+
+        String host = null;
+        final Host hostAnnotation = swaggerInterface.getAnnotation(Host.class);
+        if (hostAnnotation != null) {
+            host = hostAnnotation.value();
+        }
+
         for (Method method : swaggerInterface.getDeclaredMethods()) {
             final SwaggerMethodProxyDetails methodProxyDetails = interfaceProxyDetails.getMethodProxyDetails(method.getName());
 
@@ -178,7 +182,7 @@ public final class RestProxy implements InvocationHandler {
             }
         }
 
-        RestProxy restProxy = new RestProxy(baseUrl, restClient, interfaceProxyDetails);
+        RestProxy restProxy = new RestProxy(host, httpClient, serializer, interfaceProxyDetails);
         return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class[]{swaggerInterface}, restProxy);
     }
 }
