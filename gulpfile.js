@@ -446,3 +446,4 @@ var deleteFolderRecursive = function(path) {
         });
     }
 };
+
