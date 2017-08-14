@@ -261,6 +261,10 @@ public final class Utils {
                 .append("\n\t\t\tPublic Settings: ").append(extension.publicSettingsAsJsonString());
         }
 
+        StringBuilder msi = new StringBuilder().append("\n\tMSI: ");
+        msi.append("\n\t\t\tMSI enabled:").append(resource.isManagedServiceIdentityEnabled());
+        msi.append("\n\t\t\tMSI Active Directory Service Principal Id:").append(resource.managedServiceIdentityPrincipalId());
+        msi.append("\n\t\t\tMSI Active Directory Tenant Id:").append(resource.managedServiceIdentityTenantId());
 
         System.out.println(new StringBuilder().append("Virtual Machine: ").append(resource.id())
             .append("Name: ").append(resource.name())
@@ -273,6 +277,7 @@ public final class Utils {
             .append(osProfile)
             .append(networkProfile)
             .append(extensions)
+            .append(msi)
             .toString());
     }
 
