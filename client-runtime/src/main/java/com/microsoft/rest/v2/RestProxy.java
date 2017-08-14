@@ -39,6 +39,7 @@ import java.lang.reflect.Proxy;
 /**
  * This class can be used to create a proxy implementation for a provided Swagger generated
  * interface.
+ * TODO: Convert this to RxNetty and finish.
  */
 public final class RestProxy implements InvocationHandler {
     private final String host;

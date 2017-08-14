@@ -15,6 +15,7 @@ import com.microsoft.rest.v2.annotations.GET;
 import com.microsoft.rest.v2.annotations.HostParam;
 import com.microsoft.rest.v2.annotations.PathParam;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class AzureTests {
@@ -25,7 +26,7 @@ public class AzureTests {
         String getSecret(@HostParam String vaultBaseUrl, @PathParam("secretName") String secretName);
     }
 
-    // @AzureHost not yet supported
+// @AzureHost not yet supported.
 //    @Test
 //    public void getBytes() throws Exception {
 //        RestClient client = new RestClient.Builder()
