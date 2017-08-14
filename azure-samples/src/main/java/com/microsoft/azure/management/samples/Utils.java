@@ -49,12 +49,7 @@ import com.microsoft.azure.management.dns.SrvRecord;
 import com.microsoft.azure.management.dns.SrvRecordSet;
 import com.microsoft.azure.management.dns.TxtRecord;
 import com.microsoft.azure.management.dns.TxtRecordSet;
-import com.microsoft.azure.management.graphrbac.ActiveDirectoryApplication;
-import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroup;
-import com.microsoft.azure.management.graphrbac.ActiveDirectoryUser;
-import com.microsoft.azure.management.graphrbac.RoleAssignment;
-import com.microsoft.azure.management.graphrbac.RoleDefinition;
-import com.microsoft.azure.management.graphrbac.ServicePrincipal;
+import com.microsoft.azure.management.graphrbac.*;
 import com.microsoft.azure.management.graphrbac.implementation.PermissionInner;
 import com.microsoft.azure.management.keyvault.AccessPolicy;
 import com.microsoft.azure.management.keyvault.Vault;
@@ -2003,7 +1998,13 @@ public final class Utils {
                 .append("Active Directory Group: ").append(group.id())
                 .append("\n\tName: ").append(group.name())
                 .append("\n\tMail: ").append(group.mail())
-                .append("\n\tSecurity Enabled: ").append(group.securityEnabled());
+                .append("\n\tSecurity Enabled: ").append(group.securityEnabled())
+                .append("\n\tGroup members:");
+
+        for (ActiveDirectoryObject object : group.listMembers()) {
+            builder.append("\n\t\tType: ").append(object.getClass().getSimpleName())
+                    .append("\tName: ").append(object.name());
+        }
 
         System.out.println(builder.toString());
     }

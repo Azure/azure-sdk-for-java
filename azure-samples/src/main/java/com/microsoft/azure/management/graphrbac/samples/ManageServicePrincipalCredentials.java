@@ -49,16 +49,16 @@ public final class ManageServicePrincipalCredentials {
         final String password2      = "StrongP@ss!12";
         final String certName1      = SdkContext.randomResourceName("cert", 20);
         final String raName         = SdkContext.randomUuid();
-        String applicationId = "";
+        String servicePrincipalId = "";
         try {
             // ============================================================
-            // Create application
+            // Create service principal
 
-            System.out.println("Creating an Active Directory application " + appName + "...");
+            System.out.println("Creating an Active Directory service principal " + spName + "...");
 
-            ActiveDirectoryApplication application = authenticated.activeDirectoryApplications()
-                    .define(appName)
-                    .withSignOnUrl(appUrl)
+            ServicePrincipal servicePrincipal = authenticated.servicePrincipals()
+                    .define(spName)
+                    .withNewApplication(appUrl)
                     .definePasswordCredential(passwordName1)
                         .withPasswordValue(password1)
                         .attach()
@@ -72,23 +72,9 @@ public final class ManageServicePrincipalCredentials {
                         .attach()
                     .create();
 
-            System.out.println("Created Active Directory application " + appName + ".");
-            Utils.print(application);
-
-            applicationId = application.id();
-
-            // ============================================================
-            // Create service principal
-
-            System.out.println("Creating an Active Directory service principal " + spName + "...");
-
-            ServicePrincipal servicePrincipal = authenticated.servicePrincipals()
-                    .define(spName)
-                    .withExistingApplication(application)
-                    .create();
-
             System.out.println("Created service principal " + spName + ".");
             Utils.print(servicePrincipal);
+            servicePrincipalId = servicePrincipal.id();
 
             // ============================================================
             // Create role assignment
@@ -154,11 +140,11 @@ public final class ManageServicePrincipalCredentials {
             // Revoke access of the 1st password credential
             System.out.println("Revoking access for password credential " + passwordName1 + "...");
 
-            application.update()
+            servicePrincipal.update()
                     .withoutCredential(passwordName1)
                     .apply();
 
-            Thread.sleep(15000);
+            SdkContext.sleep(15000);
 
             System.out.println("Credential revoked.");
 
@@ -184,7 +170,7 @@ public final class ManageServicePrincipalCredentials {
 
             authenticated.roleAssignments().deleteById(roleAssignment.id());
 
-            Thread.sleep(5000);
+            SdkContext.sleep(5000);
 
             // ============================================================
             // Verify the revoked password credential is no longer valid
@@ -210,7 +196,7 @@ public final class ManageServicePrincipalCredentials {
         } finally {
             try {
                 System.out.println("Deleting application: " + appName);
-                authenticated.activeDirectoryApplications().deleteById(applicationId);
+                authenticated.servicePrincipals().deleteById(servicePrincipalId);
                 System.out.println("Deleted application: " + appName);
             }
             catch (Exception e) {

@@ -22,14 +22,14 @@ import java.util.List;
 
 /**
  * Azure Users, Groups and Roles sample.
- * - List users
- * - Get user by email
+ * - Create a user
  * - Assign role to AD user
  * - Revoke role from AD user
  * - Get role by scope and role name
  * - Create Service Principal
  * - Assign role to Service Principal
- * - List Active Directory groups.
+ * - Create 2 Active Directory groups
+ * - Add the user, the service principal and the 1st group as members of the 2nd group
  */
 public final class ManageUsersGroupsAndRoles {
     /**
@@ -40,24 +40,29 @@ public final class ManageUsersGroupsAndRoles {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure.Authenticated authenticated, String defaultSubscription) {
+        final String userEmail = Utils.createRandomName("test");
+        final String userName = userEmail.replace("test", "Test ");
         final String spName = Utils.createRandomName("sp");
         final String raName1 = SdkContext.randomUuid();
         final String raName2 = SdkContext.randomUuid();
+        final String groupEmail1 = Utils.createRandomName("group1");
+        final String groupEmail2 = Utils.createRandomName("group2");
+        final String groupName1 = groupEmail1.replace("group1", "Group ");
+        final String groupName2 = groupEmail2.replace("group2", "Group ");
         String spId = "";
         try {
             // ============================================================
-            // List users
+            // Create a user
 
-            List<ActiveDirectoryUser> users = authenticated.activeDirectoryUsers().list();
-            System.out.println("Active Directory Groups:");
-            for (ActiveDirectoryUser adUser : users) {
-                Utils.print(adUser);
-            }
+            System.out.println("Creating an AD user " + userName + "...");
 
-            // ============================================================
-            // Get user by email
+            ActiveDirectoryUser user = authenticated.activeDirectoryUsers()
+                    .define(userName)
+                    .withEmailAlias(userEmail)
+                    .withPassword("StrongPass!12")
+                    .create();
 
-            ActiveDirectoryUser user = authenticated.activeDirectoryUsers().getByName("admin@azuresdkteam.onmicrosoft.com");
+            System.out.println("Created AD user " + userName);
             Utils.print(user);
 
             // ============================================================
@@ -110,13 +115,34 @@ public final class ManageUsersGroupsAndRoles {
             Utils.print(roleAssignment2);
 
             // ============================================================
-            // List Active Directory groups
+            // Create Active Directory groups
 
-            List<ActiveDirectoryGroup> groups = authenticated.activeDirectoryGroups().list();
-            System.out.println("Active Directory Groups:");
-            for (ActiveDirectoryGroup group : groups) {
-                Utils.print(group);
-            }
+            System.out.println("Creating Active Directory group " + groupName1 + "...");
+            ActiveDirectoryGroup group1 = authenticated.activeDirectoryGroups()
+                    .define(groupName1)
+                    .withEmailAlias(groupEmail1)
+                    .create();
+
+            System.out.println("Created Active Directory group " + groupName1);
+            Utils.print(group1);
+
+            System.out.println("Creating Active Directory group " + groupName2 + "...");
+            ActiveDirectoryGroup group2 = authenticated.activeDirectoryGroups()
+                    .define(groupName2)
+                    .withEmailAlias(groupEmail2)
+                    .create();
+
+            System.out.println("Created Active Directory group " + groupName2);
+            Utils.print(group2);
+
+            System.out.println("Adding group members to group " + groupName2 + "...");
+            group2.update()
+                    .withMember(user)
+                    .withMember(sp)
+                    .withMember(group1)
+                    .apply();
+            System.out.println("Group members added to group " + groupName2);
+            Utils.print(group2);
 
             return true;
         } catch (Exception f) {
