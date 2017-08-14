@@ -25,15 +25,16 @@ public class AzureTests {
         String getSecret(@HostParam String vaultBaseUrl, @PathParam("secretName") String secretName);
     }
 
-    @Test
-    public void getBytes() throws Exception {
-        RestClient client = new RestClient.Builder()
-                .withBaseUrl("http://localhost")
-                .withSerializerAdapter(new JacksonAdapter())
-                .withResponseBuilderFactory(new ServiceResponseBuilder.Factory())
-                .build();
-        HttpBinService service = RestProxy.create(HttpBinService.class, client);
-
-        Assert.assertEquals("http://vault1.vault.azure.net/secrets/{secretName}", service.getSecret("http://vault1.vault.azure.net", "secret1"));
-    }
+    // @AzureHost not yet supported
+//    @Test
+//    public void getBytes() throws Exception {
+//        RestClient client = new RestClient.Builder()
+//                .withBaseUrl("http://localhost")
+//                .withSerializerAdapter(new JacksonAdapter())
+//                .withResponseBuilderFactory(new ServiceResponseBuilder.Factory())
+//                .build();
+//        HttpBinService service = RestProxy.create(HttpBinService.class, client);
+//
+//        Assert.assertEquals("http://vault1.vault.azure.net/secrets/{secretName}", service.getSecret("http://vault1.vault.azure.net", "secret1"));
+//    }
 }

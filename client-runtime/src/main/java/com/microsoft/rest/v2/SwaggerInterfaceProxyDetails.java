@@ -13,10 +13,11 @@ public class SwaggerInterfaceProxyDetails {
      * @param methodName The name of the method.
      * @return The SwaggerMethodProxyDetails object that is associated with the provided methodName.
      */
-    public SwaggerMethodProxyDetails createMethodDetails(String methodName) {
+    public SwaggerMethodProxyDetails getMethodProxyDetails(String methodName) {
         SwaggerMethodProxyDetails result = methodDetails.get(methodName);
         if (result == null) {
-            result = methodDetails.put(methodName, new SwaggerMethodProxyDetails());
+            result = new SwaggerMethodProxyDetails();
+            methodDetails.put(methodName, result);
         }
         return result;
     }
