@@ -1,10 +1,20 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.rest.v2;
 
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Details that are associated with an interface that is generated from a Swagger specification.
+ * This is generally used by a proxy implementation of the Swagger interface.
+ */
 public class SwaggerInterfaceProxyDetails {
-    public final Map<String, SwaggerMethodProxyDetails> methodDetails = new HashMap<>();
+    private final Map<String, SwaggerMethodProxyDetails> methodDetails = new HashMap<>();
 
     /**
      * Create and return a SwaggerMethodProxyDetails object that is associated with the provided
