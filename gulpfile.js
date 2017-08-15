@@ -421,7 +421,6 @@ var codegen = function(project, cb) {
                         ` --namespace=${mappings[project].package} ` +
                         ` --output-folder=${outDir} ` +
                         ` --license-header=MICROSOFT_MIT_NO_CODEGEN ` +
-                        ` --regenerate-manager=true ` +
                         autoRestArgs;
     if (mappings[project].args !== undefined) {
         cmd = cmd + ' ' + mappings[project].args;
