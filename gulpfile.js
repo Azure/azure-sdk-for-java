@@ -8,16 +8,16 @@ var fs = require('fs');
 var mappings = {
     'compute': {
         'dir': 'azure-mgmt-compute',
-        'source': 'arm-compute/compositeComputeClient.json',
+        'source': 'specification/compute/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.compute',
-        'args': '--payload-flattening-threshold=1',
+        'args': '--payload-flattening-threshold=1 --tag=package-2017-03',
         'modeler': 'CompositeSwagger'
     },
     'eventhub': {
         'dir': 'azure-mgmt-eventhub',
-        'source': 'arm-eventhub/2015-08-01/swagger/EventHub.json',
+        'source': 'specification/eventhub/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.eventhub',
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2017-04'
     },
     'servicefabric': {
         'dir': 'azure-mgmt-servicefabric',
@@ -214,7 +214,7 @@ var mappings = {
     },
     'network': {
         'dir': 'azure-mgmt-network',
-        'source': 'arm-network/compositeNetworkClient.json',
+        'source': 'specification/network/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.network',
         'args': '--payload-flattening-threshold=1',
         'modeler': 'CompositeSwagger'
@@ -346,12 +346,11 @@ var mappings = {
         'args': '--payload-flattening-threshold=1',
     }
 };
-console.log("This many projects: ", mappings.size);
 
 gulp.task('default', function() {
     console.log("Usage: gulp codegen [--spec-root <swagger specs root>] [--projects <project names>] [--autorest <autorest info>] [--autorest-args <AutoRest arguments>]\n");
     console.log("--spec-root");
-    console.log("\tRoot location of Swagger API specs, default value is \"https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master\"");
+    console.log("\tRoot location of Swagger API specs, default value is \"https://raw.githubusercontent.com/Azure/azure-rest-api-specs/current\"");
     console.log("--projects\n\tComma separated projects to regenerate, default is all. List of available project names:");
     Object.keys(mappings).forEach(function(i) {
         console.log('\t' + i.magenta);
@@ -360,13 +359,13 @@ gulp.task('default', function() {
     console.log("--autorest-args\n\tPasses additional argument to AutoRest generator");
 });
 
-var specRoot = args['spec-root'] || "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master";
+var specRoot = args['spec-root'] || "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/current";
 var projects = args['projects'];
 var autoRestVersion = 'latest'; // default
 if (args['autorest'] !== undefined) {
     autoRestVersion = args['autorest'];
 }
-var autoRestArgs = args['autorest-args'];
+var autoRestArgs = args['autorest-args'] || '';
 var autoRestExe;
 
 gulp.task('codegen', function(cb) {
@@ -398,21 +397,29 @@ var handleInput = function(projects, cb) {
 }
 
 var codegen = function(project, cb) {
-    var outputDir = mappings[project].dir + '/src/main/java/' + mappings[project].package.replace(/\./g, '/');
+    
     if (!args['preserve']) {
-        deleteFolderRecursive(outputDir);
+        const sourcesToDelete = path.join(
+            mappings[project].dir,
+            '/src/main/java/',
+            mappings[project].package.replace(/\./g, '/'));
+
+        deleteFolderRecursive(sourcesToDelete);
     }
+
     console.log('Generating "' + project + '" from spec file ' + specRoot + '/' + mappings[project].source);
     var generator = '--fluent';
     if (mappings[project].fluent !== null && mappings[project].fluent === false) {
         generator = '';
     }
-    cmd = autoRestExe + ' --java ' +
+    const outDir = path.resolve(mappings[project].dir);
+    // path.join won't work if specRoot is a URL
+    cmd = autoRestExe + ' ' + specRoot + "/" + mappings[project].source +
+                        ' --java ' +
                         ' --azure-arm ' +
                         generator +
                         ` --namespace=${mappings[project].package} ` +
-                        ` --input-file=${specRoot}/${mappings[project].source} ` +
-                        ` --output-folder=${mappings[project].dir} ` +
+                        ` --output-folder=${outDir} ` +
                         ` --license-header=MICROSOFT_MIT_NO_CODEGEN ` +
                         ` --regenerate-manager=true ` +
                         autoRestArgs;
