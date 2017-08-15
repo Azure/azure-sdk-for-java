@@ -1,4 +1,4 @@
-# Prepare for Azure Management Libraries for Java 1.1.0 #
+# Prepare for Azure Management Libraries for Java 1.2.0 #
 
 Steps to migrate code that uses Azure Management Libraries for Java from 1.1 to 1.2 ...
 
