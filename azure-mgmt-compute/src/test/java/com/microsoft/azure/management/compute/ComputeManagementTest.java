@@ -139,9 +139,6 @@ public abstract class ComputeManagementTest extends TestBase {
         LoadBalancer loadBalancer = this.networkManager.loadBalancers().define(loadBalancerName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
-                .definePublicFrontend(frontendName)
-                    .withExistingPublicIPAddress(publicIPAddress)
-                    .attach()
                 // Add two rules that uses above backend and probe
                 .defineLoadBalancingRule("httpRule")
                     .withProtocol(TransportProtocol.TCP)
@@ -155,6 +152,10 @@ public abstract class ComputeManagementTest extends TestBase {
                     .fromFrontend(frontendName)
                     .fromFrontendPortRange(5000, 5099)
                     .toBackendPort(22)
+                    .attach()
+                // Explicitly define the frontend
+                .definePublicFrontend(frontendName)
+                    .withExistingPublicIPAddress(publicIPAddress)
                     .attach()
                 // Add an HTTP probe
                 .defineHttpProbe("httpProbe")
@@ -184,9 +185,6 @@ public abstract class ComputeManagementTest extends TestBase {
         LoadBalancer loadBalancer = this.networkManager.loadBalancers().define(loadBalancerName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
-                .definePublicFrontend(frontendName)
-                    .withExistingPublicIPAddress(publicIPAddress)
-                    .attach()
 
                 // Add two rules that uses above backend and probe
                 .defineLoadBalancingRule("httpRule")
@@ -218,7 +216,12 @@ public abstract class ComputeManagementTest extends TestBase {
                     .toBackendPort(23)
                     .attach()
 
-                // Add two probes one per rule
+                // Explicitly define the frontend
+                .definePublicFrontend(frontendName)
+                    .withExistingPublicIPAddress(publicIPAddress)
+                    .attach()
+
+                    // Add two probes one per rule
                 .defineHttpProbe("httpProbe")
                     .withRequestPath("/")
                     .attach()
@@ -242,10 +245,6 @@ public abstract class ComputeManagementTest extends TestBase {
         LoadBalancer loadBalancer = this.networkManager.loadBalancers().define(loadBalancerName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
-                .definePrivateFrontend(privateFrontEndName)
-                    .withExistingSubnet(network, subnetName)
-                    .attach()
-
                 // Add two rules that uses above backend and probe
                 .defineLoadBalancingRule("httpRule")
                     .withProtocol(TransportProtocol.TCP)
@@ -274,6 +273,11 @@ public abstract class ComputeManagementTest extends TestBase {
                     .fromFrontend(privateFrontEndName)
                     .fromFrontendPortRange(9000, 9099)
                     .toBackendPort(45)
+                    .attach()
+
+                // Explicitly define the frontend
+                .definePrivateFrontend(privateFrontEndName)
+                    .withExistingSubnet(network, subnetName)
                     .attach()
 
                 // Add two probes one per rule
