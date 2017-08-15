@@ -328,7 +328,11 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
             }
 
             this.retryPolicy.resetRetryCount(this.getClientId());
-            this.maxMessageSize = this.sendLink.getRemoteMaxMessageSize().intValue();
+
+            final UnsignedLong remoteMaxMessageSize = this.sendLink.getRemoteMaxMessageSize();
+            if (remoteMaxMessageSize != null) {
+                this.maxMessageSize = remoteMaxMessageSize.intValue();
+            }
 
             if (!this.linkFirstOpen.isDone()) {
                 this.linkFirstOpen.complete(this);
