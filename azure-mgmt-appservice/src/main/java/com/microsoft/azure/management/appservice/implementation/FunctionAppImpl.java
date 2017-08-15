@@ -302,7 +302,7 @@ class FunctionAppImpl
         Observable<NameValuePair> generateFunctionKey(@Path("name") String functionName, @Path("keyName") String keyName);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteFunctionKey" })
-        @POST("admin/functions/{name}/keys/{keyName}")
+        @DELETE("admin/functions/{name}/keys/{keyName}")
         Observable<Void> deleteFunctionKey(@Path("name") String functionName, @Path("keyName") String keyName);
     }
 
