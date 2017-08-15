@@ -29,6 +29,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.DELETE;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -302,7 +303,7 @@ class FunctionAppImpl
         Observable<NameValuePair> generateFunctionKey(@Path("name") String functionName, @Path("keyName") String keyName);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteFunctionKey" })
-        @POST("admin/functions/{name}/keys/{keyName}")
+        @DELETE("admin/functions/{name}/keys/{keyName}")
         Observable<Void> deleteFunctionKey(@Path("name") String functionName, @Path("keyName") String keyName);
     }
 
