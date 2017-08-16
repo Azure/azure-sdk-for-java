@@ -72,7 +72,7 @@ class AppServicePlanImpl
 
     @Override
     public OperatingSystem operatingSystem() {
-        if (inner().reserved() != null && inner().reserved()) {
+        if (inner().kind().toLowerCase().contains("linux")) {
             return OperatingSystem.LINUX;
         } else {
             return OperatingSystem.WINDOWS;
