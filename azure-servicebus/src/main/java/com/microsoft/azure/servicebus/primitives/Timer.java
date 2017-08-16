@@ -53,7 +53,7 @@ final public class Timer
 		{
 			if (references.size() == 0 && (executor == null || executor.isShutdown()))
 			{
-				final int corePoolSize = Math.max(Runtime.getRuntime().availableProcessors(), 4);				
+				final int corePoolSize = Math.max(Runtime.getRuntime().availableProcessors(), 4);
 				TRACE_LOGGER.debug("Starting ScheduledThreadPoolExecutor with coreThreadPoolSize:{}", corePoolSize);
 				
 				executor = Executors.newScheduledThreadPool(corePoolSize);

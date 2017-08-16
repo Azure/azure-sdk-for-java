@@ -41,7 +41,7 @@ class RequestResponseLinkcache
         RequestResponseLinkWrapper wrapper;
         synchronized (lock)
         {
-            wrapper = this.pathToRRLinkMap.get(entityPath);            
+            wrapper = this.pathToRRLinkMap.get(entityPath);
         }
         if(wrapper != null)
         {
@@ -113,7 +113,7 @@ class RequestResponseLinkcache
                         TRACE_LOGGER.error("Creating requestresponselink to '{}' failed.", requestResponseLinkPath, cause);
                         RequestResponseLinkcache.this.removeWrapperFromCache(this.entityPath);
                         for(CompletableFuture<RequestResponseLink> waiter : this.waiters)
-                        {                       
+                        {
                             waiter.completeExceptionally(cause);
                         }
                     }
@@ -138,7 +138,7 @@ class RequestResponseLinkcache
                     this.referenceCount++;
                     return CompletableFuture.completedFuture(this.requestResponseLink);
                 }
-            }        
+            }
         }
         
         public void releaseReference()
@@ -151,7 +151,7 @@ class RequestResponseLinkcache
                     TRACE_LOGGER.info("Closing requestresponselink to '{}'", this.requestResponseLink.getLinkPath());
                     this.requestResponseLink.closeAsync();
                 }
-            }          
+            }
         }
         
         public CompletableFuture<Void> forceCloseAsync()
@@ -159,5 +159,5 @@ class RequestResponseLinkcache
             TRACE_LOGGER.info("Force closing requestresponselink to '{}'", this.requestResponseLink.getLinkPath());
             return this.requestResponseLink.closeAsync();
         }
-    }    
+    }
 }

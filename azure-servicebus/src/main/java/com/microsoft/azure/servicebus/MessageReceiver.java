@@ -348,20 +348,12 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 
     @Override
     public CompletableFuture<IMessage> receiveAsync() {
-        return this.internalReceiver.receiveAsync(1).thenApplyAsync(c ->
-        {
-            if (c == null)
-                return null;
-            else if (c.isEmpty())
-                return null;
-            else
-                return MessageConverter.convertAmqpMessageToBrokeredMessage(c.toArray(new MessageWithDeliveryTag[0])[0]);
-        });
+        return this.receiveAsync(this.messagingFactory.getOperationTimeout());
     }
 
     @Override
     public CompletableFuture<IMessage> receiveAsync(Duration serverWaitTime) {
-        return this.internalReceiver.receiveAsync(1, serverWaitTime).thenApplyAsync(c ->
+        CompletableFuture<IMessage> receiveFuture = this.internalReceiver.receiveAsync(1, serverWaitTime).thenApplyAsync(c ->
         {
             if (c == null)
                 return null;
@@ -370,24 +362,18 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
             else
                 return MessageConverter.convertAmqpMessageToBrokeredMessage(c.toArray(new MessageWithDeliveryTag[0])[0]);
         });
+        
+        return this.filterLockExpiredMessage(receiveFuture, serverWaitTime);
     }
 
     @Override
     public CompletableFuture<Collection<IMessage>> receiveBatchAsync(int maxMessageCount) {
-        return this.internalReceiver.receiveAsync(maxMessageCount).thenApplyAsync(c ->
-        {
-            if (c == null)
-                return null;
-            else if (c.isEmpty())
-                return null;
-            else
-                return convertAmqpMessagesWithDeliveryTagsToBrokeredMessages(c);
-        });
+        return this.receiveBatchAsync(maxMessageCount, this.messagingFactory.getOperationTimeout());
     }
 
     @Override
     public CompletableFuture<Collection<IMessage>> receiveBatchAsync(int maxMessageCount, Duration serverWaitTime) {
-        return this.internalReceiver.receiveAsync(maxMessageCount, serverWaitTime).thenApplyAsync(c ->
+        CompletableFuture<Collection<IMessage>> receiveFuture = this.internalReceiver.receiveAsync(maxMessageCount, serverWaitTime).thenApplyAsync(c ->
         {
             if (c == null)
                 return null;
@@ -396,6 +382,8 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
             else
                 return convertAmqpMessagesWithDeliveryTagsToBrokeredMessages(c);
         });
+        
+        return this.filterLockExpiredMessages(receiveFuture, maxMessageCount, serverWaitTime);
     }
 
     @Override
@@ -510,6 +498,98 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
     private void ensurePeekLockReceiveMode() {
         if (this.receiveMode != ReceiveMode.PEEKLOCK) {
             throw new UnsupportedOperationException("Operations Complete/Abandon/DeadLetter/Defer cannot be called on a receiver opened in ReceiveAndDelete mode.");
+        }
+    }
+    
+    private boolean isMessageLockExpired(IMessage msg)
+    {
+        return msg.getLockedUntilUtc().isBefore(Instant.now());
+    }
+    
+    private CompletableFuture<IMessage> filterLockExpiredMessage(CompletableFuture<IMessage> receivedFuture, Duration serverWaitTime)
+    {
+        if(this.receiveMode == ReceiveMode.RECEIVEANDDELETE)
+        {
+            return receivedFuture;
+        }
+        else
+        {
+            Instant startTime = Instant.now();
+            return receivedFuture.thenCompose((msg) -> {
+                if(msg == null)
+                {
+                    return receivedFuture;
+                }
+                else
+                {
+                    if(isMessageLockExpired(msg))
+                    {
+                        // Message lock already expired. Receive another message
+                        Duration remainingWaitTime = serverWaitTime.minus(Duration.between(startTime, Instant.now()));
+                        return this.receiveAsync(remainingWaitTime);
+                    }
+                    else
+                    {
+                        return CompletableFuture.completedFuture(msg);
+                    }
+                }
+            });
+        }
+    }
+    
+    private CompletableFuture<Collection<IMessage>> filterLockExpiredMessages(CompletableFuture<Collection<IMessage>> receivedFuture, int maxMessageCount, Duration serverWaitTime)
+    {
+        if(this.receiveMode == ReceiveMode.RECEIVEANDDELETE)
+        {
+            return receivedFuture;
+        }
+        else
+        {
+            Instant startTime = Instant.now();
+            return receivedFuture.thenCompose((messages) -> {
+                if(messages == null || messages.size() == 0)
+                {
+                    return receivedFuture;
+                }
+                else
+                {
+                    boolean areMessagesRemoved = false;
+                    Iterator<IMessage> msgIterator = messages.iterator();
+                    while(msgIterator.hasNext())
+                    {
+                        IMessage msg = msgIterator.next();
+                        if(isMessageLockExpired(msg))
+                        {
+                            // Message lock already expired. remove it
+                            msgIterator.remove();
+                            areMessagesRemoved = true;
+                        }
+                        else
+                        {
+                            // Break the loop. As next messages in the list are received from the entity after current message and are definitely not expired. No need to check them
+                            break;
+                        }
+                    }
+                    
+                    if(areMessagesRemoved)
+                    {
+                        if(messages.size() > 0)
+                        {
+                            // There are some messages still in the list.. Just return them to the caller
+                            return CompletableFuture.completedFuture(messages);
+                        }
+                        else
+                        {
+                            Duration remainingWaitTime = serverWaitTime.minus(Duration.between(startTime, Instant.now()));
+                            return this.receiveBatchAsync(maxMessageCount, remainingWaitTime);
+                        }
+                    }
+                    else
+                    {
+                        return receivedFuture;
+                    }
+                }
+            });
         }
     }
 

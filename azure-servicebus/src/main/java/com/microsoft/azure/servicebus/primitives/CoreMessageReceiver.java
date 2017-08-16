@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -294,7 +295,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
                 this.underlyingFactory.obtainRequestResponseLinkAsync(this.receivePath).handleAsync((rrlink, ex) ->
                 {
                     if(ex == null)
-                    {                        
+                    {
                         this.requestResponseLink = rrlink;
                         this.requestResponseLinkCreationFuture.complete(null);
                     }
@@ -406,16 +407,16 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	{
 		List<MessageWithDeliveryTag> returnMessages = null;
 		MessageWithDeliveryTag currentMessage = this.prefetchedMessages.poll();
-	
+		int returnedMessageCount = 0;
 		while (currentMessage != null) 
 		{
 			if (returnMessages == null)
 			{
-				returnMessages = new ArrayList<MessageWithDeliveryTag>();
+				returnMessages = new LinkedList<MessageWithDeliveryTag>();
 			}
 
 			returnMessages.add(currentMessage);
-			if (returnMessages.size() >= messageCount)
+			if (++returnedMessageCount >= messageCount)
 			{
 				break;
 			}
@@ -486,11 +487,6 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	            throw new ServiceBusException(false, "Setting prefetch count failed, see cause for more details", ioException);
 	        }
 		}
-	}
-	
-	public CompletableFuture<Collection<MessageWithDeliveryTag>> receiveAsync(final int maxMessageCount)
-	{
-		return this.receiveAsync(maxMessageCount, this.factoryRceiveTimeout);
 	}
 
 	public CompletableFuture<Collection<MessageWithDeliveryTag>> receiveAsync(final int maxMessageCount, Duration timeout)
@@ -781,13 +777,13 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 
 		if (this.getIsClosingOrClosed())
 		{
-		    TRACE_LOGGER.info("Receive link to '{}' closed", this.receivePath);
+		    TRACE_LOGGER.info("Receive link to '{}', sessionId '{}' closed", this.receivePath, this.sessionId);
 			AsyncUtil.completeFuture(this.linkClose, null);
 			this.clearAllPendingWorkItems(exception);
 		}
 		else
 		{
-		    TRACE_LOGGER.error("Receive link to '{}' closed with error.", this.receivePath, exception);
+		    TRACE_LOGGER.error("Receive link to '{}', sessionId '{}' closed with error.", this.receivePath, this.sessionId, exception);
 			this.lastKnownLinkError = exception;
 			if ((this.linkOpen != null && !this.linkOpen.getWork().isDone()) ||
 			     (this.receiveLinkReopenFuture !=null && !receiveLinkReopenFuture.isDone()))
@@ -804,7 +800,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	                if(this.isSessionReceiver && (exception instanceof SessionLockLostException || exception instanceof SessionCannotBeLockedException))
 	                {
 	                    // No point in retrying to establish a link.. SessionLock is lost
-	                    TRACE_LOGGER.warn("Session '{}' lock lost. Closing receiver.", this.sessionId);
+	                    TRACE_LOGGER.warn("SessionId '{}' lock lost. Closing receiver.", this.sessionId);
 	                    this.isSessionLockLost = true;
 	                    this.closeAsync();
 	                }
@@ -819,7 +815,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	                            .getNextRetryInterval(this.getClientId(), exception, workItem.getTimeoutTracker().remaining());
 	                    if (nextRetryInterval != null)
 	                    {
-	                        TRACE_LOGGER.error("Receive link to '{}' will be reopened after '{}'", this.receivePath, nextRetryInterval);
+	                        TRACE_LOGGER.error("Receive link to '{}', sessionId '{}' will be reopened after '{}'", this.receivePath, this.sessionId, nextRetryInterval);
 	                        Timer.schedule(() -> {CoreMessageReceiver.this.ensureLinkIsOpen();}, nextRetryInterval, TimerType.OneTimeRun);
 	                    }
 	                }

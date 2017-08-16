@@ -154,13 +154,13 @@ class MessageConverter
 	                        break;
 	                    case ClientConstants.SEQUENCENUBMERNAME:
 	                        brokeredMessage.setSequenceNumber((long)entry.getValue());
-	                        break;                    
+	                        break;
 	                    case ClientConstants.LOCKEDUNTILNAME:
 	                        brokeredMessage.setLockedUntilUtc(((Date)entry.getValue()).toInstant());
-	                        break;                    
+	                        break;
 	                    case ClientConstants.PARTITIONKEYNAME:
 	                        brokeredMessage.setPartitionKey((String)entry.getValue());
-	                        break;                    
+	                        break;
 	                    case ClientConstants.DEADLETTERSOURCENAME:
 	                        brokeredMessage.setDeadLetterSource((String)entry.getValue());
 	                        break;
