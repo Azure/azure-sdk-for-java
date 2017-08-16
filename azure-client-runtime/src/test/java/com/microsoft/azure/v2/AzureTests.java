@@ -26,7 +26,7 @@ public class AzureTests {
         String getSecret(@HostParam String vaultBaseUrl, @PathParam("secretName") String secretName);
     }
 
-    // @AzureHost not yet supported.
+// @AzureHost not yet supported.
 //    @Test
 //    public void getBytes() throws Exception {
 //        RestClient client = new RestClient.Builder()

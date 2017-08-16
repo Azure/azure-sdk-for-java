@@ -7,6 +7,7 @@
 package com.microsoft.rest.v2;
 
 import com.microsoft.rest.RestClient;
+import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.annotations.BodyParam;
 import com.microsoft.rest.v2.annotations.DELETE;
 import com.microsoft.rest.v2.annotations.GET;
@@ -19,209 +20,169 @@ import com.microsoft.rest.v2.annotations.POST;
 import com.microsoft.rest.v2.annotations.PUT;
 import com.microsoft.rest.v2.annotations.PathParam;
 import com.microsoft.rest.v2.annotations.QueryParam;
-import okhttp3.HttpUrl;
-import okhttp3.MediaType;
-import okhttp3.Request;
-import okhttp3.Request.Builder;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import com.microsoft.rest.v2.http.HttpClient;
+import com.microsoft.rest.v2.http.HttpRequest;
+import com.microsoft.rest.v2.http.HttpResponse;
+import com.microsoft.rest.v2.http.OkHttpClient;
+import com.microsoft.rest.v2.http.UrlBuilder;
 
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
+ * This class can be used to create a proxy implementation for a provided Swagger generated
+ * interface.
  * TODO: Convert this to RxNetty and finish.
  */
 public final class RestProxy implements InvocationHandler {
     private final String host;
-    private final RestClient restClient;
+    private final HttpClient httpClient;
+    private final SerializerAdapter<?> serializer;
+    private final SwaggerInterfaceProxyDetails interfaceDetails;
 
-    private Map<String, MethodInfo> matrix;
-
-    private RestProxy(String host, RestClient restClient) {
+    private RestProxy(String host, HttpClient httpClient, SerializerAdapter<?> serializer, SwaggerInterfaceProxyDetails interfaceDetails) {
         this.host = host;
-        this.restClient = restClient;
+        this.httpClient = httpClient;
+        this.serializer = serializer;
+        this.interfaceDetails = interfaceDetails;
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        final MethodInfo info = matrix.get(method.getName());
-        RequestBody requestBody = null;
-        if (info.bodyArg != null) {
-            if (args[info.bodyArg] != null) {
-                // TODO: what's the actual media type?
-                requestBody = RequestBody.create(MediaType.parse("application/json"), restClient.serializerAdapter().serialize(args[info.bodyArg]));
-            }
-        }
-        String actualHost = host;
-        String actualPath = info.relativePath;
-        for (Map.Entry<String, Integer> hostArg : info.hostArgs.entrySet()) {
-            String hostValue;
-            if (hostArg.getValue() < 0) {
-                hostValue = encode(String.valueOf(args[-hostArg.getValue()]));
-            } else {
-                hostValue = String.valueOf(args[hostArg.getValue()]);
-            }
-            actualHost = actualHost.replace("{" + hostArg.getKey() + "}", hostValue);
-        }
-        for (Map.Entry<String, Integer> pathArg : info.pathArgs.entrySet()) {
-            String pathValue;
-            if (pathArg.getValue() < 0) {
-                pathValue = encode(String.valueOf(args[-pathArg.getValue()]));
-            } else {
-                pathValue = String.valueOf(args[pathArg.getValue()]);
-            }
-            actualPath = actualPath.replace("{" + pathArg.getKey() + "}", pathValue);
+        final String methodName = method.getName();
+        final SwaggerMethodProxyDetails methodDetails = interfaceDetails.getMethodProxyDetails(methodName);
+
+        final String actualHost = methodDetails.applyHostSubstitutions(host, args);
+        final String[] hostParts = actualHost.split("://");
+        final String actualPath = methodDetails.getSubstitutedPath(args);
+
+        final UrlBuilder urlBuilder = new UrlBuilder()
+                .withScheme(hostParts[0])
+                .withHost(hostParts[1])
+                .withPath(actualPath);
+
+        for (EncodedParameter queryParameter : methodDetails.getEncodedQueryParameters(args)) {
+            urlBuilder.withQueryParameter(queryParameter.name(), queryParameter.encodedValue());
         }
 
-        String[] parts = actualHost.split("://");
-        HttpUrl.Builder urlBuilder = new HttpUrl.Builder()
-                .scheme(parts[0])
-                .host(parts[1])
-                .addEncodedPathSegments(actualPath);
+        final String url = urlBuilder.toString();
+        final HttpRequest request = new HttpRequest(methodDetails.method(), url);
 
-        for (Map.Entry<String, Integer> queryArg : info.queryArgs.entrySet()) {
-            String queryValue;
-            if (queryArg.getValue() < 0) {
-                queryValue = encode(String.valueOf(args[-queryArg.getValue()]));
-            } else {
-                queryValue = String.valueOf(args[queryArg.getValue()]);
-            }
-            urlBuilder.addEncodedQueryParameter(queryArg.getKey(), queryValue);
+        for (final EncodedParameter headerParameter : methodDetails.getEncodedHeaderParameters(args)) {
+            request.withHeader(headerParameter.name(), headerParameter.encodedValue());
         }
 
-        Request.Builder requestBuilder = new Builder().method(info.method, requestBody)
-                .url(urlBuilder.build());
-
-        for (Map.Entry<String, Integer> headerArg : info.headerArgs.entrySet()) {
-            String headerValue;
-            if (headerArg.getValue() < 0) {
-                headerValue = encode(String.valueOf(args[-headerArg.getValue()]));
-            } else {
-                headerValue = String.valueOf(args[headerArg.getValue()]);
+        final Integer bodyContentMethodParameterIndex = methodDetails.bodyContentMethodParameterIndex();
+        if (bodyContentMethodParameterIndex != null) {
+            final Object bodyContentObject = args[bodyContentMethodParameterIndex];
+            if (bodyContentObject != null) {
+                final String bodyContentString = serializer.serialize(bodyContentObject);
+                request.withBody(bodyContentString, "application/json");
             }
-            requestBuilder.header(headerArg.getKey(), headerValue);
         }
 
-        Response response = restClient.httpClient().newCall(requestBuilder.build()).execute();
-        if (method.getReturnType().equals(Void.TYPE) || response.body() == null) {
+        final HttpResponse response = httpClient.sendRequest(request);
+
+        final Class<?> returnType = method.getReturnType();
+        if (returnType.equals(Void.TYPE) || !response.hasBody()) {
             return null;
-        } else if (method.getReturnType().isAssignableFrom(InputStream.class)) {
-            return response.body().byteStream();
-        } else if (method.getReturnType().isAssignableFrom(byte[].class)) {
-            return response.body().bytes();
+        } else if (returnType.isAssignableFrom(InputStream.class)) {
+            return response.bodyAsInputStream();
+        } else if (returnType.isAssignableFrom(byte[].class)) {
+            return response.bodyAsByteArray();
         } else {
-            return restClient.serializerAdapter().deserialize(response.body().string(), method.getReturnType());
+            final String responseBodyString = response.bodyAsString();
+            return serializer.deserialize(responseBodyString, returnType);
         }
     }
 
     /**
-     * Create a proxy implementation for the provided Swagger interface using the provided HTTP
-     * client.
-     * @param actionable The Swagger interface.
-     * @param restClient The HTTP client.
-     * @param <A> The type of the generated proxy.
-     * @return The generated proxy.
+     * Create a proxy implementation of the provided Swagger interface.
+     * @param swaggerInterface The Swagger interface to provide a proxy implementation for.
+     * @param restClient The internal HTTP client that will be used to make REST calls.
+     * @param <A> The type of the Swagger interface.
+     * @return A proxy implementation of the provided Swagger interface.
      */
     @SuppressWarnings("unchecked")
-    public static <A> A create(Class<A> actionable, RestClient restClient) {
-        final Host hostAnnotation = actionable.getAnnotation(Host.class);
-        final String baseUrl = (hostAnnotation != null ? hostAnnotation.value() : restClient.retrofit().baseUrl().toString());
-
-        RestProxy restProxy = new RestProxy(baseUrl, restClient);
-        restProxy.matrix = populateMethodMatrix(actionable);
-        return (A) Proxy.newProxyInstance(actionable.getClassLoader(), new Class[] {actionable }, restProxy);
+    public static <A> A create(Class<A> swaggerInterface, RestClient restClient) {
+        final HttpClient httpClient = new OkHttpClient(restClient.httpClient());
+        final SerializerAdapter<?> serializer = restClient.serializerAdapter();
+        return create(swaggerInterface, httpClient, serializer);
     }
 
-    private static Map<String, MethodInfo> populateMethodMatrix(Class<?> service) {
-        Map<String, MethodInfo> matrix = new HashMap<>();
-        for (Method method : service.getDeclaredMethods()) {
-            MethodInfo info = new MethodInfo();
-            matrix.put(method.getName(), info);
+    /**
+     * Create a proxy implementation of the provided Swagger interface.
+     * @param swaggerInterface The Swagger interface to provide a proxy implementation for.
+     * @param httpClient The internal HTTP client that will be used to make REST calls.
+     * @param serializer The serializer that will be used to convert POJOs to and from request and
+     *                   response bodies.
+     * @param <A> The type of the Swagger interface.
+     * @return A proxy implementation of the provided Swagger interface.
+     */
+    @SuppressWarnings("unchecked")
+    public static <A> A create(Class<A> swaggerInterface, HttpClient httpClient, SerializerAdapter<?> serializer) {
+        final SwaggerInterfaceProxyDetails interfaceProxyDetails = new SwaggerInterfaceProxyDetails();
 
-            for (int i = 0; i != method.getParameterAnnotations().length; i++) {
-                Annotation[] annotations = method.getParameterAnnotations()[i];
-                for (Annotation annotation : annotations) {
-                    if (annotation.annotationType().equals(HostParam.class)) {
-                        String name = ((HostParam) annotation).value();
-                        // TODO: mark encoded using a better approach than positive/negative int
-                        info.hostArgs.put(name, ((HostParam) annotation).encoded() ? i : -i);
+        String host = null;
+        final Host hostAnnotation = swaggerInterface.getAnnotation(Host.class);
+        if (hostAnnotation != null) {
+            host = hostAnnotation.value();
+        }
+
+        for (Method method : swaggerInterface.getDeclaredMethods()) {
+            final SwaggerMethodProxyDetails methodProxyDetails = interfaceProxyDetails.getMethodProxyDetails(method.getName());
+
+            if (method.isAnnotationPresent(GET.class)) {
+                methodProxyDetails.setMethodAndRelativePath("GET", method.getAnnotation(GET.class).value());
+            }
+            else if (method.isAnnotationPresent(PUT.class)) {
+                methodProxyDetails.setMethodAndRelativePath("PUT", method.getAnnotation(PUT.class).value());
+            }
+            else if (method.isAnnotationPresent(HEAD.class)) {
+                methodProxyDetails.setMethodAndRelativePath("HEAD", method.getAnnotation(HEAD.class).value());
+            }
+            else if (method.isAnnotationPresent(DELETE.class)) {
+                methodProxyDetails.setMethodAndRelativePath("DELETE", method.getAnnotation(DELETE.class).value());
+            }
+            else if (method.isAnnotationPresent(POST.class)) {
+                methodProxyDetails.setMethodAndRelativePath("POST", method.getAnnotation(POST.class).value());
+            }
+            else if (method.isAnnotationPresent(PATCH.class)) {
+                methodProxyDetails.setMethodAndRelativePath("PATCH", method.getAnnotation(PATCH.class).value());
+            }
+
+            final Annotation[][] allParametersAnnotations = method.getParameterAnnotations();
+            for (int parameterIndex = 0; parameterIndex < allParametersAnnotations.length; ++parameterIndex) {
+                final Annotation[] parameterAnnotations = method.getParameterAnnotations()[parameterIndex];
+                for (final Annotation annotation : parameterAnnotations) {
+                    final Class<? extends Annotation> annotationType = annotation.annotationType();
+                    if (annotationType.equals(HostParam.class)) {
+                        final HostParam hostParamAnnotation = (HostParam) annotation;
+                        methodProxyDetails.addHostSubstitution(hostParamAnnotation.value(), parameterIndex, !hostParamAnnotation.encoded());
                     }
-                    if (annotation.annotationType().equals(PathParam.class)) {
-                        String name = ((PathParam) annotation).value();
-                        info.pathArgs.put(name, ((PathParam) annotation).encoded() ? i : -i);
+                    else if (annotationType.equals(PathParam.class)) {
+                        final PathParam pathParamAnnotation = (PathParam) annotation;
+                        methodProxyDetails.addPathSubstitution(pathParamAnnotation.value(), parameterIndex, !pathParamAnnotation.encoded());
                     }
-                    if (annotation.annotationType().equals(QueryParam.class)) {
-                        String name = ((QueryParam) annotation).value();
-                        info.queryArgs.put(name, ((PathParam) annotation).encoded() ? i : -i);
+                    else if (annotationType.equals(QueryParam.class)) {
+                        final QueryParam queryParamAnnotation = (QueryParam) annotation;
+                        methodProxyDetails.addQuerySubstitution(queryParamAnnotation.value(), parameterIndex, !queryParamAnnotation.encoded());
                     }
-                    if (annotation.annotationType().equals(HeaderParam.class)) {
-                        String name = ((HeaderParam) annotation).value();
-                        info.headerArgs.put(name, i);
+                    else if (annotationType.equals(HeaderParam.class)) {
+                        final HeaderParam headerParamAnnotation = (HeaderParam) annotation;
+                        methodProxyDetails.addHeaderSubstitution(headerParamAnnotation.value(), parameterIndex);
                     }
-                    if (annotation.annotationType().equals(BodyParam.class)) {
-                        info.bodyArg = i;
+                    else if (annotationType.equals(BodyParam.class)) {
+                        methodProxyDetails.setBodyContentMethodParameterIndex(parameterIndex);
                     }
                 }
             }
-
-            if (method.isAnnotationPresent(GET.class)) {
-                info.method = "GET";
-                info.relativePath = method.getAnnotation(GET.class).value();
-            }
-            if (method.isAnnotationPresent(PUT.class)) {
-                info.method = "PUT";
-                info.relativePath = method.getAnnotation(PUT.class).value();
-            }
-            if (method.isAnnotationPresent(HEAD.class)) {
-                info.method = "HEAD";
-                info.relativePath = method.getAnnotation(HEAD.class).value();
-            }
-            if (method.isAnnotationPresent(DELETE.class)) {
-                info.method = "DELETE";
-                info.relativePath = method.getAnnotation(DELETE.class).value();
-            }
-            if (method.isAnnotationPresent(POST.class)) {
-                info.method = "POST";
-                info.relativePath = method.getAnnotation(POST.class).value();
-            }
-            if (method.isAnnotationPresent(PATCH.class)) {
-                info.method = "PATCH";
-                info.relativePath = method.getAnnotation(PATCH.class).value();
-            }
         }
-        return matrix;
-    }
 
-    private static final class MethodInfo {
-        private String method;
-        private String relativePath;
-        private Map<String, Integer> hostArgs;
-        private Map<String, Integer> pathArgs;
-        private Map<String, Integer> queryArgs;
-        private Map<String, Integer> headerArgs;
-        private Integer bodyArg;
-
-        private MethodInfo() {
-            hostArgs = new HashMap<>();
-            pathArgs = new HashMap<>();
-            queryArgs = new HashMap<>();
-            headerArgs = new HashMap<>();
-        }
-    }
-
-    private static String encode(String segment) {
-        try {
-            return URLEncoder.encode(segment, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            return segment;
-        }
+        RestProxy restProxy = new RestProxy(host, httpClient, serializer, interfaceProxyDetails);
+        return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class[]{swaggerInterface}, restProxy);
     }
 }
