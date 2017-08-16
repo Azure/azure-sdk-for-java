@@ -4,8 +4,10 @@
  */
 package com.microsoft.azure.eventhubs;
 
-import java.util.concurrent.*;
-import java.util.function.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * This sender class is a logical representation of sending events to a specific EventHub partition. Do not use this class
@@ -50,6 +52,14 @@ public final class PartitionSender extends ClientEntity {
                         PartitionSender.this.internalSender = a;
                     }
                 });
+    }
+
+    /**
+     * Creates an Empty Collection of {@link EventData}.
+     * @return the empty {@link EventDataBatch}, after negotiating maximum message size with EventHubs service
+     */
+    public final EventDataBatch createBatch() {
+        return new EventDataBatch(this.internalSender.getMaxMessageSize(), null);
     }
 
     /**
@@ -184,6 +194,10 @@ public final class PartitionSender extends ClientEntity {
             throws EventHubException {
         if (eventDatas == null || IteratorUtil.sizeEquals(eventDatas, 0)) {
             throw new IllegalArgumentException("EventData batch cannot be empty.");
+        }
+
+        if (eventDatas instanceof EventDataBatch && !StringUtil.isNullOrEmpty(((EventDataBatch) eventDatas).getPartitionKey())) {
+            throw new IllegalArgumentException("EventData batch with partitionKey cannot be sent on PartitionSender.");
         }
 
         return this.internalSender.send(EventDataUtil.toAmqpMessages(eventDatas));
