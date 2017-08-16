@@ -108,23 +108,23 @@ interface IMessageAndSessionPump {
 //    void defer(UUID lockToken) throws InterruptedException, ServiceBusException;
 //
 //    void defer(UUID lockToken, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException;
-
-    /**
-     * Asynchronously defers a {@link Message} using its lock token. This will move message into deferred subqueue.
-     *
-     * @param lockToken Message lock token {@link Message#getLockToken()}
-     * @return a CompletableFuture representing the pending defer.
-     */
-    CompletableFuture<Void> deferAsync(UUID lockToken);
-
-    /**
-     * Asynchronously defers a {@link Message} using its lock token with modified message propert. This will move message into deferred subqueue.
-     *
-     * @param lockToken          Message lock token {@link Message#getLockToken()}
-     * @param propertiesToModify Message properties to modify.
-     * @return a CompletableFuture representing the pending defer.
-     */
-    CompletableFuture<Void> deferAsync(UUID lockToken, Map<String, Object> propertiesToModify);
+//
+//    /**
+//     * Asynchronously defers a {@link Message} using its lock token. This will move message into deferred subqueue.
+//     *
+//     * @param lockToken Message lock token {@link Message#getLockToken()}
+//     * @return a CompletableFuture representing the pending defer.
+//     */
+//    CompletableFuture<Void> deferAsync(UUID lockToken);
+//
+//    /**
+//     * Asynchronously defers a {@link Message} using its lock token with modified message propert. This will move message into deferred subqueue.
+//     *
+//     * @param lockToken          Message lock token {@link Message#getLockToken()}
+//     * @param propertiesToModify Message properties to modify.
+//     * @return a CompletableFuture representing the pending defer.
+//     */
+//    CompletableFuture<Void> deferAsync(UUID lockToken, Map<String, Object> propertiesToModify);
 
     /**
      * Moves a {@link Message} to the deadletter sub-queue.

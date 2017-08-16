@@ -209,15 +209,15 @@ public final class QueueClient extends InitializableEntity implements IQueueClie
         this.messageAndSessionPump.defer(lockToken, propertiesToModify);
     }
 
-    @Override
-    public CompletableFuture<Void> deferAsync(UUID lockToken) {
-        return this.messageAndSessionPump.deferAsync(lockToken);
-    }
-
-    @Override
-    public CompletableFuture<Void> deferAsync(UUID lockToken, Map<String, Object> propertiesToModify) {
-        return this.messageAndSessionPump.deferAsync(lockToken, propertiesToModify);
-    }
+//    @Override
+//    public CompletableFuture<Void> deferAsync(UUID lockToken) {
+//        return this.messageAndSessionPump.deferAsync(lockToken);
+//    }
+//
+//    @Override
+//    public CompletableFuture<Void> deferAsync(UUID lockToken, Map<String, Object> propertiesToModify) {
+//        return this.messageAndSessionPump.deferAsync(lockToken, propertiesToModify);
+//    }
 
     @Override
     public void deadLetter(UUID lockToken) throws InterruptedException, ServiceBusException {

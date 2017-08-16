@@ -649,17 +649,17 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
         this.innerReceiver.defer(lockToken, propertiesToModify);
     }
 
-    @Override
-    public CompletableFuture<Void> deferAsync(UUID lockToken) {
-        this.checkInnerReceiveCreated();
-        return this.innerReceiver.abandonAsync(lockToken);
-    }
-
-    @Override
-    public CompletableFuture<Void> deferAsync(UUID lockToken, Map<String, Object> propertiesToModify) {
-        this.checkInnerReceiveCreated();
-        return this.innerReceiver.abandonAsync(lockToken, propertiesToModify);
-    }
+//    @Override
+//    public CompletableFuture<Void> deferAsync(UUID lockToken) {
+//        this.checkInnerReceiveCreated();
+//        return this.innerReceiver.abandonAsync(lockToken);
+//    }
+//
+//    @Override
+//    public CompletableFuture<Void> deferAsync(UUID lockToken, Map<String, Object> propertiesToModify) {
+//        this.checkInnerReceiveCreated();
+//        return this.innerReceiver.abandonAsync(lockToken, propertiesToModify);
+//    }
 
     @Override
     public void deadLetter(UUID lockToken) throws InterruptedException, ServiceBusException {
