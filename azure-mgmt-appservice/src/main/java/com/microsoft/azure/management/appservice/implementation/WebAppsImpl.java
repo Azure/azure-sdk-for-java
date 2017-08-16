@@ -72,7 +72,7 @@ class WebAppsImpl
 
     @Override
     protected WebAppImpl wrapModel(String name) {
-        return new WebAppImpl(name, new SiteInner(), null, this.manager());
+        return new WebAppImpl(name, new SiteInner().withKind("app"), null, this.manager());
     }
 
     protected WebAppImpl wrapModel(SiteInner inner, SiteConfigResourceInner configResourceInner) {

@@ -117,6 +117,9 @@ class AppServicePlanImpl
     public AppServicePlanImpl withOperatingSystem(OperatingSystem operatingSystem) {
         if (OperatingSystem.LINUX.equals(operatingSystem)) {
             inner().withReserved(true);
+            inner().withKind("linux");
+        } else {
+            inner().withKind("app");
         }
         return this;
     }
