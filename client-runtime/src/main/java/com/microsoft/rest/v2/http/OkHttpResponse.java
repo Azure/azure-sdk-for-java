@@ -27,11 +27,6 @@ public class OkHttpResponse extends HttpResponse {
     }
 
     @Override
-    public boolean hasBody() {
-        return response.body() != null;
-    }
-
-    @Override
     public Single<? extends InputStream> getBodyAsInputStreamAsync() {
         return Single.just(response.body().byteStream());
     }

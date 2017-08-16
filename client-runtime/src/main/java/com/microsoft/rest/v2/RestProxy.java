@@ -99,7 +99,7 @@ public final class RestProxy implements InvocationHandler {
             final HttpResponse response = httpClient.sendRequest(request);
 
             final Class<?> returnType = methodDetails.getReturnType();
-            if (returnType.equals(Void.TYPE) || !response.hasBody() || methodDetails.getHttpMethod().equalsIgnoreCase("HEAD")) {
+            if (returnType.equals(Void.TYPE) || methodDetails.getHttpMethod().equalsIgnoreCase("HEAD")) {
                 result = null;
             } else if (returnType.isAssignableFrom(InputStream.class)) {
                 result = response.getBodyAsInputStream();
