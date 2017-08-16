@@ -14,7 +14,17 @@ import java.util.Map;
  * This is generally used by a proxy implementation of the Swagger interface.
  */
 public class SwaggerInterfaceProxyDetails {
+    private final String fullyQualifiedInterfaceName;
     private final Map<String, SwaggerMethodProxyDetails> methodDetails = new HashMap<>();
+
+    /**
+     * Create a new SwaggerInterfaceProxyDetails object with the provided fully qualified interface
+     * name.
+     * @param fullyQualifiedInterfaceName The fully qualified interface name.
+     */
+    public SwaggerInterfaceProxyDetails(String fullyQualifiedInterfaceName) {
+        this.fullyQualifiedInterfaceName = fullyQualifiedInterfaceName;
+    }
 
     /**
      * Create and return a SwaggerMethodProxyDetails object that is associated with the provided
@@ -26,7 +36,8 @@ public class SwaggerInterfaceProxyDetails {
     public SwaggerMethodProxyDetails getMethodProxyDetails(String methodName) {
         SwaggerMethodProxyDetails result = methodDetails.get(methodName);
         if (result == null) {
-            result = new SwaggerMethodProxyDetails();
+            final String fullyQualifiedMethodName = fullyQualifiedInterfaceName + "." + methodName;
+            result = new SwaggerMethodProxyDetails(fullyQualifiedMethodName);
             methodDetails.put(methodName, result);
         }
         return result;

@@ -75,7 +75,7 @@ public final class RestProxy implements InvocationHandler {
         }
 
         final String url = urlBuilder.toString();
-        final HttpRequest request = new HttpRequest(methodDetails.getMethod(), url);
+        final HttpRequest request = new HttpRequest(methodDetails.getFullyQualifiedMethodName(), methodDetails.getHttpMethod(), url);
 
         for (final EncodedParameter headerParameter : methodDetails.getEncodedHeaderParameters(args)) {
             request.addHeader(headerParameter.getName(), headerParameter.getEncodedValue());
@@ -99,7 +99,7 @@ public final class RestProxy implements InvocationHandler {
             final HttpResponse response = httpClient.sendRequest(request);
 
             final Class<?> returnType = methodDetails.getReturnType();
-            if (returnType.equals(Void.TYPE) || !response.hasBody() || methodDetails.getMethod().equalsIgnoreCase("HEAD")) {
+            if (returnType.equals(Void.TYPE) || !response.hasBody() || methodDetails.getHttpMethod().equalsIgnoreCase("HEAD")) {
                 result = null;
             } else if (returnType.isAssignableFrom(InputStream.class)) {
                 result = response.getBodyAsInputStream();
@@ -119,7 +119,7 @@ public final class RestProxy implements InvocationHandler {
                     public Single<?> call(HttpResponse response) {
                         Single<?> asyncResult;
                         final Class<?> singleReturnType = methodDetails.getReturnType();
-                        if (methodDetails.getMethod().equalsIgnoreCase("HEAD")) {
+                        if (methodDetails.getHttpMethod().equalsIgnoreCase("HEAD")) {
                             asyncResult = Single.just(null);
                         } else if (singleReturnType.isAssignableFrom(InputStream.class)) {
                             asyncResult = response.getBodyAsInputStreamAsync();
@@ -176,7 +176,8 @@ public final class RestProxy implements InvocationHandler {
      */
     @SuppressWarnings("unchecked")
     public static <A> A create(Class<A> swaggerInterface, HttpClient httpClient, SerializerAdapter<?> serializer) {
-        final SwaggerInterfaceProxyDetails interfaceProxyDetails = new SwaggerInterfaceProxyDetails();
+        final String interfaceName = swaggerInterface.getCanonicalName();
+        final SwaggerInterfaceProxyDetails interfaceProxyDetails = new SwaggerInterfaceProxyDetails(interfaceName);
 
         String host = null;
         final Host hostAnnotation = swaggerInterface.getAnnotation(Host.class);

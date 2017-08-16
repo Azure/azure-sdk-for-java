@@ -19,7 +19,8 @@ import java.util.List;
  * This is generally used by a proxy implementation of the Swagger interface.
  */
 public class SwaggerMethodProxyDetails {
-    private String method;
+    private String fullyQualifiedMethodName;
+    private String httpMethod;
     private String relativePath;
     private final List<Substitution> hostSubstitutions = new ArrayList<>();
     private final List<Substitution> pathSubstitutions = new ArrayList<>();
@@ -31,19 +32,36 @@ public class SwaggerMethodProxyDetails {
     private Class<?> returnType;
 
     /**
+     * Create a new SwaggerMethodProxyDetails object using the provided fully qualified method name.
+     * @param fullyQualifiedMethodName The fully qualified method name that this details object
+     *                                 represents.
+     */
+    public SwaggerMethodProxyDetails(String fullyQualifiedMethodName) {
+        this.fullyQualifiedMethodName = fullyQualifiedMethodName;
+    }
+
+    /**
+     * Get the fully qualified method that was called to invoke this HTTP request.
+     * @return The fully qualified method that was called to invoke this HTTP request.
+     */
+    public String getFullyQualifiedMethodName() {
+        return fullyQualifiedMethodName;
+    }
+
+    /**
      * Get the HTTP method that will be used to complete the Swagger method's request.
      * @return The HTTP method that will be used to complete the Swagger method's request.
      */
-    public String getMethod() {
-        return method;
+    public String getHttpMethod() {
+        return httpMethod;
     }
 
     /**
      * Set the HTTP method that will be used to complete the Swagger method's request.
-     * @param method The HTTP method that will be used to complete the Swagger method's request.
+     * @param httpMethod The HTTP method that will be used to complete the Swagger method's request.
      */
-    public void setMethod(String method) {
-        this.method = method;
+    public void setHttpMethod(String httpMethod) {
+        this.httpMethod = httpMethod;
     }
 
     /**
@@ -71,7 +89,7 @@ public class SwaggerMethodProxyDetails {
      *                     request.
      */
     public void setMethodAndRelativePath(String method, String relativePath) {
-        setMethod(method);
+        setHttpMethod(method);
         setRelativePath(relativePath);
     }
 

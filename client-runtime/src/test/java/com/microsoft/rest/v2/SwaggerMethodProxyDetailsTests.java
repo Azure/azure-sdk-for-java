@@ -10,57 +10,65 @@ public class SwaggerMethodProxyDetailsTests {
 
     @Test
     public void setMethod() {
-        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails();
-        details.setMethod("METHOD");
-        assertEquals("METHOD", details.getMethod());
+        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails("method.name");
+        assertEquals("method.name", details.getFullyQualifiedMethodName());
+        details.setHttpMethod("METHOD");
+        assertEquals("METHOD", details.getHttpMethod());
     }
 
     @Test
     public void setRelativePath() {
-        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails();
+        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails("method.name");
+        assertEquals("method.name", details.getFullyQualifiedMethodName());
         details.setRelativePath("RELATIVE_PATH");
         assertEquals("RELATIVE_PATH", details.getRelativePath());
     }
 
     @Test
     public void setMethodAndRelativePath() {
-        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails();
+        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails("method.name");
+        assertEquals("method.name", details.getFullyQualifiedMethodName());
         details.setMethodAndRelativePath("A", "B");
-        assertEquals("A", details.getMethod());
+        assertEquals("A", details.getHttpMethod());
         assertEquals("B", details.getRelativePath());
     }
 
     @Test
     public void addHostSubstitutionWithNoPlaceholders() {
-        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails();
+        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails("method.name");
+        assertEquals("method.name", details.getFullyQualifiedMethodName());
         details.addHostSubstitution("hostParam", 0, false);
         assertEquals("I'm a host", details.applyHostSubstitutions("I'm a host", new Object[]{"host sub"}));
     }
 
     @Test
     public void addHostSubstitutionWithNoMatchingPlaceholderSubstitutions() {
-        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails();
+        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails("method.name");
+        assertEquals("method.name", details.getFullyQualifiedMethodName());
         details.addHostSubstitution("hostParam", 0, false);
         assertEquals("I'm a {host}", details.applyHostSubstitutions("I'm a {host}", new Object[]{"host sub"}));
     }
 
     @Test
     public void addHostSubstitutionWithMatchingEncodedPlaceholderSubstitution() {
-        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails();
+        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails("method.name");
+        assertEquals("method.name", details.getFullyQualifiedMethodName());
         details.addHostSubstitution("hostParam", 0, false);
         assertEquals("I'm a host sub", details.applyHostSubstitutions("I'm a {hostParam}", new Object[]{"host sub"}));
     }
 
     @Test
     public void addHostSubstitutionWithMatchingNotEncodedPlaceholderSubstitution() {
-        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails();
+        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails("method.name");
+        assertEquals("method.name", details.getFullyQualifiedMethodName());
         details.addHostSubstitution("hostParam", 0, true);
         assertEquals("I'm a host+sub", details.applyHostSubstitutions("I'm a {hostParam}", new Object[]{"host sub"}));
     }
 
     @Test
     public void addPathSubstitutionWithNoPlaceholders() {
-        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails();
+        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails("method.name");
+        assertEquals("method.name", details.getFullyQualifiedMethodName());
         details.setRelativePath("relative/path/to/index.html");
         details.addPathSubstitution("pathParam", 0, false);
         assertEquals("relative/path/to/index.html", details.getSubstitutedPath(new Object[]{"index.html"}));
@@ -68,7 +76,8 @@ public class SwaggerMethodProxyDetailsTests {
 
     @Test
     public void addPathSubstitutionWithNoMatchingPlaceholderSubstitutions() {
-        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails();
+        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails("method.name");
+        assertEquals("method.name", details.getFullyQualifiedMethodName());
         details.setRelativePath("relative/path/to/{fileName}");
         details.addPathSubstitution("pathParam", 0, false);
         assertEquals("relative/path/to/{fileName}", details.getSubstitutedPath(new Object[]{"index.html"}));
@@ -76,7 +85,8 @@ public class SwaggerMethodProxyDetailsTests {
 
     @Test
     public void addPathSubstitutionWithMatchingEncodedPlaceholderSubstitution() {
-        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails();
+        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails("method.name");
+        assertEquals("method.name", details.getFullyQualifiedMethodName());
         details.setRelativePath("relative/path/to/{fileName}");
         details.addPathSubstitution("fileName", 0, false);
         assertEquals("relative/path/to/index.html", details.getSubstitutedPath(new Object[]{"index.html"}));
@@ -84,7 +94,8 @@ public class SwaggerMethodProxyDetailsTests {
 
     @Test
     public void addPathSubstitutionWithMatchingNotEncodedPlaceholderSubstitution() {
-        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails();
+        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails("method.name");
+        assertEquals("method.name", details.getFullyQualifiedMethodName());
         details.setRelativePath("relative/path/to/{fileName}");
         details.addPathSubstitution("fileName", 1, true);
         assertEquals("relative/path/to/index.html", details.getSubstitutedPath(new Object[]{"", "index.html"}));
@@ -92,7 +103,8 @@ public class SwaggerMethodProxyDetailsTests {
 
     @Test
     public void addQuerySubstitution() {
-        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails();
+        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails("method.name");
+        assertEquals("method.name", details.getFullyQualifiedMethodName());
         details.addQuerySubstitution("A", 0, true);
         final Iterator<EncodedParameter> encodedQueryParameters = details.getEncodedQueryParameters(new Object[]{"B"}).iterator();
         assertEquals(new EncodedParameter("A", "B"), encodedQueryParameters.next());
@@ -101,7 +113,8 @@ public class SwaggerMethodProxyDetailsTests {
 
     @Test
     public void addHeaderSubstitution() {
-        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails();
+        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails("method.name");
+        assertEquals("method.name", details.getFullyQualifiedMethodName());
         details.addHeaderSubstitution("C", 1);
         final Iterator<EncodedParameter> encodedHeaderParameters = details.getEncodedHeaderParameters(new Object[]{"Z", "Y"}).iterator();
         assertEquals(new EncodedParameter("C", "Y"), encodedHeaderParameters.next());
@@ -110,7 +123,8 @@ public class SwaggerMethodProxyDetailsTests {
 
     @Test
     public void setBodyContentMethodParameterIndex() {
-        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails();
+        final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails("method.name");
+        assertEquals("method.name", details.getFullyQualifiedMethodName());
         details.setBodyContentMethodParameterIndex(17);
         assertEquals(new Integer(17), details.getBodyContentMethodParameterIndex());
     }

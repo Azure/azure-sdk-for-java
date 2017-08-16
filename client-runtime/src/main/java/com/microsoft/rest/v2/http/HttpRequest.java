@@ -10,7 +10,8 @@ package com.microsoft.rest.v2.http;
  * This class contains all of the details necessary for sending a HTTP request through a HttpClient.
  */
 public class HttpRequest {
-    private final String method;
+    private final String callerMethod;
+    private final String httpMethod;
     private final String url;
     private final HttpHeaders headers = new HttpHeaders();
     private String body;
@@ -19,20 +20,30 @@ public class HttpRequest {
     /**
      * Create a new HttpRequest object with the provided HTTP method (GET, POST, PUT, etc.) and the
      * provided URL.
-     * @param method The HTTP method to use with this request.
+     * @param callerMethod The fully qualified method that was called to invoke this HTTP request.
+     * @param httpMethod The HTTP method to use with this request.
      * @param url The URL where this HTTP request should be sent to.
      */
-    public HttpRequest(String method, String url) {
-        this.method = method;
+    public HttpRequest(String callerMethod, String httpMethod, String url) {
+        this.callerMethod = callerMethod;
+        this.httpMethod = httpMethod;
         this.url = url;
+    }
+
+    /**
+     * Get the fully qualified method that was called to invoke this HTTP request.
+     * @return The fully qualified method that was called to invoke this HTTP request.
+     */
+    public String getCallerMethod() {
+        return callerMethod;
     }
 
     /**
      * Get the HTTP method that this request will use.
      * @return The HTTP method that this request will use.
      */
-    public String getMethod() {
-        return method;
+    public String getHttpMethod() {
+        return httpMethod;
     }
 
     /**

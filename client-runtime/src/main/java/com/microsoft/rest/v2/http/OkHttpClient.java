@@ -44,7 +44,7 @@ public class OkHttpClient extends HttpClient {
         }
 
         final Request.Builder requestBuilder = new Request.Builder()
-                .method(request.getMethod(), requestBody)
+                .method(request.getHttpMethod(), requestBody)
                 .url(request.getURL());
 
         for (HttpHeader header : request.getHeaders()) {
