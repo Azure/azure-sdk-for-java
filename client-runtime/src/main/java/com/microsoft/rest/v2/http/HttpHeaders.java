@@ -14,7 +14,26 @@ import java.util.Map;
  * A collection of headers that will be applied to a HTTP request.
  */
 public class HttpHeaders implements Iterable<HttpHeader> {
-    private final Map<String, HttpHeader> headers = new HashMap<>();
+    private final Map<String, HttpHeader> headers;
+
+    /**
+     * Create an empty HttpHeaders object.
+     */
+    public HttpHeaders() {
+        headers = new HashMap<>();
+    }
+
+    /**
+     * Create a HttpHeaders object with the provided initial headers.
+     * @param headers The map of name to value associations to use as initial headers.
+     */
+    public HttpHeaders(Map<String, String> headers) {
+        this();
+
+        for (final Map.Entry<String, String> header : headers.entrySet()) {
+            this.add(header.getKey(), header.getValue());
+        }
+    }
 
     /**
      * Add the provided headerName and headerValue to the list of headers for this request.
@@ -31,6 +50,18 @@ public class HttpHeaders implements Iterable<HttpHeader> {
             headers.get(headerKey).addValue(headerValue);
         }
         return this;
+    }
+
+    /**
+     * Get the header value for the provided header name. If the header name isn't found, then null
+     * will be returned.
+     * @param headerName The name of the header to look for.
+     * @return The String value of the header, or null if the header isn't found.
+     */
+    public String get(String headerName) {
+        final String headerKey = headerName.toLowerCase();
+        final HttpHeader header = headers.get(headerKey);
+        return header == null ? null : header.getValue();
     }
 
     @Override
