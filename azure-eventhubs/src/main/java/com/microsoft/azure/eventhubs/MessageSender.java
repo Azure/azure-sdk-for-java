@@ -184,6 +184,10 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
         return this.sendPath;
     }
 
+    public int getMaxMessageSize() {
+        return this.maxMessageSize;
+    }
+
     private CompletableFuture<Void> send(byte[] bytes, int arrayOffset, int messageFormat) {
         return this.send(bytes, arrayOffset, messageFormat, null, null);
     }
