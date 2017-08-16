@@ -6,9 +6,8 @@
 
 package com.microsoft.rest.v2.http;
 
-import rx.Single;
-
 import java.io.IOException;
+import rx.Single;
 
 /**
  * A generic interface for sending HTTP requests and getting responses.

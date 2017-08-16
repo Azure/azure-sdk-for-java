@@ -27,14 +27,14 @@ public class MockHttpClient extends HttpClient {
         HttpResponse response = new MockHttpResponse();
 
         try {
-            final URI requestUrl = new URI(request.getURL());
+            final URI requestUrl = new URI(request.url());
             final String requestHost = requestUrl.getHost();
             if (requestHost.equalsIgnoreCase("httpbin.org")) {
                 final String requestPath = requestUrl.getPath();
                 if (requestPath.equalsIgnoreCase("/anything")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url = request.getURL();
-                    json.headers = toMap(request.getHeaders());
+                    json.url = request.url();
+                    json.headers = toMap(request.headers());
                     response = new MockHttpResponse(json);
                 }
                 else if (requestPath.startsWith("/bytes/")) {
@@ -44,28 +44,28 @@ public class MockHttpClient extends HttpClient {
                 }
                 else if (requestPath.equalsIgnoreCase("/delete")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.data = request.getBody();
+                    json.data = request.body();
                     response = new MockHttpResponse(json);
                 }
                 else if (requestPath.equalsIgnoreCase("/get")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url = request.getURL();
-                    json.headers = toMap(request.getHeaders());
+                    json.url = request.url();
+                    json.headers = toMap(request.headers());
                     response = new MockHttpResponse(json);
                 }
                 else if (requestPath.equalsIgnoreCase("/patch")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.data = request.getBody();
+                    json.data = request.body();
                     response = new MockHttpResponse(json);
                 }
                 else if (requestPath.equalsIgnoreCase("/post")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.data = request.getBody();
+                    json.data = request.body();
                     response = new MockHttpResponse(json);
                 }
                 else if (requestPath.equalsIgnoreCase("/put")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.data = request.getBody();
+                    json.data = request.body();
                     response = new MockHttpResponse(json);
                 }
             }
