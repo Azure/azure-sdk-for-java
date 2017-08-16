@@ -19,21 +19,22 @@ public class UrlBuilder {
     private String query;
 
     /**
-     * Set the setScheme/protocol that will be used to build the final URL.
+<<<<<<< HEAD
+     * Set the scheme/protocol that will be used to build the final URL.
      * @param scheme The setScheme/protocol that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
-    public UrlBuilder setScheme(String scheme) {
+    public UrlBuilder withScheme(String scheme) {
         this.scheme = scheme;
         return this;
     }
 
     /**
-     * Set the setHost that will be used to build the final URL.
-     * @param host The setHost that will be used to build the final URL.
+     * Set the host that will be used to build the final URL.
+     * @param host The host that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
-    public UrlBuilder setHost(String host) {
+    public UrlBuilder withHost(String host) {
         this.host = host;
         return this;
     }
@@ -43,7 +44,7 @@ public class UrlBuilder {
      * @param path The path that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
-    public UrlBuilder setPath(String path) {
+    public UrlBuilder withPath(String path) {
         if (path != null && !path.startsWith("/")) {
             path = "/" + path;
         }
@@ -58,7 +59,7 @@ public class UrlBuilder {
      * @return The provided query parameter name and encoded value to query string for the final
      * URL.
      */
-    public UrlBuilder addQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
+    public UrlBuilder withQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
         if (query == null) {
             query = "";
         }

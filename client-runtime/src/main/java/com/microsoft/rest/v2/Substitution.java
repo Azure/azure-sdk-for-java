@@ -11,7 +11,7 @@ package com.microsoft.rest.v2;
  * look like: "http://{host}.com/{fileName}.html", where "{host}" and "{fileName}" are the
  * placeholders.
  */
-public class Substitution {
+class Substitution {
     private final String urlParameterName;
     private final int methodParameterIndex;
     private final boolean shouldEncode;
@@ -25,7 +25,7 @@ public class Substitution {
      * @param shouldEncode Whether or not the value from the method's argument should be encoded
      *                     when the substitution is taking place.
      */
-    public Substitution(String urlParameterName, int methodParameterIndex, boolean shouldEncode) {
+    Substitution(String urlParameterName, int methodParameterIndex, boolean shouldEncode) {
         this.urlParameterName = urlParameterName;
         this.methodParameterIndex = methodParameterIndex;
         this.shouldEncode = shouldEncode;
@@ -35,7 +35,7 @@ public class Substitution {
      * Get the placeholder's name.
      * @return The name of the placeholder.
      */
-    public String getURLParameterName() {
+    public String urlParameterName() {
         return urlParameterName;
     }
 
@@ -43,7 +43,7 @@ public class Substitution {
      * Get the index of the method parameter where the replacement value is.
      * @return The index of the method parameter where the replacement value is.
      */
-    public int getMethodParameterIndex() {
+    public int methodParameterIndex() {
         return methodParameterIndex;
     }
 

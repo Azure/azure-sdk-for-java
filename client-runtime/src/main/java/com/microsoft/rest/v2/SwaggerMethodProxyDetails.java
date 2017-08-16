@@ -18,7 +18,7 @@ import java.util.List;
  * Details of a specific method from an interface that was generated from a Swagger specification.
  * This is generally used by a proxy implementation of the Swagger interface.
  */
-public class SwaggerMethodProxyDetails {
+class SwaggerMethodProxyDetails {
     private String method;
     private String relativePath;
     private final List<Substitution> hostSubstitutions = new ArrayList<>();
@@ -34,7 +34,7 @@ public class SwaggerMethodProxyDetails {
      * Get the HTTP method that will be used to complete the Swagger method's request.
      * @return The HTTP method that will be used to complete the Swagger method's request.
      */
-    public String getMethod() {
+    public String method() {
         return method;
     }
 
@@ -50,7 +50,7 @@ public class SwaggerMethodProxyDetails {
      * Get the path that will be used to complete the Swagger method's request.
      * @return The path in the URL that will be used to complete the Swagger method's request.
      */
-    public String getRelativePath() {
+    public String relativePath() {
         return this.relativePath;
     }
 
@@ -177,7 +177,7 @@ public class SwaggerMethodProxyDetails {
      * Get the index of the method argument that will be used as the body of the HTTP request.
      * @return The index of the method argument that will be used as the body of the HTTP request.
      */
-    public Integer getBodyContentMethodParameterIndex() {
+    public Integer bodyContentMethodParameterIndex() {
         return bodyContentMethodParameterIndex;
     }
 
@@ -241,14 +241,14 @@ public class SwaggerMethodProxyDetails {
         String result = originalValue;
 
         for (Substitution substitution : substitutions) {
-            final Object methodArgument = methodArguments[substitution.getMethodParameterIndex()];
+            final Object methodArgument = methodArguments[substitution.methodParameterIndex()];
 
             String substitutionValue = String.valueOf(methodArgument);
             if (substitution.shouldEncode()) {
                 substitutionValue = encode(substitutionValue);
             }
 
-            result = result.replace("{" + substitution.getURLParameterName() + "}", substitutionValue);
+            result = result.replace("{" + substitution.urlParameterName() + "}", substitutionValue);
         }
 
         return result;
@@ -258,14 +258,14 @@ public class SwaggerMethodProxyDetails {
         final List<EncodedParameter> result = new ArrayList<>();
 
         for (Substitution substitution : substitutions) {
-            final Object methodArgument = methodArguments[substitution.getMethodParameterIndex()];
+            final Object methodArgument = methodArguments[substitution.methodParameterIndex()];
 
             String parameterValue = String.valueOf(methodArgument);
             if (substitution.shouldEncode()) {
                 parameterValue = encode(parameterValue);
             }
 
-            result.add(new EncodedParameter(substitution.getURLParameterName(), parameterValue));
+            result.add(new EncodedParameter(substitution.urlParameterName(), parameterValue));
         }
 
         return result;

@@ -12,22 +12,22 @@ public class SwaggerMethodProxyDetailsTests {
     public void setMethod() {
         final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails();
         details.setMethod("METHOD");
-        assertEquals("METHOD", details.getMethod());
+        assertEquals("METHOD", details.method());
     }
 
     @Test
     public void setRelativePath() {
         final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails();
         details.setRelativePath("RELATIVE_PATH");
-        assertEquals("RELATIVE_PATH", details.getRelativePath());
+        assertEquals("RELATIVE_PATH", details.relativePath());
     }
 
     @Test
     public void setMethodAndRelativePath() {
         final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails();
         details.setMethodAndRelativePath("A", "B");
-        assertEquals("A", details.getMethod());
-        assertEquals("B", details.getRelativePath());
+        assertEquals("A", details.method());
+        assertEquals("B", details.relativePath());
     }
 
     @Test
@@ -112,7 +112,7 @@ public class SwaggerMethodProxyDetailsTests {
     public void setBodyContentMethodParameterIndex() {
         final SwaggerMethodProxyDetails details = new SwaggerMethodProxyDetails();
         details.setBodyContentMethodParameterIndex(17);
-        assertEquals(new Integer(17), details.getBodyContentMethodParameterIndex());
+        assertEquals(new Integer(17), details.bodyContentMethodParameterIndex());
     }
 
     @Test

@@ -13,7 +13,7 @@ import java.util.Map;
  * Details that are associated with an interface that is generated from a Swagger specification.
  * This is generally used by a proxy implementation of the Swagger interface.
  */
-public class SwaggerInterfaceProxyDetails {
+class SwaggerInterfaceProxyDetails {
     private final Map<String, SwaggerMethodProxyDetails> methodDetails = new HashMap<>();
 
     /**

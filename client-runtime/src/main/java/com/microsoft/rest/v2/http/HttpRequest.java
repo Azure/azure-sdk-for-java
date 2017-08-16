@@ -31,7 +31,7 @@ public class HttpRequest {
      * Get the HTTP method that this request will use.
      * @return The HTTP method that this request will use.
      */
-    public String getMethod() {
+    public String method() {
         return method;
     }
 
@@ -39,7 +39,7 @@ public class HttpRequest {
      * Get the URL that this request will be sent to.
      * @return The URL that this request will be sent to.
      */
-    public String getURL() {
+    public String url() {
         return url;
     }
 
@@ -49,7 +49,7 @@ public class HttpRequest {
      * @param headerValue The value of the header.
      * @return This HttpRequest so that multiple operations can be chained together.
      */
-    public HttpRequest addHeader(String headerName, String headerValue) {
+    public HttpRequest withHeader(String headerName, String headerValue) {
         headers.add(headerName, headerValue);
         return this;
     }
@@ -58,7 +58,7 @@ public class HttpRequest {
      * Get the headers for this request.
      * @return The headers for this request.
      */
-    public HttpHeaders getHeaders() {
+    public HttpHeaders headers() {
         return headers;
     }
 
@@ -68,7 +68,7 @@ public class HttpRequest {
      * @param mimeType The MIME type of the body's contents.
      * @return This HttpRequest so that multiple operations can be chained together.
      */
-    public HttpRequest setBody(String body, String mimeType) {
+    public HttpRequest withBody(String body, String mimeType) {
         this.body = body;
         this.mimeType = mimeType;
         return this;
@@ -78,7 +78,7 @@ public class HttpRequest {
      * Get the body for this HttpRequest.
      * @return The body for this HttpRequest.
      */
-    public String getBody() {
+    public String body() {
         return body;
     }
 
@@ -86,7 +86,7 @@ public class HttpRequest {
      * Get the assigned MIME type for this HttpRequest's body.
      * @return The assigned MIME type for this HttpRequest's body.
      */
-    public String getMIMEType() {
+    public String mimeType() {
         return mimeType;
     }
 }
