@@ -32,12 +32,12 @@ public class OkHttpResponse extends HttpResponse {
     }
 
     @Override
-    public Single<? extends InputStream> getBodyAsInputStreamAsync() {
+    public Single<? extends InputStream> bodyAsInputStreamAsync() {
         return Single.just(response.body().byteStream());
     }
 
     @Override
-    public Single<byte[]> getBodyAsByteArrayAsync() {
+    public Single<byte[]> bodyAsByteArrayAsync() {
         Single<byte[]> result;
         try {
             result = Single.just(response.body().bytes());
@@ -49,7 +49,7 @@ public class OkHttpResponse extends HttpResponse {
     }
 
     @Override
-    public Single<String> getBodyAsStringAsync() {
+    public Single<String> bodyAsStringAsync() {
         Single<String> result;
         try {
             result = Single.just(response.body().string());

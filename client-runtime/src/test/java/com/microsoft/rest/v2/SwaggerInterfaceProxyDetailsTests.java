@@ -10,7 +10,7 @@ public class SwaggerInterfaceProxyDetailsTests {
         final SwaggerInterfaceProxyDetails interfaceDetails = new SwaggerInterfaceProxyDetails("com.foo.bar");
         final SwaggerMethodProxyDetails methodDetails = interfaceDetails.getMethodProxyDetails("MockMethodName");
         assertNotNull(methodDetails);
-        assertEquals("com.foo.bar.MockMethodName", methodDetails.getFullyQualifiedMethodName());
+        assertEquals("com.foo.bar.MockMethodName", methodDetails.fullyQualifiedMethodName());
         final SwaggerMethodProxyDetails methodDetails2 = interfaceDetails.getMethodProxyDetails("MockMethodName");
         assertSame(methodDetails, methodDetails2);
     }

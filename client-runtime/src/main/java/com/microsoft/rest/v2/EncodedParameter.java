@@ -11,7 +11,7 @@ package com.microsoft.rest.v2;
  * HTTP request. It contains the query parameter or header name, plus the query parameter's value or
  * header's value.
  */
-public class EncodedParameter {
+class EncodedParameter {
     private final String name;
     private final String encodedValue;
 
@@ -20,7 +20,7 @@ public class EncodedParameter {
      * @param name The name of the new parameter.
      * @param encodedValue The encoded value of the new parameter.
      */
-    public EncodedParameter(String name, String encodedValue) {
+    EncodedParameter(String name, String encodedValue) {
         this.name = name;
         this.encodedValue = encodedValue;
     }
@@ -29,7 +29,7 @@ public class EncodedParameter {
      * Get this parameter's name.
      * @return The name of this parameter.
      */
-    public String getName() {
+    public String name() {
         return name;
     }
 
@@ -37,7 +37,7 @@ public class EncodedParameter {
      * Get the encoded value for this parameter.
      * @return The encoded value for this parameter.
      */
-    public String getEncodedValue() {
+    public String encodedValue() {
         return encodedValue;
     }
 

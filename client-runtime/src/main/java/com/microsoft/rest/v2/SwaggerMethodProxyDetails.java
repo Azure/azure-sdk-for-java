@@ -18,7 +18,7 @@ import java.util.List;
  * Details of a specific method from an interface that was generated from a Swagger specification.
  * This is generally used by a proxy implementation of the Swagger interface.
  */
-public class SwaggerMethodProxyDetails {
+class SwaggerMethodProxyDetails {
     private String fullyQualifiedMethodName;
     private String httpMethod;
     private String relativePath;
@@ -36,7 +36,7 @@ public class SwaggerMethodProxyDetails {
      * @param fullyQualifiedMethodName The fully qualified method name that this details object
      *                                 represents.
      */
-    public SwaggerMethodProxyDetails(String fullyQualifiedMethodName) {
+    SwaggerMethodProxyDetails(String fullyQualifiedMethodName) {
         this.fullyQualifiedMethodName = fullyQualifiedMethodName;
     }
 
@@ -44,7 +44,7 @@ public class SwaggerMethodProxyDetails {
      * Get the fully qualified method that was called to invoke this HTTP request.
      * @return The fully qualified method that was called to invoke this HTTP request.
      */
-    public String getFullyQualifiedMethodName() {
+    public String fullyQualifiedMethodName() {
         return fullyQualifiedMethodName;
     }
 
@@ -52,7 +52,7 @@ public class SwaggerMethodProxyDetails {
      * Get the HTTP method that will be used to complete the Swagger method's request.
      * @return The HTTP method that will be used to complete the Swagger method's request.
      */
-    public String getHttpMethod() {
+    public String httpMethod() {
         return httpMethod;
     }
 
@@ -68,7 +68,7 @@ public class SwaggerMethodProxyDetails {
      * Get the path that will be used to complete the Swagger method's request.
      * @return The path in the URL that will be used to complete the Swagger method's request.
      */
-    public String getRelativePath() {
+    public String relativePath() {
         return this.relativePath;
     }
 
@@ -84,12 +84,12 @@ public class SwaggerMethodProxyDetails {
     /**
      * Set both the HTTP method and the path that will be used to complete the Swagger method's
      * request.
-     * @param method The HTTP method that will be used to complete the Swagger method's request.
+     * @param httpMethod The HTTP method that will be used to complete the Swagger method's request.
      * @param relativePath The path in the URL that will be used to complete the Swagger method's
      *                     request.
      */
-    public void setMethodAndRelativePath(String method, String relativePath) {
-        setHttpMethod(method);
+    public void setHttpMethodAndRelativePath(String httpMethod, String relativePath) {
+        setHttpMethod(httpMethod);
         setRelativePath(relativePath);
     }
 
@@ -195,7 +195,7 @@ public class SwaggerMethodProxyDetails {
      * Get the index of the method argument that will be used as the body of the HTTP request.
      * @return The index of the method argument that will be used as the body of the HTTP request.
      */
-    public Integer getBodyContentMethodParameterIndex() {
+    public Integer bodyContentMethodParameterIndex() {
         return bodyContentMethodParameterIndex;
     }
 
@@ -259,14 +259,14 @@ public class SwaggerMethodProxyDetails {
         String result = originalValue;
 
         for (Substitution substitution : substitutions) {
-            final Object methodArgument = methodArguments[substitution.getMethodParameterIndex()];
+            final Object methodArgument = methodArguments[substitution.methodParameterIndex()];
 
             String substitutionValue = String.valueOf(methodArgument);
             if (substitution.shouldEncode()) {
                 substitutionValue = encode(substitutionValue);
             }
 
-            result = result.replace("{" + substitution.getURLParameterName() + "}", substitutionValue);
+            result = result.replace("{" + substitution.urlParameterName() + "}", substitutionValue);
         }
 
         return result;
@@ -276,14 +276,14 @@ public class SwaggerMethodProxyDetails {
         final List<EncodedParameter> result = new ArrayList<>();
 
         for (Substitution substitution : substitutions) {
-            final Object methodArgument = methodArguments[substitution.getMethodParameterIndex()];
+            final Object methodArgument = methodArguments[substitution.methodParameterIndex()];
 
             String parameterValue = String.valueOf(methodArgument);
             if (substitution.shouldEncode()) {
                 parameterValue = encode(parameterValue);
             }
 
-            result.add(new EncodedParameter(substitution.getURLParameterName(), parameterValue));
+            result.add(new EncodedParameter(substitution.urlParameterName(), parameterValue));
         }
 
         return result;

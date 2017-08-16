@@ -29,7 +29,7 @@ public class HttpHeader {
      * Get the name of this Header.
      * @return The name of this Header.
      */
-    public String getName() {
+    public String name() {
         return name;
     }
 
@@ -37,7 +37,7 @@ public class HttpHeader {
      * Get the value of this Header.
      * @return The value of this Header.
      */
-    public String getValue() {
+    public String value() {
         return value;
     }
 
