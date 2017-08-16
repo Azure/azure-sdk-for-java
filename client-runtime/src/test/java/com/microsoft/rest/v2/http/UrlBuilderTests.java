@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class URLBuilderTests {
+public class UrlBuilderTests {
     @Test
     public void withScheme() {
         final UrlBuilder builder = new UrlBuilder()

@@ -11,13 +11,14 @@ import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import rx.Single;
 
 import java.io.IOException;
 
 /**
  * A HttpClient that is implemented using OkHttp.
  */
-public class OkHttpClient implements HttpClient {
+public class OkHttpClient extends HttpClient {
     private final okhttp3.OkHttpClient client;
 
     /**
@@ -34,7 +35,7 @@ public class OkHttpClient implements HttpClient {
      * @return The HTTP response received.
      */
     @Override
-    public HttpResponse sendRequest(HttpRequest request) throws IOException {
+    public Single<? extends HttpResponse> sendRequestAsync(HttpRequest request) {
         RequestBody requestBody = null;
         final String requestBodyString = request.getBody();
         if (requestBodyString != null && !requestBodyString.isEmpty()) {
@@ -46,11 +47,22 @@ public class OkHttpClient implements HttpClient {
                 .method(request.getMethod(), requestBody)
                 .url(request.getURL());
 
+        for (HttpHeader header : request.getHeaders()) {
+            requestBuilder.addHeader(header.getName(), header.getValue());
+        }
+
         final Request okhttpRequest = requestBuilder.build();
         final Call call = client.newCall(okhttpRequest);
 
-        final Response response = call.execute();
+        Single<? extends HttpResponse> result;
+        try {
+            final Response response = call.execute();
+            result = Single.just(new OkHttpResponse(response));
+        }
+        catch (IOException e) {
+            result = Single.error(e);
+        }
 
-        return new OkHttpResponse(response);
+        return result;
     }
 }

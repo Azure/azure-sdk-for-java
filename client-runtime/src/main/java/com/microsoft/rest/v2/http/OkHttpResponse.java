@@ -7,6 +7,7 @@
 package com.microsoft.rest.v2.http;
 
 import okhttp3.Response;
+import rx.Single;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,7 +15,7 @@ import java.io.InputStream;
 /**
  * A HttpResponse that is implemented using OkHttp.
  */
-public class OkHttpResponse implements HttpResponse {
+public class OkHttpResponse extends HttpResponse {
     private final Response response;
 
     /**
@@ -31,17 +32,31 @@ public class OkHttpResponse implements HttpResponse {
     }
 
     @Override
-    public InputStream getBodyAsInputStream() {
-        return response.body().byteStream();
+    public Single<? extends InputStream> getBodyAsInputStreamAsync() {
+        return Single.just(response.body().byteStream());
     }
 
     @Override
-    public byte[] getBodyAsByteArray() throws IOException {
-        return response.body().bytes();
+    public Single<byte[]> getBodyAsByteArrayAsync() {
+        Single<byte[]> result;
+        try {
+            result = Single.just(response.body().bytes());
+        }
+        catch (IOException e) {
+            result = Single.error(e);
+        }
+        return result;
     }
 
     @Override
-    public String getBodyAsString() throws IOException {
-        return response.body().string();
+    public Single<String> getBodyAsStringAsync() {
+        Single<String> result;
+        try {
+            result = Single.just(response.body().string());
+        }
+        catch (IOException e) {
+            result = Single.error(e);
+        }
+        return result;
     }
 }
