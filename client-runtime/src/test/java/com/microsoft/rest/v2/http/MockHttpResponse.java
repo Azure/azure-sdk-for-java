@@ -45,11 +45,6 @@ public class MockHttpResponse extends HttpResponse {
     }
 
     @Override
-    public boolean hasBody() {
-        return hasBody;
-    }
-
-    @Override
     public Single<? extends InputStream> bodyAsInputStreamAsync() {
         return Single.just(new ByteArrayInputStream(byteArray));
     }
