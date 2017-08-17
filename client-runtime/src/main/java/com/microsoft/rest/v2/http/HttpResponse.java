@@ -16,12 +16,6 @@ import rx.Single;
  */
 public abstract class HttpResponse {
     /**
-     * Get whether or not this response object has a body.
-     * @return Whether or not this response object has a body.
-     */
-    public abstract boolean hasBody();
-
-    /**
      * Get this response object's body as an InputStream. If this response object doesn't have a
      * body, then null will be returned.
      * @return This response object's body as an InputStream. If this response object doesn't have a
