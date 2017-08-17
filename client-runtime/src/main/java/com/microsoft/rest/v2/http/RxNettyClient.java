@@ -10,6 +10,10 @@ import rx.functions.Func1;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class RxNettyClient extends HttpClient {
     @Override
@@ -21,26 +25,28 @@ public class RxNettyClient extends HttpClient {
             return Single.error(e);
         }
 
-        HttpClientRequest<ByteBuf, ByteBuf> rxnReq = io.reactivex.netty.protocol.http.client.HttpClient
-                .newClient(uri.getHost(), 80)
-                .createRequest(HttpMethod.valueOf(request.getHttpMethod()), uri.toASCIIString());
-
+        Map<String, Set<Object>> rxnHeaders = new HashMap<>();
         for (HttpHeader header : request.getHeaders()) {
-            rxnReq = rxnReq.addHeader(header.getName(), header.getValue());
+            rxnHeaders.put(header.getName(), Collections.<Object>singleton(header.getValue()));
         }
 
         String mimeType = request.getMIMEType();
         if (mimeType != null) {
-            rxnReq = rxnReq.addHeader("Content-Type", mimeType);
+            rxnHeaders.put("Content-Type", Collections.<Object>singleton(mimeType));
         }
 
         String body = request.getBody();
+        if (body != null) {
+            rxnHeaders.put("Content-Length", Collections.<Object>singleton(String.valueOf(body.length())));
+        }
+
+        HttpClientRequest<ByteBuf, ByteBuf> rxnReq = io.reactivex.netty.protocol.http.client.HttpClient
+                .newClient(uri.getHost(), 80)
+                .createRequest(HttpMethod.valueOf(request.getHttpMethod()), uri.toASCIIString())
+                .addHeaders(rxnHeaders);
+
         Observable<HttpClientResponse<ByteBuf>> obsResponse = rxnReq;
         if (body != null) {
-            if (rxnReq.getHeader("Content-Length") == null) {
-                rxnReq = rxnReq.addHeader("Content-Length", body.length());
-            }
-
             obsResponse = rxnReq.writeStringContent(Observable.just(body));
         }
 
