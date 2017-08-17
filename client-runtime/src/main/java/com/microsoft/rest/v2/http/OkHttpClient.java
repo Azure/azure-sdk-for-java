@@ -12,7 +12,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import rx.Single;
-
 import java.io.IOException;
 
 /**
@@ -37,17 +36,17 @@ public class OkHttpClient extends HttpClient {
     @Override
     public Single<? extends HttpResponse> sendRequestAsync(HttpRequest request) {
         RequestBody requestBody = null;
-        final String requestBodyString = request.getBody();
+        final String requestBodyString = request.body();
         if (requestBodyString != null && !requestBodyString.isEmpty()) {
-            final MediaType mediaType = MediaType.parse(request.getMIMEType());
+            final MediaType mediaType = MediaType.parse(request.mimeType());
             requestBody = RequestBody.create(mediaType, requestBodyString);
         }
 
         final Request.Builder requestBuilder = new Request.Builder()
-                .method(request.getHttpMethod(), requestBody)
-                .url(request.getURL());
+                .method(request.httpMethod(), requestBody)
+                .url(request.url());
 
-        for (HttpHeader header : request.getHeaders()) {
+        for (HttpHeader header : request.headers()) {
             requestBuilder.addHeader(header.getName(), header.getValue());
         }
 

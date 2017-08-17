@@ -15,14 +15,14 @@ import java.io.InputStream;
 /**
  * A HttpResponse that is implemented using OkHttp.
  */
-public class OkHttpResponse extends HttpResponse {
+class OkHttpResponse extends HttpResponse {
     private final Response response;
 
     /**
      * Create a new OkHttpResponse using the provided OkHttp Response object.
      * @param response The OkHttp Response object that came from a real OkHttpClient object.
      */
-    public OkHttpResponse(Response response) {
+    OkHttpResponse(Response response) {
         this.response = response;
     }
 
@@ -32,12 +32,12 @@ public class OkHttpResponse extends HttpResponse {
     }
 
     @Override
-    public Single<? extends InputStream> getBodyAsInputStreamAsync() {
+    public Single<? extends InputStream> bodyAsInputStreamAsync() {
         return Single.just(response.body().byteStream());
     }
 
     @Override
-    public Single<byte[]> getBodyAsByteArrayAsync() {
+    public Single<byte[]> bodyAsByteArrayAsync() {
         Single<byte[]> result;
         try {
             result = Single.just(response.body().bytes());
@@ -49,7 +49,7 @@ public class OkHttpResponse extends HttpResponse {
     }
 
     @Override
-    public Single<String> getBodyAsStringAsync() {
+    public Single<String> bodyAsStringAsync() {
         Single<String> result;
         try {
             result = Single.just(response.body().string());

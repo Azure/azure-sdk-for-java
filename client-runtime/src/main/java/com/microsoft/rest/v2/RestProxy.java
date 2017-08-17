@@ -66,31 +66,31 @@ public final class RestProxy implements InvocationHandler {
         final String actualPath = methodDetails.getSubstitutedPath(args);
 
         final UrlBuilder urlBuilder = new UrlBuilder()
-                .setScheme(hostParts[0])
-                .setHost(hostParts[1])
-                .setPath(actualPath);
+                .withScheme(hostParts[0])
+                .withHost(hostParts[1])
+                .withPath(actualPath);
 
         for (EncodedParameter queryParameter : methodDetails.getEncodedQueryParameters(args)) {
-            urlBuilder.addQueryParameter(queryParameter.getName(), queryParameter.getEncodedValue());
+            urlBuilder.withQueryParameter(queryParameter.name(), queryParameter.encodedValue());
         }
 
         final String url = urlBuilder.toString();
-        final HttpRequest request = new HttpRequest(methodDetails.getFullyQualifiedMethodName(), methodDetails.getHttpMethod(), url);
+        final HttpRequest request = new HttpRequest(methodDetails.fullyQualifiedMethodName(), methodDetails.httpMethod(), url);
 
         for (final EncodedParameter headerParameter : methodDetails.getEncodedHeaderParameters(args)) {
-            request.addHeader(headerParameter.getName(), headerParameter.getEncodedValue());
+            request.withHeader(headerParameter.name(), headerParameter.encodedValue());
         }
 
         for (final HttpHeader header : methodDetails.getHeaders()) {
-            request.addHeader(header.getName(), header.getValue());
+            request.withHeader(header.getName(), header.getValue());
         }
 
-        final Integer bodyContentMethodParameterIndex = methodDetails.getBodyContentMethodParameterIndex();
+        final Integer bodyContentMethodParameterIndex = methodDetails.bodyContentMethodParameterIndex();
         if (bodyContentMethodParameterIndex != null) {
             final Object bodyContentObject = args[bodyContentMethodParameterIndex];
             if (bodyContentObject != null) {
                 final String bodyContentString = serializer.serialize(bodyContentObject);
-                request.setBody(bodyContentString, "application/json");
+                request.withBody(bodyContentString, "application/json");
             }
         }
 
@@ -98,15 +98,15 @@ public final class RestProxy implements InvocationHandler {
         if (!methodDetails.isAsync()) {
             final HttpResponse response = httpClient.sendRequest(request);
 
-            final Class<?> returnType = methodDetails.getReturnType();
-            if (returnType.equals(Void.TYPE) || !response.hasBody() || methodDetails.getHttpMethod().equalsIgnoreCase("HEAD")) {
+            final Class<?> returnType = methodDetails.returnType();
+            if (returnType.equals(Void.TYPE) || !response.hasBody() || methodDetails.httpMethod().equalsIgnoreCase("HEAD")) {
                 result = null;
             } else if (returnType.isAssignableFrom(InputStream.class)) {
-                result = response.getBodyAsInputStream();
+                result = response.bodyAsInputStream();
             } else if (returnType.isAssignableFrom(byte[].class)) {
-                result = response.getBodyAsByteArray();
+                result = response.bodyAsByteArray();
             } else {
-                final String responseBodyString = response.getBodyAsString();
+                final String responseBodyString = response.bodyAsString();
                 result = serializer.deserialize(responseBodyString, returnType);
             }
         }
@@ -118,15 +118,15 @@ public final class RestProxy implements InvocationHandler {
                     @Override
                     public Single<?> call(HttpResponse response) {
                         Single<?> asyncResult;
-                        final Class<?> singleReturnType = methodDetails.getReturnType();
-                        if (methodDetails.getHttpMethod().equalsIgnoreCase("HEAD")) {
+                        final Class<?> singleReturnType = methodDetails.returnType();
+                        if (methodDetails.httpMethod().equalsIgnoreCase("HEAD")) {
                             asyncResult = Single.just(null);
                         } else if (singleReturnType.isAssignableFrom(InputStream.class)) {
-                            asyncResult = response.getBodyAsInputStreamAsync();
+                            asyncResult = response.bodyAsInputStreamAsync();
                         } else if (singleReturnType.isAssignableFrom(byte[].class)) {
-                            asyncResult = response.getBodyAsByteArrayAsync();
+                            asyncResult = response.bodyAsByteArrayAsync();
                         } else {
-                            final Single<String> asyncResponseBodyString = response.getBodyAsStringAsync();
+                            final Single<String> asyncResponseBodyString = response.bodyAsStringAsync();
                             asyncResult = asyncResponseBodyString.flatMap(new Func1<String, Single<Object>>() {
                                 @Override
                                 public Single<Object> call(String responseBodyString) {
