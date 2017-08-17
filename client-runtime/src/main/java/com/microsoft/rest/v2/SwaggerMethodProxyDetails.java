@@ -251,7 +251,7 @@ class SwaggerMethodProxyDetails {
      * object that is returned from the method.
      * @return The synchronous return type for the method that this object describes.
      */
-    public Class<?> getReturnType() {
+    public Class<?> returnType() {
         return returnType;
     }
 

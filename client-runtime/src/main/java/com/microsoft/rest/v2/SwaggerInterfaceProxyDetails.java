@@ -38,7 +38,6 @@ class SwaggerInterfaceProxyDetails {
         if (result == null) {
             final String fullyQualifiedMethodName = fullyQualifiedInterfaceName + "." + methodName;
             result = new SwaggerMethodProxyDetails(fullyQualifiedMethodName);
-
             methodDetails.put(methodName, result);
         }
         return result;

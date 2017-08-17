@@ -98,7 +98,7 @@ public final class RestProxy implements InvocationHandler {
         if (!methodDetails.isAsync()) {
             final HttpResponse response = httpClient.sendRequest(request);
 
-            final Class<?> returnType = methodDetails.getReturnType();
+            final Class<?> returnType = methodDetails.returnType();
             if (returnType.equals(Void.TYPE) || !response.hasBody() || methodDetails.httpMethod().equalsIgnoreCase("HEAD")) {
                 result = null;
             } else if (returnType.isAssignableFrom(InputStream.class)) {
@@ -118,7 +118,7 @@ public final class RestProxy implements InvocationHandler {
                     @Override
                     public Single<?> call(HttpResponse response) {
                         Single<?> asyncResult;
-                        final Class<?> singleReturnType = methodDetails.getReturnType();
+                        final Class<?> singleReturnType = methodDetails.returnType();
                         if (methodDetails.httpMethod().equalsIgnoreCase("HEAD")) {
                             asyncResult = Single.just(null);
                         } else if (singleReturnType.isAssignableFrom(InputStream.class)) {
