@@ -17,7 +17,7 @@ import com.microsoft.azure.eventhubs.amqp.AmqpErrorCode;
 import com.microsoft.azure.eventhubs.amqp.AmqpException;
 import com.microsoft.azure.eventhubs.amqp.AmqpResponseCode;
 
-final class ExceptionUtil {
+public final class ExceptionUtil {
     static Exception toException(ErrorCondition errorCondition) {
         if (errorCondition == null) {
             throw new IllegalArgumentException("'null' errorCondition cannot be translated to EventHubException");
@@ -99,7 +99,7 @@ final class ExceptionUtil {
         return String.format(Locale.US, "TrackingId: %s, at: %s", UUID.randomUUID().toString(), ZonedDateTime.now());
     }
 
-    static String toStackTraceString(final Throwable exception, final String customErrorMessage) {
+    public static String toStackTraceString(final Throwable exception, final String customErrorMessage) {
         final StringBuilder builder = new StringBuilder();
 
         if (!StringUtil.isNullOrEmpty(customErrorMessage)) {
@@ -108,20 +108,24 @@ final class ExceptionUtil {
         }
 
         builder.append(exception.getMessage());
-        if (exception.getStackTrace() != null)
-            for (StackTraceElement ste : exception.getStackTrace()) {
+        final StackTraceElement[] stackTraceElements = exception.getStackTrace();
+        if (stackTraceElements != null) {
+            for (final StackTraceElement ste : stackTraceElements) {
                 builder.append(System.lineSeparator());
                 builder.append(ste.toString());
             }
+        }
 
-        Throwable innerException = exception.getCause();
+        final Throwable innerException = exception.getCause();
         if (innerException != null) {
             builder.append("Cause: " + innerException.getMessage());
-            if (innerException.getStackTrace() != null)
-                for (StackTraceElement ste : innerException.getStackTrace()) {
+            final StackTraceElement[] innerStackTraceElements = innerException.getStackTrace();
+            if (innerStackTraceElements != null) {
+                for (final StackTraceElement ste : innerStackTraceElements) {
                     builder.append(System.lineSeparator());
                     builder.append(ste.toString());
                 }
+            }
         }
 
         return builder.toString();
