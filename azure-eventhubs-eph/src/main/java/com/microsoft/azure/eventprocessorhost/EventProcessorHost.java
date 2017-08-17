@@ -6,6 +6,8 @@
 package com.microsoft.azure.eventprocessorhost;
 
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.ExceptionUtil;
+import com.microsoft.azure.eventhubs.StringUtil;
 import com.microsoft.azure.storage.StorageException;
 
 import java.net.URISyntaxException;
@@ -668,24 +670,7 @@ public final class EventProcessorHost
     
     void logWithHost(Level logLevel, String logMessage, Throwable e)
     {
-    	log(logLevel, "host " + this.hostName + ": " + logMessage);
-    	logWithHost(logLevel, "Caught " + e.toString());
-    	StackTraceElement[] stack = e.getStackTrace();
-    	for (int i = 0; i < stack.length; i++)
-    	{
-    		logWithHost(logLevel, stack[i].toString());
-    	}
-    	Throwable cause = e.getCause();
-    	if ((cause != null) && (cause instanceof Exception))
-    	{
-    		Exception inner = (Exception)cause;
-    		logWithHost(logLevel, "Inner exception " + inner.toString());
-    		stack = inner.getStackTrace();
-        	for (int i = 0; i < stack.length; i++)
-        	{
-        		logWithHost(logLevel, stack[i].toString());
-        	}
-    	}
+    	logWithHost(logLevel, ExceptionUtil.toStackTraceString(e, logMessage));
     }
     
     void logWithHostAndPartition(Level logLevel, String partitionId, String logMessage)
@@ -695,24 +680,7 @@ public final class EventProcessorHost
     
     void logWithHostAndPartition(Level logLevel, String partitionId, String logMessage, Throwable e)
     {
-    	logWithHostAndPartition(logLevel, partitionId, logMessage);
-    	logWithHostAndPartition(logLevel, partitionId, "Caught " + e.toString());
-    	StackTraceElement[] stack = e.getStackTrace();
-    	for (int i = 0; i < stack.length; i++)
-    	{
-    		logWithHostAndPartition(logLevel, partitionId, stack[i].toString());
-    	}
-    	Throwable cause = e.getCause();
-    	if ((cause != null) && (cause instanceof Exception))
-    	{
-    		Exception inner = (Exception)cause;
-    		logWithHostAndPartition(logLevel, partitionId, "Inner exception " + inner.toString());
-    		stack = inner.getStackTrace();
-        	for (int i = 0; i < stack.length; i++)
-        	{
-        		logWithHostAndPartition(logLevel, partitionId, stack[i].toString());
-        	}
-    	}
+    	logWithHostAndPartition(logLevel, partitionId, ExceptionUtil.toStackTraceString(e, logMessage));
     }
     
     void logWithHostAndPartition(Level logLevel, PartitionContext context, String logMessage)
