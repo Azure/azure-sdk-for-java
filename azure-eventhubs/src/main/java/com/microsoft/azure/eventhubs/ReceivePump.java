@@ -6,11 +6,12 @@ package com.microsoft.azure.eventhubs;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ReceivePump {
-    private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.EVENTHUB_CLIENT_TRACE);
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ReceivePump.class);
 
     private final IPartitionReceiver receiver;
     private final PartitionReceiveHandler onReceiveHandler;
@@ -42,8 +43,8 @@ public class ReceivePump {
                 isPumpHealthy = false;
                 this.onReceiveHandler.onError(clientException);
 
-                if (TRACE_LOGGER.isLoggable(Level.WARNING)) {
-                    TRACE_LOGGER.log(Level.WARNING, String.format("Receive pump for partition (%s) exiting after receive exception %s", this.receiver.getPartitionId(), clientException.toString()));
+                if (TRACE_LOGGER.isWarnEnabled()) {
+                    TRACE_LOGGER.warn(String.format("Receive pump for partition (%s) exiting after receive exception %s", this.receiver.getPartitionId(), clientException.toString()));
                 }
             }
 
@@ -56,13 +57,14 @@ public class ReceivePump {
                 this.onReceiveHandler.onError(userCodeError);
 
                 if (userCodeError instanceof InterruptedException) {
-                    if (TRACE_LOGGER.isLoggable(Level.FINE)) {
-                        TRACE_LOGGER.log(Level.FINE, String.format("Interrupting receive pump for partition (%s)", this.receiver.getPartitionId()));
+                    if (TRACE_LOGGER.isInfoEnabled()) {
+                        TRACE_LOGGER.info(String.format("Interrupting receive pump for partition (%s)", this.receiver.getPartitionId()));
                     }
 
                     Thread.currentThread().interrupt();
-                } else if (TRACE_LOGGER.isLoggable(Level.SEVERE)) {
-                    TRACE_LOGGER.log(Level.SEVERE, String.format("Receive pump for partition (%s) exiting after user exception %s", this.receiver.getPartitionId(), userCodeError.toString()));
+                } else {
+                    TRACE_LOGGER.error(
+                            String.format("Receive pump for partition (%s) exiting after user exception %s", this.receiver.getPartitionId(), userCodeError.toString()));
                 }
             }
         }

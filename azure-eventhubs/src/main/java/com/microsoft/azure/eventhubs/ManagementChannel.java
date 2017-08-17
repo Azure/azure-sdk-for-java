@@ -6,7 +6,6 @@ package com.microsoft.azure.eventhubs;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.logging.Logger;
 
 import com.microsoft.azure.eventhubs.amqp.AmqpResponseCode;
 import com.microsoft.azure.eventhubs.amqp.IAmqpConnection;
@@ -23,8 +22,7 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
 
 public class ManagementChannel {
-    private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.EVENTHUB_CLIENT_TRACE);
-    
+
     final FaultTolerantObject<RequestResponseChannel> innerChannel;
     final ISessionProvider sessionProvider;
     final IAmqpConnection connectionEventDispatcher;

@@ -16,8 +16,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.qpid.proton.amqp.messaging.DeliveryAnnotations;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -40,7 +41,7 @@ import com.microsoft.azure.eventhubs.amqp.AmqpConstants;
  * @see EventHubClient#createEpochReceiver
  */
 public final class PartitionReceiver extends ClientEntity implements IReceiverSettingsProvider {
-    private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.EVENTHUB_CLIENT_TRACE);
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(PartitionReceiver.class);
     private static final int MINIMUM_PREFETCH_COUNT = 10;
     private static final int MAXIMUM_PREFETCH_COUNT = 999;
 
@@ -403,8 +404,8 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
                 totalMilliSeconds = this.startingDateTime.toEpochMilli();
             } catch (ArithmeticException ex) {
                 totalMilliSeconds = Long.MAX_VALUE;
-                if (TRACE_LOGGER.isLoggable(Level.WARNING)) {
-                    TRACE_LOGGER.log(Level.WARNING,
+                if (TRACE_LOGGER.isWarnEnabled()) {
+                    TRACE_LOGGER.warn(
                             String.format("receiverPath[%s], action[createReceiveLink], warning[starting receiver from epoch+Long.Max]", this.internalReceiver.getReceivePath()));
                 }
             }
@@ -422,7 +423,7 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
                 lastReceivedOffset = this.startingOffset;
             }
 
-            if (TRACE_LOGGER.isLoggable(Level.FINE)) {
+            if (TRACE_LOGGER.isInfoEnabled()) {
                 String logReceivePath = "";
                 if (this.internalReceiver == null) {
                     // During startup, internalReceiver is still null. Need to handle this special case when logging during startup
@@ -431,7 +432,7 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
                 } else {
                     logReceivePath = "receiverPath[" + this.internalReceiver.getReceivePath() + "]";
                 }
-                TRACE_LOGGER.log(Level.FINE, String.format("%s, action[createReceiveLink], offset[%s], offsetInclusive[%s]", logReceivePath, lastReceivedOffset, offsetInclusiveFlag));
+                TRACE_LOGGER.info(String.format("%s, action[createReceiveLink], offset[%s], offsetInclusive[%s]", logReceivePath, lastReceivedOffset, offsetInclusiveFlag));
             }
 
             filter = new UnknownDescribedType(AmqpConstants.STRING_FILTER,

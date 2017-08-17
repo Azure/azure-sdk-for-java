@@ -4,8 +4,8 @@
  */
 package com.microsoft.azure.eventhubs.amqp;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Event;
@@ -15,7 +15,7 @@ import com.microsoft.azure.eventhubs.ClientConstants;
 
 public class ReactorHandler extends BaseHandler {
 
-    private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.EVENTHUB_CLIENT_TRACE);
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ReactorHandler.class);
 
     private ReactorDispatcher reactorDispatcher;
 
@@ -31,9 +31,7 @@ public class ReactorHandler extends BaseHandler {
     @Override
     public void onReactorInit(Event e) {
 
-        if (TRACE_LOGGER.isLoggable(Level.FINE)) {
-            TRACE_LOGGER.log(Level.FINE, "reactor.onReactorInit");
-        }
+        TRACE_LOGGER.info("reactor.onReactorInit");
 
         final Reactor reactor = e.getReactor();
         reactor.setTimeout(ClientConstants.REACTOR_IO_POLL_TIMEOUT);
@@ -42,8 +40,6 @@ public class ReactorHandler extends BaseHandler {
     @Override
     public void onReactorFinal(Event e) {
 
-        if (TRACE_LOGGER.isLoggable(Level.FINE)) {
-            TRACE_LOGGER.log(Level.FINE, "reactor.onReactorFinal");
-        }
+        TRACE_LOGGER.info("reactor.onReactorFinal");
     }
 }

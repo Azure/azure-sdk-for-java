@@ -6,8 +6,9 @@ package com.microsoft.azure.eventhubs.amqp;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -29,7 +30,7 @@ import com.microsoft.azure.eventhubs.StringUtil;
 // amqp_connection/transport related events from reactor
 public final class ConnectionHandler extends BaseHandler {
 
-    private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.EVENTHUB_CLIENT_TRACE);
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ConnectionHandler.class);
 
     private final IAmqpConnection messagingFactory;
 
@@ -74,8 +75,8 @@ public final class ConnectionHandler extends BaseHandler {
     public void onConnectionUnbound(Event event) {
 
         final Connection connection = event.getConnection();
-        if (TRACE_LOGGER.isLoggable(Level.FINE)) {
-            TRACE_LOGGER.log(Level.FINE,
+        if (TRACE_LOGGER.isInfoEnabled()) {
+            TRACE_LOGGER.info(
                     "Connection.onConnectionUnbound: hostname[" + connection.getHostname() + "], state[" + connection.getLocalState() + "], remoteState[" + connection.getRemoteState() + "]");
         }
 
@@ -91,8 +92,8 @@ public final class ConnectionHandler extends BaseHandler {
         final Transport transport = event.getTransport();
         final ErrorCondition condition = transport.getCondition();
 
-        if (TRACE_LOGGER.isLoggable(Level.WARNING)) {
-            TRACE_LOGGER.log(Level.WARNING, "Connection.onTransportClosed: hostname[" + (connection != null ? connection.getHostname() : "n/a") + "], error[" + (condition != null ? condition.getDescription() : "n/a") + "]");
+        if (TRACE_LOGGER.isWarnEnabled()) {
+            TRACE_LOGGER.warn("Connection.onTransportClosed: hostname[" + (connection != null ? connection.getHostname() : "n/a") + "], error[" + (condition != null ? condition.getDescription() : "n/a") + "]");
         }
 
         if (connection != null && connection.getRemoteState() != EndpointState.CLOSED) {
@@ -112,8 +113,8 @@ public final class ConnectionHandler extends BaseHandler {
         final Transport transport = event.getTransport();
         final ErrorCondition condition = transport.getCondition();
 
-        if (TRACE_LOGGER.isLoggable(Level.FINE)) {
-            TRACE_LOGGER.log(Level.FINE, "Connection.onTransportClosed: hostname[" + (connection != null ? connection.getHostname() : "n/a") + "], error[" + (condition != null ? condition.getDescription() : "n/a") + "]");
+        if (TRACE_LOGGER.isInfoEnabled()) {
+            TRACE_LOGGER.info("Connection.onTransportClosed: hostname[" + (connection != null ? connection.getHostname() : "n/a") + "], error[" + (condition != null ? condition.getDescription() : "n/a") + "]");
         }
 
         if (connection != null && connection.getRemoteState() != EndpointState.CLOSED) {
@@ -126,8 +127,8 @@ public final class ConnectionHandler extends BaseHandler {
     @Override
     public void onConnectionRemoteOpen(Event event) {
 
-        if (TRACE_LOGGER.isLoggable(Level.FINE)) {
-            TRACE_LOGGER.log(Level.FINE, "Connection.onConnectionRemoteOpen: hostname[" + event.getConnection().getHostname() + ", " + event.getConnection().getRemoteContainer() + "]");
+        if (TRACE_LOGGER.isInfoEnabled()) {
+            TRACE_LOGGER.info("Connection.onConnectionRemoteOpen: hostname[" + event.getConnection().getHostname() + ", " + event.getConnection().getRemoteContainer() + "]");
         }
 
         this.messagingFactory.onOpenComplete(null);
@@ -139,8 +140,8 @@ public final class ConnectionHandler extends BaseHandler {
         final Connection connection = event.getConnection();
 
         final ErrorCondition error = connection.getCondition();
-        if (TRACE_LOGGER.isLoggable(Level.FINE)) {
-            TRACE_LOGGER.log(Level.FINE, "hostname[" + connection.getHostname() +
+        if (TRACE_LOGGER.isInfoEnabled()) {
+            TRACE_LOGGER.info("hostname[" + connection.getHostname() +
                     (error != null
                             ? "], errorCondition[" + error.getCondition() + ", " + error.getDescription() + "]"
                             : "]"));
@@ -161,8 +162,8 @@ public final class ConnectionHandler extends BaseHandler {
         final Connection connection = event.getConnection();
         final ErrorCondition error = connection.getRemoteCondition();
 
-        if (TRACE_LOGGER.isLoggable(Level.FINE)) {
-            TRACE_LOGGER.log(Level.FINE, "hostname[" + connection.getHostname() +
+        if (TRACE_LOGGER.isInfoEnabled()) {
+            TRACE_LOGGER.info("hostname[" + connection.getHostname() +
                     (error != null
                             ? "], errorCondition[" + error.getCondition() + ", " + error.getDescription() + "]"
                             : "]"));

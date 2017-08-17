@@ -7,10 +7,11 @@ package com.microsoft.azure.eventhubs.amqp;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.BaseHandler;
@@ -26,7 +27,7 @@ import com.microsoft.azure.eventhubs.ClientConstants;
 import com.microsoft.azure.eventhubs.EventHubException;
 
 public class SessionHandler extends BaseHandler {
-    protected static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.EVENTHUB_CLIENT_TRACE);
+    protected static final Logger TRACE_LOGGER = LoggerFactory.getLogger(SessionHandler.class);
 
     private final String entityName;
     private final Consumer<Session> onRemoteSessionOpen;
@@ -64,8 +65,8 @@ public class SessionHandler extends BaseHandler {
                 reactorDispatcher.invoke(ClientConstants.SESSION_OPEN_TIMEOUT_IN_MS, new SessionTimeoutHandler(session));
             } catch (IOException ignore) {
 
-                if (TRACE_LOGGER.isLoggable(Level.SEVERE)) {
-                    TRACE_LOGGER.log(Level.SEVERE, String.format(Locale.US, "entityName[%s], reactorDispatcherError[%s]", this.entityName, ignore.getMessage()));
+                if (TRACE_LOGGER.isWarnEnabled()) {
+                    TRACE_LOGGER.warn(String.format(Locale.US, "entityName[%s], reactorDispatcherError[%s]", this.entityName, ignore.getMessage()));
                 }
 
                 session.close();
@@ -81,8 +82,8 @@ public class SessionHandler extends BaseHandler {
 
     @Override
     public void onSessionRemoteOpen(Event e) {
-        if (TRACE_LOGGER.isLoggable(Level.FINE)) {
-            TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s], sessionIncCapacity[%s], sessionOutgoingWindow[%s]",
+        if (TRACE_LOGGER.isInfoEnabled()) {
+            TRACE_LOGGER.info(String.format(Locale.US, "entityName[%s], sessionIncCapacity[%s], sessionOutgoingWindow[%s]",
                     this.entityName, e.getSession().getIncomingCapacity(), e.getSession().getOutgoingWindow()));
         }
 
@@ -99,16 +100,16 @@ public class SessionHandler extends BaseHandler {
 
     @Override
     public void onSessionLocalClose(Event e) {
-        if (TRACE_LOGGER.isLoggable(Level.FINE)) {
-            TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s], condition[%s]", this.entityName,
+        if (TRACE_LOGGER.isInfoEnabled()) {
+            TRACE_LOGGER.info(String.format(Locale.US, "entityName[%s], condition[%s]", this.entityName,
                     e.getSession().getCondition() == null ? "none" : e.getSession().getCondition().toString()));
         }
     }
 
     @Override
     public void onSessionRemoteClose(Event e) {
-        if (TRACE_LOGGER.isLoggable(Level.FINE)) {
-            TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s], condition[%s]", this.entityName,
+        if (TRACE_LOGGER.isInfoEnabled()) {
+            TRACE_LOGGER.info(String.format(Locale.US, "entityName[%s], condition[%s]", this.entityName,
                     e.getSession().getRemoteCondition() == null ? "none" : e.getSession().getRemoteCondition().toString()));
         }
 
@@ -124,8 +125,8 @@ public class SessionHandler extends BaseHandler {
 
     @Override
     public void onSessionFinal(Event e) {
-        if (TRACE_LOGGER.isLoggable(Level.FINE)) {
-            TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s]", this.entityName));
+        if (TRACE_LOGGER.isInfoEnabled()) {
+            TRACE_LOGGER.info(String.format(Locale.US, "entityName[%s]", this.entityName));
         }
     }
 

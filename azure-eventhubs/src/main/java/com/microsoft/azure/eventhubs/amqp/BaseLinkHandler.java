@@ -4,16 +4,17 @@
  */
 package com.microsoft.azure.eventhubs.amqp;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.apache.qpid.proton.amqp.transport.*;
-import org.apache.qpid.proton.engine.*;
-
-import com.microsoft.azure.eventhubs.ClientConstants;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+import org.apache.qpid.proton.engine.BaseHandler;
+import org.apache.qpid.proton.engine.EndpointState;
+import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.Link;
 
 public class BaseLinkHandler extends BaseHandler {
-    protected static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.EVENTHUB_CLIENT_TRACE);
+    protected static final Logger TRACE_LOGGER = LoggerFactory.getLogger(BaseHandler.class);
 
     private final IAmqpLink underlyingEntity;
 
@@ -25,8 +26,8 @@ public class BaseLinkHandler extends BaseHandler {
     public void onLinkLocalClose(Event event) {
         Link link = event.getLink();
         if (link != null) {
-            if (TRACE_LOGGER.isLoggable(Level.FINE)) {
-                TRACE_LOGGER.log(Level.FINE, String.format("linkName[%s]", link.getName()));
+            if (TRACE_LOGGER.isInfoEnabled()) {
+                TRACE_LOGGER.info(String.format("linkName[%s]", link.getName()));
             }
         }
 
@@ -66,8 +67,8 @@ public class BaseLinkHandler extends BaseHandler {
 
     public void processOnClose(Link link, ErrorCondition condition) {
         if (condition != null) {
-            if (TRACE_LOGGER.isLoggable(Level.FINE)) {
-                TRACE_LOGGER.log(Level.FINE, "linkName[" + link.getName() +
+            if (TRACE_LOGGER.isInfoEnabled()) {
+                TRACE_LOGGER.info("linkName[" + link.getName() +
                         (condition != null ? "], ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]" : "], condition[null]"));
             }
         }

@@ -14,6 +14,7 @@
 	<properties>
 		<proton-j-version>0.19.0</proton-j-version>
 	  	<junit-version>4.12</junit-version>
+		<slf4j-version>1.8.0-alpha2</slf4j-version>
 	</properties>
 	
 	<build>
@@ -45,7 +46,13 @@
 	 	    <version>${junit-version}</version>
 	 	    <scope>test</scope>
 		</dependency>
-	</dependencies>
+		 <dependency>
+			 <groupId>org.slf4j</groupId>
+			 <artifactId>slf4j-api</artifactId>
+			 <version>${slf4j-version}</version>
+		 </dependency>
+
+	 </dependencies>
 	
 	 <modules> 
 	    <module>azure-eventhubs</module>

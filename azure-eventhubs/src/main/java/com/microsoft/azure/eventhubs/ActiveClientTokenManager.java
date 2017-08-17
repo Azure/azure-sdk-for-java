@@ -7,12 +7,13 @@ package com.microsoft.azure.eventhubs;
 import java.time.Duration;
 import java.util.Locale;
 import java.util.concurrent.ScheduledFuture;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ActiveClientTokenManager {
 
-    private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.EVENTHUB_CLIENT_TRACE);
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ActiveClientTokenManager.class);
 
     private ScheduledFuture timer;
 
@@ -57,8 +58,8 @@ public class ActiveClientTokenManager {
                 }
             } else {
 
-                if (TRACE_LOGGER.isLoggable(Level.FINE)) {
-                    TRACE_LOGGER.log(Level.FINE,
+                if (TRACE_LOGGER.isInfoEnabled()) {
+                    TRACE_LOGGER.info(
                             String.format(Locale.US,
                                     "clientEntity[%s] - closing ActiveClientLinkManager", clientEntity.getClientId()));
                 }

@@ -5,7 +5,9 @@
 package com.microsoft.azure.eventhubs.amqp;
 
 import java.util.Locale;
-import java.util.logging.Level;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Event;
@@ -15,6 +17,7 @@ import org.apache.qpid.proton.engine.Receiver;
 // ServiceBus <-> ProtonReactor interaction 
 // handles all recvLink - reactor events
 public final class ReceiveLinkHandler extends BaseLinkHandler {
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ReceiveLinkHandler.class);
     private final IAmqpReceiver amqpReceiver;
     private final Object firstResponse;
     private boolean isFirstResponse;
@@ -33,8 +36,8 @@ public final class ReceiveLinkHandler extends BaseLinkHandler {
         if (link instanceof Receiver) {
             Receiver receiver = (Receiver) link;
 
-            if (TRACE_LOGGER.isLoggable(Level.FINE)) {
-                TRACE_LOGGER.log(Level.FINE,
+            if (TRACE_LOGGER.isInfoEnabled()) {
+                TRACE_LOGGER.info(
                         String.format("linkName[%s], localSource[%s]", receiver.getName(), receiver.getSource()));
             }
         }
@@ -46,8 +49,8 @@ public final class ReceiveLinkHandler extends BaseLinkHandler {
         if (link != null && link instanceof Receiver) {
             Receiver receiver = (Receiver) link;
             if (link.getRemoteSource() != null) {
-                if (TRACE_LOGGER.isLoggable(Level.FINE)) {
-                    TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "linkName[%s], remoteSource[%s]", receiver.getName(), link.getRemoteSource()));
+                if (TRACE_LOGGER.isInfoEnabled()) {
+                    TRACE_LOGGER.info(String.format(Locale.US, "linkName[%s], remoteSource[%s]", receiver.getName(), link.getRemoteSource()));
                 }
 
                 synchronized (this.firstResponse) {
@@ -55,8 +58,8 @@ public final class ReceiveLinkHandler extends BaseLinkHandler {
                     this.amqpReceiver.onOpenComplete(null);
                 }
             } else {
-                if (TRACE_LOGGER.isLoggable(Level.FINE)) {
-                    TRACE_LOGGER.log(Level.FINE,
+                if (TRACE_LOGGER.isInfoEnabled()) {
+                    TRACE_LOGGER.info(
                             String.format(Locale.US, "linkName[%s], remoteTarget[null], remoteSource[null], action[waitingForError]", receiver.getName()));
                 }
             }
@@ -82,8 +85,8 @@ public final class ReceiveLinkHandler extends BaseLinkHandler {
             this.amqpReceiver.onReceiveComplete(delivery);
         }
 
-        if (TRACE_LOGGER.isLoggable(Level.FINEST) && receiveLink != null) {
-            TRACE_LOGGER.log(Level.FINEST,
+        if (TRACE_LOGGER.isTraceEnabled() && receiveLink != null) {
+            TRACE_LOGGER.trace(
                     String.format(Locale.US, "linkName[%s], updatedLinkCredit[%s], remoteCredit[%s], remoteCondition[%s], delivery.isPartial[%s]",
                             receiveLink.getName(), receiveLink.getCredit(), receiveLink.getRemoteCredit(), receiveLink.getRemoteCondition(), delivery.isPartial()));
         }
