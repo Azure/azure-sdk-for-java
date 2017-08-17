@@ -45,17 +45,17 @@ public class MockHttpResponse extends HttpResponse {
     }
 
     @Override
-    public Single<? extends InputStream> getBodyAsInputStreamAsync() {
+    public Single<? extends InputStream> bodyAsInputStreamAsync() {
         return Single.just(new ByteArrayInputStream(byteArray));
     }
 
     @Override
-    public Single<byte[]> getBodyAsByteArrayAsync() {
+    public Single<byte[]> bodyAsByteArrayAsync() {
         return Single.just(byteArray);
     }
 
     @Override
-    public Single<String> getBodyAsStringAsync() {
+    public Single<String> bodyAsStringAsync() {
         return Single.just(string);
     }
 }

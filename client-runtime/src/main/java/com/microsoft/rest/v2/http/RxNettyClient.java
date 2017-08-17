@@ -20,29 +20,29 @@ public class RxNettyClient extends HttpClient {
     public Single<? extends HttpResponse> sendRequestAsync(HttpRequest request) {
         URI uri;
         try {
-            uri = new URI(request.getURL());
+            uri = new URI(request.url());
         } catch (URISyntaxException e) {
             return Single.error(e);
         }
 
         Map<String, Set<Object>> rxnHeaders = new HashMap<>();
-        for (HttpHeader header : request.getHeaders()) {
-            rxnHeaders.put(header.getName(), Collections.<Object>singleton(header.getValue()));
+        for (HttpHeader header : request.headers()) {
+            rxnHeaders.put(header.name(), Collections.<Object>singleton(header.value()));
         }
 
-        String mimeType = request.getMIMEType();
+        String mimeType = request.mimeType();
         if (mimeType != null) {
             rxnHeaders.put("Content-Type", Collections.<Object>singleton(mimeType));
         }
 
-        String body = request.getBody();
+        String body = request.body();
         if (body != null) {
             rxnHeaders.put("Content-Length", Collections.<Object>singleton(String.valueOf(body.length())));
         }
 
         HttpClientRequest<ByteBuf, ByteBuf> rxnReq = io.reactivex.netty.protocol.http.client.HttpClient
                 .newClient(uri.getHost(), 80)
-                .createRequest(HttpMethod.valueOf(request.getHttpMethod()), uri.toASCIIString())
+                .createRequest(HttpMethod.valueOf(request.httpMethod()), uri.toASCIIString())
                 .addHeaders(rxnHeaders);
 
         Observable<HttpClientResponse<ByteBuf>> obsResponse = rxnReq;

@@ -8,7 +8,7 @@ public class EncodedParameterTests {
     @Test
     public void constructor() {
         final EncodedParameter ep = new EncodedParameter("ABC", "123");
-        assertEquals("ABC", ep.getName());
-        assertEquals("123", ep.getEncodedValue());
+        assertEquals("ABC", ep.name());
+        assertEquals("123", ep.encodedValue());
     }
 }

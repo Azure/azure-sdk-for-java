@@ -61,7 +61,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     public String get(String headerName) {
         final String headerKey = headerName.toLowerCase();
         final HttpHeader header = headers.get(headerKey);
-        return header == null ? null : header.getValue();
+        return header == null ? null : header.value();
     }
 
     @Override

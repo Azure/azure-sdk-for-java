@@ -6,10 +6,9 @@
 
 package com.microsoft.rest.v2.http;
 
-import rx.Single;
-
 import java.io.IOException;
 import java.io.InputStream;
+import rx.Single;
 
 /**
  * This class contains all of the details necessary for reacting to a HTTP response from a
@@ -22,8 +21,8 @@ public abstract class HttpResponse {
      * @return This response object's body as an InputStream. If this response object doesn't have a
      * body, then null will be returned.
      */
-    public InputStream getBodyAsInputStream() {
-        return getBodyAsInputStreamAsync().toBlocking().value();
+    public InputStream bodyAsInputStream() {
+        return bodyAsInputStreamAsync().toBlocking().value();
     }
 
     /**
@@ -32,7 +31,7 @@ public abstract class HttpResponse {
      * @return This response object's body as an InputStream. If this response object doesn't have a
      * body, then null will be returned.
      */
-    public abstract Single<? extends InputStream> getBodyAsInputStreamAsync();
+    public abstract Single<? extends InputStream> bodyAsInputStreamAsync();
 
     /**
      * Get this response object's body as a byte[]. If this response object doesn't have a body,
@@ -41,8 +40,8 @@ public abstract class HttpResponse {
      * then null will be returned.
      * @throws IOException On network error.
      */
-    public byte[] getBodyAsByteArray() throws IOException {
-        return getBodyAsByteArrayAsync().toBlocking().value();
+    public byte[] bodyAsByteArray() throws IOException {
+        return bodyAsByteArrayAsync().toBlocking().value();
     }
 
     /**
@@ -51,7 +50,7 @@ public abstract class HttpResponse {
      * @return This response object's body as a byte[]. If this response object doesn't have a body,
      * then null will be returned.
      */
-    public abstract Single<byte[]> getBodyAsByteArrayAsync();
+    public abstract Single<byte[]> bodyAsByteArrayAsync();
 
     /**
      * Get this response object's body as a string. If this response object doesn't have a body,
@@ -60,8 +59,8 @@ public abstract class HttpResponse {
      * then null will be returned.
      * @throws IOException On network or serialization error.
      */
-    public String getBodyAsString() throws IOException {
-        return getBodyAsStringAsync().toBlocking().value();
+    public String bodyAsString() throws IOException {
+        return bodyAsStringAsync().toBlocking().value();
     }
 
     /**
@@ -70,5 +69,5 @@ public abstract class HttpResponse {
      * @return This response object's body as a string. If this response object doesn't have a body,
      * then null will be returned.
      */
-    public abstract Single<String> getBodyAsStringAsync();
+    public abstract Single<String> bodyAsStringAsync();
 }
