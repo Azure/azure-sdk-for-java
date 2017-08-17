@@ -44,24 +44,22 @@ import java.lang.reflect.Proxy;
  * TODO: Convert this to RxNetty and finish.
  */
 public final class RestProxy implements InvocationHandler {
-    private final String host;
     private final HttpClient httpClient;
     private final SerializerAdapter<?> serializer;
-    private final SwaggerInterfaceParser interfaceDetails;
+    private final SwaggerInterfaceParser interfaceParser;
 
-    private RestProxy(String host, HttpClient httpClient, SerializerAdapter<?> serializer, SwaggerInterfaceParser interfaceDetails) {
-        this.host = host;
+    private RestProxy(HttpClient httpClient, SerializerAdapter<?> serializer, SwaggerInterfaceParser interfaceParser) {
         this.httpClient = httpClient;
         this.serializer = serializer;
-        this.interfaceDetails = interfaceDetails;
+        this.interfaceParser = interfaceParser;
     }
 
     @Override
     public Object invoke(Object proxy, final Method method, Object[] args) throws Throwable {
         final String methodName = method.getName();
-        final SwaggerMethodProxyDetails methodDetails = interfaceDetails.getMethodProxyDetails(methodName);
+        final SwaggerMethodProxyDetails methodDetails = interfaceParser.getMethodProxyDetails(methodName);
 
-        final String actualHost = methodDetails.applyHostSubstitutions(host, args);
+        final String actualHost = methodDetails.applyHostSubstitutions(interfaceParser.host(), args);
         final String[] hostParts = actualHost.split("://");
         final String actualPath = methodDetails.getSubstitutedPath(args);
 
@@ -176,17 +174,11 @@ public final class RestProxy implements InvocationHandler {
      */
     @SuppressWarnings("unchecked")
     public static <A> A create(Class<A> swaggerInterface, HttpClient httpClient, SerializerAdapter<?> serializer) {
-        final SwaggerInterfaceParser interfaceProxyDetails = new SwaggerInterfaceParser(swaggerInterface);
-
-        String host = null;
-        final Host hostAnnotation = swaggerInterface.getAnnotation(Host.class);
-        if (hostAnnotation != null) {
-            host = hostAnnotation.value();
-        }
+        final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(swaggerInterface);
 
         final Method[] declaredMethods = swaggerInterface.getDeclaredMethods();
         for (Method method : declaredMethods) {
-            final SwaggerMethodProxyDetails methodProxyDetails = interfaceProxyDetails.getMethodProxyDetails(method.getName());
+            final SwaggerMethodProxyDetails methodProxyDetails = interfaceParser.getMethodProxyDetails(method.getName());
 
             if (method.isAnnotationPresent(GET.class)) {
                 methodProxyDetails.setHttpMethodAndRelativePath("GET", method.getAnnotation(GET.class).value());
@@ -270,7 +262,7 @@ public final class RestProxy implements InvocationHandler {
             }
         }
 
-        RestProxy restProxy = new RestProxy(host, httpClient, serializer, interfaceProxyDetails);
+        RestProxy restProxy = new RestProxy(httpClient, serializer, interfaceParser);
         return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class[]{swaggerInterface}, restProxy);
     }
 }
