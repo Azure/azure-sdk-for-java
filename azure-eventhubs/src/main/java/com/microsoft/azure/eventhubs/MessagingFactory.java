@@ -14,8 +14,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledFuture;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.BaseHandler;
@@ -46,7 +47,7 @@ import com.microsoft.azure.eventhubs.amqp.SessionHandler;
 public class MessagingFactory extends ClientEntity implements IAmqpConnection, ISessionProvider {
     public static final Duration DefaultOperationTimeout = Duration.ofSeconds(60);
 
-    private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.EVENTHUB_CLIENT_TRACE);
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(MessagingFactory.class);
     private final String hostName;
     private final CompletableFuture<Void> closeTask;
     private final ConnectionHandler connectionHandler;
@@ -276,7 +277,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
                     this.startReactor(new ReactorHandler());
                 }
             } catch (IOException e) {
-                TRACE_LOGGER.log(Level.SEVERE, ExceptionUtil.toStackTraceString(e, "Re-starting reactor failed with error"));
+                TRACE_LOGGER.error(ExceptionUtil.toStackTraceString(e, "Re-starting reactor failed with error"));
 
                 this.onReactorError(cause);
             }
@@ -371,8 +372,8 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
         }
 
         public void run() {
-            if (TRACE_LOGGER.isLoggable(Level.FINE)) {
-                TRACE_LOGGER.log(Level.FINE, "starting reactor instance.");
+            if (TRACE_LOGGER.isInfoEnabled()) {
+                TRACE_LOGGER.info("starting reactor instance.");
             }
 
             try {
@@ -387,8 +388,8 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
                     cause = handlerException;
                 }
 
-                if (TRACE_LOGGER.isLoggable(Level.WARNING)) {
-                    TRACE_LOGGER.log(Level.WARNING,
+                if (TRACE_LOGGER.isWarnEnabled()) {
+                    TRACE_LOGGER.warn(
                             ExceptionUtil.toStackTraceString(handlerException, "UnHandled exception while processing events in reactor:"));
                 }
 

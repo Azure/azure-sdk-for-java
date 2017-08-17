@@ -19,8 +19,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -47,7 +48,7 @@ import com.microsoft.azure.eventhubs.amqp.ReceiveLinkHandler;
  * translates event-driven reactor model into async receive Api
  */
 public final class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErrorContextProvider {
-    private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.EVENTHUB_CLIENT_TRACE);
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(MessageReceiver.class);
     private static final int MIN_TIMEOUT_DURATION_MILLIS = 20;
 
     private final ConcurrentLinkedQueue<ReceiveWorkItem> pendingReceives;
@@ -135,8 +136,8 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
                                     new IOperationResult<Void, Exception>() {
                                         @Override
                                         public void onComplete(Void result) {
-                                            if (TRACE_LOGGER.isLoggable(Level.FINE)) {
-                                                TRACE_LOGGER.log(Level.FINE,
+                                            if (TRACE_LOGGER.isDebugEnabled()) {
+                                                TRACE_LOGGER.debug(
                                                         String.format(Locale.US,
                                                                 "path[%s], linkName[%s] - token renewed", receivePath, receiveLink.getName()));
                                             }
@@ -144,16 +145,16 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
 
                                         @Override
                                         public void onError(Exception error) {
-                                            if (TRACE_LOGGER.isLoggable(Level.WARNING)) {
-                                                TRACE_LOGGER.log(Level.WARNING,
+                                            if (TRACE_LOGGER.isInfoEnabled()) {
+                                                TRACE_LOGGER.info(
                                                         String.format(Locale.US,
                                                                 "path[%s], linkName[%s], tokenRenewalFailure[%s]", receivePath, receiveLink.getName(), error.getMessage()));
                                             }
                                         }
                                     });
                         } catch (IOException | NoSuchAlgorithmException | InvalidKeyException | RuntimeException exception) {
-                            if (TRACE_LOGGER.isLoggable(Level.WARNING)) {
-                                TRACE_LOGGER.log(Level.WARNING,
+                            if (TRACE_LOGGER.isInfoEnabled()) {
+                                TRACE_LOGGER.info(
                                         String.format(Locale.US,
                                                 "path[%s], linkName[%s], tokenRenewalScheduleFailure[%s]", receivePath, receiveLink.getName(), exception.getMessage()));
                             }
@@ -300,8 +301,8 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
             this.nextCreditToFlow = 0;
             this.sendFlow(this.prefetchCount - this.prefetchedMessages.size());
 
-            if (TRACE_LOGGER.isLoggable(Level.FINE)) {
-                TRACE_LOGGER.log(Level.FINE, String.format("receiverPath[%s], linkname[%s], updated-link-credit[%s], sentCredits[%s]",
+            if (TRACE_LOGGER.isInfoEnabled()) {
+                TRACE_LOGGER.info(String.format("receiverPath[%s], linkname[%s], updated-link-credit[%s], sentCredits[%s]",
                         this.receivePath, this.receiveLink.getName(), this.receiveLink.getCredit(), this.prefetchCount));
             }
         } else {
@@ -518,8 +519,8 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
             this.receiveLink.flow(tempFlow);
             this.nextCreditToFlow = 0;
 
-            if (TRACE_LOGGER.isLoggable(Level.FINE)) {
-                TRACE_LOGGER.log(Level.FINE, String.format("receiverPath[%s], linkname[%s], updated-link-credit[%s], sentCredits[%s], ThreadId[%s]",
+            if (TRACE_LOGGER.isDebugEnabled()) {
+                TRACE_LOGGER.debug(String.format("receiverPath[%s], linkname[%s], updated-link-credit[%s], sentCredits[%s], ThreadId[%s]",
                         this.receivePath, this.receiveLink.getName(), this.receiveLink.getCredit(), tempFlow, Thread.currentThread().getId()));
             }
         }
@@ -541,8 +542,8 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
                             final Exception operationTimedout = new TimeoutException(
                                     String.format(Locale.US, "%s operation on ReceiveLink(%s) to path(%s) timed out at %s.", "Open", link.getName(), MessageReceiver.this.receivePath, ZonedDateTime.now()),
                                     lastReportedLinkError);
-                            if (TRACE_LOGGER.isLoggable(Level.WARNING)) {
-                                TRACE_LOGGER.log(Level.WARNING,
+                            if (TRACE_LOGGER.isWarnEnabled()) {
+                                TRACE_LOGGER.warn(
                                         String.format(Locale.US, "receiverPath[%s], linkName[%s], %s call timedout", MessageReceiver.this.receivePath, link.getName(), "Open"),
                                         operationTimedout);
                             }
@@ -567,8 +568,8 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
                             }
 
                             final Exception operationTimedout = new TimeoutException(String.format(Locale.US, "%s operation on Receive Link(%s) timed out at %s", "Close", link.getName(), ZonedDateTime.now()));
-                            if (TRACE_LOGGER.isLoggable(Level.WARNING)) {
-                                TRACE_LOGGER.log(Level.WARNING,
+                            if (TRACE_LOGGER.isInfoEnabled()) {
+                                TRACE_LOGGER.info(
                                         String.format(Locale.US, "receiverPath[%s], linkName[%s], %s call timedout", MessageReceiver.this.receivePath, link.getName(), "Close"),
                                         operationTimedout);
                             }

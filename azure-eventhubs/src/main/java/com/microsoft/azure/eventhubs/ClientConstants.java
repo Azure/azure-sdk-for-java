@@ -40,8 +40,6 @@ public final class ClientConstants {
 
     public final static int DEFAULT_MAX_RETRY_COUNT = 10;
 
-    public final static String EVENTHUB_CLIENT_TRACE = "eventhub.trace";
-
     public final static boolean DEFAULT_IS_TRANSIENT = true;
 
     public final static int SESSION_OPEN_TIMEOUT_IN_MS = 15000;

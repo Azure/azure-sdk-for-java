@@ -24,8 +24,9 @@ import java.util.PriorityQueue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -59,7 +60,7 @@ import com.microsoft.azure.eventhubs.amqp.SendLinkHandler;
  * translates event-driven reactor model into async send Api
  */
 public class MessageSender extends ClientEntity implements IAmqpSender, IErrorContextProvider {
-    private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.EVENTHUB_CLIENT_TRACE);
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(MessageSender.class);
     private static final String SEND_TIMED_OUT = "Send operation timed out";
 
     private final MessagingFactory underlyingFactory;
@@ -152,26 +153,23 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
                                     new IOperationResult<Void, Exception>() {
                                         @Override
                                         public void onComplete(Void result) {
-                                            if (TRACE_LOGGER.isLoggable(Level.FINE)) {
-                                                TRACE_LOGGER.log(Level.FINE,
-                                                        String.format(Locale.US,
-                                                                "path[%s], linkName[%s] - token renewed", sendPath, sendLink.getName()));
+                                            if (TRACE_LOGGER.isDebugEnabled()) {
+                                                TRACE_LOGGER.debug(String.format(Locale.US,
+                                                        "path[%s], linkName[%s] - token renewed", sendPath, sendLink.getName()));
                                             }
                                         }
 
                                         @Override
                                         public void onError(Exception error) {
-                                            if (TRACE_LOGGER.isLoggable(Level.WARNING)) {
-                                                TRACE_LOGGER.log(Level.WARNING,
-                                                        String.format(Locale.US,
+                                            if (TRACE_LOGGER.isInfoEnabled()) {
+                                                TRACE_LOGGER.info(String.format(Locale.US,
                                                                 "path[%s], linkName[%s] - tokenRenewalFailure[%s]", sendPath, sendLink.getName(), error.getMessage()));
                                             }
                                         }
                                     });
                         } catch (IOException | NoSuchAlgorithmException | InvalidKeyException | RuntimeException exception) {
-                            if (TRACE_LOGGER.isLoggable(Level.WARNING)) {
-                                TRACE_LOGGER.log(Level.WARNING,
-                                        String.format(Locale.US,
+                            if (TRACE_LOGGER.isWarnEnabled()) {
+                                TRACE_LOGGER.warn(String.format(Locale.US,
                                                 "path[%s], linkName[%s] - tokenRenewalScheduleFailure[%s]", sendPath, sendLink.getName(), exception.getMessage()));
                             }
                         }
@@ -457,9 +455,11 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
         final DeliveryState outcome = delivery.getRemoteState();
         final String deliveryTag = new String(delivery.getTag());
 
-        if (TRACE_LOGGER.isLoggable(Level.FINEST))
-            TRACE_LOGGER.log(Level.FINEST,
-                    String.format(Locale.US, "path[%s], linkName[%s], deliveryTag[%s]", MessageSender.this.sendPath, this.sendLink.getName(), deliveryTag));
+        if (TRACE_LOGGER.isTraceEnabled())
+            TRACE_LOGGER.trace(
+                    String.format(
+                            Locale.US,
+                            "path[%s], linkName[%s], deliveryTag[%s]", MessageSender.this.sendPath, this.sendLink.getName(), deliveryTag));
 
         final ReplayableWorkItem<Void> pendingSendWorkItem = this.pendingSendsData.remove(deliveryTag);
 
@@ -520,8 +520,8 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
                 this.cleanupFailedSend(pendingSendWorkItem, new EventHubException(false, outcome.toString()));
             }
         } else {
-            if (TRACE_LOGGER.isLoggable(Level.FINE))
-                TRACE_LOGGER.log(Level.FINE,
+            if (TRACE_LOGGER.isDebugEnabled())
+                TRACE_LOGGER.debug(
                         String.format(Locale.US, "path[%s], linkName[%s], delivery[%s] - mismatch (or send timedout)", this.sendPath, this.sendLink.getName(), deliveryTag));
         }
     }
@@ -629,8 +629,8 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
                                     String.format(Locale.US, "Open operation on SendLink(%s) on Entity(%s) timed out at %s.", link.getName(), MessageSender.this.getSendPath(), ZonedDateTime.now().toString()),
                                     lastErrorReportedAt.isAfter(Instant.now().minusSeconds(ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS)) ? lastReportedError : null);
 
-                            if (TRACE_LOGGER.isLoggable(Level.WARNING)) {
-                                TRACE_LOGGER.log(Level.WARNING,
+                            if (TRACE_LOGGER.isWarnEnabled()) {
+                                TRACE_LOGGER.warn(
                                         String.format(Locale.US, "path[%s], linkName[%s], open call timedout", MessageSender.this.sendPath, MessageSender.this.sendLink.getName()),
                                         operationTimedout);
                             }
@@ -672,9 +672,9 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
         if (creditIssued <= 0)
             return;
 
-        if (TRACE_LOGGER.isLoggable(Level.FINE)) {
+        if (TRACE_LOGGER.isDebugEnabled()) {
             int numberOfSendsWaitingforCredit = this.pendingSends.size();
-            TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "path[%s], linkName[%s], remoteLinkCredit[%s], pendingSendsWaitingForCredit[%s], pendingSendsWaitingDelivery[%s]",
+            TRACE_LOGGER.debug(String.format(Locale.US, "path[%s], linkName[%s], remoteLinkCredit[%s], pendingSendsWaitingForCredit[%s], pendingSendsWaitingDelivery[%s]",
                     this.sendPath, this.sendLink.getName(), creditIssued, numberOfSendsWaitingforCredit, this.pendingSendsData.size() - numberOfSendsWaitingforCredit));
         }
 
@@ -741,8 +741,8 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
                     this.linkCredit--;
                     sendData.setWaitingForAck();
                 } else {
-                    if (TRACE_LOGGER.isLoggable(Level.FINE)) {
-                        TRACE_LOGGER.log(Level.FINE,
+                    if (TRACE_LOGGER.isDebugEnabled()) {
+                        TRACE_LOGGER.debug(
                                 String.format(Locale.US, "path[%s], linkName[%s], deliveryTag[%s], sentMessageSize[%s], payloadActualSize[%s] - sendlink advance failed",
                                         this.sendPath, this.sendLink.getName(), deliveryTag, sentMsgSize, sendData.getEncodedMessageSize()));
                     }
@@ -758,8 +758,8 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
                 }
             } else {
                 if (deliveryTag != null) {
-                    if (TRACE_LOGGER.isLoggable(Level.FINE)) {
-                        TRACE_LOGGER.log(Level.FINE,
+                    if (TRACE_LOGGER.isDebugEnabled()) {
+                        TRACE_LOGGER.debug(
                                 String.format(Locale.US, "path[%s], linkName[%s], deliveryTag[%s] - sendData not found for this delivery.",
                                         this.sendPath, this.sendLink.getName(), deliveryTag));
                     }
@@ -810,8 +810,8 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
                             }
 
                             final Exception operationTimedout = new TimeoutException(String.format(Locale.US, "%s operation on Receive Link(%s) timed out at %s", "Close", link.getName(), ZonedDateTime.now()));
-                            if (TRACE_LOGGER.isLoggable(Level.WARNING)) {
-                                TRACE_LOGGER.log(Level.WARNING,
+                            if (TRACE_LOGGER.isInfoEnabled()) {
+                                TRACE_LOGGER.info(
                                         String.format(Locale.US, "message recever(linkName: %s, path: %s) %s call timedout", link.getName(), MessageSender.this.sendPath, "Close"),
                                         operationTimedout);
                             }
