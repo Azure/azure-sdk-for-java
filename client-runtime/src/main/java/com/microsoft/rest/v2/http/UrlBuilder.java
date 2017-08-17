@@ -19,7 +19,6 @@ public class UrlBuilder {
     private String query;
 
     /**
-<<<<<<< HEAD
      * Set the scheme/protocol that will be used to build the final URL.
      * @param scheme The setScheme/protocol that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
