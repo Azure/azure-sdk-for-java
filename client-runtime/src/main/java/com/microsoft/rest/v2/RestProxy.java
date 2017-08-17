@@ -8,19 +8,6 @@ package com.microsoft.rest.v2;
 
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.protocol.SerializerAdapter;
-import com.microsoft.rest.v2.annotations.BodyParam;
-import com.microsoft.rest.v2.annotations.DELETE;
-import com.microsoft.rest.v2.annotations.GET;
-import com.microsoft.rest.v2.annotations.HEAD;
-import com.microsoft.rest.v2.annotations.HeaderParam;
-import com.microsoft.rest.v2.annotations.Headers;
-import com.microsoft.rest.v2.annotations.Host;
-import com.microsoft.rest.v2.annotations.HostParam;
-import com.microsoft.rest.v2.annotations.PATCH;
-import com.microsoft.rest.v2.annotations.POST;
-import com.microsoft.rest.v2.annotations.PUT;
-import com.microsoft.rest.v2.annotations.PathParam;
-import com.microsoft.rest.v2.annotations.QueryParam;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpRequest;
@@ -33,7 +20,6 @@ import rx.functions.Func1;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -41,7 +27,6 @@ import java.lang.reflect.Proxy;
 /**
  * This class can be used to create a proxy implementation for a provided Swagger generated
  * interface.
- * TODO: Convert this to RxNetty and finish.
  */
 public final class RestProxy implements InvocationHandler {
     private final HttpClient httpClient;
@@ -56,48 +41,37 @@ public final class RestProxy implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, final Method method, Object[] args) throws Throwable {
-        final String methodName = method.getName();
-        final SwaggerMethodProxyDetails methodDetails = interfaceParser.getMethodProxyDetails(methodName);
-
-        final String actualHost = methodDetails.applyHostSubstitutions(interfaceParser.host(), args);
-        final String[] hostParts = actualHost.split("://");
-        final String actualPath = methodDetails.getSubstitutedPath(args);
+        final SwaggerMethodParser methodParser = interfaceParser.methodParser(method);
 
         final UrlBuilder urlBuilder = new UrlBuilder()
-                .withScheme(hostParts[0])
-                .withHost(hostParts[1])
-                .withPath(actualPath);
+                .withScheme(methodParser.scheme(args))
+                .withHost(methodParser.host(args))
+                .withPath(methodParser.path(args));
 
-        for (EncodedParameter queryParameter : methodDetails.getEncodedQueryParameters(args)) {
+        for (final EncodedParameter queryParameter : methodParser.encodedQueryParameters(args)) {
             urlBuilder.withQueryParameter(queryParameter.name(), queryParameter.encodedValue());
         }
 
         final String url = urlBuilder.toString();
-        final HttpRequest request = new HttpRequest(methodDetails.fullyQualifiedMethodName(), methodDetails.httpMethod(), url);
+        final HttpRequest request = new HttpRequest(methodParser.fullyQualifiedMethodName(), methodParser.httpMethod(), url);
 
-        for (final EncodedParameter headerParameter : methodDetails.getEncodedHeaderParameters(args)) {
-            request.withHeader(headerParameter.name(), headerParameter.encodedValue());
-        }
-
-        for (final HttpHeader header : methodDetails.getHeaders()) {
+        for (final HttpHeader header : methodParser.headers(args)) {
             request.withHeader(header.name(), header.value());
         }
 
-        final Integer bodyContentMethodParameterIndex = methodDetails.bodyContentMethodParameterIndex();
-        if (bodyContentMethodParameterIndex != null) {
-            final Object bodyContentObject = args[bodyContentMethodParameterIndex];
-            if (bodyContentObject != null) {
-                final String bodyContentString = serializer.serialize(bodyContentObject);
-                request.withBody(bodyContentString, "application/json");
-            }
+        final Object bodyContentObject = methodParser.body(args);
+        if (bodyContentObject != null) {
+            final String mimeType = "application/json";
+            final String bodyContentString = serializer.serialize(bodyContentObject);
+            request.withBody(bodyContentString, mimeType);
         }
 
         Object result = null;
-        if (!methodDetails.isAsync()) {
+        if (!methodParser.isAsync()) {
             final HttpResponse response = httpClient.sendRequest(request);
 
-            final Class<?> returnType = methodDetails.returnType();
-            if (returnType.equals(Void.TYPE) || !response.hasBody() || methodDetails.httpMethod().equalsIgnoreCase("HEAD")) {
+            final Class<?> returnType = methodParser.returnType();
+            if (returnType.equals(Void.TYPE) || !response.hasBody() || methodParser.httpMethod().equalsIgnoreCase("HEAD")) {
                 result = null;
             } else if (returnType.isAssignableFrom(InputStream.class)) {
                 result = response.bodyAsInputStream();
@@ -115,29 +89,29 @@ public final class RestProxy implements InvocationHandler {
                 result = asyncResponse.flatMap(new Func1<HttpResponse, Single<?>>() {
                     @Override
                     public Single<?> call(HttpResponse response) {
-                        Single<?> asyncResult;
-                        final Class<?> singleReturnType = methodDetails.returnType();
-                        if (methodDetails.httpMethod().equalsIgnoreCase("HEAD")) {
-                            asyncResult = Single.just(null);
-                        } else if (singleReturnType.isAssignableFrom(InputStream.class)) {
-                            asyncResult = response.bodyAsInputStreamAsync();
-                        } else if (singleReturnType.isAssignableFrom(byte[].class)) {
-                            asyncResult = response.bodyAsByteArrayAsync();
-                        } else {
-                            final Single<String> asyncResponseBodyString = response.bodyAsStringAsync();
-                            asyncResult = asyncResponseBodyString.flatMap(new Func1<String, Single<Object>>() {
-                                @Override
-                                public Single<Object> call(String responseBodyString) {
-                                    try {
-                                        return Single.just(serializer.deserialize(responseBodyString, singleReturnType));
-                                    }
-                                    catch (IOException e) {
-                                        return Single.error(e);
-                                    }
-                                }
-                            });
-                        }
-                        return asyncResult;
+                    Single<?> asyncResult;
+                    final Class<?> singleReturnType = methodParser.returnType();
+                    if (methodParser.httpMethod().equalsIgnoreCase("HEAD")) {
+                        asyncResult = Single.just(null);
+                    } else if (singleReturnType.isAssignableFrom(InputStream.class)) {
+                        asyncResult = response.bodyAsInputStreamAsync();
+                    } else if (singleReturnType.isAssignableFrom(byte[].class)) {
+                        asyncResult = response.bodyAsByteArrayAsync();
+                    } else {
+                        final Single<String> asyncResponseBodyString = response.bodyAsStringAsync();
+                        asyncResult = asyncResponseBodyString.flatMap(new Func1<String, Single<Object>>() {
+                            @Override
+                            public Single<Object> call(String responseBodyString) {
+                            try {
+                                return Single.just(serializer.deserialize(responseBodyString, singleReturnType));
+                            }
+                            catch (IOException e) {
+                                return Single.error(e);
+                            }
+                            }
+                        });
+                    }
+                    return asyncResult;
                     }
                 });
             }
@@ -175,94 +149,7 @@ public final class RestProxy implements InvocationHandler {
     @SuppressWarnings("unchecked")
     public static <A> A create(Class<A> swaggerInterface, HttpClient httpClient, SerializerAdapter<?> serializer) {
         final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(swaggerInterface);
-
-        final Method[] declaredMethods = swaggerInterface.getDeclaredMethods();
-        for (Method method : declaredMethods) {
-            final SwaggerMethodProxyDetails methodProxyDetails = interfaceParser.getMethodProxyDetails(method.getName());
-
-            if (method.isAnnotationPresent(GET.class)) {
-                methodProxyDetails.setHttpMethodAndRelativePath("GET", method.getAnnotation(GET.class).value());
-            }
-            else if (method.isAnnotationPresent(PUT.class)) {
-                methodProxyDetails.setHttpMethodAndRelativePath("PUT", method.getAnnotation(PUT.class).value());
-            }
-            else if (method.isAnnotationPresent(HEAD.class)) {
-                methodProxyDetails.setHttpMethodAndRelativePath("HEAD", method.getAnnotation(HEAD.class).value());
-            }
-            else if (method.isAnnotationPresent(DELETE.class)) {
-                methodProxyDetails.setHttpMethodAndRelativePath("DELETE", method.getAnnotation(DELETE.class).value());
-            }
-            else if (method.isAnnotationPresent(POST.class)) {
-                methodProxyDetails.setHttpMethodAndRelativePath("POST", method.getAnnotation(POST.class).value());
-            }
-            else if (method.isAnnotationPresent(PATCH.class)) {
-                methodProxyDetails.setHttpMethodAndRelativePath("PATCH", method.getAnnotation(PATCH.class).value());
-            }
-
-            if (method.isAnnotationPresent(Headers.class)) {
-                final Headers headersAnnotation = method.getAnnotation(Headers.class);
-                final String[] headers = headersAnnotation.value();
-                for (final String header : headers) {
-                    final int colonIndex = header.indexOf(":");
-                    if (colonIndex >= 0) {
-                        final String headerName = header.substring(0, colonIndex).trim();
-                        if (!headerName.isEmpty()) {
-                            final String headerValue = header.substring(colonIndex + 1).trim();
-                            if (!headerValue.isEmpty()) {
-                                methodProxyDetails.addHeader(headerName, headerValue);
-                            }
-                        }
-                    }
-                }
-            }
-
-            final Annotation[][] allParametersAnnotations = method.getParameterAnnotations();
-            for (int parameterIndex = 0; parameterIndex < allParametersAnnotations.length; ++parameterIndex) {
-                final Annotation[] parameterAnnotations = method.getParameterAnnotations()[parameterIndex];
-                for (final Annotation annotation : parameterAnnotations) {
-                    final Class<? extends Annotation> annotationType = annotation.annotationType();
-                    if (annotationType.equals(HostParam.class)) {
-                        final HostParam hostParamAnnotation = (HostParam) annotation;
-                        methodProxyDetails.addHostSubstitution(hostParamAnnotation.value(), parameterIndex, !hostParamAnnotation.encoded());
-                    }
-                    else if (annotationType.equals(PathParam.class)) {
-                        final PathParam pathParamAnnotation = (PathParam) annotation;
-                        methodProxyDetails.addPathSubstitution(pathParamAnnotation.value(), parameterIndex, !pathParamAnnotation.encoded());
-                    }
-                    else if (annotationType.equals(QueryParam.class)) {
-                        final QueryParam queryParamAnnotation = (QueryParam) annotation;
-                        methodProxyDetails.addQuerySubstitution(queryParamAnnotation.value(), parameterIndex, !queryParamAnnotation.encoded());
-                    }
-                    else if (annotationType.equals(HeaderParam.class)) {
-                        final HeaderParam headerParamAnnotation = (HeaderParam) annotation;
-                        methodProxyDetails.addHeaderSubstitution(headerParamAnnotation.value(), parameterIndex);
-                    }
-                    else if (annotationType.equals(BodyParam.class)) {
-                        methodProxyDetails.setBodyContentMethodParameterIndex(parameterIndex);
-                    }
-                }
-            }
-
-            final Class<?> returnType = method.getReturnType();
-            final boolean isAsync = (returnType == Single.class || returnType == Completable.class);
-            methodProxyDetails.setIsAsync(isAsync);
-            if (!isAsync) {
-                methodProxyDetails.setReturnType(returnType);
-            }
-            else {
-                final String asyncMethodName = method.getName();
-                final String syncMethodName = asyncMethodName.endsWith("Async") ? asyncMethodName.substring(0, asyncMethodName.length() - 5) : asyncMethodName;
-
-                for (Method possibleSyncMethod : declaredMethods) {
-                    if (possibleSyncMethod.getName().equalsIgnoreCase(syncMethodName) && possibleSyncMethod.getReturnType() != Single.class) {
-                        methodProxyDetails.setReturnType(possibleSyncMethod.getReturnType());
-                        break;
-                    }
-                }
-            }
-        }
-
-        RestProxy restProxy = new RestProxy(httpClient, serializer, interfaceParser);
+        final RestProxy restProxy = new RestProxy(httpClient, serializer, interfaceParser);
         return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class[]{swaggerInterface}, restProxy);
     }
 }

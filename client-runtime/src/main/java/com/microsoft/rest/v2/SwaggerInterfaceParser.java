@@ -8,6 +8,7 @@ package com.microsoft.rest.v2;
 
 import com.microsoft.rest.v2.annotations.Host;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ import java.util.Map;
  */
 class SwaggerInterfaceParser {
     private final Class<?> swaggerInterface;
-    private final Map<String, SwaggerMethodProxyDetails> methodDetails = new HashMap<>();
+    private final Map<Method, SwaggerMethodParser> methodParsers = new HashMap<>();
 
     private String host;
 
@@ -31,12 +32,27 @@ class SwaggerInterfaceParser {
     }
 
     /**
+     * Get the method parser that is associated with the provided swaggerMethod. The method parser
+     * can be used to get details about the Swagger REST API call.
+     * @param swaggerMethod The method to generate a parser for.
+     * @return The SwaggerMethodParser associated with the provided swaggerMethod.
+     */
+    public SwaggerMethodParser methodParser(Method swaggerMethod) {
+        SwaggerMethodParser result = methodParsers.get(swaggerMethod);
+        if (result == null) {
+            result = new SwaggerMethodParser(swaggerMethod, host());
+            methodParsers.put(swaggerMethod, result);
+        }
+        return result;
+    }
+
+    /**
      * Parse the desired host that the provided Swagger interface will target with its REST API
      * calls. This value is retrieved from the @Host annotation placed on the Swagger interface. If
      * no @Host annotation exists on the Swagger interface, then null will be returned.
      * @return The value of the @Host annotation, or null if no @Host annotation exists.
      */
-    public String host() {
+    protected String host() {
         if (host == null) {
             final Host hostAnnotation = swaggerInterface.getAnnotation(Host.class);
             if (hostAnnotation != null) {
@@ -44,22 +60,5 @@ class SwaggerInterfaceParser {
             }
         }
         return host;
-    }
-
-    /**
-     * Create and return a SwaggerMethodProxyDetails object that is associated with the provided
-     * methodName. If a SwaggerMethodProxyDetails object is already associated with the provided
-     * methodName, then the existing object will be returned.
-     * @param methodName The name of the method.
-     * @return The SwaggerMethodProxyDetails object that is associated with the provided methodName.
-     */
-    public SwaggerMethodProxyDetails getMethodProxyDetails(String methodName) {
-        SwaggerMethodProxyDetails result = methodDetails.get(methodName);
-        if (result == null) {
-            final String fullyQualifiedMethodName = swaggerInterface.getCanonicalName() + "." + methodName;
-            result = new SwaggerMethodProxyDetails(fullyQualifiedMethodName);
-            methodDetails.put(methodName, result);
-        }
-        return result;
     }
 }
