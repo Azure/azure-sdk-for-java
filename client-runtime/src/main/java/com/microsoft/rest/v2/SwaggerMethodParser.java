@@ -21,6 +21,7 @@ import com.microsoft.rest.v2.annotations.QueryParam;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import rx.Completable;
+import rx.Observable;
 import rx.Single;
 
 import java.io.UnsupportedEncodingException;
@@ -82,7 +83,7 @@ class SwaggerMethodParser {
         }
 
         final Class<?> swaggerMethodReturnType = swaggerMethod.getReturnType();
-        isAsync = (swaggerMethodReturnType == Single.class || swaggerMethodReturnType == Completable.class);
+        isAsync = (swaggerMethodReturnType == Single.class || swaggerMethodReturnType == Completable.class || swaggerMethodReturnType == Observable.class);
         if (!isAsync) {
             returnType = swaggerMethodReturnType;
         }

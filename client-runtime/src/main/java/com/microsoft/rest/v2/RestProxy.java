@@ -15,6 +15,7 @@ import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.OkHttpClient;
 import com.microsoft.rest.v2.http.UrlBuilder;
 import rx.Completable;
+import rx.Observable;
 import rx.Single;
 import rx.functions.Func1;
 
@@ -117,6 +118,9 @@ public final class RestProxy implements InvocationHandler {
             }
             else if (method.getReturnType().equals(Completable.class)) {
                 result = Completable.fromSingle(asyncResponse);
+            }
+            else if (method.getReturnType().equals(Observable.class)) {
+                result = asyncResponse.toObservable();
             }
         }
 
