@@ -1,3 +1,6 @@
+2017.XX.XX Version X.X.X
+ * Fixed a bug when using a SAS token where the token was being omitted from calls to delete a directory in the file service.
+
 2017.07.13 Version 5.4.0
  * Support for 2017-04-17 REST version. Please see our REST API documentation and blogs for information about the related added features.
  * Added ErrorReceivingResponseEvent which fires when a network error occurs before the responseReceivedEvent fires. If the responseReceivedEvent fires sucessfully, this new event will not fire.

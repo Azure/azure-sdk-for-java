@@ -131,7 +131,7 @@ public class FileSasTests {
         file.create(512);
 
         SharedAccessFilePolicy policy = createSharedAccessPolicy(
-                EnumSet.of(SharedAccessFilePermissions.READ, SharedAccessFilePermissions.LIST), 300);
+                EnumSet.of(SharedAccessFilePermissions.READ, SharedAccessFilePermissions.LIST, SharedAccessFilePermissions.DELETE), 300);
 
         // Test directory SAS with a file SAS token from an identically named file
         String sas = file.generateSharedAccessSignature(policy, null);
@@ -148,6 +148,10 @@ public class FileSasTests {
         sas = this.share.generateSharedAccessSignature(policy, null);
         sasDir = new CloudFileDirectory(new URI(dir.getUri().toString() + "?" + sas));
         sasDir.downloadAttributes();
+
+        // Test deleting a directory using a SAS token. The directory must be empty for this request to succeed.
+        file.delete();
+        sasDir.delete();
     }
 
     @Test
