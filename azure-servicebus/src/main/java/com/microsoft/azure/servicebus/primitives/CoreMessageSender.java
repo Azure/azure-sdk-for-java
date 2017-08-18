@@ -137,7 +137,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
                 this.underlyingFactory.obtainRequestResponseLinkAsync(this.sendPath).handleAsync((rrlink, ex) ->
                 {
                     if(ex == null)
-                    {                        
+                    {
                         this.requestResponseLink = rrlink;
                         this.requestResponseLinkCreationFuture.complete(null);
                     }
@@ -158,6 +158,21 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
             return this.requestResponseLinkCreationFuture;
         }
 	}
+	
+	private void closeRequestResponseLink()
+    {
+	    synchronized (this.requestResonseLinkCreationLock)
+        {
+            if(this.requestResponseLinkCreationFuture != null)
+            {
+                this.requestResponseLinkCreationFuture.thenRun(() -> {
+                    this.underlyingFactory.releaseRequestResponseLink(this.sendPath);
+                    this.requestResponseLink = null;
+                });
+                this.requestResponseLinkCreationFuture = null;
+            }
+        }
+    }
 
 	private CoreMessageSender(final MessagingFactory factory, final String sendLinkName, final String senderPath)
 	{
@@ -623,13 +638,13 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 					{
 						if (!CoreMessageSender.this.linkFirstOpen.isDone())
 						{
-						    CoreMessageSender.this.cancelSASTokenRenewTimer();
+						    CoreMessageSender.this.closeInternals(false);
+						    CoreMessageSender.this.setClosed();
+						    
 							Exception operationTimedout = new TimeoutException(
 									String.format(Locale.US, "Open operation on SendLink(%s) on Entity(%s) timed out at %s.",	CoreMessageSender.this.sendLink.getName(), CoreMessageSender.this.getSendPath(), ZonedDateTime.now().toString()),
 									CoreMessageSender.this.lastKnownErrorReportedAt.isAfter(Instant.now().minusSeconds(ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS)) ? CoreMessageSender.this.lastKnownLinkError : null);
-							
 							TRACE_LOGGER.warn(operationTimedout.getMessage());
-
 							ExceptionUtil.completeExceptionally(CoreMessageSender.this.linkFirstOpen, operationTimedout, CoreMessageSender.this, false);
 						}
 					}
@@ -885,37 +900,50 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 	@Override
 	protected CompletableFuture<Void> onClose()
 	{
-		if (!this.getIsClosed())
-		{
-			if (this.sendLink != null && this.sendLink.getLocalState() != EndpointState.CLOSED)
-			{
-				try {
-					this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler() {
-						
-						@Override
-						public void onEvent() {
-							if (CoreMessageSender.this.sendLink != null && CoreMessageSender.this.sendLink.getLocalState() != EndpointState.CLOSED)
-							{
-							    TRACE_LOGGER.info("Closing send link to '{}'", CoreMessageSender.this.sendPath);
-								CoreMessageSender.this.underlyingFactory.deregisterForConnectionError(CoreMessageSender.this.sendLink);
-								CoreMessageSender.this.sendLink.close();
-								CoreMessageSender.this.scheduleLinkCloseTimeout(TimeoutTracker.create(CoreMessageSender.this.operationTimeout));
-							}						
-						}
-					});
-				} catch (IOException e) {
-					AsyncUtil.completeFutureExceptionally(this.linkClose, e);
-				}				
-			}
-			else if (this.sendLink == null || this.sendLink.getRemoteState() == EndpointState.CLOSED)
-			{
-				AsyncUtil.completeFuture(this.linkClose, null);
-			}
-		}
-		
-		this.cancelSASTokenRenewTimer();
-		this.underlyingFactory.releaseRequestResponseLink(this.sendPath);
+		this.closeInternals(true);
 		return this.linkClose;
+	}
+	
+	private void closeInternals(boolean waitForCloseCompletion)
+	{
+	    if (!this.getIsClosed())
+        {
+            if (this.sendLink != null && this.sendLink.getLocalState() != EndpointState.CLOSED)
+            {
+                try {
+                    this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler() {
+                        
+                        @Override
+                        public void onEvent() {
+                            if (CoreMessageSender.this.sendLink != null && CoreMessageSender.this.sendLink.getLocalState() != EndpointState.CLOSED)
+                            {
+                                TRACE_LOGGER.info("Closing send link to '{}'", CoreMessageSender.this.sendPath);
+                                CoreMessageSender.this.underlyingFactory.deregisterForConnectionError(CoreMessageSender.this.sendLink);
+                                CoreMessageSender.this.sendLink.close();
+                                if(waitForCloseCompletion)
+                                {
+                                    CoreMessageSender.this.scheduleLinkCloseTimeout(TimeoutTracker.create(CoreMessageSender.this.operationTimeout));
+                                }
+                                else
+                                {
+                                    AsyncUtil.completeFuture(CoreMessageSender.this.linkClose, null);
+                                }
+                                
+                            }
+                        }
+                    });
+                } catch (IOException e) {
+                    AsyncUtil.completeFutureExceptionally(this.linkClose, e);
+                }
+            }
+            else
+            {
+                AsyncUtil.completeFuture(this.linkClose, null);
+            }
+            
+            this.cancelSASTokenRenewTimer();
+            this.closeRequestResponseLink();
+        }
 	}
 	
 	private static class WeightedDeliveryTag

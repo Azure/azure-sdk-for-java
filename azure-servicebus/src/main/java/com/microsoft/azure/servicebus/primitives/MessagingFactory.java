@@ -598,7 +598,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
     {
 	    if(++this.cbsLinkCreationAttempts > MAX_CBS_LINK_CREATION_ATTEMPTS )
 	    {
-	        Throwable completionEx = this.lastCBSLinkCreationException == null ? new Exception("CBS link creation failed multiple times.") : this.lastCBSLinkCreationException;	        
+	        Throwable completionEx = this.lastCBSLinkCreationException == null ? new Exception("CBS link creation failed multiple times.") : this.lastCBSLinkCreationException;
 	        this.cbsLinkCreationFuture.completeExceptionally(completionEx);
 	        return CompletableFuture.completedFuture(null);     
 	    }

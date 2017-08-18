@@ -258,7 +258,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
             {
                 Throwable cause = ExceptionUtil.extractAsyncCompletionCause(sasTokenEx);
                 TRACE_LOGGER.error("Sending SAS Token failed. ReceivePath:{}", this.receivePath, cause);
-                this.linkOpen.getWork().completeExceptionally(cause);
+                AsyncUtil.completeFutureExceptionally(this.linkOpen.getWork(), cause);
             }
             else
             {
@@ -276,7 +276,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
                 catch (IOException ioException)
                 {
                     this.cancelSASTokenRenewTimer();
-                    this.linkOpen.getWork().completeExceptionally(new ServiceBusException(false, "Failed to create Receiver, see cause for more details.", ioException));
+                    AsyncUtil.completeFutureExceptionally(this.linkOpen.getWork(), new ServiceBusException(false, "Failed to create Receiver, see cause for more details.", ioException));
                 }
             }
             
@@ -314,7 +314,22 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
             }
             
             return this.requestResponseLinkCreationFuture;
-        }        
+        }
+	}
+	
+	private void closeRequestResponseLink()
+	{
+	    synchronized (this.requestResonseLinkCreationLock)
+        {
+            if(this.requestResponseLinkCreationFuture != null)
+            {
+                this.requestResponseLinkCreationFuture.thenRun(() -> {
+                    this.underlyingFactory.releaseRequestResponseLink(this.receivePath);
+                    this.requestResponseLink = null;
+                });
+                this.requestResponseLinkCreationFuture = null;
+            }
+        }
 	}
 	
 	private void createReceiveLink()
@@ -591,7 +606,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		if (exception == null)
 		{			
 			if (this.linkOpen != null && !this.linkOpen.getWork().isDone())
-			{				
+			{
 				AsyncUtil.completeFuture(this.linkOpen.getWork(), this);
 			}
 			
@@ -871,13 +886,13 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 					{
 						if (!linkOpen.getWork().isDone())
 						{
-						    CoreMessageReceiver.this.cancelSASTokenRenewTimer();
+						    CoreMessageReceiver.this.closeInternals(false);
+						    CoreMessageReceiver.this.setClosed();
+						    
 							Exception operationTimedout = new TimeoutException(
 									String.format(Locale.US, "%s operation on ReceiveLink(%s) to path(%s) timed out at %s.", "Open", CoreMessageReceiver.this.receiveLink.getName(), CoreMessageReceiver.this.receivePath, ZonedDateTime.now()),
 									CoreMessageReceiver.this.lastKnownLinkError);
-							
 							TRACE_LOGGER.warn(operationTimedout.getMessage());
-
 							ExceptionUtil.completeExceptionally(linkOpen.getWork(), operationTimedout, CoreMessageReceiver.this, false);
 						}
 					}
@@ -942,39 +957,51 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	@Override
 	protected CompletableFuture<Void> onClose()
 	{
-		if (!this.getIsClosed())
-		{		    
-			if (this.receiveLink != null && this.receiveLink.getLocalState() != EndpointState.CLOSED)
-			{
-				try {
-					this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler() {
-						
-						@Override
-						public void onEvent() {
-							if (CoreMessageReceiver.this.receiveLink != null && CoreMessageReceiver.this.receiveLink.getLocalState() != EndpointState.CLOSED)
-							{
-							    TRACE_LOGGER.info("Closing receive link to '{}'", CoreMessageReceiver.this.receivePath);
-								CoreMessageReceiver.this.receiveLink.close();
-								CoreMessageReceiver.this.underlyingFactory.deregisterForConnectionError(CoreMessageReceiver.this.receiveLink);
-								CoreMessageReceiver.this.scheduleLinkCloseTimeout(TimeoutTracker.create(CoreMessageReceiver.this.operationTimeout));
-							}
-						}
-					});
-				} catch (IOException e) {
-					AsyncUtil.completeFutureExceptionally(this.linkClose, e);
-				}
-			}
-			else
-			{
-				AsyncUtil.completeFuture(this.linkClose, null);
-			}
-		}
-
-		this.cancelSASTokenRenewTimer();
-		this.underlyingFactory.releaseRequestResponseLink(this.receivePath);
-		this.updateStateRequestsTimeoutChecker.cancel(false);
-		this.returnMessagesLoopRunner.cancel(false);
+		this.closeInternals(true);
 		return this.linkClose;
+	}
+	
+	private void closeInternals(boolean waitForCloseCompletion)
+	{
+	    if (!this.getIsClosed())
+        {           
+            if (this.receiveLink != null && this.receiveLink.getLocalState() != EndpointState.CLOSED)
+            {
+                try {
+                    this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler() {
+                        
+                        @Override
+                        public void onEvent() {
+                            if (CoreMessageReceiver.this.receiveLink != null && CoreMessageReceiver.this.receiveLink.getLocalState() != EndpointState.CLOSED)
+                            {
+                                TRACE_LOGGER.info("Closing receive link to '{}'", CoreMessageReceiver.this.receivePath);
+                                CoreMessageReceiver.this.receiveLink.close();
+                                CoreMessageReceiver.this.underlyingFactory.deregisterForConnectionError(CoreMessageReceiver.this.receiveLink);
+                                if(waitForCloseCompletion)
+                                {
+                                    CoreMessageReceiver.this.scheduleLinkCloseTimeout(TimeoutTracker.create(CoreMessageReceiver.this.operationTimeout));
+                                }
+                                else
+                                {
+                                    AsyncUtil.completeFuture(CoreMessageReceiver.this.linkClose, null);
+                                }
+                            }
+                        }
+                    });
+                } catch (IOException e) {
+                    AsyncUtil.completeFutureExceptionally(this.linkClose, e);
+                }
+            }
+            else
+            {
+                AsyncUtil.completeFuture(this.linkClose, null);
+            }
+            
+            this.cancelSASTokenRenewTimer();
+            this.closeRequestResponseLink();
+            this.updateStateRequestsTimeoutChecker.cancel(false);
+            this.returnMessagesLoopRunner.cancel(false);
+        }
 	}
 	
 	public CompletableFuture<Void> completeMessageAsync(byte[] deliveryTag)

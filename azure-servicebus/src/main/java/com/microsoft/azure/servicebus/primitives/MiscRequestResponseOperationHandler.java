@@ -58,7 +58,7 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
                     {
                         if (!creationFuture.isDone())
                         {
-                            requestResponseOperationHandler.cancelSASTokenRenewTimer();
+                            requestResponseOperationHandler.closeInternals();
                             Exception operationTimedout = new TimeoutException(
                                     String.format(Locale.US, "Open operation on CBSLink(%s) on Entity(%s) timed out at %s.", requestResponseOperationHandler.getClientId(), requestResponseOperationHandler.entityPath, ZonedDateTime.now().toString()));                            
                             TRACE_LOGGER.warn(operationTimedout.getMessage());
@@ -68,15 +68,20 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
                     }
                 }
                 , factory.getOperationTimeout()
-                , TimerType.OneTimeRun);       
+                , TimerType.OneTimeRun);
 	    return creationFuture;		
+	}
+	
+	private void closeInternals()
+	{
+	    this.cancelSASTokenRenewTimer();
+        this.closeRequestResponseLink();
 	}
 	
 	@Override
 	protected CompletableFuture<Void> onClose() {
 	    TRACE_LOGGER.trace("Closing MiscRequestResponseOperationHandler");
-	    this.cancelSASTokenRenewTimer();
-	    this.underlyingFactory.releaseRequestResponseLink(this.entityPath);
+	    this.closeInternals();
 	    return CompletableFuture.completedFuture(null);
 	}
 	
@@ -87,7 +92,7 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
             return CompletableFuture.completedFuture(null);
         }
         else
-        {            
+        {
             CompletableFuture<ScheduledFuture<?>> sendTokenFuture = this.underlyingFactory.sendSASTokenAndSetRenewTimer(this.sasTokenAudienceURI, retryOnFailure, () -> this.sendSASTokenAndSetRenewTimer(true));
             return sendTokenFuture.thenAccept((f) -> {this.sasTokenRenewTimerFuture = f; TRACE_LOGGER.debug("Set SAS Token renew timer");});
         }
@@ -107,23 +112,23 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
 	    synchronized (this.requestResonseLinkCreationLock) {
             if(this.requestResponseLinkCreationFuture == null)
             {                
-                this.requestResponseLinkCreationFuture = new CompletableFuture<Void>();                
+                this.requestResponseLinkCreationFuture = new CompletableFuture<Void>();
                 this.underlyingFactory.obtainRequestResponseLinkAsync(this.entityPath).handleAsync((rrlink, ex) ->
                 {
                     if(ex == null)
-                    {                        
+                    {
                         this.requestResponseLink = rrlink;
                         this.requestResponseLinkCreationFuture.complete(null);
                     }
                     else
                     {
-                        Throwable cause = ExceptionUtil.extractAsyncCompletionCause(ex);                        
+                        Throwable cause = ExceptionUtil.extractAsyncCompletionCause(ex);
                         this.requestResponseLinkCreationFuture.completeExceptionally(cause);
                         // Set it to null so next call will retry rr link creation
                         synchronized (this.requestResonseLinkCreationLock)
                         {
                             this.requestResponseLinkCreationFuture = null;
-                        }                        
+                        }
                     }
                     return null;
                 });
@@ -132,6 +137,21 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
             return this.requestResponseLinkCreationFuture;
         }
 	}
+	
+	private void closeRequestResponseLink()
+    {
+	    synchronized (this.requestResonseLinkCreationLock)
+        {
+            if(this.requestResponseLinkCreationFuture != null)
+            {
+                this.requestResponseLinkCreationFuture.thenRun(() -> {
+                    this.underlyingFactory.releaseRequestResponseLink(this.entityPath);
+                    this.requestResponseLink = null;
+                });
+                this.requestResponseLinkCreationFuture = null;
+            }
+        }
+    }
 	
 	public CompletableFuture<Pair<String[], Integer>> getMessageSessionsAsync(Date lastUpdatedTime, int skip, int top, String lastSessionId)
 	{
