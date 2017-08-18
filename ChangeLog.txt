@@ -1,3 +1,6 @@
+2017.XX.XX Version X.X.X
+ * For Standard Storage Accounts only, added the ability to set the tier of individual block blobs. The tier can currently only be set through uploadTier()
+
 2017.07.12 Version 5.4.0
  * Added ErrorReceivingResponseEvent which fires when a network error occurs before the responseReceivedEvent fires. If the responseReceivedEvent fires sucessfully, this new event will not fire.
  * For Premium Accounts only, added support for getting and setting the tier on a page blob. The tier can also be set when creating or copying from an existing page blob.
