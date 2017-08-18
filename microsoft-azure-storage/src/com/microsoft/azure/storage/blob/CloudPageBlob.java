@@ -1611,43 +1611,8 @@ public final class CloudPageBlob extends CloudBlob {
         options = BlobRequestOptions.populateAndApplyDefaults(options, BlobType.PAGE_BLOB, this.blobServiceClient);
 
         ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
-                this.uploadPremiumPageBlobTierImpl(premiumBlobTier, options), options.getRetryPolicyFactory(), opContext);
-    }
-
-    private StorageRequest<CloudBlobClient, CloudBlob, Void> uploadPremiumPageBlobTierImpl(final PremiumPageBlobTier premiumBlobTier,
-            final BlobRequestOptions options) {
-        final StorageRequest<CloudBlobClient, CloudBlob, Void> setTierRequest = new StorageRequest<CloudBlobClient, CloudBlob, Void>(
-                options, this.getStorageUri()) {
-
-            @Override
-            public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlob blob, OperationContext context)
-                    throws Exception {
-                return BlobRequest.setBlobTier(blob.getTransformedAddress(context).getUri(this.getCurrentLocation()), options, context, premiumBlobTier.toString());
-            }
-
-            @Override
-            public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
-                    throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, context);
-            }
-
-            @Override
-            public Void preProcessResponse(CloudBlob blob, CloudBlobClient client, OperationContext context)
-                    throws Exception {
-                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
-                    this.setNonExceptionedRetryableFailure(true);
-                    return null;
-                }
-
-                blob.updateEtagAndLastModifiedFromResponse(this.getConnection());
-                blob.properties.setPremiumPageBlobTier(premiumBlobTier);
-                blob.properties.setBlobTierInferredTier(false);
-
-                return null;
-            }
-
-        };
-
-        return setTierRequest;
+                this.uploadBlobTierImpl(premiumBlobTier.toString(), options), options.getRetryPolicyFactory(), opContext);
+        this.properties.setPremiumPageBlobTier(premiumBlobTier);
+        this.properties.setBlobTierInferredTier(false);
     }
 }
