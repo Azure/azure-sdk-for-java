@@ -6,9 +6,10 @@
 
 package com.microsoft.rest.v2.http;
 
+import rx.Single;
+
 import java.io.IOException;
 import java.io.InputStream;
-import rx.Single;
 
 /**
  * This class contains all of the details necessary for reacting to a HTTP response from a

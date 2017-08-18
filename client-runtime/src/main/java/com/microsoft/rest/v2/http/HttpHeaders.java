@@ -14,13 +14,12 @@ import java.util.Map;
  * A collection of headers that will be applied to a HTTP request.
  */
 public class HttpHeaders implements Iterable<HttpHeader> {
-    private final Map<String, HttpHeader> headers;
+    private final Map<String, HttpHeader> headers = new HashMap<>();
 
     /**
      * Create an empty HttpHeaders object.
      */
     public HttpHeaders() {
-        headers = new HashMap<>();
     }
 
     /**
@@ -28,8 +27,6 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @param headers The map of name to value associations to use as initial headers.
      */
     public HttpHeaders(Map<String, String> headers) {
-        this();
-
         for (final Map.Entry<String, String> header : headers.entrySet()) {
             this.add(header.getKey(), header.getValue());
         }
