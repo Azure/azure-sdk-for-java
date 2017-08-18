@@ -332,6 +332,12 @@ var mappings = {
         'package': 'com.microsoft.azure.management.containerregistry',
         'args': '-FT 1',
     },
+    'containerinstance': {
+        'dir': 'azure-mgmt-containerinstance',
+        'source': 'arm-containerinstance/2017-08-01-preview/swagger/ContainerInstance.json',
+        'package': 'com.microsoft.azure.management.containerinstance',
+        'args': '-FT 1',
+    },
     'scheduler': {
         'dir': 'azure-mgmt-scheduler',
         'source': 'arm-scheduler/2016-03-01/swagger/scheduler.json',
