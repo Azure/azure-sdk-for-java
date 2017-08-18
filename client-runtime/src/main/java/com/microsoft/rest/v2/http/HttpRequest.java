@@ -6,16 +6,13 @@
 
 package com.microsoft.rest.v2.http;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * This class contains all of the details necessary for sending a HTTP request through a HttpClient.
  */
 public class HttpRequest {
     private final String method;
     private final String url;
-    private final Map<String, String> headers = new HashMap<>();
+    private final HttpHeaders headers = new HttpHeaders();
     private String body;
     private String mimeType;
 
@@ -53,13 +50,16 @@ public class HttpRequest {
      * @return This HttpRequest so that multiple operations can be chained together.
      */
     public HttpRequest withHeader(String headerName, String headerValue) {
-        if (!headers.containsKey(headerName)) {
-            headers.put(headerName, headerValue);
-        }
-        else {
-            headers.put(headerName, headers.get(headerName) + "," + headerValue);
-        }
+        headers.add(headerName, headerValue);
         return this;
+    }
+
+    /**
+     * Get the headers for this request.
+     * @return The headers for this request.
+     */
+    public HttpHeaders headers() {
+        return headers;
     }
 
     /**

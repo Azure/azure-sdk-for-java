@@ -6,6 +6,9 @@
 
 package com.microsoft.rest.v2;
 
+import com.microsoft.rest.v2.http.HttpHeader;
+import com.microsoft.rest.v2.http.HttpHeaders;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -22,7 +25,10 @@ class SwaggerMethodProxyDetails {
     private final List<Substitution> pathSubstitutions = new ArrayList<>();
     private final List<Substitution> querySubstitutions = new ArrayList<>();
     private final List<Substitution> headerSubstitutions = new ArrayList<>();
+    private final HttpHeaders headers = new HttpHeaders();
     private Integer bodyContentMethodParameterIndex;
+    private boolean isAsync;
+    private Class<?> returnType;
 
     /**
      * Get the HTTP method that will be used to complete the Swagger method's request.
@@ -173,6 +179,62 @@ class SwaggerMethodProxyDetails {
      */
     public Integer bodyContentMethodParameterIndex() {
         return bodyContentMethodParameterIndex;
+    }
+
+    /**
+     * Add the provided headerName and headerValue to the list of static headers to associated with
+     * the HTTP request.
+     * @param headerName The name of the header.
+     * @param headerValue The value of the header.
+     */
+    public void addHeader(String headerName, String headerValue) {
+        headers.add(headerName, headerValue);
+    }
+
+    /**
+     * Get the static headers that have been added to the HTTP request.
+     * @return The static headers that have been added to the HTTP request.
+     */
+    public Iterable<HttpHeader> getHeaders() {
+        return headers;
+    }
+
+    /**
+     * Set whether or not this object describes an asynchronous method.
+     * @param isAsync Whether or not this object describes an asynchronous method.
+     */
+    public void setIsAsync(boolean isAsync) {
+        this.isAsync = isAsync;
+    }
+
+    /**
+     * Get whether or not this object describes an asynchronous method.
+     * @return Whether or not this object describes an asynchronous method.
+     */
+    public boolean isAsync() {
+        return isAsync;
+    }
+
+    /**
+     * Set the synchronous return type for the method that this object describes. If the method is
+     * asynchronous, then returnType is the type of value that is returned when then asynchronous
+     * operation finishes. In other words, returnType is the parameterized type of the Single object
+     * that is returned from the method.
+     * @param returnType The synchronous return type for the method that this object describes.
+     */
+    public void setReturnType(Class<?> returnType) {
+        this.returnType = returnType;
+    }
+
+    /**
+     * Get the synchronous return type for the method that this object describes. If the method is
+     * asynchronous, then the type of value that is returned when then asynchronous operation
+     * finishes will be returned. In other words, returnType is the parameterized type of the Single
+     * object that is returned from the method.
+     * @return The synchronous return type for the method that this object describes.
+     */
+    public Class<?> getReturnType() {
+        return returnType;
     }
 
     private static String applySubstitutions(String originalValue, Iterable<Substitution> substitutions, Object[] methodArguments) {

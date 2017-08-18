@@ -19,8 +19,8 @@ public class UrlBuilder {
     private String query;
 
     /**
-     * Set the withScheme/protocol that will be used to build the final URL.
-     * @param scheme The withScheme/protocol that will be used to build the final URL.
+     * Set the scheme/protocol that will be used to build the final URL.
+     * @param scheme The setScheme/protocol that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withScheme(String scheme) {
@@ -29,8 +29,8 @@ public class UrlBuilder {
     }
 
     /**
-     * Set the withHost that will be used to build the final URL.
-     * @param host The withHost that will be used to build the final URL.
+     * Set the host that will be used to build the final URL.
+     * @param host The host that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withHost(String host) {

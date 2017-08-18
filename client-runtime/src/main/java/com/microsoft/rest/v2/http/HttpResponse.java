@@ -6,6 +6,8 @@
 
 package com.microsoft.rest.v2.http;
 
+import rx.Single;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -13,12 +15,12 @@ import java.io.InputStream;
  * This class contains all of the details necessary for reacting to a HTTP response from a
  * HttpResponse.
  */
-public interface HttpResponse {
+public abstract class HttpResponse {
     /**
      * Get whether or not this response object has a body.
      * @return Whether or not this response object has a body.
      */
-    boolean hasBody();
+    public abstract boolean hasBody();
 
     /**
      * Get this response object's body as an InputStream. If this response object doesn't have a
@@ -26,23 +28,53 @@ public interface HttpResponse {
      * @return This response object's body as an InputStream. If this response object doesn't have a
      * body, then null will be returned.
      */
-    InputStream bodyAsInputStream();
+    public InputStream bodyAsInputStream() {
+        return bodyAsInputStreamAsync().toBlocking().value();
+    }
+
+    /**
+     * Get this response object's body as an InputStream. If this response object doesn't have a
+     * body, then null will be returned.
+     * @return This response object's body as an InputStream. If this response object doesn't have a
+     * body, then null will be returned.
+     */
+    public abstract Single<? extends InputStream> bodyAsInputStreamAsync();
 
     /**
      * Get this response object's body as a byte[]. If this response object doesn't have a body,
      * then null will be returned.
      * @return This response object's body as a byte[]. If this response object doesn't have a body,
      * then null will be returned.
-     * @throws IOException On network issues.
+     * @throws IOException On network error.
      */
-    byte[] bodyAsByteArray() throws IOException;
+    public byte[] bodyAsByteArray() throws IOException {
+        return bodyAsByteArrayAsync().toBlocking().value();
+    }
+
+    /**
+     * Get this response object's body as a byte[]. If this response object doesn't have a body,
+     * then null will be returned.
+     * @return This response object's body as a byte[]. If this response object doesn't have a body,
+     * then null will be returned.
+     */
+    public abstract Single<byte[]> bodyAsByteArrayAsync();
 
     /**
      * Get this response object's body as a string. If this response object doesn't have a body,
      * then null will be returned.
      * @return This response object's body as a string. If this response object doesn't have a body,
      * then null will be returned.
-     * @throws IOException On network issues.
+     * @throws IOException On network or serialization error.
      */
-    String bodyAsString() throws IOException;
+    public String bodyAsString() throws IOException {
+        return bodyAsStringAsync().toBlocking().value();
+    }
+
+    /**
+     * Get this response object's body as a string. If this response object doesn't have a body,
+     * then null will be returned.
+     * @return This response object's body as a string. If this response object doesn't have a body,
+     * then null will be returned.
+     */
+    public abstract Single<String> bodyAsStringAsync();
 }
