@@ -26,7 +26,7 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(SubscriptionClient.class);
     private static final String SUBSCRIPTIONS_DELIMITER = "/subscriptions/";
 	private final ReceiveMode receiveMode;
-	private String subscriptionPath;
+	private final String subscriptionPath;
 	private MessagingFactory factory;
 	private MessageAndSessionPump messageAndSessionPump;
 	private SessionBrowser sessionBrowser;
@@ -34,16 +34,16 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
 
 	public static final String DEFAULT_RULE_NAME = "$Default";
 
-	private SubscriptionClient(ReceiveMode receiveMode)
+	private SubscriptionClient(ReceiveMode receiveMode, String subscriptionPath)
 	{
 		super(StringUtil.getShortRandomString(), null);		
 		this.receiveMode = receiveMode;
+		this.subscriptionPath = subscriptionPath;
 	}
 	
 	public SubscriptionClient(ConnectionStringBuilder amqpConnectionStringBuilder, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
 	{
-		this(receiveMode);		
-		this.subscriptionPath = amqpConnectionStringBuilder.getEntityPath();
+		this(receiveMode, amqpConnectionStringBuilder.getEntityPath());
 		CompletableFuture<MessagingFactory> factoryFuture = MessagingFactory.createFromConnectionStringBuilderAsync(amqpConnectionStringBuilder);
 		Utils.completeFuture(factoryFuture.thenComposeAsync((f) -> this.createPumpAndBrowserAsync(f)));
 		if(TRACE_LOGGER.isInfoEnabled())
@@ -54,8 +54,7 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
 	
 	SubscriptionClient(MessagingFactory factory, String subscriptionPath, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
 	{
-		this(receiveMode);
-		this.subscriptionPath = subscriptionPath;
+		this(receiveMode, subscriptionPath);
 		Utils.completeFuture(this.createPumpAndBrowserAsync(factory));
 		TRACE_LOGGER.info("Created subscription client to subscripton '{}'", subscriptionPath);
 	}

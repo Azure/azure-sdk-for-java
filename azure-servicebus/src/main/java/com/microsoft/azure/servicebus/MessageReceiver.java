@@ -525,8 +525,17 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
                     if(isMessageLockExpired(msg))
                     {
                         // Message lock already expired. Receive another message
+                        TRACE_LOGGER.warn("Lock of the prefetched message with sequence number '{}' and id '{}' from '{}' already expired", msg.getSequenceNumber(), msg.getMessageId(), this.getEntityPath());
                         Duration remainingWaitTime = serverWaitTime.minus(Duration.between(startTime, Instant.now()));
-                        return this.receiveAsync(remainingWaitTime);
+                        if(remainingWaitTime.isNegative() || remainingWaitTime.isZero())
+                        {
+                            return CompletableFuture.completedFuture(null);
+                        }
+                        else
+                        {
+                            TRACE_LOGGER.debug("Ignored the lock exipred message and receiving again from '{}'", this.getEntityPath());
+                            return this.receiveAsync(remainingWaitTime);
+                        }
                     }
                     else
                     {
@@ -561,6 +570,7 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
                         if(isMessageLockExpired(msg))
                         {
                             // Message lock already expired. remove it
+                            TRACE_LOGGER.warn("Lock of the prefetched message with sequence number '{}' and id '{}' from '{}' already expired. Removing it from the list of messages returned to the caller.", msg.getSequenceNumber(), msg.getMessageId(), this.getEntityPath());
                             msgIterator.remove();
                             areMessagesRemoved = true;
                         }
@@ -581,7 +591,15 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
                         else
                         {
                             Duration remainingWaitTime = serverWaitTime.minus(Duration.between(startTime, Instant.now()));
-                            return this.receiveBatchAsync(maxMessageCount, remainingWaitTime);
+                            if(remainingWaitTime.isNegative() || remainingWaitTime.isZero())
+                            {
+                                return CompletableFuture.completedFuture(null);
+                            }
+                            else
+                            {
+                                TRACE_LOGGER.debug("All messages in the received list are lock expired. So receiving again from '{}'", this.getEntityPath());
+                                return this.receiveBatchAsync(maxMessageCount, remainingWaitTime);
+                            }
                         }
                     }
                     else
