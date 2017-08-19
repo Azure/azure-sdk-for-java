@@ -21,7 +21,7 @@ Note: This page will be maintained regularly to ensure that it is up to date.
     <td>Compute</td>
     <td>Virtual machines and VM extensions<br>Virtual machine scale sets<br>Managed disks</td>
     <td valign="top">Azure container service and registry</td>
-    <td valign="top"></td>
+    <td valign="top">More Azure container registry features</td>
   </tr>
   <tr>
     <td>Storage</td>
