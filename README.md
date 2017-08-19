@@ -45,7 +45,7 @@ Note: This page will be maintained regularly to ensure that it is up to date.
     <td>More services</td>
     <td>Resource Manager<br>Key Vault<br>Redis<br>CDN<br>Batch</td>
     <td valign="top">Web apps<br>Function Apps<br>Service bus<br>Graph RBAC<br>Comsos DB<br>Search</td>
-    <td valign="top">Monitor<br>Scheduler<br>Functions management</td>
+    <td valign="top">Monitor</td>
   </tr>
   <tr>
     <td>Fundamentals</td>
