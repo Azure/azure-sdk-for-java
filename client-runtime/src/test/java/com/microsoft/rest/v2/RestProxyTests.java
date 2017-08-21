@@ -206,8 +206,10 @@ public abstract class RestProxyTests {
         assertEquals("http://httpbin.org/anything", json.url);
         assertNotNull(json.headers);
         final HttpHeaders headers = new HttpHeaders(json.headers);
-        assertEquals("A", headers.get("A"));
-        assertEquals("15", headers.get("B"));
+        assertEquals("A", headers.value("A"));
+        assertArrayEquals(new String[]{"A"}, headers.values("A"));
+        assertEquals("15", headers.value("B"));
+        assertArrayEquals(new String[]{"15"}, headers.values("B"));
     }
 
     @Test
@@ -219,8 +221,10 @@ public abstract class RestProxyTests {
         assertEquals("http://httpbin.org/anything", json.url);
         assertNotNull(json.headers);
         final HttpHeaders headers = new HttpHeaders(json.headers);
-        assertEquals("A", headers.get("A"));
-        assertEquals("15", headers.get("B"));
+        assertEquals("A", headers.value("A"));
+        assertArrayEquals(new String[]{"A"}, headers.values("A"));
+        assertEquals("15", headers.value("B"));
+        assertArrayEquals(new String[]{"15"}, headers.values("B"));
     }
 
     @Host("http://httpbin.org")
@@ -373,11 +377,11 @@ public abstract class RestProxyTests {
     @Host("http://httpbin.org")
     private interface Service13 {
         @GET("anything")
-        @Headers({ "MyHeader:MyHeaderValue" })
+        @Headers({ "MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value" })
         HttpBinJSON get();
 
         @GET("anything")
-        @Headers({ "MyHeader:MyHeaderValue" })
+        @Headers({ "MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value" })
         Single<HttpBinJSON> getAsync();
     }
 
@@ -389,7 +393,10 @@ public abstract class RestProxyTests {
         assertEquals("http://httpbin.org/anything", json.url);
         assertNotNull(json.headers);
         final HttpHeaders headers = new HttpHeaders(json.headers);
-        assertEquals("MyHeaderValue", headers.get("MyHeader"));
+        assertEquals("MyHeaderValue", headers.value("MyHeader"));
+        assertArrayEquals(new String[]{"MyHeaderValue"}, headers.values("MyHeader"));
+        assertEquals("My,Header,Value", headers.value("MyOtherHeader"));
+        assertArrayEquals(new String[]{"My", "Header", "Value"}, headers.values("MyOtherHeader"));
     }
 
     @Test
@@ -401,7 +408,8 @@ public abstract class RestProxyTests {
         assertEquals("http://httpbin.org/anything", json.url);
         assertNotNull(json.headers);
         final HttpHeaders headers = new HttpHeaders(json.headers);
-        assertEquals("MyHeaderValue", headers.get("MyHeader"));
+        assertEquals("MyHeaderValue", headers.value("MyHeader"));
+        assertArrayEquals(new String[]{"MyHeaderValue"}, headers.values("MyHeader"));
     }
 
     // Helpers

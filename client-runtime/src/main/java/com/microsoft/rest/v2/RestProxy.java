@@ -6,6 +6,7 @@
 
 package com.microsoft.rest.v2;
 
+import com.google.common.reflect.TypeToken;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.http.HttpClient;
@@ -15,7 +16,6 @@ import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.OkHttpClient;
 import com.microsoft.rest.v2.http.UrlBuilder;
 import rx.Completable;
-import rx.Observable;
 import rx.Single;
 import rx.functions.Func1;
 
@@ -23,7 +23,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
+import java.lang.reflect.Type;
 
 /**
  * This class can be used to create a proxy implementation for a provided Swagger generated
@@ -67,60 +69,55 @@ public final class RestProxy implements InvocationHandler {
             request.withBody(bodyContentString, mimeType);
         }
 
-        Object result = null;
-        if (!methodParser.isAsync()) {
-            final HttpResponse response = httpClient.sendRequest(request);
-
-            final Class<?> returnType = methodParser.returnType();
-            if (returnType.equals(Void.TYPE) || methodParser.httpMethod().equalsIgnoreCase("HEAD")) {
-                result = null;
-            } else if (returnType.isAssignableFrom(InputStream.class)) {
-                result = response.bodyAsInputStream();
-            } else if (returnType.isAssignableFrom(byte[].class)) {
-                result = response.bodyAsByteArray();
-            } else {
-                final String responseBodyString = response.bodyAsString();
-                result = serializer.deserialize(responseBodyString, returnType);
-            }
-        }
-        else {
+        Object result;
+        final Type returnType = methodParser.returnType();
+        final TypeToken returnTypeToken = TypeToken.of(returnType);
+        if (returnTypeToken.isSubtypeOf(Completable.class)) {
             final Single<? extends HttpResponse> asyncResponse = httpClient.sendRequestAsync(request);
-            final Class<?> methodReturnType = method.getReturnType();
-            if (methodReturnType.equals(Single.class)) {
-                result = asyncResponse.flatMap(new Func1<HttpResponse, Single<?>>() {
-                    @Override
-                    public Single<?> call(HttpResponse response) {
+            result = Completable.fromSingle(asyncResponse);
+        }
+        else if (returnTypeToken.isSubtypeOf(Single.class)) {
+            final Single<? extends HttpResponse> asyncResponse = httpClient.sendRequestAsync(request);
+            result = asyncResponse.flatMap(new Func1<HttpResponse, Single<?>>() {
+                @Override
+                public Single<?> call(HttpResponse response) {
                     Single<?> asyncResult;
-                    final Class<?> singleReturnType = methodParser.returnType();
+                    final Type singleReturnType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
+                    final TypeToken singleReturnTypeToken = TypeToken.of(singleReturnType);
                     if (methodParser.httpMethod().equalsIgnoreCase("HEAD")) {
                         asyncResult = Single.just(null);
-                    } else if (singleReturnType.isAssignableFrom(InputStream.class)) {
+                    } else if (singleReturnTypeToken.isSubtypeOf(InputStream.class)) {
                         asyncResult = response.bodyAsInputStreamAsync();
-                    } else if (singleReturnType.isAssignableFrom(byte[].class)) {
+                    } else if (singleReturnTypeToken.isSubtypeOf(byte[].class)) {
                         asyncResult = response.bodyAsByteArrayAsync();
                     } else {
                         final Single<String> asyncResponseBodyString = response.bodyAsStringAsync();
                         asyncResult = asyncResponseBodyString.flatMap(new Func1<String, Single<Object>>() {
                             @Override
                             public Single<Object> call(String responseBodyString) {
-                            try {
-                                return Single.just(serializer.deserialize(responseBodyString, singleReturnType));
-                            }
-                            catch (IOException e) {
-                                return Single.error(e);
-                            }
+                                try {
+                                    return Single.just(serializer.deserialize(responseBodyString, singleReturnType));
+                                } catch (IOException e) {
+                                    return Single.error(e);
+                                }
                             }
                         });
                     }
                     return asyncResult;
-                    }
-                });
-            }
-            else if (method.getReturnType().equals(Completable.class)) {
-                result = Completable.fromSingle(asyncResponse);
-            }
-            else if (method.getReturnType().equals(Observable.class)) {
-                result = asyncResponse.toObservable();
+                }
+            });
+        }
+        else {
+            final HttpResponse response = httpClient.sendRequest(request);
+            if (returnType.equals(Void.TYPE) || methodParser.httpMethod().equalsIgnoreCase("HEAD")) {
+                result = null;
+            } else if (returnTypeToken.isSubtypeOf(InputStream.class)) {
+                result = response.bodyAsInputStream();
+            } else if (returnTypeToken.isSubtypeOf(byte[].class)) {
+                result = response.bodyAsByteArray();
+            } else {
+                final String responseBodyString = response.bodyAsString();
+                result = serializer.deserialize(responseBodyString, returnType);
             }
         }
 

@@ -20,13 +20,11 @@ import com.microsoft.rest.v2.annotations.PathParam;
 import com.microsoft.rest.v2.annotations.QueryParam;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpHeaders;
-import rx.Completable;
-import rx.Observable;
-import rx.Single;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,11 +44,10 @@ class SwaggerMethodParser {
     private final List<Substitution> headerSubstitutions = new ArrayList<>();
     private final HttpHeaders headers = new HttpHeaders();
     private Integer bodyContentMethodParameterIndex;
-    private Boolean isAsync;
-    private Class<?> returnType;
+    private Type returnType;
 
     /**
-     * Create a new SwaggerMethodProxyDetails object using the provided fully qualified method name.
+     * Create a new SwaggerMethodParser object using the provided fully qualified method name.
      * @param swaggerMethod The Swagger method to parse.
      * @param rawHost The raw host value from the @Host annotation. Before this can be used as the
      *                host value in an HTTP request, it must be processed through the possible host
@@ -82,24 +79,7 @@ class SwaggerMethodParser {
             setHttpMethodAndRelativePath("PATCH", swaggerMethod.getAnnotation(PATCH.class).value());
         }
 
-        final Class<?> swaggerMethodReturnType = swaggerMethod.getReturnType();
-        isAsync = (swaggerMethodReturnType == Single.class || swaggerMethodReturnType == Completable.class || swaggerMethodReturnType == Observable.class);
-        if (!isAsync) {
-            returnType = swaggerMethodReturnType;
-        }
-        else {
-            final String asyncMethodName = swaggerMethod.getName();
-            final String asyncSuffix = "Async";
-            final String syncMethodName = asyncMethodName.endsWith(asyncSuffix) ? asyncMethodName.substring(0, asyncMethodName.length() - asyncSuffix.length()) : asyncMethodName;
-
-            final Method[] swaggerInterfaceMethods = swaggerInterface.getDeclaredMethods();
-            for (Method possibleSyncMethod : swaggerInterfaceMethods) {
-                if (possibleSyncMethod.getName().equalsIgnoreCase(syncMethodName) && possibleSyncMethod.getReturnType() != Single.class) {
-                    returnType = possibleSyncMethod.getReturnType();
-                    break;
-                }
-            }
-        }
+        returnType = swaggerMethod.getGenericReturnType();
 
         if (swaggerMethod.isAnnotationPresent(Headers.class)) {
             final Headers headersAnnotation = swaggerMethod.getAnnotation(Headers.class);
@@ -236,21 +216,10 @@ class SwaggerMethodParser {
     }
 
     /**
-     * Get whether or not this object describes an asynchronous method.
-     * @return Whether or not this object describes an asynchronous method.
+     * Get the return type for the method that this object describes.
+     * @return The return type for the method that this object describes.
      */
-    public boolean isAsync() {
-        return isAsync;
-    }
-
-    /**
-     * Get the synchronous return type for the method that this object describes. If the method is
-     * asynchronous, then the type of value that is returned when then asynchronous operation
-     * finishes will be returned. In other words, returnType is the parameterized type of the Single
-     * object that is returned from the method.
-     * @return The synchronous return type for the method that this object describes.
-     */
-    public Class<?> returnType() {
+    public Type returnType() {
         return returnType;
     }
 
