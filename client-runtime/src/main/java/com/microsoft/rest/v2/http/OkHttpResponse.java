@@ -15,14 +15,14 @@ import java.io.InputStream;
 /**
  * A HttpResponse that is implemented using OkHttp.
  */
-public class OkHttpResponse extends HttpResponse {
+class OkHttpResponse extends HttpResponse {
     private final Response response;
 
     /**
      * Create a new OkHttpResponse using the provided OkHttp Response object.
      * @param response The OkHttp Response object that came from a real OkHttpClient object.
      */
-    public OkHttpResponse(Response response) {
+    OkHttpResponse(Response response) {
         this.response = response;
     }
 

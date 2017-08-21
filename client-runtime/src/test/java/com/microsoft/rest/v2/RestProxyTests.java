@@ -16,6 +16,7 @@ import com.microsoft.rest.v2.annotations.PUT;
 import com.microsoft.rest.v2.annotations.PathParam;
 import com.microsoft.rest.v2.annotations.QueryParam;
 import com.microsoft.rest.v2.http.HttpClient;
+import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.OkHttpClient;
 import org.junit.Test;
 import rx.Completable;
@@ -27,7 +28,14 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
-public class RestProxyTests {
+public abstract class RestProxyTests {
+
+    /**
+     * Get the HTTP client that will be used for each test. This will be called once per test.
+     * @return The HTTP client to use for each test.
+     */
+    protected abstract HttpClient createHttpClient();
+
     @Host("http://httpbin.org")
     private interface Service1 {
         @GET("bytes/100")
@@ -197,8 +205,11 @@ public class RestProxyTests {
         assertNotNull(json);
         assertEquals("http://httpbin.org/anything", json.url);
         assertNotNull(json.headers);
-        assertEquals("A", json.headers.get("A"));
-        assertEquals("15", json.headers.get("B"));
+        final HttpHeaders headers = new HttpHeaders(json.headers);
+        assertEquals("A", headers.getValue("A"));
+        assertArrayEquals(new String[]{"A"}, headers.getValues("A"));
+        assertEquals("15", headers.getValue("B"));
+        assertArrayEquals(new String[]{"15"}, headers.getValues("B"));
     }
 
     @Test
@@ -209,8 +220,11 @@ public class RestProxyTests {
         assertNotNull(json);
         assertEquals("http://httpbin.org/anything", json.url);
         assertNotNull(json.headers);
-        assertEquals("A", json.headers.get("A"));
-        assertEquals("15", json.headers.get("B"));
+        final HttpHeaders headers = new HttpHeaders(json.headers);
+        assertEquals("A", headers.getValue("A"));
+        assertArrayEquals(new String[]{"A"}, headers.getValues("A"));
+        assertEquals("15", headers.getValue("B"));
+        assertArrayEquals(new String[]{"15"}, headers.getValues("B"));
     }
 
     @Host("http://httpbin.org")
@@ -363,11 +377,11 @@ public class RestProxyTests {
     @Host("http://httpbin.org")
     private interface Service13 {
         @GET("anything")
-        @Headers({ "MyHeader:MyHeaderValue" })
+        @Headers({ "MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value" })
         HttpBinJSON get();
 
         @GET("anything")
-        @Headers({ "MyHeader:MyHeaderValue" })
+        @Headers({ "MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value" })
         Single<HttpBinJSON> getAsync();
     }
 
@@ -378,7 +392,11 @@ public class RestProxyTests {
         assertNotNull(json);
         assertEquals("http://httpbin.org/anything", json.url);
         assertNotNull(json.headers);
-        assertEquals("MyHeaderValue", json.headers.get("Myheader"));
+        final HttpHeaders headers = new HttpHeaders(json.headers);
+        assertEquals("MyHeaderValue", headers.getValue("MyHeader"));
+        assertArrayEquals(new String[]{"MyHeaderValue"}, headers.getValues("MyHeader"));
+        assertEquals("My,Header,Value", headers.getValue("MyOtherHeader"));
+        assertArrayEquals(new String[]{"My", "Header", "Value"}, headers.getValues("MyOtherHeader"));
     }
 
     @Test
@@ -389,33 +407,16 @@ public class RestProxyTests {
         assertNotNull(json);
         assertEquals("http://httpbin.org/anything", json.url);
         assertNotNull(json.headers);
-        assertEquals("MyHeaderValue", json.headers.get("Myheader"));
+        final HttpHeaders headers = new HttpHeaders(json.headers);
+        assertEquals("MyHeaderValue", headers.getValue("MyHeader"));
+        assertArrayEquals(new String[]{"MyHeaderValue"}, headers.getValues("MyHeader"));
     }
 
     // Helpers
-    /**
-     * Maps to the JSON return values from http://httpbin.org.
-     */
-    public static class HttpBinJSON {
-        public String url;
-        public Map<String,String> headers;
-        public Object data;
-    }
-
-    private static <T> T createService(Class<T> serviceClass) {
+    private <T> T createService(Class<T> serviceClass) {
         final HttpClient httpClient = createHttpClient();
-        final SerializerAdapter<?> serializer = createSerializer();
-
         return RestProxy.create(serviceClass, httpClient, serializer);
     }
 
-    private static HttpClient createHttpClient() {
-        final okhttp3.OkHttpClient.Builder okHttpClientBuilder = new okhttp3.OkHttpClient.Builder();
-        final okhttp3.OkHttpClient innerHttpClient = okHttpClientBuilder.build();
-        return new OkHttpClient(innerHttpClient);
-    }
-
-    private static SerializerAdapter<?> createSerializer() {
-        return new JacksonAdapter();
-    }
+    private static final SerializerAdapter<?> serializer = new JacksonAdapter();
 }
