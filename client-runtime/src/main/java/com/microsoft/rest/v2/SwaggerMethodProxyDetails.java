@@ -10,6 +10,7 @@ import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpHeaders;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +29,7 @@ class SwaggerMethodProxyDetails {
     private final List<Substitution> headerSubstitutions = new ArrayList<>();
     private final HttpHeaders headers = new HttpHeaders();
     private Integer bodyContentMethodParameterIndex;
-    private boolean isAsync;
-    private Class<?> returnType;
+    private Type returnType;
 
     /**
      * Create a new SwaggerMethodProxyDetails object using the provided fully qualified method name.
@@ -218,29 +218,13 @@ class SwaggerMethodProxyDetails {
     }
 
     /**
-     * Set whether or not this object describes an asynchronous method.
-     * @param isAsync Whether or not this object describes an asynchronous method.
-     */
-    public void setIsAsync(boolean isAsync) {
-        this.isAsync = isAsync;
-    }
-
-    /**
-     * Get whether or not this object describes an asynchronous method.
-     * @return Whether or not this object describes an asynchronous method.
-     */
-    public boolean isAsync() {
-        return isAsync;
-    }
-
-    /**
      * Set the synchronous return type for the method that this object describes. If the method is
      * asynchronous, then returnType is the type of value that is returned when then asynchronous
      * operation finishes. In other words, returnType is the parameterized type of the Single object
      * that is returned from the method.
      * @param returnType The synchronous return type for the method that this object describes.
      */
-    public void setReturnType(Class<?> returnType) {
+    public void setReturnType(Type returnType) {
         this.returnType = returnType;
     }
 
@@ -251,7 +235,7 @@ class SwaggerMethodProxyDetails {
      * object that is returned from the method.
      * @return The synchronous return type for the method that this object describes.
      */
-    public Class<?> returnType() {
+    public Type returnType() {
         return returnType;
     }
 
