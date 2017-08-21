@@ -28,7 +28,6 @@ class SwaggerMethodProxyDetails {
     private final List<Substitution> headerSubstitutions = new ArrayList<>();
     private final HttpHeaders headers = new HttpHeaders();
     private Integer bodyContentMethodParameterIndex;
-    private boolean isAsync;
     private Type returnType;
 
     /**
@@ -198,22 +197,6 @@ class SwaggerMethodProxyDetails {
      */
     public Iterable<HttpHeader> getHeaders() {
         return headers;
-    }
-
-    /**
-     * Set whether or not this object describes an asynchronous method.
-     * @param isAsync Whether or not this object describes an asynchronous method.
-     */
-    public void setIsAsync(boolean isAsync) {
-        this.isAsync = isAsync;
-    }
-
-    /**
-     * Get whether or not this object describes an asynchronous method.
-     * @return Whether or not this object describes an asynchronous method.
-     */
-    public boolean isAsync() {
-        return isAsync;
     }
 
     /**

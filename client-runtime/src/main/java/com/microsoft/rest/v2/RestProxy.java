@@ -29,7 +29,6 @@ import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.OkHttpClient;
 import com.microsoft.rest.v2.http.UrlBuilder;
 import rx.Completable;
-import rx.Observable;
 import rx.Single;
 import rx.functions.Func1;
 
@@ -38,13 +37,13 @@ import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 
 /**
  * This class can be used to create a proxy implementation for a provided Swagger generated
  * interface.
- * TODO: Convert this to RxNetty and finish.
  */
 public final class RestProxy implements InvocationHandler {
     private final String host;
@@ -98,11 +97,46 @@ public final class RestProxy implements InvocationHandler {
         }
 
         Object result = null;
-        if (!methodDetails.isAsync()) {
+        final Type returnType = methodDetails.returnType();
+        final TypeToken returnTypeToken = TypeToken.of(returnType);
+        if (returnTypeToken.isSubtypeOf(Completable.class)) {
+            final Single<? extends HttpResponse> asyncResponse = httpClient.sendRequestAsync(request);
+            result = Completable.fromSingle(asyncResponse);
+        }
+        else if (returnTypeToken.isSubtypeOf(Single.class)) {
+            final Single<? extends HttpResponse> asyncResponse = httpClient.sendRequestAsync(request);
+            result = asyncResponse.flatMap(new Func1<HttpResponse, Single<?>>() {
+                @Override
+                public Single<?> call(HttpResponse response) {
+                    Single<?> asyncResult;
+                    final Type singleReturnType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
+                    final TypeToken singleReturnTypeToken = TypeToken.of(singleReturnType);
+                    if (methodDetails.method().equalsIgnoreCase("HEAD")) {
+                        asyncResult = Single.just(null);
+                    } else if (singleReturnTypeToken.isSubtypeOf(InputStream.class)) {
+                        asyncResult = response.bodyAsInputStreamAsync();
+                    } else if (singleReturnTypeToken.isSubtypeOf(byte[].class)) {
+                        asyncResult = response.bodyAsByteArrayAsync();
+                    } else {
+                        final Single<String> asyncResponseBodyString = response.bodyAsStringAsync();
+                        asyncResult = asyncResponseBodyString.flatMap(new Func1<String, Single<Object>>() {
+                            @Override
+                            public Single<Object> call(String responseBodyString) {
+                                try {
+                                    return Single.just(serializer.deserialize(responseBodyString, singleReturnType));
+                                } catch (IOException e) {
+                                    return Single.error(e);
+                                }
+                            }
+                        });
+                    }
+                    return asyncResult;
+                }
+            });
+        }
+        else {
             final HttpResponse response = httpClient.sendRequest(request);
 
-            final Type returnType = methodDetails.returnType();
-            final TypeToken returnTypeToken = TypeToken.of(returnType);
             if (returnType.equals(Void.TYPE) || !response.hasBody() || methodDetails.method().equalsIgnoreCase("HEAD")) {
                 result = null;
             } else if (returnTypeToken.isSubtypeOf(InputStream.class)) {
@@ -112,44 +146,6 @@ public final class RestProxy implements InvocationHandler {
             } else {
                 final String responseBodyString = response.bodyAsString();
                 result = serializer.deserialize(responseBodyString, returnType);
-            }
-        }
-        else {
-            final Single<? extends HttpResponse> asyncResponse = httpClient.sendRequestAsync(request);
-            final Type methodReturnType = method.getReturnType();
-            if (methodReturnType.equals(Single.class)) {
-                result = asyncResponse.flatMap(new Func1<HttpResponse, Single<?>>() {
-                    @Override
-                    public Single<?> call(HttpResponse response) {
-                        Single<?> asyncResult;
-                        final Type singleReturnType = methodDetails.returnType();
-                        final TypeToken singleReturnTypeToken = TypeToken.of(singleReturnType);
-                        if (methodDetails.method().equalsIgnoreCase("HEAD")) {
-                            asyncResult = Single.just(null);
-                        } else if (singleReturnTypeToken.isSubtypeOf(InputStream.class)) {
-                            asyncResult = response.bodyAsInputStreamAsync();
-                        } else if (singleReturnTypeToken.isSubtypeOf(byte[].class)) {
-                            asyncResult = response.bodyAsByteArrayAsync();
-                        } else {
-                            final Single<String> asyncResponseBodyString = response.bodyAsStringAsync();
-                            asyncResult = asyncResponseBodyString.flatMap(new Func1<String, Single<Object>>() {
-                                @Override
-                                public Single<Object> call(String responseBodyString) {
-                                    try {
-                                        return Single.just(serializer.deserialize(responseBodyString, singleReturnType));
-                                    }
-                                    catch (IOException e) {
-                                        return Single.error(e);
-                                    }
-                                }
-                            });
-                        }
-                        return asyncResult;
-                    }
-                });
-            }
-            else if (method.getReturnType().equals(Completable.class)) {
-                result = Completable.fromSingle(asyncResponse);
             }
         }
 
@@ -256,23 +252,8 @@ public final class RestProxy implements InvocationHandler {
                 }
             }
 
-            final Type returnType = method.getReturnType();
-            final boolean isAsync = (returnType == Single.class || returnType == Completable.class || returnType == Observable.class);
-            methodProxyDetails.setIsAsync(isAsync);
-            if (!isAsync) {
-                methodProxyDetails.setReturnType(returnType);
-            }
-            else {
-                final String asyncMethodName = method.getName();
-                final String syncMethodName = asyncMethodName.endsWith("Async") ? asyncMethodName.substring(0, asyncMethodName.length() - 5) : asyncMethodName;
-
-                for (Method possibleSyncMethod : declaredMethods) {
-                    if (possibleSyncMethod.getName().equalsIgnoreCase(syncMethodName) && possibleSyncMethod.getReturnType() != Single.class) {
-                        methodProxyDetails.setReturnType(possibleSyncMethod.getReturnType());
-                        break;
-                    }
-                }
-            }
+            final Type returnType = method.getGenericReturnType();
+            methodProxyDetails.setReturnType(returnType);
         }
 
         RestProxy restProxy = new RestProxy(host, httpClient, serializer, interfaceProxyDetails);
