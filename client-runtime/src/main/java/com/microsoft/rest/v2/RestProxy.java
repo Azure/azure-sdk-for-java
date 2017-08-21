@@ -111,7 +111,7 @@ public final class RestProxy implements InvocationHandler {
                     Single<?> asyncResult;
                     final Type singleReturnType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
                     final TypeToken singleReturnTypeToken = TypeToken.of(singleReturnType);
-                    if (methodDetails.method().equalsIgnoreCase("HEAD")) {
+                    if (methodDetails.httpMethod().equalsIgnoreCase("HEAD")) {
                         asyncResult = Single.just(null);
                     } else if (singleReturnTypeToken.isSubtypeOf(InputStream.class)) {
                         asyncResult = response.bodyAsInputStreamAsync();
@@ -136,7 +136,7 @@ public final class RestProxy implements InvocationHandler {
         }
         else {
             final HttpResponse response = httpClient.sendRequest(request);
-            if (returnType.equals(Void.TYPE) || !response.hasBody() || methodDetails.method().equalsIgnoreCase("HEAD")) {
+            if (returnType.equals(Void.TYPE) || !response.hasBody() || methodDetails.httpMethod().equalsIgnoreCase("HEAD")) {
                 result = null;
             } else if (returnTypeToken.isSubtypeOf(InputStream.class)) {
                 result = response.bodyAsInputStream();
