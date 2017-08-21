@@ -4,18 +4,34 @@ import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.HttpMethod;
 import io.reactivex.netty.protocol.http.client.HttpClientRequest;
 import io.reactivex.netty.protocol.http.client.HttpClientResponse;
+import io.reactivex.netty.ssl.SslCodec;
 import rx.Observable;
 import rx.Single;
 import rx.functions.Func1;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 public class RxNettyClient extends HttpClient {
+    private SSLEngine getSSLEngine(String host) {
+        SSLContext sslCtx;
+        try {
+            sslCtx = SSLContext.getDefault();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        SSLEngine engine = sslCtx.createSSLEngine(host, 443);
+        engine.setUseClientMode(true);
+        return engine;
+    }
+
     @Override
     public Single<? extends HttpResponse> sendRequestAsync(HttpRequest request) {
         URI uri;
@@ -40,8 +56,15 @@ public class RxNettyClient extends HttpClient {
             rxnHeaders.put("Content-Length", Collections.<Object>singleton(String.valueOf(body.length())));
         }
 
-        HttpClientRequest<ByteBuf, ByteBuf> rxnReq = io.reactivex.netty.protocol.http.client.HttpClient
-                .newClient(uri.getHost(), 80)
+        boolean isSecure = "https".equalsIgnoreCase(uri.getScheme());
+        io.reactivex.netty.protocol.http.client.HttpClient<ByteBuf, ByteBuf> rxnClient =
+                io.reactivex.netty.protocol.http.client.HttpClient.newClient(uri.getHost(), isSecure ? 443 : 80);
+
+        if (isSecure) {
+            rxnClient = rxnClient.secure(getSSLEngine(uri.getHost()));
+        }
+
+        HttpClientRequest<ByteBuf, ByteBuf> rxnReq = rxnClient
                 .createRequest(HttpMethod.valueOf(request.httpMethod()), uri.toASCIIString())
                 .addHeaders(rxnHeaders);
 
