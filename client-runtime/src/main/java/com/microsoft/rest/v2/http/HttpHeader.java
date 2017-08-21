@@ -42,6 +42,14 @@ public class HttpHeader {
     }
 
     /**
+     * Get the values of this Header that are separated by a comma.
+     * @return The values of this Header that are separated by a comma.
+     */
+    public String[] getValues() {
+        return value == null ? null : value.split(",");
+    }
+
+    /**
      * Add another value to the end of this Header.
      * @param value The value to add to the end of this Header.
      */

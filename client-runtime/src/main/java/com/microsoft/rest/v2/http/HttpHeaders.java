@@ -55,10 +55,25 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @param headerName The name of the header to look for.
      * @return The String value of the header, or null if the header isn't found.
      */
-    public String get(String headerName) {
-        final String headerKey = headerName.toLowerCase();
-        final HttpHeader header = headers.get(headerKey);
+    public String getValue(String headerName) {
+        final HttpHeader header = getHeader(headerName);
         return header == null ? null : header.getValue();
+    }
+
+    /**
+     * Get the header values for the provided header name. If the header name isn't found, then null
+     * will be returned.
+     * @param headerName The name of the header to look for.
+     * @return The String values of the header, or null if the header isn't found.
+     */
+    public String[] getValues(String headerName) {
+        final HttpHeader header = getHeader(headerName);
+        return header == null ? null : header.getValues();
+    }
+
+    private HttpHeader getHeader(String headerName) {
+        final String headerKey = headerName.toLowerCase();
+        return headers.get(headerKey);
     }
 
     @Override
