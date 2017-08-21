@@ -6,6 +6,7 @@
 
 package com.microsoft.rest.v2;
 
+import com.google.common.reflect.TypeToken;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.annotations.BodyParam;
@@ -38,6 +39,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.lang.reflect.Type;
 
 /**
  * This class can be used to create a proxy implementation for a provided Swagger generated
@@ -99,12 +101,13 @@ public final class RestProxy implements InvocationHandler {
         if (!methodDetails.isAsync()) {
             final HttpResponse response = httpClient.sendRequest(request);
 
-            final Class<?> returnType = methodDetails.returnType();
+            final Type returnType = methodDetails.returnType();
+            final TypeToken returnTypeToken = TypeToken.of(returnType);
             if (returnType.equals(Void.TYPE) || !response.hasBody() || methodDetails.method().equalsIgnoreCase("HEAD")) {
                 result = null;
-            } else if (returnType.isAssignableFrom(InputStream.class)) {
+            } else if (returnTypeToken.isSubtypeOf(InputStream.class)) {
                 result = response.bodyAsInputStream();
-            } else if (returnType.isAssignableFrom(byte[].class)) {
+            } else if (returnTypeToken.isSubtypeOf(byte[].class)) {
                 result = response.bodyAsByteArray();
             } else {
                 final String responseBodyString = response.bodyAsString();
@@ -113,18 +116,19 @@ public final class RestProxy implements InvocationHandler {
         }
         else {
             final Single<? extends HttpResponse> asyncResponse = httpClient.sendRequestAsync(request);
-            final Class<?> methodReturnType = method.getReturnType();
+            final Type methodReturnType = method.getReturnType();
             if (methodReturnType.equals(Single.class)) {
                 result = asyncResponse.flatMap(new Func1<HttpResponse, Single<?>>() {
                     @Override
                     public Single<?> call(HttpResponse response) {
                         Single<?> asyncResult;
-                        final Class<?> singleReturnType = methodDetails.returnType();
+                        final Type singleReturnType = methodDetails.returnType();
+                        final TypeToken singleReturnTypeToken = TypeToken.of(singleReturnType);
                         if (methodDetails.method().equalsIgnoreCase("HEAD")) {
                             asyncResult = Single.just(null);
-                        } else if (singleReturnType.isAssignableFrom(InputStream.class)) {
+                        } else if (singleReturnTypeToken.isSubtypeOf(InputStream.class)) {
                             asyncResult = response.bodyAsInputStreamAsync();
-                        } else if (singleReturnType.isAssignableFrom(byte[].class)) {
+                        } else if (singleReturnTypeToken.isSubtypeOf(byte[].class)) {
                             asyncResult = response.bodyAsByteArrayAsync();
                         } else {
                             final Single<String> asyncResponseBodyString = response.bodyAsStringAsync();
@@ -229,7 +233,7 @@ public final class RestProxy implements InvocationHandler {
             for (int parameterIndex = 0; parameterIndex < allParametersAnnotations.length; ++parameterIndex) {
                 final Annotation[] parameterAnnotations = method.getParameterAnnotations()[parameterIndex];
                 for (final Annotation annotation : parameterAnnotations) {
-                    final Class<? extends Annotation> annotationType = annotation.annotationType();
+                    final Type annotationType = annotation.annotationType();
                     if (annotationType.equals(HostParam.class)) {
                         final HostParam hostParamAnnotation = (HostParam) annotation;
                         methodProxyDetails.addHostSubstitution(hostParamAnnotation.value(), parameterIndex, !hostParamAnnotation.encoded());
@@ -252,7 +256,7 @@ public final class RestProxy implements InvocationHandler {
                 }
             }
 
-            final Class<?> returnType = method.getReturnType();
+            final Type returnType = method.getReturnType();
             final boolean isAsync = (returnType == Single.class || returnType == Completable.class || returnType == Observable.class);
             methodProxyDetails.setIsAsync(isAsync);
             if (!isAsync) {

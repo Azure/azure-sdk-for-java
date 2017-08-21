@@ -10,6 +10,7 @@ import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpHeaders;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ class SwaggerMethodProxyDetails {
     private final HttpHeaders headers = new HttpHeaders();
     private Integer bodyContentMethodParameterIndex;
     private boolean isAsync;
-    private Class<?> returnType;
+    private Type returnType;
 
     /**
      * Get the HTTP method that will be used to complete the Swagger method's request.
@@ -222,7 +223,7 @@ class SwaggerMethodProxyDetails {
      * that is returned from the method.
      * @param returnType The synchronous return type for the method that this object describes.
      */
-    public void setReturnType(Class<?> returnType) {
+    public void setReturnType(Type returnType) {
         this.returnType = returnType;
     }
 
@@ -233,7 +234,7 @@ class SwaggerMethodProxyDetails {
      * object that is returned from the method.
      * @return The synchronous return type for the method that this object describes.
      */
-    public Class<?> returnType() {
+    public Type returnType() {
         return returnType;
     }
 
