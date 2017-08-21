@@ -412,6 +412,29 @@ public abstract class RestProxyTests {
         assertArrayEquals(new String[]{"MyHeaderValue"}, headers.values("MyHeader"));
     }
 
+    @Host("https://httpbin.org")
+    private interface Service14 {
+        @GET("anything")
+        @Headers({ "MyHeader:MyHeaderValue" })
+        HttpBinJSON get();
+
+        @GET("anything")
+        @Headers({ "MyHeader:MyHeaderValue" })
+        Single<HttpBinJSON> getAsync();
+    }
+
+    @Test
+    public void AsyncHttpsHeadersRequest() {
+        final HttpBinJSON json = createService(Service14.class)
+                .getAsync()
+                .toBlocking().value();
+        assertNotNull(json);
+        assertEquals("https://httpbin.org/anything", json.url);
+        assertNotNull(json.headers);
+        final HttpHeaders headers = new HttpHeaders(json.headers);
+        assertEquals("MyHeaderValue", headers.get("MyHeader"));
+    }
+
     // Helpers
     private <T> T createService(Class<T> serviceClass) {
         final HttpClient httpClient = createHttpClient();
