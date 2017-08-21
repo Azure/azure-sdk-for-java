@@ -7,7 +7,6 @@
 package com.microsoft.azure.management.samples;
 
 import com.microsoft.azure.management.appservice.samples.ManageFunctionAppBasic;
-import com.microsoft.azure.management.appservice.samples.ManageFunctionAppSourceControl;
 import com.microsoft.azure.management.appservice.samples.ManageFunctionAppWithDomainSsl;
 import com.microsoft.azure.management.appservice.samples.ManageLinuxWebAppBasic;
 import com.microsoft.azure.management.appservice.samples.ManageLinuxWebAppSqlConnection;
@@ -85,11 +84,5 @@ public class AppServiceSampleTests extends SamplesTestBase {
     @Test
     public void testManageFunctionAppWithDomainSsl() {
         Assert.assertTrue(ManageFunctionAppWithDomainSsl.runSample(azure));
-    }
-
-    @Test
-    @Ignore("Failing in playback - dependent on git")
-    public void testManageFunctionAppSourceControl() {
-        Assert.assertTrue(ManageFunctionAppSourceControl.runSample(azure));
     }
 }

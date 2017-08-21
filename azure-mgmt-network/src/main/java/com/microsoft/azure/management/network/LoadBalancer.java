@@ -102,12 +102,10 @@ public interface LoadBalancer extends
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
-        DefinitionStages.WithFrontend,
         DefinitionStages.WithCreate,
-        DefinitionStages.WithPublicFrontendOrRuleNat,
-        DefinitionStages.WithPrivateFrontendOrRuleNat,
         DefinitionStages.WithBackend,
         DefinitionStages.WithLoadBalancingRule,
+        DefinitionStages.WithLBRuleOrNat,
         DefinitionStages.WithLBRuleOrNatOrCreate,
         DefinitionStages.WithCreateAndInboundNatPool,
         DefinitionStages.WithCreateAndInboundNatRule,
@@ -129,29 +127,30 @@ public interface LoadBalancer extends
          * The stage of the load balancer definition allowing to specify the resource group.
          */
         interface WithGroup
-            extends GroupableResource.DefinitionStages.WithGroup<WithFrontend> {
+            extends GroupableResource.DefinitionStages.WithGroup<WithLBRuleOrNat> {
         }
 
         /**
          * The stage of a load balancer definition describing the nature of the frontend of the load balancer: internal or Internet-facing.
          */
         interface WithFrontend extends
-            WithPublicFrontendOrRuleNat,
-            WithPrivateFrontendOrRuleNat {
+            WithPublicFrontend,
+            WithPrivateFrontend {
         }
 
         /**
          * The stage of an internal load balancer definition allowing to define one or more private frontends.
          */
         interface WithPrivateFrontend {
-            LoadBalancerPrivateFrontend.DefinitionStages.Blank<WithPrivateFrontendOrRuleNat> definePrivateFrontend(String name);
-        }
-
-        /**
-         * The stage of an internal load balancer definition allowing to specify another private frontend
-         * or start adding load balancing rules, NAT rules or NAT pools.
-         */
-        interface WithPrivateFrontendOrRuleNat extends WithPrivateFrontend, WithLBRuleOrNat {
+            /**
+             * Begins an explicit definition of a new private (internal) load balancer frontend.
+             * <p>
+             * (Note that private frontends can also be created implicitly as part of a load balancing rule,
+             * inbound NAT rule or inbound NAT pool definition, by referencing an existing subnet within those definitions.)
+             * @param name the name for the frontend
+             * @return the first stage of a new frontend definition
+             */
+            LoadBalancerPrivateFrontend.DefinitionStages.Blank<WithCreate> definePrivateFrontend(String name);
         }
 
         /**
@@ -159,18 +158,14 @@ public interface LoadBalancer extends
          */
         interface WithPublicFrontend {
             /**
-             * Begins the definition of a new load public balancer frontend.
+             * Begins an explicit definition of a new public (Internet-facing) load balancer frontend.
+             * <p>
+             * (Note that frontends can also be created implicitly as part of a load balancing rule,
+             * inbound NAT rule or inbound NAT pool definition, by referencing an existing public IP address within those definitions.)
              * @param name the name for the frontend
-             * @return the first stage of the new frontend definition
+             * @return the first stage of a new frontend definition
              */
-            LoadBalancerPublicFrontend.DefinitionStages.Blank<WithPublicFrontendOrRuleNat> definePublicFrontend(String name);
-        }
-
-        /**
-         * The stage of an Internet-facing load balancer definition allowing to add additional public frontends
-         * or start adding load balancing rules, NAT rules or NAT pools.
-         */
-        interface WithPublicFrontendOrRuleNat extends WithPublicFrontend, WithLBRuleOrNat {
+            LoadBalancerPublicFrontend.DefinitionStages.Blank<WithCreate> definePublicFrontend(String name);
         }
 
         /**
@@ -237,6 +232,7 @@ public interface LoadBalancer extends
             Creatable<LoadBalancer>,
             Resource.DefinitionWithTags<WithCreate>,
             WithBackend,
+            WithFrontend,
             WithProbe {
         }
 
@@ -271,8 +267,6 @@ public interface LoadBalancer extends
         interface WithInboundNatRule {
             /**
              * Begins the definition of a new inbound NAT rule to add to the load balancer.
-             * <p>
-             * The definition must be completed with a call to {@link LoadBalancerInboundNatRule.DefinitionStages.WithAttach#attach()}
              * @param name the name of the inbound NAT rule
              * @return the first stage of the new inbound NAT rule definition
              */
@@ -397,7 +391,7 @@ public interface LoadBalancer extends
         /**
          * The stage of a load balancer update allowing to define, remove or edit Internet-facing frontends.
          */
-        interface WithInternetFrontend {
+        interface WithPublicFrontend {
             /**
              * Begins the update of a load balancer frontend.
              * <p>
@@ -425,7 +419,7 @@ public interface LoadBalancer extends
         /**
          * The stage of a load balancer update allowing to define one or more private frontends.
          */
-        interface WithInternalFrontend {
+        interface WithPrivateFrontend {
             /**
              * Begins the update of an internal load balancer frontend.
              * @param name the name for the frontend
@@ -506,8 +500,8 @@ public interface LoadBalancer extends
         UpdateStages.WithProbe,
         UpdateStages.WithBackend,
         UpdateStages.WithLoadBalancingRule,
-        UpdateStages.WithInternetFrontend,
-        UpdateStages.WithInternalFrontend,
+        UpdateStages.WithPublicFrontend,
+        UpdateStages.WithPrivateFrontend,
         UpdateStages.WithInboundNatRule,
         UpdateStages.WithInboundNatPool {
     }

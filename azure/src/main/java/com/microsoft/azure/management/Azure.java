@@ -73,8 +73,6 @@ import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistr
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
 import com.microsoft.azure.management.resources.implementation.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import com.microsoft.azure.management.scheduler.JobCollections;
-import com.microsoft.azure.management.scheduler.implementation.ScheduleServiceManager;
 import com.microsoft.azure.management.search.SearchServices;
 import com.microsoft.azure.management.search.implementation.SearchServiceManager;
 import com.microsoft.azure.management.servicebus.ServiceBusNamespaces;
@@ -112,7 +110,6 @@ public final class Azure {
     private final ContainerRegistryManager containerRegistryManager;
     private final SearchServiceManager searchServiceManager;
     private final CosmosDBManager cosmosDBManager;
-    private final ScheduleServiceManager schedulerManager;
     private final String subscriptionId;
     private final Authenticated authenticated;
 
@@ -387,7 +384,6 @@ public final class Azure {
         this.containerRegistryManager = ContainerRegistryManager.authenticate(restClient, subscriptionId);
         this.cosmosDBManager = CosmosDBManager.authenticate(restClient, subscriptionId);
         this.searchServiceManager = SearchServiceManager.authenticate(restClient, subscriptionId);
-        this.schedulerManager = ScheduleServiceManager.authenticate(restClient, subscriptionId);
         this.subscriptionId = subscriptionId;
         this.authenticated = authenticated;
     }
@@ -707,14 +703,6 @@ public final class Azure {
     @Beta(SinceVersion.V1_2_0)
     public SearchServices searchServices() {
         return searchServiceManager.searchServices();
-    }
-
-    /**
-     * @return entry point to managing Search services.
-     */
-    @Beta(SinceVersion.V1_2_0)
-    public JobCollections jobCollections() {
-        return schedulerManager.jobCollections();
     }
 
     /**

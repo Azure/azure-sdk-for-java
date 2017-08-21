@@ -25,9 +25,9 @@ import com.microsoft.azure.management.batch.ApplicationPackage;
 import com.microsoft.azure.management.batch.BatchAccount;
 import com.microsoft.azure.management.batch.BatchAccountKeys;
 import com.microsoft.azure.management.compute.AvailabilitySet;
-import com.microsoft.azure.management.compute.DataDisk;
 import com.microsoft.azure.management.compute.ContainerService;
 import com.microsoft.azure.management.compute.ContainerServiceOchestratorTypes;
+import com.microsoft.azure.management.compute.DataDisk;
 import com.microsoft.azure.management.compute.ImageDataDisk;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineCustomImage;
@@ -51,6 +51,7 @@ import com.microsoft.azure.management.dns.TxtRecord;
 import com.microsoft.azure.management.dns.TxtRecordSet;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryApplication;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroup;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryObject;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryUser;
 import com.microsoft.azure.management.graphrbac.RoleAssignment;
 import com.microsoft.azure.management.graphrbac.RoleDefinition;
@@ -261,6 +262,10 @@ public final class Utils {
                 .append("\n\t\t\tPublic Settings: ").append(extension.publicSettingsAsJsonString());
         }
 
+        StringBuilder msi = new StringBuilder().append("\n\tMSI: ");
+        msi.append("\n\t\t\tMSI enabled:").append(resource.isManagedServiceIdentityEnabled());
+        msi.append("\n\t\t\tMSI Active Directory Service Principal Id:").append(resource.managedServiceIdentityPrincipalId());
+        msi.append("\n\t\t\tMSI Active Directory Tenant Id:").append(resource.managedServiceIdentityTenantId());
 
         System.out.println(new StringBuilder().append("Virtual Machine: ").append(resource.id())
             .append("Name: ").append(resource.name())
@@ -273,6 +278,7 @@ public final class Utils {
             .append(osProfile)
             .append(networkProfile)
             .append(extensions)
+            .append(msi)
             .toString());
     }
 
@@ -2003,7 +2009,13 @@ public final class Utils {
                 .append("Active Directory Group: ").append(group.id())
                 .append("\n\tName: ").append(group.name())
                 .append("\n\tMail: ").append(group.mail())
-                .append("\n\tSecurity Enabled: ").append(group.securityEnabled());
+                .append("\n\tSecurity Enabled: ").append(group.securityEnabled())
+                .append("\n\tGroup members:");
+
+        for (ActiveDirectoryObject object : group.listMembers()) {
+            builder.append("\n\t\tType: ").append(object.getClass().getSimpleName())
+                    .append("\tName: ").append(object.name());
+        }
 
         System.out.println(builder.toString());
     }

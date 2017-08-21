@@ -16,8 +16,6 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
-import com.microsoft.azure.management.appservice.CsmPublishingProfileOptions;
-import com.microsoft.azure.management.appservice.PublishingProfileFormat;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -274,6 +272,26 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/domainOwnershipIdentifiers/{domainOwnershipIdentifierName}")
         Observable<Response<ResponseBody>> updateDomainOwnershipIdentifier(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("domainOwnershipIdentifierName") String domainOwnershipIdentifierName, @Path("subscriptionId") String subscriptionId, @Body IdentifierInner domainOwnershipIdentifier, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getMSDeployStatus" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/extensions/MSDeploy")
+        Observable<Response<ResponseBody>> getMSDeployStatus(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createMSDeployOperation" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/extensions/MSDeploy")
+        Observable<Response<ResponseBody>> createMSDeployOperation(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body MSDeployInner mSDeploy, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps beginCreateMSDeployOperation" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/extensions/MSDeploy")
+        Observable<Response<ResponseBody>> beginCreateMSDeployOperation(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body MSDeployInner mSDeploy, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getMSDeployLog" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/extensions/MSDeploy/log")
+        Observable<Response<ResponseBody>> getMSDeployLog(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getFunctionsAdminToken" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/admin/token")
+        Observable<Response<ResponseBody>> getFunctionsAdminToken(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listHostNameBindings" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostNameBindings")
         Observable<Response<ResponseBody>> listHostNameBindings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -354,6 +372,22 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/deployments/{id}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteInstanceDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getInstanceMsDeployStatus" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/extensions/MSDeploy")
+        Observable<Response<ResponseBody>> getInstanceMsDeployStatus(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createInstanceMSDeployOperation" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/extensions/MSDeploy")
+        Observable<Response<ResponseBody>> createInstanceMSDeployOperation(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Body MSDeployInner mSDeploy, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps beginCreateInstanceMSDeployOperation" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/extensions/MSDeploy")
+        Observable<Response<ResponseBody>> beginCreateInstanceMSDeployOperation(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Body MSDeployInner mSDeploy, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getInstanceMSDeployLog" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/extensions/MSDeploy/log")
+        Observable<Response<ResponseBody>> getInstanceMSDeployLog(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps isCloneable" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/iscloneable")
         Observable<Response<ResponseBody>> isCloneable(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -426,26 +460,38 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/premieraddons/{premierAddOnName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deletePremierAddOn(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("premierAddOnName") String premierAddOnName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listPublicCertificates" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/publicCertificates")
+        Observable<Response<ResponseBody>> listPublicCertificates(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getPublicCertificate" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/publicCertificates/{publicCertificateName}")
+        Observable<Response<ResponseBody>> getPublicCertificate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("publicCertificateName") String publicCertificateName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createOrUpdatePublicCertificate" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/publicCertificates/{publicCertificateName}")
+        Observable<Response<ResponseBody>> createOrUpdatePublicCertificate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("publicCertificateName") String publicCertificateName, @Path("subscriptionId") String subscriptionId, @Body PublicCertificateInner publicCertificate, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deletePublicCertificate" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/publicCertificates/{publicCertificateName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deletePublicCertificate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("publicCertificateName") String publicCertificateName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listPublishingProfileXmlWithSecrets" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/publishxml")
         @Streaming
-        Observable<Response<ResponseBody>> listPublishingProfileXmlWithSecrets(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CsmPublishingProfileOptions publishingProfileOptions, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listPublishingProfileXmlWithSecrets(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmPublishingProfileOptionsInner publishingProfileOptions, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps recover" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/recover")
-        Observable<Response<ResponseBody>> recover(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmSiteRecoveryEntityInner recoveryEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> recover(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SnapshotRecoveryRequestInner recoveryEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps beginRecover" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/recover")
-        Observable<Response<ResponseBody>> beginRecover(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmSiteRecoveryEntityInner recoveryEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginRecover(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SnapshotRecoveryRequestInner recoveryEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps resetProductionSlotConfig" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/resetSlotConfig")
         Observable<Response<ResponseBody>> resetProductionSlotConfig(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getResourceHealthMetadata" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/resourceHealthMetadata")
-        Observable<Response<ResponseBody>> getResourceHealthMetadata(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps restart" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/restart")
@@ -643,6 +689,26 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/domainOwnershipIdentifiers/{domainOwnershipIdentifierName}")
         Observable<Response<ResponseBody>> updateDomainOwnershipIdentifierSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("domainOwnershipIdentifierName") String domainOwnershipIdentifierName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body IdentifierInner domainOwnershipIdentifier, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getMSDeployStatusSlot" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/extensions/MSDeploy")
+        Observable<Response<ResponseBody>> getMSDeployStatusSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createMSDeployOperationSlot" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/extensions/MSDeploy")
+        Observable<Response<ResponseBody>> createMSDeployOperationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body MSDeployInner mSDeploy, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps beginCreateMSDeployOperationSlot" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/extensions/MSDeploy")
+        Observable<Response<ResponseBody>> beginCreateMSDeployOperationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body MSDeployInner mSDeploy, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getMSDeployLogSlot" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/extensions/MSDeploy/log")
+        Observable<Response<ResponseBody>> getMSDeployLogSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getFunctionsAdminTokenSlot" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/functions/admin/token")
+        Observable<Response<ResponseBody>> getFunctionsAdminTokenSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listHostNameBindingsSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hostNameBindings")
         Observable<Response<ResponseBody>> listHostNameBindingsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -723,6 +789,22 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/deployments/{id}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteInstanceDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getInstanceMsDeployStatusSlot" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/extensions/MSDeploy")
+        Observable<Response<ResponseBody>> getInstanceMsDeployStatusSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createInstanceMSDeployOperationSlot" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/extensions/MSDeploy")
+        Observable<Response<ResponseBody>> createInstanceMSDeployOperationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Body MSDeployInner mSDeploy, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps beginCreateInstanceMSDeployOperationSlot" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/extensions/MSDeploy")
+        Observable<Response<ResponseBody>> beginCreateInstanceMSDeployOperationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Body MSDeployInner mSDeploy, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getInstanceMSDeployLogSlot" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/extensions/MSDeploy/log")
+        Observable<Response<ResponseBody>> getInstanceMSDeployLogSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps isCloneableSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/iscloneable")
         Observable<Response<ResponseBody>> isCloneableSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -779,26 +861,38 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/premieraddons/{premierAddOnName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deletePremierAddOnSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("premierAddOnName") String premierAddOnName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listPublicCertificatesSlot" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/publicCertificates")
+        Observable<Response<ResponseBody>> listPublicCertificatesSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getPublicCertificateSlot" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/publicCertificates/{publicCertificateName}")
+        Observable<Response<ResponseBody>> getPublicCertificateSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("publicCertificateName") String publicCertificateName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createOrUpdatePublicCertificateSlot" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/publicCertificates/{publicCertificateName}")
+        Observable<Response<ResponseBody>> createOrUpdatePublicCertificateSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("publicCertificateName") String publicCertificateName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body PublicCertificateInner publicCertificate, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deletePublicCertificateSlot" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/publicCertificates/{publicCertificateName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deletePublicCertificateSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("publicCertificateName") String publicCertificateName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listPublishingProfileXmlWithSecretsSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/publishxml")
         @Streaming
-        Observable<Response<ResponseBody>> listPublishingProfileXmlWithSecretsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CsmPublishingProfileOptions publishingProfileOptions, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listPublishingProfileXmlWithSecretsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmPublishingProfileOptionsInner publishingProfileOptions, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps recoverSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/recover")
-        Observable<Response<ResponseBody>> recoverSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSiteRecoveryEntityInner recoveryEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> recoverSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SnapshotRecoveryRequestInner recoveryEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps beginRecoverSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/recover")
-        Observable<Response<ResponseBody>> beginRecoverSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSiteRecoveryEntityInner recoveryEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginRecoverSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SnapshotRecoveryRequestInner recoveryEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps resetSlotConfigurationSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/resetSlotConfig")
         Observable<Response<ResponseBody>> resetSlotConfigurationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getResourceHealthMetadataSlot" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/resourceHealthMetadata")
-        Observable<Response<ResponseBody>> getResourceHealthMetadataSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps restartSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/restart")
@@ -1020,6 +1114,10 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @GET
         Observable<Response<ResponseBody>> listPerfMonCountersNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listPublicCertificatesNext" })
+        @GET
+        Observable<Response<ResponseBody>> listPublicCertificatesNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listSlotsNext" })
         @GET
         Observable<Response<ResponseBody>> listSlotsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -1063,6 +1161,10 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listPerfMonCountersSlotNext" })
         @GET
         Observable<Response<ResponseBody>> listPerfMonCountersSlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listPublicCertificatesSlotNext" })
+        @GET
+        Observable<Response<ResponseBody>> listPublicCertificatesSlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listSlotDifferencesSlotNext" })
         @GET
@@ -6509,6 +6611,446 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MSDeployStatusInner object if successful.
+     */
+    public MSDeployStatusInner getMSDeployStatus(String resourceGroupName, String name) {
+        return getMSDeployStatusWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MSDeployStatusInner> getMSDeployStatusAsync(String resourceGroupName, String name, final ServiceCallback<MSDeployStatusInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getMSDeployStatusWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MSDeployStatusInner object
+     */
+    public Observable<MSDeployStatusInner> getMSDeployStatusAsync(String resourceGroupName, String name) {
+        return getMSDeployStatusWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<MSDeployStatusInner>, MSDeployStatusInner>() {
+            @Override
+            public MSDeployStatusInner call(ServiceResponse<MSDeployStatusInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MSDeployStatusInner object
+     */
+    public Observable<ServiceResponse<MSDeployStatusInner>> getMSDeployStatusWithServiceResponseAsync(String resourceGroupName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-08-01";
+        return service.getMSDeployStatus(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MSDeployStatusInner>>>() {
+                @Override
+                public Observable<ServiceResponse<MSDeployStatusInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<MSDeployStatusInner> clientResponse = getMSDeployStatusDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<MSDeployStatusInner> getMSDeployStatusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MSDeployStatusInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<MSDeployStatusInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param mSDeploy Details of MSDeploy operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MSDeployStatusInner object if successful.
+     */
+    public MSDeployStatusInner createMSDeployOperation(String resourceGroupName, String name, MSDeployInner mSDeploy) {
+        return createMSDeployOperationWithServiceResponseAsync(resourceGroupName, name, mSDeploy).toBlocking().last().body();
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param mSDeploy Details of MSDeploy operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MSDeployStatusInner> createMSDeployOperationAsync(String resourceGroupName, String name, MSDeployInner mSDeploy, final ServiceCallback<MSDeployStatusInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createMSDeployOperationWithServiceResponseAsync(resourceGroupName, name, mSDeploy), serviceCallback);
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param mSDeploy Details of MSDeploy operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<MSDeployStatusInner> createMSDeployOperationAsync(String resourceGroupName, String name, MSDeployInner mSDeploy) {
+        return createMSDeployOperationWithServiceResponseAsync(resourceGroupName, name, mSDeploy).map(new Func1<ServiceResponse<MSDeployStatusInner>, MSDeployStatusInner>() {
+            @Override
+            public MSDeployStatusInner call(ServiceResponse<MSDeployStatusInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param mSDeploy Details of MSDeploy operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<MSDeployStatusInner>> createMSDeployOperationWithServiceResponseAsync(String resourceGroupName, String name, MSDeployInner mSDeploy) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (mSDeploy == null) {
+            throw new IllegalArgumentException("Parameter mSDeploy is required and cannot be null.");
+        }
+        Validator.validate(mSDeploy);
+        final String apiVersion = "2016-08-01";
+        Observable<Response<ResponseBody>> observable = service.createMSDeployOperation(resourceGroupName, name, this.client.subscriptionId(), mSDeploy, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<MSDeployStatusInner>() { }.getType());
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param mSDeploy Details of MSDeploy operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MSDeployStatusInner object if successful.
+     */
+    public MSDeployStatusInner beginCreateMSDeployOperation(String resourceGroupName, String name, MSDeployInner mSDeploy) {
+        return beginCreateMSDeployOperationWithServiceResponseAsync(resourceGroupName, name, mSDeploy).toBlocking().single().body();
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param mSDeploy Details of MSDeploy operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MSDeployStatusInner> beginCreateMSDeployOperationAsync(String resourceGroupName, String name, MSDeployInner mSDeploy, final ServiceCallback<MSDeployStatusInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateMSDeployOperationWithServiceResponseAsync(resourceGroupName, name, mSDeploy), serviceCallback);
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param mSDeploy Details of MSDeploy operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MSDeployStatusInner object
+     */
+    public Observable<MSDeployStatusInner> beginCreateMSDeployOperationAsync(String resourceGroupName, String name, MSDeployInner mSDeploy) {
+        return beginCreateMSDeployOperationWithServiceResponseAsync(resourceGroupName, name, mSDeploy).map(new Func1<ServiceResponse<MSDeployStatusInner>, MSDeployStatusInner>() {
+            @Override
+            public MSDeployStatusInner call(ServiceResponse<MSDeployStatusInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param mSDeploy Details of MSDeploy operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MSDeployStatusInner object
+     */
+    public Observable<ServiceResponse<MSDeployStatusInner>> beginCreateMSDeployOperationWithServiceResponseAsync(String resourceGroupName, String name, MSDeployInner mSDeploy) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (mSDeploy == null) {
+            throw new IllegalArgumentException("Parameter mSDeploy is required and cannot be null.");
+        }
+        Validator.validate(mSDeploy);
+        final String apiVersion = "2016-08-01";
+        return service.beginCreateMSDeployOperation(resourceGroupName, name, this.client.subscriptionId(), mSDeploy, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MSDeployStatusInner>>>() {
+                @Override
+                public Observable<ServiceResponse<MSDeployStatusInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<MSDeployStatusInner> clientResponse = beginCreateMSDeployOperationDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<MSDeployStatusInner> beginCreateMSDeployOperationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MSDeployStatusInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(201, new TypeToken<MSDeployStatusInner>() { }.getType())
+                .register(409, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MSDeployLogInner object if successful.
+     */
+    public MSDeployLogInner getMSDeployLog(String resourceGroupName, String name) {
+        return getMSDeployLogWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    }
+
+    /**
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MSDeployLogInner> getMSDeployLogAsync(String resourceGroupName, String name, final ServiceCallback<MSDeployLogInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getMSDeployLogWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MSDeployLogInner object
+     */
+    public Observable<MSDeployLogInner> getMSDeployLogAsync(String resourceGroupName, String name) {
+        return getMSDeployLogWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<MSDeployLogInner>, MSDeployLogInner>() {
+            @Override
+            public MSDeployLogInner call(ServiceResponse<MSDeployLogInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MSDeployLogInner object
+     */
+    public Observable<ServiceResponse<MSDeployLogInner>> getMSDeployLogWithServiceResponseAsync(String resourceGroupName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-08-01";
+        return service.getMSDeployLog(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MSDeployLogInner>>>() {
+                @Override
+                public Observable<ServiceResponse<MSDeployLogInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<MSDeployLogInner> clientResponse = getMSDeployLogDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<MSDeployLogInner> getMSDeployLogDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MSDeployLogInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<MSDeployLogInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Fetch a short lived token that can be exchanged for a master key.
+     * Fetch a short lived token that can be exchanged for a master key.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the String object if successful.
+     */
+    public String getFunctionsAdminToken(String resourceGroupName, String name) {
+        return getFunctionsAdminTokenWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    }
+
+    /**
+     * Fetch a short lived token that can be exchanged for a master key.
+     * Fetch a short lived token that can be exchanged for a master key.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<String> getFunctionsAdminTokenAsync(String resourceGroupName, String name, final ServiceCallback<String> serviceCallback) {
+        return ServiceFuture.fromResponse(getFunctionsAdminTokenWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Fetch a short lived token that can be exchanged for a master key.
+     * Fetch a short lived token that can be exchanged for a master key.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the String object
+     */
+    public Observable<String> getFunctionsAdminTokenAsync(String resourceGroupName, String name) {
+        return getFunctionsAdminTokenWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<String>, String>() {
+            @Override
+            public String call(ServiceResponse<String> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Fetch a short lived token that can be exchanged for a master key.
+     * Fetch a short lived token that can be exchanged for a master key.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the String object
+     */
+    public Observable<ServiceResponse<String>> getFunctionsAdminTokenWithServiceResponseAsync(String resourceGroupName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-08-01";
+        return service.getFunctionsAdminToken(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
+                @Override
+                public Observable<ServiceResponse<String>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<String> clientResponse = getFunctionsAdminTokenDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<String> getFunctionsAdminTokenDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<String, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<String>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * Get hostname bindings for an app or a deployment slot.
      * Get hostname bindings for an app or a deployment slot.
      *
@@ -8595,6 +9137,386 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param instanceId Id of web app instance
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MSDeployStatusInner object if successful.
+     */
+    public MSDeployStatusInner getInstanceMsDeployStatus(String resourceGroupName, String name, String instanceId) {
+        return getInstanceMsDeployStatusWithServiceResponseAsync(resourceGroupName, name, instanceId).toBlocking().single().body();
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param instanceId Id of web app instance
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MSDeployStatusInner> getInstanceMsDeployStatusAsync(String resourceGroupName, String name, String instanceId, final ServiceCallback<MSDeployStatusInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getInstanceMsDeployStatusWithServiceResponseAsync(resourceGroupName, name, instanceId), serviceCallback);
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param instanceId Id of web app instance
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MSDeployStatusInner object
+     */
+    public Observable<MSDeployStatusInner> getInstanceMsDeployStatusAsync(String resourceGroupName, String name, String instanceId) {
+        return getInstanceMsDeployStatusWithServiceResponseAsync(resourceGroupName, name, instanceId).map(new Func1<ServiceResponse<MSDeployStatusInner>, MSDeployStatusInner>() {
+            @Override
+            public MSDeployStatusInner call(ServiceResponse<MSDeployStatusInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param instanceId Id of web app instance
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MSDeployStatusInner object
+     */
+    public Observable<ServiceResponse<MSDeployStatusInner>> getInstanceMsDeployStatusWithServiceResponseAsync(String resourceGroupName, String name, String instanceId) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (instanceId == null) {
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-08-01";
+        return service.getInstanceMsDeployStatus(resourceGroupName, name, instanceId, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MSDeployStatusInner>>>() {
+                @Override
+                public Observable<ServiceResponse<MSDeployStatusInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<MSDeployStatusInner> clientResponse = getInstanceMsDeployStatusDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<MSDeployStatusInner> getInstanceMsDeployStatusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MSDeployStatusInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<MSDeployStatusInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param instanceId Id of web app instance
+     * @param mSDeploy Details of MSDeploy operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MSDeployStatusInner object if successful.
+     */
+    public MSDeployStatusInner createInstanceMSDeployOperation(String resourceGroupName, String name, String instanceId, MSDeployInner mSDeploy) {
+        return createInstanceMSDeployOperationWithServiceResponseAsync(resourceGroupName, name, instanceId, mSDeploy).toBlocking().last().body();
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param instanceId Id of web app instance
+     * @param mSDeploy Details of MSDeploy operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MSDeployStatusInner> createInstanceMSDeployOperationAsync(String resourceGroupName, String name, String instanceId, MSDeployInner mSDeploy, final ServiceCallback<MSDeployStatusInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createInstanceMSDeployOperationWithServiceResponseAsync(resourceGroupName, name, instanceId, mSDeploy), serviceCallback);
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param instanceId Id of web app instance
+     * @param mSDeploy Details of MSDeploy operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<MSDeployStatusInner> createInstanceMSDeployOperationAsync(String resourceGroupName, String name, String instanceId, MSDeployInner mSDeploy) {
+        return createInstanceMSDeployOperationWithServiceResponseAsync(resourceGroupName, name, instanceId, mSDeploy).map(new Func1<ServiceResponse<MSDeployStatusInner>, MSDeployStatusInner>() {
+            @Override
+            public MSDeployStatusInner call(ServiceResponse<MSDeployStatusInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param instanceId Id of web app instance
+     * @param mSDeploy Details of MSDeploy operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<MSDeployStatusInner>> createInstanceMSDeployOperationWithServiceResponseAsync(String resourceGroupName, String name, String instanceId, MSDeployInner mSDeploy) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (instanceId == null) {
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (mSDeploy == null) {
+            throw new IllegalArgumentException("Parameter mSDeploy is required and cannot be null.");
+        }
+        Validator.validate(mSDeploy);
+        final String apiVersion = "2016-08-01";
+        Observable<Response<ResponseBody>> observable = service.createInstanceMSDeployOperation(resourceGroupName, name, instanceId, this.client.subscriptionId(), mSDeploy, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<MSDeployStatusInner>() { }.getType());
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param instanceId Id of web app instance
+     * @param mSDeploy Details of MSDeploy operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MSDeployStatusInner object if successful.
+     */
+    public MSDeployStatusInner beginCreateInstanceMSDeployOperation(String resourceGroupName, String name, String instanceId, MSDeployInner mSDeploy) {
+        return beginCreateInstanceMSDeployOperationWithServiceResponseAsync(resourceGroupName, name, instanceId, mSDeploy).toBlocking().single().body();
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param instanceId Id of web app instance
+     * @param mSDeploy Details of MSDeploy operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MSDeployStatusInner> beginCreateInstanceMSDeployOperationAsync(String resourceGroupName, String name, String instanceId, MSDeployInner mSDeploy, final ServiceCallback<MSDeployStatusInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateInstanceMSDeployOperationWithServiceResponseAsync(resourceGroupName, name, instanceId, mSDeploy), serviceCallback);
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param instanceId Id of web app instance
+     * @param mSDeploy Details of MSDeploy operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MSDeployStatusInner object
+     */
+    public Observable<MSDeployStatusInner> beginCreateInstanceMSDeployOperationAsync(String resourceGroupName, String name, String instanceId, MSDeployInner mSDeploy) {
+        return beginCreateInstanceMSDeployOperationWithServiceResponseAsync(resourceGroupName, name, instanceId, mSDeploy).map(new Func1<ServiceResponse<MSDeployStatusInner>, MSDeployStatusInner>() {
+            @Override
+            public MSDeployStatusInner call(ServiceResponse<MSDeployStatusInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param instanceId Id of web app instance
+     * @param mSDeploy Details of MSDeploy operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MSDeployStatusInner object
+     */
+    public Observable<ServiceResponse<MSDeployStatusInner>> beginCreateInstanceMSDeployOperationWithServiceResponseAsync(String resourceGroupName, String name, String instanceId, MSDeployInner mSDeploy) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (instanceId == null) {
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (mSDeploy == null) {
+            throw new IllegalArgumentException("Parameter mSDeploy is required and cannot be null.");
+        }
+        Validator.validate(mSDeploy);
+        final String apiVersion = "2016-08-01";
+        return service.beginCreateInstanceMSDeployOperation(resourceGroupName, name, instanceId, this.client.subscriptionId(), mSDeploy, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MSDeployStatusInner>>>() {
+                @Override
+                public Observable<ServiceResponse<MSDeployStatusInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<MSDeployStatusInner> clientResponse = beginCreateInstanceMSDeployOperationDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<MSDeployStatusInner> beginCreateInstanceMSDeployOperationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MSDeployStatusInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(201, new TypeToken<MSDeployStatusInner>() { }.getType())
+                .register(409, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param instanceId Id of web app instance
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MSDeployLogInner object if successful.
+     */
+    public MSDeployLogInner getInstanceMSDeployLog(String resourceGroupName, String name, String instanceId) {
+        return getInstanceMSDeployLogWithServiceResponseAsync(resourceGroupName, name, instanceId).toBlocking().single().body();
+    }
+
+    /**
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param instanceId Id of web app instance
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MSDeployLogInner> getInstanceMSDeployLogAsync(String resourceGroupName, String name, String instanceId, final ServiceCallback<MSDeployLogInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getInstanceMSDeployLogWithServiceResponseAsync(resourceGroupName, name, instanceId), serviceCallback);
+    }
+
+    /**
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param instanceId Id of web app instance
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MSDeployLogInner object
+     */
+    public Observable<MSDeployLogInner> getInstanceMSDeployLogAsync(String resourceGroupName, String name, String instanceId) {
+        return getInstanceMSDeployLogWithServiceResponseAsync(resourceGroupName, name, instanceId).map(new Func1<ServiceResponse<MSDeployLogInner>, MSDeployLogInner>() {
+            @Override
+            public MSDeployLogInner call(ServiceResponse<MSDeployLogInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param instanceId Id of web app instance
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MSDeployLogInner object
+     */
+    public Observable<ServiceResponse<MSDeployLogInner>> getInstanceMSDeployLogWithServiceResponseAsync(String resourceGroupName, String name, String instanceId) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (instanceId == null) {
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-08-01";
+        return service.getInstanceMSDeployLog(resourceGroupName, name, instanceId, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MSDeployLogInner>>>() {
+                @Override
+                public Observable<ServiceResponse<MSDeployLogInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<MSDeployLogInner> clientResponse = getInstanceMSDeployLogDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<MSDeployLogInner> getInstanceMSDeployLogDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MSDeployLogInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<MSDeployLogInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -10697,23 +11619,29 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     * Gets the publishing profile for an app (or deployment slot, if specified).
+     * Get public certificates for an app or a deployment slot.
+     * Get public certificates for an app or a deployment slot.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the InputStream object if successful.
+     * @return the PagedList&lt;PublicCertificateInner&gt; object if successful.
      */
-    public InputStream listPublishingProfileXmlWithSecrets(String resourceGroupName, String name) {
-        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    public PagedList<PublicCertificateInner> listPublicCertificates(final String resourceGroupName, final String name) {
+        ServiceResponse<Page<PublicCertificateInner>> response = listPublicCertificatesSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        return new PagedList<PublicCertificateInner>(response.body()) {
+            @Override
+            public Page<PublicCertificateInner> nextPage(String nextPageLink) {
+                return listPublicCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     * Gets the publishing profile for an app (or deployment slot, if specified).
+     * Get public certificates for an app or a deployment slot.
+     * Get public certificates for an app or a deployment slot.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
@@ -10721,38 +11649,70 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceFuture.fromResponse(listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<List<PublicCertificateInner>> listPublicCertificatesAsync(final String resourceGroupName, final String name, final ListOperationCallback<PublicCertificateInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listPublicCertificatesSinglePageAsync(resourceGroupName, name),
+            new Func1<String, Observable<ServiceResponse<Page<PublicCertificateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicCertificateInner>>> call(String nextPageLink) {
+                    return listPublicCertificatesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     * Gets the publishing profile for an app (or deployment slot, if specified).
+     * Get public certificates for an app or a deployment slot.
+     * Get public certificates for an app or a deployment slot.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
+     * @return the observable to the PagedList&lt;PublicCertificateInner&gt; object
      */
-    public Observable<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name) {
-        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
-            @Override
-            public InputStream call(ServiceResponse<InputStream> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<PublicCertificateInner>> listPublicCertificatesAsync(final String resourceGroupName, final String name) {
+        return listPublicCertificatesWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<PublicCertificateInner>>, Page<PublicCertificateInner>>() {
+                @Override
+                public Page<PublicCertificateInner> call(ServiceResponse<Page<PublicCertificateInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     * Gets the publishing profile for an app (or deployment slot, if specified).
+     * Get public certificates for an app or a deployment slot.
+     * Get public certificates for an app or a deployment slot.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
+     * @return the observable to the PagedList&lt;PublicCertificateInner&gt; object
      */
-    public Observable<ServiceResponse<InputStream>> listPublishingProfileXmlWithSecretsWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<Page<PublicCertificateInner>>> listPublicCertificatesWithServiceResponseAsync(final String resourceGroupName, final String name) {
+        return listPublicCertificatesSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<PublicCertificateInner>>, Observable<ServiceResponse<Page<PublicCertificateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicCertificateInner>>> call(ServiceResponse<Page<PublicCertificateInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listPublicCertificatesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get public certificates for an app or a deployment slot.
+     * Get public certificates for an app or a deployment slot.
+     *
+    ServiceResponse<PageImpl<PublicCertificateInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+    ServiceResponse<PageImpl<PublicCertificateInner>> * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PublicCertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PublicCertificateInner>>> listPublicCertificatesSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -10763,15 +11723,107 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-08-01";
-        final PublishingProfileFormat format = null;
-        CsmPublishingProfileOptions publishingProfileOptions = new CsmPublishingProfileOptions();
-        publishingProfileOptions.withFormat(null);
-        return service.listPublishingProfileXmlWithSecrets(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), publishingProfileOptions, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InputStream>>>() {
+        return service.listPublicCertificates(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PublicCertificateInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<InputStream>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<PublicCertificateInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<InputStream> clientResponse = listPublishingProfileXmlWithSecretsDelegate(response);
+                        ServiceResponse<PageImpl<PublicCertificateInner>> result = listPublicCertificatesDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PublicCertificateInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<PublicCertificateInner>> listPublicCertificatesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PublicCertificateInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<PublicCertificateInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get the named public certificate for an app (or deployment slot, if specified).
+     * Get the named public certificate for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param publicCertificateName Public CertificateName
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PublicCertificateInner object if successful.
+     */
+    public PublicCertificateInner getPublicCertificate(String resourceGroupName, String name, String publicCertificateName) {
+        return getPublicCertificateWithServiceResponseAsync(resourceGroupName, name, publicCertificateName).toBlocking().single().body();
+    }
+
+    /**
+     * Get the named public certificate for an app (or deployment slot, if specified).
+     * Get the named public certificate for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param publicCertificateName Public CertificateName
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<PublicCertificateInner> getPublicCertificateAsync(String resourceGroupName, String name, String publicCertificateName, final ServiceCallback<PublicCertificateInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getPublicCertificateWithServiceResponseAsync(resourceGroupName, name, publicCertificateName), serviceCallback);
+    }
+
+    /**
+     * Get the named public certificate for an app (or deployment slot, if specified).
+     * Get the named public certificate for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param publicCertificateName Public CertificateName
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PublicCertificateInner object
+     */
+    public Observable<PublicCertificateInner> getPublicCertificateAsync(String resourceGroupName, String name, String publicCertificateName) {
+        return getPublicCertificateWithServiceResponseAsync(resourceGroupName, name, publicCertificateName).map(new Func1<ServiceResponse<PublicCertificateInner>, PublicCertificateInner>() {
+            @Override
+            public PublicCertificateInner call(ServiceResponse<PublicCertificateInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get the named public certificate for an app (or deployment slot, if specified).
+     * Get the named public certificate for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param publicCertificateName Public CertificateName
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PublicCertificateInner object
+     */
+    public Observable<ServiceResponse<PublicCertificateInner>> getPublicCertificateWithServiceResponseAsync(String resourceGroupName, String name, String publicCertificateName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (publicCertificateName == null) {
+            throw new IllegalArgumentException("Parameter publicCertificateName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-08-01";
+        return service.getPublicCertificate(resourceGroupName, name, publicCertificateName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PublicCertificateInner>>>() {
+                @Override
+                public Observable<ServiceResponse<PublicCertificateInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PublicCertificateInner> clientResponse = getPublicCertificateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -10780,23 +11832,225 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
+    private ServiceResponse<PublicCertificateInner> getPublicCertificateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PublicCertificateInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PublicCertificateInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Creates a hostname binding for an app.
+     * Creates a hostname binding for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param publicCertificateName Public certificate name.
+     * @param publicCertificate Public certificate details. This is the JSON representation of a PublicCertificate object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PublicCertificateInner object if successful.
+     */
+    public PublicCertificateInner createOrUpdatePublicCertificate(String resourceGroupName, String name, String publicCertificateName, PublicCertificateInner publicCertificate) {
+        return createOrUpdatePublicCertificateWithServiceResponseAsync(resourceGroupName, name, publicCertificateName, publicCertificate).toBlocking().single().body();
+    }
+
+    /**
+     * Creates a hostname binding for an app.
+     * Creates a hostname binding for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param publicCertificateName Public certificate name.
+     * @param publicCertificate Public certificate details. This is the JSON representation of a PublicCertificate object.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<PublicCertificateInner> createOrUpdatePublicCertificateAsync(String resourceGroupName, String name, String publicCertificateName, PublicCertificateInner publicCertificate, final ServiceCallback<PublicCertificateInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdatePublicCertificateWithServiceResponseAsync(resourceGroupName, name, publicCertificateName, publicCertificate), serviceCallback);
+    }
+
+    /**
+     * Creates a hostname binding for an app.
+     * Creates a hostname binding for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param publicCertificateName Public certificate name.
+     * @param publicCertificate Public certificate details. This is the JSON representation of a PublicCertificate object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PublicCertificateInner object
+     */
+    public Observable<PublicCertificateInner> createOrUpdatePublicCertificateAsync(String resourceGroupName, String name, String publicCertificateName, PublicCertificateInner publicCertificate) {
+        return createOrUpdatePublicCertificateWithServiceResponseAsync(resourceGroupName, name, publicCertificateName, publicCertificate).map(new Func1<ServiceResponse<PublicCertificateInner>, PublicCertificateInner>() {
+            @Override
+            public PublicCertificateInner call(ServiceResponse<PublicCertificateInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Creates a hostname binding for an app.
+     * Creates a hostname binding for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param publicCertificateName Public certificate name.
+     * @param publicCertificate Public certificate details. This is the JSON representation of a PublicCertificate object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PublicCertificateInner object
+     */
+    public Observable<ServiceResponse<PublicCertificateInner>> createOrUpdatePublicCertificateWithServiceResponseAsync(String resourceGroupName, String name, String publicCertificateName, PublicCertificateInner publicCertificate) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (publicCertificateName == null) {
+            throw new IllegalArgumentException("Parameter publicCertificateName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (publicCertificate == null) {
+            throw new IllegalArgumentException("Parameter publicCertificate is required and cannot be null.");
+        }
+        Validator.validate(publicCertificate);
+        final String apiVersion = "2016-08-01";
+        return service.createOrUpdatePublicCertificate(resourceGroupName, name, publicCertificateName, this.client.subscriptionId(), publicCertificate, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PublicCertificateInner>>>() {
+                @Override
+                public Observable<ServiceResponse<PublicCertificateInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PublicCertificateInner> clientResponse = createOrUpdatePublicCertificateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PublicCertificateInner> createOrUpdatePublicCertificateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PublicCertificateInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PublicCertificateInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes a hostname binding for an app.
+     * Deletes a hostname binding for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param publicCertificateName Public Certificate Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deletePublicCertificate(String resourceGroupName, String name, String publicCertificateName) {
+        deletePublicCertificateWithServiceResponseAsync(resourceGroupName, name, publicCertificateName).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes a hostname binding for an app.
+     * Deletes a hostname binding for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param publicCertificateName Public Certificate Name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deletePublicCertificateAsync(String resourceGroupName, String name, String publicCertificateName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deletePublicCertificateWithServiceResponseAsync(resourceGroupName, name, publicCertificateName), serviceCallback);
+    }
+
+    /**
+     * Deletes a hostname binding for an app.
+     * Deletes a hostname binding for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param publicCertificateName Public Certificate Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deletePublicCertificateAsync(String resourceGroupName, String name, String publicCertificateName) {
+        return deletePublicCertificateWithServiceResponseAsync(resourceGroupName, name, publicCertificateName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a hostname binding for an app.
+     * Deletes a hostname binding for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param publicCertificateName Public Certificate Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deletePublicCertificateWithServiceResponseAsync(String resourceGroupName, String name, String publicCertificateName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (publicCertificateName == null) {
+            throw new IllegalArgumentException("Parameter publicCertificateName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-08-01";
+        return service.deletePublicCertificate(resourceGroupName, name, publicCertificateName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deletePublicCertificateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> deletePublicCertificateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
     /**
      * Gets the publishing profile for an app (or deployment slot, if specified).
      * Gets the publishing profile for an app (or deployment slot, if specified).
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param format Name of the format. Valid values are:
-      FileZilla3
-      WebDeploy -- default
-      Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InputStream object if successful.
      */
-    public InputStream listPublishingProfileXmlWithSecrets(String resourceGroupName, String name, PublishingProfileFormat format) {
-        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, format).toBlocking().single().body();
+    public InputStream listPublishingProfileXmlWithSecrets(String resourceGroupName, String name, CsmPublishingProfileOptionsInner publishingProfileOptions) {
+        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, publishingProfileOptions).toBlocking().single().body();
     }
 
     /**
@@ -10805,16 +12059,13 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param format Name of the format. Valid values are:
-      FileZilla3
-      WebDeploy -- default
-      Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, PublishingProfileFormat format, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceFuture.fromResponse(listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, format), serviceCallback);
+    public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, CsmPublishingProfileOptionsInner publishingProfileOptions, final ServiceCallback<InputStream> serviceCallback) {
+        return ServiceFuture.fromResponse(listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, publishingProfileOptions), serviceCallback);
     }
 
     /**
@@ -10823,15 +12074,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param format Name of the format. Valid values are:
-      FileZilla3
-      WebDeploy -- default
-      Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
-    public Observable<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, PublishingProfileFormat format) {
-        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, format).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
+    public Observable<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, CsmPublishingProfileOptionsInner publishingProfileOptions) {
+        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, publishingProfileOptions).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
             @Override
             public InputStream call(ServiceResponse<InputStream> response) {
                 return response.body();
@@ -10845,14 +12093,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param format Name of the format. Valid values are:
-      FileZilla3
-      WebDeploy -- default
-      Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
-    public Observable<ServiceResponse<InputStream>> listPublishingProfileXmlWithSecretsWithServiceResponseAsync(String resourceGroupName, String name, PublishingProfileFormat format) {
+    public Observable<ServiceResponse<InputStream>> listPublishingProfileXmlWithSecretsWithServiceResponseAsync(String resourceGroupName, String name, CsmPublishingProfileOptionsInner publishingProfileOptions) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -10862,10 +12107,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
+        if (publishingProfileOptions == null) {
+            throw new IllegalArgumentException("Parameter publishingProfileOptions is required and cannot be null.");
+        }
+        Validator.validate(publishingProfileOptions);
         final String apiVersion = "2016-08-01";
-        CsmPublishingProfileOptions publishingProfileOptions = new CsmPublishingProfileOptions();
-        publishingProfileOptions.withFormat(format);
-        return service.listPublishingProfileXmlWithSecrets(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), publishingProfileOptions, this.client.userAgent())
+        return service.listPublishingProfileXmlWithSecrets(resourceGroupName, name, this.client.subscriptionId(), publishingProfileOptions, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InputStream>>>() {
                 @Override
                 public Observable<ServiceResponse<InputStream>> call(Response<ResponseBody> response) {
@@ -10898,7 +12145,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RecoverResponseInner object if successful.
      */
-    public RecoverResponseInner recover(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) {
+    public RecoverResponseInner recover(String resourceGroupName, String name, SnapshotRecoveryRequestInner recoveryEntity) {
         return recoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity).toBlocking().last().body();
     }
 
@@ -10913,7 +12160,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<RecoverResponseInner> recoverAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<RecoverResponseInner> serviceCallback) {
+    public ServiceFuture<RecoverResponseInner> recoverAsync(String resourceGroupName, String name, SnapshotRecoveryRequestInner recoveryEntity, final ServiceCallback<RecoverResponseInner> serviceCallback) {
         return ServiceFuture.fromResponse(recoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity), serviceCallback);
     }
 
@@ -10927,7 +12174,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<RecoverResponseInner> recoverAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) {
+    public Observable<RecoverResponseInner> recoverAsync(String resourceGroupName, String name, SnapshotRecoveryRequestInner recoveryEntity) {
         return recoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity).map(new Func1<ServiceResponse<RecoverResponseInner>, RecoverResponseInner>() {
             @Override
             public RecoverResponseInner call(ServiceResponse<RecoverResponseInner> response) {
@@ -10946,7 +12193,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<RecoverResponseInner>> recoverWithServiceResponseAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) {
+    public Observable<ServiceResponse<RecoverResponseInner>> recoverWithServiceResponseAsync(String resourceGroupName, String name, SnapshotRecoveryRequestInner recoveryEntity) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -10977,7 +12224,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RecoverResponseInner object if successful.
      */
-    public RecoverResponseInner beginRecover(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) {
+    public RecoverResponseInner beginRecover(String resourceGroupName, String name, SnapshotRecoveryRequestInner recoveryEntity) {
         return beginRecoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity).toBlocking().single().body();
     }
 
@@ -10992,7 +12239,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<RecoverResponseInner> beginRecoverAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<RecoverResponseInner> serviceCallback) {
+    public ServiceFuture<RecoverResponseInner> beginRecoverAsync(String resourceGroupName, String name, SnapshotRecoveryRequestInner recoveryEntity, final ServiceCallback<RecoverResponseInner> serviceCallback) {
         return ServiceFuture.fromResponse(beginRecoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity), serviceCallback);
     }
 
@@ -11006,7 +12253,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecoverResponseInner object
      */
-    public Observable<RecoverResponseInner> beginRecoverAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) {
+    public Observable<RecoverResponseInner> beginRecoverAsync(String resourceGroupName, String name, SnapshotRecoveryRequestInner recoveryEntity) {
         return beginRecoverWithServiceResponseAsync(resourceGroupName, name, recoveryEntity).map(new Func1<ServiceResponse<RecoverResponseInner>, RecoverResponseInner>() {
             @Override
             public RecoverResponseInner call(ServiceResponse<RecoverResponseInner> response) {
@@ -11025,7 +12272,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecoverResponseInner object
      */
-    public Observable<ServiceResponse<RecoverResponseInner>> beginRecoverWithServiceResponseAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) {
+    public Observable<ServiceResponse<RecoverResponseInner>> beginRecoverWithServiceResponseAsync(String resourceGroupName, String name, SnapshotRecoveryRequestInner recoveryEntity) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -11144,94 +12391,6 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     private ServiceResponse<Void> resetProductionSlotConfigDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Gets the category of ResourceHealthMetadata to use for the given site.
-     * Gets the category of ResourceHealthMetadata to use for the given site.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of web app
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ResourceHealthMetadataInner object if successful.
-     */
-    public ResourceHealthMetadataInner getResourceHealthMetadata(String resourceGroupName, String name) {
-        return getResourceHealthMetadataWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
-    }
-
-    /**
-     * Gets the category of ResourceHealthMetadata to use for the given site.
-     * Gets the category of ResourceHealthMetadata to use for the given site.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of web app
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<ResourceHealthMetadataInner> getResourceHealthMetadataAsync(String resourceGroupName, String name, final ServiceCallback<ResourceHealthMetadataInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getResourceHealthMetadataWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
-    }
-
-    /**
-     * Gets the category of ResourceHealthMetadata to use for the given site.
-     * Gets the category of ResourceHealthMetadata to use for the given site.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of web app
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ResourceHealthMetadataInner object
-     */
-    public Observable<ResourceHealthMetadataInner> getResourceHealthMetadataAsync(String resourceGroupName, String name) {
-        return getResourceHealthMetadataWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<ResourceHealthMetadataInner>, ResourceHealthMetadataInner>() {
-            @Override
-            public ResourceHealthMetadataInner call(ServiceResponse<ResourceHealthMetadataInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets the category of ResourceHealthMetadata to use for the given site.
-     * Gets the category of ResourceHealthMetadata to use for the given site.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of web app
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ResourceHealthMetadataInner object
-     */
-    public Observable<ServiceResponse<ResourceHealthMetadataInner>> getResourceHealthMetadataWithServiceResponseAsync(String resourceGroupName, String name) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        final String apiVersion = "2016-08-01";
-        return service.getResourceHealthMetadata(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ResourceHealthMetadataInner>>>() {
-                @Override
-                public Observable<ServiceResponse<ResourceHealthMetadataInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ResourceHealthMetadataInner> clientResponse = getResourceHealthMetadataDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<ResourceHealthMetadataInner> getResourceHealthMetadataDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ResourceHealthMetadataInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<ResourceHealthMetadataInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -16790,6 +17949,481 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MSDeployStatusInner object if successful.
+     */
+    public MSDeployStatusInner getMSDeployStatusSlot(String resourceGroupName, String name, String slot) {
+        return getMSDeployStatusSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MSDeployStatusInner> getMSDeployStatusSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<MSDeployStatusInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getMSDeployStatusSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MSDeployStatusInner object
+     */
+    public Observable<MSDeployStatusInner> getMSDeployStatusSlotAsync(String resourceGroupName, String name, String slot) {
+        return getMSDeployStatusSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<MSDeployStatusInner>, MSDeployStatusInner>() {
+            @Override
+            public MSDeployStatusInner call(ServiceResponse<MSDeployStatusInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MSDeployStatusInner object
+     */
+    public Observable<ServiceResponse<MSDeployStatusInner>> getMSDeployStatusSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-08-01";
+        return service.getMSDeployStatusSlot(resourceGroupName, name, slot, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MSDeployStatusInner>>>() {
+                @Override
+                public Observable<ServiceResponse<MSDeployStatusInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<MSDeployStatusInner> clientResponse = getMSDeployStatusSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<MSDeployStatusInner> getMSDeployStatusSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MSDeployStatusInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<MSDeployStatusInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param mSDeploy Details of MSDeploy operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MSDeployStatusInner object if successful.
+     */
+    public MSDeployStatusInner createMSDeployOperationSlot(String resourceGroupName, String name, String slot, MSDeployInner mSDeploy) {
+        return createMSDeployOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, mSDeploy).toBlocking().last().body();
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param mSDeploy Details of MSDeploy operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MSDeployStatusInner> createMSDeployOperationSlotAsync(String resourceGroupName, String name, String slot, MSDeployInner mSDeploy, final ServiceCallback<MSDeployStatusInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createMSDeployOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, mSDeploy), serviceCallback);
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param mSDeploy Details of MSDeploy operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<MSDeployStatusInner> createMSDeployOperationSlotAsync(String resourceGroupName, String name, String slot, MSDeployInner mSDeploy) {
+        return createMSDeployOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, mSDeploy).map(new Func1<ServiceResponse<MSDeployStatusInner>, MSDeployStatusInner>() {
+            @Override
+            public MSDeployStatusInner call(ServiceResponse<MSDeployStatusInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param mSDeploy Details of MSDeploy operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<MSDeployStatusInner>> createMSDeployOperationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, MSDeployInner mSDeploy) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (mSDeploy == null) {
+            throw new IllegalArgumentException("Parameter mSDeploy is required and cannot be null.");
+        }
+        Validator.validate(mSDeploy);
+        final String apiVersion = "2016-08-01";
+        Observable<Response<ResponseBody>> observable = service.createMSDeployOperationSlot(resourceGroupName, name, slot, this.client.subscriptionId(), mSDeploy, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<MSDeployStatusInner>() { }.getType());
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param mSDeploy Details of MSDeploy operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MSDeployStatusInner object if successful.
+     */
+    public MSDeployStatusInner beginCreateMSDeployOperationSlot(String resourceGroupName, String name, String slot, MSDeployInner mSDeploy) {
+        return beginCreateMSDeployOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, mSDeploy).toBlocking().single().body();
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param mSDeploy Details of MSDeploy operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MSDeployStatusInner> beginCreateMSDeployOperationSlotAsync(String resourceGroupName, String name, String slot, MSDeployInner mSDeploy, final ServiceCallback<MSDeployStatusInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateMSDeployOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, mSDeploy), serviceCallback);
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param mSDeploy Details of MSDeploy operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MSDeployStatusInner object
+     */
+    public Observable<MSDeployStatusInner> beginCreateMSDeployOperationSlotAsync(String resourceGroupName, String name, String slot, MSDeployInner mSDeploy) {
+        return beginCreateMSDeployOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, mSDeploy).map(new Func1<ServiceResponse<MSDeployStatusInner>, MSDeployStatusInner>() {
+            @Override
+            public MSDeployStatusInner call(ServiceResponse<MSDeployStatusInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param mSDeploy Details of MSDeploy operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MSDeployStatusInner object
+     */
+    public Observable<ServiceResponse<MSDeployStatusInner>> beginCreateMSDeployOperationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, MSDeployInner mSDeploy) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (mSDeploy == null) {
+            throw new IllegalArgumentException("Parameter mSDeploy is required and cannot be null.");
+        }
+        Validator.validate(mSDeploy);
+        final String apiVersion = "2016-08-01";
+        return service.beginCreateMSDeployOperationSlot(resourceGroupName, name, slot, this.client.subscriptionId(), mSDeploy, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MSDeployStatusInner>>>() {
+                @Override
+                public Observable<ServiceResponse<MSDeployStatusInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<MSDeployStatusInner> clientResponse = beginCreateMSDeployOperationSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<MSDeployStatusInner> beginCreateMSDeployOperationSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MSDeployStatusInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(201, new TypeToken<MSDeployStatusInner>() { }.getType())
+                .register(409, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MSDeployLogInner object if successful.
+     */
+    public MSDeployLogInner getMSDeployLogSlot(String resourceGroupName, String name, String slot) {
+        return getMSDeployLogSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    }
+
+    /**
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MSDeployLogInner> getMSDeployLogSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<MSDeployLogInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getMSDeployLogSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    }
+
+    /**
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MSDeployLogInner object
+     */
+    public Observable<MSDeployLogInner> getMSDeployLogSlotAsync(String resourceGroupName, String name, String slot) {
+        return getMSDeployLogSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<MSDeployLogInner>, MSDeployLogInner>() {
+            @Override
+            public MSDeployLogInner call(ServiceResponse<MSDeployLogInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MSDeployLogInner object
+     */
+    public Observable<ServiceResponse<MSDeployLogInner>> getMSDeployLogSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-08-01";
+        return service.getMSDeployLogSlot(resourceGroupName, name, slot, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MSDeployLogInner>>>() {
+                @Override
+                public Observable<ServiceResponse<MSDeployLogInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<MSDeployLogInner> clientResponse = getMSDeployLogSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<MSDeployLogInner> getMSDeployLogSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MSDeployLogInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<MSDeployLogInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Fetch a short lived token that can be exchanged for a master key.
+     * Fetch a short lived token that can be exchanged for a master key.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the String object if successful.
+     */
+    public String getFunctionsAdminTokenSlot(String resourceGroupName, String name, String slot) {
+        return getFunctionsAdminTokenSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    }
+
+    /**
+     * Fetch a short lived token that can be exchanged for a master key.
+     * Fetch a short lived token that can be exchanged for a master key.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<String> getFunctionsAdminTokenSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<String> serviceCallback) {
+        return ServiceFuture.fromResponse(getFunctionsAdminTokenSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    }
+
+    /**
+     * Fetch a short lived token that can be exchanged for a master key.
+     * Fetch a short lived token that can be exchanged for a master key.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the String object
+     */
+    public Observable<String> getFunctionsAdminTokenSlotAsync(String resourceGroupName, String name, String slot) {
+        return getFunctionsAdminTokenSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<String>, String>() {
+            @Override
+            public String call(ServiceResponse<String> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Fetch a short lived token that can be exchanged for a master key.
+     * Fetch a short lived token that can be exchanged for a master key.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the String object
+     */
+    public Observable<ServiceResponse<String>> getFunctionsAdminTokenSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-08-01";
+        return service.getFunctionsAdminTokenSlot(resourceGroupName, name, slot, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
+                @Override
+                public Observable<ServiceResponse<String>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<String> clientResponse = getFunctionsAdminTokenSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<String> getFunctionsAdminTokenSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<String, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<String>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * Get hostname bindings for an app or a deployment slot.
      * Get hostname bindings for an app or a deployment slot.
      *
@@ -19024,6 +20658,414 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param instanceId Id of web app instance
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MSDeployStatusInner object if successful.
+     */
+    public MSDeployStatusInner getInstanceMsDeployStatusSlot(String resourceGroupName, String name, String slot, String instanceId) {
+        return getInstanceMsDeployStatusSlotWithServiceResponseAsync(resourceGroupName, name, slot, instanceId).toBlocking().single().body();
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param instanceId Id of web app instance
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MSDeployStatusInner> getInstanceMsDeployStatusSlotAsync(String resourceGroupName, String name, String slot, String instanceId, final ServiceCallback<MSDeployStatusInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getInstanceMsDeployStatusSlotWithServiceResponseAsync(resourceGroupName, name, slot, instanceId), serviceCallback);
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param instanceId Id of web app instance
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MSDeployStatusInner object
+     */
+    public Observable<MSDeployStatusInner> getInstanceMsDeployStatusSlotAsync(String resourceGroupName, String name, String slot, String instanceId) {
+        return getInstanceMsDeployStatusSlotWithServiceResponseAsync(resourceGroupName, name, slot, instanceId).map(new Func1<ServiceResponse<MSDeployStatusInner>, MSDeployStatusInner>() {
+            @Override
+            public MSDeployStatusInner call(ServiceResponse<MSDeployStatusInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param instanceId Id of web app instance
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MSDeployStatusInner object
+     */
+    public Observable<ServiceResponse<MSDeployStatusInner>> getInstanceMsDeployStatusSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, String instanceId) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (instanceId == null) {
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-08-01";
+        return service.getInstanceMsDeployStatusSlot(resourceGroupName, name, slot, instanceId, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MSDeployStatusInner>>>() {
+                @Override
+                public Observable<ServiceResponse<MSDeployStatusInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<MSDeployStatusInner> clientResponse = getInstanceMsDeployStatusSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<MSDeployStatusInner> getInstanceMsDeployStatusSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MSDeployStatusInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<MSDeployStatusInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param instanceId Id of web app instance
+     * @param mSDeploy Details of MSDeploy operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MSDeployStatusInner object if successful.
+     */
+    public MSDeployStatusInner createInstanceMSDeployOperationSlot(String resourceGroupName, String name, String slot, String instanceId, MSDeployInner mSDeploy) {
+        return createInstanceMSDeployOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, instanceId, mSDeploy).toBlocking().last().body();
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param instanceId Id of web app instance
+     * @param mSDeploy Details of MSDeploy operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MSDeployStatusInner> createInstanceMSDeployOperationSlotAsync(String resourceGroupName, String name, String slot, String instanceId, MSDeployInner mSDeploy, final ServiceCallback<MSDeployStatusInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createInstanceMSDeployOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, instanceId, mSDeploy), serviceCallback);
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param instanceId Id of web app instance
+     * @param mSDeploy Details of MSDeploy operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<MSDeployStatusInner> createInstanceMSDeployOperationSlotAsync(String resourceGroupName, String name, String slot, String instanceId, MSDeployInner mSDeploy) {
+        return createInstanceMSDeployOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, instanceId, mSDeploy).map(new Func1<ServiceResponse<MSDeployStatusInner>, MSDeployStatusInner>() {
+            @Override
+            public MSDeployStatusInner call(ServiceResponse<MSDeployStatusInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param instanceId Id of web app instance
+     * @param mSDeploy Details of MSDeploy operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<MSDeployStatusInner>> createInstanceMSDeployOperationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, String instanceId, MSDeployInner mSDeploy) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (instanceId == null) {
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (mSDeploy == null) {
+            throw new IllegalArgumentException("Parameter mSDeploy is required and cannot be null.");
+        }
+        Validator.validate(mSDeploy);
+        final String apiVersion = "2016-08-01";
+        Observable<Response<ResponseBody>> observable = service.createInstanceMSDeployOperationSlot(resourceGroupName, name, slot, instanceId, this.client.subscriptionId(), mSDeploy, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<MSDeployStatusInner>() { }.getType());
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param instanceId Id of web app instance
+     * @param mSDeploy Details of MSDeploy operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MSDeployStatusInner object if successful.
+     */
+    public MSDeployStatusInner beginCreateInstanceMSDeployOperationSlot(String resourceGroupName, String name, String slot, String instanceId, MSDeployInner mSDeploy) {
+        return beginCreateInstanceMSDeployOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, instanceId, mSDeploy).toBlocking().single().body();
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param instanceId Id of web app instance
+     * @param mSDeploy Details of MSDeploy operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MSDeployStatusInner> beginCreateInstanceMSDeployOperationSlotAsync(String resourceGroupName, String name, String slot, String instanceId, MSDeployInner mSDeploy, final ServiceCallback<MSDeployStatusInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateInstanceMSDeployOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, instanceId, mSDeploy), serviceCallback);
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param instanceId Id of web app instance
+     * @param mSDeploy Details of MSDeploy operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MSDeployStatusInner object
+     */
+    public Observable<MSDeployStatusInner> beginCreateInstanceMSDeployOperationSlotAsync(String resourceGroupName, String name, String slot, String instanceId, MSDeployInner mSDeploy) {
+        return beginCreateInstanceMSDeployOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, instanceId, mSDeploy).map(new Func1<ServiceResponse<MSDeployStatusInner>, MSDeployStatusInner>() {
+            @Override
+            public MSDeployStatusInner call(ServiceResponse<MSDeployStatusInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Invoke the MSDeploy web app extension as pass-through API.
+     * Invoke the MSDeploy web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param instanceId Id of web app instance
+     * @param mSDeploy Details of MSDeploy operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MSDeployStatusInner object
+     */
+    public Observable<ServiceResponse<MSDeployStatusInner>> beginCreateInstanceMSDeployOperationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, String instanceId, MSDeployInner mSDeploy) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (instanceId == null) {
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (mSDeploy == null) {
+            throw new IllegalArgumentException("Parameter mSDeploy is required and cannot be null.");
+        }
+        Validator.validate(mSDeploy);
+        final String apiVersion = "2016-08-01";
+        return service.beginCreateInstanceMSDeployOperationSlot(resourceGroupName, name, slot, instanceId, this.client.subscriptionId(), mSDeploy, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MSDeployStatusInner>>>() {
+                @Override
+                public Observable<ServiceResponse<MSDeployStatusInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<MSDeployStatusInner> clientResponse = beginCreateInstanceMSDeployOperationSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<MSDeployStatusInner> beginCreateInstanceMSDeployOperationSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MSDeployStatusInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(201, new TypeToken<MSDeployStatusInner>() { }.getType())
+                .register(409, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param instanceId Id of web app instance
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MSDeployLogInner object if successful.
+     */
+    public MSDeployLogInner getInstanceMSDeployLogSlot(String resourceGroupName, String name, String slot, String instanceId) {
+        return getInstanceMSDeployLogSlotWithServiceResponseAsync(resourceGroupName, name, slot, instanceId).toBlocking().single().body();
+    }
+
+    /**
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param instanceId Id of web app instance
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MSDeployLogInner> getInstanceMSDeployLogSlotAsync(String resourceGroupName, String name, String slot, String instanceId, final ServiceCallback<MSDeployLogInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getInstanceMSDeployLogSlotWithServiceResponseAsync(resourceGroupName, name, slot, instanceId), serviceCallback);
+    }
+
+    /**
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param instanceId Id of web app instance
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MSDeployLogInner object
+     */
+    public Observable<MSDeployLogInner> getInstanceMSDeployLogSlotAsync(String resourceGroupName, String name, String slot, String instanceId) {
+        return getInstanceMSDeployLogSlotWithServiceResponseAsync(resourceGroupName, name, slot, instanceId).map(new Func1<ServiceResponse<MSDeployLogInner>, MSDeployLogInner>() {
+            @Override
+            public MSDeployLogInner call(ServiceResponse<MSDeployLogInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     * Invoke the MSDeploy Log web app extension as pass-through API.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param instanceId Id of web app instance
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MSDeployLogInner object
+     */
+    public Observable<ServiceResponse<MSDeployLogInner>> getInstanceMSDeployLogSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, String instanceId) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (instanceId == null) {
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-08-01";
+        return service.getInstanceMSDeployLogSlot(resourceGroupName, name, slot, instanceId, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MSDeployLogInner>>>() {
+                @Override
+                public Observable<ServiceResponse<MSDeployLogInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<MSDeployLogInner> clientResponse = getInstanceMSDeployLogSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<MSDeployLogInner> getInstanceMSDeployLogSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MSDeployLogInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<MSDeployLogInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * Shows whether an app can be cloned to another resource group or subscription.
      * Shows whether an app can be cloned to another resource group or subscription.
      *
@@ -20116,7 +22158,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
-     * @param slot Name of web app slot. If not specified then will default to production slot. **** CURRENTLY UNUSED *****
+     * @param slot Name of web app slot. If not specified then will default to production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -20138,7 +22180,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
-     * @param slot Name of web app slot. If not specified then will default to production slot. **** CURRENTLY UNUSED *****
+     * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -20161,7 +22203,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
-     * @param slot Name of web app slot. If not specified then will default to production slot. **** CURRENTLY UNUSED *****
+     * @param slot Name of web app slot. If not specified then will default to production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PerfMonResponseInner&gt; object
      */
@@ -20181,7 +22223,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
-     * @param slot Name of web app slot. If not specified then will default to production slot. **** CURRENTLY UNUSED *****
+     * @param slot Name of web app slot. If not specified then will default to production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PerfMonResponseInner&gt; object
      */
@@ -20205,7 +22247,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
-     * @param slot Name of web app slot. If not specified then will default to production slot. **** CURRENTLY UNUSED *****
+     * @param slot Name of web app slot. If not specified then will default to production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PerfMonResponseInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -20244,7 +22286,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
-     * @param slot Name of web app slot. If not specified then will default to production slot. **** CURRENTLY UNUSED *****
+     * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -20267,7 +22309,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
-     * @param slot Name of web app slot. If not specified then will default to production slot. **** CURRENTLY UNUSED *****
+     * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -20291,7 +22333,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
-     * @param slot Name of web app slot. If not specified then will default to production slot. **** CURRENTLY UNUSED *****
+     * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PerfMonResponseInner&gt; object
@@ -20312,7 +22354,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
-     * @param slot Name of web app slot. If not specified then will default to production slot. **** CURRENTLY UNUSED *****
+     * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PerfMonResponseInner&gt; object
@@ -20337,7 +22379,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
     ServiceResponse<PageImpl<PerfMonResponseInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<PerfMonResponseInner>> * @param name Name of web app
-    ServiceResponse<PageImpl<PerfMonResponseInner>> * @param slot Name of web app slot. If not specified then will default to production slot. **** CURRENTLY UNUSED *****
+    ServiceResponse<PageImpl<PerfMonResponseInner>> * @param slot Name of web app slot. If not specified then will default to production slot.
     ServiceResponse<PageImpl<PerfMonResponseInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PerfMonResponseInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -20881,66 +22923,105 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     * Gets the publishing profile for an app (or deployment slot, if specified).
+     * Get public certificates for an app or a deployment slot.
+     * Get public certificates for an app or a deployment slot.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API gets hostname bindings for the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the InputStream object if successful.
+     * @return the PagedList&lt;PublicCertificateInner&gt; object if successful.
      */
-    public InputStream listPublishingProfileXmlWithSecretsSlot(String resourceGroupName, String name, String slot) {
-        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    public PagedList<PublicCertificateInner> listPublicCertificatesSlot(final String resourceGroupName, final String name, final String slot) {
+        ServiceResponse<Page<PublicCertificateInner>> response = listPublicCertificatesSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
+        return new PagedList<PublicCertificateInner>(response.body()) {
+            @Override
+            public Page<PublicCertificateInner> nextPage(String nextPageLink) {
+                return listPublicCertificatesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     * Gets the publishing profile for an app (or deployment slot, if specified).
+     * Get public certificates for an app or a deployment slot.
+     * Get public certificates for an app or a deployment slot.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API gets hostname bindings for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceFuture.fromResponse(listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<List<PublicCertificateInner>> listPublicCertificatesSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<PublicCertificateInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listPublicCertificatesSlotSinglePageAsync(resourceGroupName, name, slot),
+            new Func1<String, Observable<ServiceResponse<Page<PublicCertificateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicCertificateInner>>> call(String nextPageLink) {
+                    return listPublicCertificatesSlotNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     * Gets the publishing profile for an app (or deployment slot, if specified).
+     * Get public certificates for an app or a deployment slot.
+     * Get public certificates for an app or a deployment slot.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API gets hostname bindings for the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
+     * @return the observable to the PagedList&lt;PublicCertificateInner&gt; object
      */
-    public Observable<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot) {
-        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
-            @Override
-            public InputStream call(ServiceResponse<InputStream> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<PublicCertificateInner>> listPublicCertificatesSlotAsync(final String resourceGroupName, final String name, final String slot) {
+        return listPublicCertificatesSlotWithServiceResponseAsync(resourceGroupName, name, slot)
+            .map(new Func1<ServiceResponse<Page<PublicCertificateInner>>, Page<PublicCertificateInner>>() {
+                @Override
+                public Page<PublicCertificateInner> call(ServiceResponse<Page<PublicCertificateInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     * Gets the publishing profile for an app (or deployment slot, if specified).
+     * Get public certificates for an app or a deployment slot.
+     * Get public certificates for an app or a deployment slot.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API gets hostname bindings for the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
+     * @return the observable to the PagedList&lt;PublicCertificateInner&gt; object
      */
-    public Observable<ServiceResponse<InputStream>> listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+    public Observable<ServiceResponse<Page<PublicCertificateInner>>> listPublicCertificatesSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot) {
+        return listPublicCertificatesSlotSinglePageAsync(resourceGroupName, name, slot)
+            .concatMap(new Func1<ServiceResponse<Page<PublicCertificateInner>>, Observable<ServiceResponse<Page<PublicCertificateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicCertificateInner>>> call(ServiceResponse<Page<PublicCertificateInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listPublicCertificatesSlotNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get public certificates for an app or a deployment slot.
+     * Get public certificates for an app or a deployment slot.
+     *
+    ServiceResponse<PageImpl<PublicCertificateInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+    ServiceResponse<PageImpl<PublicCertificateInner>> * @param name Name of the app.
+    ServiceResponse<PageImpl<PublicCertificateInner>> * @param slot Name of the deployment slot. If a slot is not specified, the API gets hostname bindings for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PublicCertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PublicCertificateInner>>> listPublicCertificatesSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -20954,15 +23035,114 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-08-01";
-        final PublishingProfileFormat format = null;
-        CsmPublishingProfileOptions publishingProfileOptions = new CsmPublishingProfileOptions();
-        publishingProfileOptions.withFormat(null);
-        return service.listPublishingProfileXmlWithSecretsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), publishingProfileOptions, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InputStream>>>() {
+        return service.listPublicCertificatesSlot(resourceGroupName, name, slot, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PublicCertificateInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<InputStream>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<PublicCertificateInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<InputStream> clientResponse = listPublishingProfileXmlWithSecretsSlotDelegate(response);
+                        ServiceResponse<PageImpl<PublicCertificateInner>> result = listPublicCertificatesSlotDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PublicCertificateInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<PublicCertificateInner>> listPublicCertificatesSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PublicCertificateInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<PublicCertificateInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get the named public certificate for an app (or deployment slot, if specified).
+     * Get the named public certificate for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API the named binding for the production slot.
+     * @param publicCertificateName Public CertificateName
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PublicCertificateInner object if successful.
+     */
+    public PublicCertificateInner getPublicCertificateSlot(String resourceGroupName, String name, String slot, String publicCertificateName) {
+        return getPublicCertificateSlotWithServiceResponseAsync(resourceGroupName, name, slot, publicCertificateName).toBlocking().single().body();
+    }
+
+    /**
+     * Get the named public certificate for an app (or deployment slot, if specified).
+     * Get the named public certificate for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API the named binding for the production slot.
+     * @param publicCertificateName Public CertificateName
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<PublicCertificateInner> getPublicCertificateSlotAsync(String resourceGroupName, String name, String slot, String publicCertificateName, final ServiceCallback<PublicCertificateInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getPublicCertificateSlotWithServiceResponseAsync(resourceGroupName, name, slot, publicCertificateName), serviceCallback);
+    }
+
+    /**
+     * Get the named public certificate for an app (or deployment slot, if specified).
+     * Get the named public certificate for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API the named binding for the production slot.
+     * @param publicCertificateName Public CertificateName
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PublicCertificateInner object
+     */
+    public Observable<PublicCertificateInner> getPublicCertificateSlotAsync(String resourceGroupName, String name, String slot, String publicCertificateName) {
+        return getPublicCertificateSlotWithServiceResponseAsync(resourceGroupName, name, slot, publicCertificateName).map(new Func1<ServiceResponse<PublicCertificateInner>, PublicCertificateInner>() {
+            @Override
+            public PublicCertificateInner call(ServiceResponse<PublicCertificateInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get the named public certificate for an app (or deployment slot, if specified).
+     * Get the named public certificate for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API the named binding for the production slot.
+     * @param publicCertificateName Public CertificateName
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PublicCertificateInner object
+     */
+    public Observable<ServiceResponse<PublicCertificateInner>> getPublicCertificateSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, String publicCertificateName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (publicCertificateName == null) {
+            throw new IllegalArgumentException("Parameter publicCertificateName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-08-01";
+        return service.getPublicCertificateSlot(resourceGroupName, name, slot, publicCertificateName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PublicCertificateInner>>>() {
+                @Override
+                public Observable<ServiceResponse<PublicCertificateInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PublicCertificateInner> clientResponse = getPublicCertificateSlotDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -20971,6 +23151,225 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
+    private ServiceResponse<PublicCertificateInner> getPublicCertificateSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PublicCertificateInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PublicCertificateInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Creates a hostname binding for an app.
+     * Creates a hostname binding for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param publicCertificateName Public certificate name.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the production slot.
+     * @param publicCertificate Public certificate details. This is the JSON representation of a PublicCertificate object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PublicCertificateInner object if successful.
+     */
+    public PublicCertificateInner createOrUpdatePublicCertificateSlot(String resourceGroupName, String name, String publicCertificateName, String slot, PublicCertificateInner publicCertificate) {
+        return createOrUpdatePublicCertificateSlotWithServiceResponseAsync(resourceGroupName, name, publicCertificateName, slot, publicCertificate).toBlocking().single().body();
+    }
+
+    /**
+     * Creates a hostname binding for an app.
+     * Creates a hostname binding for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param publicCertificateName Public certificate name.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the production slot.
+     * @param publicCertificate Public certificate details. This is the JSON representation of a PublicCertificate object.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<PublicCertificateInner> createOrUpdatePublicCertificateSlotAsync(String resourceGroupName, String name, String publicCertificateName, String slot, PublicCertificateInner publicCertificate, final ServiceCallback<PublicCertificateInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdatePublicCertificateSlotWithServiceResponseAsync(resourceGroupName, name, publicCertificateName, slot, publicCertificate), serviceCallback);
+    }
+
+    /**
+     * Creates a hostname binding for an app.
+     * Creates a hostname binding for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param publicCertificateName Public certificate name.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the production slot.
+     * @param publicCertificate Public certificate details. This is the JSON representation of a PublicCertificate object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PublicCertificateInner object
+     */
+    public Observable<PublicCertificateInner> createOrUpdatePublicCertificateSlotAsync(String resourceGroupName, String name, String publicCertificateName, String slot, PublicCertificateInner publicCertificate) {
+        return createOrUpdatePublicCertificateSlotWithServiceResponseAsync(resourceGroupName, name, publicCertificateName, slot, publicCertificate).map(new Func1<ServiceResponse<PublicCertificateInner>, PublicCertificateInner>() {
+            @Override
+            public PublicCertificateInner call(ServiceResponse<PublicCertificateInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Creates a hostname binding for an app.
+     * Creates a hostname binding for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param publicCertificateName Public certificate name.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the production slot.
+     * @param publicCertificate Public certificate details. This is the JSON representation of a PublicCertificate object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PublicCertificateInner object
+     */
+    public Observable<ServiceResponse<PublicCertificateInner>> createOrUpdatePublicCertificateSlotWithServiceResponseAsync(String resourceGroupName, String name, String publicCertificateName, String slot, PublicCertificateInner publicCertificate) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (publicCertificateName == null) {
+            throw new IllegalArgumentException("Parameter publicCertificateName is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (publicCertificate == null) {
+            throw new IllegalArgumentException("Parameter publicCertificate is required and cannot be null.");
+        }
+        Validator.validate(publicCertificate);
+        final String apiVersion = "2016-08-01";
+        return service.createOrUpdatePublicCertificateSlot(resourceGroupName, name, publicCertificateName, slot, this.client.subscriptionId(), publicCertificate, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PublicCertificateInner>>>() {
+                @Override
+                public Observable<ServiceResponse<PublicCertificateInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PublicCertificateInner> clientResponse = createOrUpdatePublicCertificateSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PublicCertificateInner> createOrUpdatePublicCertificateSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PublicCertificateInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PublicCertificateInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes a hostname binding for an app.
+     * Deletes a hostname binding for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
+     * @param publicCertificateName Public Certificate Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deletePublicCertificateSlot(String resourceGroupName, String name, String slot, String publicCertificateName) {
+        deletePublicCertificateSlotWithServiceResponseAsync(resourceGroupName, name, slot, publicCertificateName).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes a hostname binding for an app.
+     * Deletes a hostname binding for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
+     * @param publicCertificateName Public Certificate Name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deletePublicCertificateSlotAsync(String resourceGroupName, String name, String slot, String publicCertificateName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deletePublicCertificateSlotWithServiceResponseAsync(resourceGroupName, name, slot, publicCertificateName), serviceCallback);
+    }
+
+    /**
+     * Deletes a hostname binding for an app.
+     * Deletes a hostname binding for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
+     * @param publicCertificateName Public Certificate Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deletePublicCertificateSlotAsync(String resourceGroupName, String name, String slot, String publicCertificateName) {
+        return deletePublicCertificateSlotWithServiceResponseAsync(resourceGroupName, name, slot, publicCertificateName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a hostname binding for an app.
+     * Deletes a hostname binding for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
+     * @param publicCertificateName Public Certificate Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deletePublicCertificateSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, String publicCertificateName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (publicCertificateName == null) {
+            throw new IllegalArgumentException("Parameter publicCertificateName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-08-01";
+        return service.deletePublicCertificateSlot(resourceGroupName, name, slot, publicCertificateName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deletePublicCertificateSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> deletePublicCertificateSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
     /**
      * Gets the publishing profile for an app (or deployment slot, if specified).
      * Gets the publishing profile for an app (or deployment slot, if specified).
@@ -20978,17 +23377,14 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
-     * @param format Name of the format. Valid values are:
-      FileZilla3
-      WebDeploy -- default
-      Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InputStream object if successful.
      */
-    public InputStream listPublishingProfileXmlWithSecretsSlot(String resourceGroupName, String name, String slot, PublishingProfileFormat format) {
-        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, format).toBlocking().single().body();
+    public InputStream listPublishingProfileXmlWithSecretsSlot(String resourceGroupName, String name, String slot, CsmPublishingProfileOptionsInner publishingProfileOptions) {
+        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, publishingProfileOptions).toBlocking().single().body();
     }
 
     /**
@@ -20998,16 +23394,13 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
-     * @param format Name of the format. Valid values are:
-      FileZilla3
-      WebDeploy -- default
-      Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, PublishingProfileFormat format, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceFuture.fromResponse(listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, format), serviceCallback);
+    public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, CsmPublishingProfileOptionsInner publishingProfileOptions, final ServiceCallback<InputStream> serviceCallback) {
+        return ServiceFuture.fromResponse(listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, publishingProfileOptions), serviceCallback);
     }
 
     /**
@@ -21017,15 +23410,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
-     * @param format Name of the format. Valid values are:
-      FileZilla3
-      WebDeploy -- default
-      Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
-    public Observable<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, PublishingProfileFormat format) {
-        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, format).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
+    public Observable<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, CsmPublishingProfileOptionsInner publishingProfileOptions) {
+        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, publishingProfileOptions).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
             @Override
             public InputStream call(ServiceResponse<InputStream> response) {
                 return response.body();
@@ -21040,14 +23430,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
-     * @param format Name of the format. Valid values are:
-      FileZilla3
-      WebDeploy -- default
-      Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
-    public Observable<ServiceResponse<InputStream>> listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, PublishingProfileFormat format) {
+    public Observable<ServiceResponse<InputStream>> listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, CsmPublishingProfileOptionsInner publishingProfileOptions) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -21060,10 +23447,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
+        if (publishingProfileOptions == null) {
+            throw new IllegalArgumentException("Parameter publishingProfileOptions is required and cannot be null.");
+        }
+        Validator.validate(publishingProfileOptions);
         final String apiVersion = "2016-08-01";
-        CsmPublishingProfileOptions publishingProfileOptions = new CsmPublishingProfileOptions();
-        publishingProfileOptions.withFormat(format);
-        return service.listPublishingProfileXmlWithSecretsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), publishingProfileOptions, this.client.userAgent())
+        return service.listPublishingProfileXmlWithSecretsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), publishingProfileOptions, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InputStream>>>() {
                 @Override
                 public Observable<ServiceResponse<InputStream>> call(Response<ResponseBody> response) {
@@ -21097,7 +23486,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RecoverResponseInner object if successful.
      */
-    public RecoverResponseInner recoverSlot(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) {
+    public RecoverResponseInner recoverSlot(String resourceGroupName, String name, String slot, SnapshotRecoveryRequestInner recoveryEntity) {
         return recoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity).toBlocking().last().body();
     }
 
@@ -21113,7 +23502,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<RecoverResponseInner> recoverSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<RecoverResponseInner> serviceCallback) {
+    public ServiceFuture<RecoverResponseInner> recoverSlotAsync(String resourceGroupName, String name, String slot, SnapshotRecoveryRequestInner recoveryEntity, final ServiceCallback<RecoverResponseInner> serviceCallback) {
         return ServiceFuture.fromResponse(recoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity), serviceCallback);
     }
 
@@ -21128,7 +23517,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<RecoverResponseInner> recoverSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) {
+    public Observable<RecoverResponseInner> recoverSlotAsync(String resourceGroupName, String name, String slot, SnapshotRecoveryRequestInner recoveryEntity) {
         return recoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity).map(new Func1<ServiceResponse<RecoverResponseInner>, RecoverResponseInner>() {
             @Override
             public RecoverResponseInner call(ServiceResponse<RecoverResponseInner> response) {
@@ -21148,7 +23537,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<RecoverResponseInner>> recoverSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) {
+    public Observable<ServiceResponse<RecoverResponseInner>> recoverSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SnapshotRecoveryRequestInner recoveryEntity) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -21183,7 +23572,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RecoverResponseInner object if successful.
      */
-    public RecoverResponseInner beginRecoverSlot(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) {
+    public RecoverResponseInner beginRecoverSlot(String resourceGroupName, String name, String slot, SnapshotRecoveryRequestInner recoveryEntity) {
         return beginRecoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity).toBlocking().single().body();
     }
 
@@ -21199,7 +23588,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<RecoverResponseInner> beginRecoverSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<RecoverResponseInner> serviceCallback) {
+    public ServiceFuture<RecoverResponseInner> beginRecoverSlotAsync(String resourceGroupName, String name, String slot, SnapshotRecoveryRequestInner recoveryEntity, final ServiceCallback<RecoverResponseInner> serviceCallback) {
         return ServiceFuture.fromResponse(beginRecoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity), serviceCallback);
     }
 
@@ -21214,7 +23603,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecoverResponseInner object
      */
-    public Observable<RecoverResponseInner> beginRecoverSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) {
+    public Observable<RecoverResponseInner> beginRecoverSlotAsync(String resourceGroupName, String name, String slot, SnapshotRecoveryRequestInner recoveryEntity) {
         return beginRecoverSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity).map(new Func1<ServiceResponse<RecoverResponseInner>, RecoverResponseInner>() {
             @Override
             public RecoverResponseInner call(ServiceResponse<RecoverResponseInner> response) {
@@ -21234,7 +23623,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecoverResponseInner object
      */
-    public Observable<ServiceResponse<RecoverResponseInner>> beginRecoverSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) {
+    public Observable<ServiceResponse<RecoverResponseInner>> beginRecoverSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SnapshotRecoveryRequestInner recoveryEntity) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -21363,101 +23752,6 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     private ServiceResponse<Void> resetSlotConfigurationSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Gets the category of ResourceHealthMetadata to use for the given site.
-     * Gets the category of ResourceHealthMetadata to use for the given site.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of web app
-     * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ResourceHealthMetadataInner object if successful.
-     */
-    public ResourceHealthMetadataInner getResourceHealthMetadataSlot(String resourceGroupName, String name, String slot) {
-        return getResourceHealthMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
-    }
-
-    /**
-     * Gets the category of ResourceHealthMetadata to use for the given site.
-     * Gets the category of ResourceHealthMetadata to use for the given site.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of web app
-     * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<ResourceHealthMetadataInner> getResourceHealthMetadataSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<ResourceHealthMetadataInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getResourceHealthMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
-    }
-
-    /**
-     * Gets the category of ResourceHealthMetadata to use for the given site.
-     * Gets the category of ResourceHealthMetadata to use for the given site.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of web app
-     * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ResourceHealthMetadataInner object
-     */
-    public Observable<ResourceHealthMetadataInner> getResourceHealthMetadataSlotAsync(String resourceGroupName, String name, String slot) {
-        return getResourceHealthMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<ResourceHealthMetadataInner>, ResourceHealthMetadataInner>() {
-            @Override
-            public ResourceHealthMetadataInner call(ServiceResponse<ResourceHealthMetadataInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets the category of ResourceHealthMetadata to use for the given site.
-     * Gets the category of ResourceHealthMetadata to use for the given site.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of web app
-     * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ResourceHealthMetadataInner object
-     */
-    public Observable<ServiceResponse<ResourceHealthMetadataInner>> getResourceHealthMetadataSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (slot == null) {
-            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        final String apiVersion = "2016-08-01";
-        return service.getResourceHealthMetadataSlot(resourceGroupName, name, slot, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ResourceHealthMetadataInner>>>() {
-                @Override
-                public Observable<ServiceResponse<ResourceHealthMetadataInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ResourceHealthMetadataInner> clientResponse = getResourceHealthMetadataSlotDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<ResourceHealthMetadataInner> getResourceHealthMetadataSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ResourceHealthMetadataInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<ResourceHealthMetadataInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -22776,7 +25070,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
 
     private ServiceResponse<Void> syncRepositorySlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
-                .register(204, new TypeToken<Void>() { }.getType())
+                .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -25049,7 +27343,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
 
     private ServiceResponse<Void> syncRepositoryDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
-                .register(204, new TypeToken<Void>() { }.getType())
+                .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -27592,6 +29886,122 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
+     * Get public certificates for an app or a deployment slot.
+     * Get public certificates for an app or a deployment slot.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PublicCertificateInner&gt; object if successful.
+     */
+    public PagedList<PublicCertificateInner> listPublicCertificatesNext(final String nextPageLink) {
+        ServiceResponse<Page<PublicCertificateInner>> response = listPublicCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<PublicCertificateInner>(response.body()) {
+            @Override
+            public Page<PublicCertificateInner> nextPage(String nextPageLink) {
+                return listPublicCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Get public certificates for an app or a deployment slot.
+     * Get public certificates for an app or a deployment slot.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PublicCertificateInner>> listPublicCertificatesNextAsync(final String nextPageLink, final ServiceFuture<List<PublicCertificateInner>> serviceFuture, final ListOperationCallback<PublicCertificateInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listPublicCertificatesNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<PublicCertificateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicCertificateInner>>> call(String nextPageLink) {
+                    return listPublicCertificatesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get public certificates for an app or a deployment slot.
+     * Get public certificates for an app or a deployment slot.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PublicCertificateInner&gt; object
+     */
+    public Observable<Page<PublicCertificateInner>> listPublicCertificatesNextAsync(final String nextPageLink) {
+        return listPublicCertificatesNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<PublicCertificateInner>>, Page<PublicCertificateInner>>() {
+                @Override
+                public Page<PublicCertificateInner> call(ServiceResponse<Page<PublicCertificateInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Get public certificates for an app or a deployment slot.
+     * Get public certificates for an app or a deployment slot.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PublicCertificateInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<PublicCertificateInner>>> listPublicCertificatesNextWithServiceResponseAsync(final String nextPageLink) {
+        return listPublicCertificatesNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<PublicCertificateInner>>, Observable<ServiceResponse<Page<PublicCertificateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicCertificateInner>>> call(ServiceResponse<Page<PublicCertificateInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listPublicCertificatesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get public certificates for an app or a deployment slot.
+     * Get public certificates for an app or a deployment slot.
+     *
+    ServiceResponse<PageImpl<PublicCertificateInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PublicCertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PublicCertificateInner>>> listPublicCertificatesNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listPublicCertificatesNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PublicCertificateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicCertificateInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<PublicCertificateInner>> result = listPublicCertificatesNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PublicCertificateInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<PublicCertificateInner>> listPublicCertificatesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PublicCertificateInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<PublicCertificateInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * Gets an app's deployment slots.
      * Gets an app's deployment slots.
      *
@@ -28863,6 +31273,122 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     private ServiceResponse<PageImpl<PerfMonResponseInner>> listPerfMonCountersSlotNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<PerfMonResponseInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PerfMonResponseInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get public certificates for an app or a deployment slot.
+     * Get public certificates for an app or a deployment slot.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PublicCertificateInner&gt; object if successful.
+     */
+    public PagedList<PublicCertificateInner> listPublicCertificatesSlotNext(final String nextPageLink) {
+        ServiceResponse<Page<PublicCertificateInner>> response = listPublicCertificatesSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<PublicCertificateInner>(response.body()) {
+            @Override
+            public Page<PublicCertificateInner> nextPage(String nextPageLink) {
+                return listPublicCertificatesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Get public certificates for an app or a deployment slot.
+     * Get public certificates for an app or a deployment slot.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PublicCertificateInner>> listPublicCertificatesSlotNextAsync(final String nextPageLink, final ServiceFuture<List<PublicCertificateInner>> serviceFuture, final ListOperationCallback<PublicCertificateInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listPublicCertificatesSlotNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<PublicCertificateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicCertificateInner>>> call(String nextPageLink) {
+                    return listPublicCertificatesSlotNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get public certificates for an app or a deployment slot.
+     * Get public certificates for an app or a deployment slot.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PublicCertificateInner&gt; object
+     */
+    public Observable<Page<PublicCertificateInner>> listPublicCertificatesSlotNextAsync(final String nextPageLink) {
+        return listPublicCertificatesSlotNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<PublicCertificateInner>>, Page<PublicCertificateInner>>() {
+                @Override
+                public Page<PublicCertificateInner> call(ServiceResponse<Page<PublicCertificateInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Get public certificates for an app or a deployment slot.
+     * Get public certificates for an app or a deployment slot.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PublicCertificateInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<PublicCertificateInner>>> listPublicCertificatesSlotNextWithServiceResponseAsync(final String nextPageLink) {
+        return listPublicCertificatesSlotNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<PublicCertificateInner>>, Observable<ServiceResponse<Page<PublicCertificateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicCertificateInner>>> call(ServiceResponse<Page<PublicCertificateInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listPublicCertificatesSlotNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get public certificates for an app or a deployment slot.
+     * Get public certificates for an app or a deployment slot.
+     *
+    ServiceResponse<PageImpl<PublicCertificateInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PublicCertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PublicCertificateInner>>> listPublicCertificatesSlotNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listPublicCertificatesSlotNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PublicCertificateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicCertificateInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<PublicCertificateInner>> result = listPublicCertificatesSlotNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PublicCertificateInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<PublicCertificateInner>> listPublicCertificatesSlotNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PublicCertificateInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<PublicCertificateInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

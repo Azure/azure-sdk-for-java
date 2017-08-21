@@ -57,7 +57,7 @@ class NicIPConfigurationImpl
      */
     private String existingPublicIPAddressIdToAssociate;
     /**
-     * name of an existing subnet to be associated with a new or existing ip configuration.
+     * name of an existing subnet to be associated with a new or existing IP configuration.
      */
     private String subnetToAssociate;
     /**
@@ -284,7 +284,7 @@ class NicIPConfigurationImpl
             }
 
             for (SubnetInner subnet : this.existingVirtualNetworkToAssociate.inner().subnets()) {
-                if (subnet.name().compareToIgnoreCase(this.subnetToAssociate) == 0) {
+                if (subnet.name().equalsIgnoreCase(this.subnetToAssociate)) {
                     subnetInner.withId(subnet.id());
                     return subnetInner;
                 }

@@ -16,6 +16,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ErrorEntity {
     /**
+     * Basic error code.
+     */
+    @JsonProperty(value = "code")
+    private String code;
+
+    /**
+     * Any details of the error.
+     */
+    @JsonProperty(value = "message")
+    private String message;
+
+    /**
      * Type of error.
      */
     @JsonProperty(value = "extendedCode")
@@ -40,16 +52,44 @@ public class ErrorEntity {
     private List<ErrorEntity> innerErrors;
 
     /**
-     * Basic error code.
+     * Get the code value.
+     *
+     * @return the code value
      */
-    @JsonProperty(value = "code")
-    private String code;
+    public String code() {
+        return this.code;
+    }
 
     /**
-     * Any details of the error.
+     * Set the code value.
+     *
+     * @param code the code value to set
+     * @return the ErrorEntity object itself.
      */
-    @JsonProperty(value = "message")
-    private String message;
+    public ErrorEntity withCode(String code) {
+        this.code = code;
+        return this;
+    }
+
+    /**
+     * Get the message value.
+     *
+     * @return the message value
+     */
+    public String message() {
+        return this.message;
+    }
+
+    /**
+     * Set the message value.
+     *
+     * @param message the message value to set
+     * @return the ErrorEntity object itself.
+     */
+    public ErrorEntity withMessage(String message) {
+        this.message = message;
+        return this;
+    }
 
     /**
      * Get the extendedCode value.
@@ -128,46 +168,6 @@ public class ErrorEntity {
      */
     public ErrorEntity withInnerErrors(List<ErrorEntity> innerErrors) {
         this.innerErrors = innerErrors;
-        return this;
-    }
-
-    /**
-     * Get the code value.
-     *
-     * @return the code value
-     */
-    public String code() {
-        return this.code;
-    }
-
-    /**
-     * Set the code value.
-     *
-     * @param code the code value to set
-     * @return the ErrorEntity object itself.
-     */
-    public ErrorEntity withCode(String code) {
-        this.code = code;
-        return this;
-    }
-
-    /**
-     * Get the message value.
-     *
-     * @return the message value
-     */
-    public String message() {
-        return this.message;
-    }
-
-    /**
-     * Set the message value.
-     *
-     * @param message the message value to set
-     * @return the ErrorEntity object itself.
-     */
-    public ErrorEntity withMessage(String message) {
-        this.message = message;
         return this;
     }
 

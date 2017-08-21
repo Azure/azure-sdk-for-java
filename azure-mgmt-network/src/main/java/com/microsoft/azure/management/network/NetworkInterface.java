@@ -29,7 +29,7 @@ public interface NetworkInterface extends
         Refreshable<NetworkInterface>,
         Updatable<NetworkInterface.Update> {
     /**
-     * @return the IP configurations of this network interface, indexed by their names
+     * @return the IP configurations of this network interface, indexed by their names.
      */
     Map<String, NicIPConfiguration> ipConfigurations();
 
@@ -495,7 +495,7 @@ public interface NetworkInterface extends
              * Starts definition of a secondary IP configuration.
              *
              * @param name name for the IP configuration
-             * @return the first stage of a secondary IP configuration definition
+             * @return the first stage of the update
              */
             NicIPConfiguration.UpdateDefinitionStages.Blank<NetworkInterface.Update> defineSecondaryIPConfiguration(String name);
 
@@ -503,9 +503,16 @@ public interface NetworkInterface extends
              * Starts update of an IP configuration.
              *
              * @param name name of the IP configuration
-             * @return the first stage of an IP configuration update
+             * @return the first stage of the update
              */
             NicIPConfiguration.Update updateIPConfiguration(String name);
+
+            /**
+             * Removes the specified IP configuration.
+             * @param name the name of an existing IP configuration
+             * @return the next stage of the update
+             */
+            Update withoutIPConfiguration(String name);
         }
 
         /**

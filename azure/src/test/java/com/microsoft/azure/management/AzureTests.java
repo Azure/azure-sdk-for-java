@@ -805,15 +805,21 @@ public class AzureTests extends TestBase {
     }
 
     @Test
-    public void testJobCollectionMultipleSku() throws Exception {
-        new TestSchedulerService.JobCollectionMultipleSkuTest()
-            .runTest(azure.jobCollections(), azure.resourceGroups());
+    public void testSearchServiceFreeSku() throws Exception {
+        new TestSearchService.SearchServiceFreeSku()
+            .runTest(azure.searchServices(), azure.resourceGroups());
     }
 
     @Test
-    public void testJobAndJobCollection() throws Exception {
-        new TestSchedulerService.JobAndJobCollectionTest()
-            .runTest(azure.jobCollections(), azure.resourceGroups());
+    public void testSearchServiceBasicSku() throws Exception {
+        new TestSearchService.SearchServiceBasicSku()
+            .runTest(azure.searchServices(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testSearchServiceStandardSku() throws Exception {
+        new TestSearchService.SearchServiceStandardSku()
+            .runTest(azure.searchServices(), azure.resourceGroups());
     }
 
     @Test

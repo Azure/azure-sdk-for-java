@@ -141,7 +141,7 @@ public class TestLoadBalancer {
             Assert.assertTrue(pip0.id().equalsIgnoreCase(publicFrontend.publicIPAddressId()));
 
             // Verify backends
-            Assert.assertTrue(lb.backends().size() == 1);
+            Assert.assertEquals(1, lb.backends().size());
 
             // Verify probes
             Assert.assertEquals(1, lb.httpProbes().size());
@@ -150,19 +150,19 @@ public class TestLoadBalancer {
             Assert.assertTrue(lb.tcpProbes().containsKey("tcpProbe1"));
 
             // Verify rules
+            Assert.assertEquals(1, lb.loadBalancingRules().size());
             Assert.assertTrue(lb.loadBalancingRules().containsKey("rule1"));
-            Assert.assertTrue(lb.loadBalancingRules().values().size() == 1);
             LoadBalancingRule rule = lb.loadBalancingRules().get("rule1");
             Assert.assertNotNull(rule.backend());
             Assert.assertTrue(rule.probe().name().equalsIgnoreCase("tcpProbe1"));
 
             // Verify inbound NAT pools
             Assert.assertTrue(lb.inboundNatPools().containsKey("natpool1"));
-            Assert.assertTrue(lb.inboundNatPools().size() == 1);
+            Assert.assertEquals(1, lb.inboundNatPools().size());
             LoadBalancerInboundNatPool inboundNatPool = lb.inboundNatPools().get("natpool1");
-            Assert.assertTrue(inboundNatPool.frontendPortRangeStart() == 2000);
-            Assert.assertTrue(inboundNatPool.frontendPortRangeEnd() == 2001);
-            Assert.assertTrue(inboundNatPool.backendPort() == 8080);
+            Assert.assertEquals(2000, inboundNatPool.frontendPortRangeStart());
+            Assert.assertEquals(2001, inboundNatPool.frontendPortRangeEnd());
+            Assert.assertEquals(8080, inboundNatPool.backendPort());
 
             return lb;
         }
@@ -238,41 +238,41 @@ public class TestLoadBalancer {
 
             // Create a load balancer
             LoadBalancer lb = resources.define(TestLoadBalancer.LB_NAME)
-                    .withRegion(TestLoadBalancer.REGION)
-                    .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
+                .withRegion(TestLoadBalancer.REGION)
+                .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
 
-                    // Load balancing rules
-                    .defineLoadBalancingRule("rule1")
-                        .withProtocol(TransportProtocol.TCP)    // Required
-                        .fromExistingPublicIPAddress(pip)
-                        .fromFrontendPort(81)
-                        .toBackend("backend1")
-                        .toBackendPort(82)                     // Optionals
-                        .withProbe("tcpProbe1")
-                        .withIdleTimeoutInMinutes(10)
-                        .withLoadDistribution(LoadDistribution.SOURCE_IP)
-                        .attach()
+                // Load balancing rules
+                .defineLoadBalancingRule("rule1")
+                    .withProtocol(TransportProtocol.TCP)    // Required
+                    .fromExistingPublicIPAddress(pip)
+                    .fromFrontendPort(81)
+                    .toBackend("backend1")
+                    .toBackendPort(82)                     // Optionals
+                    .withProbe("tcpProbe1")
+                    .withIdleTimeoutInMinutes(10)
+                    .withLoadDistribution(LoadDistribution.SOURCE_IP)
+                    .attach()
 
-                    // Inbound NAT rules
-                    .defineInboundNatRule("natrule1")
-                        .withProtocol(TransportProtocol.TCP)
-                        .fromExistingPublicIPAddress(pip)   // Implicitly uses the same frontend because the PIP is the same
-                        .fromFrontendPort(88)
-                        .attach()
+                // Inbound NAT rules
+                .defineInboundNatRule("natrule1")
+                    .withProtocol(TransportProtocol.TCP)
+                    .fromExistingPublicIPAddress(pip)   // Implicitly uses the same frontend because the PIP is the same
+                    .fromFrontendPort(88)
+                    .attach()
 
-                    // Probes (Optional)
-                    .defineTcpProbe("tcpProbe1")
-                        .withPort(25)               // Required
-                        .withIntervalInSeconds(15)  // Optionals
-                        .withNumberOfProbes(5)
-                        .attach()
-                    .defineHttpProbe("httpProbe1")
-                        .withRequestPath("/")       // Required
-                        .withIntervalInSeconds(13)  // Optionals
-                        .withNumberOfProbes(4)
-                        .attach()
+                // Probes (Optional)
+                .defineTcpProbe("tcpProbe1")
+                    .withPort(25)               // Required
+                    .withIntervalInSeconds(15)  // Optionals
+                    .withNumberOfProbes(5)
+                    .attach()
+                .defineHttpProbe("httpProbe1")
+                    .withRequestPath("/")       // Required
+                    .withIntervalInSeconds(13)  // Optionals
+                    .withNumberOfProbes(4)
+                    .attach()
 
-                    .create();
+                .create();
 
             String backendName = lb.backends().values().iterator().next().name();
             String frontendName = lb.frontends().values().iterator().next().name();
@@ -311,7 +311,7 @@ public class TestLoadBalancer {
 
             // Verify backends
             Assert.assertTrue(lb.backends().containsKey(backendName));
-            Assert.assertTrue(lb.backends().size() == 1);
+            Assert.assertEquals(1, lb.backends().size());
 
             // Verify probes
             Assert.assertTrue(lb.httpProbes().containsKey("httpProbe1"));
@@ -320,20 +320,20 @@ public class TestLoadBalancer {
             Assert.assertEquals(1, lb.tcpProbes().size());
 
             // Verify rules
+            Assert.assertEquals(1, lb.loadBalancingRules().size());
             Assert.assertTrue(lb.loadBalancingRules().containsKey("rule1"));
-            Assert.assertTrue(lb.loadBalancingRules().values().size() == 1);
             LoadBalancingRule rule = lb.loadBalancingRules().get("rule1");
             Assert.assertTrue(rule.backend().name().equalsIgnoreCase(backendName));
             Assert.assertTrue(rule.frontend().name().equalsIgnoreCase(frontendName));
             Assert.assertTrue(rule.probe().name().equalsIgnoreCase("tcpProbe1"));
 
             // Verify inbound NAT rules
+            Assert.assertEquals(1, lb.inboundNatRules().size());
             Assert.assertTrue(lb.inboundNatRules().containsKey("natrule1"));
-            Assert.assertTrue(lb.inboundNatRules().size() == 1);
             LoadBalancerInboundNatRule inboundNatRule = lb.inboundNatRules().get("natrule1");
             Assert.assertTrue(inboundNatRule.frontend().name().equalsIgnoreCase(frontendName));
-            Assert.assertTrue(inboundNatRule.frontendPort() == 88);
-            Assert.assertTrue(inboundNatRule.backendPort() == 88);
+            Assert.assertEquals(88, inboundNatRule.frontendPort());
+            Assert.assertEquals(88, inboundNatRule.backendPort());
 
             return lb;
         }
@@ -812,8 +812,6 @@ public class TestLoadBalancer {
                         .fromFrontendPort(22)
                         .toBackend("backend2")
                         .withProbe("httpprobe")
-                        .attach()
-                    .defineBackend("backend2")
                         .attach()
                     .withoutBackend(backend.name())
                     .withTag("tag1", "value1")

@@ -61,10 +61,10 @@ public final class CreateSimpleInternetFacingLoadBalancer {
      */
     public static boolean runSample(Azure azure) {
         final Region region = Region.US_EAST;
-        final String resourceGroupName = SdkContext.randomResourceName("rgNEML", 15);
+        final String resourceGroupName = SdkContext.randomResourceName("rg", 15);
         final String vnetName = SdkContext.randomResourceName("vnet", 24);
-        final String loadBalancerName = SdkContext.randomResourceName("intlb1" + "-", 18);
-        final String publicIpName = "pip1-" + loadBalancerName;
+        final String loadBalancerName = SdkContext.randomResourceName("lb" + "-", 18);
+        final String publicIpName = SdkContext.randomResourceName("pip", 18);
         final String httpLoadBalancingRule = "httpRule";
 
         final String availabilitySetName = SdkContext.randomResourceName("av", 24);
@@ -78,8 +78,6 @@ public final class CreateSimpleInternetFacingLoadBalancer {
             Creatable<AvailabilitySet> availabilitySetDefinition = azure.availabilitySets().define(availabilitySetName)
                     .withRegion(region)
                     .withNewResourceGroup(resourceGroupName)
-                    .withFaultDomainCount(2)
-                    .withUpdateDomainCount(4)
                     .withSku(AvailabilitySetSkuTypes.MANAGED);
 
             //=============================================================
@@ -100,7 +98,7 @@ public final class CreateSimpleInternetFacingLoadBalancer {
 
             for (int i = 0; i < 2; i++) {
                 virtualMachineDefinitions.add(
-                        azure.virtualMachines().define(SdkContext.randomResourceName("lVM1", 24))
+                        azure.virtualMachines().define(SdkContext.randomResourceName("vm", 24))
                             .withRegion(region)
                             .withExistingResourceGroup(resourceGroupName)
                             .withNewPrimaryNetwork(networkDefinition)

@@ -108,7 +108,7 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-client-runtime</artifactId>
-        <version>1.0.4-SNAPSHOT</version>
+        <version>1.0.5-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>

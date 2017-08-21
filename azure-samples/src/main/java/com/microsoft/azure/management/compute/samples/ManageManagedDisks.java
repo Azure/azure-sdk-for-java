@@ -500,9 +500,6 @@ public final class ManageManagedDisks {
         LoadBalancer loadBalancer = azure.loadBalancers().define(loadBalancerName1)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
-                .definePublicFrontend(frontendName)
-                    .withExistingPublicIPAddress(publicIPAddress)
-                    .attach()
                 // Add two rules that uses above backend and probe
                 .defineLoadBalancingRule(httpLoadBalancingRule)
                     .withProtocol(TransportProtocol.TCP)
@@ -531,6 +528,10 @@ public final class ManageManagedDisks {
                     .fromFrontend(frontendName)
                     .fromFrontendPortRange(6000, 6099)
                     .toBackendPort(23)
+                    .attach()
+                // Explicitly define a frontend
+                .definePublicFrontend(frontendName)
+                    .withExistingPublicIPAddress(publicIPAddress)
                     .attach()
                 // Add two probes one per rule
                 .defineHttpProbe(httpProbe)

@@ -65,8 +65,14 @@ public class RestoreRequestInner extends Resource {
     private Boolean ignoreConflictingHostNames;
 
     /**
+     * Ignore the databases and only restore the site content.
+     */
+    @JsonProperty(value = "properties.ignoreDatabases")
+    private Boolean ignoreDatabases;
+
+    /**
      * Operation type. Possible values include: 'Default', 'Clone',
-     * 'Relocation'.
+     * 'Relocation', 'Snapshot'.
      */
     @JsonProperty(value = "properties.operationType")
     private BackupRestoreOperationType operationType;
@@ -202,6 +208,26 @@ public class RestoreRequestInner extends Resource {
      */
     public RestoreRequestInner withIgnoreConflictingHostNames(Boolean ignoreConflictingHostNames) {
         this.ignoreConflictingHostNames = ignoreConflictingHostNames;
+        return this;
+    }
+
+    /**
+     * Get the ignoreDatabases value.
+     *
+     * @return the ignoreDatabases value
+     */
+    public Boolean ignoreDatabases() {
+        return this.ignoreDatabases;
+    }
+
+    /**
+     * Set the ignoreDatabases value.
+     *
+     * @param ignoreDatabases the ignoreDatabases value to set
+     * @return the RestoreRequestInner object itself.
+     */
+    public RestoreRequestInner withIgnoreDatabases(Boolean ignoreDatabases) {
+        this.ignoreDatabases = ignoreDatabases;
         return this;
     }
 
