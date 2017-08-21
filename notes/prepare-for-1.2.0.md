@@ -177,6 +177,36 @@ The following naming associated with load balancers has been changed in ways tha
   </tr>
 </table>
 
+## DocumentDB API renamed to CosmosDB.
+
+The document db API which was in the com.microsoft.azure.management.documentdb namespace has been moved to com.microsoft.azure.management.cosmosdb. The POM artifact id has been changed from azure-mgmt-documentdb to azure-mgmt-cosmosdb. 
+
+### Renames
+
+The following naming associated with document db has been changed in ways that break backwards compatibility with the previous releases of this API:
+
+<table>
+  <tr>
+    <th align=left>From</th>
+    <th align=left>To</th>
+    <th align=left>Ref</th>
+  </tr>
+  <tr>
+      <td><code>DocumentDBAccount</code></td>
+      <td><code>CosmosDBAccount</code></td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1856">#1856</a></td>
+  </tr>
+  <tr>
+      <td><code>DocumentDBAccounts</code></td>
+      <td><code>CosmosDBAccounts</code></td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1856">#1856</a></td>
+  </tr>
+  <tr>
+      <td><code>DocumentDBManager.databaseAccounts</code></td>
+      <td><code>CosmosDBManager.databaseAccounts</code></td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1856">#1856</a></td>
+  </tr>
+</table>
 
 ## Other changes
 ### Naming changes
