@@ -13,13 +13,13 @@ To create an authenticated Azure client:
 Azure azure = Azure.authenticate(new File("my.azureauth")).withDefaultSubscription();
 ```
 
-The authentication file, referenced as "my.azureauth" in the example above, contains the information of a service principal. You can generate this file using [Azure CLI 2.0](https://github.com/Azure/azure-cli) through the following command. Make sure you selected your subscription by `az account set --subscritpion <name or id>` and you have the privileges to create service principals.
+The authentication file, referenced as "my.azureauth" in the example above, contains the information of a service principal. You can generate this file using [Azure CLI 2.0](https://github.com/Azure/azure-cli) through the following command. Make sure you selected your subscription by `az account set --subscription <name or id>` and you have the privileges to create service principals.
 
 ```bash
 az ad sp create-for-rbac --sdk-auth > my.azureauth
 ```
 
-If you don't have Azure CLI installed, you can also do this in the [cloud shell](https://docs.microsoft.com/en-us/azure/cloud-shell/quickstart). For detailed explanations of the content in this auth file, or directions to create the auth file manually, please see [Auth file formats](#auth-file-formats).
+If you don't have Azure CLI installed, you can also do this in the [cloud shell](https://docs.microsoft.com/en-us/azure/cloud-shell/quickstart). Alternatively, you can login to Java SDK through other ways of authentication and create an auth file by following [this sample](https://github.com/Azure/azure-sdk-for-java/blob/master/azure-samples/src/main/java/com/microsoft/azure/management/graphrbac/samples/ManageServicePrincipal.java). For detailed explanations of the content in this auth file, or directions to create the auth file manually, please see [Auth file formats](#auth-file-formats).
 
 ## Using `ApplicationTokenCredentials`
 
