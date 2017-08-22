@@ -11,8 +11,11 @@ import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroup;
 import com.microsoft.azure.management.graphrbac.BuiltInRole;
+import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.rest.LogLevel;
@@ -23,13 +26,16 @@ import java.util.List;
 
 /**
  * Azure Compute sample for managing virtual machines -
- *   - Create a virtual machine with Managed Service Identity enabled with access to resource group
+ *   - Create a AAD security group
+ *   - Assign AAD security group Contributor role at a resource group
+ *   - Create a virtual machine with MSI enabled
+ *   - Add virtual machine MSI service principal to the AAD group
  *   - Set custom script in the virtual machine that
  *          - install az cli in the virtual machine
  *          - uses az cli MSI credentials to create a storage account
  *   - Get storage account created through MSI credentials.
  */
-public final class ManageStorageFromMSIEnabledVirtualMachine {
+public final class ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup {
     /**
      * Main function which runs the actual sample.
      *
@@ -37,8 +43,10 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
-        final String linuxVMName = Utils.createRandomName("VM1");
+        String groupName = SdkContext.randomResourceName("group", 16);
         final String rgName = Utils.createRandomName("rgCOMV");
+        String roleAssignmentName = SdkContext.randomUuid();
+        final String linuxVMName = Utils.createRandomName("VM1");
         final String pipName = Utils.createRandomName("pip1");
         final String userName = "tirekicker";
         final String password = "12NewPA$$w0rd!";
@@ -50,8 +58,42 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
         fileUris.add(installScript);
 
         try {
+
             //=============================================================
-            // Create a Linux VM with MSI enabled for contributor access to the current resource group
+            // Create a AAD security group
+
+            System.out.println("Creating a AAD security group");
+
+            ActiveDirectoryGroup activeDirectoryGroup = azure.accessManagement()
+                    .activeDirectoryGroups()
+                    .define(groupName)
+                        .withEmailAlias(groupName)
+                        .create();
+
+            //=============================================================
+            // Assign AAD security group Contributor role at a resource group
+
+            ResourceGroup resourceGroup = azure.resourceGroups()
+                    .define(rgName)
+                        .withRegion(region)
+                        .create();
+
+            SdkContext.sleep(45 * 1000);
+
+            System.out.println("Assigning AAD security group Contributor role to the resource group");
+
+            azure.accessManagement()
+                    .roleAssignments()
+                    .define(roleAssignmentName)
+                        .forGroup(activeDirectoryGroup)
+                        .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
+                        .withResourceGroupScope(resourceGroup)
+                        .create();
+
+            System.out.println("Assigned AAD security group Contributor role to the resource group");
+
+            //=============================================================
+            // Create a Linux VM with MSI enabled
 
             System.out.println("Creating a Linux VM with MSI enabled");
 
@@ -68,20 +110,34 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
                         .withSize(VirtualMachineSizeTypes.STANDARD_DS2_V2)
                         .withOSDiskCaching(CachingTypes.READ_WRITE)
                         .withManagedServiceIdentity()
-                        .withRoleBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
                         .create();
 
             System.out.println("Created virtual machine with MSI enabled");
             Utils.print(virtualMachine);
 
+            //=============================================================
+            // Add virtual machine MSI service principal to the AAD group
+
+            System.out.println("Adding virtual machine MSI service principal to the AAD group");
+
+            activeDirectoryGroup.update()
+                    .withMember(virtualMachine.managedServiceIdentityPrincipalId())
+                    .apply();
+
+            System.out.println("Added virtual machine MSI service principal to the AAD group");
+
+            System.out.println("Waiting 15 minutes to MSI extension in the VM to refresh the token");
+
+            SdkContext.sleep(10 * 60 * 1000);
+
             // Prepare custom script t install az cli that uses MSI to create a storage account
             //
             final String stgName = Utils.createRandomName("st44");
             installCommand = installCommand.replace("{subscriptionID}", azure.subscriptionId())
-                            .replace("{port}", "50342")
-                            .replace("{stgName}", stgName)
-                            .replace("{rgName}", rgName)
-                            .replace("{location}", region.name());
+                    .replace("{port}", "50342")
+                    .replace("{stgName}", stgName)
+                    .replace("{rgName}", rgName)
+                    .replace("{location}", region.name());
 
             // Update the VM by installing custom script extension.
             //
@@ -90,15 +146,15 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
 
             virtualMachine
                     .update()
-                    .defineNewExtension("CustomScriptForLinux")
-                        .withPublisher("Microsoft.OSTCExtensions")
-                        .withType("CustomScriptForLinux")
-                        .withVersion("1.4")
-                        .withMinorVersionAutoUpgrade()
-                        .withPublicSetting("fileUris", fileUris)
-                        .withPublicSetting("commandToExecute", installCommand)
-                        .attach()
-                    .apply();
+                        .defineNewExtension("CustomScriptForLinux")
+                            .withPublisher("Microsoft.OSTCExtensions")
+                            .withType("CustomScriptForLinux")
+                            .withVersion("1.4")
+                            .withMinorVersionAutoUpgrade()
+                            .withPublicSetting("fileUris", fileUris)
+                            .withPublicSetting("commandToExecute", installCommand)
+                            .attach()
+                        .apply();
 
             // Retrieve the storage account created by az cli using MSI credentials
             //
@@ -150,6 +206,6 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
         }
     }
 
-    private ManageStorageFromMSIEnabledVirtualMachine() {
+    private ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup() {
     }
 }
