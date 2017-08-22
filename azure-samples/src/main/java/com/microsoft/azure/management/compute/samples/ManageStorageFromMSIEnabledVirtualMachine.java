@@ -57,19 +57,19 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
 
             VirtualMachine virtualMachine = azure.virtualMachines()
                     .define(linuxVMName)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withNewPrimaryPublicIPAddress(pipName)
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                    .withRootUsername(userName)
-                    .withRootPassword(password)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_DS2_V2)
-                    .withOSDiskCaching(CachingTypes.READ_WRITE)
-                    .withManagedServiceIdentity()
-                    .withRoleBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
-                    .create();
+                        .withRegion(region)
+                        .withNewResourceGroup(rgName)
+                        .withNewPrimaryNetwork("10.0.0.0/28")
+                        .withPrimaryPrivateIPAddressDynamic()
+                        .withNewPrimaryPublicIPAddress(pipName)
+                        .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                        .withRootUsername(userName)
+                        .withRootPassword(password)
+                        .withSize(VirtualMachineSizeTypes.STANDARD_DS2_V2)
+                        .withOSDiskCaching(CachingTypes.READ_WRITE)
+                        .withManagedServiceIdentity()
+                        .withRoleBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
+                        .create();
 
             System.out.println("Created virtual machine with MSI enabled");
             Utils.print(virtualMachine);
@@ -88,7 +88,8 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
             System.out.println("Installing custom script extension to configure az cli in the virtual machine");
             System.out.println("az cli will use MSI credentials to create storage account");
 
-            virtualMachine.update()
+            virtualMachine
+                    .update()
                     .defineNewExtension("CustomScriptForLinux")
                         .withPublisher("Microsoft.OSTCExtensions")
                         .withType("CustomScriptForLinux")
@@ -96,7 +97,7 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
                         .withMinorVersionAutoUpgrade()
                         .withPublicSetting("fileUris", fileUris)
                         .withPublicSetting("commandToExecute", installCommand)
-                    .attach()
+                        .attach()
                     .apply();
 
             // Retrieve the storage account created by az cli using MSI credentials

@@ -43,11 +43,11 @@ public final class ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
-        final String linuxVMName = Utils.createRandomName("VM1");
+        String groupName = SdkContext.randomResourceName("group", 16);
         final String rgName = Utils.createRandomName("rgCOMV");
-        final String pipName = Utils.createRandomName("pip1");
-        String group1Name = SdkContext.randomResourceName("group", 16);
         String roleAssignmentName = SdkContext.randomUuid();
+        final String linuxVMName = Utils.createRandomName("VM1");
+        final String pipName = Utils.createRandomName("pip1");
         final String userName = "tirekicker";
         final String password = "12NewPA$$w0rd!";
         final Region region = Region.US_WEST_CENTRAL;
@@ -66,17 +66,17 @@ public final class ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup {
 
             ActiveDirectoryGroup activeDirectoryGroup = azure.accessManagement()
                     .activeDirectoryGroups()
-                    .define(group1Name)
-                    .withEmailAlias(group1Name)
-                    .create();
+                    .define(groupName)
+                        .withEmailAlias(groupName)
+                        .create();
 
             //=============================================================
             // Assign AAD security group Contributor role at a resource group
 
             ResourceGroup resourceGroup = azure.resourceGroups()
                     .define(rgName)
-                    .withRegion(region)
-                    .create();
+                        .withRegion(region)
+                        .create();
 
             SdkContext.sleep(45 * 1000);
 
@@ -85,10 +85,10 @@ public final class ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup {
             azure.accessManagement()
                     .roleAssignments()
                     .define(roleAssignmentName)
-                    .forGroup(activeDirectoryGroup)
-                    .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
-                    .withResourceGroupScope(resourceGroup)
-                    .create();
+                        .forGroup(activeDirectoryGroup)
+                        .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
+                        .withResourceGroupScope(resourceGroup)
+                        .create();
 
             System.out.println("Assigned AAD security group Contributor role to the resource group");
 
@@ -99,18 +99,18 @@ public final class ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup {
 
             VirtualMachine virtualMachine = azure.virtualMachines()
                     .define(linuxVMName)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withNewPrimaryPublicIPAddress(pipName)
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                    .withRootUsername(userName)
-                    .withRootPassword(password)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_DS2_V2)
-                    .withOSDiskCaching(CachingTypes.READ_WRITE)
-                    .withManagedServiceIdentity()
-                    .create();
+                        .withRegion(region)
+                        .withNewResourceGroup(rgName)
+                        .withNewPrimaryNetwork("10.0.0.0/28")
+                        .withPrimaryPrivateIPAddressDynamic()
+                        .withNewPrimaryPublicIPAddress(pipName)
+                        .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                        .withRootUsername(userName)
+                        .withRootPassword(password)
+                        .withSize(VirtualMachineSizeTypes.STANDARD_DS2_V2)
+                        .withOSDiskCaching(CachingTypes.READ_WRITE)
+                        .withManagedServiceIdentity()
+                        .create();
 
             System.out.println("Created virtual machine with MSI enabled");
             Utils.print(virtualMachine);
@@ -144,16 +144,17 @@ public final class ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup {
             System.out.println("Installing custom script extension to configure az cli in the virtual machine");
             System.out.println("az cli will use MSI credentials to create storage account");
 
-            virtualMachine.update()
-                    .defineNewExtension("CustomScriptForLinux")
-                    .withPublisher("Microsoft.OSTCExtensions")
-                    .withType("CustomScriptForLinux")
-                    .withVersion("1.4")
-                    .withMinorVersionAutoUpgrade()
-                    .withPublicSetting("fileUris", fileUris)
-                    .withPublicSetting("commandToExecute", installCommand)
-                    .attach()
-                    .apply();
+            virtualMachine
+                    .update()
+                        .defineNewExtension("CustomScriptForLinux")
+                            .withPublisher("Microsoft.OSTCExtensions")
+                            .withType("CustomScriptForLinux")
+                            .withVersion("1.4")
+                            .withMinorVersionAutoUpgrade()
+                            .withPublicSetting("fileUris", fileUris)
+                            .withPublicSetting("commandToExecute", installCommand)
+                            .attach()
+                        .apply();
 
             // Retrieve the storage account created by az cli using MSI credentials
             //
