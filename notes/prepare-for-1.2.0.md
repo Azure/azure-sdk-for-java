@@ -9,6 +9,26 @@ V1.2 is backwards compatible with V1.1 in the APIs intended for public use that 
 
 Some breaking changes were introduced in APIs that were still in Beta in V1.1, as indicated by the `@Beta` annotation.
 
+## Graph RBAC
+
+When you create a service principal, there's an option to export an authentication file:
+
+```java
+return authenticated.servicePrincipals()
+  .define(SP_NAME)
+  .withNewApplication(APP_NAME)
+  // password credentials definition
+  .definePasswordCredential("password")
+    .withPasswordValue("P@ssw0rd")
+    // export the credentials to the file
+    .withAuthFileToExport(authFileStream)
+    .attach()
+  .withNewRoleInSubscription(role, subscriptionId)
+  .create();
+```
+
+The output format has been changed from Java properties format to JSON. For more information about the auth file formats, please see the documentations here: https://github.com/Azure/azure-sdk-for-java/blob/master/AUTH.md#auth-file-formats.
+
 ## Load Balancer API rework
 
 The load balancer API, which has been in Beta, has undergone a major rework to further simplify the user model, to achieve greater consistency with 
@@ -129,7 +149,7 @@ The following naming associated with load balancers has been changed in ways tha
       <td><code>LoadBalancerInboundNatPool.fromExistingPublicIPAddress()</code></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1814/commits/bb3df1a20834397d0ccc0279ab25a8e9c937ef84">7ef84</a></td>
   </tr>
- 
+
 </table>
 
 ### API Removals
@@ -207,58 +227,3 @@ The following naming associated with document db has been changed in ways that b
       <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1856">#1856</a></td>
   </tr>
 </table>
-
-## Other changes
-### Naming changes
-
-<table>
-  <tr>
-    <th align=left>Area</th>
-    <th align=left>From</th>
-    <th align=left>To</th>
-    <th align=left>Ref</th>
-  </tr>
-  <tr>
-      <td>TBD</td>
-      <td><code>TBD</code></td>
-      <td><code>TBD</code></td>
-      <td><a href="">TBD</a></td>
-  </tr>
-</table>
-
-
-### Changes in return or input parameter types
-
-<table>
-  <tr>
-    <th align=left>Area</th>
-    <th align=left>Method</th>
-    <th align=left>From</th>
-    <th align=left>To</th>
-    <th align=left>Ref</th>
-  </tr>
-  <tr>
-    <td>TBD</td>
-    <td><code>TBD</code></td>
-    <td><code>TBD</code></td>
-    <td><code>TBD</code></td>
-    <td><a href="">TBD</a></td>
-  </tr>
-</table>
-
-
-### API Removals
-
-<table>
-  <tr>
-    <th>Removed</th>
-    <th>Alternate to switch to</th>
-    <th>PR</th>
-  </tr>
-  <tr>
-    <td><code>TBD</code></td>
-    <td><code>TBD</code></td>
-    <td><a href="">TBD</a></td>
-  </tr>
-</table>
-
