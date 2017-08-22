@@ -10,7 +10,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.HttpMethod;
 import io.reactivex.netty.protocol.http.client.HttpClientRequest;
 import io.reactivex.netty.protocol.http.client.HttpClientResponse;
-import io.reactivex.netty.ssl.SslCodec;
 import rx.Observable;
 import rx.Single;
 import rx.functions.Func1;

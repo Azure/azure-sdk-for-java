@@ -432,7 +432,7 @@ public abstract class RestProxyTests {
         assertEquals("https://httpbin.org/anything", json.url);
         assertNotNull(json.headers);
         final HttpHeaders headers = new HttpHeaders(json.headers);
-        assertEquals("MyHeaderValue", headers.get("MyHeader"));
+        assertEquals("MyHeaderValue", headers.value("MyHeader"));
     }
 
     // Helpers
