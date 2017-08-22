@@ -328,7 +328,6 @@ abstract class AppServiceBaseImpl<
         AppServicePlanImpl appServicePlan = (AppServicePlanImpl) (this.manager().appServicePlans()
                 .define(planName))
                 .withRegion(regionName());
-        appServicePlan.withOperatingSystem(operatingSystem());
         if (super.creatableGroup != null && isInCreateMode()) {
             appServicePlan = appServicePlan.withNewResourceGroup(super.creatableGroup);
         } else {
@@ -354,21 +353,26 @@ abstract class AppServiceBaseImpl<
         return withNewAppServicePlan(operatingSystem(), pricingTier);
     }
 
-    @SuppressWarnings("unchecked")
     public FluentImplT withNewAppServicePlan(Creatable<AppServicePlan> appServicePlanCreatable) {
         addCreatableDependency(appServicePlanCreatable);
         String id = ResourceUtils.constructResourceId(this.manager().subscriptionId(),
                 resourceGroupName(), "Microsoft.Web", "serverFarms", appServicePlanCreatable.name(), "");
         inner().withServerFarmId(id);
-        inner().withReserved(((AppServicePlanImpl) appServicePlanCreatable).inner().reserved());
-        return (FluentImplT) this;
+        return withOperatingSystem(((AppServicePlanImpl) appServicePlanCreatable).operatingSystem());
     }
 
     @SuppressWarnings("unchecked")
+    private FluentImplT withOperatingSystem(OperatingSystem os) {
+        if (os == OperatingSystem.LINUX) {
+            inner().withReserved(true);
+            inner().withKind(inner().kind() + ",linux");
+        }
+        return (FluentImplT) this;
+    }
+
     public FluentImplT withExistingAppServicePlan(AppServicePlan appServicePlan) {
         inner().withServerFarmId(appServicePlan.id());
-        inner().withReserved(appServicePlan.inner().reserved());
         this.withRegion(appServicePlan.regionName());
-        return (FluentImplT) this;
+        return withOperatingSystem(appServicePlan.operatingSystem());
     }
 }

@@ -61,7 +61,7 @@ class FunctionAppsImpl
 
     @Override
     protected FunctionAppImpl wrapModel(String name) {
-        return new FunctionAppImpl(name, new SiteInner(), null, this.manager());
+        return new FunctionAppImpl(name, new SiteInner().withKind("functionapp"), null, this.manager());
     }
 
     @Override

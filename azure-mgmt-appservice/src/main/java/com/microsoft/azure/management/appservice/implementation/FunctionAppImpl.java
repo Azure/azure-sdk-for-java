@@ -65,7 +65,6 @@ class FunctionAppImpl
 
     FunctionAppImpl(final String name, SiteInner innerObject, SiteConfigResourceInner configObject, AppServiceManager manager) {
         super(name, innerObject, configObject, manager);
-        innerObject.withKind("functionapp");
         functionAppKeyService = manager.restClient().retrofit().create(FunctionAppKeyService.class);
         String defaultHostName = defaultHostName().startsWith("http") ? defaultHostName() : "http://" + defaultHostName();
         functionKuduService = manager.restClient().newBuilder()
