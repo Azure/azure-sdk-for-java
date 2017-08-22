@@ -35,12 +35,12 @@ public class ContainerGroupImpl
     }
 
     @Override
-    public ContainerGroup.DefinitionStages.WithPrivateImageRegistry withLinux() {
+    public ContainerGroupImpl withLinux() {
         return null;
     }
 
     @Override
-    public ContainerGroup.DefinitionStages.WithPrivateImageRegistry withWindows() {
+    public ContainerGroupImpl withWindows() {
         return null;
     }
 
@@ -61,6 +61,36 @@ public class ContainerGroupImpl
 
     @Override
     public ContainerGroup.DefinitionStages.ContainerInstanceDefinitionStages.Blank<ContainerGroup.DefinitionStages.WithNextContainerInstance> defineContainerInstance(String name) {
+        return null;
+    }
+
+    @Override
+    public ContainerGroupImpl withContainerInstance(String imageName) {
+        return null;
+    }
+
+    @Override
+    public ContainerGroupImpl withContainerInstance(String imageName, int port) {
+        return null;
+    }
+
+    @Override
+    public String getLogContent(String resourceGroupName, String containerName, String containerGroupName) {
+        return null;
+    }
+
+    @Override
+    public String getLogContent(String resourceGroupName, String containerName, String containerGroupName, int tailLineCount) {
+        return null;
+    }
+
+    @Override
+    public Observable<String> getLogContentAsync(String resourceGroupName, String containerName, String containerGroupName) {
+        return null;
+    }
+
+    @Override
+    public Observable<String> getLogContentAsync(String resourceGroupName, String containerName, String containerGroupName, int tailLineCount) {
         return null;
     }
 }

@@ -35,12 +35,7 @@ public class ContainerImpl implements ContainerGroup.DefinitionStages.ContainerI
     }
 
     @Override
-    public ContainerImpl withCPUCoreCount(double cpuCoreCount) {
-        return null;
-    }
-
-    @Override
-    public ContainerImpl withMemorySizeInGB(double memorySize) {
+    public ContainerImpl withoutPorts() {
         return null;
     }
 
@@ -81,6 +76,16 @@ public class ContainerImpl implements ContainerGroup.DefinitionStages.ContainerI
 
     @Override
     public ContainerImpl withInternalUdpPort(int port) {
+        return null;
+    }
+
+    @Override
+    public ContainerImpl withCPUCoreCount(double cpuCoreCount) {
+        return null;
+    }
+
+    @Override
+    public ContainerImpl withMemorySizeInGB(double memorySize) {
         return null;
     }
 

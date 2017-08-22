@@ -14,6 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import rx.Observable;
 
 import java.util.Map;
 
@@ -34,6 +35,44 @@ public interface ContainerGroup extends
     /***********************************************************
      * Actions
      ***********************************************************/
+
+    /**
+     * Get the log content for the specified container instance within the container group.
+     *
+     * @param containerName the container instance name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return all available log lines
+     */
+    String getLogContent(String containerName);
+
+    /**
+     * Get the log content for the specified container instance within the container group.
+     *
+     * @param containerName the container instance name
+     * @param tailLineCount only get the last log lines up to this
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the log lines from the end, up to the number specified
+     */
+    String getLogContent(String containerName, int tailLineCount);
+
+    /**
+     * Get the log content for the specified container instance within the container group.
+     *
+     * @param containerName the container instance name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return a representation of the future computation of this call
+     */
+    Observable<String> getLogContentAsync(String containerName);
+
+    /**
+     * Get the log content for the specified container instance within the container group.
+     *
+     * @param containerName the container instance name
+     * @param tailLineCount only get the last log lines up to this
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return a representation of the future computation of this call
+     */
+    Observable<String> getLogContentAsync(String containerName, int tailLineCount);
 
 
     /**
@@ -216,12 +255,27 @@ public interface ContainerGroup extends
             /**
              * Begins the definition of a container instance.
              *
-             * <p>
-             * The definition must be completed with a call to {@link ContainerInstanceDefinitionStages.WithAttach#attach()}
-             * @param name the name of the volume
+             * @param name the name of the container instance
              * @return the next stage of the definition
              */
             ContainerInstanceDefinitionStages.Blank<WithNextContainerInstance> defineContainerInstance(String name);
+
+            /**
+             * Defines one container instance for the specified image with one CPU count and 1.5 GB memory, with TCP port 80 opened externally.
+             *
+             * @param imageName the name of the container image
+             * @return the next stage of the definition
+             */
+            WithCreate withContainerInstance(String imageName);
+
+            /**
+             * Defines one container instance for the specified image with one CPU count and 1.5 GB memory, with a custom TCP port opened externally.
+             *
+             * @param imageName the name of the container image
+             * @param port the external port to be opened
+             * @return the next stage of the definition
+             */
+            WithCreate withContainerInstance(String imageName, int port);
         }
 
         /**
@@ -231,8 +285,6 @@ public interface ContainerGroup extends
             /**
              * Begins the definition of a container instance.
              *
-             * <p>
-             * The definition must be completed with a call to {@link ContainerInstanceDefinitionStages.WithAttach#attach()}
              * @param name the name of the volume
              * @return the next stage of the definition
              */
@@ -263,7 +315,144 @@ public interface ContainerGroup extends
                  * @param imageName the container image
                  * @return the next stage of the definition
                  */
-                WithCPUCoreCount<ParentT> withImage(String imageName);
+                WithOrWithoutPorts<ParentT> withImage(String imageName);
+            }
+
+            /**
+             * The stage of the container instance definition allowing to specify (or not) the container ports.
+             *
+             * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+             */
+            interface WithOrWithoutPorts<ParentT> extends
+                WithPorts<ParentT>,
+                WithoutPorts<ParentT> {
+            }
+
+            /**
+             * The stage of the container instance definition allowing not to specify any container ports internal or external.
+             *
+             * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+             */
+            interface WithoutPorts<ParentT> {
+                /**
+                 * Specifies that not ports will be opened internally or externally for this container instance.
+                 *
+                 * @return the next stage of the definition
+                 */
+                WithAttach<ParentT> withoutPorts();
+            }
+
+            /**
+             * The stage of the container instance definition allowing to specify one or more container ports.
+             *
+             * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+             */
+            interface WithPortsOrAttach<ParentT> extends
+                WithPorts<ParentT>,
+                WithAttach<ParentT> {
+            }
+
+            /**
+             * The stage of the container instance definition allowing to specify the container ports.
+             *
+             * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+             */
+            interface WithPorts<ParentT> {
+                /**
+                 * Specifies the container's TCP ports available to external clients.
+                 * <p>
+                 * A public IP address will be create to allow external clients to reach the containers within the group.
+                 * To enable external clients to reach a container within the group, you must expose the port on the
+                 *   IP address and from the container. Because containers within the group share a port namespace, port
+                 *   mapping is not supported.
+                 *
+                 * @param ports array of TCP ports to be exposed externally
+                 * @return the next stage of the definition
+                 */
+                WithPortsOrAttach<ParentT> withExternalTcpPorts(int... ports);
+
+                /**
+                 * Specifies the container's TCP port available to external clients.
+                 * <p>
+                 * A public IP address will be create to allow external clients to reach the containers within the group.
+                 * To enable external clients to reach a container within the group, you must expose the port on the
+                 *   IP address and from the container. Because containers within the group share a port namespace, port
+                 *   mapping is not supported.
+                 *
+                 * @param port TCP port to be exposed externally
+                 * @return the next stage of the definition
+                 */
+                WithPortsOrAttach<ParentT> withExternalTcpPort(int port);
+
+                /**
+                 * Specifies the container's UDP ports available to external clients.
+                 * <p>
+                 * A public IP address will be create to allow external clients to reach the containers within the group.
+                 * To enable external clients to reach a container within the group, you must expose the port on the
+                 *   IP address and from the container. Because containers within the group share a port namespace, port
+                 *   mapping is not supported.
+                 *
+                 * @param ports array of UDP ports to be exposed externally
+                 * @return the next stage of the definition
+                 */
+                WithPortsOrAttach<ParentT> withExternalUdpPorts(int... ports);
+
+                /**
+                 * Specifies the container's UDP port available to external clients.
+                 * <p>
+                 * A public IP address will be create to allow external clients to reach the containers within the group.
+                 * To enable external clients to reach a container within the group, you must expose the port on the
+                 *   IP address and from the container. Because containers within the group share a port namespace, port
+                 *   mapping is not supported.
+                 *
+                 * @param port UDP port to be exposed externally
+                 * @return the next stage of the definition
+                 */
+                WithPortsOrAttach<ParentT> withExternalUdpPort(int port);
+
+                /**
+                 * Specifies the container's TCP ports available to internal clients (other container instances within the container group).
+                 * <p>
+                 * Containers within a group can reach each other via localhost on the ports that they have exposed,
+                 *   even if those ports are not exposed externally on the group's IP address.
+                 *
+                 * @param ports array of TCP ports to be exposed externally
+                 * @return the next stage of the definition
+                 */
+                WithPortsOrAttach<ParentT> withInternalTcpPorts(int... ports);
+
+                /**
+                 * Specifies the container's TCP port available to internal clients (other container instances within the container group).
+                 * <p>
+                 * Containers within a group can reach each other via localhost on the ports that they have exposed,
+                 *   even if those ports are not exposed externally on the group's IP address.
+                 *
+                 * @param port TCP port to be exposed externally
+                 * @return the next stage of the definition
+                 */
+                WithPortsOrAttach<ParentT> withInternalTcpPort(int port);
+
+                /**
+                 * Specifies the container's UDP ports available to internal clients (other container instances within the container group).
+                 * <p>
+                 * Containers within a group can reach each other via localhost on the ports that they have exposed,
+                 *   even if those ports are not exposed externally on the group's IP address.
+                 *
+                 * @param ports array of UDP ports to be exposed externally
+                 * @return the next stage of the definition
+                 */
+                WithPortsOrAttach<ParentT> withInternalUdpPorts(int... ports);
+
+                /**
+                 * Specifies the container's UDP port available to internal clients (other container instances within the container group).
+                 * <p>
+                 * Containers within a group can reach each other via localhost on the ports that they have exposed,
+                 *   even if those ports are not exposed externally on the group's IP address.
+                 *
+                 * @param port UDP port to be exposed externally
+                 * @return the next stage of the definition
+                 */
+                WithPortsOrAttach<ParentT> withInternalUdpPort(int port);
             }
 
             /**
@@ -281,7 +470,7 @@ public interface ContainerGroup extends
                  * @param cpuCoreCount the number of CPU cores
                  * @return the next stage of the definition
                  */
-                WithMemorySize<ParentT> withCPUCoreCount(double cpuCoreCount);
+                WithAttach<ParentT> withCPUCoreCount(double cpuCoreCount);
             }
 
             /**
@@ -298,110 +487,7 @@ public interface ContainerGroup extends
                  * @param memorySize the memory size in GB
                  * @return the next stage of the definition
                  */
-                WithPorts<ParentT> withMemorySizeInGB(double memorySize);
-            }
-
-            /**
-             * The stage of the container instance definition allowing to specify the container ports.
-             *
-             * @param <ParentT> the stage of the parent definition to return to after attaching this definition
-             */
-            interface WithPorts<ParentT> extends WithStartingCommandLine<ParentT> {
-                /**
-                 * Specifies the container's TCP ports available to external clients.
-                 * <p>
-                 * A public IP address will be create to allow external clients to reach the containers within the group.
-                 * To enable external clients to reach a container within the group, you must expose the port on the
-                 *   IP address and from the container. Because containers within the group share a port namespace, port
-                 *   mapping is not supported.
-                 *
-                 * @param ports array of TCP ports to be exposed externally
-                 * @return the next stage of the definition
-                 */
-                WithPorts<ParentT> withExternalTcpPorts(int... ports);
-
-                /**
-                 * Specifies the container's TCP port available to external clients.
-                 * <p>
-                 * A public IP address will be create to allow external clients to reach the containers within the group.
-                 * To enable external clients to reach a container within the group, you must expose the port on the
-                 *   IP address and from the container. Because containers within the group share a port namespace, port
-                 *   mapping is not supported.
-                 *
-                 * @param port TCP port to be exposed externally
-                 * @return the next stage of the definition
-                 */
-                WithPorts<ParentT> withExternalTcpPort(int port);
-
-                /**
-                 * Specifies the container's UDP ports available to external clients.
-                 * <p>
-                 * A public IP address will be create to allow external clients to reach the containers within the group.
-                 * To enable external clients to reach a container within the group, you must expose the port on the
-                 *   IP address and from the container. Because containers within the group share a port namespace, port
-                 *   mapping is not supported.
-                 *
-                 * @param ports array of UDP ports to be exposed externally
-                 * @return the next stage of the definition
-                 */
-                WithPorts<ParentT> withExternalUdpPorts(int... ports);
-
-                /**
-                 * Specifies the container's UDP port available to external clients.
-                 * <p>
-                 * A public IP address will be create to allow external clients to reach the containers within the group.
-                 * To enable external clients to reach a container within the group, you must expose the port on the
-                 *   IP address and from the container. Because containers within the group share a port namespace, port
-                 *   mapping is not supported.
-                 *
-                 * @param port UDP port to be exposed externally
-                 * @return the next stage of the definition
-                 */
-                WithPorts<ParentT> withExternalUdpPort(int port);
-
-                /**
-                 * Specifies the container's TCP ports available to internal clients (other container instances within the container group).
-                 * <p>
-                 * Containers within a group can reach each other via localhost on the ports that they have exposed,
-                 *   even if those ports are not exposed externally on the group's IP address.
-                 *
-                 * @param ports array of TCP ports to be exposed externally
-                 * @return the next stage of the definition
-                 */
-                WithPorts<ParentT> withInternalTcpPorts(int... ports);
-
-                /**
-                 * Specifies the container's TCP port available to internal clients (other container instances within the container group).
-                 * <p>
-                 * Containers within a group can reach each other via localhost on the ports that they have exposed,
-                 *   even if those ports are not exposed externally on the group's IP address.
-                 *
-                 * @param port TCP port to be exposed externally
-                 * @return the next stage of the definition
-                 */
-                WithPorts<ParentT> withInternalTcpPort(int port);
-
-                /**
-                 * Specifies the container's UDP ports available to internal clients (other container instances within the container group).
-                 * <p>
-                 * Containers within a group can reach each other via localhost on the ports that they have exposed,
-                 *   even if those ports are not exposed externally on the group's IP address.
-                 *
-                 * @param ports array of UDP ports to be exposed externally
-                 * @return the next stage of the definition
-                 */
-                WithPorts<ParentT> withInternalUdpPorts(int... ports);
-
-                /**
-                 * Specifies the container's UDP port available to internal clients (other container instances within the container group).
-                 * <p>
-                 * Containers within a group can reach each other via localhost on the ports that they have exposed,
-                 *   even if those ports are not exposed externally on the group's IP address.
-                 *
-                 * @param port UDP port to be exposed externally
-                 * @return the next stage of the definition
-                 */
-                WithPorts<ParentT> withInternalUdpPort(int port);
+                WithAttach<ParentT> withMemorySizeInGB(double memorySize);
             }
 
             /**
@@ -409,14 +495,14 @@ public interface ContainerGroup extends
              *
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
-            interface WithStartingCommandLine<ParentT> extends WithEnvironmentVariables<ParentT> {
+            interface WithStartingCommandLine<ParentT> {
                 /**
                  * Specifies the starting command lines.
                  *
                  * @param commandLines the starting command lines the container will execute after it gets initialized
                  * @return the next stage of the definition
                  */
-                WithStartingCommandLine<ParentT> withStartingCommandLines(String... commandLines);
+                WithAttach<ParentT> withStartingCommandLines(String... commandLines);
 
                 /**
                  * Specifies the starting command line.
@@ -424,7 +510,7 @@ public interface ContainerGroup extends
                  * @param commandLine the starting command line the container will execute after it gets initialized
                  * @return the next stage of the definition
                  */
-                WithStartingCommandLine<ParentT> withStartingCommandLine(String commandLine);
+                WithAttach<ParentT> withStartingCommandLine(String commandLine);
             }
 
             /**
@@ -432,14 +518,14 @@ public interface ContainerGroup extends
              *
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
-            interface WithEnvironmentVariables<ParentT> extends WithVolumeMountSetting<ParentT> {
+            interface WithEnvironmentVariables<ParentT> {
                 /**
                  * Specifies the environment variables.
                  *
                  * @param environmentVariables the environment variables in a name and value pair to be set after the container gets initialized
                  * @return the next stage of the definition
                  */
-                WithEnvironmentVariables<ParentT> withEnvironmentVariables(Map<String, String> environmentVariables);
+                WithAttach<ParentT> withEnvironmentVariables(Map<String, String> environmentVariables);
 
                 /**
                  * Specifies the environment variable.
@@ -448,7 +534,7 @@ public interface ContainerGroup extends
                  * @param envValue the environment variable value
                  * @return the next stage of the definition
                  */
-                WithEnvironmentVariables<ParentT> withEnvironmentVariable(String envName, String envValue);
+                WithAttach<ParentT> withEnvironmentVariable(String envName, String envValue);
             }
 
             /**
@@ -456,7 +542,7 @@ public interface ContainerGroup extends
              *
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
-            interface WithVolumeMountSetting<ParentT> extends WithAttach<ParentT> {
+            interface WithVolumeMountSetting<ParentT> {
                 /**
                  * Specifies the container group's volume to be mounted by the container instance at a specified mount path.
                  * <p>
@@ -468,7 +554,7 @@ public interface ContainerGroup extends
                  * @param mountPath the local path the volume will be mounted at
                  * @return the next stage of the definition
                  */
-                WithVolumeMountSetting<ParentT> withVolumeMountSetting(String volumeName, String mountPath);
+                WithAttach<ParentT> withVolumeMountSetting(String volumeName, String mountPath);
 
                 /**
                  * Specifies the container group's volume to be mounted by the container instance at a specified mount path.
@@ -480,7 +566,7 @@ public interface ContainerGroup extends
                  * @param volumeMountSetting the name and value pair representing volume names as defined in the volumes of the container group and the local paths the volume will be mounted at
                  * @return the next stage of the definition
                  */
-                WithVolumeMountSetting<ParentT> withVolumeMountSetting(Map<String, String> volumeMountSetting);
+                WithAttach<ParentT> withVolumeMountSetting(Map<String, String> volumeMountSetting);
 
                 /**
                  * Specifies the container group's volume to be mounted by the container instance at a specified mount path.
@@ -493,7 +579,7 @@ public interface ContainerGroup extends
                  * @param mountPath the local path the volume will be mounted at
                  * @return the next stage of the definition
                  */
-                WithVolumeMountSetting<ParentT> withReadOnlyVolumeMountSetting(String volumeName, String mountPath);
+                WithAttach<ParentT> withReadOnlyVolumeMountSetting(String volumeName, String mountPath);
 
                 /**
                  * Specifies the container group's volume to be mounted by the container instance at a specified mount path.
@@ -505,7 +591,7 @@ public interface ContainerGroup extends
                  * @param volumeMountSetting the name and value pair representing volume names as defined in the volumes of the container group and the local paths the volume will be mounted at
                  * @return the next stage of the definition
                  */
-                WithVolumeMountSetting<ParentT> withReadOnlyVolumeMountSetting(Map<String, String> volumeMountSetting);
+                WithAttach<ParentT> withReadOnlyVolumeMountSetting(Map<String, String> volumeMountSetting);
             }
 
             /** The final stage of the container instance definition.
@@ -515,6 +601,11 @@ public interface ContainerGroup extends
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
             interface WithAttach<ParentT> extends
+                WithCPUCoreCount<ParentT>,
+                WithMemorySize<ParentT>,
+                WithStartingCommandLine<ParentT>,
+                WithEnvironmentVariables<ParentT>,
+                WithVolumeMountSetting<ParentT>,
                 Attachable.InDefinition<ParentT> {
             }
 
@@ -523,12 +614,13 @@ public interface ContainerGroup extends
              */
             interface ContainerInstanceDefinition<ParentT> extends
                 WithImage<ParentT>,
-                WithCPUCoreCount<ParentT>,
-                WithMemorySize<ParentT>,
-                WithPorts<ParentT>,
-                WithStartingCommandLine<ParentT>,
-                WithEnvironmentVariables<ParentT>,
-                WithVolumeMountSetting<ParentT>,
+                WithOrWithoutPorts<ParentT>,
+                WithPortsOrAttach<ParentT>,
+//                WithCPUCoreCount<ParentT>,
+//                WithMemorySize<ParentT>,
+//                WithStartingCommandLine<ParentT>,
+//                WithEnvironmentVariables<ParentT>,
+//                WithVolumeMountSetting<ParentT>,
                 WithAttach<ParentT> {
             }
         }

@@ -77,4 +77,24 @@ public class ContainerGroupsImpl
     public ContainerGroup.DefinitionStages.Blank define(String name) {
         return null;
     }
+
+    @Override
+    public String getLogContent(String resourceGroupName, String containerName, String containerGroupName) {
+        return null;
+    }
+
+    @Override
+    public String getLogContent(String resourceGroupName, String containerName, String containerGroupName, int tailLineCount) {
+        return null;
+    }
+
+    @Override
+    public Observable<String> getLogContentAsync(String resourceGroupName, String containerName, String containerGroupName) {
+        return null;
+    }
+
+    @Override
+    public Observable<String> getLogContentAsync(String resourceGroupName, String containerName, String containerGroupName, int tailLineCount) {
+        return null;
+    }
 }
