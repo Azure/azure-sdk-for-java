@@ -813,6 +813,12 @@ class VirtualMachineImpl
     }
 
     @Override
+    public VirtualMachineImpl withOSDiskSizeInGB(Integer size) {
+        this.inner().storageProfile().osDisk().withDiskSizeGB(size);
+        return this;
+    }
+
+    @Override
     public VirtualMachineImpl withOSDiskSizeInGB(int size) {
         this.inner().storageProfile().osDisk().withDiskSizeGB(size);
         return this;
