@@ -15,6 +15,9 @@ import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConver
 import rx.Observable;
 import rx.functions.Func1;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * The implementation for WebApps.
  */
@@ -41,7 +44,8 @@ class WebAppsImpl
 
             @Override
             protected boolean filter(SiteInner inner) {
-                return "app".equals(inner.kind());
+                List<String> kinds = Arrays.asList(inner.kind().split(","));
+                return kinds.contains("app");
             }
         };
     }
@@ -68,7 +72,7 @@ class WebAppsImpl
 
     @Override
     protected WebAppImpl wrapModel(String name) {
-        return new WebAppImpl(name, new SiteInner(), null, this.manager());
+        return new WebAppImpl(name, new SiteInner().withKind("app"), null, this.manager());
     }
 
     protected WebAppImpl wrapModel(SiteInner inner, SiteConfigResourceInner configResourceInner) {

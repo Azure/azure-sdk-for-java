@@ -159,6 +159,7 @@ public interface VirtualMachineScaleSets extends
      *
      * @return a representation of the deferred computation of this call
      */
+    @Beta(Beta.SinceVersion.V1_2_0)
     Completable startAsync(String groupName, String name);
 
     /**
@@ -169,6 +170,7 @@ public interface VirtualMachineScaleSets extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
+    @Beta(Beta.SinceVersion.V1_2_0)
     ServiceFuture<Void> startAsync(String groupName, String name, ServiceCallback<Void> callback);
 
     /**

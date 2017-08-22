@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.OperatingSystemTypes;
 import com.microsoft.azure.management.compute.ResourceIdentityType;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSet;
@@ -35,6 +36,7 @@ import java.util.concurrent.Callable;
 /**
  * Utility class to set Managed Service Identity (MSI) and MSI related resources for a virtual machine scale set.
  */
+@LangDefinition
 class VirtualMachineScaleSetMsiHelper {
     private static final String CURRENT_RESOURCE_GROUP_SCOPE = "CURRENT_RESOURCE_GROUP";
     private static final int DEFAULT_TOKEN_PORT = 50342;

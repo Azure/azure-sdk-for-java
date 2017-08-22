@@ -168,9 +168,6 @@ public final class ManageInternetFacingLoadBalancer {
             LoadBalancer loadBalancer1 = azure.loadBalancers().define(loadBalancerName1)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
-                    .definePublicFrontend(frontendName)
-                        .withExistingPublicIPAddress(publicIPAddress)
-                        .attach()
 
                     // Add two rules that uses above backend and probe
                     .defineLoadBalancingRule(httpLoadBalancingRule)
@@ -217,6 +214,11 @@ public final class ManageInternetFacingLoadBalancer {
                         .fromFrontend(frontendName)
                         .fromFrontendPort(5003)
                         .toBackendPort(23)
+                        .attach()
+
+                    // Explicitly define the frontend
+                    .definePublicFrontend(frontendName)
+                        .withExistingPublicIPAddress(publicIPAddress)
                         .attach()
 
                     // Add two probes one per rule
@@ -379,9 +381,6 @@ public final class ManageInternetFacingLoadBalancer {
             LoadBalancer loadBalancer2 = azure.loadBalancers().define(loadBalancerName2)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
-                    .definePublicFrontend(frontendName)
-                        .withExistingPublicIPAddress(publicIPAddress2)
-                        .attach()
 
                     // Add two rules that uses above backend and probe
                     .defineLoadBalancingRule(httpLoadBalancingRule)
@@ -428,6 +427,11 @@ public final class ManageInternetFacingLoadBalancer {
                         .fromFrontend(frontendName)
                         .fromFrontendPort(5003)
                         .toBackendPort(23)
+                        .attach()
+
+                    // Explicitly define the frontend
+                    .definePublicFrontend(frontendName)
+                        .withExistingPublicIPAddress(publicIPAddress2)
                         .attach()
 
                     // Add two probes one per rule
