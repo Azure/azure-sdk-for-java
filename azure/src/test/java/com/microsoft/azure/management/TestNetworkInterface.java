@@ -46,7 +46,11 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .withAcceleratedNetworking()
                 .create();
 
-        // Verifications
+        // Verify NIC settings
+        Assert.assertTrue(nic.isAcceleratedNetworkingEnabled());
+        Assert.assertTrue(nic.isIPForwardingEnabled());
+
+        // Verify IP configs
         NicIPConfiguration ipConfig = nic.primaryIPConfiguration();
         Assert.assertNotNull(ipConfig);
         network = ipConfig.getNetwork();
@@ -57,9 +61,16 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
         Set<NicIPConfiguration> ipConfigs = subnet.getNetworkInterfaceIPConfigurations();
         Assert.assertNotNull(ipConfigs);
         Assert.assertEquals(1, ipConfigs.size());
-        NicIPConfiguration ipConfig2 = ipConfigs.iterator().next();
-        Assert.assertEquals(ipConfig.name().toLowerCase(), ipConfig2.name().toLowerCase());
-        Assert.assertTrue(nic.isAcceleratedNetworkingEnabled());
+        NicIPConfiguration ipConfig2 = null;
+        for (NicIPConfiguration i : ipConfigs) {
+            if (i.name().equalsIgnoreCase(ipConfig.name())) {
+                ipConfig2 = i;
+                break;
+            }
+        }
+        Assert.assertNotNull(ipConfig2);
+        Assert.assertTrue(ipConfig.name().equalsIgnoreCase(ipConfig2.name()));
+
         return nic;
     }
 
@@ -69,7 +80,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .withoutIPForwarding()
                 .withoutAcceleratedNetworking()
                 .withSubnet("subnet2")
-                .updateIPConfiguration("primary") // Updating the primary ip configuration
+                .updateIPConfiguration("primary")  // Updating the primary ip configuration
                     .withPrivateIPAddressDynamic() // Equivalent to ..update().withPrimaryPrivateIPAddressDynamic()
                     .withoutPublicIPAddress()      // Equivalent to ..update().withoutPrimaryPublicIPAddress()
                     .parent()
@@ -86,6 +97,8 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
         Assert.assertTrue("subnet2".equalsIgnoreCase(primaryIpConfig.subnetName()));
         Assert.assertNull(primaryIpConfig.publicIPAddressId());
         Assert.assertTrue(resource.tags().containsKey("tag1"));
+
+        Assert.assertEquals(1,  resource.ipConfigurations().size());
         return resource;
     }
 

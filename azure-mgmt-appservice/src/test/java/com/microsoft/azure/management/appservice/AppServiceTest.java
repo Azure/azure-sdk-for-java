@@ -41,13 +41,13 @@ public class AppServiceTest extends TestBase {
         appServiceManager = AppServiceManager
                 .authenticate(restClient, domain, defaultSubscription);
 
-        useExistingDomainAndCertificate();
+        //useExistingDomainAndCertificate();
         //createNewDomainAndCertificate();
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
+//        resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
     }
 
     private void useExistingDomainAndCertificate() {

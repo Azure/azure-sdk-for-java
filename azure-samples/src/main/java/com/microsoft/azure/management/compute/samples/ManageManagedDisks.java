@@ -84,20 +84,20 @@ public final class ManageManagedDisks {
             final String vmScaleSetName = SdkContext.randomResourceName("vmss" + "-", 18);
             VirtualMachineScaleSet vmScaleSet = azure.virtualMachineScaleSets()
                     .define(vmScaleSetName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D5_V2)
-                    .withExistingPrimaryNetworkSubnet(prepareNetwork(azure, region, rgName), "subnet1")
-                    .withExistingPrimaryInternetFacingLoadBalancer(prepareLoadBalancer(azure, region, rgName))
-                    .withoutPrimaryInternalLoadBalancer()
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                    .withRootUsername("tirekicker")
-                    .withSsh(sshkey)
-                    .withNewDataDisk(100)
-                    .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)
-                    .withNewDataDisk(100, 2, CachingTypes.READ_ONLY)
-                    .withCapacity(3)
-                    .create();
+                        .withRegion(region)
+                        .withExistingResourceGroup(rgName)
+                        .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D5_V2)
+                        .withExistingPrimaryNetworkSubnet(prepareNetwork(azure, region, rgName), "subnet1")
+                        .withExistingPrimaryInternetFacingLoadBalancer(prepareLoadBalancer(azure, region, rgName))
+                        .withoutPrimaryInternalLoadBalancer()
+                        .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                        .withRootUsername("tirekicker")
+                        .withSsh(sshkey)
+                        .withNewDataDisk(100)
+                        .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)
+                        .withNewDataDisk(100, 2, CachingTypes.READ_ONLY)
+                        .withCapacity(3)
+                        .create();
 
             System.out.println("Created VMSS [with implicit managed OS disks and explicit managed data disks]");
 
@@ -162,10 +162,10 @@ public final class ManageManagedDisks {
             final String customImageName = SdkContext.randomResourceName("cimg" + "-", 10);
             VirtualMachineCustomImage virtualMachineCustomImage = azure.virtualMachineCustomImages()
                     .define(customImageName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .fromVirtualMachine(linuxVM) // from a deallocated and generalized VM
-                    .create();
+                        .withRegion(region)
+                        .withExistingResourceGroup(rgName)
+                        .fromVirtualMachine(linuxVM) // from a deallocated and generalized VM
+                        .create();
 
             System.out.println("Created custom image from specialized virtual machine");
 
@@ -500,9 +500,6 @@ public final class ManageManagedDisks {
         LoadBalancer loadBalancer = azure.loadBalancers().define(loadBalancerName1)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
-                .definePublicFrontend(frontendName)
-                    .withExistingPublicIPAddress(publicIPAddress)
-                    .attach()
                 // Add two rules that uses above backend and probe
                 .defineLoadBalancingRule(httpLoadBalancingRule)
                     .withProtocol(TransportProtocol.TCP)
@@ -531,6 +528,10 @@ public final class ManageManagedDisks {
                     .fromFrontend(frontendName)
                     .fromFrontendPortRange(6000, 6099)
                     .toBackendPort(23)
+                    .attach()
+                // Explicitly define a frontend
+                .definePublicFrontend(frontendName)
+                    .withExistingPublicIPAddress(publicIPAddress)
                     .attach()
                 // Add two probes one per rule
                 .defineHttpProbe(httpProbe)

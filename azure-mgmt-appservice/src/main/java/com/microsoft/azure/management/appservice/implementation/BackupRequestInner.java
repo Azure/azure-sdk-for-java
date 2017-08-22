@@ -54,7 +54,7 @@ public class BackupRequestInner extends Resource {
 
     /**
      * Type of the backup. Possible values include: 'Default', 'Clone',
-     * 'Relocation'.
+     * 'Relocation', 'Snapshot'.
      */
     @JsonProperty(value = "properties.type")
     private BackupRestoreOperationType backupRequestType;
