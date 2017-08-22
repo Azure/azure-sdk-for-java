@@ -19,6 +19,7 @@ import com.microsoft.azure.management.compute.samples.ManageAvailabilitySet;
 import com.microsoft.azure.management.compute.samples.ManageManagedDisks;
 import com.microsoft.azure.management.compute.samples.ManageContainerServiceUsingDockerSwarm;
 import com.microsoft.azure.management.compute.samples.ManageContainerServiceUsingKubernetes;
+import com.microsoft.azure.management.compute.samples.ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup;
 import com.microsoft.azure.management.compute.samples.ManageStorageFromMSIEnabledVirtualMachine;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachine;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineAsync;
@@ -161,4 +162,8 @@ public class ComputeSampleTests extends SamplesTestBase {
         Assert.assertTrue(ManageStorageFromMSIEnabledVirtualMachine.runSample(azure));
     }
 
+    @Test
+    public void testManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup() {
+        Assert.assertTrue(ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup.runSample(azure));
+    }
 }

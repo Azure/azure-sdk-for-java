@@ -35,7 +35,7 @@ import java.util.List;
  *          - uses az cli MSI credentials to create a storage account
  *   - Get storage account created through MSI credentials.
  */
-public final class ManageResourceFromAADMemberMSIEnabledVirtualMachine {
+public final class ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup {
     /**
      * Main function which runs the actual sample.
      *
@@ -59,7 +59,6 @@ public final class ManageResourceFromAADMemberMSIEnabledVirtualMachine {
 
         try {
 
-
             //=============================================================
             // Create a AAD security group
 
@@ -78,6 +77,8 @@ public final class ManageResourceFromAADMemberMSIEnabledVirtualMachine {
                     .define(rgName)
                     .withRegion(region)
                     .create();
+
+            SdkContext.sleep(45 * 1000);
 
             System.out.println("Assigning AAD security group Contributor role to the resource group");
 
@@ -127,7 +128,7 @@ public final class ManageResourceFromAADMemberMSIEnabledVirtualMachine {
 
             System.out.println("Waiting 15 minutes to MSI extension in the VM to refresh the token");
 
-            SdkContext.sleep(15 * 60 * 1000);
+            SdkContext.sleep(10 * 60 * 1000);
 
             // Prepare custom script t install az cli that uses MSI to create a storage account
             //
@@ -204,6 +205,6 @@ public final class ManageResourceFromAADMemberMSIEnabledVirtualMachine {
         }
     }
 
-    private ManageResourceFromAADMemberMSIEnabledVirtualMachine() {
+    private ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup() {
     }
 }
