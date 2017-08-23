@@ -15,7 +15,6 @@ import com.microsoft.azure.management.compute.OSProfile;
 import com.microsoft.azure.management.compute.NetworkProfile;
 import com.microsoft.azure.management.compute.DiagnosticsProfile;
 import com.microsoft.azure.SubResource;
-import com.microsoft.azure.management.compute.VirtualMachineInstanceView;
 import java.util.List;
 import com.microsoft.azure.management.compute.VirtualMachineIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -81,7 +80,7 @@ public class VirtualMachineInner extends Resource {
      * The virtual machine instance view.
      */
     @JsonProperty(value = "properties.instanceView", access = JsonProperty.Access.WRITE_ONLY)
-    private VirtualMachineInstanceView instanceView;
+    private VirtualMachineInstanceViewInner instanceView;
 
     /**
      * Specifies that the image or disk that is being used was licensed
@@ -110,6 +109,12 @@ public class VirtualMachineInner extends Resource {
      */
     @JsonProperty(value = "identity")
     private VirtualMachineIdentity identity;
+
+    /**
+     * The virtual machine zones.
+     */
+    @JsonProperty(value = "zones")
+    private List<String> zones;
 
     /**
      * Get the plan value.
@@ -265,7 +270,7 @@ public class VirtualMachineInner extends Resource {
      *
      * @return the instanceView value
      */
-    public VirtualMachineInstanceView instanceView() {
+    public VirtualMachineInstanceViewInner instanceView() {
         return this.instanceView;
     }
 
@@ -324,6 +329,26 @@ public class VirtualMachineInner extends Resource {
      */
     public VirtualMachineInner withIdentity(VirtualMachineIdentity identity) {
         this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the zones value.
+     *
+     * @return the zones value
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones value.
+     *
+     * @param zones the zones value to set
+     * @return the VirtualMachineInner object itself.
+     */
+    public VirtualMachineInner withZones(List<String> zones) {
+        this.zones = zones;
         return this;
     }
 

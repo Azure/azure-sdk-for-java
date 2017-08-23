@@ -8,10 +8,11 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.compute.VirtualMachineScaleSetNetworkConfigurationDnsSettings;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.SubResource;
 
 /**
  * Describes a virtual machine scale set network profile's network
@@ -30,6 +31,25 @@ public class VirtualMachineScaleSetNetworkConfigurationInner extends SubResource
      */
     @JsonProperty(value = "properties.primary")
     private Boolean primary;
+
+    /**
+     * Specifies whether the network interface is accelerated
+     * networking-enabled.
+     */
+    @JsonProperty(value = "properties.enableAcceleratedNetworking")
+    private Boolean enableAcceleratedNetworking;
+
+    /**
+     * The network security group.
+     */
+    @JsonProperty(value = "properties.networkSecurityGroup")
+    private SubResource networkSecurityGroup;
+
+    /**
+     * The dns settings to be applied on the network interfaces.
+     */
+    @JsonProperty(value = "properties.dnsSettings")
+    private VirtualMachineScaleSetNetworkConfigurationDnsSettings dnsSettings;
 
     /**
      * The virtual machine scale set IP Configuration.
@@ -74,6 +94,66 @@ public class VirtualMachineScaleSetNetworkConfigurationInner extends SubResource
      */
     public VirtualMachineScaleSetNetworkConfigurationInner withPrimary(Boolean primary) {
         this.primary = primary;
+        return this;
+    }
+
+    /**
+     * Get the enableAcceleratedNetworking value.
+     *
+     * @return the enableAcceleratedNetworking value
+     */
+    public Boolean enableAcceleratedNetworking() {
+        return this.enableAcceleratedNetworking;
+    }
+
+    /**
+     * Set the enableAcceleratedNetworking value.
+     *
+     * @param enableAcceleratedNetworking the enableAcceleratedNetworking value to set
+     * @return the VirtualMachineScaleSetNetworkConfigurationInner object itself.
+     */
+    public VirtualMachineScaleSetNetworkConfigurationInner withEnableAcceleratedNetworking(Boolean enableAcceleratedNetworking) {
+        this.enableAcceleratedNetworking = enableAcceleratedNetworking;
+        return this;
+    }
+
+    /**
+     * Get the networkSecurityGroup value.
+     *
+     * @return the networkSecurityGroup value
+     */
+    public SubResource networkSecurityGroup() {
+        return this.networkSecurityGroup;
+    }
+
+    /**
+     * Set the networkSecurityGroup value.
+     *
+     * @param networkSecurityGroup the networkSecurityGroup value to set
+     * @return the VirtualMachineScaleSetNetworkConfigurationInner object itself.
+     */
+    public VirtualMachineScaleSetNetworkConfigurationInner withNetworkSecurityGroup(SubResource networkSecurityGroup) {
+        this.networkSecurityGroup = networkSecurityGroup;
+        return this;
+    }
+
+    /**
+     * Get the dnsSettings value.
+     *
+     * @return the dnsSettings value
+     */
+    public VirtualMachineScaleSetNetworkConfigurationDnsSettings dnsSettings() {
+        return this.dnsSettings;
+    }
+
+    /**
+     * Set the dnsSettings value.
+     *
+     * @param dnsSettings the dnsSettings value to set
+     * @return the VirtualMachineScaleSetNetworkConfigurationInner object itself.
+     */
+    public VirtualMachineScaleSetNetworkConfigurationInner withDnsSettings(VirtualMachineScaleSetNetworkConfigurationDnsSettings dnsSettings) {
+        this.dnsSettings = dnsSettings;
         return this;
     }
 

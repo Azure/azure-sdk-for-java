@@ -13,6 +13,7 @@ import com.microsoft.azure.management.compute.Plan;
 import com.microsoft.azure.management.compute.UpgradePolicy;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVMProfile;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetIdentity;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -61,6 +62,12 @@ public class VirtualMachineScaleSetInner extends Resource {
     private Boolean overprovision;
 
     /**
+     * Specifies the ID which uniquely identifies a Virtual Machine Scale Set.
+     */
+    @JsonProperty(value = "properties.uniqueId", access = JsonProperty.Access.WRITE_ONLY)
+    private String uniqueId;
+
+    /**
      * When true this limits the scale set to a single placement group, of max
      * size 100 virtual machines.
      */
@@ -72,6 +79,12 @@ public class VirtualMachineScaleSetInner extends Resource {
      */
     @JsonProperty(value = "identity")
     private VirtualMachineScaleSetIdentity identity;
+
+    /**
+     * The virtual machine scale set zones.
+     */
+    @JsonProperty(value = "zones")
+    private List<String> zones;
 
     /**
      * Get the sku value.
@@ -183,6 +196,15 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
+     * Get the uniqueId value.
+     *
+     * @return the uniqueId value
+     */
+    public String uniqueId() {
+        return this.uniqueId;
+    }
+
+    /**
      * Get the singlePlacementGroup value.
      *
      * @return the singlePlacementGroup value
@@ -219,6 +241,26 @@ public class VirtualMachineScaleSetInner extends Resource {
      */
     public VirtualMachineScaleSetInner withIdentity(VirtualMachineScaleSetIdentity identity) {
         this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the zones value.
+     *
+     * @return the zones value
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones value.
+     *
+     * @param zones the zones value to set
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withZones(List<String> zones) {
+        this.zones = zones;
         return this;
     }
 

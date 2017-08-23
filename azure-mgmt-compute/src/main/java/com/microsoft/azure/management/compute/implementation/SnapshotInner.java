@@ -8,7 +8,7 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.management.compute.StorageAccountTypes;
+import com.microsoft.azure.management.compute.DiskSku;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.compute.OperatingSystemTypes;
 import com.microsoft.azure.management.compute.CreationData;
@@ -23,11 +23,10 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class SnapshotInner extends Resource {
     /**
-     * the storage account type of the disk. Possible values include:
-     * 'Standard_LRS', 'Premium_LRS'.
+     * The sku property.
      */
-    @JsonProperty(value = "properties.accountType")
-    private StorageAccountTypes accountType;
+    @JsonProperty(value = "sku")
+    private DiskSku sku;
 
     /**
      * The time when the disk was created.
@@ -65,34 +64,28 @@ public class SnapshotInner extends Resource {
     private EncryptionSettings encryptionSettings;
 
     /**
-     * A relative URI containing the VM id that has the disk attached.
-     */
-    @JsonProperty(value = "properties.ownerId", access = JsonProperty.Access.WRITE_ONLY)
-    private String ownerId;
-
-    /**
      * The disk provisioning state.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /**
-     * Get the accountType value.
+     * Get the sku value.
      *
-     * @return the accountType value
+     * @return the sku value
      */
-    public StorageAccountTypes accountType() {
-        return this.accountType;
+    public DiskSku sku() {
+        return this.sku;
     }
 
     /**
-     * Set the accountType value.
+     * Set the sku value.
      *
-     * @param accountType the accountType value to set
+     * @param sku the sku value to set
      * @return the SnapshotInner object itself.
      */
-    public SnapshotInner withAccountType(StorageAccountTypes accountType) {
-        this.accountType = accountType;
+    public SnapshotInner withSku(DiskSku sku) {
+        this.sku = sku;
         return this;
     }
 
@@ -183,15 +176,6 @@ public class SnapshotInner extends Resource {
     public SnapshotInner withEncryptionSettings(EncryptionSettings encryptionSettings) {
         this.encryptionSettings = encryptionSettings;
         return this;
-    }
-
-    /**
-     * Get the ownerId value.
-     *
-     * @return the ownerId value
-     */
-    public String ownerId() {
-        return this.ownerId;
     }
 
     /**

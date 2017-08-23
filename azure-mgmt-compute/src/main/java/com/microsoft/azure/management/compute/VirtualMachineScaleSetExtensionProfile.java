@@ -9,8 +9,8 @@
 package com.microsoft.azure.management.compute;
 
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetExtensionInner;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes a virtual machine scale set extension profile.

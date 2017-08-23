@@ -33,10 +33,22 @@ public class VirtualMachineScaleSetVMProfile {
     private VirtualMachineScaleSetNetworkProfile networkProfile;
 
     /**
+     * The virtual machine scale set diagnostics profile.
+     */
+    @JsonProperty(value = "diagnosticsProfile")
+    private DiagnosticsProfile diagnosticsProfile;
+
+    /**
      * The virtual machine scale set extension profile.
      */
     @JsonProperty(value = "extensionProfile")
     private VirtualMachineScaleSetExtensionProfile extensionProfile;
+
+    /**
+     * The license type, which is for bring your own license scenario.
+     */
+    @JsonProperty(value = "licenseType")
+    private String licenseType;
 
     /**
      * Get the osProfile value.
@@ -99,6 +111,26 @@ public class VirtualMachineScaleSetVMProfile {
     }
 
     /**
+     * Get the diagnosticsProfile value.
+     *
+     * @return the diagnosticsProfile value
+     */
+    public DiagnosticsProfile diagnosticsProfile() {
+        return this.diagnosticsProfile;
+    }
+
+    /**
+     * Set the diagnosticsProfile value.
+     *
+     * @param diagnosticsProfile the diagnosticsProfile value to set
+     * @return the VirtualMachineScaleSetVMProfile object itself.
+     */
+    public VirtualMachineScaleSetVMProfile withDiagnosticsProfile(DiagnosticsProfile diagnosticsProfile) {
+        this.diagnosticsProfile = diagnosticsProfile;
+        return this;
+    }
+
+    /**
      * Get the extensionProfile value.
      *
      * @return the extensionProfile value
@@ -115,6 +147,26 @@ public class VirtualMachineScaleSetVMProfile {
      */
     public VirtualMachineScaleSetVMProfile withExtensionProfile(VirtualMachineScaleSetExtensionProfile extensionProfile) {
         this.extensionProfile = extensionProfile;
+        return this;
+    }
+
+    /**
+     * Get the licenseType value.
+     *
+     * @return the licenseType value
+     */
+    public String licenseType() {
+        return this.licenseType;
+    }
+
+    /**
+     * Set the licenseType value.
+     *
+     * @param licenseType the licenseType value to set
+     * @return the VirtualMachineScaleSetVMProfile object itself.
+     */
+    public VirtualMachineScaleSetVMProfile withLicenseType(String licenseType) {
+        this.licenseType = licenseType;
         return this;
     }
 

@@ -22,6 +22,12 @@ public class DiskInstanceView {
     private String name;
 
     /**
+     * The encryption settings of the disk.
+     */
+    @JsonProperty(value = "encryptionSettings")
+    private List<DiskEncryptionSettings> encryptionSettings;
+
+    /**
      * The resource status information.
      */
     @JsonProperty(value = "statuses")
@@ -44,6 +50,26 @@ public class DiskInstanceView {
      */
     public DiskInstanceView withName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the encryptionSettings value.
+     *
+     * @return the encryptionSettings value
+     */
+    public List<DiskEncryptionSettings> encryptionSettings() {
+        return this.encryptionSettings;
+    }
+
+    /**
+     * Set the encryptionSettings value.
+     *
+     * @param encryptionSettings the encryptionSettings value to set
+     * @return the DiskInstanceView object itself.
+     */
+    public DiskInstanceView withEncryptionSettings(List<DiskEncryptionSettings> encryptionSettings) {
+        this.encryptionSettings = encryptionSettings;
         return this;
     }
 
