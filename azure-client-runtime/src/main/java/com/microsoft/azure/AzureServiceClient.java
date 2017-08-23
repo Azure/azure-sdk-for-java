@@ -7,12 +7,19 @@
 package com.microsoft.azure;
 
 import com.google.common.hash.Hashing;
+import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
+import com.microsoft.azure.v2.AzureTokenCredentialsHandler;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.v2.http.ChannelHandlerConfig;
+import com.microsoft.rest.v2.http.HttpClient;
+import com.microsoft.rest.v2.http.RxNettyClient;
+import io.netty.channel.ChannelHandler;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import rx.functions.Func0;
 
 import java.net.NetworkInterface;
 import java.util.Enumeration;
@@ -49,6 +56,20 @@ public abstract class AzureServiceClient extends ServiceClient {
      */
     protected AzureServiceClient(RestClient restClient) {
         super(restClient);
+        rpHttpClient = new RxNettyClient(new ChannelHandlerConfig(new Func0<ChannelHandler>() {
+            @Override
+            public ChannelHandler call() {
+                return new AzureTokenCredentialsHandler((AzureTokenCredentials) AzureServiceClient.this.restClient().credentials());
+            }
+        }, true));
+    }
+
+    private final HttpClient rpHttpClient;
+    /**
+     * @return the RestProxy HTTP client.
+     */
+    public HttpClient rpHttpClient() {
+        return rpHttpClient;
     }
 
     /**
