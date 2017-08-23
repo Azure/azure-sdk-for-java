@@ -79,7 +79,7 @@ public class MockHttpClient extends HttpClient {
     private static Map<String, String> toMap(HttpHeaders headers) {
         final Map<String, String> result = new HashMap<String, String>();
         for (final HttpHeader header : headers) {
-            result.put(header.getName(), header.getValue());
+            result.put(header.name(), header.value());
         }
         return result;
     }

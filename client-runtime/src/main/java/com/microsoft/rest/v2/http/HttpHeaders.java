@@ -33,6 +33,18 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     }
 
     /**
+     * Create a HttpHeaders object with the provided initial headers.
+     * @param headers The map of name to value associations to use as initial headers.
+     */
+    public HttpHeaders(Iterable<HttpHeader> headers) {
+        this();
+
+        for (final HttpHeader header : headers) {
+            this.add(header.name(), header.value());
+        }
+    }
+
+    /**
      * Add the provided headerName and headerValue to the list of headers for this request.
      * @param headerName The name of the header.
      * @param headerValue The value of the header.
@@ -55,9 +67,9 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @param headerName The name of the header to look for.
      * @return The String value of the header, or null if the header isn't found.
      */
-    public String getValue(String headerName) {
+    public String value(String headerName) {
         final HttpHeader header = getHeader(headerName);
-        return header == null ? null : header.getValue();
+        return header == null ? null : header.value();
     }
 
     /**
@@ -66,9 +78,9 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @param headerName The name of the header to look for.
      * @return The String values of the header, or null if the header isn't found.
      */
-    public String[] getValues(String headerName) {
+    public String[] values(String headerName) {
         final HttpHeader header = getHeader(headerName);
-        return header == null ? null : header.getValues();
+        return header == null ? null : header.values();
     }
 
     private HttpHeader getHeader(String headerName) {

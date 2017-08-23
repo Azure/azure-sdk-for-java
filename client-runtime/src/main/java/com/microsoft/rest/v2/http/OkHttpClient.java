@@ -44,11 +44,11 @@ public class OkHttpClient extends HttpClient {
         }
 
         final Request.Builder requestBuilder = new Request.Builder()
-                .method(request.method(), requestBody)
+                .method(request.httpMethod(), requestBody)
                 .url(request.url());
 
         for (HttpHeader header : request.headers()) {
-            requestBuilder.addHeader(header.getName(), header.getValue());
+            requestBuilder.addHeader(header.name(), header.value());
         }
 
         final Request okhttpRequest = requestBuilder.build();
