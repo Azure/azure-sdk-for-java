@@ -300,7 +300,7 @@ public final class BlobProperties {
      *
      * @return A {@Link java.lang.Boolean} object which represents if the blob tier was inferred.
      */
-    public Boolean getInferredBlobTier() { return this.isBlobTierInferredTier; }
+    public Boolean isBlobTierInferred() { return this.isBlobTierInferredTier; }
 
     /**
      * Gets the lease status for the blob.
@@ -592,7 +592,7 @@ public final class BlobProperties {
      * @param isBlobTierInferredTier
      *      A {@Link java.lang.Boolean} which specifies if the blob tier is inferred.
      */
-    protected void setBlobTierInferredTier(Boolean isBlobTierInferredTier) {
+    protected void setBlobTierInferred(Boolean isBlobTierInferredTier) {
         this.isBlobTierInferredTier = isBlobTierInferredTier;
     }
 
