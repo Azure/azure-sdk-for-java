@@ -44,7 +44,7 @@ Note: This page will be maintained regularly to ensure that it is up to date.
   <tr>
     <td>More services</td>
     <td>Resource Manager<br>Key Vault<br>Redis<br>CDN<br>Batch</td>
-    <td valign="top">Web apps<br>Function Apps<br>Service bus<br>Graph RBAC<br>Comsos DB<br>Search</td>
+    <td valign="top">Web apps<br>Function Apps<br>Service bus<br>Graph RBAC<br>Cosmos DB<br>Search</td>
     <td valign="top">Monitor<br>Azure container instances<br>Data Lake</td>
   </tr>
   <tr>
@@ -489,7 +489,7 @@ If you are using snapshots builds for this repo, add the following repository an
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure</artifactId>
-    <version>1.2.0-SNAPSHOT</version>
+    <version>1.2.1-SNAPSHOT</version>
 </dependency>
 <dependency>
     <groupId>com.microsoft.azure</groupId>
