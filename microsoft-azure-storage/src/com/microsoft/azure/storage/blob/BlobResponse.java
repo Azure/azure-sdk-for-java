@@ -152,7 +152,7 @@ final class BlobResponse extends BaseResponse {
 
         final String tierInferredString = request.getHeaderField(BlobConstants.ACCESS_TIER_INFERRED_HEADER);
         if (!Utility.isNullOrEmpty(tierInferredString)) {
-            properties.setBlobTierInferredTier(Boolean.parseBoolean(tierInferredString));
+            properties.setBlobTierInferred(Boolean.parseBoolean(tierInferredString));
         }
 
         final String rehydrationStatusString = request.getHeaderField(BlobConstants.ARCHIVE_STATUS_HEADER);

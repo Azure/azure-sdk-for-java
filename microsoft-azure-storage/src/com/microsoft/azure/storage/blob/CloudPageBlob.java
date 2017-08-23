@@ -580,7 +580,7 @@ public final class CloudPageBlob extends CloudBlob {
                 blob.getProperties().setLength(length);
                 blob.getProperties().setPremiumPageBlobTier(premiumBlobTier);
                 if (premiumBlobTier != null) {
-                    blob.getProperties().setBlobTierInferredTier(false);
+                    blob.getProperties().setBlobTierInferred(false);
                 }
 
                 return null;
@@ -1613,6 +1613,6 @@ public final class CloudPageBlob extends CloudBlob {
         ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
                 this.uploadBlobTierImpl(premiumBlobTier.toString(), options), options.getRetryPolicyFactory(), opContext);
         this.properties.setPremiumPageBlobTier(premiumBlobTier);
-        this.properties.setBlobTierInferredTier(false);
+        this.properties.setBlobTierInferred(false);
     }
 }
