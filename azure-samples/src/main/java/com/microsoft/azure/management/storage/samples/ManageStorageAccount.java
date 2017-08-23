@@ -10,12 +10,15 @@ import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.azure.management.storage.StorageAccount;
+import com.microsoft.azure.management.storage.StorageAccountEncryptionStatus;
 import com.microsoft.azure.management.storage.StorageAccountKey;
 import com.microsoft.azure.management.storage.StorageAccounts;
+import com.microsoft.azure.management.storage.StorageService;
 import com.microsoft.rest.LogLevel;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Azure Storage sample for managing storage accounts -
@@ -81,6 +84,20 @@ public final class ManageStorageAccount {
             System.out.println("Created a Storage Account:");
             Utils.print(storageAccount2);
 
+
+            // ============================================================
+            // Update storage account by enabling encryption
+
+            System.out.println("Enabling encryption for the storage account: " + storageAccount2.name());
+
+            storageAccount2.update()
+                    .withEncryption()
+                    .apply();
+
+            for (Map.Entry<StorageService, StorageAccountEncryptionStatus> encryptionStatus : storageAccount2.encryptionStatuses().entrySet()) {
+                String status = encryptionStatus.getValue().isEnabled() ? "Enabled" : "Not enabled";
+                System.out.println("Encryption status of the service " + encryptionStatus.getKey() + ":" + status);
+            }
 
             // ============================================================
             // List storage accounts

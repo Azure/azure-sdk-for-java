@@ -1134,6 +1134,15 @@ public interface VirtualMachine extends
              * @param size the VHD size
              * @return the next stage of the definition
              */
+            WithCreate withOSDiskSizeInGB(Integer size);
+
+            /**
+             * Specifies the size of the OSDisk in GB.
+             *
+             * @param size the VHD size
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_2_0)
             WithCreate withOSDiskSizeInGB(int size);
 
             /**
@@ -2079,6 +2088,17 @@ public interface VirtualMachine extends
          * @param size a disk size.
          * @return the next stage of the update
          */
+        Update withOSDiskSizeInGB(Integer size);
+
+        /**
+         * Specifies the size of the OS disk in GB.
+         * <p>
+         * Only unmanaged disks may be resized as part of a VM update. Managed disks must be resized separately, using managed disk API.
+         *
+         * @param size a disk size.
+         * @return the next stage of the update
+         */
+        @Beta(Beta.SinceVersion.V1_2_0)
         Update withOSDiskSizeInGB(int size);
 
         /**
