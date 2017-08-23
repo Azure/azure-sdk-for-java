@@ -18,6 +18,7 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.compute.Plan;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.azure.management.compute.VirtualMachineInstanceView;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
@@ -55,7 +56,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * The virtual machine instance view.
      */
     @JsonProperty(value = "properties.instanceView", access = JsonProperty.Access.WRITE_ONLY)
-    private VirtualMachineInstanceViewInner instanceView;
+    private VirtualMachineInstanceView instanceView;
 
     /**
      * The hardware profile.
@@ -160,7 +161,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      *
      * @return the instanceView value
      */
-    public VirtualMachineInstanceViewInner instanceView() {
+    public VirtualMachineInstanceView instanceView() {
         return this.instanceView;
     }
 
