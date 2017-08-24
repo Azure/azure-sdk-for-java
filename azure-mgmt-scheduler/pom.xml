@@ -8,13 +8,13 @@
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-parent</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>azure-mgmt-scheduler</artifactId>
   <packaging>jar</packaging>
-  <version>1.2.0-beta</version>
+  <version>1.2.1-beta-SNAPSHOT</version>
 
   <name>Microsoft Azure SDK for Scheduler Management</name>
   <description>This package contains Microsoft Azure Sche Management SDK.</description>
@@ -31,7 +31,7 @@
   <scm>
     <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
     <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
-    <tag>v1.2.0</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <properties>
@@ -54,7 +54,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-mgmt-resources</artifactId>
-      <version>1.2.0</version>
+      <version>1.2.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
