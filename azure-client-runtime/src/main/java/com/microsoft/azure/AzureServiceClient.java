@@ -13,12 +13,11 @@ import com.microsoft.azure.v2.AzureTokenCredentialsHandler;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
-import com.microsoft.rest.v2.http.ChannelHandlerConfig;
-import com.microsoft.rest.v2.http.HttpClient;
-import com.microsoft.rest.v2.http.RxNettyClient;
+import com.microsoft.rest.v2.http.*;
 import io.netty.channel.ChannelHandler;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import rx.Single;
 import rx.functions.Func0;
 
 import java.net.NetworkInterface;
@@ -56,12 +55,27 @@ public abstract class AzureServiceClient extends ServiceClient {
      */
     protected AzureServiceClient(RestClient restClient) {
         super(restClient);
-        rpHttpClient = new RxNettyClient(new ChannelHandlerConfig(new Func0<ChannelHandler>() {
+
+        final RxNettyClient rxnClient =
+                new RxNettyClient(new ChannelHandlerConfig(new Func0<ChannelHandler>() {
+                    @Override
+                    public ChannelHandler call() {
+                        return new AzureTokenCredentialsHandler((AzureTokenCredentials) AzureServiceClient.this.restClient().credentials());
+                    }
+                }, true));
+
+
+        rpHttpClient = new RequestPolicyChain(new RequestPolicy.Factory() {
             @Override
-            public ChannelHandler call() {
-                return new AzureTokenCredentialsHandler((AzureTokenCredentials) AzureServiceClient.this.restClient().credentials());
+            public RequestPolicy create(RequestPolicy next) {
+                return new RequestPolicy() {
+                    @Override
+                    public Single<HttpResponse> sendAsync(HttpRequest request) {
+                        return rxnClient.sendAsync(request);
+                    }
+                };
             }
-        }, true));
+        }, new UseOtherHostPolicy.Factory());
     }
 
     private final HttpClient rpHttpClient;

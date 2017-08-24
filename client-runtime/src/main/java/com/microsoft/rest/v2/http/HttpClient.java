@@ -7,13 +7,14 @@
 package com.microsoft.rest.v2.http;
 
 import rx.Single;
+import rx.functions.Func1;
 
 import java.io.IOException;
 
 /**
  * A generic interface for sending HTTP requests and getting responses.
  */
-public abstract class HttpClient {
+public abstract class HttpClient implements RequestPolicy {
     /**
      * Send the provided request and block until the response is received.
      * @param request The HTTP request to send.
@@ -32,4 +33,14 @@ public abstract class HttpClient {
      * @throws IOException On network issues.
      */
     public abstract Single<? extends HttpResponse> sendRequestAsync(HttpRequest request);
+
+    @Override
+    public Single<HttpResponse> sendAsync(HttpRequest request) {
+        return sendRequestAsync(request).map(new Func1<HttpResponse, HttpResponse>() {
+            @Override
+            public HttpResponse call(HttpResponse httpResponse) {
+                return httpResponse;
+            }
+        });
+    }
 }
