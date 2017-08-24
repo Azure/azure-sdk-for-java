@@ -87,7 +87,7 @@ public class CreationSource {
             return sourceResourceId;
         }
         if (this.type() == CreationSourceType.COPIED_FROM_SNAPSHOT) {
-            String sourceResourceId = this.creationData.sourceUri();
+            String sourceResourceId = this.creationData.sourceResourceId();
             if (sourceResourceId == null) {
                 sourceResourceId = this.creationData.sourceUri();
             }
