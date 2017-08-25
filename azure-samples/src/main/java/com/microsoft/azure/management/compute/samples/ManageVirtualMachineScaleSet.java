@@ -86,8 +86,8 @@ public final class ManageVirtualMachineScaleSet {
                     .withNewResourceGroup(rgName)
                     .withAddressSpace("172.16.0.0/16")
                     .defineSubnet("Front-end")
-                    .withAddressPrefix("172.16.1.0/24")
-                    .attach()
+                        .withAddressPrefix("172.16.1.0/24")
+                        .attach()
                     .create();
 
             System.out.println("Created a virtual network");
