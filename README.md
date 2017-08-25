@@ -180,12 +180,12 @@ ApplicationGateway applicationGateway = azure.applicationGateways().define("myFi
         .fromPublicFrontend()
         .fromFrontendHttpPort(80)
         .toBackendHttpPort(8080)
-        .toBackendIpAddress("11.1.1.1")
-        .toBackendIpAddress("11.1.1.2")
-        .toBackendIpAddress("11.1.1.3")
-        .toBackendIpAddress("11.1.1.4")
+        .toBackendIPAddress("11.1.1.1")
+        .toBackendIPAddress("11.1.1.2")
+        .toBackendIPAddress("11.1.1.3")
+        .toBackendIPAddress("11.1.1.4")
         .attach()
-    .withExistingPublicIpAddress(publicIpAddress)
+    .withExistingPublicIPAddress(publicIpAddress)
     .create();
 ```
 
