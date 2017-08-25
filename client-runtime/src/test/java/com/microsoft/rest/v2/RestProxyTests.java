@@ -17,14 +17,12 @@ import com.microsoft.rest.v2.annotations.PathParam;
 import com.microsoft.rest.v2.annotations.QueryParam;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpHeaders;
-import com.microsoft.rest.v2.http.OkHttpClient;
 import org.junit.Test;
 import rx.Completable;
 import rx.Single;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 

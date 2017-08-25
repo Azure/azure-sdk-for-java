@@ -18,14 +18,14 @@ import java.io.IOException;
 /**
  * A HttpClient that is implemented using OkHttp.
  */
-public class OkHttpClient extends HttpClient {
+public class OkHttpClientAdapter extends HttpClient {
     private final okhttp3.OkHttpClient client;
 
     /**
-     * Create a new OkHttpClient.
-     * @param client The inner OkHttpClient implementation.
+     * Create a new OkHttpClientAdapter.
+     * @param client The inner OkHttpClientAdapter implementation.
      */
-    public OkHttpClient(okhttp3.OkHttpClient client) {
+    public OkHttpClientAdapter(okhttp3.OkHttpClient client) {
         this.client = client;
     }
 
