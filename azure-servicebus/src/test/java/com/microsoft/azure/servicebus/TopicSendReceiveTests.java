@@ -1,15 +1,24 @@
 package com.microsoft.azure.servicebus;
 
-import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
-
 public class TopicSendReceiveTests extends SendReceiveTests {
-	@Override
-	public ConnectionStringBuilder getSenderConnectionStringBuilder() {
-		return TestUtils.getNonPartitionedTopicConnectionStringBuilder();
-	}
 
-	@Override
-	public ConnectionStringBuilder getReceiverConnectionStringBuilder() {
-		return TestUtils.getNonPartitionedSubscriptionConnectionStringBuilder();
-	}
+    @Override
+    public String getEntityNamePrefix() {
+        return "TopicSendReceiveTests";
+    }
+
+    @Override
+    public boolean isEntityQueue() {
+        return false;
+    }
+
+    @Override
+    public boolean isEntityPartitioned() {
+        return false;
+    }
+
+    @Override
+    public boolean shouldCreateEntityForEveryTest() {
+        return TestUtils.shouldCreateEntityForEveryTest();
+    }
 }

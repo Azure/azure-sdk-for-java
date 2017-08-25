@@ -1,10 +1,9 @@
 package com.microsoft.azure.servicebus;
 
-public class QueueSendReceiveTests extends SendReceiveTests
-{
+public class SubscriptionClientSessionTests extends ClientSessionTests{
     @Override
     public String getEntityNamePrefix() {
-       return "QueueSendReceiveTests";
+       return "SubscriptionClientSessionTests";
     }
 
     @Override

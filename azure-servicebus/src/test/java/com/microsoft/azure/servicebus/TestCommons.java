@@ -558,7 +558,7 @@ public class TestCommons {
 		for(IMessageSession session : sessions)
 		{
 			session.closeAsync();
-		}		
+		}
 	}
 	
 	public static void drainAllMessagesFromReceiver(IMessageReceiver receiver) throws InterruptedException, ServiceBusException

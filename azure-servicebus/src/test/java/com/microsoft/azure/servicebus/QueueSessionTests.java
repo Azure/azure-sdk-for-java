@@ -1,16 +1,24 @@
 package com.microsoft.azure.servicebus;
 
-import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
-
 public class QueueSessionTests extends SessionTests
 {
-	@Override
-	public ConnectionStringBuilder getSenderConnectionStringBuilder() {
-		return TestUtils.getNonPartitionedSessionfulQueueConnectionStringBuilder();
-	}
+    @Override
+    public String getEntityNamePrefix() {
+       return "QueueSessionTests";
+    }
 
-	@Override
-	public ConnectionStringBuilder getReceiverConnectionStringBuilder() {
-		return TestUtils.getNonPartitionedSessionfulQueueConnectionStringBuilder();
-	}
+    @Override
+    public boolean isEntityQueue() {
+        return true;
+    }
+
+    @Override
+    public boolean shouldCreateEntityForEveryTest() {
+        return TestUtils.shouldCreateEntityForEveryTest();
+    }
+
+    @Override
+    public boolean isEntityPartitioned() {
+        return false;
+    }
 }

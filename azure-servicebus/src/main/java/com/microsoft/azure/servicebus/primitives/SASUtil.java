@@ -48,7 +48,7 @@ public class SASUtil {
             String secretToSign = encodedResourceURI + "\n" + validUntil;
             Mac hmac = Mac.getInstance(HMACAlgorithm);
             SecretKeySpec secretKey = new SecretKeySpec(StringUtil.convertStringToBytes(sasKey), HMACAlgorithm);
-            hmac.init(secretKey);       
+            hmac.init(secretKey);
             byte[] signatureBytes = hmac.doFinal(StringUtil.convertStringToBytes(secretToSign));
             String signature = base64Encoder.encodeToString(signatureBytes);
             TRACE_LOGGER.debug("Generated SAS token for resource: {} with sas key name : {}", resourceURI, sasKeyName);
