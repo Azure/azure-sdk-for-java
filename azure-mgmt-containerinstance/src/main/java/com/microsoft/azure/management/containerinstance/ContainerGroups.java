@@ -9,6 +9,7 @@ import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.containerinstance.implementation.ContainerGroupsInner;
 import com.microsoft.azure.management.containerinstance.implementation.ContainerInstanceManager;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
@@ -31,11 +32,12 @@ public interface ContainerGroups extends
     HasManager<ContainerInstanceManager>,
     HasInner<ContainerGroupsInner>,
     SupportsBatchCreation<ContainerGroup>,
-    SupportsGettingById<ContainerGroup>,
-    SupportsDeletingById,
-    SupportsDeletingByResourceGroup,
-    SupportsListingByResourceGroup<ContainerGroup>,
     SupportsGettingByResourceGroup<ContainerGroup>,
+    SupportsGettingById<ContainerGroup>,
+    SupportsDeletingByResourceGroup,
+    SupportsDeletingById,
+    SupportsBatchDeletion,
+    SupportsListingByResourceGroup<ContainerGroup>,
     SupportsListing<ContainerGroup> {
 
     /**

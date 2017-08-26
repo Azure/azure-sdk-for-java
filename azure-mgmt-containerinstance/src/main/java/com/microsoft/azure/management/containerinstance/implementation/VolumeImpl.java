@@ -6,31 +6,42 @@
 package com.microsoft.azure.management.containerinstance.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.containerinstance.AzureFileVolume;
 import com.microsoft.azure.management.containerinstance.ContainerGroup;
 import com.microsoft.azure.management.containerinstance.Volume;
+
+import java.util.ArrayList;
 
 /**
  * Implementation for container group's volume definition stages interface.
  */
 @LangDefinition
-public class VolumeImpl implements ContainerGroup.DefinitionStages.VolumeDefinitionStages.VolumeDefinition<ContainerGroupImpl> {
+class VolumeImpl implements ContainerGroup.DefinitionStages.VolumeDefinitionStages.VolumeDefinition<ContainerGroup.DefinitionStages.WithVolume> {
     private Volume innerVolume;
     private ContainerGroupImpl parent;
 
-    VolumeImpl(ContainerGroupImpl parent) {
+    VolumeImpl(ContainerGroupImpl parent, String volumeName) {
         this.parent = parent;
-        this.innerVolume = new Volume();
+        this.innerVolume = new Volume().withName(volumeName);
     }
 
     @Override
     public ContainerGroupImpl attach() {
-        return null;
-//        return this.parent.withVolume(innerVolume);
+        if (parent.inner().volumes() == null) {
+            parent.inner().withVolumes(new ArrayList<Volume>());
+        }
+        parent.inner().volumes().add(innerVolume);
+
+        return parent;
     }
 
     @Override
     public VolumeImpl withExistingReadWriteAzureFileShare(String shareName) {
-        return null;
+        ensureAzureFileVolume()
+            .withReadOnly(false)
+            .withShareName(shareName);
+
+        return this;
     }
 
     @Override
@@ -38,18 +49,30 @@ public class VolumeImpl implements ContainerGroup.DefinitionStages.VolumeDefinit
         return null;
     }
 
+    private AzureFileVolume ensureAzureFileVolume() {
+        if (innerVolume.azureFile() == null) {
+            innerVolume.withAzureFile(new AzureFileVolume());
+        }
+
+        return innerVolume.azureFile();
+    }
+
     @Override
     public VolumeImpl withNewAzureFileShare(String shareName) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public VolumeImpl withStorageAccountName(String storageAccountName) {
-        return null;
+        ensureAzureFileVolume().withStorageAccountName(storageAccountName);
+
+        return this;
     }
 
     @Override
     public VolumeImpl withStorageAccountKey(String storageAccountKey) {
-        return null;
+        ensureAzureFileVolume().withStorageAccountKey(storageAccountKey);
+
+        return this;
     }
 }
