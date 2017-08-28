@@ -105,6 +105,16 @@ class NetworkPeeringImpl
     }
 
     @Override
+    public NetworkPeeringImpl withAccessBetweenBothNetworks() {
+        return this.withAccessFromRemoteNetwork().withAccessToRemoteNetwork();
+    }
+
+    @Override
+    public NetworkPeeringImpl withoutAccessFromEitherNetwork() {
+        return this.withoutAccessFromRemoteNetwork().withoutAccessToRemoteNetwork();
+    }
+
+    @Override
     public NetworkPeeringImpl withRemoteNetwork(String resourceId) {
         SubResource networkRef = new SubResource().withId(resourceId);
         this.inner().withRemoteVirtualNetwork(networkRef);
@@ -133,6 +143,11 @@ class NetworkPeeringImpl
     }
 
     @Override
+    public NetworkPeeringImpl withoutTrafficForwardingFromEitherNetwork() {
+        return this.withoutTrafficForwardingFromRemoteNetwork().withoutTrafficForwardingToRemoteNetwork();
+    }
+
+    @Override
     public NetworkPeeringImpl withTrafficForwardingToRemoteNetwork() {
         this.remoteForwarding = true;
         return this;
@@ -142,6 +157,11 @@ class NetworkPeeringImpl
     public NetworkPeeringImpl withoutTrafficForwardingToRemoteNetwork() {
         this.remoteForwarding = false;
         return this;
+    }
+
+    @Override
+    public NetworkPeeringImpl withTrafficForwardingBetweenBothNetworks() {
+        return this.withTrafficForwardingFromRemoteNetwork().withTrafficForwardingToRemoteNetwork();
     }
 
     @Override

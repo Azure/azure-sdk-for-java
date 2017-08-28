@@ -159,10 +159,8 @@ public class TestNetwork {
                 .withRemoteNetwork(remoteNetwork)
 
                 // Optionals
-                .withTrafficForwardingFromRemoteNetwork()
-                .withTrafficForwardingToRemoteNetwork()
-                .withoutAccessFromRemoteNetwork()
-                .withoutAccessToRemoteNetwork()
+                .withTrafficForwardingBetweenBothNetworks()
+                .withoutAccessFromEitherNetwork()
                 .withGatewayUseByRemoteNetworkAllowed()
                 .create();
 
@@ -195,10 +193,8 @@ public class TestNetwork {
         public Network updateResource(Network resource) throws Exception {
             NetworkPeering localPeering = resource.peerings().list().get(0);
             localPeering.update()
-                .withoutTrafficForwardingFromRemoteNetwork()
-                .withoutTrafficForwardingToRemoteNetwork()
-                .withAccessFromRemoteNetwork()
-                .withAccessToRemoteNetwork()
+                .withoutTrafficForwardingFromEitherNetwork()
+                .withAccessBetweenBothNetworks()
                 // TODO Gateway use
                 .apply();
 
@@ -222,7 +218,7 @@ public class TestNetwork {
     }
 
     /**
-     * Outputs info about a network
+     * Outputs info about a network.
      * @param resource a network
      */
     public static void printNetwork(Network resource) {

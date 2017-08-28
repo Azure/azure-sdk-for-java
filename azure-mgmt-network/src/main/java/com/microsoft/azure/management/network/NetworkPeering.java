@@ -135,10 +135,19 @@ public interface NetworkPeering extends
             /**
              * Allows traffic forwarding from this network to the remote network.
              * <p>
-             * This setting will only work here if the remote network is in the same subscription. Otherwise, it will be ignored and you need to change
+             * This setting will have effect only if the remote network is in the same subscription. Otherwise, it will be ignored and you need to change
              * the corresponding traffic forwarding setting on the remote network's matching peering explicitly.
              */
             WithCreate withTrafficForwardingToRemoteNetwork();
+
+            /**
+             * Allows traffic forwarding both from either peered network into the other.
+             * <p>
+             * This setting will have effect on the remote network only if the remote network is in the same subscription. Otherwise, it will be ignored and you need to change
+             * the corresponding traffic forwarding setting on the remote network's matching peering explicitly.
+             * @return the next stage of the definition
+             */
+            WithCreate withTrafficForwardingBetweenBothNetworks();
         }
 
         /**
@@ -199,11 +208,20 @@ public interface NetworkPeering extends
             /**
              * Disallows access to the remote network's address space from this network.
              * <p>
-             * This setting will only work here if the remote network is in the same subscription. Otherwise, it will be ignored and you need to change
+             * This setting will have effect on the remote network only if the remote network is in the same subscription. Otherwise, it will be ignored and you need to change
              * the corresponding access setting on the remote network's matching peering explicitly.
              * @return the next stage of the definition
              */
             WithCreate withoutAccessToRemoteNetwork();
+
+            /**
+             * Disallows access to either peered network from the other.
+             * <p>
+             * This setting will have effect on the remote network only if the remote network is in the same subscription. Otherwise, it will be ignored and you need to change
+             * the corresponding access setting on the remote network's matching peering explicitly.
+             * @return the next stage of the definition
+             */
+            WithCreate withoutAccessFromEitherNetwork();
         }
 
         /**
@@ -263,14 +281,33 @@ public interface NetworkPeering extends
              * <p>
              * This setting will only work here if the remote network is in the same subscription. Otherwise, it will be ignored and you need to change
              * the corresponding traffic forwarding setting on the remote network's matching peering explicitly.
+             * @return the next stage of the update
              */
             Update withTrafficForwardingToRemoteNetwork();
 
             /**
              * Disables traffic forwarding to the remote network.
-             * @return
+             * @return the next stage of the update
              */
             Update withoutTrafficForwardingToRemoteNetwork();
+
+            /**
+             * Allows traffic forwarding both from either peered network to the other.
+             * <p>
+             * This setting will have effect on the remote network only if the remote network is in the same subscription. Otherwise, it will be ignored and you need to change
+             * the corresponding traffic forwarding setting on the remote network's matching peering explicitly.
+             * @return the next stage of the update
+             */
+            Update withTrafficForwardingBetweenBothNetworks();
+
+            /**
+             * Disables traffic forwarding from either peered network to the other.
+             * <p>
+             * This setting will have effect on the remote network only if the remote network is in the same subscription. Otherwise, it will be ignored and you need to change
+             * the corresponding traffic forwarding setting on the remote network's matching peering explicitly.
+             * @return the next stage of the update
+             */
+            Update withoutTrafficForwardingFromEitherNetwork();
         }
 
         /**
@@ -279,33 +316,51 @@ public interface NetworkPeering extends
         interface WithAccess {
             /**
              * Disallows access to this network's address space from the remote network.
-             * @return the next stage of the definition
+             * @return the next stage of the update
              */
             Update withoutAccessFromRemoteNetwork();
 
             /**
              * Allows access to this network's address space from the remote network.
-             * @return the next stage of the definition
+             * @return the next stage of the update
              */
             Update withAccessFromRemoteNetwork();
 
             /**
              * Disallows access to the remote network's address space from this network.
              * <p>
-             * This setting will only work here if the remote network is in the same subscription. Otherwise, it will be ignored and you need to change
+             * This setting will have effect on the remote network only if the remote network is in the same subscription. Otherwise, it will be ignored and you need to change
              * the corresponding access setting on the remote network's matching peering explicitly.
-             * @return the next stage of the definition
+             * @return the next stage of the update
              */
             Update withoutAccessToRemoteNetwork();
 
             /**
              * Enables access to the remote network's address space from this network.
              * <p>
-             * This setting will only work here if the remote network is in the same subscription. Otherwise, it will be ignored and you need to change
+             * This setting will have effect on the remote network only if the remote network is in the same subscription. Otherwise, it will be ignored and you need to change
              * the corresponding access setting on the remote network's matching peering explicitly.
-             * @return
+             * @return the next stage of the update
              */
             Update withAccessToRemoteNetwork();
+
+            /**
+             * Enables access to either peered virtual network from the other.
+             * <p>
+             * This setting will have effect on the remote network only if the remote network is in the same subscription. Otherwise, it will be ignored and you need to change
+             * the corresponding access setting on the remote network's matching peering explicitly.
+             * @return the next stage of the update
+             */
+            Update withAccessBetweenBothNetworks();
+
+            /**
+             * Disallows access to either peered network from the other.
+             * <p>
+             * This setting will have effect on the remote network only if the remote network is in the same subscription. Otherwise, it will be ignored and you need to change
+             * the corresponding access setting on the remote network's matching peering explicitly.
+             * @return the next stage of the update
+             */
+            Update withoutAccessFromEitherNetwork();
         }
     }
 }
