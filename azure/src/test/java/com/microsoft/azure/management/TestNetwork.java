@@ -10,18 +10,22 @@ import java.util.List;
 import org.junit.Assert;
 
 import com.microsoft.azure.management.network.Network;
+import com.microsoft.azure.management.network.NetworkPeering;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.RouteTable;
 import com.microsoft.azure.management.network.Subnet;
+import com.microsoft.azure.management.network.VirtualNetworkPeeringState;
+import com.microsoft.azure.management.network.NetworkPeering.GatewayUse;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 
 /**
  * Test of virtual network management.
  */
 public class TestNetwork {
     /**
-     * Test of plain subnets.
+     * Test of network with subnets.
      */
     public static class WithSubnets extends TestTemplate<Network, Networks> {
         @Override
@@ -124,6 +128,82 @@ public class TestNetwork {
     }
 
     /**
+     * Test of network peerings.
+     */
+    public static class WithPeering extends TestTemplate<Network, Networks> {
+        @Override
+        public Network createResource(Networks networks) throws Exception {
+            Region region = Region.US_EAST;
+            String groupName = "rg" + this.testId;
+
+            String networkName = SdkContext.randomResourceName("net", 15);
+            String networkName2 = SdkContext.randomResourceName("net", 15);
+
+            Network remoteNetwork = networks.define(networkName2)
+                    .withRegion(region)
+                    .withNewResourceGroup(groupName)
+                    .withAddressSpace("10.1.0.0/27")
+                    .withSubnet("subnet3", "10.1.0.0/27")
+                    .create();
+
+            Network localNetwork = networks.define(networkName)
+                    .withRegion(region)
+                    .withNewResourceGroup(groupName)
+                    .withAddressSpace("10.0.0.0/27")
+                    .withSubnet("subnet1", "10.0.0.0/28")
+                    .withSubnet("subnet2", "10.0.0.16/28")
+                    .create();
+
+            // Create peering
+            NetworkPeering localPeering = localNetwork.peerings().define("peer0")
+                .withRemoteNetwork(remoteNetwork)
+
+                // Optionals
+                .withTrafficForwardingFromRemoteNetwork()
+                .withoutAccessFromRemoteNetwork()
+                .withoutAccessToRemoteNetwork()
+                .withTrafficForwardingToRemoteNetwork()
+                .withGatewayUseByRemoteNetworkAllowed()
+                .create();
+
+            // Verify local peering
+            Assert.assertNotNull(localNetwork.peerings());
+            Assert.assertEquals(1,  localNetwork.peerings().list().size());
+            localPeering = localNetwork.peerings().list().get(0);
+            Assert.assertNotNull(localPeering);
+            Assert.assertTrue(localPeering.name().equalsIgnoreCase("peer0"));
+            Assert.assertEquals(VirtualNetworkPeeringState.CONNECTED, localPeering.state());
+            Assert.assertTrue(localPeering.isTrafficForwardingFromRemoteNetworkAllowed());
+            Assert.assertFalse(localPeering.isAccessFromRemoteNetworkAllowed());
+            Assert.assertEquals(GatewayUse.BY_REMOTE_NETWORK, localPeering.gatewayUse());
+
+            // Verify remote peering
+            Assert.assertNotNull(remoteNetwork.peerings());
+            Assert.assertEquals(1, remoteNetwork.peerings().list().size());
+            NetworkPeering remotePeering = localPeering.getRemotePeering();
+            Assert.assertNotNull(remotePeering);
+            Assert.assertTrue(remotePeering.remoteNetworkId().equalsIgnoreCase(localNetwork.id()));
+            Assert.assertEquals(VirtualNetworkPeeringState.CONNECTED, remotePeering.state());
+            Assert.assertTrue(remotePeering.isTrafficForwardingFromRemoteNetworkAllowed());
+            Assert.assertFalse(remotePeering.isAccessFromRemoteNetworkAllowed());
+            Assert.assertEquals(GatewayUse.NONE, remotePeering.gatewayUse());
+
+            return localNetwork;
+        }
+
+        @Override
+        public Network updateResource(Network resource) throws Exception {
+            // TODO
+            return resource;
+        }
+
+        @Override
+        public void print(Network resource) {
+            printNetwork(resource);
+        }
+    }
+
+    /**
      * Outputs info about a network
      * @param resource a network
      */
@@ -143,27 +223,26 @@ public class TestNetwork {
                 .append("\n\t\tAddress prefix: ").append(subnet.addressPrefix());
 
             // Show associated NSG
-            info.append("\n\tAssociated NSG: ");
-
-            NetworkSecurityGroup nsg;
-            try {
-                nsg = subnet.getNetworkSecurityGroup();
-            } catch (Exception e) {
-                nsg = null;
+            NetworkSecurityGroup nsg = subnet.getNetworkSecurityGroup();
+            if (nsg != null) {
+                info.append("\n\tNetwork security group ID: ").append(nsg.id());
             }
-
-            info.append((null == nsg) ? "(None)" : nsg.resourceGroupName() + "/" + nsg.name());
 
             // Show associated route table
-            info.append("\n\tAssociated route table: ");
-            RouteTable routeTable;
-            try {
-                routeTable = subnet.getRouteTable();
-            } catch (Exception e) {
-                routeTable = null;
+            RouteTable routeTable = subnet.getRouteTable();
+            if (routeTable != null) {
+                info.append("\n\tRoute table ID: ").append(routeTable.id());
             }
+        }
 
-            info.append((null == routeTable) ? "(None)" : routeTable.resourceGroupName() + "/" + routeTable.name());
+        // Output peerings
+        for (NetworkPeering peering : resource.peerings().list()) {
+            info.append("\n\tPeering: ").append(peering.name())
+                .append("\n\t\tRemote network ID: ").append(peering.remoteNetworkId())
+                .append("\n\t\tPeering state: ").append(peering.state())
+                .append("\n\t\tIs traffic forwarded from remote network allowed? ").append(peering.isTrafficForwardingFromRemoteNetworkAllowed())
+                .append("\n\t\tIs access from remote network allowed? ").append(peering.isAccessFromRemoteNetworkAllowed())
+                .append("\n\t\tGateway use: ").append(peering.gatewayUse());
         }
 
         System.out.println(info.toString());

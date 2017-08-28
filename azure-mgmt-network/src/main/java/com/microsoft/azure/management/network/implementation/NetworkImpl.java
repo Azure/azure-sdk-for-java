@@ -9,6 +9,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.AddressSpace;
 import com.microsoft.azure.management.network.DhcpOptions;
 import com.microsoft.azure.management.network.Network;
+import com.microsoft.azure.management.network.NetworkPeerings;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import rx.Observable;
@@ -37,6 +38,7 @@ class NetworkImpl
         Network.Update {
 
     private Map<String, Subnet> subnets;
+    private NetworkPeeringsImpl peerings;
 
     NetworkImpl(String name,
             final VirtualNetworkInner innerModel,
@@ -46,6 +48,7 @@ class NetworkImpl
 
     @Override
     protected void initializeChildrenFromInner() {
+        // Initialize subnets
         this.subnets = new TreeMap<>();
         List<SubnetInner> inners = this.inner().subnets();
         if (inners != null) {
@@ -54,6 +57,8 @@ class NetworkImpl
                 this.subnets.put(inner.name(), subnet);
             }
         }
+
+        this.peerings = new NetworkPeeringsImpl(this);
     }
 
     // Verbs
@@ -203,5 +208,10 @@ class NetworkImpl
     @Override
     protected Observable<VirtualNetworkInner> createInner() {
         return this.manager().inner().virtualNetworks().createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
+    }
+
+    @Override
+    public NetworkPeerings peerings() {
+        return this.peerings;
     }
 }
