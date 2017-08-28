@@ -23,7 +23,7 @@ import com.microsoft.rest.RestClient;
 /**
  * Entry point to Azure container instance management.
  */
-@Beta(SinceVersion.V1_2_0)
+@Beta(SinceVersion.V1_3_0)
 public final class ContainerInstanceManager extends Manager<ContainerInstanceManager, ContainerInstanceManagementClientImpl> {
 
     // The service managers
