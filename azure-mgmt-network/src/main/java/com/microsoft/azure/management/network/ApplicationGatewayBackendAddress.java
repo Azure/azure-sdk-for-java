@@ -61,7 +61,7 @@ public class ApplicationGatewayBackendAddress {
      * @param ipAddress the ipAddress value to set
      * @return the ApplicationGatewayBackendAddress object itself.
      */
-    public ApplicationGatewayBackendAddress withIPAddress(String ipAddress) {
+    public ApplicationGatewayBackendAddress withIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
         return this;
     }

@@ -159,7 +159,7 @@ public class ExpressRouteCircuitPeeringsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, circuitName, peeringName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
@@ -232,7 +232,7 @@ public class ExpressRouteCircuitPeeringsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.beginDelete(resourceGroupName, circuitName, peeringName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -325,7 +325,7 @@ public class ExpressRouteCircuitPeeringsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.get(resourceGroupName, circuitName, peeringName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ExpressRouteCircuitPeeringInner>>>() {
                 @Override
@@ -424,7 +424,7 @@ public class ExpressRouteCircuitPeeringsInner {
             throw new IllegalArgumentException("Parameter peeringParameters is required and cannot be null.");
         }
         Validator.validate(peeringParameters);
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, circuitName, peeringName, this.client.subscriptionId(), peeringParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ExpressRouteCircuitPeeringInner>() { }.getType());
     }
@@ -506,7 +506,7 @@ public class ExpressRouteCircuitPeeringsInner {
             throw new IllegalArgumentException("Parameter peeringParameters is required and cannot be null.");
         }
         Validator.validate(peeringParameters);
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.beginCreateOrUpdate(resourceGroupName, circuitName, peeringName, this.client.subscriptionId(), peeringParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ExpressRouteCircuitPeeringInner>>>() {
                 @Override
@@ -628,7 +628,7 @@ public class ExpressRouteCircuitPeeringsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.list(resourceGroupName, circuitName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ExpressRouteCircuitPeeringInner>>>>() {
                 @Override

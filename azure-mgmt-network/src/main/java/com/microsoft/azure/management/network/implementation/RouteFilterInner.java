@@ -27,7 +27,7 @@ public class RouteFilterInner extends Resource {
     /**
      * A collection of references to express route circuit peerings.
      */
-    @JsonProperty(value = "properties.peerings", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.peerings")
     private List<ExpressRouteCircuitPeeringInner> peerings;
 
     /**
@@ -71,6 +71,17 @@ public class RouteFilterInner extends Resource {
      */
     public List<ExpressRouteCircuitPeeringInner> peerings() {
         return this.peerings;
+    }
+
+    /**
+     * Set the peerings value.
+     *
+     * @param peerings the peerings value to set
+     * @return the RouteFilterInner object itself.
+     */
+    public RouteFilterInner withPeerings(List<ExpressRouteCircuitPeeringInner> peerings) {
+        this.peerings = peerings;
+        return this;
     }
 
     /**

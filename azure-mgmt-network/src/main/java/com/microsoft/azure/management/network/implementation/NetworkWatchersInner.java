@@ -150,6 +150,14 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/queryFlowLogStatus")
         Observable<Response<ResponseBody>> beginGetFlowLogStatus(@Path("resourceGroupName") String resourceGroupName, @Path("networkWatcherName") String networkWatcherName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body FlowLogStatusParameters parameters, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.NetworkWatchers checkConnectivity" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectivityCheck")
+        Observable<Response<ResponseBody>> checkConnectivity(@Path("resourceGroupName") String resourceGroupName, @Path("networkWatcherName") String networkWatcherName, @Path("subscriptionId") String subscriptionId, @Body ConnectivityParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.NetworkWatchers beginCheckConnectivity" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectivityCheck")
+        Observable<Response<ResponseBody>> beginCheckConnectivity(@Path("resourceGroupName") String resourceGroupName, @Path("networkWatcherName") String networkWatcherName, @Path("subscriptionId") String subscriptionId, @Body ConnectivityParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
     }
 
     /**
@@ -222,7 +230,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.createOrUpdate(resourceGroupName, networkWatcherName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NetworkWatcherInner>>>() {
                 @Override
@@ -307,7 +315,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.getByResourceGroup(resourceGroupName, networkWatcherName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NetworkWatcherInner>>>() {
                 @Override
@@ -390,7 +398,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, networkWatcherName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
@@ -456,7 +464,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.beginDelete(resourceGroupName, networkWatcherName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -538,7 +546,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<NetworkWatcherInner>>>>() {
                 @Override
@@ -613,7 +621,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.list(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<NetworkWatcherInner>>>>() {
                 @Override
@@ -705,7 +713,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
         if (targetResourceGroupName == null) {
             throw new IllegalArgumentException("Parameter targetResourceGroupName is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         TopologyParameters parameters = new TopologyParameters();
         parameters.withTargetResourceGroupName(targetResourceGroupName);
         return service.getTopology(resourceGroupName, networkWatcherName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
@@ -799,7 +807,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         Observable<Response<ResponseBody>> observable = service.verifyIPFlow(resourceGroupName, networkWatcherName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<VerificationIPFlowResultInner>() { }.getType());
     }
@@ -874,7 +882,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.beginVerifyIPFlow(resourceGroupName, networkWatcherName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VerificationIPFlowResultInner>>>() {
                 @Override
@@ -967,7 +975,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         Observable<Response<ResponseBody>> observable = service.getNextHop(resourceGroupName, networkWatcherName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<NextHopResultInner>() { }.getType());
     }
@@ -1042,7 +1050,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.beginGetNextHop(resourceGroupName, networkWatcherName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NextHopResultInner>>>() {
                 @Override
@@ -1134,7 +1142,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
         if (targetResourceId == null) {
             throw new IllegalArgumentException("Parameter targetResourceId is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         SecurityGroupViewParameters parameters = new SecurityGroupViewParameters();
         parameters.withTargetResourceId(targetResourceId);
         Observable<Response<ResponseBody>> observable = service.getVMSecurityRules(resourceGroupName, networkWatcherName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent());
@@ -1210,7 +1218,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
         if (targetResourceId == null) {
             throw new IllegalArgumentException("Parameter targetResourceId is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         SecurityGroupViewParameters parameters = new SecurityGroupViewParameters();
         parameters.withTargetResourceId(targetResourceId);
         return service.beginGetVMSecurityRules(resourceGroupName, networkWatcherName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
@@ -1305,7 +1313,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         Observable<Response<ResponseBody>> observable = service.getTroubleshooting(resourceGroupName, networkWatcherName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<TroubleshootingResultInner>() { }.getType());
     }
@@ -1380,7 +1388,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.beginGetTroubleshooting(resourceGroupName, networkWatcherName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TroubleshootingResultInner>>>() {
                 @Override
@@ -1472,7 +1480,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
         if (targetResourceId == null) {
             throw new IllegalArgumentException("Parameter targetResourceId is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         QueryTroubleshootingParameters parameters = new QueryTroubleshootingParameters();
         parameters.withTargetResourceId(targetResourceId);
         Observable<Response<ResponseBody>> observable = service.getTroubleshootingResult(resourceGroupName, networkWatcherName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent());
@@ -1548,7 +1556,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
         if (targetResourceId == null) {
             throw new IllegalArgumentException("Parameter targetResourceId is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         QueryTroubleshootingParameters parameters = new QueryTroubleshootingParameters();
         parameters.withTargetResourceId(targetResourceId);
         return service.beginGetTroubleshootingResult(resourceGroupName, networkWatcherName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
@@ -1643,7 +1651,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         Observable<Response<ResponseBody>> observable = service.setFlowLogConfiguration(resourceGroupName, networkWatcherName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<FlowLogInformationInner>() { }.getType());
     }
@@ -1718,7 +1726,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.beginSetFlowLogConfiguration(resourceGroupName, networkWatcherName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FlowLogInformationInner>>>() {
                 @Override
@@ -1810,7 +1818,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
         if (targetResourceId == null) {
             throw new IllegalArgumentException("Parameter targetResourceId is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         FlowLogStatusParameters parameters = new FlowLogStatusParameters();
         parameters.withTargetResourceId(targetResourceId);
         Observable<Response<ResponseBody>> observable = service.getFlowLogStatus(resourceGroupName, networkWatcherName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent());
@@ -1886,7 +1894,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
         if (targetResourceId == null) {
             throw new IllegalArgumentException("Parameter targetResourceId is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         FlowLogStatusParameters parameters = new FlowLogStatusParameters();
         parameters.withTargetResourceId(targetResourceId);
         return service.beginGetFlowLogStatus(resourceGroupName, networkWatcherName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
@@ -1907,6 +1915,174 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
         return this.client.restClient().responseBuilderFactory().<FlowLogInformationInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<FlowLogInformationInner>() { }.getType())
                 .register(202, new TypeToken<FlowLogInformationInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint including another VM or an arbitrary remote server.
+     *
+     * @param resourceGroupName The name of the network watcher resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that determine how the connectivity check will be performed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ConnectivityInformationInner object if successful.
+     */
+    public ConnectivityInformationInner checkConnectivity(String resourceGroupName, String networkWatcherName, ConnectivityParametersInner parameters) {
+        return checkConnectivityWithServiceResponseAsync(resourceGroupName, networkWatcherName, parameters).toBlocking().last().body();
+    }
+
+    /**
+     * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint including another VM or an arbitrary remote server.
+     *
+     * @param resourceGroupName The name of the network watcher resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that determine how the connectivity check will be performed.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ConnectivityInformationInner> checkConnectivityAsync(String resourceGroupName, String networkWatcherName, ConnectivityParametersInner parameters, final ServiceCallback<ConnectivityInformationInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkConnectivityWithServiceResponseAsync(resourceGroupName, networkWatcherName, parameters), serviceCallback);
+    }
+
+    /**
+     * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint including another VM or an arbitrary remote server.
+     *
+     * @param resourceGroupName The name of the network watcher resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that determine how the connectivity check will be performed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ConnectivityInformationInner> checkConnectivityAsync(String resourceGroupName, String networkWatcherName, ConnectivityParametersInner parameters) {
+        return checkConnectivityWithServiceResponseAsync(resourceGroupName, networkWatcherName, parameters).map(new Func1<ServiceResponse<ConnectivityInformationInner>, ConnectivityInformationInner>() {
+            @Override
+            public ConnectivityInformationInner call(ServiceResponse<ConnectivityInformationInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint including another VM or an arbitrary remote server.
+     *
+     * @param resourceGroupName The name of the network watcher resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that determine how the connectivity check will be performed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ConnectivityInformationInner>> checkConnectivityWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, ConnectivityParametersInner parameters) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (networkWatcherName == null) {
+            throw new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        final String apiVersion = "2017-08-01";
+        Observable<Response<ResponseBody>> observable = service.checkConnectivity(resourceGroupName, networkWatcherName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<ConnectivityInformationInner>() { }.getType());
+    }
+
+    /**
+     * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint including another VM or an arbitrary remote server.
+     *
+     * @param resourceGroupName The name of the network watcher resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that determine how the connectivity check will be performed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ConnectivityInformationInner object if successful.
+     */
+    public ConnectivityInformationInner beginCheckConnectivity(String resourceGroupName, String networkWatcherName, ConnectivityParametersInner parameters) {
+        return beginCheckConnectivityWithServiceResponseAsync(resourceGroupName, networkWatcherName, parameters).toBlocking().single().body();
+    }
+
+    /**
+     * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint including another VM or an arbitrary remote server.
+     *
+     * @param resourceGroupName The name of the network watcher resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that determine how the connectivity check will be performed.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ConnectivityInformationInner> beginCheckConnectivityAsync(String resourceGroupName, String networkWatcherName, ConnectivityParametersInner parameters, final ServiceCallback<ConnectivityInformationInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCheckConnectivityWithServiceResponseAsync(resourceGroupName, networkWatcherName, parameters), serviceCallback);
+    }
+
+    /**
+     * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint including another VM or an arbitrary remote server.
+     *
+     * @param resourceGroupName The name of the network watcher resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that determine how the connectivity check will be performed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ConnectivityInformationInner object
+     */
+    public Observable<ConnectivityInformationInner> beginCheckConnectivityAsync(String resourceGroupName, String networkWatcherName, ConnectivityParametersInner parameters) {
+        return beginCheckConnectivityWithServiceResponseAsync(resourceGroupName, networkWatcherName, parameters).map(new Func1<ServiceResponse<ConnectivityInformationInner>, ConnectivityInformationInner>() {
+            @Override
+            public ConnectivityInformationInner call(ServiceResponse<ConnectivityInformationInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint including another VM or an arbitrary remote server.
+     *
+     * @param resourceGroupName The name of the network watcher resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that determine how the connectivity check will be performed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ConnectivityInformationInner object
+     */
+    public Observable<ServiceResponse<ConnectivityInformationInner>> beginCheckConnectivityWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, ConnectivityParametersInner parameters) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (networkWatcherName == null) {
+            throw new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        final String apiVersion = "2017-08-01";
+        return service.beginCheckConnectivity(resourceGroupName, networkWatcherName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ConnectivityInformationInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ConnectivityInformationInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ConnectivityInformationInner> clientResponse = beginCheckConnectivityDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ConnectivityInformationInner> beginCheckConnectivityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ConnectivityInformationInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ConnectivityInformationInner>() { }.getType())
+                .register(202, new TypeToken<ConnectivityInformationInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

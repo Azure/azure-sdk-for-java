@@ -39,7 +39,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     private List<InboundNatRuleInner> loadBalancerInboundNatRules;
 
     /**
-     * The privateIPAddress property.
+     * Private IP address of the IP configuration.
      */
     @JsonProperty(value = "properties.privateIPAddress")
     private String privateIPAddress;
@@ -61,7 +61,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     private IPVersion privateIPAddressVersion;
 
     /**
-     * The subnet property.
+     * Subnet bound to the IP configuration.
      */
     @JsonProperty(value = "properties.subnet")
     private SubnetInner subnet;
@@ -74,13 +74,14 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     private Boolean primary;
 
     /**
-     * The publicIPAddress property.
+     * Public IP address bound to the IP configuration.
      */
     @JsonProperty(value = "properties.publicIPAddress")
-    private SubResource publicIPAddress;
+    private PublicIPAddressInner publicIPAddress;
 
     /**
-     * The provisioningState property.
+     * The provisioning state of the network interface IP configuration.
+     * Possible values are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
@@ -263,7 +264,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
      *
      * @return the publicIPAddress value
      */
-    public SubResource publicIPAddress() {
+    public PublicIPAddressInner publicIPAddress() {
         return this.publicIPAddress;
     }
 
@@ -273,7 +274,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
      * @param publicIPAddress the publicIPAddress value to set
      * @return the NetworkInterfaceIPConfigurationInner object itself.
      */
-    public NetworkInterfaceIPConfigurationInner withPublicIPAddress(SubResource publicIPAddress) {
+    public NetworkInterfaceIPConfigurationInner withPublicIPAddress(PublicIPAddressInner publicIPAddress) {
         this.publicIPAddress = publicIPAddress;
         return this;
     }
