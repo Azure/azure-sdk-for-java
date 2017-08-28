@@ -325,9 +325,31 @@ final class BlobListHandler extends DefaultHandler {
             this.copyState.setCopyDestinationSnapshotID(value);
         }
         else if (Constants.ACCESS_TIER.equals(currentNode)) {
-            PremiumPageBlobTier premiumPageBlobTier = PremiumPageBlobTier.parse(value);
-            this.properties.setPremiumPageBlobTier(premiumPageBlobTier);
-            this.properties.setBlobTierInferredTier(false);
+            if (properties.getBlobType().equals(BlobType.PAGE_BLOB)) {
+                PremiumPageBlobTier premiumPageBlobTier = PremiumPageBlobTier.parse(value);
+                this.properties.setPremiumPageBlobTier(premiumPageBlobTier);
+            }
+            else if (properties.getBlobType().equals(BlobType.BLOCK_BLOB)) {
+                StandardBlobTier standardBlobTier = StandardBlobTier.parse(value);
+                this.properties.setStandardBlobTier(standardBlobTier);
+            }
+            else if (properties.getBlobType().equals(BlobType.UNSPECIFIED)) {
+                PremiumPageBlobTier premiumPageBlobTier = PremiumPageBlobTier.parse(value);
+                StandardBlobTier standardBlobTier = StandardBlobTier.parse(value);
+                if (!premiumPageBlobTier.equals(PremiumPageBlobTier.UNKNOWN)) {
+                    properties.setPremiumPageBlobTier(premiumPageBlobTier);
+                }
+                else if (!standardBlobTier.equals(StandardBlobTier.UNKNOWN)) {
+                    properties.setStandardBlobTier(standardBlobTier);
+                }
+                else {
+                    properties.setPremiumPageBlobTier(PremiumPageBlobTier.UNKNOWN);
+                    properties.setStandardBlobTier(StandardBlobTier.UNKNOWN);
+                }
+            }
+        }
+        else if (Constants.ARCHIVE_STATUS.equals(currentNode)) {
+            this.properties.setRehydrationStatus(RehydrationStatus.parse(value));
         }
     }
 }

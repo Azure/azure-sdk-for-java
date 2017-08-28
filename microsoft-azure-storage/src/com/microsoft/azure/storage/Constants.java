@@ -900,6 +900,11 @@ public final class Constants {
     public static final String ACCESS_TIER = "AccessTier";
 
     /**
+     * XML element for the archive status.
+     */
+    public static final String ARCHIVE_STATUS = "ArchiveStatus";
+
+    /**
      * Buffer width used to copy data to output streams.
      */
     public static final int BUFFER_COPY_LENGTH = 8 * KB;

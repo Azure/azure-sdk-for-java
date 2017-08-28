@@ -48,15 +48,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.TimeZone;
+import java.util.*;
 
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
 import com.microsoft.azure.storage.TestRunners.CloudTests;
@@ -1941,5 +1933,83 @@ public class CloudBlockBlobTests {
 
         destination.delete();
         source.delete();
+    }
+
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testCloudBlockBlobUploadStandardTier() throws StorageException, IOException, URISyntaxException {
+        for (StandardBlobTier standardBlobTier : StandardBlobTier.values()) {
+            if (standardBlobTier == StandardBlobTier.UNKNOWN) {
+                continue;
+            }
+
+            final String blobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testBlob");
+            final CloudBlockBlob blob = this.container.getBlockBlobReference(blobName);
+            blob.uploadText("text");
+
+            blob.uploadStandardBlobTier(standardBlobTier);
+            assertEquals(standardBlobTier, blob.getProperties().getStandardBlobTier());
+            assertNull(blob.getProperties().getPremiumPageBlobTier());
+            assertNull(blob.getProperties().getRehydrationStatus());
+
+            CloudBlockBlob blob2 = this.container.getBlockBlobReference(blobName);
+            blob2.downloadAttributes();
+            assertEquals(standardBlobTier, blob2.getProperties().getStandardBlobTier());
+            assertNull(blob2.getProperties().getPremiumPageBlobTier());
+            assertNull(blob2.getProperties().getRehydrationStatus());
+
+            CloudBlockBlob blob3 = (CloudBlockBlob)this.container.listBlobs().iterator().next();
+            assertEquals(standardBlobTier, blob3.getProperties().getStandardBlobTier());
+            assertNull(blob3.getProperties().getPremiumPageBlobTier());
+            assertNull(blob3.getProperties().getRehydrationStatus());
+
+            blob.deleteIfExists();
+        }
+    }
+
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testCloudBlockBlobRehydrateBlob() throws StorageException, IOException, URISyntaxException {
+        final String blobName1 = BlobTestHelper.generateRandomBlobNameWithPrefix("testBlob1");
+        final String blobName2 = BlobTestHelper.generateRandomBlobNameWithPrefix("testBlob2");
+        final CloudBlockBlob blob = this.container.getBlockBlobReference(blobName1);
+        blob.uploadText("text");
+        blob.uploadStandardBlobTier(StandardBlobTier.ARCHIVE);
+        final CloudBlockBlob blob2 = this.container.getBlockBlobReference(blobName2);
+        blob2.uploadText("text");
+        blob2.uploadStandardBlobTier(StandardBlobTier.ARCHIVE);
+
+        CloudBlockBlob blobRef1 = this.container.getBlockBlobReference(blobName1);
+        blobRef1.uploadStandardBlobTier(StandardBlobTier.COOL);
+        assertNull(blobRef1.getProperties().getRehydrationStatus());
+        assertEquals(StandardBlobTier.ARCHIVE, blobRef1.getProperties().getStandardBlobTier());
+        assertNull(blobRef1.getProperties().getPremiumPageBlobTier());
+
+        blob.downloadAttributes();
+        assertEquals(RehydrationStatus.PENDING_TO_COOL, blob.getProperties().getRehydrationStatus());
+        assertEquals(StandardBlobTier.ARCHIVE, blob.getProperties().getStandardBlobTier());
+        assertNull(blob.getProperties().getPremiumPageBlobTier());
+
+        CloudBlockBlob blobRef2 = this.container.getBlockBlobReference(blobName2);
+        blobRef2.uploadStandardBlobTier(StandardBlobTier.HOT);
+        assertNull(blobRef2.getProperties().getRehydrationStatus());
+        assertEquals(StandardBlobTier.ARCHIVE, blobRef2.getProperties().getStandardBlobTier());
+        assertNull(blobRef2.getProperties().getPremiumPageBlobTier());
+
+        blob2.downloadAttributes();
+        assertEquals(RehydrationStatus.PENDING_TO_HOT, blob2.getProperties().getRehydrationStatus());
+        assertEquals(StandardBlobTier.ARCHIVE, blob2.getProperties().getStandardBlobTier());
+        assertNull(blob2.getProperties().getPremiumPageBlobTier());
+
+        Iterator it = this.container.listBlobs().iterator();
+        CloudBlockBlob listBlob = (CloudBlockBlob)it.next();
+        assertEquals(RehydrationStatus.PENDING_TO_COOL, listBlob.getProperties().getRehydrationStatus());
+        assertEquals(StandardBlobTier.ARCHIVE, listBlob.getProperties().getStandardBlobTier());
+        assertNull(listBlob.getProperties().getPremiumPageBlobTier());
+
+        CloudBlockBlob listBlob2 = (CloudBlockBlob)it.next();
+        assertEquals(RehydrationStatus.PENDING_TO_HOT, listBlob2.getProperties().getRehydrationStatus());
+        assertEquals(StandardBlobTier.ARCHIVE, listBlob2.getProperties().getStandardBlobTier());
+        assertNull(listBlob2.getProperties().getPremiumPageBlobTier());
     }
 }

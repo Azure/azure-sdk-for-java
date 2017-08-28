@@ -123,10 +123,20 @@ public final class BlobProperties {
     private PremiumPageBlobTier premiumPageBlobTier;
 
     /**
+     * Represents the tier on a blob on a standard storage account.
+     */
+    private StandardBlobTier standardBlobTier;
+
+    /**
      * Represents whether or not the blob tier is inferred.
      */
     private Boolean isBlobTierInferredTier;
-    
+
+    /**
+     * Represents the rehydration status if the blob is being rehydrated.
+     */
+    private RehydrationStatus rehydrationStatus;
+
     /**
      * Creates an instance of the <code>BlobProperties</code> class.
      */
@@ -152,16 +162,18 @@ public final class BlobProperties {
         this.contentType = other.contentType;
         this.copyState = other.copyState;
         this.etag = other.etag;
+        this.isBlobTierInferredTier = other.isBlobTierInferredTier;
+        this.isIncrementalCopy = other.isIncrementalCopy;
         this.leaseStatus = other.leaseStatus;
         this.leaseState = other.leaseState;
         this.leaseDuration = other.leaseDuration;
         this.length = other.length;
         this.lastModified = other.lastModified;
         this.pageBlobSequenceNumber = other.pageBlobSequenceNumber;
-        this.serverEncrypted = other.serverEncrypted;
-        this.isIncrementalCopy = other.isIncrementalCopy;
         this.premiumPageBlobTier = other.premiumPageBlobTier;
-        this.isBlobTierInferredTier = other.isBlobTierInferredTier;
+        this.serverEncrypted = other.serverEncrypted;
+        this.standardBlobTier = other.standardBlobTier;
+        this.rehydrationStatus = other.rehydrationStatus;
     }
 
     /**
@@ -288,7 +300,7 @@ public final class BlobProperties {
      *
      * @return A {@Link java.lang.Boolean} object which represents if the blob tier was inferred.
      */
-    public Boolean getInferredBlobTier() { return this.isBlobTierInferredTier; }
+    public Boolean isBlobTierInferred() { return this.isBlobTierInferredTier; }
 
     /**
      * Gets the lease status for the blob.
@@ -343,6 +355,22 @@ public final class BlobProperties {
     public PremiumPageBlobTier getPremiumPageBlobTier() {
         return this.premiumPageBlobTier;
     }
+
+    /**
+     * If using a standard account and the blob is a block blob, gets the tier of the blob.
+     * @return A {@link StandardBlobTier} object which represents the tier of the blob
+     * or <code>null</code> if the tier has not been set.
+     */
+    public StandardBlobTier getStandardBlobTier() {
+        return this.standardBlobTier;
+    }
+
+    /**
+     * The rehydration status if the blob is being rehydrated
+     * and the tier of the blob once the rehydration from archive has completed.
+     * @return
+     */
+    public RehydrationStatus getRehydrationStatus() { return this.rehydrationStatus; }
 
     /**
      * Gets the blob's server-side encryption status;
@@ -551,11 +579,29 @@ public final class BlobProperties {
     }
 
     /**
+     * Sets the tier of the block blob. This is only supported for standard storage accounts.
+     * @param standardBlobTier
+     *        A {@link StandardBlobTier} object which represents the tier of the blob.
+     */
+    protected void setStandardBlobTier(StandardBlobTier standardBlobTier) {
+        this.standardBlobTier = standardBlobTier;
+    }
+
+    /**
      * Sets whether the blob tier is inferred.
      * @param isBlobTierInferredTier
      *      A {@Link java.lang.Boolean} which specifies if the blob tier is inferred.
      */
-    protected void setBlobTierInferredTier(Boolean isBlobTierInferredTier) {
+    protected void setBlobTierInferred(Boolean isBlobTierInferredTier) {
         this.isBlobTierInferredTier = isBlobTierInferredTier;
+    }
+
+    /**
+     * Sets the rehydration status of the blob.
+     * @param rehydrationStatus
+     *      A {@Link RehydrationStatus} which specifies the rehydration status of the blob.
+     */
+    protected void setRehydrationStatus(RehydrationStatus rehydrationStatus) {
+        this.rehydrationStatus = rehydrationStatus;
     }
 }
