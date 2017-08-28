@@ -29,7 +29,7 @@ public interface NetworkPeering extends
     Updatable<NetworkPeering.Update> {
 
     /**
-     * Possible gateway use scenarios
+     * Possible gateway use scenarios.
      */
     enum GatewayUse {
         /**
@@ -233,12 +233,79 @@ public interface NetworkPeering extends
      * can be modified.
      */
     interface Update extends
-        Appliable<NetworkPeering> {
+        Appliable<NetworkPeering>,
+        UpdateStages.WithTrafficForwarding,
+        UpdateStages.WithAccess {
     }
 
     /**
      * Grouping of all the network peering update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of a network peering update allowing to control traffic forwarding from or to the remote network.
+         */
+        interface WithTrafficForwarding {
+            /**
+             * Allows traffic forwarding from the remote network.
+             * @return the next stage of the update
+             */
+            Update withTrafficForwardingFromRemoteNetwork();
+
+            /**
+             * Prevents traffic forwarding from the remote network.
+             * @return the next stage of the update
+             */
+            Update withoutTrafficForwardingFromRemoteNetwork();
+
+            /**
+             * Allows traffic forwarding from this network to the remote network.
+             * <p>
+             * This setting will only work here if the remote network is in the same subscription. Otherwise, it will be ignored and you need to change
+             * the corresponding traffic forwarding setting on the remote network's matching peering explicitly.
+             */
+            Update withTrafficForwardingToRemoteNetwork();
+
+            /**
+             * Disables traffic forwarding to the remote network.
+             * @return
+             */
+            Update withoutTrafficForwardingToRemoteNetwork();
+        }
+
+        /**
+         * The stage of a network peering update allowing to control access from and to the remote network.
+         */
+        interface WithAccess {
+            /**
+             * Disallows access to this network's address space from the remote network.
+             * @return the next stage of the definition
+             */
+            Update withoutAccessFromRemoteNetwork();
+
+            /**
+             * Allows access to this network's address space from the remote network.
+             * @return the next stage of the definition
+             */
+            Update withAccessFromRemoteNetwork();
+
+            /**
+             * Disallows access to the remote network's address space from this network.
+             * <p>
+             * This setting will only work here if the remote network is in the same subscription. Otherwise, it will be ignored and you need to change
+             * the corresponding access setting on the remote network's matching peering explicitly.
+             * @return the next stage of the definition
+             */
+            Update withoutAccessToRemoteNetwork();
+
+            /**
+             * Enables access to the remote network's address space from this network.
+             * <p>
+             * This setting will only work here if the remote network is in the same subscription. Otherwise, it will be ignored and you need to change
+             * the corresponding access setting on the remote network's matching peering explicitly.
+             * @return
+             */
+            Update withAccessToRemoteNetwork();
+        }
     }
 }

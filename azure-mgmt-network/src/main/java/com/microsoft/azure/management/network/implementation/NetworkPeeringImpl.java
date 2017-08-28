@@ -41,16 +41,16 @@ class NetworkPeeringImpl
 
     private NetworkImpl parent;
     private Network remoteNetwork;
-    private boolean remoteAccess; // Controls the allowAccess setting on the remote peering
-    private boolean remoteForwarding; // Controls the trafficForwarding setting on the remote peering
+    private Boolean remoteAccess;                   // Controls the allowAccess setting on the remote peering (null means no change)
+    private Boolean remoteForwarding;               // Controls the trafficForwarding setting on the remote peering (null means no change)
     private Boolean startGatewayUseByRemoteNetwork; // Controls the UseGateway setting on the remote network (null means no change)
     private Boolean allowGatewayUseOnRemoteNetwork; // Controls the AllowGatewayTransit setting on the remote network (null means no change)
 
     NetworkPeeringImpl(VirtualNetworkPeeringInner inner, NetworkImpl parent) {
         super(inner.name(), inner, parent.manager());
         this.parent = parent;
-        this.remoteAccess = true; // By default, access to remote network is enabled on the remote peering
-        this.remoteForwarding = false; // By default, traffic forwarding to the remote network is disabled
+        this.remoteAccess = null;
+        this.remoteForwarding = null;
     }
 
     // Getters
@@ -99,6 +99,12 @@ class NetworkPeeringImpl
     }
 
     @Override
+    public NetworkPeeringImpl withAccessFromRemoteNetwork() {
+        this.inner().withAllowVirtualNetworkAccess(true);
+        return this;
+    }
+
+    @Override
     public NetworkPeeringImpl withRemoteNetwork(String resourceId) {
         SubResource networkRef = new SubResource().withId(resourceId);
         this.inner().withRemoteVirtualNetwork(networkRef);
@@ -121,15 +127,32 @@ class NetworkPeeringImpl
     }
 
     @Override
-    public WithCreate withTrafficForwardingToRemoteNetwork() {
+    public NetworkPeeringImpl withoutTrafficForwardingFromRemoteNetwork() {
+        this.inner().withAllowForwardedTraffic(false);
+        return this;
+    }
+
+    @Override
+    public NetworkPeeringImpl withTrafficForwardingToRemoteNetwork() {
         this.remoteForwarding = true;
         return this;
     }
 
+    @Override
+    public NetworkPeeringImpl withoutTrafficForwardingToRemoteNetwork() {
+        this.remoteForwarding = false;
+        return this;
+    }
 
     @Override
     public NetworkPeeringImpl withoutAccessToRemoteNetwork() {
         this.remoteAccess = false;
+        return this;
+    }
+
+    @Override
+    public NetworkPeeringImpl withAccessToRemoteNetwork() {
+        this.remoteAccess = true;
         return this;
     }
 
@@ -220,10 +243,43 @@ class NetworkPeeringImpl
                             public Observable<Indexable> call(NetworkPeering remotePeering) {
                                 if (remotePeering != null) {
                                     // Matching peering exists, so update as needed
-                                    // TODO: remotePeering.update().withGateway.....
-                                    return Observable.just((Indexable) localPeering);
+                                    Update remotePeeringUpdate = remotePeering.update();
+                                    boolean isUpdateNeeded = false;
+
+                                    // Check if traffic forwarding needs to be updated on the remote peering
+                                    if (localPeering.remoteForwarding == null) {
+                                        // No traffic forwarding change, so ignore
+                                    } else if (localPeering.remoteForwarding.booleanValue() && !remotePeering.isTrafficForwardingFromRemoteNetworkAllowed()) {
+                                        isUpdateNeeded = true;
+                                        remotePeeringUpdate = remotePeeringUpdate.withTrafficForwardingFromRemoteNetwork();
+                                    } else if (!localPeering.remoteForwarding.booleanValue() && remotePeering.isTrafficForwardingFromRemoteNetworkAllowed()) {
+                                        isUpdateNeeded = true;
+                                        remotePeeringUpdate = remotePeeringUpdate.withoutTrafficForwardingFromRemoteNetwork();
+                                    }
+
+                                    // Check if network access needs to be updated on the remote peering
+                                    if (localPeering.remoteAccess == null) {
+                                        // No access change, so ignore
+                                    } else if (localPeering.remoteAccess.booleanValue() && !remotePeering.isAccessFromRemoteNetworkAllowed()) {
+                                        isUpdateNeeded = true;
+                                        remotePeeringUpdate = remotePeeringUpdate.withAccessFromRemoteNetwork();
+                                    } else if (!localPeering.remoteAccess.booleanValue() && remotePeering.isAccessFromRemoteNetworkAllowed()) {
+                                        isUpdateNeeded = true;
+                                        remotePeeringUpdate = remotePeeringUpdate.withoutAccessFromRemoteNetwork();
+                                    }
+
+                                    // TODO: Update gateway
+
+                                    if (isUpdateNeeded) {
+                                        localPeering.remoteForwarding = null;
+                                        localPeering.remoteAccess = null;
+                                        return remotePeeringUpdate.applyAsync().last().cast(Indexable.class);
+                                    } else {
+                                        return Observable.just((Indexable) localPeering);
+                                    }
+
                                 } else {
-                                    // Create a matching peering on the remote network
+                                    // No matching remote peering, so create one on the remote network
                                     String peeringName = SdkContext.randomResourceName("peer", 15);
 
                                     WithCreate remotePeeringDefinition = remoteNetwork.peerings().define(peeringName)
@@ -243,7 +299,7 @@ class NetworkPeeringImpl
                                     // Process remote network's AllowGatewayTransit setting
                                     if (localPeering.allowGatewayUseOnRemoteNetwork == null) {
                                         // Do nothing
-                                    } else if (localPeering.allowGatewayUseOnRemoteNetwork) {
+                                    } else if (localPeering.allowGatewayUseOnRemoteNetwork.booleanValue()) {
                                         // Allow gateway use on remote network
                                         remotePeeringDefinition.withGatewayUseByRemoteNetworkAllowed();
                                     } else {
@@ -251,12 +307,12 @@ class NetworkPeeringImpl
                                     }
                                     localPeering.allowGatewayUseOnRemoteNetwork = null;
 
-                                    if (!localPeering.remoteAccess) {
-                                        remotePeeringDefinition.withoutAccessFromRemoteNetwork();
+                                    if (localPeering.remoteAccess != null && !localPeering.remoteAccess) {
+                                        remotePeeringDefinition.withoutAccessFromRemoteNetwork(); // Assumes by default access is on for new peerings
                                     }
 
-                                    if (localPeering.remoteForwarding) {
-                                        remotePeeringDefinition.withTrafficForwardingFromRemoteNetwork();
+                                    if (localPeering.remoteForwarding != null && localPeering.remoteForwarding.booleanValue()) {
+                                        remotePeeringDefinition.withTrafficForwardingFromRemoteNetwork(); // Assumes by default forwarding is off for new peerings
                                     }
 
                                     return remotePeeringDefinition

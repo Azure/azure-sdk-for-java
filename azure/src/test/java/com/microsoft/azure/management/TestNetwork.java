@@ -160,9 +160,9 @@ public class TestNetwork {
 
                 // Optionals
                 .withTrafficForwardingFromRemoteNetwork()
+                .withTrafficForwardingToRemoteNetwork()
                 .withoutAccessFromRemoteNetwork()
                 .withoutAccessToRemoteNetwork()
-                .withTrafficForwardingToRemoteNetwork()
                 .withGatewayUseByRemoteNetworkAllowed()
                 .create();
 
@@ -193,7 +193,25 @@ public class TestNetwork {
 
         @Override
         public Network updateResource(Network resource) throws Exception {
-            // TODO
+            NetworkPeering localPeering = resource.peerings().list().get(0);
+            localPeering.update()
+                .withoutTrafficForwardingFromRemoteNetwork()
+                .withoutTrafficForwardingToRemoteNetwork()
+                .withAccessFromRemoteNetwork()
+                .withAccessToRemoteNetwork()
+                // TODO Gateway use
+                .apply();
+
+            // Verify local peering changes
+            Assert.assertFalse(localPeering.isTrafficForwardingFromRemoteNetworkAllowed());
+            Assert.assertTrue(localPeering.isAccessFromRemoteNetworkAllowed());
+
+            // Verify remote peering changes
+            NetworkPeering remotePeering = localPeering.getRemotePeering();
+            Assert.assertNotNull(remotePeering);
+            Assert.assertFalse(remotePeering.isTrafficForwardingFromRemoteNetworkAllowed());
+            Assert.assertTrue(remotePeering.isAccessFromRemoteNetworkAllowed());
+
             return resource;
         }
 

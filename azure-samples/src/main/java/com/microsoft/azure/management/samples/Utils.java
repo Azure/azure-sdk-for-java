@@ -1952,7 +1952,7 @@ public final class Utils {
                     .append("\n\t\t\tName :").append(readReplica.locationName());
         }
     }
-    
+
     /**
      * Print Active Directory User info.
      * @param user active directory user
