@@ -291,10 +291,7 @@ class NetworkPeeringImpl
                                     } else if (localPeering.startGatewayUseByRemoteNetwork.booleanValue()) {
                                         // Start gateway use on this network by the remote network
                                         remotePeeringDefinition.withGatewayUseOnRemoteNetworkStarted();
-                                    } else {
-                                        // TODO Stop if false
                                     }
-                                    localPeering.startGatewayUseByRemoteNetwork = null;
 
                                     // Process remote network's AllowGatewayTransit setting
                                     if (localPeering.allowGatewayUseOnRemoteNetwork == null) {
@@ -302,10 +299,7 @@ class NetworkPeeringImpl
                                     } else if (localPeering.allowGatewayUseOnRemoteNetwork.booleanValue()) {
                                         // Allow gateway use on remote network
                                         remotePeeringDefinition.withGatewayUseByRemoteNetworkAllowed();
-                                    } else {
-                                        // TODO Disallow if false
                                     }
-                                    localPeering.allowGatewayUseOnRemoteNetwork = null;
 
                                     if (localPeering.remoteAccess != null && !localPeering.remoteAccess) {
                                         remotePeeringDefinition.withoutAccessFromRemoteNetwork(); // Assumes by default access is on for new peerings
@@ -315,6 +309,10 @@ class NetworkPeeringImpl
                                         remotePeeringDefinition.withTrafficForwardingFromRemoteNetwork(); // Assumes by default forwarding is off for new peerings
                                     }
 
+                                    localPeering.remoteAccess = null;
+                                    localPeering.remoteForwarding = null;
+                                    localPeering.startGatewayUseByRemoteNetwork = null;
+                                    localPeering.allowGatewayUseOnRemoteNetwork = null;
                                     return remotePeeringDefinition
                                         .createAsync()
                                         .last();
