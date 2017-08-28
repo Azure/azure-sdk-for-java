@@ -1340,7 +1340,7 @@ public class CloudPageBlobTests {
                 if (blob.getName().equals(blobName) && !pageBlobWithTierFound) {
                     // Check that the blob is found exactly once
                     assertEquals(PremiumPageBlobTier.P40, blob3.properties.getPremiumPageBlobTier());
-                    assertFalse(blob3.getProperties().isBlobTierInferred());
+                    assertNull(blob3.getProperties().isBlobTierInferred());
                     assertNull(blob3.getProperties().getStandardBlobTier());
                     assertNull(blob3.getProperties().getRehydrationStatus());
                     pageBlobWithTierFound = true;

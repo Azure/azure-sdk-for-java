@@ -328,7 +328,6 @@ final class BlobListHandler extends DefaultHandler {
             if (properties.getBlobType().equals(BlobType.PAGE_BLOB)) {
                 PremiumPageBlobTier premiumPageBlobTier = PremiumPageBlobTier.parse(value);
                 this.properties.setPremiumPageBlobTier(premiumPageBlobTier);
-                this.properties.setBlobTierInferred(false);
             }
             else if (properties.getBlobType().equals(BlobType.BLOCK_BLOB)) {
                 StandardBlobTier standardBlobTier = StandardBlobTier.parse(value);
