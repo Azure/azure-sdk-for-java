@@ -58,6 +58,10 @@ final class ServicePropertiesHandler extends DefaultHandler {
             IOException, ParserConfigurationException {
         SAXParser saxParser = Utility.getSAXParser();
         ServicePropertiesHandler handler = new ServicePropertiesHandler();
+        handler.props.setCors(null);
+        handler.props.setHourMetrics(null);
+        handler.props.setMinuteMetrics(null);
+        handler.props.setCors(null);
         saxParser.parse(stream, handler);
 
         return handler.props;
@@ -69,6 +73,18 @@ final class ServicePropertiesHandler extends DefaultHandler {
 
         if (Constants.AnalyticsConstants.CORS_RULE_ELEMENT.equals(localName)) {
             this.rule = new CorsRule();
+        }
+        else if (Constants.AnalyticsConstants.LOGGING_ELEMENT.equals(localName)) {
+            this.props.setLogging(new LoggingProperties());
+        }
+        else if (Constants.AnalyticsConstants.HOUR_METRICS_ELEMENT.equals(localName)) {
+            this.props.setHourMetrics(new MetricsProperties());
+        }
+        else if (Constants.AnalyticsConstants.MINUTE_METRICS_ELEMENT.equals(localName)) {
+            this.props.setMinuteMetrics(new MetricsProperties());
+        }
+        else if (Constants.AnalyticsConstants.CORS_ELEMENT.equals(localName)) {
+            this.props.setCors(new CorsProperties());
         }
     }
 

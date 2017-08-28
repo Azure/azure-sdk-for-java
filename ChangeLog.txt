@@ -1,7 +1,9 @@
-2017.XX.XX Version X.X.X
+2017.08.28 Version 5.5.0
+ * Fixed a bug when using a SAS token where the token was being omitted from calls to delete a directory in the file service.
  * For Standard Storage Accounts only, added the ability to set the tier of individual block blobs. The tier can currently only be set through uploadTier()
 
-2017.07.12 Version 5.4.0
+2017.07.13 Version 5.4.0
+ * Support for 2017-04-17 REST version. Please see our REST API documentation and blogs for information about the related added features.
  * Added ErrorReceivingResponseEvent which fires when a network error occurs before the responseReceivedEvent fires. If the responseReceivedEvent fires sucessfully, this new event will not fire.
  * For Premium Accounts only, added support for getting and setting the tier on a page blob. The tier can also be set when creating or copying from an existing page blob.
  * Added support for server side encryption for File Service.
