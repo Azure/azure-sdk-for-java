@@ -661,7 +661,7 @@ public final class Constants {
         /**
          * Specifies the value to use for UserAgent header.
          */
-        public static final String USER_AGENT_VERSION = "5.4.0";
+        public static final String USER_AGENT_VERSION = "5.5.0";
 
         /**
          * The default type for content-type and accept
@@ -898,6 +898,11 @@ public final class Constants {
      * XML element for access tier.
      */
     public static final String ACCESS_TIER = "AccessTier";
+
+    /**
+     * XML element for the archive status.
+     */
+    public static final String ARCHIVE_STATUS = "ArchiveStatus";
 
     /**
      * Buffer width used to copy data to output streams.

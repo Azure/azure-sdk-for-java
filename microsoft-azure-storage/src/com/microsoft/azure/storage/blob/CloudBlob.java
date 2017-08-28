@@ -772,7 +772,7 @@ public abstract class CloudBlob implements ListBlobItem {
                 blob.properties.setCopyState(BlobResponse.getCopyState(this.getConnection()));
                 blob.properties.setPremiumPageBlobTier(premiumPageBlobTier);
                 if (premiumPageBlobTier != null) {
-                    blob.properties.setBlobTierInferredTier(false);
+                    blob.properties.setBlobTierInferred(false);
                 }
 
                 return blob.properties.getCopyState().getCopyId();
@@ -2598,6 +2598,56 @@ public abstract class CloudBlob implements ListBlobItem {
         };
 
         return putRequest;
+    }
+
+    protected StorageRequest<CloudBlobClient, CloudBlob, Void> uploadBlobTierImpl(final String blobTierString, final BlobRequestOptions options) {
+        final StorageRequest<CloudBlobClient, CloudBlob, Void> setTierRequest = new StorageRequest<CloudBlobClient, CloudBlob, Void>(
+                options, this.getStorageUri()) {
+
+            @Override
+            public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlob blob, OperationContext context)
+                    throws Exception {
+                return BlobRequest.setBlobTier(blob.getTransformedAddress(context).getUri(this.getCurrentLocation()), options, context, blobTierString);
+            }
+
+            @Override
+            public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
+                    throws Exception {
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, context);
+            }
+
+            @Override
+            public Void preProcessResponse(CloudBlob blob, CloudBlobClient client, OperationContext context)
+                    throws Exception {
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK && this.getResult().getStatusCode() != HttpURLConnection.HTTP_ACCEPTED) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
+
+                blob.updateEtagAndLastModifiedFromResponse(this.getConnection());
+                this.getResult().setRequestServiceEncrypted(BaseResponse.isServerRequestEncrypted(this.getConnection()));
+                blob.getProperties().setBlobTierInferred(false);
+                if (blob.getProperties().getBlobType() == BlobType.BLOCK_BLOB) {
+                    // For standard accounts when rehydrating a blob from archive, the status code will be 202 instead of 200.
+                    StandardBlobTier standardBlobTier = StandardBlobTier.parse(blobTierString);
+                    blob.getProperties().setRehydrationStatus(null);
+                    if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_OK) {
+                        blob.getProperties().setStandardBlobTier(standardBlobTier);
+                    }
+                    else if (standardBlobTier.equals(StandardBlobTier.COOL)) {
+                        blob.getProperties().setStandardBlobTier(StandardBlobTier.ARCHIVE);
+                    }
+                    else if (standardBlobTier.equals(StandardBlobTier.HOT)) {
+                        blob.getProperties().setStandardBlobTier(StandardBlobTier.ARCHIVE);
+                    }
+                }
+
+                return null;
+            }
+
+        };
+
+        return setTierRequest;
     }
 
     /**
