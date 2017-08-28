@@ -195,18 +195,20 @@ public class TestNetwork {
             localPeering.update()
                 .withoutTrafficForwardingFromEitherNetwork()
                 .withAccessBetweenBothNetworks()
-                // TODO Gateway use
+                .withoutAnyGatewayUse()
                 .apply();
 
             // Verify local peering changes
             Assert.assertFalse(localPeering.isTrafficForwardingFromRemoteNetworkAllowed());
             Assert.assertTrue(localPeering.isAccessFromRemoteNetworkAllowed());
+            Assert.assertEquals(GatewayUse.NONE, localPeering.gatewayUse());
 
             // Verify remote peering changes
             NetworkPeering remotePeering = localPeering.getRemotePeering();
             Assert.assertNotNull(remotePeering);
             Assert.assertFalse(remotePeering.isTrafficForwardingFromRemoteNetworkAllowed());
             Assert.assertTrue(remotePeering.isAccessFromRemoteNetworkAllowed());
+            Assert.assertEquals(GatewayUse.NONE, remotePeering.gatewayUse());
 
             return resource;
         }

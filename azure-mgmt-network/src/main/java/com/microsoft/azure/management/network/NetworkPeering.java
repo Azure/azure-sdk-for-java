@@ -103,6 +103,8 @@ public interface NetworkPeering extends
          * The stage of a network peering definition allowing to specify the remote virtual network.
          */
         interface WithRemoteNetwork {
+            // The remote network can only be specified at the time of the peering creation, not update
+
             /**
              * Specifies the remote network to peer with.
              * <p>
@@ -165,8 +167,8 @@ public interface NetworkPeering extends
             /**
              * Allows and starts the use of this network's gateway by the remote network (a.k.a. gateway transit).
              * <p>
-             * If the remote network is not in the same subscription as this network, then gateway use by the remote gateway will be allowed on this network, but not started.
-             * The matching peering on the remote network must be modified explicitly to start it.
+             * If the remote network is not in the same subscription as this network, then gateway use by the remote gateway will only be
+             * allowed on this network, but not started. The matching peering on the remote network must be modified explicitly to start it.
              * <p>
              * If this network is currently configured to use the remote network's gateway, that use will be automatically disabled, as these two settings cannot be used together.
              * <p>
@@ -192,7 +194,7 @@ public interface NetworkPeering extends
              * Disables any gateway use by this network and the remote one.
              * @return the next stage of the definition
              */
-            WithCreate withGatewayUseDisabled();
+            WithCreate withoutAnyGatewayUse();
         }
 
         /**
@@ -253,13 +255,81 @@ public interface NetworkPeering extends
     interface Update extends
         Appliable<NetworkPeering>,
         UpdateStages.WithTrafficForwarding,
-        UpdateStages.WithAccess {
+        UpdateStages.WithAccess,
+        UpdateStages.WithGatewayUse {
     }
 
     /**
      * Grouping of all the network peering update stages.
      */
     interface UpdateStages {
+
+        /**
+         * The stage of a network peering update allowing to control the gateway use by or on the remote network.
+         */
+        interface WithGatewayUse {
+            /**
+             * Allows the remote network to use this network's gateway (a.k.a. gateway transit), but does not start the use of the gateway by the remote network.
+             * <p>
+             * If this network is currently configured to use the remote network's gateway, that use will be automatically disabled, as these two settings cannot be used together.
+             * @return the next stage of the update
+             */
+            Update withGatewayUseByRemoteNetworkAllowed();
+
+            /**
+             * Allows and starts the use of this network's gateway by the remote network (a.k.a. gateway transit).
+             * <p>
+             * If the remote network is not in the same subscription as this network, then gateway use by the remote gateway will only be allowed
+             * on this network, but not started. The matching peering on the remote network must be modified explicitly to start it.
+             * <p>
+             * If this network is currently configured to use the remote network's gateway, that use will be automatically disabled, as these two settings cannot be used together.
+             * <p>
+             * Before gateway use by a remote network can be started, a working gateway must already be in place within this network.
+             * @return the next stage of the update
+             */
+            Update withGatewayUseByRemoteNetworkStarted();
+
+            /**
+             * Starts the use of the remote network's gateway.
+             * <p>
+             * If the remote network is in the same subscription, remote gateway use by this network (a.k.a. gateway transit) will also be automatically allowed on the remote network's side.
+             * Otherwise, this network will only be configured to use the remote gateway, but the matching peering on the remote network must still be additionally modified
+             * explicitly to allow gateway use by this network.
+             * <p>
+             * If this network is currently configured to allow the remote network to use its gateway, that use will be automatically disabled, as these two settings cannot be used together.
+             * <p>
+             * Before gateway use on a remote network can be started, a working gateway must already be in place within the remote network.
+             * @return the next stage of the update
+             */
+            Update withGatewayUseOnRemoteNetworkStarted();
+
+            /**
+             * Stops this network's use of the remote network's gateway.
+             * @return the next stage of the definition.
+             */
+            Update withoutGatewayUseOnRemoteNetwork();
+
+            /**
+             * Disables any gateway use by this network and the remote one.
+             * <p>
+             * This will have effect on the remote network only if the remote network is in the same subscription as this network.
+             * Otherwise, only this network's use of the remote network's gateway will be stopped, but the use of this network's gateway
+             * by the remote network will only be disallowed. You will have to update the remote network's peering explicitly to properly stop
+             * its use of this network's gateway.
+             * @return the next stage of the update
+             */
+            Update withoutAnyGatewayUse();
+
+            /**
+             * Stops and disallows the use of this network's gateway by the remote network.
+             * <p>
+             * If the remote network is not in the same subscription, then the use of that network's gateway by this network will be stopped but not disallowed
+             * by the remote network. The matching peering on the remote network must still be explicitly updated to also disallow such use.
+             * @return the next stage of the update
+             */
+            Update withoutGatewayUseByRemoteNetwork();
+        }
+
         /**
          * The stage of a network peering update allowing to control traffic forwarding from or to the remote network.
          */
