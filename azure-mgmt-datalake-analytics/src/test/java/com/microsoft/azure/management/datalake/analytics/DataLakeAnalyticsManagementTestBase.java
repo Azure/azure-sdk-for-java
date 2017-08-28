@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.datalake.analytics;
 
+import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.datalake.analytics.models.*;
 import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
@@ -15,6 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
+import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.datalake.analytics.implementation.DataLakeAnalyticsAccountManagementClientImpl;
@@ -76,6 +78,8 @@ public class DataLakeAnalyticsManagementTestBase extends TestBase {
             RestClient restClientWithTimeout = buildRestClient(new RestClient.Builder()
                     .withConnectionTimeout(5, TimeUnit.MINUTES)
                     .withBaseUrl("https://{accountName}.{adlaJobDnsSuffix}")
+                    .withSerializerAdapter(new AzureJacksonAdapter())
+                    .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                     .withCredentials(credentials)
                     .withLogLevel(LogLevel.BODY_AND_HEADERS)
                     .withNetworkInterceptor(interceptorManager.initInterceptor()),
@@ -88,6 +92,8 @@ public class DataLakeAnalyticsManagementTestBase extends TestBase {
 
             RestClient catalogRestClient = buildRestClient(new RestClient.Builder()
                     .withBaseUrl("https://{accountName}.{adlaCatalogDnsSuffix}")
+                    .withSerializerAdapter(new AzureJacksonAdapter())
+                    .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                     .withCredentials(credentials)
                     .withLogLevel(LogLevel.BODY_AND_HEADERS)
                     .withNetworkInterceptor(interceptorManager.initInterceptor()),
@@ -141,8 +147,8 @@ public class DataLakeAnalyticsManagementTestBase extends TestBase {
     }
 
     protected void runJobToCompletion(String adlaAcct, UUID jobId, String scriptToRun) throws Exception {
-        JobInformation jobToSubmit = new JobInformation();
-        USqlJobProperties jobProperties = new USqlJobProperties();
+        CreateJobParameters jobToSubmit = new CreateJobParameters();
+        CreateUSqlJobProperties jobProperties = new CreateUSqlJobProperties();
         jobProperties.withScript(scriptToRun);
         jobToSubmit.withName("java azure sdk data lake analytics job");
         jobToSubmit.withDegreeOfParallelism(2);

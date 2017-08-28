@@ -86,9 +86,9 @@ public class DataLakeAnalyticsAccountOperationsTests extends DataLakeAnalyticsMa
         Assert.assertEquals(adlsName, getResponse.dataLakeStoreAccounts().get(0).name());
 
         // list all accounts and make sure there is one.
-        List<DataLakeAnalyticsAccount> listResult = dataLakeAnalyticsAccountManagementClient.accounts().list();
-        DataLakeAnalyticsAccount discoveredAcct = null;
-        for (DataLakeAnalyticsAccount acct : listResult) {
+        List<DataLakeAnalyticsAccountBasic> listResult = dataLakeAnalyticsAccountManagementClient.accounts().list();
+        DataLakeAnalyticsAccountBasic discoveredAcct = null;
+        for (DataLakeAnalyticsAccountBasic acct : listResult) {
             if (acct.name().equals(adlaAcct)) {
                 discoveredAcct = acct;
                 break;
@@ -101,14 +101,11 @@ public class DataLakeAnalyticsAccountOperationsTests extends DataLakeAnalyticsMa
         Assert.assertNotNull(discoveredAcct.id());
         Assert.assertTrue(discoveredAcct.id().contains(adlaAcct));
         Assert.assertEquals(2, discoveredAcct.getTags().size());
-
-        // the properties should be empty when we do list calls
-        Assert.assertNull(discoveredAcct.dataLakeStoreAccounts());
 
         // list within a resource group
         listResult = dataLakeAnalyticsAccountManagementClient.accounts().listByResourceGroup(rgName);
         discoveredAcct = null;
-        for (DataLakeAnalyticsAccount acct : listResult) {
+        for (DataLakeAnalyticsAccountBasic acct : listResult) {
             if (acct.name().equals(adlaAcct)) {
                 discoveredAcct = acct;
                 break;
@@ -121,9 +118,6 @@ public class DataLakeAnalyticsAccountOperationsTests extends DataLakeAnalyticsMa
         Assert.assertNotNull(discoveredAcct.id());
         Assert.assertTrue(discoveredAcct.id().contains(adlaAcct));
         Assert.assertEquals(2, discoveredAcct.getTags().size());
-
-        // the properties should be empty when we do list calls
-        Assert.assertNull(discoveredAcct.dataLakeStoreAccounts());
 
         // Add, list, get and remove a data lake store account
         AddDataLakeStoreParameters addAdlsParams = new AddDataLakeStoreParameters();
