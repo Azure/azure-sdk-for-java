@@ -125,23 +125,43 @@ final class BlobResponse extends BaseResponse {
         }
 
         // Get the tier of the blob
-        final String premiumBlobTierString = request.getHeaderField(BlobConstants.ACCESS_TIER_HEADER);
+        final String blobTierString = request.getHeaderField(BlobConstants.ACCESS_TIER_HEADER);
 
-        if (properties.getBlobType().equals(BlobType.PAGE_BLOB))
-        {
-            PremiumPageBlobTier premiumPageBlobTier = PremiumPageBlobTier.parse(premiumBlobTierString);
+        if (!Utility.isNullOrEmpty(blobTierString) && properties.getBlobType().equals(BlobType.PAGE_BLOB)) {
+            PremiumPageBlobTier premiumPageBlobTier = PremiumPageBlobTier.parse(blobTierString);
             properties.setPremiumPageBlobTier(premiumPageBlobTier);
         }
-        else if (properties.getBlobType().equals(BlobType.UNSPECIFIED)) {
-            PremiumPageBlobTier premiumPageBlobTier = PremiumPageBlobTier.parse(premiumBlobTierString);
+        else if (!Utility.isNullOrEmpty(blobTierString) && properties.getBlobType().equals(BlobType.BLOCK_BLOB)) {
+            StandardBlobTier standardBlobTier = StandardBlobTier.parse(blobTierString);
+            properties.setStandardBlobTier(standardBlobTier);
+        }
+        else if (!Utility.isNullOrEmpty(blobTierString) && properties.getBlobType().equals(BlobType.UNSPECIFIED)) {
+            PremiumPageBlobTier premiumPageBlobTier = PremiumPageBlobTier.parse(blobTierString);
+            StandardBlobTier standardBlobTier = StandardBlobTier.parse(blobTierString);
             if (!premiumPageBlobTier.equals(PremiumPageBlobTier.UNKNOWN)) {
                 properties.setPremiumPageBlobTier(premiumPageBlobTier);
+            }
+            else if (!standardBlobTier.equals(StandardBlobTier.UNKNOWN)) {
+                properties.setStandardBlobTier(standardBlobTier);
+            }
+            else {
+                properties.setPremiumPageBlobTier(PremiumPageBlobTier.UNKNOWN);
+                properties.setStandardBlobTier(StandardBlobTier.UNKNOWN);
             }
         }
 
         final String tierInferredString = request.getHeaderField(BlobConstants.ACCESS_TIER_INFERRED_HEADER);
         if (!Utility.isNullOrEmpty(tierInferredString)) {
-            properties.setBlobTierInferredTier(Boolean.parseBoolean(tierInferredString));
+            properties.setBlobTierInferred(Boolean.parseBoolean(tierInferredString));
+        }
+
+        final String rehydrationStatusString = request.getHeaderField(BlobConstants.ARCHIVE_STATUS_HEADER);
+        if (!Utility.isNullOrEmpty(rehydrationStatusString)) {
+            RehydrationStatus rehydrationStatus = RehydrationStatus.parse(rehydrationStatusString);
+            properties.setRehydrationStatus(rehydrationStatus);
+        }
+        else {
+            properties.setRehydrationStatus(null);
         }
 
         final String incrementalCopyHeaderString =
