@@ -412,6 +412,8 @@ var codegen = function(project, cb) {
     if (mappings[project].fluent !== null && mappings[project].fluent === false) {
         generator = '';
     }
+
+    const autorestGeneratorPath = path.resolve(autoRestVersion, "src/core/AutoRest");
     const outDir = path.resolve(mappings[project].dir);
     // path.join won't work if specRoot is a URL
     cmd = autoRestExe + ' ' + specRoot + "/" + mappings[project].source +
@@ -421,6 +423,7 @@ var codegen = function(project, cb) {
                         ` --namespace=${mappings[project].package} ` +
                         ` --output-folder=${outDir} ` +
                         ` --license-header=MICROSOFT_MIT_NO_CODEGEN ` +
+                        ` --use=${autorestGeneratorPath} ` +
                         autoRestArgs;
     if (mappings[project].args !== undefined) {
         cmd = cmd + ' ' + mappings[project].args;
