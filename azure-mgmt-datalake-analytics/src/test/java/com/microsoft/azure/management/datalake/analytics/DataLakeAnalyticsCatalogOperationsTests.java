@@ -62,7 +62,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
                 "        ClickedUrls     string,\r\n" +
                 "    INDEX idx1 //Name of index\r\n" +
                 "    CLUSTERED (Region ASC) //Column to cluster by\r\n" +
-                "    PARTITIONED BY BUCKETS (UserId) HASH (Region) //Column to partition by\r\n" +
+                "    PARTITIONED BY (UserId) HASH (Region) //Column to partition by\r\n" +
                 ");\r\n" +
                 "\r\n" +
                 "ALTER TABLE {0}.dbo.{1} ADD IF NOT EXISTS PARTITION (1);\r\n" +
@@ -291,7 +291,19 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         Assert.assertFalse(foundCatalogElement);
     }
 
-    @Test
+    // TODO: got the error: "CREATE/ALTER/DROP CREDENTIAL statements have been deprecated and removed from the language."  Details below:
+    // DETAILS: to fix this, I must use Azure Powershell cmdlets instead for such operations (https://msdn.microsoft.com/en-us/library/azure/mt621327.aspx).
+    //          will consider how to test this in the near future
+    // SPECIFIC ERROR MESSAGE:
+    // "errorId":"E_CSC_USER_CREDENTIALDDLISREMOVED",
+    // "severity":"Error",
+    // "component":"CSC",
+    // "source":"USER",
+    // "message":"CREATE/ALTER/DROP CREDENTIAL statements used in the script are removed from U-SQL language.",
+    // "details":"at token 'CREATE', line 1\r\nnear the ###:\r\n**************\r\nUSE testdb117763a;  ### CREATE CREDENTIAL testcred178426 WITH USER_NAME = \"scope@rkm4grspxa\", IDENTITY = \"a7f0a37750c5425\";",
+    // "description":"CREATE/ALTER/DROP CREDENTIAL statements have been deprecated and removed from the language.",
+    // "resolution":"Use credential management commandlets in the latest Azure Powershell.",
+    //@Test
     public void  canCreateUpdateDeleteSecretsAndCredentials() throws Exception {
         // create the secret
         DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters createParams = new DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters();
