@@ -1241,6 +1241,49 @@ public final class CloudBlockBlob extends CloudBlob {
     }
 
     /**
+     * Sets the blob tier on a block blob on a standard storage account.
+     * @param standardBlobTier
+     *            A {@link StandardBlobTier} object which represents the tier of the blob.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public void uploadStandardBlobTier(final StandardBlobTier standardBlobTier) throws StorageException {
+        this.uploadStandardBlobTier(standardBlobTier, null /* options */, null /* opContext */);
+    }
+
+    /**
+     * Sets the tier on a block blob on a standard storage account.
+     * @param standardBlobTier
+     *            A {@link StandardBlobTier} object which represents the tier of the blob.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object which represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public void uploadStandardBlobTier(final StandardBlobTier standardBlobTier, BlobRequestOptions options,
+                                   OperationContext opContext) throws StorageException {
+        assertNoWriteOperationForSnapshot();
+        Utility.assertNotNull("standardBlobTier", standardBlobTier);
+
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        options = BlobRequestOptions.populateAndApplyDefaults(options, BlobType.BLOCK_BLOB, this.blobServiceClient);
+
+        ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
+                this.uploadBlobTierImpl(standardBlobTier.toString(), options), options.getRetryPolicyFactory(), opContext);
+    }
+
+    /**
      * Gets the flag that indicates whether the default streamWriteSize was modified.
      */
     public boolean isStreamWriteSizeModified()
