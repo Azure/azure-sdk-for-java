@@ -101,7 +101,7 @@ class SqlDatabasesImpl extends IndependentChildResourcesImpl<
     }
 
     @Override
-    public SqlDatabase.DefinitionStages.Blank definedWithSqlServer(String resourceGroupName, String sqlServerName, String databaseName, Region region) {
+    public SqlDatabaseImpl definedWithSqlServer(String resourceGroupName, String sqlServerName, String databaseName, Region region) {
         DatabaseInner inner = new DatabaseInner();
         inner.withLocation(region.name());
 

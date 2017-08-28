@@ -84,7 +84,7 @@ public interface SqlServer extends
     Map<String, RecommendedElasticPool> listRecommendedElasticPools();
 
     /**
-     * Entry point to access FirewallRules from the SQL Server.
+     * Entry point to firewall rules from the SQL Server.
      */
     interface FirewallRules {
         /**
@@ -127,7 +127,7 @@ public interface SqlServer extends
     }
 
     /**
-     * Entry point to access ElasticPools from the SQL Server.
+     * Entry point to elastic pools from the SQL Server.
      */
     interface ElasticPools {
         /**
@@ -170,7 +170,7 @@ public interface SqlServer extends
     }
 
     /**
-     * Entry point to access ElasticPools from the SQL Server.
+     * Entry point to databases from the SQL Server.
      */
     interface Databases {
         /**

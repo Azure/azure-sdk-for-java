@@ -64,31 +64,33 @@ public final class ManageVirtualMachine {
 
             // Create a data disk to attach to VM
             //
-            Disk dataDisk = azure.disks().define(Utils.createRandomName("dsk-"))
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withData()
-                    .withSizeInGB(50)
-                    .create();
+            Disk dataDisk = azure.disks()
+                    .define(Utils.createRandomName("dsk-"))
+                        .withRegion(region)
+                        .withNewResourceGroup(rgName)
+                        .withData()
+                        .withSizeInGB(50)
+                        .create();
 
             System.out.println("Creating a Windows VM");
 
             Date t1 = new Date();
 
-            VirtualMachine windowsVM = azure.virtualMachines().define(windowsVMName)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withoutPrimaryPublicIPAddress()
-                    .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                    .withAdminUsername(userName)
-                    .withAdminPassword(password)
-                    .withNewDataDisk(10)
-                    .withNewDataDisk(dataDiskCreatable)
-                    .withExistingDataDisk(dataDisk)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
-                    .create();
+            VirtualMachine windowsVM = azure.virtualMachines()
+                    .define(windowsVMName)
+                        .withRegion(region)
+                        .withNewResourceGroup(rgName)
+                        .withNewPrimaryNetwork("10.0.0.0/28")
+                        .withPrimaryPrivateIPAddressDynamic()
+                        .withoutPrimaryPublicIPAddress()
+                        .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+                        .withAdminUsername(userName)
+                        .withAdminPassword(password)
+                        .withNewDataDisk(10)
+                        .withNewDataDisk(dataDiskCreatable)
+                        .withExistingDataDisk(dataDisk)
+                        .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                        .create();
 
             Date t2 = new Date();
             System.out.println("Created VM: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + windowsVM.id());
@@ -157,18 +159,19 @@ public final class ManageVirtualMachine {
 
             System.out.println("Creating a Linux VM in the network");
 
-            VirtualMachine linuxVM = azure.virtualMachines().define(linuxVMName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withExistingPrimaryNetwork(network)
-                    .withSubnet("subnet1") // Referencing the default subnet name when no name specified at creation
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withoutPrimaryPublicIPAddress()
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                    .withRootUsername(userName)
-                    .withRootPassword(password)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
-                    .create();
+            VirtualMachine linuxVM = azure.virtualMachines()
+                    .define(linuxVMName)
+                        .withRegion(region)
+                        .withExistingResourceGroup(rgName)
+                        .withExistingPrimaryNetwork(network)
+                        .withSubnet("subnet1") // Referencing the default subnet name when no name specified at creation
+                        .withPrimaryPrivateIPAddressDynamic()
+                        .withoutPrimaryPublicIPAddress()
+                        .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                        .withRootUsername(userName)
+                        .withRootPassword(password)
+                        .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                        .create();
 
             System.out.println("Created a Linux VM (in the same virtual network): " + linuxVM.id());
             Utils.print(linuxVM);
