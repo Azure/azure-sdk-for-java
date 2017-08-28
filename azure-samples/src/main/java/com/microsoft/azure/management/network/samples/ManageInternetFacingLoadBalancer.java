@@ -154,7 +154,7 @@ public final class ManageInternetFacingLoadBalancer {
             //  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23
 
             System.out.println("Creating a Internet facing load balancer with ...");
-            System.out.println("- A frontend IP address");
+            System.out.println("- A frontend public IP address");
             System.out.println("- Two backend address pools which contain network interfaces for the virtual\n"
                     + "  machines to receive HTTP and HTTPS network traffic from the load balancer");
             System.out.println("- Two load balancing rules for HTTP and HTTPS to map public ports on the load\n"
@@ -168,9 +168,6 @@ public final class ManageInternetFacingLoadBalancer {
             LoadBalancer loadBalancer1 = azure.loadBalancers().define(loadBalancerName1)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
-                    .definePublicFrontend(frontendName)
-                        .withExistingPublicIPAddress(publicIPAddress)
-                        .attach()
 
                     // Add two rules that uses above backend and probe
                     .defineLoadBalancingRule(httpLoadBalancingRule)
@@ -217,6 +214,11 @@ public final class ManageInternetFacingLoadBalancer {
                         .fromFrontend(frontendName)
                         .fromFrontendPort(5003)
                         .toBackendPort(23)
+                        .attach()
+
+                    // Explicitly define the frontend
+                    .definePublicFrontend(frontendName)
+                        .withExistingPublicIPAddress(publicIPAddress)
                         .attach()
 
                     // Add two probes one per rule
@@ -379,9 +381,6 @@ public final class ManageInternetFacingLoadBalancer {
             LoadBalancer loadBalancer2 = azure.loadBalancers().define(loadBalancerName2)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
-                    .definePublicFrontend(frontendName)
-                        .withExistingPublicIPAddress(publicIPAddress2)
-                        .attach()
 
                     // Add two rules that uses above backend and probe
                     .defineLoadBalancingRule(httpLoadBalancingRule)
@@ -428,6 +427,11 @@ public final class ManageInternetFacingLoadBalancer {
                         .fromFrontend(frontendName)
                         .fromFrontendPort(5003)
                         .toBackendPort(23)
+                        .attach()
+
+                    // Explicitly define the frontend
+                    .definePublicFrontend(frontendName)
+                        .withExistingPublicIPAddress(publicIPAddress2)
                         .attach()
 
                     // Add two probes one per rule

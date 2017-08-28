@@ -6,13 +6,14 @@
 
 package com.microsoft.azure.management.samples;
 
+import com.microsoft.azure.management.appservice.samples.ManageFunctionAppSourceControl;
+import com.microsoft.azure.management.appservice.samples.ManageFunctionAppWithAuthentication;
 import com.microsoft.azure.management.appservice.samples.ManageLinuxWebAppSourceControl;
 import com.microsoft.azure.management.appservice.samples.ManageLinuxWebAppStorageAccountConnection;
 import com.microsoft.azure.management.appservice.samples.ManageLinuxWebAppWithContainerRegistry;
 import com.microsoft.azure.management.appservice.samples.ManageWebAppSourceControl;
 import com.microsoft.azure.management.appservice.samples.ManageWebAppStorageAccountConnection;
 import com.microsoft.azure.management.resources.core.TestBase;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -44,5 +45,15 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
     @Test
     public void testManageLinuxWebAppWithContainerRegistry() {
         Assert.assertTrue(ManageLinuxWebAppWithContainerRegistry.runSample(azure));
+    }
+
+    @Test
+    public void testManageFunctionAppWithAuthentication() {
+        Assert.assertTrue(ManageFunctionAppWithAuthentication.runSample(azure));
+    }
+
+    @Test
+    public void testManageFunctionAppSourceControl() {
+        Assert.assertTrue(ManageFunctionAppSourceControl.runSample(azure));
     }
 }

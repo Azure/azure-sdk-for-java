@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Implementation for Foo and its create and update interfaces.
+ * Implementation for Search service and its create and update interfaces.
  */
 @LangDefinition
 class SearchServiceImpl
@@ -35,14 +35,14 @@ class SearchServiceImpl
         SearchServiceImpl,
         SearchServiceManager>
     implements
-    SearchService,
-    SearchService.Definition,
-    SearchService.Update {
+        SearchService,
+        SearchService.Definition,
+        SearchService.Update {
 
   SearchServiceImpl(String name,
                        final SearchServiceInner innerModel,
-                       final SearchServiceManager networkManager) {
-    super(name, innerModel, networkManager);
+                       final SearchServiceManager searchManager) {
+    super(name, innerModel, searchManager);
   }
 
   @Override
@@ -75,9 +75,6 @@ class SearchServiceImpl
     if (isInCreateMode()) {
       // TODO something
     }
-
-//    // Reset and update subnets
-//    this.inner().withSubnets(innersFromWrappers(this.childModels.values()));
   }
 
   @Override

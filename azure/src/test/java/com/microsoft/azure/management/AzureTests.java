@@ -278,9 +278,7 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testLoadBalancersNatRules() throws Exception {
-        new TestLoadBalancer.InternetWithNatRule(
-                azure.virtualMachines(),
-                azure.availabilitySets())
+        new TestLoadBalancer.InternetWithNatRule(azure.virtualMachines().manager())
             .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
@@ -290,10 +288,8 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testLoadBalancersNatPools() throws Exception {
-        new TestLoadBalancer.InternetWithNatPool(
-                azure.virtualMachines(),
-                azure.availabilitySets())
-        .runTest(azure.loadBalancers(), azure.resourceGroups());
+        new TestLoadBalancer.InternetWithNatPool(azure.virtualMachines().manager())
+            .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
     /**
@@ -302,9 +298,7 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testLoadBalancersInternetMinimum() throws Exception {
-        new TestLoadBalancer.InternetMinimal(
-                azure.virtualMachines(),
-                azure.availabilitySets())
+        new TestLoadBalancer.InternetMinimal(azure.virtualMachines().manager())
             .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
@@ -324,10 +318,8 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testLoadBalancersInternalMinimum() throws Exception {
-        new TestLoadBalancer.InternalMinimal(
-                azure.virtualMachines(),
-                azure.availabilitySets())
-        .runTest(azure.loadBalancers(), azure.resourceGroups());
+        new TestLoadBalancer.InternalMinimal(azure.virtualMachines().manager())
+            .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
     /**
@@ -592,7 +584,7 @@ public class AzureTests extends TestBase {
                 .withRemotePort("443")
                 .execute();
         Assert.assertEquals(Access.ALLOW, verificationIPFlow.access());
-        Assert.assertEquals("defaultSecurityRules/AllowInternetOutBound", verificationIPFlow.ruleName());
+        Assert.assertEquals("DefaultRule_AllowInternetOutBound", verificationIPFlow.ruleName());
 
         // test packet capture
         List<PacketCapture> packetCaptures = nw.packetCaptures().list();
@@ -783,7 +775,6 @@ public class AzureTests extends TestBase {
                 .runTest(azure.dnsZones(), azure.resourceGroups());
     }
 
-
     @Test
     public void testSqlServer() throws Exception {
         new TestSql().runTest(azure.sqlServers(), azure.resourceGroups());
@@ -808,10 +799,29 @@ public class AzureTests extends TestBase {
 
     @Test
     @Ignore("Runs locally find but fails for unknown reason on check in.")
-    public void testDocumentDB() throws Exception {
-        new TestDocumentDB()
-                .runTest(azure.documentDBAccounts(), azure.resourceGroups());
+    public void testCosmosDB() throws Exception {
+        new TestCosmosDB()
+                .runTest(azure.cosmosDBAccounts(), azure.resourceGroups());
     }
+
+    @Test
+    public void testSearchServiceFreeSku() throws Exception {
+        new TestSearchService.SearchServiceFreeSku()
+            .runTest(azure.searchServices(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testSearchServiceBasicSku() throws Exception {
+        new TestSearchService.SearchServiceBasicSku()
+            .runTest(azure.searchServices(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testSearchServiceStandardSku() throws Exception {
+        new TestSearchService.SearchServiceStandardSku()
+            .runTest(azure.searchServices(), azure.resourceGroups());
+    }
+
     @Test
     public void testSearchServiceAnySku() throws Exception {
         new TestSearchService.SearchServiceAnySku()

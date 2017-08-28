@@ -16,7 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
- * An immutable client-side representation of a subnet of a virtual network.
+ * A client-side representation of a subnet of a virtual network.
  */
 @Fluent()
 public interface Subnet extends
@@ -78,7 +78,7 @@ public interface Subnet extends
 
         /**
          * The stage of the subnet definition allowing to specify the address space for the subnet.
-         * @param <ParentT> the parent type
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAddressPrefix<ParentT> {
             /**
@@ -91,7 +91,7 @@ public interface Subnet extends
 
         /**
          * The stage of the subnet definition allowing to specify the network security group to assign to the subnet.
-         * @param <ParentT> the parent type
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithNetworkSecurityGroup<ParentT> {
             /**
@@ -111,7 +111,7 @@ public interface Subnet extends
 
         /**
          * The stage of a subnet definition allowing to specify a route table to associate with the subnet.
-         * @param <ParentT> the parent network type
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithRouteTable<ParentT> {
             /**
@@ -132,8 +132,8 @@ public interface Subnet extends
         /** The final stage of the subnet definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the subnet definition
-         * can be attached to the parent virtual network definition using {@link WithAttach#attach()}.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * can be attached to the parent virtual network definition.
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends
             Attachable.InDefinition<ParentT>,
@@ -143,7 +143,7 @@ public interface Subnet extends
     }
 
     /** The entirety of a Subnet definition.
-     * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
+     * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
@@ -184,6 +184,12 @@ public interface Subnet extends
              * @return the next stage of the update
              */
             Update withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg);
+
+            /**
+             * Removes the association of this subnet with any network security group.
+             * @return the next stage of the update
+             */
+            Update withoutNetworkSecurityGroup();
         }
 
         /**
@@ -236,7 +242,7 @@ public interface Subnet extends
 
         /**
          * The stage of the subnet definition allowing to specify the address space for the subnet.
-         * @param <ParentT> the parent type
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAddressPrefix<ParentT> {
             /**
@@ -249,7 +255,7 @@ public interface Subnet extends
 
         /**
          * The stage of the subnet definition allowing to specify the network security group to assign to the subnet.
-         * @param <ParentT> the parent type
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithNetworkSecurityGroup<ParentT> {
             /**
@@ -269,7 +275,7 @@ public interface Subnet extends
 
         /**
          * The stage of a subnet definition allowing to specify a route table to associate with the subnet.
-         * @param <ParentT> the parent type
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithRouteTable<ParentT> {
             /**
@@ -290,8 +296,8 @@ public interface Subnet extends
         /** The final stage of the subnet definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the subnet definition
-         * can be attached to the parent virtual network definition using {@link WithAttach#attach()}.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * can be attached to the parent virtual network definition.
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends
             Attachable.InUpdate<ParentT>,
@@ -301,7 +307,7 @@ public interface Subnet extends
     }
 
     /** The entirety of a subnet definition as part of a virtual network update.
-     * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
+     * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
     interface UpdateDefinition<ParentT> extends
        UpdateDefinitionStages.Blank<ParentT>,

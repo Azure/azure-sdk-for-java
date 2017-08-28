@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResou
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
- * An immutable client-side representation of a load balancer frontend.
+ * An client-side representation of a load balancer frontend.
  */
 @Fluent()
 @Beta

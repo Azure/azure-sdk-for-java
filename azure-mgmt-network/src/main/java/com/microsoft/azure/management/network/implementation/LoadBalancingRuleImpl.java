@@ -5,6 +5,9 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.LoadBalancerBackend;
@@ -12,11 +15,16 @@ import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.LoadDistribution;
+import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIPAddress;
+import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.network.LoadBalancerProbe;
 import com.microsoft.azure.management.network.TransportProtocol;
+import com.microsoft.azure.management.network.model.HasNetworkInterfaces;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 
 /**
@@ -27,7 +35,7 @@ class LoadBalancingRuleImpl
     extends ChildResourceImpl<LoadBalancingRuleInner, LoadBalancerImpl, LoadBalancer>
     implements
         LoadBalancingRule,
-        LoadBalancingRule.Definition<LoadBalancer.DefinitionStages.WithLoadBalancingRuleOrCreate>,
+        LoadBalancingRule.Definition<LoadBalancer.DefinitionStages.WithLBRuleOrNatOrCreate>,
         LoadBalancingRule.UpdateDefinition<LoadBalancer.Update>,
         LoadBalancingRule.Update {
 
@@ -114,13 +122,54 @@ class LoadBalancingRuleImpl
     // Fluent withers
 
     @Override
-    public LoadBalancingRuleImpl withExistingPublicIPAddress(PublicIPAddress publicIPAddress) {
-        return (publicIPAddress != null) ? this.withExistingPublicIPAddress(publicIPAddress.id()) : this;
+    public LoadBalancingRuleImpl fromExistingPublicIPAddress(PublicIPAddress publicIPAddress) {
+        return (publicIPAddress != null) ? this.fromExistingPublicIPAddress(publicIPAddress.id()) : this;
     }
 
     @Override
-    public LoadBalancingRuleImpl withExistingPublicIPAddress(String resourceId) {
+    public LoadBalancingRuleImpl fromExistingPublicIPAddress(String resourceId) {
         return (null != resourceId) ? this.fromFrontend(this.parent().ensurePublicFrontendWithPip(resourceId).name()) : this;
+    }
+
+    @Override
+    public LoadBalancingRuleImpl fromNewPublicIPAddress(String leafDnsLabel) {
+        String frontendName = SdkContext.randomResourceName("fe", 20);
+        this.parent().withNewPublicIPAddress(leafDnsLabel, frontendName);
+        return fromFrontend(frontendName);
+    }
+
+    @Override
+    public LoadBalancingRuleImpl fromNewPublicIPAddress(Creatable<PublicIPAddress> pipDefinition) {
+        String frontendName = SdkContext.randomResourceName("fe", 20);
+        this.parent().withNewPublicIPAddress(pipDefinition, frontendName);
+        return fromFrontend(frontendName);
+    }
+
+    @Override
+    public LoadBalancingRuleImpl fromNewPublicIPAddress() {
+        String dnsLabel = SdkContext.randomResourceName("fe", 20);
+        return this.fromNewPublicIPAddress(dnsLabel);
+    }
+
+    @Override
+    public LoadBalancingRuleImpl fromExistingSubnet(String networkResourceId, String subnetName) {
+        return (null != networkResourceId && null != subnetName)
+                ? this.fromFrontend(this.parent().ensurePrivateFrontendWithSubnet(networkResourceId, subnetName).name())
+                : this;
+    }
+
+    @Override
+    public LoadBalancingRuleImpl fromExistingSubnet(Network network, String subnetName) {
+        return (null != network && null != subnetName)
+                ? this.fromExistingSubnet(network.id(), subnetName)
+                : this;
+    }
+
+    @Override
+    public LoadBalancingRuleImpl fromExistingSubnet(Subnet subnet) {
+        return (null != subnet)
+                ? this.fromExistingSubnet(subnet.parent().id(), subnet.name())
+                : this;
     }
 
     @Override
@@ -170,14 +219,23 @@ class LoadBalancingRuleImpl
     }
 
     @Override
-    public LoadBalancingRuleImpl withLoadDistribution(LoadDistribution loadDistribution) {
-        this.inner().withLoadDistribution(loadDistribution);
+    public LoadBalancingRuleImpl toExistingVirtualMachines(HasNetworkInterfaces... vms) {
+        return (vms != null) ? this.toExistingVirtualMachines(Arrays.asList(vms)) : this;
+    }
+
+    @Override
+    public LoadBalancingRuleImpl toExistingVirtualMachines(Collection<HasNetworkInterfaces> vms) {
+        if (vms != null) {
+            LoadBalancerBackendImpl backend = this.parent().ensureUniqueBackend().withExistingVirtualMachines(vms);
+            this.toBackend(backend.name());
+        }
         return this;
     }
 
     @Override
-    public LoadBalancingRuleImpl fromDefaultFrontend() {
-        return this.fromFrontend(null);
+    public LoadBalancingRuleImpl withLoadDistribution(LoadDistribution loadDistribution) {
+        this.inner().withLoadDistribution(loadDistribution);
+        return this;
     }
 
     @Override
@@ -190,18 +248,9 @@ class LoadBalancingRuleImpl
     }
 
     @Override
-    public LoadBalancingRuleImpl toDefaultBackend() {
-        return this.toBackend(null);
-    }
-
-    @Override
     public LoadBalancingRuleImpl toBackend(String backendName) {
         // Ensure existence of backend, creating one if needed
-        if (backendName == null) {
-            backendName = this.parent().ensureDefaultBackend().name();
-        } else {
-            this.parent().defineBackend(backendName).attach();
-        }
+        this.parent().defineBackend(backendName).attach();
 
         SubResource backendRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/backendAddressPools/" + backendName);
@@ -218,7 +267,7 @@ class LoadBalancingRuleImpl
     }
 
     @Override
-    public Update withoutProbe() {
+    public LoadBalancingRuleImpl withoutProbe() {
         this.inner().withProbe(null);
         return this;
     }

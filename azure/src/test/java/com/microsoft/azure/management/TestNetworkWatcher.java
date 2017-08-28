@@ -41,6 +41,15 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
     public NetworkWatcher createResource(NetworkWatchers networkWatchers) throws Exception {
         // Network Watcher should be in the same region as monitored resources
         initializeResourceNames();
+
+        // make sure Network Watcher is disabled in current subscription and region as only one can exist
+        List<NetworkWatcher> nwList = networkWatchers.list();
+        for (NetworkWatcher nw : nwList) {
+            if (REGION.equals(nw.region())) {
+                networkWatchers.deleteById(nw.id());
+            }
+        }
+        // create Network Watcher
         NetworkWatcher nw = networkWatchers.define(nwName)
                 .withRegion(REGION)
                 .withNewResourceGroup()

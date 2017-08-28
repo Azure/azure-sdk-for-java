@@ -10,6 +10,8 @@ import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.network.ApplicationGateway;
+import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGateways;
 import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.network.Network;
@@ -26,10 +28,12 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -75,6 +79,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
                 .withSerializerAdapter(new AzureJacksonAdapter())
                 .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                 .withInterceptor(new ProviderRegistrationInterceptor(credentials))
+                .withInterceptor(new ResourceManagerThrottlingInterceptor())
                 .build(), subscriptionId);
     }
 
@@ -242,10 +247,10 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
         if (subnetRefs != null) {
             for (SubnetInner subnetRef : subnetRefs) {
                 String networkId = ResourceUtils.parentResourceIdFromResourceId(subnetRef.id());
-                Network network = networks.get(networkId);
+                Network network = networks.get(networkId.toLowerCase());
                 if (network == null) {
                     network = this.networks().getById(networkId);
-                    networks.put(networkId, network);
+                    networks.put(networkId.toLowerCase(), network);
                 }
 
                 String subnetName = ResourceUtils.nameFromResourceId(subnetRef.id());
@@ -254,5 +259,27 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
         }
 
         return Collections.unmodifiableList(subnets);
+    }
+
+    // Internal utility function
+    Collection<ApplicationGatewayBackend> listAssociatedApplicationGatewayBackends(List<ApplicationGatewayBackendAddressPoolInner> backendRefs) {
+        final Map<String, ApplicationGateway> appGateways = new HashMap<>();
+        final List<ApplicationGatewayBackend> backends = new ArrayList<>();
+
+        if (backendRefs != null) {
+            for (ApplicationGatewayBackendAddressPoolInner backendRef : backendRefs) {
+                String appGatewayId = ResourceUtils.parentResourceIdFromResourceId(backendRef.id());
+                ApplicationGateway appGateway = appGateways.get(appGatewayId.toLowerCase());
+                if (appGateway == null) {
+                    appGateway = this.applicationGateways().getById(appGatewayId);
+                    appGateways.put(appGatewayId.toLowerCase(), appGateway);
+                }
+
+                String backendName = ResourceUtils.nameFromResourceId(backendRef.id());
+                backends.add(appGateway.backends().get(backendName));
+            }
+        }
+
+        return Collections.unmodifiableCollection(backends);
     }
 }

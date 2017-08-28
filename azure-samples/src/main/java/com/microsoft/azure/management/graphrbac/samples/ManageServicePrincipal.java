@@ -31,6 +31,7 @@ import java.util.List;
  *  - Export the Service Principal to an authentication file
  *  - Use the file to list subcription virtual machines
  *  - Update the application
+ *  - Update the service principal to revoke the password credential and the role
  *  - Delete the application and Service Principal.
  */
 
@@ -83,6 +84,8 @@ public final class ManageServicePrincipal {
             useAuthFile(authFilePath);
 
             manageApplication(authenticated, activeDirectoryApplication);
+
+            manageServicePrincipal(authenticated, servicePrincipal);
 
             return true;
         } catch (Exception e) {
@@ -182,6 +185,13 @@ public final class ManageServicePrincipal {
                 .attach()
                 // add a reply url
                 .withReplyUrl("http://localhost:8080")
+                .apply();
+    }
+
+    private static void manageServicePrincipal(Azure.Authenticated authenticated, ServicePrincipal servicePrincipal) {
+        servicePrincipal.update()
+                .withoutCredential("ServicePrincipalAzureSample")
+                .withoutRole(servicePrincipal.roleAssignments().iterator().next())
                 .apply();
     }
 

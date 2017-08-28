@@ -10,6 +10,7 @@ import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.LogLevel;
@@ -18,10 +19,8 @@ import com.microsoft.rest.interceptors.LoggingInterceptor;
 import org.junit.*;
 import org.junit.rules.TestName;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
+import java.io.*;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 public abstract class TestBase {
@@ -41,6 +40,11 @@ public abstract class TestBase {
         PLAYBACK,
         RECORD
     }
+
+    protected final static String ZERO_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
+    protected final static String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
+    private static final String PLAYBACK_URI_BASE = "http://localhost:";
+    protected static String playbackUri = null;
 
     private final RunCondition runCondition;
 
@@ -66,7 +70,7 @@ public abstract class TestBase {
 
     private static TestMode testMode = null;
 
-    private static void initTestMode() throws IOException{
+    private static void initTestMode() throws IOException {
         String azureTestMode = System.getenv("AZURE_TEST_MODE");
         if (azureTestMode != null) {
             if (azureTestMode.equalsIgnoreCase("Record")) {
@@ -77,16 +81,25 @@ public abstract class TestBase {
                 throw new IOException("Unknown AZURE_TEST_MODE: " + azureTestMode);
             }
         } else {
-            System.out.print("Environment variable 'AZURE_TEST_MODE' has not been set yet. Use 'Playback' mode.");
+            //System.out.print("Environment variable 'AZURE_TEST_MODE' has not been set yet. Using 'Playback' mode.");
             testMode = TestMode.PLAYBACK;
         }
     }
 
-
-    protected final static String ZERO_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
-    protected final static String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
-    private static final String PLAYBACK_URI_BASE = "http://localhost:";
-    protected static String playbackUri;
+    private static void initPlaybackUri() throws IOException {
+        if (isPlaybackMode()) {
+            Properties mavenProps = new Properties();
+            InputStream in = TestBase.class.getResourceAsStream("/maven.properties");
+            if (in == null) {
+                throw new IOException("The file \"maven.properties\" has not been generated yet. Please execute \"mvn compile\" to generate the file.");
+            }
+            mavenProps.load(in);
+            String port = mavenProps.getProperty("playbackServerPort");
+            playbackUri = PLAYBACK_URI_BASE + port;
+        } else {
+            playbackUri = PLAYBACK_URI_BASE + "1234";
+        }
+    }
 
     public static boolean isPlaybackMode() {
         if (testMode == null) try {
@@ -106,7 +119,6 @@ public abstract class TestBase {
     public TestName testName = new TestName();
 
     protected InterceptorManager interceptorManager = null;
-    private static DummyServer dummyServer = null;
 
     private static void printThreadInfo(String what) {
         long id = Thread.currentThread().getId();
@@ -115,16 +127,10 @@ public abstract class TestBase {
     }
 
     @BeforeClass
-    public static void beforeClass() throws Exception {
+    public static void beforeClass() throws IOException {
         printThreadInfo("beforeClass");
         initTestMode();
-        if (isPlaybackMode()) {
-            dummyServer = DummyServer.createOnAvailablePort();
-            playbackUri = PLAYBACK_URI_BASE + dummyServer.getPort();
-            dummyServer.start();
-        } else {
-            playbackUri = PLAYBACK_URI_BASE +"1234";
-        }
+        initPlaybackUri();
     }
 
     @Before
@@ -140,19 +146,20 @@ public abstract class TestBase {
         String defaultSubscription;
 
         if (isPlaybackMode()) {
-            credentials = new AzureTestCredentials(this.playbackUri, ZERO_TENANT, true);
+            credentials = new AzureTestCredentials(playbackUri, ZERO_TENANT, true);
             restClient = buildRestClient(new RestClient.Builder()
-                    .withBaseUrl(this.playbackUri + "/")
+                    .withBaseUrl(playbackUri + "/")
                     .withSerializerAdapter(new AzureJacksonAdapter())
                     .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                     .withCredentials(credentials)
                     .withLogLevel(LogLevel.NONE)
                     .withNetworkInterceptor(new LoggingInterceptor(LogLevel.BODY_AND_HEADERS))
                     .withNetworkInterceptor(interceptorManager.initInterceptor())
+                    .withInterceptor(new ResourceManagerThrottlingInterceptor())
                     ,true);
 
             defaultSubscription = ZERO_SUBSCRIPTION;
-            System.out.println(this.playbackUri);
+            System.out.println(playbackUri);
             out = System.out;
             System.setOut(new PrintStream(new OutputStream() {
                 public void write(int b) {
@@ -173,6 +180,7 @@ public abstract class TestBase {
                     .withReadTimeout(3, TimeUnit.MINUTES)
                     .withNetworkInterceptor(new LoggingInterceptor(LogLevel.BODY_AND_HEADERS))
                     .withNetworkInterceptor(interceptorManager.initInterceptor())
+                    .withInterceptor(new ResourceManagerThrottlingInterceptor())
                     ,false);
 
             defaultSubscription = credentials.defaultSubscriptionId();
@@ -191,13 +199,6 @@ public abstract class TestBase {
         }
         cleanUpResources();
         interceptorManager.finalizeInterceptor();
-    }
-
-    @AfterClass
-    public static void afterClass() {
-        if (isPlaybackMode()) {
-            dummyServer.stop();
-        }
     }
 
     protected void addTextReplacementRule(String from, String to ) {

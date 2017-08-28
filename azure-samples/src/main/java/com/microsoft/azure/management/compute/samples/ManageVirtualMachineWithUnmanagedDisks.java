@@ -96,9 +96,9 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
             windowsVM.update()
                     .withNewUnmanagedDataDisk(10)
                     .defineUnmanagedDataDisk(dataDiskName)
-                    .withNewVhd(20)
-                    .withCaching(CachingTypes.READ_WRITE)
-                    .attach()
+                        .withNewVhd(20)
+                        .withCaching(CachingTypes.READ_WRITE)
+                        .attach()
                     .apply();
 
 
@@ -130,8 +130,8 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
 
             windowsVM.update()
                     .updateUnmanagedDataDisk(dataDisk.name())
-                    .withSizeInGB(30)
-                    .parent()
+                        .withSizeInGB(30)
+                        .parent()
                     .apply();
 
             System.out.println("Expanded VM " + windowsVM.id() + "'s data disk to 30GB");

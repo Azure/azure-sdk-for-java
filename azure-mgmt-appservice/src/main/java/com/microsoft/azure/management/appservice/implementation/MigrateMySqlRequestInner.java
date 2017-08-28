@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import com.microsoft.azure.management.appservice.MySqlMigrationType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -18,11 +19,17 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class MigrateMySqlRequestInner extends Resource {
     /**
-     * Connection string to the remote MySQL database to which data should be
-     * migrated.
+     * Connection string to the remote MySQL database.
      */
     @JsonProperty(value = "properties.connectionString")
     private String connectionString;
+
+    /**
+     * The type of migration operation to be done. Possible values include:
+     * 'LocalToRemote', 'RemoteToLocal'.
+     */
+    @JsonProperty(value = "properties.migrationType")
+    private MySqlMigrationType migrationType;
 
     /**
      * Get the connectionString value.
@@ -41,6 +48,26 @@ public class MigrateMySqlRequestInner extends Resource {
      */
     public MigrateMySqlRequestInner withConnectionString(String connectionString) {
         this.connectionString = connectionString;
+        return this;
+    }
+
+    /**
+     * Get the migrationType value.
+     *
+     * @return the migrationType value
+     */
+    public MySqlMigrationType migrationType() {
+        return this.migrationType;
+    }
+
+    /**
+     * Set the migrationType value.
+     *
+     * @param migrationType the migrationType value to set
+     * @return the MigrateMySqlRequestInner object itself.
+     */
+    public MigrateMySqlRequestInner withMigrationType(MySqlMigrationType migrationType) {
+        this.migrationType = migrationType;
         return this;
     }
 

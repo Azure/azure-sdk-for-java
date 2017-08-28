@@ -43,9 +43,14 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .withPrimaryPrivateIPAddressDynamic()
                 .withNewPrimaryPublicIPAddress(pipName)
                 .withIPForwarding()
+                .withAcceleratedNetworking()
                 .create();
 
-        // Verifications
+        // Verify NIC settings
+        Assert.assertTrue(nic.isAcceleratedNetworkingEnabled());
+        Assert.assertTrue(nic.isIPForwardingEnabled());
+
+        // Verify IP configs
         NicIPConfiguration ipConfig = nic.primaryIPConfiguration();
         Assert.assertNotNull(ipConfig);
         network = ipConfig.getNetwork();
@@ -56,8 +61,16 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
         Set<NicIPConfiguration> ipConfigs = subnet.getNetworkInterfaceIPConfigurations();
         Assert.assertNotNull(ipConfigs);
         Assert.assertEquals(1, ipConfigs.size());
-        NicIPConfiguration ipConfig2 = ipConfigs.iterator().next();
-        Assert.assertEquals(ipConfig.name().toLowerCase(), ipConfig2.name().toLowerCase());
+        NicIPConfiguration ipConfig2 = null;
+        for (NicIPConfiguration i : ipConfigs) {
+            if (i.name().equalsIgnoreCase(ipConfig.name())) {
+                ipConfig2 = i;
+                break;
+            }
+        }
+        Assert.assertNotNull(ipConfig2);
+        Assert.assertTrue(ipConfig.name().equalsIgnoreCase(ipConfig2.name()));
+
         return nic;
     }
 
@@ -65,8 +78,9 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
     public NetworkInterface updateResource(NetworkInterface resource) throws Exception {
         resource =  resource.update()
                 .withoutIPForwarding()
+                .withoutAcceleratedNetworking()
                 .withSubnet("subnet2")
-                .updateIPConfiguration("primary") // Updating the primary ip configuration
+                .updateIPConfiguration("primary")  // Updating the primary ip configuration
                     .withPrivateIPAddressDynamic() // Equivalent to ..update().withPrimaryPrivateIPAddressDynamic()
                     .withoutPublicIPAddress()      // Equivalent to ..update().withoutPrimaryPublicIPAddress()
                     .parent()
@@ -75,13 +89,16 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .apply();
 
         // Verifications
-        Assert.assertTrue(!resource.isIPForwardingEnabled());
+        Assert.assertFalse(resource.isAcceleratedNetworkingEnabled());
+        Assert.assertFalse(resource.isIPForwardingEnabled());
         NicIPConfiguration primaryIpConfig = resource.primaryIPConfiguration();
         Assert.assertNotNull(primaryIpConfig);
         Assert.assertTrue(primaryIpConfig.isPrimary());
         Assert.assertTrue("subnet2".equalsIgnoreCase(primaryIpConfig.subnetName()));
         Assert.assertNull(primaryIpConfig.publicIPAddressId());
         Assert.assertTrue(resource.tags().containsKey("tag1"));
+
+        Assert.assertEquals(1,  resource.ipConfigurations().size());
         return resource;
     }
 
@@ -104,7 +121,8 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
             info.append("\n\t\t").append(dnsServerIp);
         }
 
-        info.append("\n\tIP forwarding enabled: ").append(resource.isIPForwardingEnabled())
+        info.append("\n\tIP forwarding enabled? ").append(resource.isIPForwardingEnabled())
+                .append("\n\tAccelerated networking enabled? ").append(resource.isAcceleratedNetworkingEnabled())
                 .append("\n\tMAC Address:").append(resource.macAddress())
                 .append("\n\tPrivate IP:").append(resource.primaryPrivateIP())
                 .append("\n\tPrivate allocation method:").append(resource.primaryPrivateIPAllocationMethod())

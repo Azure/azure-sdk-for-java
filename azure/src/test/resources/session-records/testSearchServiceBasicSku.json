@@ -1,0 +1,985 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:16 GMT",
+      "content-length" : "2040",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14996",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "746f0e00-19ad-48ce-a27e-5989098f06d0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000317Z:746f0e00-19ad-48ce-a27e-5989098f06d0",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "746f0e00-19ad-48ce-a27e-5989098f06d0",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Default-Storage-EastUS\",\"name\":\"Default-Storage-EastUS\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg0fb824152\",\"name\":\"javacsmrg0fb824152\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgbb127984f\",\"name\":\"javacsmrgbb127984f\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/linux-rg\",\"name\":\"linux-rg\",\"location\":\"southcentralus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2delete\",\"name\":\"rg2delete\",\"location\":\"southcentralus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-webapp-170317114541\",\"name\":\"rg-webapp-170317114541\",\"location\":\"eastus2\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsearch90679b\",\"name\":\"rgsearch90679b\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgtodelete\",\"name\":\"rgtodelete\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/squarerg\",\"name\":\"squarerg\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv288917group\",\"name\":\"ssrv288917group\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv707696group\",\"name\":\"ssrv707696group\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Default-Storage-EastUS/providers/Microsoft.Search/searchServices?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:16 GMT",
+      "content-length" : "12",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14995",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "42503d50-3c3f-43bf-87e4-0d2ad00387ff",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000317Z:42503d50-3c3f-43bf-87e4-0d2ad00387ff",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "42503d50-3c3f-43bf-87e4-0d2ad00387ff",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg0fb824152/providers/Microsoft.Search/searchServices?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:16 GMT",
+      "content-length" : "12",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14994",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "5748ed5d-3f85-461f-a46d-22efc7c5051b",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000317Z:5748ed5d-3f85-461f-a46d-22efc7c5051b",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "5748ed5d-3f85-461f-a46d-22efc7c5051b",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgbb127984f/providers/Microsoft.Search/searchServices?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:16 GMT",
+      "content-length" : "12",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14993",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "f0c3773a-4f8a-4b3f-b550-1bf9d753b4f3",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000317Z:f0c3773a-4f8a-4b3f-b550-1bf9d753b4f3",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "f0c3773a-4f8a-4b3f-b550-1bf9d753b4f3",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/linux-rg/providers/Microsoft.Search/searchServices?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:16 GMT",
+      "content-length" : "12",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14992",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "de181417-5083-4489-b19a-59943899b6ba",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000317Z:de181417-5083-4489-b19a-59943899b6ba",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "de181417-5083-4489-b19a-59943899b6ba",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2delete/providers/Microsoft.Search/searchServices?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:16 GMT",
+      "content-length" : "12",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14991",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "9a107d8d-65c6-4e0c-a26f-4c30afb3ae76",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000317Z:9a107d8d-65c6-4e0c-a26f-4c30afb3ae76",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "9a107d8d-65c6-4e0c-a26f-4c30afb3ae76",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-webapp-170317114541/providers/Microsoft.Search/searchServices?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:17 GMT",
+      "content-length" : "12",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14990",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "a6046c69-45bf-4532-a21c-57c90a8304a2",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000317Z:a6046c69-45bf-4532-a21c-57c90a8304a2",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "a6046c69-45bf-4532-a21c-57c90a8304a2",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsearch90679b/providers/Microsoft.Search/searchServices?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:17 GMT",
+      "content-length" : "535",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding,Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "request-id" : "18419463-aab5-4d65-80fc-2032264f6879",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14989",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "e2d11692-45ca-4c1f-bf98-06a2d12e9c18",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000318Z:e2d11692-45ca-4c1f-bf98-06a2d12e9c18",
+      "elapsed-time" : "226",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "18419463-aab5-4d65-80fc-2032264f6879",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsearch90679b/providers/Microsoft.Search/searchServices/ssrvcf821115a8ee\",\"name\":\"ssrvcf821115a8ee\",\"type\":\"Microsoft.Search/searchServices\",\"location\":\"East US\",\"tags\":{\"tag2\":\"value2\",\"tag3\":\"value3\"},\"properties\":{\"replicaCount\":3,\"partitionCount\":3,\"status\":\"running\",\"statusDetails\":\"\",\"provisioningState\":\"succeeded\",\"hostingMode\":\"Default\",\"ETag\":\"W/\\\"datetime'2017-08-09T21%3A27%3A55.7188169Z'\\\"\"},\"sku\":{\"name\":\"standard\"}}],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgtodelete/providers/Microsoft.Search/searchServices?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:17 GMT",
+      "content-length" : "12",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14988",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "6d3daf09-19d4-4e3c-baf7-3db601f7424e",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000318Z:6d3daf09-19d4-4e3c-baf7-3db601f7424e",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "6d3daf09-19d4-4e3c-baf7-3db601f7424e",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/squarerg/providers/Microsoft.Search/searchServices?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:18 GMT",
+      "content-length" : "12",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14987",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "e1afc502-e2e5-435c-bacc-92f6d0bdd928",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000318Z:e1afc502-e2e5-435c-bacc-92f6d0bdd928",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "e1afc502-e2e5-435c-bacc-92f6d0bdd928",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv288917group/providers/Microsoft.Search/searchServices?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:18 GMT",
+      "content-length" : "524",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding,Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "request-id" : "b909c27d-8ea6-44e0-836a-8566731a5061",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14986",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "450c258a-49a9-4b75-88e6-cf5ba59fb161",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000319Z:450c258a-49a9-4b75-88e6-cf5ba59fb161",
+      "elapsed-time" : "171",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "b909c27d-8ea6-44e0-836a-8566731a5061",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv288917group/providers/Microsoft.Search/searchServices/ssrv288917\",\"name\":\"ssrv288917\",\"type\":\"Microsoft.Search/searchServices\",\"location\":\"West US\",\"tags\":{\"tag2\":\"value2\",\"tag3\":\"value3\"},\"properties\":{\"replicaCount\":2,\"partitionCount\":2,\"status\":\"running\",\"statusDetails\":\"\",\"provisioningState\":\"succeeded\",\"hostingMode\":\"Default\",\"ETag\":\"W/\\\"datetime'2017-08-10T22%3A11%3A24.1911525Z'\\\"\"},\"sku\":{\"name\":\"standard\"}}],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv707696group/providers/Microsoft.Search/searchServices?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:18 GMT",
+      "content-length" : "498",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding,Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "request-id" : "daeb0709-f729-4d1b-b8c8-6d82e7f754b7",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14985",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "889281c6-b0b1-4ff0-9aa3-8d00bcf999ff",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000319Z:889281c6-b0b1-4ff0-9aa3-8d00bcf999ff",
+      "elapsed-time" : "81",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "daeb0709-f729-4d1b-b8c8-6d82e7f754b7",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv707696group/providers/Microsoft.Search/searchServices/ssrv707696\",\"name\":\"ssrv707696\",\"type\":\"Microsoft.Search/searchServices\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"replicaCount\":2,\"partitionCount\":1,\"status\":\"provisioning\",\"statusDetails\":\"\",\"provisioningState\":\"provisioning\",\"hostingMode\":\"Default\",\"ETag\":\"W/\\\"datetime'2017-08-10T23%3A06%3A41.0727187Z'\\\"\"},\"sku\":{\"name\":\"basic\"}}],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/ssrv36378egroup?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:19 GMT",
+      "content-length" : "183",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "eee6fe84-7415-4ee1-a328-bc4c2276e675",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000320Z:eee6fe84-7415-4ee1-a328-bc4c2276e675",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "eee6fe84-7415-4ee1-a328-bc4c2276e675",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv36378egroup\",\"name\":\"ssrv36378egroup\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv36378egroup/providers/Microsoft.Search/searchServices/ssrv36378e?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:23 GMT",
+      "content-length" : "404",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "retry-after" : "0",
+      "request-id" : "0c49ed3d-ffb8-4817-8942-0b2ce5bfd2e4",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "b6a1174c-1968-4e15-bb29-a282eb74d734",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000324Z:b6a1174c-1968-4e15-bb29-a282eb74d734",
+      "elapsed-time" : "4231",
+      "content-type" : "application/json; charset=utf-8",
+      "etag" : "W/\"datetime'2017-08-11T00%3A03%3A24.6903639Z'\"",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "0c49ed3d-ffb8-4817-8942-0b2ce5bfd2e4",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv36378egroup/providers/Microsoft.Search/searchServices/ssrv36378e\",\"name\":\"ssrv36378e\",\"type\":\"Microsoft.Search/searchServices\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"replicaCount\":1,\"partitionCount\":1,\"status\":\"running\",\"statusDetails\":\"\",\"provisioningState\":\"succeeded\",\"hostingMode\":\"Default\"},\"sku\":{\"name\":\"basic\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv36378egroup/providers/Microsoft.Search/searchServices/ssrv36378e/listAdminKeys?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:23 GMT",
+      "content-length" : "99",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding,Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1197",
+      "retry-after" : "0",
+      "request-id" : "57bf92ac-33a7-477b-a161-0895c803a72f",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "19e67539-0c4d-4c2a-a7d4-9e8a81316128",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000324Z:19e67539-0c4d-4c2a-a7d4-9e8a81316128",
+      "elapsed-time" : "168",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "57bf92ac-33a7-477b-a161-0895c803a72f",
+      "Body" : "{\"primaryKey\":\"A302EA16FA58E966C0CFBFF2BEDC208A\",\"secondaryKey\":\"86E40316CC13578A1624F324B68960C1\"}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv36378egroup/providers/Microsoft.Search/searchServices/ssrv36378e/listQueryKeys?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:24 GMT",
+      "content-length" : "82",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding,Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "request-id" : "f888ca0a-6b61-4919-83cb-7a18d9fdc111",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14984",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "88609662-41e7-4508-aad0-3cdd93003357",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000325Z:88609662-41e7-4508-aad0-3cdd93003357",
+      "elapsed-time" : "140",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "f888ca0a-6b61-4919-83cb-7a18d9fdc111",
+      "Body" : "{\"value\":[{\"name\":null,\"key\":\"E52EA82347262ABABBE800E39BECFD4F\"}],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:24 GMT",
+      "content-length" : "2224",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14983",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "71466e88-a267-4a80-a30d-0250e4a700e1",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000325Z:71466e88-a267-4a80-a30d-0250e4a700e1",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "71466e88-a267-4a80-a30d-0250e4a700e1",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Default-Storage-EastUS\",\"name\":\"Default-Storage-EastUS\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg0fb824152\",\"name\":\"javacsmrg0fb824152\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgbb127984f\",\"name\":\"javacsmrgbb127984f\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/linux-rg\",\"name\":\"linux-rg\",\"location\":\"southcentralus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2delete\",\"name\":\"rg2delete\",\"location\":\"southcentralus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-webapp-170317114541\",\"name\":\"rg-webapp-170317114541\",\"location\":\"eastus2\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsearch90679b\",\"name\":\"rgsearch90679b\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgtodelete\",\"name\":\"rgtodelete\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/squarerg\",\"name\":\"squarerg\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv288917group\",\"name\":\"ssrv288917group\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv36378egroup\",\"name\":\"ssrv36378egroup\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv707696group\",\"name\":\"ssrv707696group\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Default-Storage-EastUS/providers/Microsoft.Search/searchServices?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:24 GMT",
+      "content-length" : "12",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14982",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "931a0ef3-4288-4dcf-9e17-5a10144e989e",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000325Z:931a0ef3-4288-4dcf-9e17-5a10144e989e",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "931a0ef3-4288-4dcf-9e17-5a10144e989e",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg0fb824152/providers/Microsoft.Search/searchServices?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:24 GMT",
+      "content-length" : "12",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14981",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "d35313d9-ae0e-4537-a80b-1adbda8d5478",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000325Z:d35313d9-ae0e-4537-a80b-1adbda8d5478",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "d35313d9-ae0e-4537-a80b-1adbda8d5478",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgbb127984f/providers/Microsoft.Search/searchServices?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:24 GMT",
+      "content-length" : "12",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14980",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "3dac7c23-d7bb-4f30-8fd5-cdde3a3b7883",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000325Z:3dac7c23-d7bb-4f30-8fd5-cdde3a3b7883",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "3dac7c23-d7bb-4f30-8fd5-cdde3a3b7883",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/linux-rg/providers/Microsoft.Search/searchServices?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:24 GMT",
+      "content-length" : "12",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14979",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "7bab56df-5a3b-43c8-8063-66b20acf1dba",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000325Z:7bab56df-5a3b-43c8-8063-66b20acf1dba",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "7bab56df-5a3b-43c8-8063-66b20acf1dba",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2delete/providers/Microsoft.Search/searchServices?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:24 GMT",
+      "content-length" : "12",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14978",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "6f99537b-c166-4d4a-be0e-dd4ccaa9d19c",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000325Z:6f99537b-c166-4d4a-be0e-dd4ccaa9d19c",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "6f99537b-c166-4d4a-be0e-dd4ccaa9d19c",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-webapp-170317114541/providers/Microsoft.Search/searchServices?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:24 GMT",
+      "content-length" : "12",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14977",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "480e0e12-48ab-4b25-97b9-2508078ef46e",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000325Z:480e0e12-48ab-4b25-97b9-2508078ef46e",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "480e0e12-48ab-4b25-97b9-2508078ef46e",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsearch90679b/providers/Microsoft.Search/searchServices?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:24 GMT",
+      "content-length" : "535",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding,Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "request-id" : "78fdfb05-29ab-4849-b7fd-b5f045d11054",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14976",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "049e98b2-3907-41ca-b96a-5013719b5055",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000325Z:049e98b2-3907-41ca-b96a-5013719b5055",
+      "elapsed-time" : "69",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "78fdfb05-29ab-4849-b7fd-b5f045d11054",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsearch90679b/providers/Microsoft.Search/searchServices/ssrvcf821115a8ee\",\"name\":\"ssrvcf821115a8ee\",\"type\":\"Microsoft.Search/searchServices\",\"location\":\"East US\",\"tags\":{\"tag2\":\"value2\",\"tag3\":\"value3\"},\"properties\":{\"replicaCount\":3,\"partitionCount\":3,\"status\":\"running\",\"statusDetails\":\"\",\"provisioningState\":\"succeeded\",\"hostingMode\":\"Default\",\"ETag\":\"W/\\\"datetime'2017-08-09T21%3A27%3A55.7188169Z'\\\"\"},\"sku\":{\"name\":\"standard\"}}],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgtodelete/providers/Microsoft.Search/searchServices?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:24 GMT",
+      "content-length" : "12",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14975",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "5300616d-1f91-4936-8a7e-9dee0d2f67e7",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000325Z:5300616d-1f91-4936-8a7e-9dee0d2f67e7",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "5300616d-1f91-4936-8a7e-9dee0d2f67e7",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/squarerg/providers/Microsoft.Search/searchServices?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:24 GMT",
+      "content-length" : "12",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14974",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "08b1f398-10fe-4e2d-a247-058ea0979e8c",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000325Z:08b1f398-10fe-4e2d-a247-058ea0979e8c",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "08b1f398-10fe-4e2d-a247-058ea0979e8c",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv288917group/providers/Microsoft.Search/searchServices?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:24 GMT",
+      "content-length" : "524",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding,Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "request-id" : "99395905-94b7-4e1e-a2cd-8922b6c67a3a",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14973",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "1776ed72-012a-4386-9a7d-43e611816af8",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000325Z:1776ed72-012a-4386-9a7d-43e611816af8",
+      "elapsed-time" : "92",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "99395905-94b7-4e1e-a2cd-8922b6c67a3a",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv288917group/providers/Microsoft.Search/searchServices/ssrv288917\",\"name\":\"ssrv288917\",\"type\":\"Microsoft.Search/searchServices\",\"location\":\"West US\",\"tags\":{\"tag2\":\"value2\",\"tag3\":\"value3\"},\"properties\":{\"replicaCount\":2,\"partitionCount\":2,\"status\":\"running\",\"statusDetails\":\"\",\"provisioningState\":\"succeeded\",\"hostingMode\":\"Default\",\"ETag\":\"W/\\\"datetime'2017-08-10T22%3A11%3A24.1911525Z'\\\"\"},\"sku\":{\"name\":\"standard\"}}],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv36378egroup/providers/Microsoft.Search/searchServices?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:25 GMT",
+      "content-length" : "490",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding,Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "request-id" : "866fda94-6cba-436d-8dd2-28ac1e2c9e9e",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14972",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "cc3c9243-0a9d-4aee-b154-479ed9cac0fc",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000326Z:cc3c9243-0a9d-4aee-b154-479ed9cac0fc",
+      "elapsed-time" : "78",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "866fda94-6cba-436d-8dd2-28ac1e2c9e9e",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv36378egroup/providers/Microsoft.Search/searchServices/ssrv36378e\",\"name\":\"ssrv36378e\",\"type\":\"Microsoft.Search/searchServices\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"replicaCount\":1,\"partitionCount\":1,\"status\":\"running\",\"statusDetails\":\"\",\"provisioningState\":\"succeeded\",\"hostingMode\":\"Default\",\"ETag\":\"W/\\\"datetime'2017-08-11T00%3A03%3A24.6903639Z'\\\"\"},\"sku\":{\"name\":\"basic\"}}],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv707696group/providers/Microsoft.Search/searchServices?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:25 GMT",
+      "content-length" : "498",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding,Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "request-id" : "e22850d0-f0ba-44df-b935-019ed733179b",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14971",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "78fb0554-bc63-4b91-99ea-4bceeb9d69c4",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000326Z:78fb0554-bc63-4b91-99ea-4bceeb9d69c4",
+      "elapsed-time" : "80",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "e22850d0-f0ba-44df-b935-019ed733179b",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv707696group/providers/Microsoft.Search/searchServices/ssrv707696\",\"name\":\"ssrv707696\",\"type\":\"Microsoft.Search/searchServices\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"replicaCount\":2,\"partitionCount\":1,\"status\":\"provisioning\",\"statusDetails\":\"\",\"provisioningState\":\"provisioning\",\"hostingMode\":\"Default\",\"ETag\":\"W/\\\"datetime'2017-08-10T23%3A06%3A41.0727187Z'\\\"\"},\"sku\":{\"name\":\"basic\"}}],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv36378egroup/providers/Microsoft.Search/searchServices/ssrv36378e?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:25 GMT",
+      "content-length" : "404",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding,Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "request-id" : "2af16216-5740-4481-bbec-c01d5b4a859b",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14970",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "3adab607-dac3-4d84-9317-bc6169408cd8",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000326Z:3adab607-dac3-4d84-9317-bc6169408cd8",
+      "elapsed-time" : "70",
+      "content-type" : "application/json; charset=utf-8",
+      "etag" : "W/\"datetime'2017-08-11T00%3A03%3A24.6903639Z'\"",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "2af16216-5740-4481-bbec-c01d5b4a859b",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv36378egroup/providers/Microsoft.Search/searchServices/ssrv36378e\",\"name\":\"ssrv36378e\",\"type\":\"Microsoft.Search/searchServices\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"replicaCount\":1,\"partitionCount\":1,\"status\":\"running\",\"statusDetails\":\"\",\"provisioningState\":\"succeeded\",\"hostingMode\":\"Default\"},\"sku\":{\"name\":\"basic\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv36378egroup/providers/Microsoft.Search/searchServices/ssrv36378e?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:25 GMT",
+      "content-length" : "404",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding,Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "request-id" : "605e1532-d894-4e63-bc24-d8d404a3b9c5",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14969",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "9055c3b1-3bf7-4ce5-b9f6-f6fd7185fc02",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000326Z:9055c3b1-3bf7-4ce5-b9f6-f6fd7185fc02",
+      "elapsed-time" : "75",
+      "content-type" : "application/json; charset=utf-8",
+      "etag" : "W/\"datetime'2017-08-11T00%3A03%3A24.6903639Z'\"",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "605e1532-d894-4e63-bc24-d8d404a3b9c5",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv36378egroup/providers/Microsoft.Search/searchServices/ssrv36378e\",\"name\":\"ssrv36378e\",\"type\":\"Microsoft.Search/searchServices\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"replicaCount\":1,\"partitionCount\":1,\"status\":\"running\",\"statusDetails\":\"\",\"provisioningState\":\"succeeded\",\"hostingMode\":\"Default\"},\"sku\":{\"name\":\"basic\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv36378egroup/providers/Microsoft.Search/searchServices/ssrv36378e/listAdminKeys?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:25 GMT",
+      "content-length" : "99",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding,Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1196",
+      "retry-after" : "0",
+      "request-id" : "9cd5f666-2cfb-4706-b985-a0d720c956c6",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "677c8272-89f3-45ab-8dd9-9dd5bda40b83",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000326Z:677c8272-89f3-45ab-8dd9-9dd5bda40b83",
+      "elapsed-time" : "133",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "9cd5f666-2cfb-4706-b985-a0d720c956c6",
+      "Body" : "{\"primaryKey\":\"A302EA16FA58E966C0CFBFF2BEDC208A\",\"secondaryKey\":\"86E40316CC13578A1624F324B68960C1\"}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv36378egroup/providers/Microsoft.Search/searchServices/ssrv36378e/listQueryKeys?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:25 GMT",
+      "content-length" : "82",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding,Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "request-id" : "3087fb8a-9806-41c5-be9f-14bcf75aa410",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14968",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "2ecdf252-0dec-4c70-902a-832f7e18d447",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000326Z:2ecdf252-0dec-4c70-902a-832f7e18d447",
+      "elapsed-time" : "130",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "3087fb8a-9806-41c5-be9f-14bcf75aa410",
+      "Body" : "{\"value\":[{\"name\":null,\"key\":\"E52EA82347262ABABBE800E39BECFD4F\"}],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv36378egroup/providers/Microsoft.Search/searchServices/ssrv36378e?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:26 GMT",
+      "content-length" : "435",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding,Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1195",
+      "retry-after" : "0",
+      "request-id" : "bb5f0bb9-1876-4c72-9b30-7aa49320e791",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "e7c78d7c-42c6-4032-927c-60f10bfc0cc1",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000327Z:e7c78d7c-42c6-4032-927c-60f10bfc0cc1",
+      "elapsed-time" : "159",
+      "content-type" : "application/json; charset=utf-8",
+      "etag" : "W/\"datetime'2017-08-11T00%3A03%3A27.4187899Z'\"",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "bb5f0bb9-1876-4c72-9b30-7aa49320e791",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv36378egroup/providers/Microsoft.Search/searchServices/ssrv36378e\",\"name\":\"ssrv36378e\",\"type\":\"Microsoft.Search/searchServices\",\"location\":\"West US\",\"tags\":{\"tag2\":\"value2\",\"tag3\":\"value3\"},\"properties\":{\"replicaCount\":1,\"partitionCount\":1,\"status\":\"running\",\"statusDetails\":\"\",\"provisioningState\":\"succeeded\",\"hostingMode\":\"Default\"},\"sku\":{\"name\":\"basic\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv36378egroup/providers/Microsoft.Search/searchServices/ssrv36378e/listAdminKeys?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:26 GMT",
+      "content-length" : "99",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding,Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1194",
+      "retry-after" : "0",
+      "request-id" : "7681b7b8-34b8-4ad4-88b4-a5028d977850",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "639f99f8-d0c3-4156-82f2-87b9039164a2",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000327Z:639f99f8-d0c3-4156-82f2-87b9039164a2",
+      "elapsed-time" : "191",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "7681b7b8-34b8-4ad4-88b4-a5028d977850",
+      "Body" : "{\"primaryKey\":\"A302EA16FA58E966C0CFBFF2BEDC208A\",\"secondaryKey\":\"86E40316CC13578A1624F324B68960C1\"}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv36378egroup/providers/Microsoft.Search/searchServices/ssrv36378e/listQueryKeys?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:26 GMT",
+      "content-length" : "82",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding,Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "request-id" : "501c734c-176d-4799-93de-aea457b17696",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14967",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "41aed050-452c-47b4-85ab-b81b06f6c907",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000327Z:41aed050-452c-47b4-85ab-b81b06f6c907",
+      "elapsed-time" : "154",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "501c734c-176d-4799-93de-aea457b17696",
+      "Body" : "{\"value\":[{\"name\":null,\"key\":\"E52EA82347262ABABBE800E39BECFD4F\"}],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ssrv36378egroup/providers/Microsoft.Search/searchServices/ssrv36378e?api-version=2015-08-19",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (SearchManagementClient, 2015-08-19)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:28 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1193",
+      "retry-after" : "0",
+      "request-id" : "712ee741-d22f-46d3-bb73-da69233b1170",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "16461699-52d5-4c35-bbed-e2637651e793",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000329Z:16461699-52d5-4c35-bbed-e2637651e793",
+      "elapsed-time" : "1082",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "712ee741-d22f-46d3-bb73-da69233b1170",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/ssrv36378egroup?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.11.6 MacAddressHash:8a55e9ba48fb137616ecc98bc553d89fa0ef072a0c56c09d2a1e8382fde0caec (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 11 Aug 2017 00:03:28 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1192",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "4a53196e-8096-4216-9a78-b975646fbea3",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS:20170811T000329Z:4a53196e-8096-4216-9a78-b975646fbea3",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1TU1JWMzYzNzhFR1JPVVAtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "4a53196e-8096-4216-9a78-b975646fbea3",
+      "Body" : ""
+    }
+  } ],
+  "variables" : [ "36378e" ]
+}

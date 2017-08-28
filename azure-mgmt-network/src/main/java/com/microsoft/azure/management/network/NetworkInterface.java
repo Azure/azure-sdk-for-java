@@ -7,6 +7,8 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.network.implementation.NetworkInterfaceInner;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -27,7 +29,7 @@ public interface NetworkInterface extends
         Refreshable<NetworkInterface>,
         Updatable<NetworkInterface.Update> {
     /**
-     * @return the IP configurations of this network interface, indexed by their names
+     * @return the IP configurations of this network interface, indexed by their names.
      */
     Map<String, NicIPConfiguration> ipConfigurations();
 
@@ -251,8 +253,24 @@ public interface NetworkInterface extends
         }
 
         /**
+         * The stage of the network interface definition allowing to enable accelerated networking.
+         */
+        interface WithAcceleratedNetworking {
+            /**
+             * Enables accelerated networking.
+             * <p>
+             * Note that additional steps need to be taken in the virtual machine itself for the virtual machine associated with this network interface to be able to
+             * take advantage of accelerated networking. This feature might not be available in some regions, virtual machine sizes, or operating system versions.
+             * It can be enabled only during the creation of a network interface, not during an update.
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_2_0)
+            WithCreate withAcceleratedNetworking();
+        }
+
+        /**
          * The stage of the network interface definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * the resource to be created, but also allows
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
@@ -261,9 +279,10 @@ public interface NetworkInterface extends
                 WithPrimaryPublicIPAddress,
                 WithNetworkSecurityGroup,
                 WithSecondaryIPConfiguration,
+                WithAcceleratedNetworking,
                 WithLoadBalancer {
             /**
-             * Enable IP forwarding in the network interface.
+             * Enables IP forwarding in the network interface.
              *
              * @return the next stage of the definition
              */
@@ -476,7 +495,7 @@ public interface NetworkInterface extends
              * Starts definition of a secondary IP configuration.
              *
              * @param name name for the IP configuration
-             * @return the first stage of a secondary IP configuration definition
+             * @return the first stage of the update
              */
             NicIPConfiguration.UpdateDefinitionStages.Blank<NetworkInterface.Update> defineSecondaryIPConfiguration(String name);
 
@@ -484,10 +503,28 @@ public interface NetworkInterface extends
              * Starts update of an IP configuration.
              *
              * @param name name of the IP configuration
-             * @return the first stage of an IP configuration update
+             * @return the first stage of the update
              */
             NicIPConfiguration.Update updateIPConfiguration(String name);
+
+            /**
+             * Removes the specified IP configuration.
+             * @param name the name of an existing IP configuration
+             * @return the next stage of the update
+             */
+            Update withoutIPConfiguration(String name);
         }
+
+        /**
+         * The stage of the network interface definition allowing to disable accelerated networking.
+         */
+        interface WithAcceleratedNetworking {
+            /**
+             * Disables accelerated networking.
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_2_0)
+            Update withoutAcceleratedNetworking();        }
 
         /**
          * The stage of the network interface update allowing to associate it with a load balancer.
@@ -526,8 +563,6 @@ public interface NetworkInterface extends
     /**
      * The template for an update operation, containing all the settings that
      * can be modified.
-     * <p>
-     * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
     interface Update extends
             Appliable<NetworkInterface>,
@@ -539,6 +574,7 @@ public interface NetworkInterface extends
             UpdateStages.WithIPForwarding,
             UpdateStages.WithDnsServer,
             UpdateStages.WithIPConfiguration,
-            UpdateStages.WithLoadBalancer {
+            UpdateStages.WithLoadBalancer,
+            UpdateStages.WithAcceleratedNetworking {
     }
 }
