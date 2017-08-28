@@ -30,10 +30,16 @@ final class BlobConstants {
      * The header that specifies if the access tier is inferred.
      */
     public static final String ACCESS_TIER_INFERRED_HEADER = Constants.PREFIX_FOR_STORAGE_HEADER + "access-tier-inferred";
+
     /**
      * Specifies the append blob type.
      */
     public static final String APPEND_BLOB = "AppendBlob";
+
+    /**
+     * The header that specifies the archive status.
+     */
+    public static final String ARCHIVE_STATUS_HEADER = Constants.PREFIX_FOR_STORAGE_HEADER + "archive-status";
 
     /**
      * XML element for authentication error details.
