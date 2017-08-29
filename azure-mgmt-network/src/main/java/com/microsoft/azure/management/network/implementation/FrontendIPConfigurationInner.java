@@ -60,13 +60,13 @@ public class FrontendIPConfigurationInner extends SubResource {
      * The reference of the subnet resource.
      */
     @JsonProperty(value = "properties.subnet")
-    private SubnetInner subnet;
+    private SubResource subnet;
 
     /**
      * The reference of the Public IP resource.
      */
     @JsonProperty(value = "properties.publicIPAddress")
-    private PublicIPAddressInner publicIPAddress;
+    private SubResource publicIPAddress;
 
     /**
      * Gets the provisioning state of the public IP resource. Possible values
@@ -176,7 +176,7 @@ public class FrontendIPConfigurationInner extends SubResource {
      *
      * @return the subnet value
      */
-    public SubnetInner subnet() {
+    public SubResource subnet() {
         return this.subnet;
     }
 
@@ -186,7 +186,7 @@ public class FrontendIPConfigurationInner extends SubResource {
      * @param subnet the subnet value to set
      * @return the FrontendIPConfigurationInner object itself.
      */
-    public FrontendIPConfigurationInner withSubnet(SubnetInner subnet) {
+    public FrontendIPConfigurationInner withSubnet(SubResource subnet) {
         this.subnet = subnet;
         return this;
     }
@@ -196,7 +196,7 @@ public class FrontendIPConfigurationInner extends SubResource {
      *
      * @return the publicIPAddress value
      */
-    public PublicIPAddressInner publicIPAddress() {
+    public SubResource publicIPAddress() {
         return this.publicIPAddress;
     }
 
@@ -206,7 +206,7 @@ public class FrontendIPConfigurationInner extends SubResource {
      * @param publicIPAddress the publicIPAddress value to set
      * @return the FrontendIPConfigurationInner object itself.
      */
-    public FrontendIPConfigurationInner withPublicIPAddress(PublicIPAddressInner publicIPAddress) {
+    public FrontendIPConfigurationInner withPublicIPAddress(SubResource publicIPAddress) {
         this.publicIPAddress = publicIPAddress;
         return this;
     }
