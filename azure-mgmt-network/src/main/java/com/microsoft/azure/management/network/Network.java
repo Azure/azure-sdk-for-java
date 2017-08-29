@@ -29,9 +29,22 @@ public interface Network extends
         Refreshable<Network>,
         Updatable<Network.Update> {
 
-    /***********************************************************
-     * Getters
-     ***********************************************************/
+    /**
+     * Checks if the specified private IP address is available in this network.
+     * @param ipAddress an IP address from this network's address space
+     * @return true if the address is within this network's address space and is available
+     */
+    @Beta(SinceVersion.V1_3_0)
+    boolean isPrivateIPAddressAvailable(String ipAddress);
+
+    /**
+     * Checks if the specified private IP address is within this network's address space.
+     * @param ipAddress an IP address
+     * @return true if the specified IP address is within this network's address space, otherwise false
+     */
+    @Beta(SinceVersion.V1_3_0)
+    boolean isPrivateIPAddressInNetwork(String ipAddress);
+
     /**
      * @return list of address spaces associated with this virtual network, in the CIDR notation
      */

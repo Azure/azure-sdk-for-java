@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.AddressSpace;
 import com.microsoft.azure.management.network.DhcpOptions;
@@ -12,6 +13,7 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkPeerings;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
+
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -80,7 +82,43 @@ class NetworkImpl
         return this.manager().inner().virtualNetworks().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
+    @Override
+    public boolean isPrivateIPAddressAvailable(String ipAddress) {
+        IPAddressAvailabilityResultInner result = checkIPAvailability(ipAddress);
+        return (result != null) ? result.available() : false;
+    }
+
+    @Override
+    public boolean isPrivateIPAddressInNetwork(String ipAddress) {
+        IPAddressAvailabilityResultInner result = checkIPAvailability(ipAddress);
+        return (result != null) ? true : false;
+    }
+
     // Helpers
+
+    private IPAddressAvailabilityResultInner checkIPAvailability(String ipAddress) {
+        if (ipAddress == null) {
+            return null;
+        }
+        IPAddressAvailabilityResultInner result = null;
+        try {
+            result = this.manager().networks().inner().checkIPAddressAvailability(
+                    this.resourceGroupName(),
+                    this.name(),
+                    ipAddress);
+            if (result == null) {
+                return null;
+            } else {
+                return result;
+            }
+        } catch (CloudException e) {
+            if (!e.body().code().equalsIgnoreCase("PrivateIPAddressNotInAnySubnet")) {
+                throw e; // Rethrow if the exception reason is anything other than IP address not found
+            } else {
+                return null;
+            }
+        }
+    }
 
     NetworkImpl withSubnet(SubnetImpl subnet) {
         this.subnets.put(subnet.name(), subnet);
