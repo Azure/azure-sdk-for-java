@@ -60,8 +60,8 @@ public class BackCompatTest extends ApiTestBase
 					&& eData.getProperties().get(intApplicationProperty).equals(originalMessage.getApplicationProperties().getValue().get(intApplicationProperty)));
 			
 			Assert.assertTrue(eData.getProperties().size() == 2);
-			
-			Assert.assertTrue(new String(eData.getBody(), eData.getBodyOffset(), eData.getBodyLength()).equals(payload));	
+
+			Assert.assertTrue(new String(eData.getBytes()).equals(payload));
 		}};
 		
 	@BeforeClass

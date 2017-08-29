@@ -63,7 +63,7 @@ public class PrefabEventProcessor implements IEventProcessor
 			{
 				//TestUtilities.log("P" + context.getPartitionId() + " " + new String(event.getBody()) + " @ " + event.getSystemProperties().getOffset() + "\n");
 			}
-			if (Arrays.equals(event.getBody(), this.telltaleBytes))
+			if (Arrays.equals(event.getBytes(), this.telltaleBytes))
 			{
 				this.factory.setTelltaleFound(context.getPartitionId());
 			}

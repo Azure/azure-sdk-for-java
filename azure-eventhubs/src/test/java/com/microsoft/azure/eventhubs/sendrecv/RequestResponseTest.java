@@ -21,7 +21,7 @@ import com.microsoft.azure.eventhubs.amqp.IOperationResult;
 import com.microsoft.azure.eventhubs.amqp.ReactorDispatcher;
 import com.microsoft.azure.eventhubs.amqp.RequestResponseChannel;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import junit.framework.AssertionFailedError;
 
 import org.apache.qpid.proton.Proton;
