@@ -54,6 +54,7 @@ import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.NetworkWatchers;
 import com.microsoft.azure.management.network.PublicIPAddresses;
 import com.microsoft.azure.management.network.RouteTables;
+import com.microsoft.azure.management.network.VirtualNetworkGateways;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.redis.RedisCaches;
 import com.microsoft.azure.management.redis.implementation.RedisManager;
@@ -526,6 +527,13 @@ public final class Azure {
      */
     public NetworkWatchers networkWatchers() {
         return networkManager.networkWatchers();
+    }
+
+    /**
+     * @return entry point to managing virtual network gateways
+     */
+    public VirtualNetworkGateways virtualNetworkGateways() {
+        return networkManager.virtualNetworkGateways();
     }
 
     /**

@@ -23,6 +23,7 @@ import com.microsoft.azure.management.network.PublicIPAddresses;
 import com.microsoft.azure.management.network.RouteTables;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.network.NetworkWatchers;
+import com.microsoft.azure.management.network.VirtualNetworkGateways;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
@@ -54,6 +55,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
     private ApplicationGateways applicationGateways;
     private NetworkUsages networkUsages;
     private NetworkWatchers networkWatchers;
+    private VirtualNetworkGateways virtualNetworkGateways;
 
     /**
      * Get a Configurable instance that can be used to create {@link NetworkManager}
@@ -216,6 +218,16 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
             this.networkWatchers = new NetworkWatchersImpl(this);
         }
         return this.networkWatchers;
+    }
+
+    /**
+     * @return entry point to virtual network gateways management
+     */
+    public VirtualNetworkGateways virtualNetworkGateways() {
+        if (this.virtualNetworkGateways == null) {
+            this.virtualNetworkGateways = new VirtualNetworkGatewaysImpl(this);
+        }
+        return this.virtualNetworkGateways;
     }
 
     // Internal utility function

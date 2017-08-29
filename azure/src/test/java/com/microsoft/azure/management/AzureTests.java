@@ -619,6 +619,15 @@ public class AzureTests extends TestBase {
     }
 
     /**
+     * Tests the virtual network gateway implementation.
+     * @throws Exception
+     */
+    @Test
+    public void testVirtualNetworkGateways() throws Exception {
+        new TestVirtualNetworkGateway().runTest(azure.virtualNetworkGateways(), azure.resourceGroups());
+    }
+
+    /**
      * Tests virtual machines.
      * @throws Exception
      */
