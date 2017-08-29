@@ -10,11 +10,11 @@
     <parent>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-parent</artifactId>
-        <version>1.2.1</version>
+        <version>1.2.2-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>azure-mgmt-cognitiveservices</artifactId>
-  <version>1.2.1-beta</version>
+  <version>1.2.2-beta-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for CognitiveServices Management</name>
     <description>This package contains Microsoft CognitiveServices Management SDK.</description>
@@ -29,7 +29,7 @@
     <scm>
         <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
         <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
-        <tag>v1.2.1</tag>
+        <tag>HEAD</tag>
     </scm>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -49,7 +49,7 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-mgmt-resources</artifactId>
-            <version>1.2.1</version>
+            <version>1.2.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
