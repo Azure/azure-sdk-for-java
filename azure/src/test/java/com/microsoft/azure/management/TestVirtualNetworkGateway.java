@@ -6,6 +6,7 @@
 package com.microsoft.azure.management;
 
 import com.microsoft.azure.management.network.VirtualNetworkGateway;
+import com.microsoft.azure.management.network.VirtualNetworkGatewaySkuName;
 import com.microsoft.azure.management.network.VirtualNetworkGateways;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
@@ -34,9 +35,9 @@ public class TestVirtualNetworkGateway  extends TestTemplate<VirtualNetworkGatew
                 .withNewResourceGroup()
                 .withVPN()
                 .withRouteBased()
-                .withSku()
-                .withNewPublicIPAddress()
+                .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
                 .withTag("tag1", "value1")
+//                .withActiveActive(true)
                 .create();
         return nw;
     }
@@ -44,6 +45,7 @@ public class TestVirtualNetworkGateway  extends TestTemplate<VirtualNetworkGatew
     @Override
     public VirtualNetworkGateway updateResource(VirtualNetworkGateway resource) throws Exception {
         resource.update()
+                .withSku(VirtualNetworkGatewaySkuName.VPN_GW2)
                 .withTag("tag2", "value2")
                 .withoutTag("tag1")
                 .apply();

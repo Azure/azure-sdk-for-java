@@ -5,12 +5,18 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.network.BgpSettings;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.VirtualNetworkGateway;
 import com.microsoft.azure.management.network.VirtualNetworkGatewayIPConfiguration;
+import com.microsoft.azure.management.network.VirtualNetworkGatewaySku;
+import com.microsoft.azure.management.network.VirtualNetworkGatewaySkuName;
+import com.microsoft.azure.management.network.VirtualNetworkGatewaySkuTier;
 import com.microsoft.azure.management.network.VirtualNetworkGatewayType;
+import com.microsoft.azure.management.network.VpnClientConfiguration;
 import com.microsoft.azure.management.network.VpnType;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
@@ -52,31 +58,36 @@ class VirtualNetworkGatewayImpl
 
 
     @Override
-    public VirtualNetworkGateway.DefinitionStages.WithPublicIPAddress withExpressRoute() {
+    public VirtualNetworkGatewayImpl withExpressRoute() {
         inner().withGatewayType(VirtualNetworkGatewayType.EXPRESS_ROUTE);
         return this;
     }
 
     @Override
-    public VirtualNetworkGateway.DefinitionStages.WithVPNType withVPN() {
+    public VirtualNetworkGatewayImpl withVPN() {
         inner().withGatewayType(VirtualNetworkGatewayType.VPN);
         return this;
     }
 
     @Override
-    public VirtualNetworkGateway.DefinitionStages.WithSku withRouteBased() {
+    public VirtualNetworkGatewayImpl withRouteBased() {
         inner().withVpnType(VpnType.ROUTE_BASED);
         return this;
     }
 
     @Override
-    public VirtualNetworkGateway.DefinitionStages.WithSku withPolicyBased() {
+    public VirtualNetworkGatewayImpl withPolicyBased() {
         inner().withVpnType(VpnType.POLICY_BASED);
         return this;
     }
 
     @Override
-    public VirtualNetworkGateway.DefinitionStages.WithCreate withSku() {
+    public VirtualNetworkGatewayImpl withSku(VirtualNetworkGatewaySkuName skuName) {
+        VirtualNetworkGatewaySku sku = new VirtualNetworkGatewaySku()
+                .withName(skuName)
+                // same sku tier as sku name
+                .withTier(new VirtualNetworkGatewaySkuTier(skuName.toString()));
+        this.inner().withSku(sku);
         return this;
     }
 
@@ -94,7 +105,7 @@ class VirtualNetworkGatewayImpl
 
     @Override
     public Update withoutPublicIPAddress() {
-        return null;
+        return this;
     }
 
     @Override
@@ -111,6 +122,62 @@ class VirtualNetworkGatewayImpl
         return this;
     }
 
+
+    @Override
+    public VirtualNetworkGatewayImpl withActiveActive(boolean activeActive) {
+        this.inner().withActiveActive(activeActive);
+        return this;
+    }
+
+    @Override
+    public void reset() {
+
+    }
+
+    @Override
+    public VirtualNetworkGatewayType gatewayType() {
+        return inner().gatewayType();
+    }
+
+    @Override
+    public VpnType vpnType() {
+        return inner().vpnType();
+    }
+
+    @Override
+    public Boolean enableBgp() {
+        return inner().enableBgp();
+    }
+
+    @Override
+    public Boolean activeActive() {
+        return inner().activeActive();
+    }
+
+    @Override
+    public SubResource gatewayDefaultSite() {
+        return inner().gatewayDefaultSite();
+    }
+
+    @Override
+    public VirtualNetworkGatewaySku sku() {
+        return this.inner().sku();
+    }
+
+    @Override
+    public VpnClientConfiguration vpnClientConfiguration() {
+        return inner().vpnClientConfiguration();
+    }
+
+    @Override
+    public BgpSettings bgpSettings() {
+        return inner().bgpSettings();
+    }
+
+    @Override
+    public List<VirtualNetworkGatewayIPConfigurationInner> ipConfigurations() {
+        return null;
+    }
 
     @Override
     protected void initializeChildrenFromInner() {

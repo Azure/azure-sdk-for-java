@@ -102,7 +102,7 @@ public interface VirtualNetworkGatewayIPConfiguration extends
     interface Definition<ParentT> extends
             DefinitionStages.Blank<ParentT>,
             DefinitionStages.WithAttach<ParentT>,
-            DefinitionStages.WithPublicIPAddress<ParentT>{
+            DefinitionStages.WithPublicIPAddress<ParentT> {
     }
 
     /**

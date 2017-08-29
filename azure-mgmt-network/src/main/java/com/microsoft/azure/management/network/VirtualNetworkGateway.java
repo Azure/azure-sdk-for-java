@@ -6,9 +6,12 @@
 package com.microsoft.azure.management.network;
 
 
+import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
+import com.microsoft.azure.management.network.implementation.VirtualNetworkGatewayIPConfigurationInner;
 import com.microsoft.azure.management.network.implementation.VirtualNetworkGatewayInner;
 import com.microsoft.azure.management.network.model.HasPublicIPAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -17,6 +20,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
+
+import java.util.List;
 
 /**
  * Entry point for Virtual Network Gateway management API in Azure.
@@ -28,9 +33,60 @@ public interface VirtualNetworkGateway extends
         Refreshable<VirtualNetworkGateway>,
         Updatable<VirtualNetworkGateway.Update> {
 
-    /***********************************************************
-     * Getters
-     ***********************************************************/
+    // Actions
+
+    /**
+     * Resets the primary of the virtual network gateway.
+     */
+    @Method
+    void reset();
+
+    // Getters
+
+    /**
+     * @return the gatewayType value
+     */
+    VirtualNetworkGatewayType gatewayType();
+
+    /**
+     * @return the type of this virtual network gateway
+     */
+    VpnType vpnType();
+
+    /**
+     * @return whether BGP is enabled for this virtual network gateway or not
+     */
+    Boolean enableBgp();
+
+    /**
+     * @return activeActive flag
+     */
+    Boolean activeActive();
+
+    /**
+     * @return the reference of the LocalNetworkGateway resource which represents local network site having default routes
+     */
+    SubResource gatewayDefaultSite();
+
+    /**
+     * @return the SKU of this virtual network gateway
+     */
+    VirtualNetworkGatewaySku sku();
+
+    /**
+     * @return the reference of the VpnClientConfiguration resource which represents the P2S VpnClient configurations
+     */
+    VpnClientConfiguration vpnClientConfiguration();
+
+    /**
+     * @return virtual network gateway's BGP speaker settings
+     */
+    BgpSettings bgpSettings();
+
+    /**
+     * @return IP configurations for virtual network gateway
+     */
+    List<VirtualNetworkGatewayIPConfigurationInner> ipConfigurations();
 
     /**
      * The entirety of the virtual network gateway definition.
@@ -40,8 +96,8 @@ public interface VirtualNetworkGateway extends
             DefinitionStages.WithGroup,
             DefinitionStages.WithGatewayType,
             DefinitionStages.WithVPNType,
-            DefinitionStages.WithSku,
-            DefinitionStages.WithCreate {
+            DefinitionStages.WithCreate,
+            DefinitionStages.WithBgpSettingsAndCreate {
     }
 
     /**
@@ -51,8 +107,7 @@ public interface VirtualNetworkGateway extends
         /**
          * The first stage of a virtual network definition.
          */
-        interface Blank
-                extends GroupableResource.DefinitionWithRegion<WithGroup> {
+        interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {
         }
 
         /**
@@ -74,18 +129,33 @@ public interface VirtualNetworkGateway extends
          * The stage of virtual network gateway definition allowing to specify virtual network gateway type.
          */
         interface WithVPNType {
-            DefinitionStages.WithSku withRouteBased();
-            DefinitionStages.WithSku withPolicyBased();
+            WithBgpSettingsAndCreate withRouteBased();
+            DefinitionStages.WithCreate withPolicyBased();
         }
 
+        /**
+         * The stage of virtual network gateway definition allowing to specify SKU.
+         */
         interface WithSku {
-            DefinitionStages.WithCreate withSku();
+            DefinitionStages.WithCreate withSku(VirtualNetworkGatewaySkuName skuName);
         }
 
         /**
          * The stage of virtual network gateway definition allowing to specify public IP address for IP configuration.
          */
         interface WithPublicIPAddress extends HasPublicIPAddress.DefinitionStages.WithPublicIPAddressNoDnsLabel<VirtualNetworkGateway.DefinitionStages.WithCreate> {
+        }
+
+        interface WithActiveActive {
+            DefinitionStages.WithCreate withActiveActive(boolean activeActive);
+        }
+
+        /**
+         * The stage of definition allowing to specify virtual network gateway's BGP speaker settings.
+         * Note: BGP is supported on Route-Based VPN gateways only.
+         */
+        interface WithBgpSettingsAndCreate extends WithCreate {
+
         }
 
         /**
@@ -96,7 +166,9 @@ public interface VirtualNetworkGateway extends
         interface WithCreate extends
                 Creatable<VirtualNetworkGateway>,
                 Resource.DefinitionWithTags<WithCreate>,
-                DefinitionStages.WithPublicIPAddress {
+                DefinitionStages.WithSku,
+                DefinitionStages.WithPublicIPAddress,
+                DefinitionStages.WithActiveActive {
         }
     }
 
@@ -109,6 +181,17 @@ public interface VirtualNetworkGateway extends
          */
         interface WithPublicIPAddress extends HasPublicIPAddress.UpdateStages.WithPublicIPAddressNoDnsLabel<Update> {
         }
+
+        /**
+         * The stage of virtual network gateway definition allowing to specify SKU.
+         */
+        interface WithSku {
+            Update withSku(VirtualNetworkGatewaySkuName skuName);
+        }
+
+        interface WithBgpSettings {
+
+        }
     }
 
     /**
@@ -120,6 +203,8 @@ public interface VirtualNetworkGateway extends
     interface Update extends
             Appliable<VirtualNetworkGateway>,
             Resource.UpdateWithTags<Update>,
-            UpdateStages.WithPublicIPAddress {
+            UpdateStages.WithPublicIPAddress,
+            UpdateStages.WithSku,
+            UpdateStages.WithBgpSettings {
     }
 }
