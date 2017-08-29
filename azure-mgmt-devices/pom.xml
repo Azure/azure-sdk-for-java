@@ -12,11 +12,11 @@
     <parent>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-parent</artifactId>
-        <version>1.2.1-SNAPSHOT</version>
+        <version>1.2.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>azure-mgmt-devices</artifactId>
-  <version>1.2.1-beta-SNAPSHOT</version>
+  <version>1.2.1-beta</version>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Devices Management</name>
     <description>This package contains Microsoft Devices Management SDK.</description>
@@ -31,7 +31,7 @@
     <scm>
         <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
         <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
-        <tag>HEAD</tag>
+        <tag>v1.2.1</tag>
     </scm>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -51,7 +51,7 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-mgmt-resources</artifactId>
-            <version>1.2.1-SNAPSHOT</version>
+            <version>1.2.1</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
