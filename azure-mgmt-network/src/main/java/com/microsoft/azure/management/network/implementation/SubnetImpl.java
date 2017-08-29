@@ -139,6 +139,11 @@ class SubnetImpl
 
     @Override
     public Set<NicIPConfiguration> getNetworkInterfaceIPConfigurations() {
+        return listNetworkInterfaceIPConfigurations();
+    }
+
+    @Override
+    public Set<NicIPConfiguration> listNetworkInterfaceIPConfigurations() {
         Set<NicIPConfiguration> ipConfigs = new HashSet<>();
         Map<String, NetworkInterface> nics = new HashMap<>();
         List<IPConfigurationInner> ipConfigRefs = this.inner().ipConfigurations();
@@ -175,5 +180,27 @@ class SubnetImpl
         }
 
         return Collections.unmodifiableSet(ipConfigs);
+    }
+
+    @Override
+    public Set<String> listAvailablePrivateIPAddresses() {
+        Set<String> ipAddresses = new HashSet<>();
+
+        String cidr = this.addressPrefix();
+        if (cidr == null) {
+            return ipAddresses; // Should never happen, but just in case
+        }
+        String takenIPAddress = cidr.split("/")[0];
+
+        IPAddressAvailabilityResultInner result = this.parent().manager().networks().inner().checkIPAddressAvailability(
+                this.parent().resourceGroupName(),
+                this.parent().name(),
+                takenIPAddress);
+        if (result == null) {
+            return ipAddresses;
+        }
+
+        ipAddresses.addAll(result.availableIPAddresses());
+        return ipAddresses;
     }
 }

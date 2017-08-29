@@ -6,6 +6,7 @@
 package com.microsoft.azure.management;
 
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Assert;
 
@@ -192,6 +193,18 @@ public class TestNetwork {
         @Override
         public Network updateResource(Network resource) throws Exception {
             NetworkPeering localPeering = resource.peerings().list().get(0);
+
+            // Verify remote IP invisibility to local network before peering
+            Network remoteNetwork = localPeering.getRemoteNetwork();
+            Assert.assertNotNull(remoteNetwork);
+            Subnet remoteSubnet = remoteNetwork.subnets().get("subnet3");
+            Assert.assertNotNull(remoteSubnet);
+            Set<String> remoteAvailableIPs = remoteSubnet.listAvailablePrivateIPAddresses();
+            Assert.assertNotNull(remoteAvailableIPs);
+            Assert.assertFalse(remoteAvailableIPs.isEmpty());
+            String remoteTestIP = remoteAvailableIPs.iterator().next();
+            Assert.assertFalse(resource.isPrivateIPAddressAvailable(remoteTestIP));
+
             localPeering.update()
                 .withoutTrafficForwardingFromEitherNetwork()
                 .withAccessBetweenBothNetworks()
