@@ -159,6 +159,7 @@ public final class ManageWebAppSlots {
     private static DeploymentSlot createSlot(String slotName, WebApp app) {
         System.out.println("Creating a slot " + slotName + " with auto swap turned on...");
 
+        app.deploymentSlots().getByName("staging").deploy().withPackageUri().execute()
         DeploymentSlot slot = app.deploymentSlots()
                 .define(slotName)
                 .withConfigurationFromParent()

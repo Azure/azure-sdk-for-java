@@ -462,7 +462,7 @@ If you are using released builds from 1.2.0, add the following to your POM file:
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
 </dependency>
 ```
 
@@ -489,7 +489,7 @@ If you are using snapshots builds for this repo, add the following repository an
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure</artifactId>
-    <version>1.2.1-SNAPSHOT</version>
+    <version>1.2.2-SNAPSHOT</version>
 </dependency>
 <dependency>
     <groupId>com.microsoft.azure</groupId>
