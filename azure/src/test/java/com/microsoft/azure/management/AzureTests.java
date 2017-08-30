@@ -19,6 +19,7 @@ import com.microsoft.azure.management.compute.VirtualMachineSku;
 import com.microsoft.azure.management.network.Access;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
+import com.microsoft.azure.management.network.ConnectivityCheck;
 import com.microsoft.azure.management.network.Direction;
 import com.microsoft.azure.management.network.FlowLogSettings;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
@@ -609,6 +610,13 @@ public class AzureTests extends TestBase {
         packetCapture.stop();
         Assert.assertEquals("Stopped", packetCapture.getStatus().packetCaptureStatus().toString());
         nw.packetCaptures().deleteByName(packetCapture.name());
+
+        ConnectivityCheck connectivityCheck = nw.checkConnectivity()
+                .withSourceResourceId(virtualMachines[0].id())
+                .withDestinationResourceId(virtualMachines[1].id())
+                .withDestinationPort(80)
+                .execute();
+        Assert.assertEquals("Reachable", connectivityCheck.connectionStatus().toString());
 
         azure.virtualMachines().deleteById(virtualMachines[1].id());
         topology.refresh();
