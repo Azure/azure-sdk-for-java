@@ -271,8 +271,7 @@ You can find plenty of sample code that illustrates management scenarios (80+ en
     <td>Active Directory</td>
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/aad-java-manage-service-principals">Manage service principals using Java</a></li>
-<li><a href="https://github.com/Azure-Samples/aad-java-manage-users-and-groups">Manage users and groups</a></li>
-<li><a href="https://github.com/Azure-Samples/aad-java-browse-graph-and-manage-roles">Browse graph (users, groups and members) and managing roles</a></li>
+<li><a href="https://github.com/Azure-Samples/aad-java-manage-users-groups-and-roles">Manage users and groups and manage their roles</a></li>
 <li><a href="https://github.com/Azure-Samples/aad-java-manage-passwords">Manage passwords</li>
 </ul></td>
   </tr>
