@@ -35,7 +35,6 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
-import java.io.IOException;
 import java.util.List;
 import rx.Observable;
 
