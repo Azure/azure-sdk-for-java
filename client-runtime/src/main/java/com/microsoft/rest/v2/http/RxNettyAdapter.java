@@ -8,6 +8,8 @@ package com.microsoft.rest.v2.http;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.HttpMethod;
+import io.netty.util.concurrent.DefaultEventExecutorGroup;
+import io.netty.util.concurrent.EventExecutorGroup;
 import io.reactivex.netty.protocol.http.client.HttpClientRequest;
 import io.reactivex.netty.protocol.http.client.HttpClientResponse;
 import rx.Observable;
@@ -23,11 +25,18 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executors;
 
 /**
  * A HttpClient that is implemented using RxNetty.
  */
 public class RxNettyAdapter extends HttpClient {
+    private final ChannelHandlerConfig[] handlerConfigs;
+
+    public RxNettyAdapter(ChannelHandlerConfig... handlerConfigs) {
+        this.handlerConfigs = handlerConfigs;
+    }
+
     private SSLEngine getSSLEngine(String host) {
         SSLContext sslCtx;
         try {
@@ -64,9 +73,20 @@ public class RxNettyAdapter extends HttpClient {
             rxnHeaders.put("Content-Length", Collections.<Object>singleton(String.valueOf(body.length())));
         }
 
+        // Is caching of rxnetty's HttpClient preferred for performance?
         boolean isSecure = "https".equalsIgnoreCase(uri.getScheme());
         io.reactivex.netty.protocol.http.client.HttpClient<ByteBuf, ByteBuf> rxnClient =
                 io.reactivex.netty.protocol.http.client.HttpClient.newClient(uri.getHost(), isSecure ? 443 : 80);
+
+        for (int i = 0; i < handlerConfigs.length; i++) {
+            ChannelHandlerConfig config = handlerConfigs[i];
+            if (config.mayBlock()) {
+                EventExecutorGroup executorGroup = new DefaultEventExecutorGroup(1);
+                rxnClient = rxnClient.addChannelHandlerLast(executorGroup, "az-client-handler-" + i, config.factory());
+            } else {
+                rxnClient = rxnClient.addChannelHandlerLast("az-client-handler-" + i, config.factory());
+            }
+        }
 
         if (isSecure) {
             rxnClient = rxnClient.secure(getSSLEngine(uri.getHost()));
