@@ -68,7 +68,7 @@ public abstract class AzureServiceClient extends ServiceClient {
     /**
      * @return the RestProxy HTTP client.
      */
-    public HttpClient rpHttpClient() {
+    public HttpClient httpClient() {
         return rpHttpClient;
     }
 

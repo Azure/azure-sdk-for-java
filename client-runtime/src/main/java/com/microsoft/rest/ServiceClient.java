@@ -25,7 +25,7 @@ public abstract class ServiceClient {
      *
      * @param baseUrl the service endpoint
      */
-    protected ServiceClient(String baseUrl) {
+    ServiceClient(String baseUrl) {
         this(baseUrl, new OkHttpClient.Builder(), new Retrofit.Builder());
     }
 
@@ -56,6 +56,7 @@ public abstract class ServiceClient {
     /**
      * @return the {@link RestClient} instance.
      */
+    @Deprecated
     public RestClient restClient() {
         return restClient;
     }
@@ -63,15 +64,9 @@ public abstract class ServiceClient {
     /**
      * @return the Retrofit instance.
      */
+    @Deprecated
     public Retrofit retrofit() {
         return restClient.retrofit();
-    }
-
-    /**
-     * @return the HTTP client.
-     */
-    public OkHttpClient httpClient() {
-        return this.restClient.httpClient();
     }
 
     /**
