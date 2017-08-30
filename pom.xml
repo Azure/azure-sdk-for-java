@@ -113,7 +113,7 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-client-authentication</artifactId>
-        <version>[1.1.0,2.0.0)</version>
+        <version>1.0.5-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>com.google.guava</groupId>
@@ -373,7 +373,6 @@
     </profile>
   </profiles>
   <modules>
-    <module>../autorest-clientruntime-for-java</module>
     <module>./azure</module>
     <module>./azure-samples</module>
     <module>./azure-mgmt-appservice</module>
