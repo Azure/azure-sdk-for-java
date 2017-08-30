@@ -20,7 +20,7 @@ class OkHttpResponse extends HttpResponse {
 
     /**
      * Create a new OkHttpResponse using the provided OkHttp Response object.
-     * @param response The OkHttp Response object that came from a real OkHttpClientAdapter object.
+     * @param response The OkHttp Response object that came from a real OkHttpClient object.
      */
     OkHttpResponse(Response response) {
         this.response = response;

@@ -9,12 +9,8 @@ package com.microsoft.rest.v2;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.protocol.SerializerAdapter;
-import com.microsoft.rest.v2.http.HttpClient;
-import com.microsoft.rest.v2.http.HttpHeader;
-import com.microsoft.rest.v2.http.HttpRequest;
-import com.microsoft.rest.v2.http.HttpResponse;
-import com.microsoft.rest.v2.http.OkHttpClientAdapter;
-import com.microsoft.rest.v2.http.UrlBuilder;
+import com.microsoft.rest.v2.http.*;
+import com.microsoft.rest.v2.http.OkHttpAdapter;
 import rx.Completable;
 import rx.Single;
 import rx.functions.Func1;
@@ -133,7 +129,7 @@ public final class RestProxy implements InvocationHandler {
      */
     @SuppressWarnings("unchecked")
     public static <A> A create(Class<A> swaggerInterface, RestClient restClient) {
-        final HttpClient httpClient = new OkHttpClientAdapter(restClient.httpClient());
+        final HttpClient httpClient = new OkHttpAdapter(restClient.httpClient());
         final SerializerAdapter<?> serializer = restClient.serializerAdapter();
         return create(swaggerInterface, httpClient, serializer);
     }
