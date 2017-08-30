@@ -9,18 +9,13 @@
 package com.microsoft.azure.management.storage.implementation;
 
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
-import com.microsoft.rest.serializer.JacksonAdapter;
 import com.microsoft.rest.v2.RestProxy;
 import com.microsoft.rest.v2.annotations.*;
-import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import java.io.IOException;
-import java.util.ArrayList;
+
 import java.util.List;
 
 import rx.functions.Func1;
@@ -42,7 +37,7 @@ public class UsagesInner {
      * @param client the instance of the service client containing this operation class.
      */
     public UsagesInner(StorageManagementClientImpl client) {
-        this.service = RestProxy.create(UsagesService.class, client.rpHttpClient(), new AzureJacksonAdapter());
+        this.service = RestProxy.create(UsagesService.class, client.httpClient(), new AzureJacksonAdapter());
         this.client = client;
     }
 
