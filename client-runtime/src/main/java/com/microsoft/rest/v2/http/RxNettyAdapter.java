@@ -27,7 +27,7 @@ import java.util.Set;
 /**
  * A HttpClient that is implemented using RxNetty.
  */
-public class RxNettyClient extends HttpClient {
+public class RxNettyAdapter extends HttpClient {
     private SSLEngine getSSLEngine(String host) {
         SSLContext sslCtx;
         try {
