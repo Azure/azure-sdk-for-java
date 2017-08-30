@@ -56,6 +56,16 @@ class NetworkPeeringImpl
     // Getters
 
     @Override
+    public boolean isSameSubscription() {
+        if (this.remoteNetworkId() == null) {
+            return false;
+        }
+        String localSubscriptionId = ResourceUtils.subscriptionFromResourceId(this.id());
+        String remoteSubscriptionId = ResourceUtils.subscriptionFromResourceId(this.remoteNetworkId());
+        return localSubscriptionId.equalsIgnoreCase(remoteSubscriptionId);
+    }
+
+    @Override
     public VirtualNetworkPeeringState state() {
         return this.inner().peeringState();
     }
@@ -416,16 +426,27 @@ class NetworkPeeringImpl
 
     @Override
     public Network getRemoteNetwork() {
-        if (this.remoteNetwork != null) {
-            return this.remoteNetwork;
+        return this.getRemoteNetworkAsync().toBlocking().last();
+    }
+
+    @Override
+    public Observable<Network> getRemoteNetworkAsync() {
+        final NetworkPeeringImpl self = this;
+        if (self.remoteNetwork != null) {
+            return Observable.just(self.remoteNetwork);
         } else if (ResourceUtils.subscriptionFromResourceId(this.remoteNetworkId()).equalsIgnoreCase(ResourceUtils.subscriptionFromResourceId(this.id()))) {
             // Fetch the remote network if within the same subscription
-            this.remoteNetwork = this.manager().networks().getById(this.remoteNetworkId());
-            return this.remoteNetwork;
+            return this.manager().networks().getByIdAsync(this.remoteNetworkId())
+                .doOnNext(new Action1<Network>() {
+                    @Override
+                    public void call(Network network) {
+                        self.remoteNetwork = network;
+                    }
+                });
         } else {
             // Otherwise bail out
-            this.remoteNetwork = null;
-            return this.remoteNetwork;
+            self.remoteNetwork = null;
+            return Observable.just(null);
         }
     }
 
@@ -433,6 +454,23 @@ class NetworkPeeringImpl
     public NetworkPeering getRemotePeering() {
         Network network = this.getRemoteNetwork();
         return (network != null) ? network.peerings().associatedWithRemoteNetwork(this.networkId()) : null;
+    }
+
+    @Override
+    public Observable<NetworkPeering> getRemotePeeringAsync() {
+        final NetworkPeeringImpl self = this;
+        return this.getRemoteNetworkAsync()
+            .flatMap(new Func1<Network, Observable<NetworkPeering>>() {
+                @Override
+                public Observable<NetworkPeering> call(Network remoteNetwork) {
+                    if (remoteNetwork == null) {
+                        return Observable.just(null);
+                    } else {
+                        NetworkPeering remotePeering = remoteNetwork.peerings().associatedWithRemoteNetwork(self.networkId());
+                        return Observable.just(remotePeering);
+                    }
+                }
+            });
     }
 
     @Override

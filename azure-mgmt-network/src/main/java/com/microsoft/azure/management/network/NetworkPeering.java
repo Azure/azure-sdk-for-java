@@ -17,6 +17,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
+import rx.Observable;
+
 /**
  * An client-side representation of a network peering.
  */
@@ -64,9 +66,21 @@ public interface NetworkPeering extends
     Network getRemoteNetwork();
 
     /**
-     * @return the associated peering on the remote network if it is in the same subscription, otherwise null.
+     * Gets the remote network associated with this peering asynchronously.
+     * @return a representation of the future computation of this call
+     */
+    Observable<Network> getRemoteNetworkAsync();
+
+    /**
+     * @return the associated matching peering on the remote network if it is in the same subscription, otherwise this future computation will evaluate to null.
      */
     NetworkPeering getRemotePeering();
+
+    /**
+     * Gets the associated matching peering on the remote network if it is in the same subscription.
+     * @return a representation of the future computation of this call.
+     */
+    Observable<NetworkPeering> getRemotePeeringAsync();
 
     /**
      * @return the state of the peering between the two networks
@@ -87,6 +101,11 @@ public interface NetworkPeering extends
      * @return true if virtual machines on this network's address spaces are accessible from the remote network
      */
     boolean isAccessFromRemoteNetworkAllowed();
+
+    /**
+     * @return true if the peered networks are in the same subscription, otherwise false
+     */
+    boolean isSameSubscription();
 
     /**
      * Grouping of all the network peering definition stages.
