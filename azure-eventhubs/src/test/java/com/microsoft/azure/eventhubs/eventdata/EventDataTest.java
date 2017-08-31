@@ -43,7 +43,7 @@ public class EventDataTest
 	{
 		byte[] byteArray = new byte[0];
 		EventData deSerializedEvent = serializeAndDeserialize(new EventData(byteArray));
-                Assert.assertEquals(deSerializedEvent.getBodyLength(), 0);
+                Assert.assertEquals(deSerializedEvent.getBytes().length, 0);
                 Assert.assertTrue(deSerializedEvent.getBytes() != null);
 	}
 	

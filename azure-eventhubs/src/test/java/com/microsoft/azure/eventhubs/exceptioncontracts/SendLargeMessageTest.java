@@ -82,10 +82,10 @@ public class SendLargeMessageTest extends ApiTestBase
 		Assert.assertTrue(messages != null && messages.iterator().hasNext());
 
 		EventData recdMessage = messages.iterator().next();
-		
+
 		Assert.assertTrue(
-				String.format("sent msg size: %s, recvd msg size: %s", msgSize, recdMessage.getBodyLength()),
-				recdMessage.getBodyLength() == msgSize);
+				String.format("sent msg size: %s, recvd msg size: %s", msgSize, recdMessage.getBytes().length),
+				 recdMessage.getBytes().length == msgSize);
 	}
 	
 	@AfterClass()
