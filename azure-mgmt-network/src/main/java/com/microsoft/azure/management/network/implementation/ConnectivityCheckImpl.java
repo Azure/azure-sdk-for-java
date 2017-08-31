@@ -34,9 +34,7 @@ public class ConnectivityCheckImpl extends ExecutableImpl<ConnectivityCheck>
 
     @Override
     public ConnectivityCheckImpl withSourceResourceId(String sourceResourceId) {
-        ConnectivitySource connectivitySource = new ConnectivitySource();
-        connectivitySource.withResourceId(sourceResourceId);
-        parameters.withSource(connectivitySource);
+        ensureConnectivitySource().withResourceId(sourceResourceId);
         return this;
     }
 
@@ -54,14 +52,21 @@ public class ConnectivityCheckImpl extends ExecutableImpl<ConnectivityCheck>
 
     @Override
     public ConnectivityCheckImpl withDestinationPort(int port) {
-        parameters.destination().withPort(port);
+        ensureConnectivityDestination().withPort(port);
         return this;
     }
 
     @Override
     public DefinitionStages.WithExecute withSourcePort(int port) {
-        parameters.source().withPort(port);
+        ensureConnectivitySource().withPort(port);
         return this;
+    }
+
+    private ConnectivitySource ensureConnectivitySource() {
+        if (parameters.source() == null) {
+            parameters.withSource(new ConnectivitySource());
+        }
+        return parameters.source();
     }
 
     private ConnectivityDestination ensureConnectivityDestination() {
