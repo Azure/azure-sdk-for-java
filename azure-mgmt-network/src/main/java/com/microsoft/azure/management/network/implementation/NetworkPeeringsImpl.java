@@ -64,12 +64,12 @@ class NetworkPeeringsImpl
             // Get the parent network of the peering to delete
             .getByResourceGroupAsync(groupName, parentName)
 
-            // Find the local peering to delete
+            // Then find the local peering to delete
             .flatMap(new Func1<Network, Observable<NetworkPeering>>() {
                 @Override
                 public Observable<NetworkPeering> call(Network localNetwork) {
                     if (localNetwork == null) {
-                        return Observable.empty(); // Missing local network, so nothing else to do
+                        return Observable.just(null); // Missing local network, so nothing else to do
                     } else {
                         String peeringId = localNetwork.id() + "/peerings/" + name;
                         return localNetwork.peerings().getByIdAsync(peeringId);
@@ -77,7 +77,7 @@ class NetworkPeeringsImpl
                 }
             })
 
-            // Get the remote peering if available and possible to delete
+            // Then get the remote peering if available and possible to delete
             .flatMap(new Func1<NetworkPeering, Observable<NetworkPeering>>() {
                 @Override
                 public Observable<NetworkPeering> call(NetworkPeering localPeering) {
@@ -91,7 +91,7 @@ class NetworkPeeringsImpl
                 }
             })
 
-            // Delete each peering (this will be called for each of the peerings, so at least once for the local peering, and second time for the remote one if any
+            // Then delete each peering (this will be called for each of the peerings, so at least once for the local peering, and second time for the remote one if any
             .flatMap(new Func1<NetworkPeering, Observable<Void>>() {
                 @Override
                 public Observable<Void> call(NetworkPeering peering) {
@@ -107,7 +107,7 @@ class NetworkPeeringsImpl
                 }
             })
 
-            // Continue till the last peering is deleted
+            // Then continue till the last peering is deleted
             .last()
             .toCompletable();
     }
