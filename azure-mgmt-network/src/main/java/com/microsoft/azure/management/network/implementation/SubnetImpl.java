@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
@@ -184,7 +185,7 @@ class SubnetImpl
 
     @Override
     public Set<String> listAvailablePrivateIPAddresses() {
-        Set<String> ipAddresses = new HashSet<>();
+        Set<String> ipAddresses = new TreeSet<>();
 
         String cidr = this.addressPrefix();
         if (cidr == null) {
