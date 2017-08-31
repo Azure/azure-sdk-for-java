@@ -111,7 +111,7 @@ class NetworkWatcherImpl
     }
 
     @Override
-    public ConnectivityCheck.DefinitionStages.WithSource checkConnectivity() {
+    public ConnectivityCheck.DefinitionStages.ToDestination checkConnectivity() {
         return new ConnectivityCheckImpl(this);
     }
 

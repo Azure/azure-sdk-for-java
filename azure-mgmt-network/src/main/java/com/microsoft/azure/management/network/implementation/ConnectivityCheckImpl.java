@@ -11,6 +11,7 @@ import com.microsoft.azure.management.network.ConnectivityCheck;
 import com.microsoft.azure.management.network.ConnectivityDestination;
 import com.microsoft.azure.management.network.ConnectivityHop;
 import com.microsoft.azure.management.network.ConnectivitySource;
+import com.microsoft.azure.management.network.model.HasNetworkInterfaces;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.ExecutableImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
@@ -33,31 +34,37 @@ public class ConnectivityCheckImpl extends ExecutableImpl<ConnectivityCheck>
     }
 
     @Override
-    public ConnectivityCheckImpl withSourceResourceId(String sourceResourceId) {
+    public ConnectivityCheckImpl fromSourceVirtualMachine(String sourceResourceId) {
         ensureConnectivitySource().withResourceId(sourceResourceId);
         return this;
     }
 
     @Override
-    public ConnectivityCheckImpl withDestinationResourceId(String resourceId) {
+    public DefinitionStages.WithExecute fromSourceVirtualMachine(HasNetworkInterfaces vm) {
+        ensureConnectivitySource().withResourceId(vm.id());
+        return this;
+    }
+
+    @Override
+    public ConnectivityCheckImpl toDestinationResourceId(String resourceId) {
         ensureConnectivityDestination().withResourceId(resourceId);
         return this;
     }
 
     @Override
-    public ConnectivityCheckImpl withDestinationAddress(String address) {
+    public ConnectivityCheckImpl toDestinationAddress(String address) {
         ensureConnectivityDestination().withAddress(address);
         return this;
     }
 
     @Override
-    public ConnectivityCheckImpl withDestinationPort(int port) {
+    public ConnectivityCheckImpl toDestinationPort(int port) {
         ensureConnectivityDestination().withPort(port);
         return this;
     }
 
     @Override
-    public DefinitionStages.WithExecute withSourcePort(int port) {
+    public DefinitionStages.WithExecute fromSourcePort(int port) {
         ensureConnectivitySource().withPort(port);
         return this;
     }

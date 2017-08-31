@@ -612,9 +612,9 @@ public class AzureTests extends TestBase {
         nw.packetCaptures().deleteByName(packetCapture.name());
 
         ConnectivityCheck connectivityCheck = nw.checkConnectivity()
-                .withSourceResourceId(virtualMachines[0].id())
-                .withDestinationResourceId(virtualMachines[1].id())
-                .withDestinationPort(80)
+                .toDestinationResourceId(virtualMachines[1].id())
+                .toDestinationPort(80)
+                .fromSourceVirtualMachine(virtualMachines[0].id())
                 .execute();
         Assert.assertEquals("Reachable", connectivityCheck.connectionStatus().toString());
 

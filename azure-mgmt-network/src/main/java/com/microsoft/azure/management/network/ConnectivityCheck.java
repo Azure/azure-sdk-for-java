@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.network.model.HasNetworkInterfaces;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.model.Executable;
 
@@ -59,9 +60,9 @@ public interface ConnectivityCheck extends Executable<ConnectivityCheck>,
      * The entirety of next hop parameters definition.
      */
     interface Definition extends
-            DefinitionStages.WithSource,
-            DefinitionStages.WithDestination,
-            DefinitionStages.WithDestinationPort,
+            DefinitionStages.ToDestination,
+            DefinitionStages.ToDestinationPort,
+            DefinitionStages.FromSourceVirtualMachine,
             DefinitionStages.WithExecute {
     }
 
@@ -72,47 +73,56 @@ public interface ConnectivityCheck extends Executable<ConnectivityCheck>,
         /**
          * Sets the source property.
          */
-        interface WithSource {
-            WithDestination withSourceResourceId(String resourceId);
+        interface FromSourceVirtualMachine {
+            /**
+             * @param resourceId the ID of the virtual machine from which a connectivity check will be initiated
+             * @return next definition stage
+             */
+            WithExecute fromSourceVirtualMachine(String resourceId);
+            /**
+             * @param vm virtual machine from which a connectivity check will be initiated
+             * @return next definition stage
+             */
+            WithExecute fromSourceVirtualMachine(HasNetworkInterfaces vm);
         }
 
         /**
          * Sets the destination property.
          */
-        interface WithDestination {
+        interface ToDestination {
             /**
              * @param resourceId the ID of the resource to which a connection attempt will be made
              * @return next definition stage
              */
-            WithDestinationPort withDestinationResourceId(String resourceId);
+            ToDestinationPort toDestinationResourceId(String resourceId);
 
             /**
              * @param address the IP address or URI the resource to which a connection attempt will be made
              * @return next definition stage
              */
-            WithDestinationPort withDestinationAddress(String address);
+            ToDestinationPort toDestinationAddress(String address);
         }
 
         /**
          * Sets the destination port on which check connectivity will be performed.
          */
-        interface WithDestinationPort {
+        interface ToDestinationPort {
             /**
              * @param port destination port
              * @return next definition stage
              */
-            WithExecute withDestinationPort(int port);
+            FromSourceVirtualMachine toDestinationPort(int port);
         }
 
         /**
          * Sets the source port from which a connectivity check will be performed.
          */
-        interface  WithSourcePort {
+        interface FromSourcePort {
             /**
              * @param port source port
              * @return next definition stage
              */
-            WithExecute withSourcePort(int port);
+            WithExecute fromSourcePort(int port);
         }
 
         /**
@@ -121,7 +131,7 @@ public interface ConnectivityCheck extends Executable<ConnectivityCheck>,
          */
         interface WithExecute extends
                 Executable<ConnectivityCheck>,
-                DefinitionStages.WithSourcePort {
+                FromSourcePort {
         }
     }
 }
