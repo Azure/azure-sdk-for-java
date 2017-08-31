@@ -13,7 +13,7 @@ import rx.Single;
 /**
  * Type representing RequestPolicy that can intercept and modify headers.
  */
-public class AddHeaderPolicy implements RequestPolicy {
+public final class AddHeaderPolicy implements RequestPolicy {
     private final RequestPolicy next;
 
     /**
@@ -37,7 +37,6 @@ public class AddHeaderPolicy implements RequestPolicy {
 
     @Override
     public Single<HttpResponse> sendAsync(HttpRequest request) {
-
         request.headers().add("x-my-header", "42");
         return next.sendAsync(request);
     }
