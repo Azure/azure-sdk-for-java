@@ -20,6 +20,8 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDe
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
+import rx.Observable;
+
 /**
  *  Entry point to network peering management API.
  */
@@ -37,15 +39,37 @@ public interface NetworkPeerings extends
 
     /**
      * Finds the peering, if any, that is associated with the specified network.
+     * <p>
+     * (Note that this makes a separate call to Azure.)
      * @param network an existing network
      * @return a network peering, or null if none exists
      */
-    NetworkPeering associatedWithRemoteNetwork(Network network);
+    NetworkPeering getByRemoteNetwork(Network network);
 
     /**
      * Finds the peering, if any, that is associated with the specified network.
-     * @param resourceId the resource ID of an existing network
+     * <p>
+     * (Note that this makes a separate call to Azure.)
+     * @param remoteNetworkResourceId the resource ID of an existing network
      * @return a network peering, or null if none exists
      */
-    NetworkPeering associatedWithRemoteNetwork(String resourceId);
+    NetworkPeering getByRemoteNetwork(String remoteNetworkResourceId);
+
+    /**
+     * Asynchronously finds the peering, if any, that is associated with the specified network.
+     * <p>
+     * (Note that this makes a separate call to Azure.)
+     * @param network an existing network
+     * @return a representation of the future computation of this call, evaluating to null if no such peering is found
+     */
+    Observable<NetworkPeering> getByRemoteNetworkAsync(Network network);
+
+    /**
+     * Asynchronously finds the peering, if any, that is associated with the specified network.
+     * <p>
+     * (Note that this makes a separate call to Azure.)
+     * @param remoteNetworkResourceId the resource ID of an existing network
+     * @return a representation of the future computation of this call, evaluating to null if no such peering is found
+     */
+    Observable<NetworkPeering> getByRemoteNetworkAsync(String remoteNetworkResourceId);
 }

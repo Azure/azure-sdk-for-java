@@ -10,6 +10,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkPeering;
 import com.microsoft.azure.management.network.NetworkPeerings;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildrenImpl;
 
 import rx.Completable;
@@ -32,13 +33,11 @@ class NetworkPeeringsImpl
     implements NetworkPeerings {
 
     private final NetworkImpl network;
-    private final PagedList<NetworkPeering> members;
 
     // Constructor to use from the context of a parent
     NetworkPeeringsImpl(final NetworkImpl parent) {
         super(parent.manager().inner().virtualNetworkPeerings(), parent.manager());
         this.network = parent;
-        this.members = this.wrapList(parent.inner().virtualNetworkPeerings());
     }
 
     @Override
@@ -60,8 +59,57 @@ class NetworkPeeringsImpl
     }
 
     @Override
-    public Completable deleteByParentAsync(String groupName, String parentName, String name) {
-        return this.inner().deleteAsync(groupName, parentName, name).toCompletable();
+    public Completable deleteByParentAsync(String groupName, String parentName, final String name) {
+        return this.manager().networks()
+            // Get the parent network of the peering to delete
+            .getByResourceGroupAsync(groupName, parentName)
+
+            // Find the local peering to delete
+            .flatMap(new Func1<Network, Observable<NetworkPeering>>() {
+                @Override
+                public Observable<NetworkPeering> call(Network localNetwork) {
+                    if (localNetwork == null) {
+                        return Observable.empty(); // Missing local network, so nothing else to do
+                    } else {
+                        String peeringId = localNetwork.id() + "/peerings/" + name;
+                        return localNetwork.peerings().getByIdAsync(peeringId);
+                    }
+                }
+            })
+
+            // Get the remote peering if available and possible to delete
+            .flatMap(new Func1<NetworkPeering, Observable<NetworkPeering>>() {
+                @Override
+                public Observable<NetworkPeering> call(NetworkPeering localPeering) {
+                    if (localPeering == null) {
+                        return Observable.just(localPeering);
+                    } else if (!localPeering.isSameSubscription()) {
+                        return Observable.just(localPeering);
+                    } else {
+                        return Observable.just(localPeering).concatWith(localPeering.getRemotePeeringAsync());
+                    }
+                }
+            })
+
+            // Delete each peering (this will be called for each of the peerings, so at least once for the local peering, and second time for the remote one if any
+            .flatMap(new Func1<NetworkPeering, Observable<Void>>() {
+                @Override
+                public Observable<Void> call(NetworkPeering peering) {
+                    if (peering == null) {
+                        return Observable.just(null);
+                    } else {
+                        String networkName = ResourceUtils.nameFromResourceId(peering.networkId());
+                        return peering.manager().inner().virtualNetworkPeerings().deleteAsync(
+                                peering.resourceGroupName(),
+                                networkName,
+                                peering.name());
+                    }
+                }
+            })
+
+            // Continue till the last peering is deleted
+            .last()
+            .toCompletable();
     }
 
     @Override
@@ -81,28 +129,55 @@ class NetworkPeeringsImpl
 
     @Override
     public PagedList<NetworkPeering> list() {
-        return this.members;
+        return this.wrapList(this.inner().list(this.network.resourceGroupName(), this.network.name()));
     }
 
     @Override
     public Observable<NetworkPeering> listAsync() {
-        return Observable.from(this.members);
+        return this.wrapPageAsync(this.inner().listAsync(this.network.resourceGroupName(), this.network.name()));
     }
 
     @Override
-    public NetworkPeering associatedWithRemoteNetwork(Network network) {
-        return (network != null) ? this.associatedWithRemoteNetwork(network.id()) : null;
+    public NetworkPeering getByRemoteNetwork(Network network) {
+        return (network != null) ? this.getByRemoteNetwork(network.id()) : null;
     }
 
     @Override
-    public NetworkPeering associatedWithRemoteNetwork(String resourceId) {
-        if (resourceId != null) {
-            for (NetworkPeering peering : this.members) {
-                if (peering.remoteNetworkId().equalsIgnoreCase(resourceId)) {
+    public NetworkPeering getByRemoteNetwork(String remoteNetworkResourceId) {
+        if (remoteNetworkResourceId != null) {
+            for (NetworkPeering peering : this.list()) {
+                if (peering.remoteNetworkId().equalsIgnoreCase(remoteNetworkResourceId)) {
                     return peering;
                 }
             }
         }
         return null;
+    }
+
+    @Override
+    public Observable<NetworkPeering> getByRemoteNetworkAsync(Network network) {
+        if (network != null) {
+            return this.getByRemoteNetworkAsync(network.id());
+        } else {
+            return Observable.just(null);
+        }
+    }
+
+    @Override
+    public Observable<NetworkPeering> getByRemoteNetworkAsync(final String remoteNetworkResourceId) {
+        if (remoteNetworkResourceId == null) {
+            return Observable.just(null);
+        } else {
+            return this.listAsync().filter(new Func1<NetworkPeering, Boolean>() {
+                @Override
+                public Boolean call(NetworkPeering peering) {
+                    if (peering == null) {
+                        return false;
+                    } else {
+                        return remoteNetworkResourceId.equalsIgnoreCase(peering.remoteNetworkId());
+                    }
+                }
+            });
+        }
     }
 }

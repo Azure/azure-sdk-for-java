@@ -223,6 +223,13 @@ public class TestNetwork {
             Assert.assertTrue(remotePeering.isAccessFromRemoteNetworkAllowed());
             Assert.assertEquals(GatewayUse.NONE, remotePeering.gatewayUse());
 
+            // Delete the peering
+            resource.peerings().deleteById(remotePeering.id());
+
+            // Verify deletion
+            Assert.assertEquals(0, resource.peerings().list().size());
+            Assert.assertEquals(0, remoteNetwork.peerings().list().size());
+
             return resource;
         }
 
