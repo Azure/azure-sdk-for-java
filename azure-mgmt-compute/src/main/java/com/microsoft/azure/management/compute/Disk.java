@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.DiskInner;
@@ -390,6 +391,21 @@ public interface Disk extends
         }
 
         /**
+         * The stage of the managed disk definition allowing to specify availability zone.
+         */
+        @Beta(Beta.SinceVersion.V1_3_0)
+        interface WithAvailabilityZone {
+            /**
+             * Specifies the availability zone for the managed disk.
+             *
+             * @param zoneId the zone identifier. The valid values are "1", "2", and "3"
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_3_0)
+            WithCreate withAvailabilityZone(String zoneId);
+        }
+
+        /**
          * The stage of the managed disk definition allowing to create the disk or optionally specify size.
          */
         interface WithCreateAndSize extends WithCreate {
@@ -423,7 +439,8 @@ public interface Disk extends
         interface WithCreate extends
                 Creatable<Disk>,
                 Resource.DefinitionWithTags<Disk.DefinitionStages.WithCreate>,
-                WithSku {
+                WithSku,
+                WithAvailabilityZone {
         }
     }
 

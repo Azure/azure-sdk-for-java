@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.network.implementation.PublicIPAddressInner;
@@ -187,6 +188,21 @@ public interface PublicIPAddress extends
         }
 
         /**
+         * The stage of the IP address definition allowing to specify availability zone.
+         */
+        @Beta(Beta.SinceVersion.V1_3_0)
+        interface WithAvailabilityZone {
+            /**
+             * Specifies the availability zone for the IP address.
+             *
+             * @param zoneId the zone identifier. The valid values are "1", "2", and "3"
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_3_0)
+            WithCreate withAvailabilityZone(String zoneId);
+        }
+
+        /**
          * The stage of the public IP definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
@@ -197,6 +213,7 @@ public interface PublicIPAddress extends
             DefinitionStages.WithIPAddress,
             DefinitionStages.WithReverseFQDN,
             DefinitionStages.WithIdleTimeout,
+            DefinitionStages.WithAvailabilityZone,
             Resource.DefinitionWithTags<WithCreate> {
         }
     }

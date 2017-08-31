@@ -1580,18 +1580,33 @@ public interface VirtualMachine extends
         }
 
         /**
-         * The stage of the definition which contains all the minimum required inputs for
-         * the VM to be created and optionally allow managed data disks specific settings to
-         * be specified.
+         * The stage of the VM definition allowing to specify availability zone.
+         */
+        @Beta(Beta.SinceVersion.V1_3_0)
+        interface WithAvailabilityZone {
+            /**
+             * Specifies the availability zone for the virtual machine.
+             *
+             * @param zoneId the zone identifier. The valid values are "1", "2", and "3"
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_3_0)
+            WithManagedCreate withAvailabilityZone(String zoneId);
+        }
+
+        /**
+         * The stage of the definition which contains all the minimum required inputs for the VM using managed OS disk
+         * to be created and optionally allow managed data disks specific settings to be specified.
          */
         interface WithManagedCreate extends
                 WithManagedDataDisk,
+                WithAvailabilityZone,
                 WithCreate {
             /**
              * Specifies the storage account type for the managed OS disk.
              *
              * @param accountType storage account type
-             * @return  the next stage of the definition
+             * @return the next stage of the definition
              */
             WithManagedCreate withOSDiskStorageAccountType(StorageAccountTypes accountType);
 
@@ -1613,9 +1628,9 @@ public interface VirtualMachine extends
         }
 
         /**
-         * The stage of a virtual machine definition which contains all the minimum required inputs for
-         * the VM to be created and optionally allow unmanaged data disk and settings specific to
-         * unmanaged OS disk to be specified.
+         * The stage of a virtual machine definition which contains all the minimum required inputs for the VM using
+         * storage account (unmanaged based OS disk to be created and optionally allow unmanaged data disk and settings
+         * specific to unmanaged OS disk to be specified.
          */
         interface WithUnmanagedCreate extends
                 WithUnmanagedDataDisk,

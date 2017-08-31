@@ -54,6 +54,7 @@ import com.microsoft.azure.management.graphrbac.BuiltInRole;
 import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
+import com.microsoft.azure.management.network.NicIPConfiguration;
 import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -149,6 +150,8 @@ class VirtualMachineImpl
     private String creatableDiagnosticsStorageAccountKey;
     // Utility to setup MSI for the virtual machine
     private VirtualMachineMsiHelper virtualMachineMsiHelper;
+    // Reference to the PublicIp creatable that is implicitly created
+    private  PublicIPAddress.DefinitionStages.WithCreate implicitPipCreatable;
 
     VirtualMachineImpl(String name,
                        VirtualMachineInner innerModel,
@@ -451,8 +454,20 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewPrimaryPublicIPAddress(String leafDnsLabel) {
+        PublicIPAddress.DefinitionStages.WithGroup definitionWithGroup = this.networkManager.publicIPAddresses()
+                .define(this.namer.randomName("pip", 15))
+                .withRegion(this.regionName());
+        PublicIPAddress.DefinitionStages.WithCreate definitionAfterGroup;
+        if (this.creatableGroup != null) {
+            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.creatableGroup);
+        } else {
+            definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
+        }
+        this.implicitPipCreatable = definitionAfterGroup.withLeafDomainLabel(leafDnsLabel);
+        // Create NIC with creatable PIP
+        //
         Creatable<NetworkInterface> nicCreatable = this.nicDefinitionWithCreate
-                .withNewPrimaryPublicIPAddress(leafDnsLabel);
+                .withNewPrimaryPublicIPAddress(this.implicitPipCreatable);
         this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
         this.addCreatableDependency(nicCreatable);
         return this;
@@ -1605,6 +1620,9 @@ class VirtualMachineImpl
                     public Observable<? extends VirtualMachine> call(StorageAccount storageAccount) {
                         handleNetworkSettings();
                         handleAvailabilitySettings();
+                        // inner().withZones(new ArrayList<String>());
+                        // inner().zones().add("1");
+
                         return client.createOrUpdateAsync(resourceGroupName(), vmName, inner())
                                 .map(new Func1<VirtualMachineInner, VirtualMachine>() {
                                     @Override
@@ -1662,6 +1680,26 @@ class VirtualMachineImpl
                 .add(dataDisk.inner());
         this.unmanagedDataDisks
                 .add(dataDisk);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withAvailabilityZone(String zoneId) {
+        if (isInCreateMode()) {
+            // 'withAvailabilityZone' is not exposed via VirtualMachine.Update interface but
+            // still adding above 'isInCreateMode' check just as a reminder to take special
+            // handling of 'implicitPipCreatable' when avail zone update is supported.
+            //
+            if (this.inner().zones() == null) {
+                this.inner().withZones(new ArrayList<String>());
+            }
+            this.inner().zones().add(zoneId);
+            // zone aware VM can be attached to only zone aware public IP.
+            //
+            if (this.implicitPipCreatable != null) {
+                this.implicitPipCreatable.withAvailabilityZone(zoneId);
+            }
+        }
         return this;
     }
 

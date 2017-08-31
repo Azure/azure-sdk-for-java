@@ -19,6 +19,8 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 
+import java.util.ArrayList;
+
 /**
  *  Implementation for PublicIPAddress and its create and update interfaces.
  */
@@ -74,6 +76,15 @@ class PublicIPAddressImpl
     }
 
     @Override
+    public PublicIPAddressImpl withAvailabilityZone(String zoneId) {
+        if (this.inner().zones() == null) {
+            this.inner().withZones(new ArrayList<String>());
+        }
+        this.inner().zones().add(zoneId);
+        return this;
+    }
+
+    @Override
     public PublicIPAddressImpl withoutLeafDomainLabel() {
         return this.withLeafDomainLabel(null);
     }
@@ -88,7 +99,6 @@ class PublicIPAddressImpl
     public PublicIPAddressImpl withoutReverseFqdn() {
         return this.withReverseFqdn(null);
     }
-
 
     // Getters
 

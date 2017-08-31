@@ -24,6 +24,8 @@ import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
+import java.util.ArrayList;
+
 /**
  * The implementation for {@link Disk} and its create and update interfaces.
  */
@@ -293,6 +295,15 @@ class DiskImpl
     @Override
     public DiskImpl withSku(DiskSkuTypes sku) {
         this.inner().withSku((new DiskSku()).withName(sku.accountType()));
+        return this;
+    }
+
+    @Override
+    public DiskImpl withAvailabilityZone(String zoneId) {
+        if (this.inner().zones() == null) {
+            this.inner().withZones(new ArrayList<String>());
+        }
+        this.inner().zones().add(zoneId);
         return this;
     }
 
