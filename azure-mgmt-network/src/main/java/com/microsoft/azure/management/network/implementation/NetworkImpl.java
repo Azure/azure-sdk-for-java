@@ -106,18 +106,12 @@ class NetworkImpl
                     this.resourceGroupName(),
                     this.name(),
                     ipAddress);
-            if (result == null) {
-                return null;
-            } else {
-                return result;
-            }
         } catch (CloudException e) {
             if (!e.body().code().equalsIgnoreCase("PrivateIPAddressNotInAnySubnet")) {
                 throw e; // Rethrow if the exception reason is anything other than IP address not found
-            } else {
-                return null;
             }
         }
+        return result;
     }
 
     NetworkImpl withSubnet(SubnetImpl subnet) {

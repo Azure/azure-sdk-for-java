@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.network.implementation.VirtualNetworkPeeringInner;
@@ -63,23 +64,27 @@ public interface NetworkPeering extends
     /**
      * @return the remote network if it is in the same subscription, otherwise null.
      */
+    @Method
     Network getRemoteNetwork();
 
     /**
      * Gets the remote network associated with this peering asynchronously.
      * @return a representation of the future computation of this call
      */
+    @Method
     Observable<Network> getRemoteNetworkAsync();
 
     /**
      * @return the associated matching peering on the remote network if it is in the same subscription, otherwise this future computation will evaluate to null.
      */
+    @Method
     NetworkPeering getRemotePeering();
 
     /**
      * Gets the associated matching peering on the remote network if it is in the same subscription.
      * @return a representation of the future computation of this call.
      */
+    @Method
     Observable<NetworkPeering> getRemotePeeringAsync();
 
     /**
