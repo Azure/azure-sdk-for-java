@@ -13,7 +13,7 @@ import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import com.microsoft.rest.v2.http.OkHttpClient;
+import com.microsoft.rest.v2.http.OkHttpAdapter;
 import com.microsoft.rest.v2.http.UrlBuilder;
 import rx.Completable;
 import rx.Single;
@@ -133,7 +133,7 @@ public final class RestProxy implements InvocationHandler {
      */
     @SuppressWarnings("unchecked")
     public static <A> A create(Class<A> swaggerInterface, RestClient restClient) {
-        final HttpClient httpClient = new OkHttpClient(restClient.httpClient());
+        final HttpClient httpClient = new OkHttpAdapter(restClient.httpClient());
         final SerializerAdapter<?> serializer = restClient.serializerAdapter();
         return create(swaggerInterface, httpClient, serializer);
     }

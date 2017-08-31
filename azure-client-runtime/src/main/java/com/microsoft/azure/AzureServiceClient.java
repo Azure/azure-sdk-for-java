@@ -19,7 +19,7 @@ import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyChain;
-import com.microsoft.rest.v2.http.RxNettyClient;
+import com.microsoft.rest.v2.http.RxNettyAdapter;
 import com.microsoft.rest.v2.policy.UseOtherHostPolicy;
 import io.netty.channel.ChannelHandler;
 import okhttp3.OkHttpClient;
@@ -65,7 +65,7 @@ public abstract class AzureServiceClient extends ServiceClient {
 
         final AzureTokenCredentials credentials = (AzureTokenCredentials) restClient().credentials();
         // TODO: tests, refactoring-- less hacky way of getting credentials
-        final RxNettyClient rxnClient = new RxNettyClient();
+        final RxNettyAdapter rxnClient = new RxNettyAdapter();
         rpHttpClient = new RequestPolicyChain(new AzureTokenCredentialsPolicy.Factory(credentials), new RequestPolicy.Factory() {
             @Override
             public RequestPolicy create(RequestPolicy next) {

@@ -29,7 +29,7 @@ import java.util.Set;
 /**
  * A HttpClient that is implemented using RxNetty.
  */
-public class RxNettyClient extends HttpClient {
+public class RxNettyAdapter extends HttpClient {
     private final ChannelHandlerConfig[] handlerConfigs;
 
     /**
@@ -37,11 +37,9 @@ public class RxNettyClient extends HttpClient {
      *
      * @param handlerConfigs the Netty ChannelHandler configurations.
      */
-    public RxNettyClient(ChannelHandlerConfig... handlerConfigs) {
+    public RxNettyAdapter(ChannelHandlerConfig... handlerConfigs) {
         this.handlerConfigs = handlerConfigs;
-    }
-
-    private SSLEngine getSSLEngine(String host) {
+    }    private SSLEngine getSSLEngine(String host) {
         SSLContext sslCtx;
         try {
             sslCtx = SSLContext.getDefault();
