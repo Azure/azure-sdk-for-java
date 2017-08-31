@@ -371,8 +371,8 @@ var autoRestExe;
 gulp.task('codegen', function(cb) {
     if (autoRestVersion.match(/[0-9]+\.[0-9]+\.[0-9]+.*/) ||
         autoRestVersion == 'latest') {
-        console.error("The --autorest flag must be used to provide a path to an AutoRest 2.0 repo until AutoRest 2.0 is released.".red);
-        process.exit(1);
+            autoRestExe = 'autorest ---version=' + autoRestVersion;
+            handleInput(projects, cb);    
     } else {
         autoRestExe = "node " + path.join(autoRestVersion, "src/autorest-core/dist/app.js");
         handleInput(projects, cb);
