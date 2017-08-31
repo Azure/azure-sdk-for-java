@@ -13,6 +13,7 @@ import okhttp3.Request;
 
 import java.io.IOException;
 import java.net.Proxy;
+import java.net.URL;
 
 /**
  * AzureTokenCredentials represents a credentials object with access to Azure
@@ -40,6 +41,20 @@ public abstract class AzureTokenCredentials extends TokenCredentials {
     @Override
     protected final String getToken(Request request) throws IOException {
         String host = request.url().host();
+        for (String endpoint : environment().endpoints().values()) {
+            if (host.contains(endpoint)) {
+                // Remove leading dots
+                host = endpoint.replaceAll("^\\.*", "");
+                break;
+            }
+        }
+        String resource = String.format("https://%s/", host);
+        return getToken(resource);
+    }
+
+    public final String getTokenFromUri(String uri) throws IOException {
+        URL url = new URL(uri);
+        String host = url.getHost();
         for (String endpoint : environment().endpoints().values()) {
             if (host.contains(endpoint)) {
                 // Remove leading dots
