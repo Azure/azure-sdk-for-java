@@ -5,47 +5,41 @@
  */
 package com.microsoft.azure.management;
 
-import com.microsoft.azure.management.network.VirtualNetworkGateway;
-import com.microsoft.azure.management.network.VirtualNetworkGatewaySkuName;
-import com.microsoft.azure.management.network.VirtualNetworkGateways;
+import com.microsoft.azure.management.network.LocalNetworkGateway;
+import com.microsoft.azure.management.network.LocalNetworkGateways;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.Assert;
 
 /**
- * Tests Virtual Network Gateway.
+ * Tests Local Network Gateway.
  */
-public class TestVirtualNetworkGateway  extends TestTemplate<VirtualNetworkGateway, VirtualNetworkGateways> {
+public class TestLocalNetworkGateway  extends TestTemplate<LocalNetworkGateway, LocalNetworkGateways> {
     private static String TEST_ID = "";
     private static Region REGION = Region.US_NORTH_CENTRAL;
     private String groupName;
-    private String nwName;
+    private String lngwName;
 
     private void initializeResourceNames() {
         TEST_ID = SdkContext.randomResourceName("", 8);
         groupName = "rg" + TEST_ID;
-        nwName = "vngw" + TEST_ID;
+        lngwName = "lngw" + TEST_ID;
     }
 
     @Override
-    public VirtualNetworkGateway createResource(VirtualNetworkGateways virtualNetworkGateways) throws Exception {
+    public LocalNetworkGateway createResource(LocalNetworkGateways localNetworkGateways) throws Exception {
         initializeResourceNames();
-        VirtualNetworkGateway vngw = virtualNetworkGateways.define(nwName)
+        LocalNetworkGateway gateway = localNetworkGateways.define(lngwName)
                 .withRegion(REGION)
-                .withNewResourceGroup()
-                .withVPN()
-                .withRouteBased()
-                .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
-                .withTag("tag1", "value1")
-//                .withActiveActive(true)
+                .withNewResourceGroup(groupName)
+                .withIPAddress("40.71.184.214")
                 .create();
-        return vngw;
+        return gateway;
     }
 
     @Override
-    public VirtualNetworkGateway updateResource(VirtualNetworkGateway resource) throws Exception {
+    public LocalNetworkGateway updateResource(LocalNetworkGateway resource) throws Exception {
         resource.update()
-                .withSku(VirtualNetworkGatewaySkuName.VPN_GW2)
                 .withTag("tag2", "value2")
                 .withoutTag("tag1")
                 .apply();
@@ -56,9 +50,9 @@ public class TestVirtualNetworkGateway  extends TestTemplate<VirtualNetworkGatew
     }
 
     @Override
-    public void print(VirtualNetworkGateway gateway) {
+    public void print(LocalNetworkGateway gateway) {
         StringBuilder info = new StringBuilder();
-        info.append("Virtual Network Gateway: ").append(gateway.id())
+        info.append("Local Network Gateway: ").append(gateway.id())
                 .append("\n\tName: ").append(gateway.name())
                 .append("\n\tResource group: ").append(gateway.resourceGroupName())
                 .append("\n\tRegion: ").append(gateway.regionName())

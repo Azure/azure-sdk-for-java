@@ -628,6 +628,15 @@ public class AzureTests extends TestBase {
     }
 
     /**
+     * Tests the local network gateway implementation.
+     * @throws Exception
+     */
+    @Test
+    public void testLocalNetworkGateways() throws Exception {
+        new TestLocalNetworkGateway().runTest(azure.localNetworkGateways(), azure.resourceGroups());
+    }
+
+    /**
      * Tests virtual machines.
      * @throws Exception
      */

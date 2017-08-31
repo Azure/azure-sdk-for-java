@@ -101,17 +101,17 @@ public interface VirtualNetworkGateway extends
     }
 
     /**
-     * Grouping of virtual network definition stages.
+     * Grouping of virtual network gateway definition stages.
      */
     interface DefinitionStages {
         /**
-         * The first stage of a virtual network definition.
+         * The first stage of a virtual network gateway definition.
          */
         interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {
         }
 
         /**
-         * The stage of the virtual network definition allowing to specify the resource group.
+         * The stage of the virtual network gateway definition allowing to specify the resource group.
          */
         interface WithGroup
                 extends GroupableResource.DefinitionStages.WithGroup<DefinitionStages.WithGatewayType> {
@@ -159,9 +159,9 @@ public interface VirtualNetworkGateway extends
         }
 
         /**
-         * The stage of the virtual network definition which contains all the minimum required inputs for
+         * The stage of the virtual network gateway definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
-         * for any other optional settings to be specified, except for adding subnets.
+         * for any other optional settings to be specified.
          */
         interface WithCreate extends
                 Creatable<VirtualNetworkGateway>,
@@ -195,7 +195,7 @@ public interface VirtualNetworkGateway extends
     }
 
     /**
-     * The template for a virtual network update operation, containing all the settings that
+     * The template for a virtual network gateway update operation, containing all the settings that
      * can be modified.
      * <p>
      * Call {@link Update#apply()} to apply the changes to the resource in Azure.

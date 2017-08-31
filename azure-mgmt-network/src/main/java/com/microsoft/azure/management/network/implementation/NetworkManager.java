@@ -14,6 +14,7 @@ import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGateways;
 import com.microsoft.azure.management.network.LoadBalancers;
+import com.microsoft.azure.management.network.LocalNetworkGateways;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
@@ -56,6 +57,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
     private NetworkUsages networkUsages;
     private NetworkWatchers networkWatchers;
     private VirtualNetworkGateways virtualNetworkGateways;
+    private LocalNetworkGateways localNetworkGateways;
 
     /**
      * Get a Configurable instance that can be used to create {@link NetworkManager}
@@ -228,6 +230,16 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
             this.virtualNetworkGateways = new VirtualNetworkGatewaysImpl(this);
         }
         return this.virtualNetworkGateways;
+    }
+
+    /**
+     * @return entry point to local network gateway management
+     */
+    public LocalNetworkGateways localNetworkGateways() {
+        if (this.localNetworkGateways == null) {
+            this.localNetworkGateways = new LocalNetworkGatewaysImpl(this);
+        }
+        return this.localNetworkGateways;
     }
 
     // Internal utility function
