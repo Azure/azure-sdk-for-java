@@ -6,6 +6,7 @@
 
 package com.microsoft.rest.v2.http;
 
+import com.microsoft.rest.v2.policy.RequestPolicy;
 import rx.Single;
 import rx.functions.Func1;
 
