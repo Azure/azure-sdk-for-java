@@ -8,19 +8,24 @@ package com.microsoft.rest.v2.http;
 
 import rx.Single;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Type representing request-response pipeline holding request policies.
  */
 public class RequestPolicyChain extends HttpClient {
-    private final RequestPolicy.Factory[] factories;
+    private final List<RequestPolicy.Factory> factories;
 
     /**
      * Creates RequestPolicyChain.
      *
-     * @param factories the factories that can creates RequestPolicy instances in the pipeline.
+     * @param factoryArray the factories that can creates RequestPolicy instances in the pipeline.
      */
-    public RequestPolicyChain(RequestPolicy.Factory... factories) {
-        this.factories = factories;
+    public RequestPolicyChain(RequestPolicy.Factory... factoryArray) {
+        factories = Arrays.asList(factoryArray);
+        Collections.reverse(factories);
     }
 
     /**

@@ -26,7 +26,7 @@ public class UseOtherHostPolicy implements RequestPolicy {
     }
 
     private final RequestPolicy next;
-    UseOtherHostPolicy(RequestPolicy next) {
+    private UseOtherHostPolicy(RequestPolicy next) {
         this.next = next;
     }
 

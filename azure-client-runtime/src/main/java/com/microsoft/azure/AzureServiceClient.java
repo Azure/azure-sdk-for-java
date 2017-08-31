@@ -63,6 +63,7 @@ public abstract class AzureServiceClient extends ServiceClient {
     protected AzureServiceClient(RestClient restClient) {
         super(restClient);
 
+        // TODO: tests, refactoring-- less hacky way of getting credentials
         final RxNettyClient rxnClient =
                 new RxNettyClient(new ChannelHandlerConfig(new Func0<ChannelHandler>() {
                     @Override
@@ -71,8 +72,7 @@ public abstract class AzureServiceClient extends ServiceClient {
                     }
                 }, true));
 
-
-        rpHttpClient = new RequestPolicyChain(new RequestPolicy.Factory() {
+        rpHttpClient = new RequestPolicyChain(new UseOtherHostPolicy.Factory(), new RequestPolicy.Factory() {
             @Override
             public RequestPolicy create(RequestPolicy next) {
                 return new RequestPolicy() {
@@ -82,7 +82,7 @@ public abstract class AzureServiceClient extends ServiceClient {
                     }
                 };
             }
-        }, new UseOtherHostPolicy.Factory());
+        });
     }
 
     private final HttpClient rpHttpClient;
