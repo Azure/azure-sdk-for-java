@@ -37,21 +37,18 @@ public class ConnectivityCheckImpl extends ExecutableImpl<ConnectivityCheck>
         ConnectivitySource connectivitySource = new ConnectivitySource();
         connectivitySource.withResourceId(sourceResourceId);
         parameters.withSource(connectivitySource);
-        parameters.withDestination(new ConnectivityDestination());
         return this;
     }
 
     @Override
     public ConnectivityCheckImpl withDestinationResourceId(String resourceId) {
-        ensureConnectivityDestination();
-        parameters.destination().withResourceId(resourceId);
+        ensureConnectivityDestination().withResourceId(resourceId);
         return this;
     }
 
     @Override
     public ConnectivityCheckImpl withDestinationAddress(String address) {
-        ensureConnectivityDestination();
-        parameters.destination().withAddress(address);
+        ensureConnectivityDestination().withAddress(address);
         return this;
     }
 
@@ -67,10 +64,11 @@ public class ConnectivityCheckImpl extends ExecutableImpl<ConnectivityCheck>
         return this;
     }
 
-    private void ensureConnectivityDestination() {
+    private ConnectivityDestination ensureConnectivityDestination() {
         if (parameters.destination() == null) {
             parameters.withDestination(new ConnectivityDestination());
         }
+        return parameters.destination();
     }
 
     @Override
