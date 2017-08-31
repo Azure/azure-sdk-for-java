@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.rest.v2.http;
 
 import rx.Single;
@@ -5,9 +11,14 @@ import rx.Single;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * Type representing RequestPolicy that can send request to a different host.
+ */
 public class UseOtherHostPolicy implements RequestPolicy {
+    /**
+     * Factory to create UseOtherHostPolicy.
+     */
     public static class Factory implements RequestPolicy.Factory {
-
         @Override
         public RequestPolicy create(RequestPolicy next) {
             return new UseOtherHostPolicy(next);
