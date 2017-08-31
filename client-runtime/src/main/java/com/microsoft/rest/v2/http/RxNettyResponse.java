@@ -97,7 +97,7 @@ class RxNettyResponse extends HttpResponse {
     private class ClosableByteBufInputStream extends io.netty.buffer.ByteBufInputStream {
         private final ByteBuf buffer;
 
-        public ClosableByteBufInputStream(ByteBuf buffer) {
+        ClosableByteBufInputStream(ByteBuf buffer) {
             super(buffer);
             this.buffer = buffer;
         }

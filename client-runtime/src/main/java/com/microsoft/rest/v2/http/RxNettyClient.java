@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Executors;
 
 /**
  * A HttpClient that is implemented using RxNetty.
@@ -33,6 +32,11 @@ import java.util.concurrent.Executors;
 public class RxNettyClient extends HttpClient {
     private final ChannelHandlerConfig[] handlerConfigs;
 
+    /**
+     * Creates RxNettyClient.
+     *
+     * @param handlerConfigs the Netty ChannelHandler configurations.
+     */
     public RxNettyClient(ChannelHandlerConfig... handlerConfigs) {
         this.handlerConfigs = handlerConfigs;
     }

@@ -52,6 +52,13 @@ public abstract class AzureTokenCredentials extends TokenCredentials {
         return getToken(resource);
     }
 
+    /**
+     * Gets the token from the given endpoint.
+     *
+     * @param uri the url
+     * @return the token
+     * @throws IOException IOException
+     */
     public final String getTokenFromUri(String uri) throws IOException {
         URL url = new URL(uri);
         String host = url.getHost();
