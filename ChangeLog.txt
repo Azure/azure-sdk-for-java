@@ -1,3 +1,7 @@
+X.X.X
+ * Connection string support expanded to allow AccountName to be specified with SharedAccessSignature and DefaultEndpointsProtocol.  In this case, SharedAccessSignature is used for credentials, while having both DefaultEndpointsProtocol and AccountName allows the library to infer a set of default endpoints.  Additionally, we have added support for BlobSecondaryEndpoint, QueueSecondaryEndpoint, TableSecondaryEndpoint, and FileSecondaryEndpoint.  Specifying a secondary endpoint requires the specification of the corresponding primary.
+ * All: The use of DefaultEndpointsProtocol in a connection string is now optional in the case where endpoints would be automatically generated; if missing, a value of https will be inferred.  When the parsed account settings in such a case are used to generate a connection string, the value of DefaultEndpointsProtocol will be explicitly included.
+
 2017.08.28 Version 5.5.0
  * Fixed a bug when using a SAS token where the token was being omitted from calls to delete a directory in the file service.
  * For Standard Storage Accounts only, added the ability to set the tier of individual block blobs. The tier can currently only be set through uploadTier()

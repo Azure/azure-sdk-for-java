@@ -1,4 +1,8 @@
-﻿Changes in 5.1.1
+﻿Changes in X.X.X
+ * DefaultEndpointsProtocol will now be explicitly included in generated connection strings.
+ * Connection string parsing has been substantially re-written and expanded. Please refer to current documentation about connection string formats.
+
+Changes in 5.1.1
 OTHER
   * Reverted the code from 5.1.0 because it contained a regression and an accidental change.
 

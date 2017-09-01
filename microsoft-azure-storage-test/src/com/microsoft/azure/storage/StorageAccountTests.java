@@ -282,21 +282,406 @@ public class StorageAccountTests {
 
     @Test
     public void testCloudStorageAccountConnectionStringRoundtrip() throws InvalidKeyException, URISyntaxException {
-        String accountString1 = String.format("DefaultEndpointsProtocol=http;AccountName=%s;AccountKey=%s",
-                ACCOUNT_NAME, ACCOUNT_KEY);
+        Object[] accountKeyParams = new String[]
+        {
+            ACCOUNT_NAME,
+            ACCOUNT_KEY,
+            "fake.endpoint.suffix",
+            "https://primary.endpoint/",
+            "https://secondary.endpoint/"
+        };
 
-        String accountString2 = String.format(
-                "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;QueueEndpoint=%s", ACCOUNT_NAME,
-                ACCOUNT_KEY, "https://alternate.queue.endpoint/");
+        Object[] accountSasParams = new String[]
+        {
+            ACCOUNT_NAME,
+            "sasTest",
+            "fake.endpoint.suffix",
+            "https://primary.endpoint/",
+            "https://secondary.endpoint/"
+        };
+
+        // account key
+
+        String accountString1 =
+                String.format(
+                        "DefaultEndpointsProtocol=http;AccountName=%1$s;AccountKey=%2$s;EndpointSuffix=%3$s;",
+                        accountKeyParams);
+
+        String accountString2 =
+                String.format(
+                        "DefaultEndpointsProtocol=https;AccountName=%1$s;AccountKey=%2$s;",
+                        accountKeyParams);
+
+        String accountString3 =
+                String.format(
+                        "DefaultEndpointsProtocol=https;AccountName=%1$s;AccountKey=%2$s;QueueEndpoint=%4$s",
+                        accountKeyParams);
+
+        String accountString4 =
+                String.format(
+                        "DefaultEndpointsProtocol=https;AccountName=%1$s;AccountKey=%2$s;EndpointSuffix=%3$s;QueueEndpoint=%4$s",
+                        accountKeyParams);
 
         connectionStringRoundtripHelper(accountString1);
         connectionStringRoundtripHelper(accountString2);
+        connectionStringRoundtripHelper(accountString3);
+        connectionStringRoundtripHelper(accountString4);
+
+        String accountString5 =
+                String.format(
+                        "AccountName=%1$s;AccountKey=%2$s;EndpointSuffix=%3$s;",
+                        accountKeyParams);
+
+        String accountString6 =
+                String.format(
+                        "AccountName=%1$s;AccountKey=%2$s;",
+                        accountKeyParams);
+
+        String accountString7 =
+                String.format(
+                        "AccountName=%1$s;AccountKey=%2$s;QueueEndpoint=%4$s",
+                        accountKeyParams);
+
+        String accountString8 =
+                String.format(
+                        "AccountName=%1$s;AccountKey=%2$s;EndpointSuffix=%3$s;QueueEndpoint=%4$s",
+                        accountKeyParams);
+
+        connectionStringRoundtripHelper(accountString5);
+        connectionStringRoundtripHelper(accountString6);
+        connectionStringRoundtripHelper(accountString7);
+        connectionStringRoundtripHelper(accountString8);
+
+        // shared access
+
+        String accountString9 =
+                String.format(
+                        "DefaultEndpointsProtocol=http;AccountName=%1$s;SharedAccessSignature=%2$s;EndpointSuffix=%3$s;",
+                        accountSasParams);
+
+        String accountString10 =
+                String.format(
+                        "DefaultEndpointsProtocol=https;AccountName=%1$s;SharedAccessSignature=%2$s;",
+                        accountSasParams);
+
+        String accountString11 =
+                String.format(
+                        "DefaultEndpointsProtocol=https;AccountName=%1$s;SharedAccessSignature=%2$s;QueueEndpoint=%4$s",
+                        accountSasParams);
+
+        String accountString12 =
+                String.format(
+                        "DefaultEndpointsProtocol=https;AccountName=%1$s;SharedAccessSignature=%2$s;EndpointSuffix=%3$s;QueueEndpoint=%4$s",
+                        accountSasParams);
+
+        connectionStringRoundtripHelper(accountString9);
+        connectionStringRoundtripHelper(accountString10);
+        connectionStringRoundtripHelper(accountString11);
+        connectionStringRoundtripHelper(accountString12);
+
+        String accountString13 =
+                String.format(
+                        "AccountName=%1$s;SharedAccessSignature=%2$s;EndpointSuffix=%3$s;",
+                        accountSasParams);
+
+        String accountString14 =
+                String.format(
+                        "AccountName=%1$s;SharedAccessSignature=%2$s;",
+                        accountSasParams);
+
+        String accountString15 =
+                String.format(
+                        "AccountName=%1$s;SharedAccessSignature=%2$s;QueueEndpoint=%4$s",
+                        accountSasParams);
+
+        String accountString16 =
+                String.format(
+                        "AccountName=%1$s;SharedAccessSignature=%2$s;EndpointSuffix=%3$s;QueueEndpoint=%4$s",
+                        accountSasParams);
+
+        connectionStringRoundtripHelper(accountString13);
+        connectionStringRoundtripHelper(accountString14);
+        connectionStringRoundtripHelper(accountString15);
+        connectionStringRoundtripHelper(accountString16);
+
+        // shared access no account name
+
+        String accountString17 =
+                String.format(
+                        "SharedAccessSignature=%2$s;QueueEndpoint=%4$s",
+                        accountSasParams);
+
+        connectionStringRoundtripHelper(accountString17);
     }
 
+    @Test
+    public void CloudStorageAccountConnectionStringExpectedExceptions()
+    {
+        String[][] endpointCombinations = new String[][]
+        {
+            new String[] { "BlobEndpoint=%4$s", "BlobSecondaryEndpoint=%5$s", "BlobEndpoint=%4$s;BlobSecondaryEndpoint=%5$s" },
+            new String[] { "QueueEndpoint=%4$s", "QueueSecondaryEndpoint=%5$s", "QueueEndpoint=%4$s;QueueSecondaryEndpoint=%5$s" },
+            new String[] { "TableEndpoint=%4$s", "TableSecondaryEndpoint=%5$s", "TableEndpoint=%4$s;TableSecondaryEndpoint=%5$s" },
+            new String[] { "FileEndpoint=%4$s", "FileSecondaryEndpoint=%5$s", "FileEndpoint=%4$s;FileSecondaryEndpoint=%5$s" }
+        };
+
+        Object[] accountKeyParams = new String[]
+                {
+                        ACCOUNT_NAME,
+                        ACCOUNT_KEY,
+                        "fake.endpoint.suffix",
+                        "https://primary.endpoint/",
+                        "https://secondary.endpoint/"
+                };
+
+        Object[] accountSasParams = new String[]
+                {
+                        ACCOUNT_NAME,
+                        "sasTest",
+                        "fake.endpoint.suffix",
+                        "https://primary.endpoint/",
+                        "https://secondary.endpoint/"
+                };
+
+        for (String[] endpointCombination: endpointCombinations)
+        {
+            // account key
+
+            String accountStringKeyPrimary =
+                    String.format(
+                            "DefaultEndpointsProtocol=https;AccountName=%1$s;AccountKey=%2$s;EndpointSuffix=%3$s;" + endpointCombination[0],
+                            accountKeyParams
+                    );
+
+            String accountStringKeySecondary =
+                    String.format(
+                            "DefaultEndpointsProtocol=https;AccountName=%1$s;AccountKey=%2$s;EndpointSuffix=%3$s;" + endpointCombination[1],
+                            accountKeyParams
+                    );
+
+            String accountStringKeyPrimarySecondary =
+                    String.format(
+                            "DefaultEndpointsProtocol=https;AccountName=%1$s;AccountKey=%2$s;EndpointSuffix=%3$s;" + endpointCombination[2],
+                            accountKeyParams
+                    );
+
+            try {
+                CloudStorageAccount.parse(accountStringKeyPrimary); // no exception expected
+            } catch (Exception e) {
+                fail("Unexpected exception");
+            }
+
+            try {
+                CloudStorageAccount.parse(accountStringKeySecondary);
+                fail("Expected exception not thrown");
+            } catch (IllegalArgumentException e) {
+                // pass
+            } catch (InvalidKeyException e) {
+                fail("Unexpected exception");
+            } catch (URISyntaxException e) {
+                fail("Unexpected exception");
+            }
+
+            try {
+                CloudStorageAccount.parse(accountStringKeyPrimarySecondary); // no exception expected
+            } catch (Exception e) {
+                fail("Unexpected exception");
+            }
+
+            // account key, no default protocol
+
+            String accountStringKeyNoDefaultProtocolPrimary =
+                    String.format(
+                            "AccountName=%1$s;AccountKey=%2$s;EndpointSuffix=%3$s;" + endpointCombination[0],
+                            accountKeyParams
+                    );
+
+            String accountStringKeyNoDefaultProtocolSecondary =
+                    String.format(
+                            "AccountName=%1$s;AccountKey=%2$s;EndpointSuffix=%3$s;" + endpointCombination[1],
+                            accountKeyParams
+                    );
+
+            String accountStringKeyNoDefaultProtocolPrimarySecondary =
+                    String.format(
+                            "AccountName=%1$s;AccountKey=%2$s;EndpointSuffix=%3$s;" + endpointCombination[2],
+                            accountKeyParams
+                    );
+
+            try {
+                CloudStorageAccount.parse(accountStringKeyNoDefaultProtocolPrimary); // no exception expected
+            } catch (Exception e) {
+                fail("Unexpected exception");
+            }
+
+            try {
+                CloudStorageAccount.parse(accountStringKeyNoDefaultProtocolSecondary);
+                fail("Expected exception not thrown");
+            } catch (IllegalArgumentException e) {
+                // pass
+            } catch (InvalidKeyException e) {
+                fail("Unexpected exception");
+            } catch (URISyntaxException e) {
+                fail("Unexpected exception");
+            }
+
+            try {
+                CloudStorageAccount.parse(accountStringKeyNoDefaultProtocolPrimarySecondary); // no exception expected
+            } catch (Exception e) {
+                fail("Unexpected exception");
+            }
+
+            // SAS
+
+            String accountStringSasPrimary =
+                    String.format(
+                            "DefaultEndpointsProtocol=https;AccountName=%1$s;SharedAccessSignature=%2$s;EndpointSuffix=%3$s;" + endpointCombination[0],
+                            accountSasParams
+                    );
+
+            String accountStringSasSecondary =
+                    String.format(
+                            "DefaultEndpointsProtocol=https;AccountName=%1$s;SharedAccessSignature=%2$s;EndpointSuffix=%3$s;" + endpointCombination[1],
+                            accountSasParams
+                    );
+
+            String accountStringSasPrimarySecondary =
+                    String.format(
+                            "DefaultEndpointsProtocol=https;AccountName=%1$s;SharedAccessSignature=%2$s;EndpointSuffix=%3$s;" + endpointCombination[2],
+                            accountSasParams
+                    );
+
+            try {
+                CloudStorageAccount.parse(accountStringSasPrimary); // no exception expected
+            } catch (Exception e) {
+                fail("Unexpected exception");
+            }
+
+            try {
+                CloudStorageAccount.parse(accountStringSasSecondary);
+                fail("Expected exception not thrown");
+            } catch (IllegalArgumentException e) {
+                // pass
+            } catch (InvalidKeyException e) {
+                fail("Unexpected exception");
+            } catch (URISyntaxException e) {
+                fail("Unexpected exception");
+            }
+
+            try {
+                CloudStorageAccount.parse(accountStringSasPrimarySecondary); // no exception expected
+            } catch (Exception e) {
+                fail("Unexpected exception");
+            }
+
+            // SAS, no default protocol
+
+            String accountStringSasNoDefaultProtocolPrimary =
+                    String.format(
+                            "AccountName=%1$s;SharedAccessSignature=%2$s;EndpointSuffix=%3$s;" + endpointCombination[0],
+                            accountSasParams
+                    );
+
+            String accountStringSasNoDefaultProtocolSecondary =
+                    String.format(
+                            "AccountName=%1$s;SharedAccessSignature=%2$s;EndpointSuffix=%3$s;" + endpointCombination[1],
+                            accountSasParams
+                    );
+
+            String accountStringSasNoDefaultProtocolPrimarySecondary =
+                    String.format(
+                            "AccountName=%1$s;SharedAccessSignature=%2$s;EndpointSuffix=%3$s;" + endpointCombination[2],
+                            accountSasParams
+                    );
+
+            try {
+                CloudStorageAccount.parse(accountStringSasNoDefaultProtocolPrimary); // no exception expected
+            } catch (Exception e) {
+                fail("Unexpected exception");
+            }
+
+            try {
+                CloudStorageAccount.parse(accountStringSasNoDefaultProtocolSecondary);
+                fail("Expected exception not thrown");
+            } catch (IllegalArgumentException e) {
+                // pass
+            } catch (InvalidKeyException e) {
+                fail("Unexpected exception");
+            } catch (URISyntaxException e) {
+                fail("Unexpected exception");
+            }
+
+            try {
+                CloudStorageAccount.parse(accountStringSasNoDefaultProtocolPrimarySecondary); // no exception expected
+            } catch (Exception e) {
+                fail("Unexpected exception");
+            }
+
+            // SAS without AccountName
+
+            String accountStringSasNoNameNoEndpoint =
+                    String.format(
+                            "SharedAccessSignature=%2$s",
+                            accountSasParams
+                    );
+
+            String accountStringSasNoNamePrimary =
+                    String.format(
+                            "SharedAccessSignature=%2$s;" + endpointCombination[0],
+                            accountSasParams
+                    );
+
+            String accountStringSasNoNameSecondary =
+                    String.format(
+                            "SharedAccessSignature=%2$s;" + endpointCombination[1],
+                            accountSasParams
+                    );
+
+            String accountStringSasNoNamePrimarySecondary =
+                    String.format(
+                            "SharedAccessSignature=%2$s;" + endpointCombination[2],
+                            accountSasParams
+                    );
+
+            try {
+                CloudStorageAccount.parse(accountStringSasNoNameNoEndpoint);
+                fail("Expected exception not thrown");
+            } catch (IllegalArgumentException e) {
+                // pass
+            } catch (InvalidKeyException e) {
+                fail("Unexpected exception");
+            } catch (URISyntaxException e) {
+                fail("Unexpected exception");
+            }
+
+            try {
+                CloudStorageAccount.parse(accountStringSasNoNamePrimary); // no exception expected
+            } catch (Exception e) {
+                fail("Unexpected exception");
+            }
+
+            try {
+                CloudStorageAccount.parse(accountStringSasNoNameSecondary);
+                fail("Expected exception not thrown");
+            } catch (IllegalArgumentException e) {
+                // pass
+            } catch (InvalidKeyException e) {
+                fail("Unexpected exception");
+            } catch (URISyntaxException e) {
+                fail("Unexpected exception");
+            }
+
+            try {
+                CloudStorageAccount.parse(accountStringSasNoNamePrimarySecondary); // no exception expected
+            } catch (Exception e) {
+                fail("Unexpected exception");
+            }
+        }
+    }
+    
     private void connectionStringRoundtripHelper(String accountString) throws InvalidKeyException, URISyntaxException {
         CloudStorageAccount originalAccount = CloudStorageAccount.parse(accountString);
         String copiedAccountString = originalAccount.toString(true);
-        //        assertEquals(accountString, copiedAccountString);
         CloudStorageAccount copiedAccount = CloudStorageAccount.parse(copiedAccountString);
 
         // make sure it round trips
@@ -394,7 +779,7 @@ public class StorageAccountTests {
             fail();
         }
         catch (IllegalArgumentException ex) {
-            assertEquals(SR.INVALID_CONNECTION_STRING_DEV_STORE_NOT_TRUE, ex.getMessage());
+            assertEquals(SR.INVALID_CONNECTION_STRING, ex.getMessage());
         }
     }
 
@@ -407,7 +792,7 @@ public class StorageAccountTests {
             fail();
         }
         catch (IllegalArgumentException ex) {
-            assertEquals(SR.INVALID_CONNECTION_STRING_DEV_STORE_NOT_TRUE, ex.getMessage());
+            assertEquals(SR.INVALID_CONNECTION_STRING, ex.getMessage());
         }
     }
 
@@ -420,7 +805,7 @@ public class StorageAccountTests {
             fail();
         }
         catch (IllegalArgumentException ex) {
-            assertEquals(SR.INVALID_CONNECTION_STRING_DEV_STORE_NOT_TRUE, ex.getMessage());
+            assertEquals(SR.INVALID_CONNECTION_STRING, ex.getMessage());
         }
     }
 
@@ -504,8 +889,8 @@ public class StorageAccountTests {
     @Test
     public void testCloudStorageAccountExplicitCloudRoundtrip()
             throws InvalidKeyException, URISyntaxException {
-        String accountString = "EndpointSuffix=a.b.c;BlobEndpoint=https://blobs/;AccountName=test;"
-                + "AccountKey=abc=";
+        String accountString = "EndpointSuffix=a.b.c;BlobEndpoint=https://blobs/;DefaultEndpointsProtocol=https;"
+                + "AccountName=test;AccountKey=abc=";
 
         assertEquals(accountString, CloudStorageAccount.parse(accountString).toString(true));
     }
@@ -541,7 +926,7 @@ public class StorageAccountTests {
         String accountString = ";EndpointSuffix=a.b.c;;BlobEndpoint=http://blobs/;;"
                 + "AccountName=test;;AccountKey=abc=;;;";
         String validAccountString = "EndpointSuffix=a.b.c;BlobEndpoint=http://blobs/;"
-                + "AccountName=test;AccountKey=abc=";
+                + "DefaultEndpointsProtocol=http;AccountName=test;AccountKey=abc=";
 
         assertEquals(validAccountString, CloudStorageAccount.parse(accountString).toString(true));
     }
@@ -585,28 +970,28 @@ public class StorageAccountTests {
 
     @Test
     public void testCloudStorageAccountJustBlobToString() throws InvalidKeyException, URISyntaxException {
-        String accountString = "BlobEndpoint=http://blobs/;AccountName=test;AccountKey=abc=";
+        String accountString = "BlobEndpoint=http://blobs/;DefaultEndpointsProtocol=http;AccountName=test;AccountKey=abc=";
 
         assertEquals(accountString, CloudStorageAccount.parse(accountString).toString(true));
     }
 
     @Test
     public void testCloudStorageAccountJustQueueToString() throws InvalidKeyException, URISyntaxException {
-        String accountString = "QueueEndpoint=http://queue/;AccountName=test;AccountKey=abc=";
+        String accountString = "QueueEndpoint=http://queue/;DefaultEndpointsProtocol=https;AccountName=test;AccountKey=abc=";
 
         assertEquals(accountString, CloudStorageAccount.parse(accountString).toString(true));
     }
 
     @Test
     public void testCloudStorageAccountJustTableToString() throws InvalidKeyException, URISyntaxException {
-        String accountString = "TableEndpoint=http://table/;AccountName=test;AccountKey=abc=";
+        String accountString = "TableEndpoint=http://table/;DefaultEndpointsProtocol=https;AccountName=test;AccountKey=abc=";
 
         assertEquals(accountString, CloudStorageAccount.parse(accountString).toString(true));
     }
 
     @Test
     public void testCloudStorageAccountJustFileToString() throws InvalidKeyException, URISyntaxException {
-        String accountString = "FileEndpoint=http://file/;AccountName=test;AccountKey=abc=";
+        String accountString = "FileEndpoint=http://file/;DefaultEndpointsProtocol=https;AccountName=test;AccountKey=abc=";
 
         assertEquals(accountString, CloudStorageAccount.parse(accountString).toString(true));
     }
