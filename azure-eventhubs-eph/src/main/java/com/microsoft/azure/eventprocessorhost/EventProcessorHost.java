@@ -34,14 +34,9 @@ public final class EventProcessorHost
     private EventProcessorOptions processorOptions;
     private PartitionManagerOptions partitionManagerOptions = null;
 
-    // Thread pool is shared among all instances of EventProcessorHost
-    // weOwnExecutor exists to support user-supplied thread pools if we add that feature later.
-    // weOwnExecutor is a boxed Boolean so it can be used to synchronize access to these variables.
-    // executorRefCount is required because the last host must shut down the thread pool if we own it.
-    private static ExecutorService executorService = null;
-    private static int executorRefCount = 0;
-    private static Boolean weOwnExecutor = true;
-    private static boolean autoShutdownExecutor = false;
+    // weOwnExecutor exists to support user-supplied thread pools.
+    private final ExecutorService executorService;
+    private final boolean weOwnExecutor;
     
     public final static String EVENTPROCESSORHOST_TRACE = "eventprocessorhost.trace";
 	private static final Logger TRACE_LOGGER = Logger.getLogger(EventProcessorHost.EVENTPROCESSORHOST_TRACE);
@@ -350,38 +345,16 @@ public final class EventProcessorHost
         this.checkpointManager = checkpointManager;
         this.leaseManager = leaseManager;
 
-        synchronized(EventProcessorHost.weOwnExecutor)
+        if (executorService != null)
         {
-	        if (EventProcessorHost.executorService != null)
-	        {
-	        	// An EventProcessorHost has already been instantiated in this process.
-	        	// Ignore any settings provided, just use the existing ExecutorService and
-	        	// related settings.
-	        	
-	        	// If using EventProcessorHost internal ExecutorService, increase the refcount.
-	        	if (EventProcessorHost.weOwnExecutor)
-	        	{
-	        		EventProcessorHost.executorRefCount++;
-	        	}
-	        }
-	        else
-	        {
-		        if (executorService != null)
-		        {
-		        	// User has supplied an ExecutorService, so use that.
-		        	EventProcessorHost.weOwnExecutor = false;
-		        	EventProcessorHost.executorService = executorService;
-		        	// We don't own it so refcount is meaningless.
-		        	// Make sure that auto shutdown is false!
-		        	EventProcessorHost.autoShutdownExecutor = false;
-		        }
-		        else
-		        {
-		        	EventProcessorHost.weOwnExecutor = true;
-		        	EventProcessorHost.executorService = Executors.newCachedThreadPool();
-		        	EventProcessorHost.executorRefCount++;
-		        }
-	        }
+            // User has supplied an ExecutorService, so use that.
+            this.weOwnExecutor = false;
+            this.executorService = executorService;
+        }
+        else
+        {
+            this.weOwnExecutor = true;
+            this.executorService = Executors.newCachedThreadPool();
         }
         
         this.partitionManager = new PartitionManager(this);
@@ -413,7 +386,7 @@ public final class EventProcessorHost
     void setPartitionManager(PartitionManager pm) { this.partitionManager = pm; }
     
     // All of these accessors are for internal use only.
-    static ExecutorService getExecutorService() { return EventProcessorHost.executorService; }
+    ExecutorService getExecutorService() { return this.executorService; }
     ICheckpointManager getCheckpointManager() { return this.checkpointManager; }
     ILeaseManager getLeaseManager() { return this.leaseManager; }
     PartitionManager getPartitionManager() { return this.partitionManager; }
@@ -521,7 +494,7 @@ public final class EventProcessorHost
     		throw new IllegalStateException("Register has already been called on this EventProcessorHost");
     	}
     	
-    	if (EventProcessorHost.executorService.isShutdown() || EventProcessorHost.executorService.isTerminated())
+        if (this.executorService.isShutdown() || this.executorService.isTerminated())
     	{
     		this.logWithHost(Level.SEVERE, "Calling registerEventProcessor/Factory after executor service has been shut down");
     		throw new RejectedExecutionException("EventProcessorHost executor service has been shut down");
@@ -543,7 +516,7 @@ public final class EventProcessorHost
         logWithHost(Level.FINE, "Starting event processing");
         this.processorFactory = factory;
         this.processorOptions = processorOptions;
-        return EventProcessorHost.executorService.submit(() -> this.partitionManager.initialize()); 
+        return this.executorService.submit(() -> this.partitionManager.initialize());
     }
 
     /**
@@ -567,17 +540,10 @@ public final class EventProcessorHost
 	        		stoppingPartitions.get();
 	        	}
 	            
-		        if (EventProcessorHost.weOwnExecutor)
-		        {
-		        	// If there are multiple EventProcessorHosts in one process, only await the shutdown on the last one.
-		        	// Otherwise the first one will block forever here.
-		        	// This could race with stopExecutor() but that is harmless: it is legal to call awaitTermination()
-		        	// at any time, whether executorServer.shutdown() has been called yet or not.
-		        	if ((EventProcessorHost.executorRefCount <= 0) && EventProcessorHost.autoShutdownExecutor)
-		        	{
-		        		EventProcessorHost.executorService.awaitTermination(10, TimeUnit.MINUTES);
-		        	}
-		        }
+                if (this.weOwnExecutor)
+                {
+                    this.executorService.awaitTermination(10, TimeUnit.MINUTES);
+                }
 			}
 	        catch (InterruptedException | ExecutionException e)
 	        {
@@ -591,65 +557,32 @@ public final class EventProcessorHost
     // PartitionManager calls this after all shutdown tasks have been submitted to the ExecutorService.
     void stopExecutor()
     {
-        if (EventProcessorHost.weOwnExecutor)
+        if (this.weOwnExecutor)
         {
-        	synchronized(EventProcessorHost.weOwnExecutor)
-        	{
-        		EventProcessorHost.executorRefCount--;
-        		
-        		if ((EventProcessorHost.executorRefCount <= 0) && EventProcessorHost.autoShutdownExecutor)
-        		{
-        			// It is OK to call shutdown() here even though threads are still running.
-        			// Shutdown() causes the executor to stop accepting new tasks, but existing tasks will
-        			// run to completion. The pool will terminate when all existing tasks finish.
-        			// By this point all new tasks generated by the shutdown have been submitted.
-        			EventProcessorHost.executorService.shutdown();
-        		}
-        	}
+			// It is OK to call shutdown() here even if threads are still running.
+			// Shutdown() causes the executor to stop accepting new tasks, but existing tasks will
+			// run to completion. The pool will terminate when all existing tasks finish.
+			// By this point all new tasks generated by the shutdown have been submitted.
+			this.executorService.shutdown();
         }
     }
-
     
     /**
-     * EventProcessorHost can automatically shut down its internal ExecutorService when the last host shuts down
-     * due to an unregisterEventProcessor() call. However, doing so means that any EventProcessorHost instances
-     * created after that will be unable to function. Set this option to true only if you are sure that you will
-     * only ever call unregisterEventProcess() when the process is shutting down.
-     * <p>
-     * If you leave this option as the default false, then you should call forceExecutorShutdown() at the appropriate time.
-     * <p>
-     * If using a user-supplied ExecutorService, then this option must remain false.
-     * 
-     * @param auto  true for automatic shutdown, false for manual via forceExecutorShutdown()
+     * This method is no longer required and does nothing. If the user supplies a thread pool, we will never
+     * shut it down. The internal thread pool is per-instance now, so it is always safe to auto shut down.
      */
+    @Deprecated
     public static void setAutoExecutorShutdown(boolean auto)
     {
-    	if ((EventProcessorHost.weOwnExecutor == false) && (auto == true))
-    	{
-    		throw new IllegalArgumentException("Automatic executor shutdown not possible with user-supplied executor");
-    	}
-    	EventProcessorHost.autoShutdownExecutor = auto;
     }
 
     /**
-     * If you do not want to use the automatic shutdown option, then you must call forceExecutorShutdown() during
-     * process termination, after the last call to unregisterEventProcessor() has returned. Be sure that you will
-     * not need to create any new EventProcessorHost instances, because calling this method means that any new
-     * instances will fail when a register* method is called.
-     * <p>
-     * If using a user-supplied ExecutorService, calling this method is not required and has no effect.
-     * 
-     * @param secondsToWait  How long to wait for the ExecutorService to shut down
-     * @throws InterruptedException
+     * This method is no longer required and does nothing. If the user supplies a thread pool, we will never
+     * shut it down. The internal thread pool is per-instance now, so it is always safe to auto shut down.
      */
+    @Deprecated
     public static void forceExecutorShutdown(long secondsToWait) throws InterruptedException
     {
-    	if (EventProcessorHost.weOwnExecutor && (EventProcessorHost.executorService != null))
-		{
-			EventProcessorHost.executorService.shutdown();
-			EventProcessorHost.executorService.awaitTermination(secondsToWait, TimeUnit.SECONDS);
-		}
-    	// else just ignore
     }
 
     

@@ -381,7 +381,7 @@ public class PartitionManagerTest
 	{
 		try
 		{
-			EventProcessorHost.getExecutorService().submit(() -> this.partitionManagers[index].initialize()).get();
+			this.hosts[index].getExecutorService().submit(() -> this.partitionManagers[index].initialize()).get();
 			this.running[index] = true;
 		}
 		catch (Exception e)
@@ -452,12 +452,12 @@ public class PartitionManagerTest
 		@Override
 	    String[] getPartitionIds()
 	    {
-			ArrayList<String> ids = new ArrayList<String>();
+			String ids[] = new String[this.partitionCount];
 			for (int i = 0; i < this.partitionCount; i++)
 			{
-				ids.add(String.valueOf(i));
+				ids[i] = String.valueOf(i);
 			}
-			return (String[])ids.toArray();
+			return ids;
 	    }
 	    
 		@Override

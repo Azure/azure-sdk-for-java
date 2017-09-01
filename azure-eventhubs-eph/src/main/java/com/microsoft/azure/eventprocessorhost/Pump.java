@@ -59,7 +59,7 @@ class Pump
     private void createNewPump(String partitionId, Lease lease) throws Exception
     {
 		PartitionPump newPartitionPump = new EventHubPartitionPump(this.host, this, lease);
-		EventProcessorHost.getExecutorService().submit(new Callable<Void>()
+		this.host.getExecutorService().submit(new Callable<Void>()
 			{
 				@Override
 				public Void call() throws Exception
@@ -84,7 +84,7 @@ class Pump
     	if (capturedPump != null)
     	{
 			this.host.logWithHostAndPartition(Level.FINE, partitionId, "closing pump for reason " + reason.toString());
-			retval = EventProcessorHost.getExecutorService().submit(() -> capturedPump.shutdown(reason));
+			retval = this.host.getExecutorService().submit(() -> capturedPump.shutdown(reason));
     		
     		this.host.logWithHostAndPartition(Level.FINE, partitionId, "removing pump");
     		this.pumpStates.remove(partitionId);

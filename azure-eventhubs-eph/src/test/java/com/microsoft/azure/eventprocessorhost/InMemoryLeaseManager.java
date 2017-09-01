@@ -7,6 +7,8 @@ package com.microsoft.azure.eventprocessorhost;
 
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 
@@ -28,12 +30,14 @@ import java.util.logging.Level;
 public class InMemoryLeaseManager implements ILeaseManager
 {
     private EventProcessorHost host;
+    private ExecutorService executor;
 
     private final static int leaseDurationInMillieconds = 30 * 1000;	   // thirty seconds
     private final static int leaseRenewIntervalInMilliseconds = 10 * 1000; // ten seconds
 
     public InMemoryLeaseManager()
     {
+    	this.executor = Executors.newCachedThreadPool();
     }
 
     // This object is constructed before the EventProcessorHost and passed as an argument to
@@ -58,7 +62,7 @@ public class InMemoryLeaseManager implements ILeaseManager
     @Override
     public Future<Boolean> leaseStoreExists()
     {
-        return EventProcessorHost.getExecutorService().submit(() -> leaseStoreExistsSync());
+        return this.executor.submit(() -> leaseStoreExistsSync());
     }
     
     private Boolean leaseStoreExistsSync()
@@ -69,7 +73,7 @@ public class InMemoryLeaseManager implements ILeaseManager
     @Override
     public Future<Boolean> createLeaseStoreIfNotExists()
     {
-        return EventProcessorHost.getExecutorService().submit(() -> createLeaseStoreIfNotExistsSync());
+        return this.executor.submit(() -> createLeaseStoreIfNotExistsSync());
     }
 
     private Boolean createLeaseStoreIfNotExistsSync()
@@ -81,7 +85,7 @@ public class InMemoryLeaseManager implements ILeaseManager
     @Override
     public Future<Boolean> deleteLeaseStore()
     {
-    	return EventProcessorHost.getExecutorService().submit(() -> deleteLeaseStoreSync());
+    	return this.executor.submit(() -> deleteLeaseStoreSync());
     }
     
     private Boolean deleteLeaseStoreSync()
@@ -93,7 +97,7 @@ public class InMemoryLeaseManager implements ILeaseManager
     @Override
     public Future<Lease> getLease(String partitionId)
     {
-        return EventProcessorHost.getExecutorService().submit(() -> getLeaseSync(partitionId));
+        return this.executor.submit(() -> getLeaseSync(partitionId));
     }
 
     private InMemoryLease getLeaseSync(String partitionId)
@@ -127,7 +131,7 @@ public class InMemoryLeaseManager implements ILeaseManager
     @Override
     public Future<Lease> createLeaseIfNotExists(String partitionId)
     {
-        return EventProcessorHost.getExecutorService().submit(() -> createLeaseIfNotExistsSync(partitionId));
+        return this.executor.submit(() -> createLeaseIfNotExistsSync(partitionId));
     }
 
     private InMemoryLease createLeaseIfNotExistsSync(String partitionId)
@@ -154,7 +158,7 @@ public class InMemoryLeaseManager implements ILeaseManager
     @Override
     public Future<Void> deleteLease(Lease lease)
     {
-        return EventProcessorHost.getExecutorService().submit(() -> deleteLeaseSync(lease));
+        return this.executor.submit(() -> deleteLeaseSync(lease));
     }
     
     private Void deleteLeaseSync(Lease lease)
@@ -167,7 +171,7 @@ public class InMemoryLeaseManager implements ILeaseManager
     @Override
     public Future<Boolean> acquireLease(Lease lease)
     {
-        return EventProcessorHost.getExecutorService().submit(() -> acquireLeaseSync((InMemoryLease)lease));
+        return this.executor.submit(() -> acquireLeaseSync((InMemoryLease)lease));
     }
 
     private Boolean acquireLeaseSync(InMemoryLease lease)
@@ -219,7 +223,7 @@ public class InMemoryLeaseManager implements ILeaseManager
     @Override
     public Future<Boolean> renewLease(Lease lease)
     {
-        return EventProcessorHost.getExecutorService().submit(() -> renewLeaseSync((InMemoryLease)lease));
+        return this.executor.submit(() -> renewLeaseSync((InMemoryLease)lease));
     }
     
     private Boolean renewLeaseSync(InMemoryLease lease)
@@ -258,7 +262,7 @@ public class InMemoryLeaseManager implements ILeaseManager
     @Override
     public Future<Boolean> releaseLease(Lease lease)
     {
-        return EventProcessorHost.getExecutorService().submit(() -> releaseLeaseSync((InMemoryLease)lease));
+        return this.executor.submit(() -> releaseLeaseSync((InMemoryLease)lease));
     }
     
     private Boolean releaseLeaseSync(InMemoryLease lease)
@@ -295,7 +299,7 @@ public class InMemoryLeaseManager implements ILeaseManager
     @Override
     public Future<Boolean> updateLease(Lease lease)
     {
-        return EventProcessorHost.getExecutorService().submit(() -> updateLeaseSync((InMemoryLease)lease));
+        return this.executor.submit(() -> updateLeaseSync((InMemoryLease)lease));
     }
     
     private Boolean updateLeaseSync(InMemoryLease lease)

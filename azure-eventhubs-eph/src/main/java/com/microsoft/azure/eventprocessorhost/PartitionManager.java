@@ -118,7 +118,7 @@ class PartitionManager
     		throw e;
     	}
     	
-    	this.partitionsFuture = EventProcessorHost.getExecutorService().submit(() -> runAndCleanUp());
+        this.partitionsFuture = this.host.getExecutorService().submit(() -> runAndCleanUp());
     	
     	return null;
     }
@@ -162,11 +162,6 @@ class PartitionManager
     	this.host.logWithHost(Level.FINE, "Shutting down all pumps");
     	Iterable<Future<?>> pumpRemovals = this.pump.removeAllPumps(CloseReason.Shutdown);
     	
-    	// All of the shutdown threads have been launched, we can shut down the executor now.
-    	// Shutting down the executor only prevents new tasks from being submitted.
-    	// We can't wait for executor termination here because this thread is in the executor.
-    	this.host.stopExecutor();
-    	
     	// Wait for shutdown threads.
     	for (Future<?> removal : pumpRemovals)
     	{
@@ -190,6 +185,10 @@ class PartitionManager
 			}
     	}
     	
+        // All of the shutdown threads are done, we can shut down the executor now.
+        // We can't wait for executor termination here because this thread is in the executor.
+        this.host.stopExecutor();
+
     	this.host.logWithHost(Level.FINE, "Partition manager exiting");
     	
     	return null;

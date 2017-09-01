@@ -64,7 +64,7 @@ public class Repros extends TestBase
 		{
 			utils.sendToAny("conflict-" + i++, 10);
 			System.out.println("\n." + factory1.getEventsReceivedCount() + "." + factory2.getEventsReceivedCount() + ":" +
-					((ThreadPoolExecutor)EventProcessorHost.getExecutorService()).getPoolSize() + ":" +
+					((ThreadPoolExecutor)host1.getExecutorService()).getPoolSize() + "." + ((ThreadPoolExecutor)host2.getExecutorService()).getPoolSize() + ":" +
 					Thread.activeCount());
 			Thread.sleep(100);
 		}

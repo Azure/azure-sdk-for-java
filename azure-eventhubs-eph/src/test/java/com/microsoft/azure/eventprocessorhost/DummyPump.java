@@ -73,7 +73,7 @@ class DummyPump extends Pump
 	@Override
     public Future<?> removePump(String partitionId, final CloseReason reason)
     {
-		return EventProcessorHost.getExecutorService().submit(() -> this.pumps.remove(partitionId));
+		return this.host.getExecutorService().submit(() -> this.pumps.remove(partitionId));
     }
     
 	@Override

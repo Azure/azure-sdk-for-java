@@ -284,7 +284,7 @@ class EventHubPartitionPump extends PartitionPump
 			// blocks other client calls that we would like to make during cleanup. Specifically, this issue was found when
 			// PartitionReceiver.setReceiveHandler(null).get() was called and never returned.
 			final Throwable capturedError = error;
-			EventProcessorHost.getExecutorService().submit(() -> EventHubPartitionPump.this.onError(capturedError));
+			EventHubPartitionPump.this.host.getExecutorService().submit(() -> EventHubPartitionPump.this.onError(capturedError));
 		}
     }
 }

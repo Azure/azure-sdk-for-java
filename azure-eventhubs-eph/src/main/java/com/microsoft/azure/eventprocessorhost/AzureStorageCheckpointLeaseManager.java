@@ -156,7 +156,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     @Override
     public Future<Checkpoint> getCheckpoint(String partitionId)
     {
-        return EventProcessorHost.getExecutorService().submit(() -> getCheckpointSync(partitionId));
+        return this.host.getExecutorService().submit(() -> getCheckpointSync(partitionId));
     }
     
     private Checkpoint getCheckpointSync(String partitionId) throws URISyntaxException, IOException, StorageException
@@ -176,7 +176,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     @Override
     public Future<Checkpoint> createCheckpointIfNotExists(String partitionId)
     {
-        return EventProcessorHost.getExecutorService().submit(() -> createCheckpointIfNotExistsSync(partitionId));
+        return this.host.getExecutorService().submit(() -> createCheckpointIfNotExistsSync(partitionId));
     }
     
     private Checkpoint createCheckpointIfNotExistsSync(String partitionId) throws Exception
@@ -197,13 +197,13 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     @Override
     public Future<Void> updateCheckpoint(Checkpoint checkpoint)
     {
-    	throw new RuntimeException("Use updateCheckpoint(checkpoint, lease) instead."); 
+        throw new RuntimeException("Use updateCheckpoint(checkpoint, lease) instead.");
     }
     
     @Override
     public Future<Void> updateCheckpoint(Lease lease, Checkpoint checkpoint)
     {
-    	return EventProcessorHost.getExecutorService().submit(() -> updateCheckpointSync(lease, checkpoint));
+        return this.host.getExecutorService().submit(() -> updateCheckpointSync(lease, checkpoint));
     }
     
     private Void updateCheckpointSync(Lease lease, Checkpoint checkpoint) throws Exception
@@ -219,7 +219,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     @Override
     public Future<Void> deleteCheckpoint(String partitionId)
     {
-    	return EventProcessorHost.getExecutorService().submit(() -> deleteCheckpointSync(partitionId));
+        return this.host.getExecutorService().submit(() -> deleteCheckpointSync(partitionId));
     }
     
     private Void deleteCheckpointSync(String partitionId) throws Exception
@@ -258,7 +258,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     
     private Future<Boolean> leaseStoreExists(BlobRequestOptions options)
     {
-    	return EventProcessorHost.getExecutorService().submit(() -> this.eventHubContainer.exists(null, options, null));
+        return this.host.getExecutorService().submit(() -> this.eventHubContainer.exists(null, options, null));
     }
 
     @Override
@@ -269,18 +269,18 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     
     private Future<Boolean> createLeaseStoreIfNotExists(BlobRequestOptions options)
     {
-    	return EventProcessorHost.getExecutorService().submit(() -> this.eventHubContainer.createIfNotExists(options, null));
+        return this.host.getExecutorService().submit(() -> this.eventHubContainer.createIfNotExists(options, null));
     }
 
     @Override
     public Future<Boolean> deleteLeaseStore()
     {
-    	return EventProcessorHost.getExecutorService().submit(() -> deleteLeaseStoreSync(this.leaseOperationOptions));
+        return this.host.getExecutorService().submit(() -> deleteLeaseStoreSync(this.leaseOperationOptions));
     }
     
     private Future<Boolean> deleteLeaseStore(BlobRequestOptions options)
     {
-    	return EventProcessorHost.getExecutorService().submit(() -> deleteLeaseStoreSync(options));
+        return this.host.getExecutorService().submit(() -> deleteLeaseStoreSync(options));
     }
     
     private Boolean deleteLeaseStoreSync(BlobRequestOptions options)
@@ -334,7 +334,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     @Override
     public Future<Lease> getLease(String partitionId)
     {
-        return EventProcessorHost.getExecutorService().submit(() -> getLeaseSync(partitionId, this.leaseOperationOptions));
+        return this.host.getExecutorService().submit(() -> getLeaseSync(partitionId, this.leaseOperationOptions));
     }
     
     private AzureBlobLease getLeaseSync(String partitionId, BlobRequestOptions options) throws URISyntaxException, IOException, StorageException
@@ -365,7 +365,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     @Override
     public Future<Lease> createLeaseIfNotExists(String partitionId)
     {
-        return EventProcessorHost.getExecutorService().submit(() -> createLeaseIfNotExistsSync(partitionId, this.leaseOperationOptions));
+        return this.host.getExecutorService().submit(() -> createLeaseIfNotExistsSync(partitionId, this.leaseOperationOptions));
     }
     
     private AzureBlobLease createLeaseIfNotExistsSync(String partitionId, BlobRequestOptions options) throws URISyntaxException, IOException, StorageException
@@ -407,7 +407,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     @Override
     public Future<Void> deleteLease(Lease lease)
     {
-        return EventProcessorHost.getExecutorService().submit(() -> deleteLeaseSync((AzureBlobLease)lease));
+        return this.host.getExecutorService().submit(() -> deleteLeaseSync((AzureBlobLease)lease));
     }
     
     private Void deleteLeaseSync(AzureBlobLease lease) throws StorageException
@@ -420,7 +420,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     @Override
     public Future<Boolean> acquireLease(Lease lease)
     {
-        return EventProcessorHost.getExecutorService().submit(() -> acquireLeaseSync((AzureBlobLease)lease));
+        return this.host.getExecutorService().submit(() -> acquireLeaseSync((AzureBlobLease)lease));
     }
     
     private Boolean acquireLeaseSync(AzureBlobLease lease) throws Exception
@@ -488,7 +488,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     @Override
     public Future<Boolean> renewLease(Lease lease)
     {
-        return EventProcessorHost.getExecutorService().submit(() -> renewLeaseSync((AzureBlobLease)lease));
+        return this.host.getExecutorService().submit(() -> renewLeaseSync((AzureBlobLease)lease));
     }
     
     private Boolean renewLeaseSync(AzureBlobLease lease) throws Exception
@@ -520,7 +520,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     @Override
     public Future<Boolean> releaseLease(Lease lease)
     {
-        return EventProcessorHost.getExecutorService().submit(() -> releaseLeaseSync((AzureBlobLease)lease));
+        return this.host.getExecutorService().submit(() -> releaseLeaseSync((AzureBlobLease)lease));
     }
     
     private Boolean releaseLeaseSync(AzureBlobLease lease) throws Exception
@@ -556,7 +556,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     @Override
     public Future<Boolean> updateLease(Lease lease)
     {
-        return EventProcessorHost.getExecutorService().submit(() -> updateLeaseSync((AzureBlobLease)lease, this.leaseOperationOptions));
+        return this.host.getExecutorService().submit(() -> updateLeaseSync((AzureBlobLease)lease, this.leaseOperationOptions));
     }
     
     public Boolean updateLeaseSync(AzureBlobLease lease, BlobRequestOptions options) throws Exception

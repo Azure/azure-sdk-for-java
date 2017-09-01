@@ -6,6 +6,8 @@
 package com.microsoft.azure.eventprocessorhost;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 
@@ -27,9 +29,11 @@ import java.util.logging.Level;
 public class InMemoryCheckpointManager implements ICheckpointManager
 {
     private EventProcessorHost host;
+    private ExecutorService executor;
 
     public InMemoryCheckpointManager()
     {
+    	this.executor = Executors.newCachedThreadPool();
     }
 
     // This object is constructed before the EventProcessorHost and passed as an argument to
@@ -42,7 +46,7 @@ public class InMemoryCheckpointManager implements ICheckpointManager
     @Override
     public Future<Boolean> checkpointStoreExists()
     {
-    	return EventProcessorHost.getExecutorService().submit(() -> checkpointStoreExistsSync());
+    	return this.executor.submit(() -> checkpointStoreExistsSync());
     }
     
     private Boolean checkpointStoreExistsSync()
@@ -53,7 +57,7 @@ public class InMemoryCheckpointManager implements ICheckpointManager
     @Override
     public Future<Boolean> createCheckpointStoreIfNotExists()
     {
-        return EventProcessorHost.getExecutorService().submit(() -> createCheckpointStoreIfNotExistsSync());
+        return this.executor.submit(() -> createCheckpointStoreIfNotExistsSync());
     }
 
     private Boolean createCheckpointStoreIfNotExistsSync()
@@ -65,7 +69,7 @@ public class InMemoryCheckpointManager implements ICheckpointManager
     @Override
     public Future<Boolean> deleteCheckpointStore()
     {
-    	return EventProcessorHost.getExecutorService().submit(() -> deleteCheckpointStoreSync());
+    	return this.executor.submit(() -> deleteCheckpointStoreSync());
     }
     
     private Boolean deleteCheckpointStoreSync()
@@ -77,7 +81,7 @@ public class InMemoryCheckpointManager implements ICheckpointManager
     @Override
     public Future<Checkpoint> getCheckpoint(String partitionId)
     {
-        return EventProcessorHost.getExecutorService().submit(() -> getCheckpointSync(partitionId));
+        return this.executor.submit(() -> getCheckpointSync(partitionId));
     }
     
     private Checkpoint getCheckpointSync(String partitionId)
@@ -104,7 +108,7 @@ public class InMemoryCheckpointManager implements ICheckpointManager
     @Override
     public Future<Checkpoint> createCheckpointIfNotExists(String partitionId)
     {
-    	return EventProcessorHost.getExecutorService().submit(() -> createCheckpointIfNotExistsSync(partitionId));
+    	return this.executor.submit(() -> createCheckpointIfNotExistsSync(partitionId));
     }
     
     private Checkpoint createCheckpointIfNotExistsSync(String partitionId)
@@ -149,7 +153,7 @@ public class InMemoryCheckpointManager implements ICheckpointManager
     @Override
     public Future<Void> updateCheckpoint(Lease lease, Checkpoint checkpoint)
     {
-        return EventProcessorHost.getExecutorService().submit(() -> updateCheckpointSync(checkpoint.getPartitionId(), checkpoint.getOffset(), checkpoint.getSequenceNumber()));
+        return this.executor.submit(() -> updateCheckpointSync(checkpoint.getPartitionId(), checkpoint.getOffset(), checkpoint.getSequenceNumber()));
     }
 
     private Void updateCheckpointSync(String partitionId, String offset, long sequenceNumber)
@@ -171,7 +175,7 @@ public class InMemoryCheckpointManager implements ICheckpointManager
     @Override
     public Future<Void> deleteCheckpoint(String partitionId)
     {
-    	return EventProcessorHost.getExecutorService().submit(() -> deleteCheckpointSync(partitionId));
+    	return this.executor.submit(() -> deleteCheckpointSync(partitionId));
     }
     
     private Void deleteCheckpointSync(String partitionId)
