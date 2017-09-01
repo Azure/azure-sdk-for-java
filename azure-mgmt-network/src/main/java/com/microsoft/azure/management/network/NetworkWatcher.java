@@ -90,6 +90,13 @@ public interface NetworkWatcher extends
     VerificationIPFlow.DefinitionStages.WithTargetResource verifyIPFlow();
 
     /**
+     * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint
+     * including another virtual machine or an arbitrary remote server.
+     * @return a stage to specify source virtual machine
+     */
+    ConnectivityCheck.DefinitionStages.ToDestination checkConnectivity();
+
+    /**
      * Container interface for all the definitions.
      */
     interface Definition extends
