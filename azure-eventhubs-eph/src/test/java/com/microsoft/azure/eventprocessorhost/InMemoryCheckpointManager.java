@@ -94,7 +94,8 @@ public class InMemoryCheckpointManager implements ICheckpointManager
         Checkpoint checkpointInStore = InMemoryCheckpointStore.singleton.getCheckpoint(partitionId);
         if (checkpointInStore == null)
         {
-        	TRACE_LOGGER.warn(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId, "getCheckpoint() no existing Checkpoint"));
+        	TRACE_LOGGER.warn(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId,
+                    "getCheckpoint() no existing Checkpoint"));
         	returnCheckpoint = null;
         }
         else if (checkpointInStore.getSequenceNumber() == -1)

@@ -493,7 +493,8 @@ public final class EventProcessorHost
     	
         if (this.executorService.isShutdown() || this.executorService.isTerminated())
     	{
-    		TRACE_LOGGER.warn(LoggingUtils.withHost(this.hostName, "Calling registerEventProcessor/Factory after executor service has been shut down."));
+    		TRACE_LOGGER.warn(LoggingUtils.withHost(this.hostName,
+                    "Calling registerEventProcessor/Factory after executor service has been shut down."));
     		throw new RejectedExecutionException("EventProcessorHost executor service has been shut down");
     	}
     	
@@ -582,48 +583,6 @@ public final class EventProcessorHost
     public static void forceExecutorShutdown(long secondsToWait) throws InterruptedException
     {
     }
-
-    
-    //
-    // Centralized logging.
-    //
-    /*
-    void log(Level logLevel, String logMessage)
-    {
-  		EventProcessorHost.TRACE_LOGGER.log(logLevel, logMessage);
-    	//System.out.println(LocalDateTime.now().toString() + ": " + logLevel.toString() + ": " + logMessage);
-    }
-    
-    void logWithHost(Level logLevel, String logMessage)
-    {
-    	log(logLevel, "host " + this.hostName + ": " + logMessage);
-    }
-    
-    void logWithHost(Level logLevel, String logMessage, Throwable e)
-    {
-    	logWithHost(logLevel, ExceptionUtil.toStackTraceString(e, logMessage));
-    }
-    
-    void logWithHostAndPartition(Level logLevel, String partitionId, String logMessage)
-    {
-    	logWithHost(logLevel, "partition " + partitionId + ": " + logMessage);
-    }
-    
-    void logWithHostAndPartition(Level logLevel, String partitionId, String logMessage, Throwable e)
-    {
-    	logWithHostAndPartition(logLevel, partitionId, ExceptionUtil.toStackTraceString(e, logMessage));
-    }
-    
-    void logWithHostAndPartition(Level logLevel, PartitionContext context, String logMessage)
-    {
-    	logWithHostAndPartition(logLevel, context.getPartitionId(), logMessage);
-    }
-    
-    void logWithHostAndPartition(Level logLevel, PartitionContext context, String logMessage, Throwable e)
-    {
-    	logWithHostAndPartition(logLevel, context.getPartitionId(), logMessage, e);
-    }
-    */
 
     /**
      * Convenience method for generating unique host names, safe to pass to the EventProcessorHost constructors

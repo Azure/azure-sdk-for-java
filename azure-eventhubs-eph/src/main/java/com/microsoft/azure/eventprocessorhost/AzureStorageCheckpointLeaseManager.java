@@ -33,7 +33,6 @@ import com.microsoft.azure.storage.blob.LeaseState;
 import com.microsoft.azure.storage.blob.ListBlobItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.rmi.runtime.Log;
 
 
 class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseManager
@@ -637,7 +636,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     		{
 				lease.setOffset(cached.getOffset());
 				lease.setSequenceNumber(cached.getSequenceNumber());
-				TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), lease.getPartitionId(), "Replacing stale offset/seqno while uploading lease"));
+				TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), lease.getPartitionId(),
+                        "Replacing stale offset/seqno while uploading lease"));
 			}
 			else if (lease.getOffset() != null)
 			{
@@ -649,7 +649,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
  		blob.uploadText(jsonLease, null, condition, options, null);
 		// During create, we blindly try upload and it may throw. Doing the logging after the upload
 		// avoids a spurious trace in that case.
-        TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), lease.getPartitionId(), "Raw JSON uploading for " + activity + ": " + jsonLease));
+        TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), lease.getPartitionId(),
+                "Raw JSON uploading for " + activity + ": " + jsonLease));
     }
     
     private boolean wasLeaseLost(StorageException se, String partitionId)

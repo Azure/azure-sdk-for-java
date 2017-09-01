@@ -87,7 +87,8 @@ class Pump
     	PartitionPump capturedPump = this.pumpStates.get(partitionId);
     	if (capturedPump != null)
     	{
-            TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId, "closing pump for reason " + reason.toString()));
+            TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId,
+                    "closing pump for reason " + reason.toString()));
 			retval = this.host.getExecutorService().submit(() -> capturedPump.shutdown(reason));
 
     		TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId, "removing pump"));
@@ -97,7 +98,8 @@ class Pump
     	{
     		// PartitionManager main loop tries to remove pump for every partition that the host does not own, just to be sure.
     		// Not finding a pump for a partition is normal and expected most of the time.
-    		TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId, "no pump found to remove for partition " + partitionId));
+    		TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId,
+                    "no pump found to remove for partition " + partitionId));
     	}
     	return retval;
     }
@@ -113,7 +115,8 @@ class Pump
 			}
 			catch (InterruptedException | ExecutionException e)
 			{
-				TRACE_LOGGER.warn(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId, "error while shutting down failed partition pump"), e);
+				TRACE_LOGGER.warn(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId,
+                        "error while shutting down failed partition pump"), e);
 			}
     	}
     }
