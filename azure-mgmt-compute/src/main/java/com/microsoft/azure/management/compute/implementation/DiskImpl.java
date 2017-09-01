@@ -12,6 +12,7 @@ import com.microsoft.azure.management.compute.CreationData;
 import com.microsoft.azure.management.compute.Disk;
 import com.microsoft.azure.management.compute.DiskCreateOption;
 import com.microsoft.azure.management.compute.CreationSource;
+import com.microsoft.azure.management.compute.DiskSku;
 import com.microsoft.azure.management.compute.DiskSkuTypes;
 import com.microsoft.azure.management.compute.OperatingSystemTypes;
 import com.microsoft.azure.management.compute.Snapshot;
@@ -44,7 +45,7 @@ class DiskImpl
 
     @Override
     public DiskSkuTypes sku() {
-        return DiskSkuTypes.fromStorageAccountType(this.inner().accountType());
+        return DiskSkuTypes.fromDiskSku(this.inner().sku());
     }
 
     @Override
@@ -59,7 +60,7 @@ class DiskImpl
 
     @Override
     public String virtualMachineId() {
-        return this.inner().ownerId();
+        return this.inner().managedBy();
     }
 
     @Override
@@ -291,7 +292,7 @@ class DiskImpl
 
     @Override
     public DiskImpl withSku(DiskSkuTypes sku) {
-        this.inner().withAccountType(sku.accountType());
+        this.inner().withSku((new DiskSku()).withName(sku.accountType()));
         return this;
     }
 

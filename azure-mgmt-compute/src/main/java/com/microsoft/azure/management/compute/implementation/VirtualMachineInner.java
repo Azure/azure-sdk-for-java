@@ -15,10 +15,10 @@ import com.microsoft.azure.management.compute.OSProfile;
 import com.microsoft.azure.management.compute.NetworkProfile;
 import com.microsoft.azure.management.compute.DiagnosticsProfile;
 import com.microsoft.azure.SubResource;
-import com.microsoft.azure.management.compute.VirtualMachineInstanceView;
 import java.util.List;
 import com.microsoft.azure.management.compute.VirtualMachineIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.azure.management.compute.VirtualMachineInstanceView;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
@@ -110,6 +110,12 @@ public class VirtualMachineInner extends Resource {
      */
     @JsonProperty(value = "identity")
     private VirtualMachineIdentity identity;
+
+    /**
+     * The virtual machine zones.
+     */
+    @JsonProperty(value = "zones")
+    private List<String> zones;
 
     /**
      * Get the plan value.
@@ -324,6 +330,26 @@ public class VirtualMachineInner extends Resource {
      */
     public VirtualMachineInner withIdentity(VirtualMachineIdentity identity) {
         this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the zones value.
+     *
+     * @return the zones value
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones value.
+     *
+     * @param zones the zones value to set
+     * @return the VirtualMachineInner object itself.
+     */
+    public VirtualMachineInner withZones(List<String> zones) {
+        this.zones = zones;
         return this;
     }
 

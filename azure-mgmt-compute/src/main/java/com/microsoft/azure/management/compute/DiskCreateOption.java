@@ -28,10 +28,7 @@ public enum DiskCreateOption {
     IMPORT("Import"),
 
     /** Enum value Copy. */
-    COPY("Copy"),
-
-    /** Enum value Restore. */
-    RESTORE("Restore");
+    COPY("Copy");
 
     /** The actual serialized value for a DiskCreateOption instance. */
     private String value;

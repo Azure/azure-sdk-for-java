@@ -26,6 +26,15 @@ public final class VirtualNetworkGatewaySkuTier {
     /** Static value UltraPerformance for VirtualNetworkGatewaySkuTier. */
     public static final VirtualNetworkGatewaySkuTier ULTRA_PERFORMANCE = new VirtualNetworkGatewaySkuTier("UltraPerformance");
 
+    /** Static value VpnGw1 for VirtualNetworkGatewaySkuTier. */
+    public static final VirtualNetworkGatewaySkuTier VPN_GW1 = new VirtualNetworkGatewaySkuTier("VpnGw1");
+
+    /** Static value VpnGw2 for VirtualNetworkGatewaySkuTier. */
+    public static final VirtualNetworkGatewaySkuTier VPN_GW2 = new VirtualNetworkGatewaySkuTier("VpnGw2");
+
+    /** Static value VpnGw3 for VirtualNetworkGatewaySkuTier. */
+    public static final VirtualNetworkGatewaySkuTier VPN_GW3 = new VirtualNetworkGatewaySkuTier("VpnGw3");
+
     private String value;
 
     /**

@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.network.implementation.NetworkWatcherInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -78,13 +79,22 @@ public interface NetworkWatcher extends
      * First step specifying the parameters to get next hop for the VM.
      * @return a stage to specify target vm
      */
+    @Method
     NextHop.DefinitionStages.WithTargetResource nextHop();
 
     /**
      * Verify IP flow from the specified VM to a location given the currently configured NSG rules.
      * @return a stage to specify target vm
      */
+    @Method
     VerificationIPFlow.DefinitionStages.WithTargetResource verifyIPFlow();
+
+    /**
+     * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint
+     * including another virtual machine or an arbitrary remote server.
+     * @return a stage to specify source virtual machine
+     */
+    ConnectivityCheck.DefinitionStages.ToDestination checkConnectivity();
 
     /**
      * Container interface for all the definitions.

@@ -31,8 +31,7 @@ public class ApplicationGatewayHttpListenerInner extends SubResource {
     private SubResource frontendPort;
 
     /**
-     * Protocol. Possible values are: 'Http' and 'Https'. Possible values
-     * include: 'Http', 'Https'.
+     * Protocol. Possible values include: 'Http', 'Https'.
      */
     @JsonProperty(value = "properties.protocol")
     private ApplicationGatewayProtocol protocol;
@@ -74,6 +73,12 @@ public class ApplicationGatewayHttpListenerInner extends SubResource {
      */
     @JsonProperty(value = "etag")
     private String etag;
+
+    /**
+     * Type of the resource.
+     */
+    @JsonProperty(value = "type")
+    private String type;
 
     /**
      * Get the frontendIPConfiguration value.
@@ -252,6 +257,26 @@ public class ApplicationGatewayHttpListenerInner extends SubResource {
      */
     public ApplicationGatewayHttpListenerInner withEtag(String etag) {
         this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Get the type value.
+     *
+     * @return the type value
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type value.
+     *
+     * @param type the type value to set
+     * @return the ApplicationGatewayHttpListenerInner object itself.
+     */
+    public ApplicationGatewayHttpListenerInner withType(String type) {
+        this.type = type;
         return this;
     }
 

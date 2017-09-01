@@ -8,7 +8,8 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.management.compute.StorageAccountTypes;
+import com.microsoft.azure.management.compute.DiskSku;
+import java.util.List;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.compute.OperatingSystemTypes;
 import com.microsoft.azure.management.compute.CreationData;
@@ -23,11 +24,22 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class DiskInner extends Resource {
     /**
-     * the storage account type of the disk. Possible values include:
-     * 'Standard_LRS', 'Premium_LRS'.
+     * A relative URI containing the ID of the VM that has the disk attached.
      */
-    @JsonProperty(value = "properties.accountType")
-    private StorageAccountTypes accountType;
+    @JsonProperty(value = "managedBy", access = JsonProperty.Access.WRITE_ONLY)
+    private String managedBy;
+
+    /**
+     * The sku property.
+     */
+    @JsonProperty(value = "sku")
+    private DiskSku sku;
+
+    /**
+     * The Logical zone list for Disk.
+     */
+    @JsonProperty(value = "zones")
+    private List<String> zones;
 
     /**
      * The time when the disk was created.
@@ -65,34 +77,57 @@ public class DiskInner extends Resource {
     private EncryptionSettings encryptionSettings;
 
     /**
-     * A relative URI containing the VM id that has the disk attached.
-     */
-    @JsonProperty(value = "properties.ownerId", access = JsonProperty.Access.WRITE_ONLY)
-    private String ownerId;
-
-    /**
      * The disk provisioning state.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /**
-     * Get the accountType value.
+     * Get the managedBy value.
      *
-     * @return the accountType value
+     * @return the managedBy value
      */
-    public StorageAccountTypes accountType() {
-        return this.accountType;
+    public String managedBy() {
+        return this.managedBy;
     }
 
     /**
-     * Set the accountType value.
+     * Get the sku value.
      *
-     * @param accountType the accountType value to set
+     * @return the sku value
+     */
+    public DiskSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku value.
+     *
+     * @param sku the sku value to set
      * @return the DiskInner object itself.
      */
-    public DiskInner withAccountType(StorageAccountTypes accountType) {
-        this.accountType = accountType;
+    public DiskInner withSku(DiskSku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the zones value.
+     *
+     * @return the zones value
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones value.
+     *
+     * @param zones the zones value to set
+     * @return the DiskInner object itself.
+     */
+    public DiskInner withZones(List<String> zones) {
+        this.zones = zones;
         return this;
     }
 
@@ -183,15 +218,6 @@ public class DiskInner extends Resource {
     public DiskInner withEncryptionSettings(EncryptionSettings encryptionSettings) {
         this.encryptionSettings = encryptionSettings;
         return this;
-    }
-
-    /**
-     * Get the ownerId value.
-     *
-     * @return the ownerId value
-     */
-    public String ownerId() {
-        return this.ownerId;
     }
 
     /**

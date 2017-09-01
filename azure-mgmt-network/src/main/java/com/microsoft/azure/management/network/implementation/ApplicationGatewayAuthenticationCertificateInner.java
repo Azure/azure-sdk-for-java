@@ -44,6 +44,12 @@ public class ApplicationGatewayAuthenticationCertificateInner extends SubResourc
     private String etag;
 
     /**
+     * Type of the resource.
+     */
+    @JsonProperty(value = "type")
+    private String type;
+
+    /**
      * Get the data value.
      *
      * @return the data value
@@ -120,6 +126,26 @@ public class ApplicationGatewayAuthenticationCertificateInner extends SubResourc
      */
     public ApplicationGatewayAuthenticationCertificateInner withEtag(String etag) {
         this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Get the type value.
+     *
+     * @return the type value
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type value.
+     *
+     * @param type the type value to set
+     * @return the ApplicationGatewayAuthenticationCertificateInner object itself.
+     */
+    public ApplicationGatewayAuthenticationCertificateInner withType(String type) {
+        this.type = type;
         return this;
     }
 

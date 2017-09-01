@@ -157,7 +157,7 @@ public class VirtualMachineImagesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-04-30-preview";
+        final String apiVersion = "2017-03-30";
         return service.get(location, publisherName, offer, skus, version, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualMachineImageInner>>>() {
                 @Override
@@ -255,7 +255,7 @@ public class VirtualMachineImagesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-04-30-preview";
+        final String apiVersion = "2017-03-30";
         final String filter = null;
         final Integer top = null;
         final String orderby = null;
@@ -361,7 +361,7 @@ public class VirtualMachineImagesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-04-30-preview";
+        final String apiVersion = "2017-03-30";
         return service.list(location, publisherName, offer, skus, this.client.subscriptionId(), filter, top, orderby, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>>>() {
                 @Override
@@ -445,7 +445,7 @@ public class VirtualMachineImagesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-04-30-preview";
+        final String apiVersion = "2017-03-30";
         return service.listOffers(location, publisherName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>>>() {
                 @Override
@@ -522,7 +522,7 @@ public class VirtualMachineImagesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-04-30-preview";
+        final String apiVersion = "2017-03-30";
         return service.listPublishers(location, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>>>() {
                 @Override
@@ -613,7 +613,7 @@ public class VirtualMachineImagesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-04-30-preview";
+        final String apiVersion = "2017-03-30";
         return service.listSkus(location, publisherName, offer, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>>>() {
                 @Override

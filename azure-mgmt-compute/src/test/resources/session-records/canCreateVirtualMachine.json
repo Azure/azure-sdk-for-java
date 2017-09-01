@@ -1,1032 +1,1162 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg28445?api-version=2016-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg62714?api-version=2016-09-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ResourceManagementClient, 2016-09-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ResourceManagementClient, 2016-09-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "StatusCode" : "201",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445\",\"name\":\"javacsmrg28445\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T160557Z:74cc5929-ff72-49b2-a928-b9cde74f9aaf",
-      "date" : "Tue, 01 Aug 2017 16:05:56 GMT",
-      "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "74cc5929-ff72-49b2-a928-b9cde74f9aaf",
+      "date" : "Fri, 25 Aug 2017 00:27:50 GMT",
       "content-length" : "181",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "5491b851-8f9e-4d4c-b192-29f3e988688e",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "74cc5929-ff72-49b2-a928-b9cde74f9aaf"
+      "x-ms-routing-request-id" : "WESTUS2:20170825T002750Z:5491b851-8f9e-4d4c-b192-29f3e988688e",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "5491b851-8f9e-4d4c-b192-29f3e988688e",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714\",\"name\":\"javacsmrg62714\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Network/virtualNetworks/vnet749037135d?api-version=2016-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Network/virtualNetworks/vnet408387fa27?api-version=2016-12-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (NetworkManagementClient)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (NetworkManagementClient)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "StatusCode" : "201",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"name\": \"vnet749037135d\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Network/virtualNetworks/vnet749037135d\",\r\n  \"etag\": \"W/\\\"3368468f-aa61-454e-947d-e184a55301fd\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworks\",\r\n  \"location\": \"eastus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"cd103197-6ffb-4607-ba57-a3d810db5e70\",\r\n    \"addressSpace\": {\r\n      \"addressPrefixes\": [\r\n        \"10.0.0.0/28\"\r\n      ]\r\n    },\r\n    \"dhcpOptions\": {\r\n      \"dnsServers\": []\r\n    },\r\n    \"subnets\": [\r\n      {\r\n        \"name\": \"subnet1\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Network/virtualNetworks/vnet749037135d/subnets/subnet1\",\r\n        \"etag\": \"W/\\\"3368468f-aa61-454e-947d-e184a55301fd\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"addressPrefix\": \"10.0.0.0/28\"\r\n        }\r\n      }\r\n    ],\r\n    \"virtualNetworkPeerings\": []\r\n  }\r\n}",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/887dfaca-7add-45a9-baf4-e871d2d0c870?api-version=2016-12-01",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T160559Z:02ac623a-db23-4d65-bb30-e1742188fe74",
-      "date" : "Tue, 01 Aug 2017 16:05:58 GMT",
-      "pragma" : "no-cache",
-      "cache-control" : "no-cache",
-      "retry-after" : "0",
-      "expires" : "-1",
-      "x-ms-request-id" : "887dfaca-7add-45a9-baf4-e871d2d0c870",
+      "date" : "Fri, 25 Aug 2017 00:27:51 GMT",
       "content-length" : "1065",
       "server" : "Microsoft-HTTPAPI/2.0",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "02ac623a-db23-4d65-bb30-e1742188fe74"
+      "x-ms-correlation-request-id" : "d6eab24a-749e-49dc-82a5-a85828832eb8",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T002752Z:d6eab24a-749e-49dc-82a5-a85828832eb8",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "c71d2757-4c6a-48c7-a1b1-75f176cdadf1",
+      "Body" : "{\r\n  \"name\": \"vnet408387fa27\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Network/virtualNetworks/vnet408387fa27\",\r\n  \"etag\": \"W/\\\"ed9c8837-dd06-44a9-a3d3-21caa4a7210a\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworks\",\r\n  \"location\": \"eastus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"a47169d4-ca62-4aec-9eae-7ecda3e4209e\",\r\n    \"addressSpace\": {\r\n      \"addressPrefixes\": [\r\n        \"10.0.0.0/28\"\r\n      ]\r\n    },\r\n    \"dhcpOptions\": {\r\n      \"dnsServers\": []\r\n    },\r\n    \"subnets\": [\r\n      {\r\n        \"name\": \"subnet1\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Network/virtualNetworks/vnet408387fa27/subnets/subnet1\",\r\n        \"etag\": \"W/\\\"ed9c8837-dd06-44a9-a3d3-21caa4a7210a\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"addressPrefix\": \"10.0.0.0/28\"\r\n        }\r\n      }\r\n    ],\r\n    \"virtualNetworkPeerings\": []\r\n  }\r\n}",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/c71d2757-4c6a-48c7-a1b1-75f176cdadf1?api-version=2016-12-01"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/887dfaca-7add-45a9-baf4-e871d2d0c870?api-version=2016-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/c71d2757-4c6a-48c7-a1b1-75f176cdadf1?api-version=2016-12-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (NetworkManagementClient)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (NetworkManagementClient)"
     },
     "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"status\": \"Succeeded\"\r\n}",
-      "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T160559Z:143ed588-ce5f-4f61-8594-1be7fc9367c6",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14997",
-      "date" : "Tue, 01 Aug 2017 16:05:59 GMT",
-      "vary" : "Accept-Encoding",
-      "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "56199238-363e-463c-a102-7bdb941db344",
+      "date" : "Fri, 25 Aug 2017 00:27:52 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
       "content-length" : "29",
-      "server" : "Microsoft-HTTPAPI/2.0",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14989",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "143ed588-ce5f-4f61-8594-1be7fc9367c6"
+      "x-ms-correlation-request-id" : "42ec8a68-1a32-4017-9b07-803f8154dbca",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T002753Z:42ec8a68-1a32-4017-9b07-803f8154dbca",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "7ae96b3a-3281-43bf-aa5c-27e3bfd76155",
+      "Body" : "{\r\n  \"status\": \"Succeeded\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Network/virtualNetworks/vnet749037135d?api-version=2016-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Network/virtualNetworks/vnet408387fa27?api-version=2016-12-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (NetworkManagementClient)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (NetworkManagementClient)"
     },
     "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"name\": \"vnet749037135d\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Network/virtualNetworks/vnet749037135d\",\r\n  \"etag\": \"W/\\\"fc282387-7d81-4520-a240-f8aebb173ef6\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworks\",\r\n  \"location\": \"eastus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"cd103197-6ffb-4607-ba57-a3d810db5e70\",\r\n    \"addressSpace\": {\r\n      \"addressPrefixes\": [\r\n        \"10.0.0.0/28\"\r\n      ]\r\n    },\r\n    \"dhcpOptions\": {\r\n      \"dnsServers\": []\r\n    },\r\n    \"subnets\": [\r\n      {\r\n        \"name\": \"subnet1\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Network/virtualNetworks/vnet749037135d/subnets/subnet1\",\r\n        \"etag\": \"W/\\\"fc282387-7d81-4520-a240-f8aebb173ef6\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"addressPrefix\": \"10.0.0.0/28\"\r\n        }\r\n      }\r\n    ],\r\n    \"virtualNetworkPeerings\": []\r\n  }\r\n}",
-      "etag" : "W/\"fc282387-7d81-4520-a240-f8aebb173ef6\"",
-      "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T160600Z:1a4e6990-a5cf-45b4-8493-5c8bef4cdd01",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14996",
-      "date" : "Tue, 01 Aug 2017 16:05:59 GMT",
-      "vary" : "Accept-Encoding",
-      "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "fd5a1ff2-af7a-499b-8ed6-e867f6356756",
-      "content-length" : "1067",
+      "date" : "Fri, 25 Aug 2017 00:27:52 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "1067",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14988",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "1a4e6990-a5cf-45b4-8493-5c8bef4cdd01"
+      "x-ms-correlation-request-id" : "f159ced7-3a28-4beb-9b33-e2ad85e5c859",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T002753Z:f159ced7-3a28-4beb-9b33-e2ad85e5c859",
+      "content-type" : "application/json; charset=utf-8",
+      "etag" : "W/\"22def93f-b61b-4ce5-be8b-d69787564bbb\"",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "b35a39e4-7063-4613-b903-ef3fcb73769f",
+      "Body" : "{\r\n  \"name\": \"vnet408387fa27\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Network/virtualNetworks/vnet408387fa27\",\r\n  \"etag\": \"W/\\\"22def93f-b61b-4ce5-be8b-d69787564bbb\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworks\",\r\n  \"location\": \"eastus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"a47169d4-ca62-4aec-9eae-7ecda3e4209e\",\r\n    \"addressSpace\": {\r\n      \"addressPrefixes\": [\r\n        \"10.0.0.0/28\"\r\n      ]\r\n    },\r\n    \"dhcpOptions\": {\r\n      \"dnsServers\": []\r\n    },\r\n    \"subnets\": [\r\n      {\r\n        \"name\": \"subnet1\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Network/virtualNetworks/vnet408387fa27/subnets/subnet1\",\r\n        \"etag\": \"W/\\\"22def93f-b61b-4ce5-be8b-d69787564bbb\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"addressPrefix\": \"10.0.0.0/28\"\r\n        }\r\n      }\r\n    ],\r\n    \"virtualNetworkPeerings\": []\r\n  }\r\n}"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Network/networkInterfaces/nicjavavm6c9130261?api-version=2016-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Network/networkInterfaces/nicjavavm9b123535b?api-version=2016-12-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (NetworkManagementClient)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (NetworkManagementClient)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "StatusCode" : "201",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"name\": \"nicjavavm6c9130261\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Network/networkInterfaces/nicjavavm6c9130261\",\r\n  \"etag\": \"W/\\\"db06fe44-1a07-4b94-bea9-41b3ac9b67d6\\\"\",\r\n  \"location\": \"eastus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"3723c551-b066-4333-94b9-ca95ff9773ed\",\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"primary\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Network/networkInterfaces/nicjavavm6c9130261/ipConfigurations/primary\",\r\n        \"etag\": \"W/\\\"db06fe44-1a07-4b94-bea9-41b3ac9b67d6\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"privateIPAddress\": \"10.0.0.4\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Network/virtualNetworks/vnet749037135d/subnets/subnet1\"\r\n          },\r\n          \"primary\": true,\r\n          \"privateIPAddressVersion\": \"IPv4\"\r\n        }\r\n      }\r\n    ],\r\n    \"dnsSettings\": {\r\n      \"dnsServers\": [],\r\n      \"appliedDnsServers\": [],\r\n      \"internalDomainNameSuffix\": \"s2yrbtp1n2dunosxupmbbw04oa.bx.internal.cloudapp.net\"\r\n    },\r\n    \"enableAcceleratedNetworking\": false,\r\n    \"enableIPForwarding\": false\r\n  },\r\n  \"type\": \"Microsoft.Network/networkInterfaces\"\r\n}",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1197",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/bef771cf-a292-42fc-aba1-a85e2fb752cf?api-version=2016-12-01",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T160601Z:5a34eeb9-df89-41ef-9537-5f08965ef25d",
-      "date" : "Tue, 01 Aug 2017 16:06:00 GMT",
-      "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "bef771cf-a292-42fc-aba1-a85e2fb752cf",
+      "date" : "Fri, 25 Aug 2017 00:27:53 GMT",
       "content-length" : "1516",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "5a34eeb9-df89-41ef-9537-5f08965ef25d"
-    }
-  }, {
-    "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Storage/storageAccounts/stgjavavm6c914196acb?api-version=2016-01-01",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (StorageManagementClient, 2016-01-01)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "StatusCode" : "202",
-      "Body" : "",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1196",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/operations/a033f9c0-dd6f-481b-9d50-deadfefc7268?monitor=true&api-version=2016-01-01",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T160602Z:b4417192-c718-4a73-9ec9-75c76d9222c2",
-      "date" : "Tue, 01 Aug 2017 16:06:01 GMT",
-      "pragma" : "no-cache",
-      "cache-control" : "no-cache",
-      "retry-after" : "0",
       "expires" : "-1",
-      "x-ms-request-id" : "b4417192-c718-4a73-9ec9-75c76d9222c2",
-      "content-length" : "0",
-      "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "b4417192-c718-4a73-9ec9-75c76d9222c2"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/operations/a033f9c0-dd6f-481b-9d50-deadfefc7268?monitor=true&api-version=2016-01-01",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (StorageManagementClient, 2016-01-01)"
-    },
-    "Response" : {
+      "x-ms-ratelimit-remaining-subscription-writes" : "1197",
       "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "StatusCode" : "202",
-      "Body" : "",
-      "expires" : "-1",
-      "x-ms-request-id" : "2448a607-e64d-42a1-b3b9-b3e8fda24ca2",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/operations/a033f9c0-dd6f-481b-9d50-deadfefc7268?monitor=true&api-version=2016-01-01",
-      "content-length" : "0",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T160602Z:2448a607-e64d-42a1-b3b9-b3e8fda24ca2",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14995",
-      "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "date" : "Tue, 01 Aug 2017 16:06:02 GMT",
-      "x-ms-correlation-request-id" : "2448a607-e64d-42a1-b3b9-b3e8fda24ca2",
-      "pragma" : "no-cache"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/operations/a033f9c0-dd6f-481b-9d50-deadfefc7268?monitor=true&api-version=2016-01-01",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (StorageManagementClient, 2016-01-01)"
-    },
-    "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Storage/storageAccounts/stgjavavm6c914196acb\",\"kind\":\"Storage\",\"location\":\"eastus\",\"name\":\"stgjavavm6c914196acb\",\"properties\":{\"creationTime\":\"2017-08-01T16:06:02.0984974Z\",\"primaryEndpoints\":{\"blob\":\"https://stgjavavm6c914196acb.blob.core.windows.net/\",\"file\":\"https://stgjavavm6c914196acb.file.core.windows.net/\",\"queue\":\"https://stgjavavm6c914196acb.queue.core.windows.net/\",\"table\":\"https://stgjavavm6c914196acb.table.core.windows.net/\"},\"primaryLocation\":\"eastus\",\"provisioningState\":\"Succeeded\",\"secondaryLocation\":\"westus\",\"statusOfPrimary\":\"available\",\"statusOfSecondary\":\"available\"},\"sku\":{\"name\":\"Standard_GRS\",\"tier\":\"Standard\"},\"tags\":{},\"type\":\"Microsoft.Storage/storageAccounts\"}\n",
-      "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T160620Z:6182b6bb-5bcb-4b61-a95c-d93d01c4942a",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14994",
-      "date" : "Tue, 01 Aug 2017 16:06:19 GMT",
-      "vary" : "Accept-Encoding",
-      "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "6182b6bb-5bcb-4b61-a95c-d93d01c4942a",
-      "content-length" : "804",
-      "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "6182b6bb-5bcb-4b61-a95c-d93d01c4942a"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Storage/storageAccounts/stgjavavm6c914196acb?api-version=2016-01-01",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (StorageManagementClient, 2016-01-01)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Storage/storageAccounts/stgjavavm6c914196acb\",\"kind\":\"Storage\",\"location\":\"eastus\",\"name\":\"stgjavavm6c914196acb\",\"properties\":{\"creationTime\":\"2017-08-01T16:06:02.0984974Z\",\"primaryEndpoints\":{\"blob\":\"https://stgjavavm6c914196acb.blob.core.windows.net/\",\"file\":\"https://stgjavavm6c914196acb.file.core.windows.net/\",\"queue\":\"https://stgjavavm6c914196acb.queue.core.windows.net/\",\"table\":\"https://stgjavavm6c914196acb.table.core.windows.net/\"},\"primaryLocation\":\"eastus\",\"provisioningState\":\"Succeeded\",\"secondaryLocation\":\"westus\",\"statusOfPrimary\":\"available\",\"statusOfSecondary\":\"available\"},\"sku\":{\"name\":\"Standard_GRS\",\"tier\":\"Standard\"},\"tags\":{},\"type\":\"Microsoft.Storage/storageAccounts\"}\n",
-      "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T160620Z:2984b718-f9e9-4dc4-90ab-c832dffd8ba7",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14993",
-      "date" : "Tue, 01 Aug 2017 16:06:19 GMT",
-      "vary" : "Accept-Encoding",
-      "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "2984b718-f9e9-4dc4-90ab-c832dffd8ba7",
-      "content-length" : "804",
-      "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "2984b718-f9e9-4dc4-90ab-c832dffd8ba7"
-    }
-  }, {
-    "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2016-04-30-preview",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
       "StatusCode" : "201",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"properties\": {\r\n    \"vmId\": \"cdc9debb-67b8-46e2-a1f4-dc8ae409bfc5\",\r\n    \"hardwareProfile\": {\r\n      \"vmSize\": \"Standard_D3\"\r\n    },\r\n    \"storageProfile\": {\r\n      \"imageReference\": {\r\n        \"publisher\": \"MicrosoftWindowsServer\",\r\n        \"offer\": \"WindowsServer\",\r\n        \"sku\": \"2012-Datacenter\",\r\n        \"version\": \"latest\"\r\n      },\r\n      \"osDisk\": {\r\n        \"osType\": \"Windows\",\r\n        \"name\": \"javatest\",\r\n        \"createOption\": \"FromImage\",\r\n        \"vhd\": {\r\n          \"uri\": \"https://stgjavavm6c914196acb.blob.core.windows.net/vhds/javavm-os-disk-ddc65c22-5d7b-4343-896d-22be0f52ad0c.vhd\"\r\n        },\r\n        \"caching\": \"ReadWrite\"\r\n      },\r\n      \"dataDisks\": []\r\n    },\r\n    \"osProfile\": {\r\n      \"computerName\": \"javavm\",\r\n      \"adminUsername\": \"Foo12\",\r\n      \"windowsConfiguration\": {\r\n        \"provisionVMAgent\": true,\r\n        \"enableAutomaticUpdates\": true\r\n      },\r\n      \"secrets\": []\r\n    },\r\n    \"networkProfile\": {\"networkInterfaces\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Network/networkInterfaces/nicjavavm6c9130261\",\"properties\":{\"primary\":true}}]},\r\n    \"provisioningState\": \"Creating\"\r\n  },\r\n  \"type\": \"Microsoft.Compute/virtualMachines\",\r\n  \"location\": \"eastus\",\r\n  \"tags\": {},\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Compute/virtualMachines/javavm\",\r\n  \"name\": \"javavm\"\r\n}",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1195",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/94f9bfb5-29f4-4184-9410-b630528f791a?api-version=2016-04-30-preview",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T160621Z:dda334cb-e4fa-4300-ab29-3e6a2892a55c",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:06:20 GMT",
       "pragma" : "no-cache",
-      "retry-after" : "0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "7a751f69-33be-4b3d-a076-45edba2ce215",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T002754Z:7a751f69-33be-4b3d-a076-45edba2ce215",
+      "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
+      "x-ms-request-id" : "d1dcb71c-f9f3-4baf-97dc-db24582edcdc",
+      "Body" : "{\r\n  \"name\": \"nicjavavm9b123535b\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Network/networkInterfaces/nicjavavm9b123535b\",\r\n  \"etag\": \"W/\\\"83830f79-7353-480c-9a92-cff19508527b\\\"\",\r\n  \"location\": \"eastus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"504962fe-a4b7-4c36-b381-5a600720419e\",\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"primary\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Network/networkInterfaces/nicjavavm9b123535b/ipConfigurations/primary\",\r\n        \"etag\": \"W/\\\"83830f79-7353-480c-9a92-cff19508527b\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"privateIPAddress\": \"10.0.0.4\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Network/virtualNetworks/vnet408387fa27/subnets/subnet1\"\r\n          },\r\n          \"primary\": true,\r\n          \"privateIPAddressVersion\": \"IPv4\"\r\n        }\r\n      }\r\n    ],\r\n    \"dnsSettings\": {\r\n      \"dnsServers\": [],\r\n      \"appliedDnsServers\": [],\r\n      \"internalDomainNameSuffix\": \"0ruxdjdczlwevhvop1g0hzbatg.bx.internal.cloudapp.net\"\r\n    },\r\n    \"enableAcceleratedNetworking\": false,\r\n    \"enableIPForwarding\": false\r\n  },\r\n  \"type\": \"Microsoft.Network/networkInterfaces\"\r\n}",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/d1dcb71c-f9f3-4baf-97dc-db24582edcdc?api-version=2016-12-01"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Storage/storageAccounts/stgjavavm9b1528229ae?api-version=2016-01-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (StorageManagementClient, 2016-01-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 25 Aug 2017 00:27:55 GMT",
+      "content-length" : "0",
+      "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0",
       "expires" : "-1",
-      "x-ms-request-id" : "94f9bfb5-29f4-4184-9410-b630528f791a",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1196",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "dbd20964-f77c-4030-a519-49edaa387617",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T002756Z:dbd20964-f77c-4030-a519-49edaa387617",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/operations/3cece19e-6ba1-4540-857e-671b6836e302?monitor=true&api-version=2016-01-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "dbd20964-f77c-4030-a519-49edaa387617",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/operations/3cece19e-6ba1-4540-857e-671b6836e302?monitor=true&api-version=2016-01-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (StorageManagementClient, 2016-01-01)"
+    },
+    "Response" : {
+      "date" : "Fri, 25 Aug 2017 00:27:56 GMT",
+      "content-length" : "0",
+      "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14987",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "addf75a6-3966-4cb7-aae7-49aa0a9caa29",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T002756Z:addf75a6-3966-4cb7-aae7-49aa0a9caa29",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/operations/3cece19e-6ba1-4540-857e-671b6836e302?monitor=true&api-version=2016-01-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "addf75a6-3966-4cb7-aae7-49aa0a9caa29",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/operations/3cece19e-6ba1-4540-857e-671b6836e302?monitor=true&api-version=2016-01-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (StorageManagementClient, 2016-01-01)"
+    },
+    "Response" : {
+      "date" : "Fri, 25 Aug 2017 00:28:13 GMT",
+      "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0",
+      "content-length" : "804",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14986",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "3eed52c9-d128-4e36-9069-53c7043518d0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T002813Z:3eed52c9-d128-4e36-9069-53c7043518d0",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "3eed52c9-d128-4e36-9069-53c7043518d0",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Storage/storageAccounts/stgjavavm9b1528229ae\",\"kind\":\"Storage\",\"location\":\"eastus\",\"name\":\"stgjavavm9b1528229ae\",\"properties\":{\"creationTime\":\"2017-08-25T00:27:55.2807025Z\",\"primaryEndpoints\":{\"blob\":\"https://stgjavavm9b1528229ae.blob.core.windows.net/\",\"file\":\"https://stgjavavm9b1528229ae.file.core.windows.net/\",\"queue\":\"https://stgjavavm9b1528229ae.queue.core.windows.net/\",\"table\":\"https://stgjavavm9b1528229ae.table.core.windows.net/\"},\"primaryLocation\":\"eastus\",\"provisioningState\":\"Succeeded\",\"secondaryLocation\":\"westus\",\"statusOfPrimary\":\"available\",\"statusOfSecondary\":\"available\"},\"sku\":{\"name\":\"Standard_GRS\",\"tier\":\"Standard\"},\"tags\":{},\"type\":\"Microsoft.Storage/storageAccounts\"}\n"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Storage/storageAccounts/stgjavavm9b1528229ae?api-version=2016-01-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (StorageManagementClient, 2016-01-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 25 Aug 2017 00:28:14 GMT",
+      "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0",
+      "content-length" : "804",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14985",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "6ace63ed-c2d7-47bf-b4b3-9a0cdb5c64a2",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T002814Z:6ace63ed-c2d7-47bf-b4b3-9a0cdb5c64a2",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "6ace63ed-c2d7-47bf-b4b3-9a0cdb5c64a2",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Storage/storageAccounts/stgjavavm9b1528229ae\",\"kind\":\"Storage\",\"location\":\"eastus\",\"name\":\"stgjavavm9b1528229ae\",\"properties\":{\"creationTime\":\"2017-08-25T00:27:55.2807025Z\",\"primaryEndpoints\":{\"blob\":\"https://stgjavavm9b1528229ae.blob.core.windows.net/\",\"file\":\"https://stgjavavm9b1528229ae.file.core.windows.net/\",\"queue\":\"https://stgjavavm9b1528229ae.queue.core.windows.net/\",\"table\":\"https://stgjavavm9b1528229ae.table.core.windows.net/\"},\"primaryLocation\":\"eastus\",\"provisioningState\":\"Succeeded\",\"secondaryLocation\":\"westus\",\"statusOfPrimary\":\"available\",\"statusOfSecondary\":\"available\"},\"sku\":{\"name\":\"Standard_GRS\",\"tier\":\"Standard\"},\"tags\":{},\"type\":\"Microsoft.Storage/storageAccounts\"}\n"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2017-03-30",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 25 Aug 2017 00:28:15 GMT",
       "content-length" : "1464",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "dda334cb-e4fa-4300-ab29-3e6a2892a55c"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/94f9bfb5-29f4-4184-9410-b630528f791a?api-version=2016-04-30-preview",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)"
-    },
-    "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"startTime\": \"2017-08-01T16:06:21.1278662+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"94f9bfb5-29f4-4184-9410-b630528f791a\"\r\n}",
-      "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T160621Z:4fa85351-727a-4b36-978f-8866c92a75f3",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14992",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:06:20 GMT",
-      "vary" : "Accept-Encoding",
-      "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
       "expires" : "-1",
-      "x-ms-request-id" : "09a2e65b-1f3a-4aff-b231-b289227e1fe7",
-      "content-length" : "134",
-      "server" : "Microsoft-HTTPAPI/2.0",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "4fa85351-727a-4b36-978f-8866c92a75f3"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/94f9bfb5-29f4-4184-9410-b630528f791a?api-version=2016-04-30-preview",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)"
-    },
-    "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"startTime\": \"2017-08-01T16:06:21.1278662+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"94f9bfb5-29f4-4184-9410-b630528f791a\"\r\n}",
-      "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T160651Z:4d55eab3-586e-4d12-8a59-321de186f966",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14991",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:06:51 GMT",
-      "vary" : "Accept-Encoding",
-      "pragma" : "no-cache",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131480692027108923",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1195",
       "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "ddc15e54-e989-4021-918b-8af1ea7274e1",
-      "content-length" : "134",
-      "server" : "Microsoft-HTTPAPI/2.0",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "4d55eab3-586e-4d12-8a59-321de186f966"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/94f9bfb5-29f4-4184-9410-b630528f791a?api-version=2016-04-30-preview",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)"
-    },
-    "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"startTime\": \"2017-08-01T16:06:21.1278662+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"94f9bfb5-29f4-4184-9410-b630528f791a\"\r\n}",
-      "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T160721Z:0fd09ed5-f6df-4a52-b3ac-6b2295737d3c",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14990",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:07:21 GMT",
-      "vary" : "Accept-Encoding",
+      "StatusCode" : "201",
       "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "cb9841e7-9ae2-46f0-87aa-559339a6c312",
-      "content-length" : "134",
-      "server" : "Microsoft-HTTPAPI/2.0",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "0fd09ed5-f6df-4a52-b3ac-6b2295737d3c"
+      "x-ms-correlation-request-id" : "84123f1c-f47c-430d-b8da-5c0c6dbb1ef9",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T002815Z:84123f1c-f47c-430d-b8da-5c0c6dbb1ef9",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "2bfc4c6c-35d6-406e-807a-ab1f51746222",
+      "Body" : "{\r\n  \"properties\": {\r\n    \"vmId\": \"f59a08bc-2ed9-4cc6-b542-28c0a4387dcb\",\r\n    \"hardwareProfile\": {\r\n      \"vmSize\": \"Standard_D3\"\r\n    },\r\n    \"storageProfile\": {\r\n      \"imageReference\": {\r\n        \"publisher\": \"MicrosoftWindowsServer\",\r\n        \"offer\": \"WindowsServer\",\r\n        \"sku\": \"2012-Datacenter\",\r\n        \"version\": \"latest\"\r\n      },\r\n      \"osDisk\": {\r\n        \"osType\": \"Windows\",\r\n        \"name\": \"javatest\",\r\n        \"createOption\": \"FromImage\",\r\n        \"vhd\": {\r\n          \"uri\": \"https://stgjavavm9b1528229ae.blob.core.windows.net/vhds/javavm-os-disk-0879be90-99e3-4ea6-8cc1-a35bf288aa64.vhd\"\r\n        },\r\n        \"caching\": \"ReadWrite\"\r\n      },\r\n      \"dataDisks\": []\r\n    },\r\n    \"osProfile\": {\r\n      \"computerName\": \"javavm\",\r\n      \"adminUsername\": \"Foo12\",\r\n      \"windowsConfiguration\": {\r\n        \"provisionVMAgent\": true,\r\n        \"enableAutomaticUpdates\": true\r\n      },\r\n      \"secrets\": []\r\n    },\r\n    \"networkProfile\": {\"networkInterfaces\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Network/networkInterfaces/nicjavavm9b123535b\",\"properties\":{\"primary\":true}}]},\r\n    \"provisioningState\": \"Creating\"\r\n  },\r\n  \"type\": \"Microsoft.Compute/virtualMachines\",\r\n  \"location\": \"eastus\",\r\n  \"tags\": {},\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Compute/virtualMachines/javavm\",\r\n  \"name\": \"javavm\"\r\n}",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/2bfc4c6c-35d6-406e-807a-ab1f51746222?api-version=2017-03-30"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/94f9bfb5-29f4-4184-9410-b630528f791a?api-version=2016-04-30-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/2bfc4c6c-35d6-406e-807a-ab1f51746222?api-version=2017-03-30",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
     },
     "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"startTime\": \"2017-08-01T16:06:21.1278662+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"94f9bfb5-29f4-4184-9410-b630528f791a\"\r\n}",
+      "date" : "Fri, 25 Aug 2017 00:28:15 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
       "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T160752Z:2b1e3fd3-2572-4267-baf9-b9cfffaee45c",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14989",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:07:51 GMT",
       "vary" : "Accept-Encoding",
-      "pragma" : "no-cache",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131480692027108923",
       "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "d47ebf20-84f0-453d-a88f-bc5226d8d51c",
-      "content-length" : "134",
-      "server" : "Microsoft-HTTPAPI/2.0",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "2b1e3fd3-2572-4267-baf9-b9cfffaee45c"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/94f9bfb5-29f4-4184-9410-b630528f791a?api-version=2016-04-30-preview",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)"
-    },
-    "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"startTime\": \"2017-08-01T16:06:21.1278662+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"94f9bfb5-29f4-4184-9410-b630528f791a\"\r\n}",
-      "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T160822Z:9b83e7cb-6c44-4309-b5e9-2159a9e6db0c",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14987",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:08:21 GMT",
-      "vary" : "Accept-Encoding",
-      "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "ae9b8857-3eb1-43a2-a8a7-4f8f404cb0cb",
-      "content-length" : "134",
-      "server" : "Microsoft-HTTPAPI/2.0",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "9b83e7cb-6c44-4309-b5e9-2159a9e6db0c"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/94f9bfb5-29f4-4184-9410-b630528f791a?api-version=2016-04-30-preview",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)"
-    },
-    "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"startTime\": \"2017-08-01T16:06:21.1278662+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"94f9bfb5-29f4-4184-9410-b630528f791a\"\r\n}",
-      "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T160855Z:c012da3e-caec-46fc-ae58-e1d649600bff",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14986",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:08:55 GMT",
-      "vary" : "Accept-Encoding",
-      "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "c15ffa1d-1dc4-472e-85e2-52d537cde7f9",
-      "content-length" : "134",
-      "server" : "Microsoft-HTTPAPI/2.0",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "c012da3e-caec-46fc-ae58-e1d649600bff"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/94f9bfb5-29f4-4184-9410-b630528f791a?api-version=2016-04-30-preview",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)"
-    },
-    "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"startTime\": \"2017-08-01T16:06:21.1278662+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"94f9bfb5-29f4-4184-9410-b630528f791a\"\r\n}",
-      "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T160925Z:fa9f695d-06b2-49db-a5e7-b6242c99e49d",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14985",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:09:25 GMT",
-      "vary" : "Accept-Encoding",
-      "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "b1d47e17-fd33-4eda-a9a0-88b708a32488",
-      "content-length" : "134",
-      "server" : "Microsoft-HTTPAPI/2.0",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "fa9f695d-06b2-49db-a5e7-b6242c99e49d"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/94f9bfb5-29f4-4184-9410-b630528f791a?api-version=2016-04-30-preview",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)"
-    },
-    "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"startTime\": \"2017-08-01T16:06:21.1278662+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"94f9bfb5-29f4-4184-9410-b630528f791a\"\r\n}",
-      "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T160955Z:08ff53b0-309d-469b-a980-bf5fd09c6387",
       "x-ms-ratelimit-remaining-subscription-reads" : "14984",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:09:55 GMT",
-      "vary" : "Accept-Encoding",
+      "StatusCode" : "200",
       "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "8bbacb54-1cad-42fb-8828-6fff9b0b42b1",
-      "content-length" : "134",
-      "server" : "Microsoft-HTTPAPI/2.0",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "08ff53b0-309d-469b-a980-bf5fd09c6387"
+      "x-ms-correlation-request-id" : "20209e69-b1d7-44bf-9b13-328928df96b2",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T002816Z:20209e69-b1d7-44bf-9b13-328928df96b2",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "f1e05fce-5a45-4d48-809a-1cbdd5cfee05",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:28:15.0277138+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"2bfc4c6c-35d6-406e-807a-ab1f51746222\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/94f9bfb5-29f4-4184-9410-b630528f791a?api-version=2016-04-30-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/2bfc4c6c-35d6-406e-807a-ab1f51746222?api-version=2017-03-30",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
     },
     "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"startTime\": \"2017-08-01T16:06:21.1278662+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"94f9bfb5-29f4-4184-9410-b630528f791a\"\r\n}",
+      "date" : "Fri, 25 Aug 2017 00:28:45 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
       "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T161025Z:ff889814-3f42-4aca-9da3-03d0079ee3df",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131480692027108923",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14983",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "a780e3e7-d533-4a18-83a7-d069416fc3e2",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T002846Z:a780e3e7-d533-4a18-83a7-d069416fc3e2",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "9f7a1620-a08a-4cef-94bc-265fd00e0d03",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:28:15.0277138+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"2bfc4c6c-35d6-406e-807a-ab1f51746222\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/2bfc4c6c-35d6-406e-807a-ab1f51746222?api-version=2017-03-30",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
+    },
+    "Response" : {
+      "date" : "Fri, 25 Aug 2017 00:29:15 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131480692027108923",
+      "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "14982",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:10:25 GMT",
-      "vary" : "Accept-Encoding",
+      "StatusCode" : "200",
       "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "d31de38f-1dc7-41c5-9c5a-a7d651cb74f0",
-      "content-length" : "134",
-      "server" : "Microsoft-HTTPAPI/2.0",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "ff889814-3f42-4aca-9da3-03d0079ee3df"
+      "x-ms-correlation-request-id" : "5a5baa04-b58e-46fb-bd9a-ac13a8823734",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T002916Z:5a5baa04-b58e-46fb-bd9a-ac13a8823734",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "86ab9eaa-45ec-40d2-807e-5acd70df5c6d",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:28:15.0277138+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"2bfc4c6c-35d6-406e-807a-ab1f51746222\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/94f9bfb5-29f4-4184-9410-b630528f791a?api-version=2016-04-30-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/2bfc4c6c-35d6-406e-807a-ab1f51746222?api-version=2017-03-30",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
     },
     "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"startTime\": \"2017-08-01T16:06:21.1278662+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"94f9bfb5-29f4-4184-9410-b630528f791a\"\r\n}",
+      "date" : "Fri, 25 Aug 2017 00:29:45 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
       "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T161056Z:1a02dfc0-7371-4ea4-b77d-70743a75dece",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131480692027108923",
+      "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "14981",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:10:56 GMT",
-      "vary" : "Accept-Encoding",
+      "StatusCode" : "200",
       "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "c3e68a7d-5a08-4a04-840a-6022bbd4d9ee",
-      "content-length" : "134",
-      "server" : "Microsoft-HTTPAPI/2.0",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "1a02dfc0-7371-4ea4-b77d-70743a75dece"
+      "x-ms-correlation-request-id" : "3c987493-97be-46d7-9e10-28a549622ec4",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T002946Z:3c987493-97be-46d7-9e10-28a549622ec4",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "d49afb22-0a13-4dea-b058-3f2504bc8194",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:28:15.0277138+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"2bfc4c6c-35d6-406e-807a-ab1f51746222\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/94f9bfb5-29f4-4184-9410-b630528f791a?api-version=2016-04-30-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/2bfc4c6c-35d6-406e-807a-ab1f51746222?api-version=2017-03-30",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
     },
     "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"startTime\": \"2017-08-01T16:06:21.1278662+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"94f9bfb5-29f4-4184-9410-b630528f791a\"\r\n}",
+      "date" : "Fri, 25 Aug 2017 00:30:15 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
       "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T161126Z:e5f86567-0fca-47cc-85cb-593e7d200402",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131480692027108923",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14982",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "c1c9cf54-d08f-4d6d-9dd1-fefd690ac250",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003016Z:c1c9cf54-d08f-4d6d-9dd1-fefd690ac250",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "01e47a33-7b05-4c15-8916-231f35ebb3cb",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:28:15.0277138+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"2bfc4c6c-35d6-406e-807a-ab1f51746222\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/2bfc4c6c-35d6-406e-807a-ab1f51746222?api-version=2017-03-30",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
+    },
+    "Response" : {
+      "date" : "Fri, 25 Aug 2017 00:30:45 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131480692027108923",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14981",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "13b730bd-a862-4816-9dfa-525a4def1c01",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003046Z:13b730bd-a862-4816-9dfa-525a4def1c01",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "b15a24c2-bf9e-44d6-bf37-36c257e4d4dc",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:28:15.0277138+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"2bfc4c6c-35d6-406e-807a-ab1f51746222\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/2bfc4c6c-35d6-406e-807a-ab1f51746222?api-version=2017-03-30",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
+    },
+    "Response" : {
+      "date" : "Fri, 25 Aug 2017 00:31:15 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131480692027108923",
+      "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "14980",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:11:25 GMT",
-      "vary" : "Accept-Encoding",
+      "StatusCode" : "200",
       "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "b77a10ba-40f6-4547-b2b1-6debf0884d3a",
-      "content-length" : "134",
-      "server" : "Microsoft-HTTPAPI/2.0",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "e5f86567-0fca-47cc-85cb-593e7d200402"
+      "x-ms-correlation-request-id" : "d4013674-dbc7-40d1-9bee-edff98cf3a25",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003116Z:d4013674-dbc7-40d1-9bee-edff98cf3a25",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "83223902-c3de-4f50-8485-1fac4073d296",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:28:15.0277138+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"2bfc4c6c-35d6-406e-807a-ab1f51746222\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/94f9bfb5-29f4-4184-9410-b630528f791a?api-version=2016-04-30-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/2bfc4c6c-35d6-406e-807a-ab1f51746222?api-version=2017-03-30",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
     },
     "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"startTime\": \"2017-08-01T16:06:21.1278662+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"94f9bfb5-29f4-4184-9410-b630528f791a\"\r\n}",
+      "date" : "Fri, 25 Aug 2017 00:31:46 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
       "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T161156Z:fee64da1-95d6-4ffd-bf4d-f6f0c105eb3c",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131480692027108923",
+      "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "14979",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:11:55 GMT",
-      "vary" : "Accept-Encoding",
+      "StatusCode" : "200",
       "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "c10bd8b8-24ae-432f-970d-c26d30863b40",
-      "content-length" : "134",
-      "server" : "Microsoft-HTTPAPI/2.0",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "fee64da1-95d6-4ffd-bf4d-f6f0c105eb3c"
+      "x-ms-correlation-request-id" : "71a61dcc-e0c8-41c2-b618-a48be178acd6",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003146Z:71a61dcc-e0c8-41c2-b618-a48be178acd6",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "460e5472-0e7e-4a57-a645-2f939f00abf0",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:28:15.0277138+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"2bfc4c6c-35d6-406e-807a-ab1f51746222\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/94f9bfb5-29f4-4184-9410-b630528f791a?api-version=2016-04-30-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/2bfc4c6c-35d6-406e-807a-ab1f51746222?api-version=2017-03-30",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
     },
     "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"startTime\": \"2017-08-01T16:06:21.1278662+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"94f9bfb5-29f4-4184-9410-b630528f791a\"\r\n}",
+      "date" : "Fri, 25 Aug 2017 00:32:16 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
       "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T161226Z:f2040b9a-da5e-42d7-b59b-16dd1b967fc4",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131480692027108923",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14978",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "fd905ed6-4008-4836-a932-ba68fee69445",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003216Z:fd905ed6-4008-4836-a932-ba68fee69445",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "bff57637-2fbb-4d1f-b1de-33dacd7e88d8",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:28:15.0277138+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"2bfc4c6c-35d6-406e-807a-ab1f51746222\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/2bfc4c6c-35d6-406e-807a-ab1f51746222?api-version=2017-03-30",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
+    },
+    "Response" : {
+      "date" : "Fri, 25 Aug 2017 00:32:46 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131480692027108923",
+      "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "14977",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:12:26 GMT",
-      "vary" : "Accept-Encoding",
+      "StatusCode" : "200",
       "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "f3d81f84-db35-452b-ac0c-12ce803c494c",
-      "content-length" : "134",
-      "server" : "Microsoft-HTTPAPI/2.0",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "f2040b9a-da5e-42d7-b59b-16dd1b967fc4"
+      "x-ms-correlation-request-id" : "9d8ad5ab-4f9b-4050-a521-98fbe5f99ed1",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003247Z:9d8ad5ab-4f9b-4050-a521-98fbe5f99ed1",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "5e9d9e82-b82a-4f6a-9742-023c201a124c",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:28:15.0277138+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"2bfc4c6c-35d6-406e-807a-ab1f51746222\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/94f9bfb5-29f4-4184-9410-b630528f791a?api-version=2016-04-30-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/2bfc4c6c-35d6-406e-807a-ab1f51746222?api-version=2017-03-30",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
     },
     "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"startTime\": \"2017-08-01T16:06:21.1278662+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"94f9bfb5-29f4-4184-9410-b630528f791a\"\r\n}",
+      "date" : "Fri, 25 Aug 2017 00:33:16 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
       "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T161256Z:8cf15677-8cc4-437f-92b9-24f1463590d9",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131480692027108923",
+      "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "14976",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:12:56 GMT",
-      "vary" : "Accept-Encoding",
+      "StatusCode" : "200",
       "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "9ef31172-9559-49c0-b048-364f18b1734a",
-      "content-length" : "134",
-      "server" : "Microsoft-HTTPAPI/2.0",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "8cf15677-8cc4-437f-92b9-24f1463590d9"
+      "x-ms-correlation-request-id" : "7a579437-fae5-4c3d-991e-9671b627a1a9",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003317Z:7a579437-fae5-4c3d-991e-9671b627a1a9",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "b88ad1d5-5751-44a5-9eef-b690013040aa",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:28:15.0277138+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"2bfc4c6c-35d6-406e-807a-ab1f51746222\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/94f9bfb5-29f4-4184-9410-b630528f791a?api-version=2016-04-30-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/2bfc4c6c-35d6-406e-807a-ab1f51746222?api-version=2017-03-30",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
     },
     "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"startTime\": \"2017-08-01T16:06:21.1278662+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"94f9bfb5-29f4-4184-9410-b630528f791a\"\r\n}",
+      "date" : "Fri, 25 Aug 2017 00:33:47 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
       "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T161327Z:98ea2242-45ca-48d5-96fc-9fba38ebc9e1",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131480692027108923",
+      "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "14975",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:13:26 GMT",
-      "vary" : "Accept-Encoding",
+      "StatusCode" : "200",
       "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "c353eb9d-3484-4603-9b85-ca485bd2c082",
-      "content-length" : "134",
-      "server" : "Microsoft-HTTPAPI/2.0",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "98ea2242-45ca-48d5-96fc-9fba38ebc9e1"
+      "x-ms-correlation-request-id" : "da7337d0-19b5-4ada-841d-b37355836554",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003347Z:da7337d0-19b5-4ada-841d-b37355836554",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "9e980c71-79ba-4288-85c1-70ad14a420e8",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:28:15.0277138+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"2bfc4c6c-35d6-406e-807a-ab1f51746222\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/94f9bfb5-29f4-4184-9410-b630528f791a?api-version=2016-04-30-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/2bfc4c6c-35d6-406e-807a-ab1f51746222?api-version=2017-03-30",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
     },
     "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"startTime\": \"2017-08-01T16:06:21.1278662+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"94f9bfb5-29f4-4184-9410-b630528f791a\"\r\n}",
+      "date" : "Fri, 25 Aug 2017 00:34:16 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
       "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T161357Z:4f6eb7c1-7b56-4d77-bb33-1b2261e76015",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131480692027108923",
+      "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "14974",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:13:56 GMT",
-      "vary" : "Accept-Encoding",
+      "StatusCode" : "200",
       "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "23ddbb3e-9a53-4857-bda9-84f0460e1b35",
-      "content-length" : "134",
-      "server" : "Microsoft-HTTPAPI/2.0",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "4f6eb7c1-7b56-4d77-bb33-1b2261e76015"
+      "x-ms-correlation-request-id" : "a85009d4-284e-4ed2-bddc-317491fc7e75",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003417Z:a85009d4-284e-4ed2-bddc-317491fc7e75",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "a2b46952-f5b0-4118-bc75-a26ce2c465c7",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:28:15.0277138+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"2bfc4c6c-35d6-406e-807a-ab1f51746222\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/94f9bfb5-29f4-4184-9410-b630528f791a?api-version=2016-04-30-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/2bfc4c6c-35d6-406e-807a-ab1f51746222?api-version=2017-03-30",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
     },
     "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"startTime\": \"2017-08-01T16:06:21.1278662+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"94f9bfb5-29f4-4184-9410-b630528f791a\"\r\n}",
+      "date" : "Fri, 25 Aug 2017 00:34:47 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
       "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T161427Z:2c342594-d3c4-4be3-af5e-8d93edea9525",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131480692027108923",
+      "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "14973",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:14:27 GMT",
-      "vary" : "Accept-Encoding",
+      "StatusCode" : "200",
       "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "81596c49-5586-406a-9446-fd9c85edc7f3",
-      "content-length" : "134",
-      "server" : "Microsoft-HTTPAPI/2.0",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "2c342594-d3c4-4be3-af5e-8d93edea9525"
+      "x-ms-correlation-request-id" : "d3ebf291-fcba-4de2-91ed-ab58a6d86852",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003448Z:d3ebf291-fcba-4de2-91ed-ab58a6d86852",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "3f0f738d-6d27-4afb-9a45-1380bbef4b62",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:28:15.0277138+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"2bfc4c6c-35d6-406e-807a-ab1f51746222\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/94f9bfb5-29f4-4184-9410-b630528f791a?api-version=2016-04-30-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/2bfc4c6c-35d6-406e-807a-ab1f51746222?api-version=2017-03-30",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
     },
     "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"startTime\": \"2017-08-01T16:06:21.1278662+00:00\",\r\n  \"endTime\": \"2017-08-01T16:14:34.146015+00:00\",\r\n  \"status\": \"Succeeded\",\r\n  \"name\": \"94f9bfb5-29f4-4184-9410-b630528f791a\"\r\n}",
+      "date" : "Fri, 25 Aug 2017 00:35:17 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
       "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T161457Z:c439845d-832d-432b-8236-f8493130145c",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131480692027108923",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14975",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "a11ae46b-cda6-4395-b670-84af572d7cbf",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003518Z:a11ae46b-cda6-4395-b670-84af572d7cbf",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "4957f9c9-4ff6-42e2-a42c-f82197e6bab6",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:28:15.0277138+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"2bfc4c6c-35d6-406e-807a-ab1f51746222\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/2bfc4c6c-35d6-406e-807a-ab1f51746222?api-version=2017-03-30",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
+    },
+    "Response" : {
+      "date" : "Fri, 25 Aug 2017 00:35:47 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131480692027108923",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14974",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "3c612e6d-f8e1-4076-8a0f-b6e1d321083c",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003548Z:3c612e6d-f8e1-4076-8a0f-b6e1d321083c",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "10546163-78ca-4872-b24d-c8cb4c8d7e0f",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:28:15.0277138+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"2bfc4c6c-35d6-406e-807a-ab1f51746222\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/2bfc4c6c-35d6-406e-807a-ab1f51746222?api-version=2017-03-30",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
+    },
+    "Response" : {
+      "date" : "Fri, 25 Aug 2017 00:36:18 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131480692027108923",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14973",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "c371891e-a479-4f2f-a757-42c059942c6f",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003618Z:c371891e-a479-4f2f-a757-42c059942c6f",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "26901ac6-c641-405a-a1fb-abc95573dfcd",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:28:15.0277138+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"2bfc4c6c-35d6-406e-807a-ab1f51746222\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/2bfc4c6c-35d6-406e-807a-ab1f51746222?api-version=2017-03-30",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
+    },
+    "Response" : {
+      "date" : "Fri, 25 Aug 2017 00:36:48 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131480692027108923",
+      "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "14972",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:14:57 GMT",
-      "vary" : "Accept-Encoding",
+      "StatusCode" : "200",
       "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "eead280b-240e-4bad-bc59-d3b184b305f8",
-      "content-length" : "183",
-      "server" : "Microsoft-HTTPAPI/2.0",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "c439845d-832d-432b-8236-f8493130145c"
+      "x-ms-correlation-request-id" : "abc03323-dbdf-4632-adaf-33ddc41488bd",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003648Z:abc03323-dbdf-4632-adaf-33ddc41488bd",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "af0ea097-7531-4f61-a93e-14cbbdb24c31",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:28:15.0277138+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"2bfc4c6c-35d6-406e-807a-ab1f51746222\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2016-04-30-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/2bfc4c6c-35d6-406e-807a-ab1f51746222?api-version=2017-03-30",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
     },
     "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"properties\": {\r\n    \"vmId\": \"cdc9debb-67b8-46e2-a1f4-dc8ae409bfc5\",\r\n    \"hardwareProfile\": {\r\n      \"vmSize\": \"Standard_D3\"\r\n    },\r\n    \"storageProfile\": {\r\n      \"imageReference\": {\r\n        \"publisher\": \"MicrosoftWindowsServer\",\r\n        \"offer\": \"WindowsServer\",\r\n        \"sku\": \"2012-Datacenter\",\r\n        \"version\": \"latest\"\r\n      },\r\n      \"osDisk\": {\r\n        \"osType\": \"Windows\",\r\n        \"name\": \"javatest\",\r\n        \"createOption\": \"FromImage\",\r\n        \"vhd\": {\r\n          \"uri\": \"https://stgjavavm6c914196acb.blob.core.windows.net/vhds/javavm-os-disk-ddc65c22-5d7b-4343-896d-22be0f52ad0c.vhd\"\r\n        },\r\n        \"caching\": \"ReadWrite\"\r\n      },\r\n      \"dataDisks\": []\r\n    },\r\n    \"osProfile\": {\r\n      \"computerName\": \"javavm\",\r\n      \"adminUsername\": \"Foo12\",\r\n      \"windowsConfiguration\": {\r\n        \"provisionVMAgent\": true,\r\n        \"enableAutomaticUpdates\": true\r\n      },\r\n      \"secrets\": []\r\n    },\r\n    \"networkProfile\": {\"networkInterfaces\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Network/networkInterfaces/nicjavavm6c9130261\",\"properties\":{\"primary\":true}}]},\r\n    \"provisioningState\": \"Succeeded\"\r\n  },\r\n  \"type\": \"Microsoft.Compute/virtualMachines\",\r\n  \"location\": \"eastus\",\r\n  \"tags\": {},\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Compute/virtualMachines/javavm\",\r\n  \"name\": \"javavm\"\r\n}",
+      "date" : "Fri, 25 Aug 2017 00:37:17 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
       "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T161457Z:7638a815-015e-4776-8ec4-1af28872ca10",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131480692027108923",
+      "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "14971",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:14:57 GMT",
-      "vary" : "Accept-Encoding",
+      "StatusCode" : "200",
       "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "7ce27e1f-60dc-4e51-90e3-b1a1d7d68159",
-      "content-length" : "1465",
-      "server" : "Microsoft-HTTPAPI/2.0",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "7638a815-015e-4776-8ec4-1af28872ca10"
+      "x-ms-correlation-request-id" : "27807642-d2da-43a5-93ac-61dd19a1dfa2",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003718Z:27807642-d2da-43a5-93ac-61dd19a1dfa2",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "1b0fd8b2-f479-4e60-a60a-7a8c3b667535",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:28:15.0277138+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"2bfc4c6c-35d6-406e-807a-ab1f51746222\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Compute/virtualMachines?api-version=2016-04-30-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/2bfc4c6c-35d6-406e-807a-ab1f51746222?api-version=2017-03-30",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)",
-      "Content-Type" : "application/json; charset=utf-8"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
     },
     "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"value\": [\r\n    {\r\n      \"properties\": {\r\n        \"vmId\": \"cdc9debb-67b8-46e2-a1f4-dc8ae409bfc5\",\r\n        \"hardwareProfile\": {\r\n          \"vmSize\": \"Standard_D3\"\r\n        },\r\n        \"storageProfile\": {\r\n          \"imageReference\": {\r\n            \"publisher\": \"MicrosoftWindowsServer\",\r\n            \"offer\": \"WindowsServer\",\r\n            \"sku\": \"2012-Datacenter\",\r\n            \"version\": \"latest\"\r\n          },\r\n          \"osDisk\": {\r\n            \"osType\": \"Windows\",\r\n            \"name\": \"javatest\",\r\n            \"createOption\": \"FromImage\",\r\n            \"vhd\": {\r\n              \"uri\": \"https://stgjavavm6c914196acb.blob.core.windows.net/vhds/javavm-os-disk-ddc65c22-5d7b-4343-896d-22be0f52ad0c.vhd\"\r\n            },\r\n            \"caching\": \"ReadWrite\"\r\n          },\r\n          \"dataDisks\": []\r\n        },\r\n        \"osProfile\": {\r\n          \"computerName\": \"javavm\",\r\n          \"adminUsername\": \"Foo12\",\r\n          \"windowsConfiguration\": {\r\n            \"provisionVMAgent\": true,\r\n            \"enableAutomaticUpdates\": true\r\n          },\r\n          \"secrets\": []\r\n        },\r\n        \"networkProfile\": {\"networkInterfaces\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Network/networkInterfaces/nicjavavm6c9130261\",\"properties\":{\"primary\":true}}]},\r\n        \"provisioningState\": \"Succeeded\"\r\n      },\r\n      \"type\": \"Microsoft.Compute/virtualMachines\",\r\n      \"location\": \"eastus\",\r\n      \"tags\": {},\r\n      \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Compute/virtualMachines/javavm\",\r\n      \"name\": \"javavm\"\r\n    }\r\n  ]\r\n}",
+      "date" : "Fri, 25 Aug 2017 00:37:48 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
       "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T161457Z:9201b8ad-0cfd-4987-95bc-d38c4bc2fc8e",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131480692027108923",
+      "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "14970",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:14:57 GMT",
-      "vary" : "Accept-Encoding",
+      "StatusCode" : "200",
       "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "937be531-52ce-446a-a976-2621ea1350a0",
-      "content-length" : "1658",
-      "server" : "Microsoft-HTTPAPI/2.0",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "9201b8ad-0cfd-4987-95bc-d38c4bc2fc8e"
+      "x-ms-correlation-request-id" : "759e7811-748a-40a6-9d2c-b91f6d98aee4",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003748Z:759e7811-748a-40a6-9d2c-b91f6d98aee4",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "88f85cb9-9eed-4ad6-bc0f-17db95122995",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:28:15.0277138+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"2bfc4c6c-35d6-406e-807a-ab1f51746222\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2016-04-30-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/2bfc4c6c-35d6-406e-807a-ab1f51746222?api-version=2017-03-30",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)",
-      "Content-Type" : "application/json; charset=utf-8"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
     },
     "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"properties\": {\r\n    \"vmId\": \"cdc9debb-67b8-46e2-a1f4-dc8ae409bfc5\",\r\n    \"hardwareProfile\": {\r\n      \"vmSize\": \"Standard_D3\"\r\n    },\r\n    \"storageProfile\": {\r\n      \"imageReference\": {\r\n        \"publisher\": \"MicrosoftWindowsServer\",\r\n        \"offer\": \"WindowsServer\",\r\n        \"sku\": \"2012-Datacenter\",\r\n        \"version\": \"latest\"\r\n      },\r\n      \"osDisk\": {\r\n        \"osType\": \"Windows\",\r\n        \"name\": \"javatest\",\r\n        \"createOption\": \"FromImage\",\r\n        \"vhd\": {\r\n          \"uri\": \"https://stgjavavm6c914196acb.blob.core.windows.net/vhds/javavm-os-disk-ddc65c22-5d7b-4343-896d-22be0f52ad0c.vhd\"\r\n        },\r\n        \"caching\": \"ReadWrite\"\r\n      },\r\n      \"dataDisks\": []\r\n    },\r\n    \"osProfile\": {\r\n      \"computerName\": \"javavm\",\r\n      \"adminUsername\": \"Foo12\",\r\n      \"windowsConfiguration\": {\r\n        \"provisionVMAgent\": true,\r\n        \"enableAutomaticUpdates\": true\r\n      },\r\n      \"secrets\": []\r\n    },\r\n    \"networkProfile\": {\"networkInterfaces\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Network/networkInterfaces/nicjavavm6c9130261\",\"properties\":{\"primary\":true}}]},\r\n    \"provisioningState\": \"Succeeded\"\r\n  },\r\n  \"type\": \"Microsoft.Compute/virtualMachines\",\r\n  \"location\": \"eastus\",\r\n  \"tags\": {},\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Compute/virtualMachines/javavm\",\r\n  \"name\": \"javavm\"\r\n}",
+      "date" : "Fri, 25 Aug 2017 00:38:18 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
       "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T161458Z:cd957ef4-da89-41e8-a8a9-93153152f9da",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131480692027108923",
+      "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "14969",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:14:57 GMT",
-      "vary" : "Accept-Encoding",
+      "StatusCode" : "200",
       "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "5c8e3714-b821-41ce-bb7f-72b7dab44994",
-      "content-length" : "1465",
-      "server" : "Microsoft-HTTPAPI/2.0",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "cd957ef4-da89-41e8-a8a9-93153152f9da"
+      "x-ms-correlation-request-id" : "84b1fd10-4c19-49ef-afee-f692b2a58c39",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003819Z:84b1fd10-4c19-49ef-afee-f692b2a58c39",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "d18e642e-ec0e-45fb-aa62-b97628117c86",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:28:15.0277138+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"2bfc4c6c-35d6-406e-807a-ab1f51746222\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Compute/virtualMachines/javavm?$expand=instanceView&api-version=2016-04-30-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/2bfc4c6c-35d6-406e-807a-ab1f51746222?api-version=2017-03-30",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)",
-      "Content-Type" : "application/json; charset=utf-8"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
     },
     "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"properties\": {\r\n    \"vmId\": \"cdc9debb-67b8-46e2-a1f4-dc8ae409bfc5\",\r\n    \"hardwareProfile\": {\r\n      \"vmSize\": \"Standard_D3\"\r\n    },\r\n    \"storageProfile\": {\r\n      \"imageReference\": {\r\n        \"publisher\": \"MicrosoftWindowsServer\",\r\n        \"offer\": \"WindowsServer\",\r\n        \"sku\": \"2012-Datacenter\",\r\n        \"version\": \"latest\"\r\n      },\r\n      \"osDisk\": {\r\n        \"osType\": \"Windows\",\r\n        \"name\": \"javatest\",\r\n        \"createOption\": \"FromImage\",\r\n        \"vhd\": {\r\n          \"uri\": \"https://stgjavavm6c914196acb.blob.core.windows.net/vhds/javavm-os-disk-ddc65c22-5d7b-4343-896d-22be0f52ad0c.vhd\"\r\n        },\r\n        \"caching\": \"ReadWrite\"\r\n      },\r\n      \"dataDisks\": []\r\n    },\r\n    \"osProfile\": {\r\n      \"computerName\": \"javavm\",\r\n      \"adminUsername\": \"Foo12\",\r\n      \"windowsConfiguration\": {\r\n        \"provisionVMAgent\": true,\r\n        \"enableAutomaticUpdates\": true\r\n      },\r\n      \"secrets\": []\r\n    },\r\n    \"networkProfile\": {\"networkInterfaces\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Network/networkInterfaces/nicjavavm6c9130261\",\"properties\":{\"primary\":true}}]},\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"instanceView\": {\r\n      \"vmAgent\": {\r\n        \"vmAgentVersion\": \"Unknown\",\r\n        \"statuses\": [\r\n          {\r\n            \"code\": \"ProvisioningState/Unavailable\",\r\n            \"level\": \"Warning\",\r\n            \"displayStatus\": \"Not Ready\",\r\n            \"message\": \"VM status blob is found but not yet populated.\",\r\n            \"time\": \"2017-08-01T16:14:58+00:00\"\r\n          }\r\n        ]\r\n      },\r\n      \"disks\": [\r\n        {\r\n          \"name\": \"javatest\",\r\n          \"statuses\": [\r\n            {\r\n              \"code\": \"ProvisioningState/succeeded\",\r\n              \"level\": \"Info\",\r\n              \"displayStatus\": \"Provisioning succeeded\",\r\n              \"time\": \"2017-08-01T16:06:22.5653786+00:00\"\r\n            }\r\n          ]\r\n        }\r\n      ],\r\n      \"statuses\": [\r\n        {\r\n          \"code\": \"ProvisioningState/succeeded\",\r\n          \"level\": \"Info\",\r\n          \"displayStatus\": \"Provisioning succeeded\",\r\n          \"time\": \"2017-08-01T16:14:34.1303862+00:00\"\r\n        },\r\n        {\r\n          \"code\": \"PowerState/running\",\r\n          \"level\": \"Info\",\r\n          \"displayStatus\": \"VM running\"\r\n        }\r\n      ]\r\n    }\r\n  },\r\n  \"type\": \"Microsoft.Compute/virtualMachines\",\r\n  \"location\": \"eastus\",\r\n  \"tags\": {},\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Compute/virtualMachines/javavm\",\r\n  \"name\": \"javavm\"\r\n}",
+      "date" : "Fri, 25 Aug 2017 00:38:48 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
       "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T161458Z:46914b01-ba74-41cd-8c27-b8b0304e6f7e",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131480692027108923",
+      "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "14968",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:14:58 GMT",
-      "vary" : "Accept-Encoding",
+      "StatusCode" : "200",
       "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "c164038c-caa0-4e96-af28-a66f80c7c5bd",
-      "content-length" : "2601",
-      "server" : "Microsoft-HTTPAPI/2.0",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "46914b01-ba74-41cd-8c27-b8b0304e6f7e"
-    }
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg28445/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2016-04-30-preview",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "StatusCode" : "202",
-      "Body" : "",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1191",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/1047a8cd-cd80-4fd0-9821-c81f835b4fa1?monitor=true&api-version=2016-04-30-preview",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/1047a8cd-cd80-4fd0-9821-c81f835b4fa1?api-version=2016-04-30-preview",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T161459Z:4b2ad6b2-37b8-4955-abb0-6c6b5579c499",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:14:58 GMT",
-      "pragma" : "no-cache",
-      "retry-after" : "0",
+      "x-ms-correlation-request-id" : "d9a1a8bc-d336-45b9-b806-f8cdda3fe121",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003849Z:d9a1a8bc-d336-45b9-b806-f8cdda3fe121",
+      "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "1047a8cd-cd80-4fd0-9821-c81f835b4fa1",
-      "content-length" : "0",
-      "server" : "Microsoft-HTTPAPI/2.0",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "4b2ad6b2-37b8-4955-abb0-6c6b5579c499"
+      "x-ms-request-id" : "7e18a590-d4f6-4b42-bb54-5998756e25b5",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:28:15.0277138+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"2bfc4c6c-35d6-406e-807a-ab1f51746222\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/1047a8cd-cd80-4fd0-9821-c81f835b4fa1?api-version=2016-04-30-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/2bfc4c6c-35d6-406e-807a-ab1f51746222?api-version=2017-03-30",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
     },
     "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"startTime\": \"2017-08-01T16:14:59.4429093+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"1047a8cd-cd80-4fd0-9821-c81f835b4fa1\"\r\n}",
-      "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T161459Z:800997a4-9868-48f7-960e-c14312f7997d",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14967",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:14:59 GMT",
-      "vary" : "Accept-Encoding",
-      "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "49e414be-a528-45b9-874f-ee79c6610a6f",
+      "date" : "Fri, 25 Aug 2017 00:39:19 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
       "content-length" : "134",
-      "server" : "Microsoft-HTTPAPI/2.0",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131468063487666260",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14999",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "800997a4-9868-48f7-960e-c14312f7997d"
+      "x-ms-correlation-request-id" : "af55f4e3-6f0e-4032-a347-69a14186f5cc",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003919Z:af55f4e3-6f0e-4032-a347-69a14186f5cc",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "dc544eae-2d77-49c7-87b9-7c42f7539eb2",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:28:15.0277138+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"2bfc4c6c-35d6-406e-807a-ab1f51746222\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/1047a8cd-cd80-4fd0-9821-c81f835b4fa1?api-version=2016-04-30-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/2bfc4c6c-35d6-406e-807a-ab1f51746222?api-version=2017-03-30",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
     },
     "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"startTime\": \"2017-08-01T16:14:59.4429093+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"1047a8cd-cd80-4fd0-9821-c81f835b4fa1\"\r\n}",
-      "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T161529Z:224e1563-f56e-411f-a137-aa47977624ca",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14966",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:15:28 GMT",
-      "vary" : "Accept-Encoding",
-      "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "d04c312c-f129-49ba-8967-da4a1512bea9",
-      "content-length" : "134",
+      "date" : "Fri, 25 Aug 2017 00:39:49 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "224e1563-f56e-411f-a137-aa47977624ca"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/1047a8cd-cd80-4fd0-9821-c81f835b4fa1?api-version=2016-04-30-preview",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)"
-    },
-    "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"startTime\": \"2017-08-01T16:14:59.4429093+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"1047a8cd-cd80-4fd0-9821-c81f835b4fa1\"\r\n}",
-      "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T161559Z:2d070aff-c695-447d-acfe-2a26aeb744fb",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14965",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:15:58 GMT",
-      "vary" : "Accept-Encoding",
-      "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "0cdb8eea-7da6-4046-8a19-4bf9e5f70eb1",
-      "content-length" : "134",
-      "server" : "Microsoft-HTTPAPI/2.0",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "2d070aff-c695-447d-acfe-2a26aeb744fb"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/1047a8cd-cd80-4fd0-9821-c81f835b4fa1?api-version=2016-04-30-preview",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)"
-    },
-    "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"startTime\": \"2017-08-01T16:14:59.4429093+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"1047a8cd-cd80-4fd0-9821-c81f835b4fa1\"\r\n}",
-      "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T161629Z:651e6b98-bb6d-4264-bf82-02a047a363a2",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14964",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:16:28 GMT",
-      "vary" : "Accept-Encoding",
-      "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "ecc6b14c-6a03-4b48-a7e7-e73170f7335f",
-      "content-length" : "134",
-      "server" : "Microsoft-HTTPAPI/2.0",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "651e6b98-bb6d-4264-bf82-02a047a363a2"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/1047a8cd-cd80-4fd0-9821-c81f835b4fa1?api-version=2016-04-30-preview",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)"
-    },
-    "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"startTime\": \"2017-08-01T16:14:59.4429093+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"1047a8cd-cd80-4fd0-9821-c81f835b4fa1\"\r\n}",
-      "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T161659Z:f62612ae-d4c6-42e3-9c5a-9e199ea80aaa",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14963",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:16:58 GMT",
-      "vary" : "Accept-Encoding",
-      "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "9308c2e7-8524-4b8f-8575-6a559eeb2163",
-      "content-length" : "134",
-      "server" : "Microsoft-HTTPAPI/2.0",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "f62612ae-d4c6-42e3-9c5a-9e199ea80aaa"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/1047a8cd-cd80-4fd0-9821-c81f835b4fa1?api-version=2016-04-30-preview",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ComputeManagementClient)"
-    },
-    "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\r\n  \"startTime\": \"2017-08-01T16:14:59.4429093+00:00\",\r\n  \"endTime\": \"2017-08-01T16:17:00.2719848+00:00\",\r\n  \"status\": \"Succeeded\",\r\n  \"name\": \"1047a8cd-cd80-4fd0-9821-c81f835b4fa1\"\r\n}",
-      "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T161730Z:86b211da-0436-4f15-870c-0eccf54fe984",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14962",
-      "x-ms-served-by" : "91192fd5-83e0-46bf-a832-2d9b2d267510_131456175868302316",
-      "date" : "Tue, 01 Aug 2017 16:17:29 GMT",
-      "vary" : "Accept-Encoding",
-      "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "f00ebe06-e9cf-44b6-8a5d-e37a055249c1",
       "content-length" : "184",
-      "server" : "Microsoft-HTTPAPI/2.0",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131468063487666260",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14998",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "86b211da-0436-4f15-870c-0eccf54fe984"
+      "x-ms-correlation-request-id" : "c17efafa-29a3-44ca-8820-4ca17b1c7257",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003949Z:c17efafa-29a3-44ca-8820-4ca17b1c7257",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "c31210c2-939b-4d0f-a8e2-d609467649be",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:28:15.0277138+00:00\",\r\n  \"endTime\": \"2017-08-25T00:39:37.4867885+00:00\",\r\n  \"status\": \"Succeeded\",\r\n  \"name\": \"2bfc4c6c-35d6-406e-807a-ab1f51746222\"\r\n}"
     }
   }, {
-    "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg28445?api-version=2016-09-01",
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2017-03-30",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (ResourceManagementClient, 2016-09-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
+    },
+    "Response" : {
+      "date" : "Fri, 25 Aug 2017 00:39:49 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "1493",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131468063487666260",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14997",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "5a763a99-b67f-404b-aa7f-79eb9acf2866",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003950Z:5a763a99-b67f-404b-aa7f-79eb9acf2866",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "5ddb5abe-9dc1-4ac6-ac7f-5b52ce9c9767",
+      "Body" : "{\r\n  \"properties\": {\r\n    \"vmId\": \"f59a08bc-2ed9-4cc6-b542-28c0a4387dcb\",\r\n    \"hardwareProfile\": {\r\n      \"vmSize\": \"Standard_D3\"\r\n    },\r\n    \"storageProfile\": {\r\n      \"imageReference\": {\r\n        \"publisher\": \"MicrosoftWindowsServer\",\r\n        \"offer\": \"WindowsServer\",\r\n        \"sku\": \"2012-Datacenter\",\r\n        \"version\": \"latest\"\r\n      },\r\n      \"osDisk\": {\r\n        \"osType\": \"Windows\",\r\n        \"name\": \"javatest\",\r\n        \"createOption\": \"FromImage\",\r\n        \"vhd\": {\r\n          \"uri\": \"https://stgjavavm9b1528229ae.blob.core.windows.net/vhds/javavm-os-disk-0879be90-99e3-4ea6-8cc1-a35bf288aa64.vhd\"\r\n        },\r\n        \"caching\": \"ReadWrite\",\r\n        \"diskSizeGB\": 127\r\n      },\r\n      \"dataDisks\": []\r\n    },\r\n    \"osProfile\": {\r\n      \"computerName\": \"javavm\",\r\n      \"adminUsername\": \"Foo12\",\r\n      \"windowsConfiguration\": {\r\n        \"provisionVMAgent\": true,\r\n        \"enableAutomaticUpdates\": true\r\n      },\r\n      \"secrets\": []\r\n    },\r\n    \"networkProfile\": {\"networkInterfaces\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Network/networkInterfaces/nicjavavm9b123535b\",\"properties\":{\"primary\":true}}]},\r\n    \"provisioningState\": \"Succeeded\"\r\n  },\r\n  \"type\": \"Microsoft.Compute/virtualMachines\",\r\n  \"location\": \"eastus\",\r\n  \"tags\": {},\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Compute/virtualMachines/javavm\",\r\n  \"name\": \"javavm\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Compute/virtualMachines?api-version=2017-03-30",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "StatusCode" : "202",
-      "Body" : "",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1190",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1KQVZBQ1NNUkcyODQ0NS1FQVNUVVMiLCJqb2JMb2NhdGlvbiI6ImVhc3R1cyJ9?api-version=2016-09-01",
-      "x-ms-routing-request-id" : "WESTUS2:20170801T161731Z:e5aea0b4-720e-4593-8599-36b91c39413a",
-      "date" : "Tue, 01 Aug 2017 16:17:31 GMT",
-      "pragma" : "no-cache",
-      "cache-control" : "no-cache",
-      "retry-after" : "0",
+      "date" : "Fri, 25 Aug 2017 00:39:49 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "1690",
       "expires" : "-1",
-      "x-ms-request-id" : "e5aea0b4-720e-4593-8599-36b91c39413a",
-      "content-length" : "0",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131468063487666260",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14996",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "e5aea0b4-720e-4593-8599-36b91c39413a"
+      "x-ms-correlation-request-id" : "787e21b5-439e-4884-b02a-9b431ae4e3e7",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003950Z:787e21b5-439e-4884-b02a-9b431ae4e3e7",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "494bb3ff-4364-4954-9daf-c844bb4a5077",
+      "Body" : "{\r\n  \"value\": [\r\n    {\r\n      \"properties\": {\r\n        \"vmId\": \"f59a08bc-2ed9-4cc6-b542-28c0a4387dcb\",\r\n        \"hardwareProfile\": {\r\n          \"vmSize\": \"Standard_D3\"\r\n        },\r\n        \"storageProfile\": {\r\n          \"imageReference\": {\r\n            \"publisher\": \"MicrosoftWindowsServer\",\r\n            \"offer\": \"WindowsServer\",\r\n            \"sku\": \"2012-Datacenter\",\r\n            \"version\": \"latest\"\r\n          },\r\n          \"osDisk\": {\r\n            \"osType\": \"Windows\",\r\n            \"name\": \"javatest\",\r\n            \"createOption\": \"FromImage\",\r\n            \"vhd\": {\r\n              \"uri\": \"https://stgjavavm9b1528229ae.blob.core.windows.net/vhds/javavm-os-disk-0879be90-99e3-4ea6-8cc1-a35bf288aa64.vhd\"\r\n            },\r\n            \"caching\": \"ReadWrite\",\r\n            \"diskSizeGB\": 127\r\n          },\r\n          \"dataDisks\": []\r\n        },\r\n        \"osProfile\": {\r\n          \"computerName\": \"javavm\",\r\n          \"adminUsername\": \"Foo12\",\r\n          \"windowsConfiguration\": {\r\n            \"provisionVMAgent\": true,\r\n            \"enableAutomaticUpdates\": true\r\n          },\r\n          \"secrets\": []\r\n        },\r\n        \"networkProfile\": {\"networkInterfaces\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Network/networkInterfaces/nicjavavm9b123535b\",\"properties\":{\"primary\":true}}]},\r\n        \"provisioningState\": \"Succeeded\"\r\n      },\r\n      \"type\": \"Microsoft.Compute/virtualMachines\",\r\n      \"location\": \"eastus\",\r\n      \"tags\": {},\r\n      \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Compute/virtualMachines/javavm\",\r\n      \"name\": \"javavm\"\r\n    }\r\n  ]\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2017-03-30",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 25 Aug 2017 00:39:50 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "1493",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131468063487666260",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14995",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "4d09cbeb-6ddf-435c-98f3-c312a02d10e8",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003950Z:4d09cbeb-6ddf-435c-98f3-c312a02d10e8",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "d77898c3-7b39-4ee4-97f7-b9ee6bc74a3c",
+      "Body" : "{\r\n  \"properties\": {\r\n    \"vmId\": \"f59a08bc-2ed9-4cc6-b542-28c0a4387dcb\",\r\n    \"hardwareProfile\": {\r\n      \"vmSize\": \"Standard_D3\"\r\n    },\r\n    \"storageProfile\": {\r\n      \"imageReference\": {\r\n        \"publisher\": \"MicrosoftWindowsServer\",\r\n        \"offer\": \"WindowsServer\",\r\n        \"sku\": \"2012-Datacenter\",\r\n        \"version\": \"latest\"\r\n      },\r\n      \"osDisk\": {\r\n        \"osType\": \"Windows\",\r\n        \"name\": \"javatest\",\r\n        \"createOption\": \"FromImage\",\r\n        \"vhd\": {\r\n          \"uri\": \"https://stgjavavm9b1528229ae.blob.core.windows.net/vhds/javavm-os-disk-0879be90-99e3-4ea6-8cc1-a35bf288aa64.vhd\"\r\n        },\r\n        \"caching\": \"ReadWrite\",\r\n        \"diskSizeGB\": 127\r\n      },\r\n      \"dataDisks\": []\r\n    },\r\n    \"osProfile\": {\r\n      \"computerName\": \"javavm\",\r\n      \"adminUsername\": \"Foo12\",\r\n      \"windowsConfiguration\": {\r\n        \"provisionVMAgent\": true,\r\n        \"enableAutomaticUpdates\": true\r\n      },\r\n      \"secrets\": []\r\n    },\r\n    \"networkProfile\": {\"networkInterfaces\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Network/networkInterfaces/nicjavavm9b123535b\",\"properties\":{\"primary\":true}}]},\r\n    \"provisioningState\": \"Succeeded\"\r\n  },\r\n  \"type\": \"Microsoft.Compute/virtualMachines\",\r\n  \"location\": \"eastus\",\r\n  \"tags\": {},\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Compute/virtualMachines/javavm\",\r\n  \"name\": \"javavm\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Compute/virtualMachines/javavm?$expand=instanceView&api-version=2017-03-30",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 25 Aug 2017 00:39:50 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "2629",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131468063487666260",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14994",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "1e768083-7c9a-4ab6-a9f5-884145c19dfe",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003951Z:1e768083-7c9a-4ab6-a9f5-884145c19dfe",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "efdc4b4e-1b05-4ce9-b8be-05fac1381523",
+      "Body" : "{\r\n  \"properties\": {\r\n    \"vmId\": \"f59a08bc-2ed9-4cc6-b542-28c0a4387dcb\",\r\n    \"hardwareProfile\": {\r\n      \"vmSize\": \"Standard_D3\"\r\n    },\r\n    \"storageProfile\": {\r\n      \"imageReference\": {\r\n        \"publisher\": \"MicrosoftWindowsServer\",\r\n        \"offer\": \"WindowsServer\",\r\n        \"sku\": \"2012-Datacenter\",\r\n        \"version\": \"latest\"\r\n      },\r\n      \"osDisk\": {\r\n        \"osType\": \"Windows\",\r\n        \"name\": \"javatest\",\r\n        \"createOption\": \"FromImage\",\r\n        \"vhd\": {\r\n          \"uri\": \"https://stgjavavm9b1528229ae.blob.core.windows.net/vhds/javavm-os-disk-0879be90-99e3-4ea6-8cc1-a35bf288aa64.vhd\"\r\n        },\r\n        \"caching\": \"ReadWrite\",\r\n        \"diskSizeGB\": 127\r\n      },\r\n      \"dataDisks\": []\r\n    },\r\n    \"osProfile\": {\r\n      \"computerName\": \"javavm\",\r\n      \"adminUsername\": \"Foo12\",\r\n      \"windowsConfiguration\": {\r\n        \"provisionVMAgent\": true,\r\n        \"enableAutomaticUpdates\": true\r\n      },\r\n      \"secrets\": []\r\n    },\r\n    \"networkProfile\": {\"networkInterfaces\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Network/networkInterfaces/nicjavavm9b123535b\",\"properties\":{\"primary\":true}}]},\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"instanceView\": {\r\n      \"vmAgent\": {\r\n        \"vmAgentVersion\": \"Unknown\",\r\n        \"statuses\": [\r\n          {\r\n            \"code\": \"ProvisioningState/Unavailable\",\r\n            \"level\": \"Warning\",\r\n            \"displayStatus\": \"Not Ready\",\r\n            \"message\": \"VM status blob is found but not yet populated.\",\r\n            \"time\": \"2017-08-25T00:39:50+00:00\"\r\n          }\r\n        ]\r\n      },\r\n      \"disks\": [\r\n        {\r\n          \"name\": \"javatest\",\r\n          \"statuses\": [\r\n            {\r\n              \"code\": \"ProvisioningState/succeeded\",\r\n              \"level\": \"Info\",\r\n              \"displayStatus\": \"Provisioning succeeded\",\r\n              \"time\": \"2017-08-25T00:38:57.0009818+00:00\"\r\n            }\r\n          ]\r\n        }\r\n      ],\r\n      \"statuses\": [\r\n        {\r\n          \"code\": \"ProvisioningState/succeeded\",\r\n          \"level\": \"Info\",\r\n          \"displayStatus\": \"Provisioning succeeded\",\r\n          \"time\": \"2017-08-25T00:39:37.4242833+00:00\"\r\n        },\r\n        {\r\n          \"code\": \"PowerState/running\",\r\n          \"level\": \"Info\",\r\n          \"displayStatus\": \"VM running\"\r\n        }\r\n      ]\r\n    }\r\n  },\r\n  \"type\": \"Microsoft.Compute/virtualMachines\",\r\n  \"location\": \"eastus\",\r\n  \"tags\": {},\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Compute/virtualMachines/javavm\",\r\n  \"name\": \"javavm\"\r\n}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62714/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2017-03-30",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 25 Aug 2017 00:39:51 GMT",
+      "content-length" : "0",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "expires" : "-1",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131468063487666260",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "29885c1f-cc23-4c36-897f-98c2897e4922",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003952Z:29885c1f-cc23-4c36-897f-98c2897e4922",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/64983122-97ba-4a15-bf5e-c51ba5170b3a?monitor=true&api-version=2017-03-30",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "64983122-97ba-4a15-bf5e-c51ba5170b3a",
+      "Body" : "",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/64983122-97ba-4a15-bf5e-c51ba5170b3a?api-version=2017-03-30"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/64983122-97ba-4a15-bf5e-c51ba5170b3a?api-version=2017-03-30",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
+    },
+    "Response" : {
+      "date" : "Fri, 25 Aug 2017 00:39:51 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131468063487666260",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14993",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "d6e050a8-aca7-4723-b7ed-3d9fd8c3b9b3",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T003952Z:d6e050a8-aca7-4723-b7ed-3d9fd8c3b9b3",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "f714455b-e1d8-412d-9033-285304b89125",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:39:51.6276112+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"64983122-97ba-4a15-bf5e-c51ba5170b3a\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/64983122-97ba-4a15-bf5e-c51ba5170b3a?api-version=2017-03-30",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
+    },
+    "Response" : {
+      "date" : "Fri, 25 Aug 2017 00:40:21 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131468063487666260",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14992",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "00bc8ed5-50a0-4a64-a5c9-c79071e388db",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T004022Z:00bc8ed5-50a0-4a64-a5c9-c79071e388db",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "556c1d58-58c0-4610-999c-a19d003c05bf",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:39:51.6276112+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"64983122-97ba-4a15-bf5e-c51ba5170b3a\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/64983122-97ba-4a15-bf5e-c51ba5170b3a?api-version=2017-03-30",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
+    },
+    "Response" : {
+      "date" : "Fri, 25 Aug 2017 00:40:52 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131468063487666260",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14990",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "b2d7eeeb-e2b5-4b49-ad15-4a596de155a6",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T004052Z:b2d7eeeb-e2b5-4b49-ad15-4a596de155a6",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "5b47cd66-446b-4ec5-9371-bd9fbefb43d7",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:39:51.6276112+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"64983122-97ba-4a15-bf5e-c51ba5170b3a\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/64983122-97ba-4a15-bf5e-c51ba5170b3a?api-version=2017-03-30",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
+    },
+    "Response" : {
+      "date" : "Fri, 25 Aug 2017 00:41:22 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "134",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131468063487666260",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14989",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "88b0ac0a-00f4-4e3b-9e7a-f69ac4357b84",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T004122Z:88b0ac0a-00f4-4e3b-9e7a-f69ac4357b84",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "0fa0fe20-7624-4ab0-a60f-bd9aae81b09c",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:39:51.6276112+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"64983122-97ba-4a15-bf5e-c51ba5170b3a\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/operations/64983122-97ba-4a15-bf5e-c51ba5170b3a?api-version=2017-03-30",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ComputeManagementClient)"
+    },
+    "Response" : {
+      "date" : "Fri, 25 Aug 2017 00:41:53 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "184",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-ms-served-by" : "c4eddfd8-50c0-4095-b028-281986cc641e_131468063487666260",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14988",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "59b2174b-9203-48de-80c3-4a2eea8cbc9b",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T004153Z:59b2174b-9203-48de-80c3-4a2eea8cbc9b",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "f0985da0-b3bd-4eba-9147-6c29b51f25be",
+      "Body" : "{\r\n  \"startTime\": \"2017-08-25T00:39:51.6276112+00:00\",\r\n  \"endTime\": \"2017-08-25T00:41:42.9766851+00:00\",\r\n  \"status\": \"Succeeded\",\r\n  \"name\": \"64983122-97ba-4a15-bf5e-c51ba5170b3a\"\r\n}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg62714?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 8.1/6.3 MacAddressHash:f4a80874da73428761e18fdc5a83dbe6afc821318380ed409e3c3d34f8e7dfe0 Java:1.8.0_65 (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 25 Aug 2017 00:41:55 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "46775972-453e-469c-b03b-521fe69f0aa5",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "WESTUS2:20170825T004155Z:46775972-453e-469c-b03b-521fe69f0aa5",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1KQVZBQ1NNUkc2MjcxNC1FQVNUVVMiLCJqb2JMb2NhdGlvbiI6ImVhc3R1cyJ9?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "46775972-453e-469c-b03b-521fe69f0aa5",
+      "Body" : ""
     }
   } ],
-  "variables" : [ "javacsmrg28445", "nicjavavm6c9130261", "vnet749037135d", "stgjavavm6c914196acb" ]
+  "variables" : [ "javacsmrg62714", "nicjavavm9b123535b", "vnet408387fa27", "stgjavavm9b1528229ae" ]
 }

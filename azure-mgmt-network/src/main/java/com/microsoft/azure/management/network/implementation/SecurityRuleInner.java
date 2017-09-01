@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.SecurityRuleProtocol;
+import java.util.List;
 import com.microsoft.azure.management.network.SecurityRuleAccess;
 import com.microsoft.azure.management.network.SecurityRuleDirection;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -57,12 +58,36 @@ public class SecurityRuleInner extends SubResource {
     private String sourceAddressPrefix;
 
     /**
-     * The destination address prefix. CIDR or source IP range. Asterix '*' can
-     * also be used to match all source IPs. Default tags such as
+     * The CIDR or source IP ranges.
+     */
+    @JsonProperty(value = "properties.sourceAddressPrefixes")
+    private List<String> sourceAddressPrefixes;
+
+    /**
+     * The destination address prefix. CIDR or destination IP range. Asterix
+     * '*' can also be used to match all source IPs. Default tags such as
      * 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
      */
     @JsonProperty(value = "properties.destinationAddressPrefix", required = true)
     private String destinationAddressPrefix;
+
+    /**
+     * The destination address prefixes. CIDR or destination IP ranges.
+     */
+    @JsonProperty(value = "properties.destinationAddressPrefixes")
+    private List<String> destinationAddressPrefixes;
+
+    /**
+     * The source port ranges.
+     */
+    @JsonProperty(value = "properties.sourcePortRanges")
+    private List<String> sourcePortRanges;
+
+    /**
+     * The destination port ranges.
+     */
+    @JsonProperty(value = "properties.destinationPortRanges")
+    private List<String> destinationPortRanges;
 
     /**
      * The network traffic is allowed or denied. Possible values are: 'Allow'
@@ -209,6 +234,26 @@ public class SecurityRuleInner extends SubResource {
     }
 
     /**
+     * Get the sourceAddressPrefixes value.
+     *
+     * @return the sourceAddressPrefixes value
+     */
+    public List<String> sourceAddressPrefixes() {
+        return this.sourceAddressPrefixes;
+    }
+
+    /**
+     * Set the sourceAddressPrefixes value.
+     *
+     * @param sourceAddressPrefixes the sourceAddressPrefixes value to set
+     * @return the SecurityRuleInner object itself.
+     */
+    public SecurityRuleInner withSourceAddressPrefixes(List<String> sourceAddressPrefixes) {
+        this.sourceAddressPrefixes = sourceAddressPrefixes;
+        return this;
+    }
+
+    /**
      * Get the destinationAddressPrefix value.
      *
      * @return the destinationAddressPrefix value
@@ -225,6 +270,66 @@ public class SecurityRuleInner extends SubResource {
      */
     public SecurityRuleInner withDestinationAddressPrefix(String destinationAddressPrefix) {
         this.destinationAddressPrefix = destinationAddressPrefix;
+        return this;
+    }
+
+    /**
+     * Get the destinationAddressPrefixes value.
+     *
+     * @return the destinationAddressPrefixes value
+     */
+    public List<String> destinationAddressPrefixes() {
+        return this.destinationAddressPrefixes;
+    }
+
+    /**
+     * Set the destinationAddressPrefixes value.
+     *
+     * @param destinationAddressPrefixes the destinationAddressPrefixes value to set
+     * @return the SecurityRuleInner object itself.
+     */
+    public SecurityRuleInner withDestinationAddressPrefixes(List<String> destinationAddressPrefixes) {
+        this.destinationAddressPrefixes = destinationAddressPrefixes;
+        return this;
+    }
+
+    /**
+     * Get the sourcePortRanges value.
+     *
+     * @return the sourcePortRanges value
+     */
+    public List<String> sourcePortRanges() {
+        return this.sourcePortRanges;
+    }
+
+    /**
+     * Set the sourcePortRanges value.
+     *
+     * @param sourcePortRanges the sourcePortRanges value to set
+     * @return the SecurityRuleInner object itself.
+     */
+    public SecurityRuleInner withSourcePortRanges(List<String> sourcePortRanges) {
+        this.sourcePortRanges = sourcePortRanges;
+        return this;
+    }
+
+    /**
+     * Get the destinationPortRanges value.
+     *
+     * @return the destinationPortRanges value
+     */
+    public List<String> destinationPortRanges() {
+        return this.destinationPortRanges;
+    }
+
+    /**
+     * Set the destinationPortRanges value.
+     *
+     * @param destinationPortRanges the destinationPortRanges value to set
+     * @return the SecurityRuleInner object itself.
+     */
+    public SecurityRuleInner withDestinationPortRanges(List<String> destinationPortRanges) {
+        this.destinationPortRanges = destinationPortRanges;
         return this;
     }
 

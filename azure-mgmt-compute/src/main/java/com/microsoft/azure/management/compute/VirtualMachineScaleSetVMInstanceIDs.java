@@ -16,7 +16,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class VirtualMachineScaleSetVMInstanceIDs {
     /**
-     * The virtual machine scale set instance IDs.
+     * The virtual machine scale set instance ids. Omitting the virtual machine
+     * scale set instance ids will result in the operation being performed on
+     * all virtual machines in the virtual machine scale set.
      */
     @JsonProperty(value = "instanceIds")
     private List<String> instanceIds;

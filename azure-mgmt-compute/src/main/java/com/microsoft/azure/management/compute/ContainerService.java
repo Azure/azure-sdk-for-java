@@ -35,7 +35,7 @@ public interface ContainerService extends
     /**
      * @return the type of the orchestrator
      */
-    ContainerServiceOchestratorTypes orchestratorType();
+    ContainerServiceOrchestratorTypes orchestratorType();
 
     /**
      * @return the master leaf domain label

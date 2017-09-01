@@ -96,6 +96,10 @@ public class VirtualNetworksInner implements InnerSupportsGet<VirtualNetworkInne
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/CheckIPAddressAvailability")
         Observable<Response<ResponseBody>> checkIPAddressAvailability(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("subscriptionId") String subscriptionId, @Query("ipAddress") String ipAddress, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.VirtualNetworks listUsage" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/usages")
+        Observable<Response<ResponseBody>> listUsage(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.VirtualNetworks listNext" })
         @GET
         Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -103,6 +107,10 @@ public class VirtualNetworksInner implements InnerSupportsGet<VirtualNetworkInne
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.VirtualNetworks listByResourceGroupNext" })
         @GET
         Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.VirtualNetworks listUsageNext" })
+        @GET
+        Observable<Response<ResponseBody>> listUsageNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -167,7 +175,7 @@ public class VirtualNetworksInner implements InnerSupportsGet<VirtualNetworkInne
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
@@ -233,7 +241,7 @@ public class VirtualNetworksInner implements InnerSupportsGet<VirtualNetworkInne
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.beginDelete(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -319,7 +327,7 @@ public class VirtualNetworksInner implements InnerSupportsGet<VirtualNetworkInne
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         final String expand = null;
         return service.getByResourceGroup(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualNetworkInner>>>() {
@@ -401,7 +409,7 @@ public class VirtualNetworksInner implements InnerSupportsGet<VirtualNetworkInne
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.getByResourceGroup(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualNetworkInner>>>() {
                 @Override
@@ -493,7 +501,7 @@ public class VirtualNetworksInner implements InnerSupportsGet<VirtualNetworkInne
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<VirtualNetworkInner>() { }.getType());
     }
@@ -568,7 +576,7 @@ public class VirtualNetworksInner implements InnerSupportsGet<VirtualNetworkInne
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.beginCreateOrUpdate(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualNetworkInner>>>() {
                 @Override
@@ -674,7 +682,7 @@ public class VirtualNetworksInner implements InnerSupportsGet<VirtualNetworkInne
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.list(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VirtualNetworkInner>>>>() {
                 @Override
@@ -787,7 +795,7 @@ public class VirtualNetworksInner implements InnerSupportsGet<VirtualNetworkInne
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VirtualNetworkInner>>>>() {
                 @Override
@@ -871,7 +879,7 @@ public class VirtualNetworksInner implements InnerSupportsGet<VirtualNetworkInne
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         final String ipAddress = null;
         return service.checkIPAddressAvailability(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), ipAddress, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<IPAddressAvailabilityResultInner>>>() {
@@ -953,7 +961,7 @@ public class VirtualNetworksInner implements InnerSupportsGet<VirtualNetworkInne
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.checkIPAddressAvailability(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), ipAddress, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<IPAddressAvailabilityResultInner>>>() {
                 @Override
@@ -971,6 +979,127 @@ public class VirtualNetworksInner implements InnerSupportsGet<VirtualNetworkInne
     private ServiceResponse<IPAddressAvailabilityResultInner> checkIPAddressAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<IPAddressAvailabilityResultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<IPAddressAvailabilityResultInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists usage stats.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;VirtualNetworkUsageInner&gt; object if successful.
+     */
+    public PagedList<VirtualNetworkUsageInner> listUsage(final String resourceGroupName, final String virtualNetworkName) {
+        ServiceResponse<Page<VirtualNetworkUsageInner>> response = listUsageSinglePageAsync(resourceGroupName, virtualNetworkName).toBlocking().single();
+        return new PagedList<VirtualNetworkUsageInner>(response.body()) {
+            @Override
+            public Page<VirtualNetworkUsageInner> nextPage(String nextPageLink) {
+                return listUsageNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists usage stats.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<VirtualNetworkUsageInner>> listUsageAsync(final String resourceGroupName, final String virtualNetworkName, final ListOperationCallback<VirtualNetworkUsageInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listUsageSinglePageAsync(resourceGroupName, virtualNetworkName),
+            new Func1<String, Observable<ServiceResponse<Page<VirtualNetworkUsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<VirtualNetworkUsageInner>>> call(String nextPageLink) {
+                    return listUsageNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists usage stats.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;VirtualNetworkUsageInner&gt; object
+     */
+    public Observable<Page<VirtualNetworkUsageInner>> listUsageAsync(final String resourceGroupName, final String virtualNetworkName) {
+        return listUsageWithServiceResponseAsync(resourceGroupName, virtualNetworkName)
+            .map(new Func1<ServiceResponse<Page<VirtualNetworkUsageInner>>, Page<VirtualNetworkUsageInner>>() {
+                @Override
+                public Page<VirtualNetworkUsageInner> call(ServiceResponse<Page<VirtualNetworkUsageInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists usage stats.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;VirtualNetworkUsageInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<VirtualNetworkUsageInner>>> listUsageWithServiceResponseAsync(final String resourceGroupName, final String virtualNetworkName) {
+        return listUsageSinglePageAsync(resourceGroupName, virtualNetworkName)
+            .concatMap(new Func1<ServiceResponse<Page<VirtualNetworkUsageInner>>, Observable<ServiceResponse<Page<VirtualNetworkUsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<VirtualNetworkUsageInner>>> call(ServiceResponse<Page<VirtualNetworkUsageInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listUsageNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists usage stats.
+     *
+    ServiceResponse<PageImpl<VirtualNetworkUsageInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<VirtualNetworkUsageInner>> * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;VirtualNetworkUsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<VirtualNetworkUsageInner>>> listUsageSinglePageAsync(final String resourceGroupName, final String virtualNetworkName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (virtualNetworkName == null) {
+            throw new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2017-08-01";
+        return service.listUsage(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VirtualNetworkUsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<VirtualNetworkUsageInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<VirtualNetworkUsageInner>> result = listUsageDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<VirtualNetworkUsageInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<VirtualNetworkUsageInner>> listUsageDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualNetworkUsageInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<VirtualNetworkUsageInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1193,6 +1322,117 @@ public class VirtualNetworksInner implements InnerSupportsGet<VirtualNetworkInne
     private ServiceResponse<PageImpl<VirtualNetworkInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualNetworkInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<VirtualNetworkInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists usage stats.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;VirtualNetworkUsageInner&gt; object if successful.
+     */
+    public PagedList<VirtualNetworkUsageInner> listUsageNext(final String nextPageLink) {
+        ServiceResponse<Page<VirtualNetworkUsageInner>> response = listUsageNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<VirtualNetworkUsageInner>(response.body()) {
+            @Override
+            public Page<VirtualNetworkUsageInner> nextPage(String nextPageLink) {
+                return listUsageNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists usage stats.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<VirtualNetworkUsageInner>> listUsageNextAsync(final String nextPageLink, final ServiceFuture<List<VirtualNetworkUsageInner>> serviceFuture, final ListOperationCallback<VirtualNetworkUsageInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listUsageNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<VirtualNetworkUsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<VirtualNetworkUsageInner>>> call(String nextPageLink) {
+                    return listUsageNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists usage stats.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;VirtualNetworkUsageInner&gt; object
+     */
+    public Observable<Page<VirtualNetworkUsageInner>> listUsageNextAsync(final String nextPageLink) {
+        return listUsageNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<VirtualNetworkUsageInner>>, Page<VirtualNetworkUsageInner>>() {
+                @Override
+                public Page<VirtualNetworkUsageInner> call(ServiceResponse<Page<VirtualNetworkUsageInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists usage stats.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;VirtualNetworkUsageInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<VirtualNetworkUsageInner>>> listUsageNextWithServiceResponseAsync(final String nextPageLink) {
+        return listUsageNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<VirtualNetworkUsageInner>>, Observable<ServiceResponse<Page<VirtualNetworkUsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<VirtualNetworkUsageInner>>> call(ServiceResponse<Page<VirtualNetworkUsageInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listUsageNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists usage stats.
+     *
+    ServiceResponse<PageImpl<VirtualNetworkUsageInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;VirtualNetworkUsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<VirtualNetworkUsageInner>>> listUsageNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listUsageNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VirtualNetworkUsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<VirtualNetworkUsageInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<VirtualNetworkUsageInner>> result = listUsageNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<VirtualNetworkUsageInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<VirtualNetworkUsageInner>> listUsageNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualNetworkUsageInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<VirtualNetworkUsageInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

@@ -22,6 +22,12 @@ public class ExpressRouteCircuitPeeringConfig {
     private List<String> advertisedPublicPrefixes;
 
     /**
+     * The communities of bgp peering. Spepcified for microsoft peering.
+     */
+    @JsonProperty(value = "advertisedCommunities")
+    private List<String> advertisedCommunities;
+
+    /**
      * AdvertisedPublicPrefixState of the Peering resource. Possible values are
      * 'NotConfigured', 'Configuring', 'Configured', and 'ValidationNeeded'.
      * Possible values include: 'NotConfigured', 'Configuring', 'Configured',
@@ -29,6 +35,12 @@ public class ExpressRouteCircuitPeeringConfig {
      */
     @JsonProperty(value = "advertisedPublicPrefixesState")
     private ExpressRouteCircuitPeeringAdvertisedPublicPrefixState advertisedPublicPrefixesState;
+
+    /**
+     * The legacy mode of the peering.
+     */
+    @JsonProperty(value = "legacyMode")
+    private Integer legacyMode;
 
     /**
      * The CustomerASN of the peering.
@@ -63,6 +75,26 @@ public class ExpressRouteCircuitPeeringConfig {
     }
 
     /**
+     * Get the advertisedCommunities value.
+     *
+     * @return the advertisedCommunities value
+     */
+    public List<String> advertisedCommunities() {
+        return this.advertisedCommunities;
+    }
+
+    /**
+     * Set the advertisedCommunities value.
+     *
+     * @param advertisedCommunities the advertisedCommunities value to set
+     * @return the ExpressRouteCircuitPeeringConfig object itself.
+     */
+    public ExpressRouteCircuitPeeringConfig withAdvertisedCommunities(List<String> advertisedCommunities) {
+        this.advertisedCommunities = advertisedCommunities;
+        return this;
+    }
+
+    /**
      * Get the advertisedPublicPrefixesState value.
      *
      * @return the advertisedPublicPrefixesState value
@@ -79,6 +111,26 @@ public class ExpressRouteCircuitPeeringConfig {
      */
     public ExpressRouteCircuitPeeringConfig withAdvertisedPublicPrefixesState(ExpressRouteCircuitPeeringAdvertisedPublicPrefixState advertisedPublicPrefixesState) {
         this.advertisedPublicPrefixesState = advertisedPublicPrefixesState;
+        return this;
+    }
+
+    /**
+     * Get the legacyMode value.
+     *
+     * @return the legacyMode value
+     */
+    public Integer legacyMode() {
+        return this.legacyMode;
+    }
+
+    /**
+     * Set the legacyMode value.
+     *
+     * @param legacyMode the legacyMode value to set
+     * @return the ExpressRouteCircuitPeeringConfig object itself.
+     */
+    public ExpressRouteCircuitPeeringConfig withLegacyMode(Integer legacyMode) {
+        this.legacyMode = legacyMode;
         return this;
     }
 
