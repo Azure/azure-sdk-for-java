@@ -6,9 +6,10 @@
 package com.microsoft.azure.eventprocessorhost;
 
 import java.util.Iterator;
-import java.util.logging.Level;
 
 import com.microsoft.azure.eventhubs.EventData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 abstract class PartitionPump
 {
@@ -22,6 +23,8 @@ abstract class PartitionPump
     protected PartitionContext partitionContext = null;
     
     protected final Object processingSynchronizer;
+
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(PartitionPump.class);
     
 	PartitionPump(EventProcessorHost host, Pump pump, Lease lease)
 	{
@@ -58,7 +61,7 @@ abstract class PartitionPump
             	// If the processor won't create or open, only thing we can do here is pass the buck.
             	// Null it out so we don't try to operate on it further.
             	this.processor = null;
-            	this.host.logWithHostAndPartition(Level.SEVERE, this.partitionContext, "Failed " + action, e);
+            	TRACE_LOGGER.warn(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionContext, "Failed " + action), e);
             	this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, action, this.lease.getPartitionId());
             	
             	this.pumpStatus = PartitionPumpStatus.PP_OPENFAILED;
@@ -81,7 +84,8 @@ abstract class PartitionPump
             catch (Exception e)
             {
                 // If the processor fails on close, just log and notify.
-                this.host.logWithHostAndPartition(Level.SEVERE, this.partitionContext, "Failed " + EventProcessorHostActionStrings.CLOSING_EVENT_PROCESSOR, e);
+                TRACE_LOGGER.warn(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionContext,
+                        "Failed " + EventProcessorHostActionStrings.CLOSING_EVENT_PROCESSOR), e);
                 this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, EventProcessorHostActionStrings.CLOSING_EVENT_PROCESSOR,
                    this.lease.getPartitionId());
             }
@@ -117,7 +121,8 @@ abstract class PartitionPump
     		}
     		this.pumpStatus = PartitionPumpStatus.PP_CLOSING;
     	}
-        this.host.logWithHostAndPartition(Level.FINE, this.partitionContext, "pump shutdown for reason " + reason.toString());
+        TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionContext,
+               "pump shutdown for reason " + reason.toString()));
 
         specializedShutdown(reason);
 
@@ -135,7 +140,8 @@ abstract class PartitionPump
             }
             catch (Exception e)
             {
-            	this.host.logWithHostAndPartition(Level.SEVERE, this.partitionContext, "Failure closing processor", e);
+            	TRACE_LOGGER.warn(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionContext,
+                        "Failure closing processor"), e);
             	// If closing the processor has failed, the state of the processor is suspect.
             	// Report the failure to the general error handler instead.
             	this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, "Closing Event Processor", this.lease.getPartitionId());
@@ -188,7 +194,8 @@ abstract class PartitionPump
         	// Depending on how you look at it, that's either pointless (if the user's code throws, the user's code should already know about it) or
         	// a convenient way of centralizing error handling.
         	// In the meantime, just trace it.
-        	this.host.logWithHostAndPartition(Level.SEVERE, this.partitionContext, "Got exception from onEvents", e);
+        	TRACE_LOGGER.warn(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionContext,
+                    "Got exception from onEvents"), e);
         }
 	}
     

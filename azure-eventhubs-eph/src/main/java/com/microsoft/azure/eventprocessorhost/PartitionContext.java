@@ -8,11 +8,12 @@ package com.microsoft.azure.eventprocessorhost;
 import java.time.Instant;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Function;
-import java.util.logging.Level;
 
 import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.ReceiverRuntimeInformation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PartitionContext
 {
@@ -25,6 +26,8 @@ public class PartitionContext
     private String offset = PartitionReceiver.START_OF_STREAM;
     private long sequenceNumber = 0;
     private ReceiverRuntimeInformation runtimeInformation;
+
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(PartitionContext.class);
     
     PartitionContext(EventProcessorHost host, String partitionId, String eventHubPath, String consumerGroupName)
     {
@@ -81,8 +84,9 @@ public class PartitionContext
 		}
 		else
 		{
-			this.host.logWithHostAndPartition(Level.FINER, this.partitionId, "setOffsetAndSequenceNumber(" + event.getSystemProperties().getOffset() + "//" +
-					event.getSystemProperties().getSequenceNumber() + ") would move backwards, ignoring");
+			TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionId,
+                    "setOffsetAndSequenceNumber(" + event.getSystemProperties().getOffset() + "//" +
+					event.getSystemProperties().getSequenceNumber() + ") would move backwards, ignoring"));
 		}
     }
     
@@ -101,18 +105,18 @@ public class PartitionContext
     	{
     		// No checkpoint was ever stored. Use the initialOffsetProvider instead.
         	Function<String, Object> initialOffsetProvider = this.host.getEventProcessorOptions().getInitialOffsetProvider();
-    		this.host.logWithHostAndPartition(Level.FINER, this.partitionId, "Calling user-provided initial offset provider");
+    		TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionId, "Calling user-provided initial offset provider"));
     		startAt = initialOffsetProvider.apply(this.partitionId);
     		if (startAt instanceof String)
     		{
     			this.offset = (String)startAt;
         		this.sequenceNumber = 0; // TODO we use sequenceNumber to check for regression of offset, 0 could be a problem until it gets updated from an event
-    	    	this.host.logWithHostAndPartition(Level.FINER, this.partitionId, "Initial offset provided: " + this.offset + "//" + this.sequenceNumber);
+    	    	TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionId, "Initial offset provided: " + this.offset + "//" + this.sequenceNumber));
     		}
     		else if (startAt instanceof Instant)
     		{
     			// can't set offset/sequenceNumber
-    	    	this.host.logWithHostAndPartition(Level.FINER, this.partitionId, "Initial timestamp provided: " + (Instant)startAt);
+    	    	TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionId, "Initial timestamp provided: " + (Instant)startAt));
     		}
     		else
     		{
@@ -125,7 +129,7 @@ public class PartitionContext
 	    	this.offset = startingCheckpoint.getOffset();
 	    	startAt = this.offset;
 	    	this.sequenceNumber = startingCheckpoint.getSequenceNumber();
-	    	this.host.logWithHostAndPartition(Level.FINER, this.partitionId, "Retrieved starting offset " + this.offset + "//" + this.sequenceNumber);
+	    	TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionId, "Retrieved starting offset " + this.offset + "//" + this.sequenceNumber));
     	}
     	
     	return startAt;
@@ -165,8 +169,8 @@ public class PartitionContext
     
     private void persistCheckpoint(Checkpoint persistThis) throws IllegalArgumentException, InterruptedException, ExecutionException
     {
-    	this.host.logWithHostAndPartition(Level.FINER, persistThis.getPartitionId(), "Saving checkpoint: " +
-    			persistThis.getOffset() + "//" + persistThis.getSequenceNumber());
+    	TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), persistThis.getPartitionId(), "Saving checkpoint: " +
+    			persistThis.getOffset() + "//" + persistThis.getSequenceNumber()));
 		
         this.host.getCheckpointManager().updateCheckpoint(this.lease, persistThis).get();
     }

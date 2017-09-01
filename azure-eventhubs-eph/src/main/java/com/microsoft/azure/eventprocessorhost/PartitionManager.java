@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.logging.Level;
 
 import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.EventHubRuntimeInformation;
@@ -20,6 +19,8 @@ import com.microsoft.azure.eventhubs.IllegalEntityException;
 import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.TimeoutException;
 import com.microsoft.azure.storage.StorageException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class PartitionManager
 {
@@ -31,6 +32,8 @@ class PartitionManager
     
     private Future<?> partitionsFuture = null;
     private boolean keepGoing = true;
+
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(PartitionManager.class);
 
     PartitionManager(EventProcessorHost host)
     {
@@ -51,10 +54,11 @@ class PartitionManager
 				{
 					this.partitionIds = ehInfo.getPartitionIds();
 	
-					this.host.logWithHost(Level.FINE, "Eventhub " + this.host.getEventHubPath() + " count of partitions: " + ehInfo.getPartitionCount());
+					TRACE_LOGGER.info(LoggingUtils.withHost(this.host.getHostName(),
+                           "Eventhub " + this.host.getEventHubPath() + " count of partitions: " + ehInfo.getPartitionCount()));
 					for (String id : this.partitionIds)
 					{
-						this.host.logWithHost(Level.FINER, "Found partition with id: " + id);
+						TRACE_LOGGER.info(LoggingUtils.withHost(this.host.getHostName(), "Found partition with id: " + id));
 					}
 				}
 				else
@@ -109,12 +113,12 @@ class PartitionManager
     	}
     	catch (ExceptionWithAction e)
     	{
-    		this.host.logWithHost(Level.SEVERE, "Exception while initializing stores (" + e.getAction() + "), not starting partition manager", e.getCause());
+    		TRACE_LOGGER.warn(LoggingUtils.withHost(this.host.getHostName(), "Exception while initializing stores (" + e.getAction() + "), not starting partition manager"), e.getCause());
     		throw e;
     	}
     	catch (Exception e)
     	{
-    		this.host.logWithHost(Level.SEVERE, "Exception while initializing stores, not starting partition manager", e);
+    		TRACE_LOGGER.warn(LoggingUtils.withHost(this.host.getHostName(), "Exception while initializing stores, not starting partition manager"), e);
     		throw e;
     	}
     	
@@ -129,11 +133,11 @@ class PartitionManager
     	try
     	{
     		runLoop();
-    		this.host.logWithHost(Level.FINE, "Partition manager main loop exited normally, shutting down");
+    		TRACE_LOGGER.info(LoggingUtils.withHost(this.host.getHostName(), "Partition manager main loop exited normally, shutting down"));
     	}
     	catch (ExceptionWithAction e)
     	{
-    		this.host.logWithHost(Level.SEVERE, "Exception from partition manager main loop, shutting down", e.getCause());
+    		TRACE_LOGGER.warn(LoggingUtils.withHost(this.host.getHostName(), "Exception from partition manager main loop, shutting down"), e.getCause());
     		this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, e.getAction());
     	}
     	catch (Exception e)
@@ -154,12 +158,12 @@ class PartitionManager
         			this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), forLogging, EventProcessorHostActionStrings.PARTITION_MANAGER_MAIN_LOOP);
     			}
     		}
-    		this.host.logWithHost(Level.SEVERE, "Exception from partition manager main loop, shutting down", e);
+    		TRACE_LOGGER.warn(LoggingUtils.withHost(this.host.getHostName(), "Exception from partition manager main loop, shutting down"), e);
     		this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, EventProcessorHostActionStrings.PARTITION_MANAGER_MAIN_LOOP);
     	}
     	
     	// Cleanup
-    	this.host.logWithHost(Level.FINE, "Shutting down all pumps");
+    	TRACE_LOGGER.info(LoggingUtils.withHost(this.host.getHostName(), "Shutting down all pumps"));
     	Iterable<Future<?>> pumpRemovals = this.pump.removeAllPumps(CloseReason.Shutdown);
     	
     	// Wait for shutdown threads.
@@ -171,7 +175,7 @@ class PartitionManager
 			}
     		catch (InterruptedException | ExecutionException e)
     		{
-    			this.host.logWithHost(Level.SEVERE, "Failure during shutdown", e);
+    			TRACE_LOGGER.warn(LoggingUtils.withHost(this.host.getHostName(), "Failure during shutdown"), e);
     			this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, EventProcessorHostActionStrings.PARTITION_MANAGER_CLEANUP);
     			
     			// By convention, bail immediately on interrupt, even though we're just cleaning
@@ -189,8 +193,8 @@ class PartitionManager
         // We can't wait for executor termination here because this thread is in the executor.
         this.host.stopExecutor();
 
-    	this.host.logWithHost(Level.FINE, "Partition manager exiting");
-    	
+        TRACE_LOGGER.info(LoggingUtils.withHost(this.host.getHostName(), "Partition manager exiting"));
+
     	return null;
     }
     
@@ -249,11 +253,11 @@ class PartitionManager
     		{
     			if (partitionId != null)
     			{
-    				this.host.logWithHostAndPartition(Level.WARNING, partitionId, retryMessage, e);
+    				TRACE_LOGGER.warn(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId, retryMessage), e);
     			}
     			else
     			{
-    				this.host.logWithHost(Level.WARNING, retryMessage, e);
+    				TRACE_LOGGER.warn(LoggingUtils.withHost(this.host.getHostName(), retryMessage), e);
     			}
     			retryCount++;
     		}
@@ -262,11 +266,11 @@ class PartitionManager
         {
     		if (partitionId != null)
     		{
-    			this.host.logWithHostAndPartition(Level.SEVERE, partitionId, finalFailureMessage);
+    			TRACE_LOGGER.warn(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId, finalFailureMessage));
     		}
     		else
     		{
-    			this.host.logWithHost(Level.SEVERE, finalFailureMessage);
+    			TRACE_LOGGER.warn(LoggingUtils.withHost(this.host.getHostName(), finalFailureMessage));
     		}
     		throw new ExceptionWithAction(new RuntimeException(finalFailureMessage), action);
         }
@@ -331,7 +335,7 @@ class PartitionManager
             	// next partition.
             	catch (ExecutionException|StorageException e)
             	{
-            		this.host.logWithHost(Level.WARNING, "Failure getting/acquiring/renewing lease, skipping", e);
+            		TRACE_LOGGER.warn(LoggingUtils.withHost(this.host.getHostName(), "Failure getting/acquiring/renewing lease, skipping"), e);
             		Exception notifyWith = e;
             		if ((e instanceof ExecutionException) && (e.getCause() != null) && (e.getCause() instanceof Exception))
             		{
@@ -354,18 +358,18 @@ class PartitionManager
 	            		{
     	                	if (leaseManager.acquireLease(stealee).get())
     	                	{
-    	                		this.host.logWithHostAndPartition(Level.FINE, stealee.getPartitionId(), "Stole lease");
+    	                		TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), stealee.getPartitionId(), "Stole lease"));
     	                		allLeases.put(stealee.getPartitionId(), stealee);
     	                		ourLeasesCount++;
     	                	}
     	                	else
     	                	{
-    	                		this.host.logWithHost(Level.WARNING, "Failed to steal lease for partition " + stealee.getPartitionId());
+    	                		TRACE_LOGGER.warn(LoggingUtils.withHost(this.host.getHostName(), "Failed to steal lease for partition " + stealee.getPartitionId()));
     	                	}
 	            		}
 	            		catch (ExecutionException e)
 	            		{
-	            			this.host.logWithHost(Level.SEVERE, "Exception stealing lease for partition " + stealee.getPartitionId(), e);
+	            			TRACE_LOGGER.warn(LoggingUtils.withHost(this.host.getHostName(), "Exception stealing lease for partition " + stealee.getPartitionId()), e);
 	            			this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, EventProcessorHostActionStrings.STEALING_LEASE,
 	            					stealee.getPartitionId());
 	            		}
@@ -377,7 +381,7 @@ class PartitionManager
             for (String partitionId : allLeases.keySet())
             {
             	Lease updatedLease = allLeases.get(partitionId);
-            	this.host.logWithHost(Level.FINER, "Lease on partition " + updatedLease.getPartitionId() + " owned by " + updatedLease.getOwner()); // DEBUG
+            	TRACE_LOGGER.info(LoggingUtils.withHost(this.host.getHostName(), "Lease on partition " + updatedLease.getPartitionId() + " owned by " + updatedLease.getOwner())); // DEBUG
             	if (updatedLease.getOwner().compareTo(this.host.getHostName()) == 0)
             	{
             		this.pump.addPump(partitionId, updatedLease);
@@ -401,7 +405,7 @@ class PartitionManager
             catch (InterruptedException e)
             {
             	// Bail on the thread if we are interrupted.
-                this.host.logWithHost(Level.WARNING, "Sleep was interrupted", e);
+                TRACE_LOGGER.warn(LoggingUtils.withHost(this.host.getHostName(), "Sleep was interrupted"), e);
                 this.keepGoing = false;
 				Thread.currentThread().interrupt();
 				throw new RuntimeException(e);
@@ -443,7 +447,7 @@ class PartitionManager
     			if (l.getOwner().compareTo(biggestOwner) == 0)
     			{
     				stealTheseLeases.add(l);
-    				this.host.logWithHost(Level.FINER, "Proposed to steal lease for partition " + l.getPartitionId() + " from " + biggestOwner);
+    				TRACE_LOGGER.info(LoggingUtils.withHost(this.host.getHostName(), "Proposed to steal lease for partition " + l.getPartitionId() + " from " + biggestOwner));
   					break;
     			}
     		}
@@ -483,9 +487,9 @@ class PartitionManager
     	}
     	for (String owner : counts.keySet())
     	{
-    		this.host.log(Level.FINER, "host " + owner + " owns " + counts.get(owner) + " leases");
+    		TRACE_LOGGER.info("host " + owner + " owns " + counts.get(owner) + " leases");
     	}
-    	this.host.log(Level.FINER, "total hosts in sorted list: " + counts.size());
+    	TRACE_LOGGER.info("total hosts in sorted list: " + counts.size());
     	
     	return counts;
     }

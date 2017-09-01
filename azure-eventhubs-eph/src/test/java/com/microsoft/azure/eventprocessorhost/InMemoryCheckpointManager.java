@@ -5,11 +5,13 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.logging.Level;
 
 
 //
@@ -30,6 +32,8 @@ public class InMemoryCheckpointManager implements ICheckpointManager
 {
     private EventProcessorHost host;
     private ExecutorService executor;
+
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(InMemoryCheckpointManager.class);
 
     public InMemoryCheckpointManager()
     {
@@ -90,7 +94,7 @@ public class InMemoryCheckpointManager implements ICheckpointManager
         Checkpoint checkpointInStore = InMemoryCheckpointStore.singleton.getCheckpoint(partitionId);
         if (checkpointInStore == null)
         {
-        	this.host.logWithHostAndPartition(Level.SEVERE, partitionId, "getCheckpoint() no existing Checkpoint");
+        	TRACE_LOGGER.warn(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId, "getCheckpoint() no existing Checkpoint"));
         	returnCheckpoint = null;
         }
         else if (checkpointInStore.getSequenceNumber() == -1)
@@ -117,7 +121,8 @@ public class InMemoryCheckpointManager implements ICheckpointManager
     	Checkpoint returnCheckpoint = null;
     	if (checkpointInStore != null)
     	{
-        	this.host.logWithHostAndPartition(Level.INFO, partitionId, "createCheckpointIfNotExists() found existing checkpoint, OK");
+        	TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId,
+                    "createCheckpointIfNotExists() found existing checkpoint, OK"));
         	if (checkpointInStore.getSequenceNumber() != -1)
         	{
         		returnCheckpoint = new Checkpoint(checkpointInStore);
@@ -130,7 +135,8 @@ public class InMemoryCheckpointManager implements ICheckpointManager
     	}
     	else
     	{
-        	this.host.logWithHostAndPartition(Level.INFO, partitionId, "createCheckpointIfNotExists() creating new checkpoint");
+        	TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId,
+                    "createCheckpointIfNotExists() creating new checkpoint"));
         	Checkpoint newStoreCheckpoint = new Checkpoint(partitionId);
         	newStoreCheckpoint.setOffset(null);
         	newStoreCheckpoint.setSequenceNumber(-1);
@@ -167,7 +173,8 @@ public class InMemoryCheckpointManager implements ICheckpointManager
     	}
     	else
     	{
-    		this.host.logWithHostAndPartition(Level.SEVERE, partitionId, "updateCheckpoint() can't find checkpoint");
+    		TRACE_LOGGER.warn(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId,
+                    "updateCheckpoint() can't find checkpoint"));
     	}
     	return null;
     }

@@ -6,17 +6,15 @@
 package com.microsoft.azure.eventprocessorhost;
 
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
-import com.microsoft.azure.eventhubs.ExceptionUtil;
-import com.microsoft.azure.eventhubs.StringUtil;
 import com.microsoft.azure.storage.StorageException;
 
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.UUID;
 import java.util.concurrent.*;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class EventProcessorHost
 {
@@ -38,9 +36,8 @@ public final class EventProcessorHost
     private final ExecutorService executorService;
     private final boolean weOwnExecutor;
     
-    public final static String EVENTPROCESSORHOST_TRACE = "eventprocessorhost.trace";
-	private static final Logger TRACE_LOGGER = Logger.getLogger(EventProcessorHost.EVENTPROCESSORHOST_TRACE);
-	
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(EventProcessorHost.class);
+
 	private static final Object uuidSynchronizer = new Object();
 
 	/**
@@ -358,8 +355,8 @@ public final class EventProcessorHost
         }
         
         this.partitionManager = new PartitionManager(this);
-        
-        logWithHost(Level.FINE, "New EventProcessorHost created");
+
+        TRACE_LOGGER.info(LoggingUtils.withHost(this.hostName, "New EventProcessorHost created."));
     }
 
     /**
@@ -496,7 +493,7 @@ public final class EventProcessorHost
     	
         if (this.executorService.isShutdown() || this.executorService.isTerminated())
     	{
-    		this.logWithHost(Level.SEVERE, "Calling registerEventProcessor/Factory after executor service has been shut down");
+    		TRACE_LOGGER.warn(LoggingUtils.withHost(this.hostName, "Calling registerEventProcessor/Factory after executor service has been shut down."));
     		throw new RejectedExecutionException("EventProcessorHost executor service has been shut down");
     	}
     	
@@ -508,12 +505,13 @@ public final class EventProcessorHost
 			}
             catch (InvalidKeyException | URISyntaxException | StorageException e)
             {
-            	this.logWithHost(Level.SEVERE, "Failure initializing Storage lease manager", e);
+                TRACE_LOGGER.warn(LoggingUtils.withHost(this.hostName, "Failure initializing Storage lease manager."));
             	throw new RuntimeException("Failure initializing Storage lease manager", e);
 			}
         }
-        
-        logWithHost(Level.FINE, "Starting event processing");
+
+        TRACE_LOGGER.info(LoggingUtils.withHost(this.hostName, "Starting event processing."));
+
         this.processorFactory = factory;
         this.processorOptions = processorOptions;
         return this.executorService.submit(() -> this.partitionManager.initialize());
@@ -527,7 +525,7 @@ public final class EventProcessorHost
      */
     public void unregisterEventProcessor() throws InterruptedException, ExecutionException
     {
-    	logWithHost(Level.FINE, "Stopping event processing");
+    	TRACE_LOGGER.info(LoggingUtils.withHost(this.hostName, "Stopping event processing"));
         this.unregistered = true;
     	
     	if (this.partitionManager != null)
@@ -548,7 +546,7 @@ public final class EventProcessorHost
 	        catch (InterruptedException | ExecutionException e)
 	        {
 	        	// Log the failure but nothing really to do about it.
-	        	logWithHost(Level.SEVERE, "Failure shutting down", e);
+                TRACE_LOGGER.warn(LoggingUtils.withHost(this.hostName, "Failure shutting down"), e);
 	        	throw e;
 			}
     	}
@@ -589,7 +587,7 @@ public final class EventProcessorHost
     //
     // Centralized logging.
     //
-    
+    /*
     void log(Level logLevel, String logMessage)
     {
   		EventProcessorHost.TRACE_LOGGER.log(logLevel, logMessage);
@@ -625,6 +623,7 @@ public final class EventProcessorHost
     {
     	logWithHostAndPartition(logLevel, context.getPartitionId(), logMessage, e);
     }
+    */
 
     /**
      * Convenience method for generating unique host names, safe to pass to the EventProcessorHost constructors
