@@ -34,12 +34,12 @@ public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManage
         UUID runId2;
 
         if (isRecordMode()) {
-            jobId = UUID.randomUUID();
-            jobId2 = UUID.randomUUID();
-            pipelineId = UUID.randomUUID();
-            runId = UUID.randomUUID();
-            runId2 = UUID.randomUUID();
-            recurrenceId = UUID.randomUUID();
+            jobId = UUID.fromString(SdkContext.randomUuid());
+            jobId2 = UUID.fromString(SdkContext.randomUuid());;
+            pipelineId = UUID.fromString(SdkContext.randomUuid());
+            runId = UUID.fromString(SdkContext.randomUuid());
+            runId2 = UUID.fromString(SdkContext.randomUuid());
+            recurrenceId = UUID.fromString(SdkContext.randomUuid());
             addTextReplacementRule(jobId.toString(), mockedId.toString());
             addTextReplacementRule(jobId2.toString(), mockedId2.toString());
             addTextReplacementRule(pipelineId.toString(), mockedId3.toString());
