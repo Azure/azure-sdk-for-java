@@ -1,7 +1,10 @@
 package com.microsoft.azure.servicebus;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -18,6 +21,7 @@ import com.microsoft.azure.servicebus.management.TopicDescription;
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
+import com.microsoft.azure.servicebus.primitives.TimeoutException;
 
 public abstract class SessionTests extends Tests {
     private static String entityNameCreatedForAllTests = null;
@@ -33,6 +37,7 @@ public abstract class SessionTests extends Tests {
 	@BeforeClass
 	public static void init()
 	{
+	    Logger.getLogger("com.microsoft.azure.servicebus").setLevel(Level.OFF);
 	    SessionTests.entityNameCreatedForAllTests = null;
 	    SessionTests.receiveEntityPathForAllTest = null;
 	}
@@ -89,20 +94,21 @@ public abstract class SessionTests extends Tests {
 	@After
 	public void tearDown() throws ServiceBusException, InterruptedException, ManagementException
 	{
-		if(this.shouldCreateEntityForEveryTest())
+		if(!this.shouldCreateEntityForEveryTest())
         {
-            ConnectionStringBuilder managementConnectionStringBuilder = new ConnectionStringBuilder(TestUtils.getNamespaceConnectionString());
-            EntityManager.deleteEntity(managementConnectionStringBuilder, this.entityName);
-        }
-        else
-        {
-            this.drainSession();
+		    this.drainSession();
         }
 		
 		this.sender.close();
         if(this.session != null)
             this.session.close();
         this.factory.close();
+        
+        if(this.shouldCreateEntityForEveryTest())
+        {
+            ConnectionStringBuilder managementConnectionStringBuilder = new ConnectionStringBuilder(TestUtils.getNamespaceConnectionString());
+            EntityManager.deleteEntity(managementConnectionStringBuilder, this.entityName);
+        }
 	}
 	
     @AfterClass
@@ -292,14 +298,44 @@ public abstract class SessionTests extends Tests {
 		updatedState = this.session.getState();
 		Assert.assertArrayEquals("Session state not updated properly", customState, updatedState);
 	}
+
+	@Test
+	public void testAcceptSessionTimeoutShouldNotLockSession() throws InterruptedException, ServiceBusException
+	{
+	    ConnectionStringBuilder shortTimeoutBuilder = new ConnectionStringBuilder(this.receiveBuilder.getEndpoint(), this.receiveBuilder.getEntityPath(), this.receiveBuilder.getSasKeyName(), this.receiveBuilder.getSasKey());
+	    shortTimeoutBuilder.setOperationTimeout(Duration.ofSeconds(10));// Should be less than default session wait timeout on the service
+	    try
+	    {
+	        this.session = ClientFactory.acceptSessionFromConnectionStringBuilder(shortTimeoutBuilder, null, ReceiveMode.PEEKLOCK);
+	        Assert.fail("Session " + this.session.getSessionId() + " accepted even though there is no such session on the entity.");
+	    }
+	    catch(TimeoutException te)
+	    {
+	        // Expected..
+	    }
+	    
+	    // Create session now
+	    String sessionId = TestUtils.getRandomString();
+	    Message message = new Message("AMQP message");
+        message.setSessionId(sessionId);
+        this.sender.send(message);
+        this.session = ClientFactory.acceptSessionFromConnectionStringBuilder(shortTimeoutBuilder, null, ReceiveMode.PEEKLOCK);
+        Assert.assertEquals("Accepted an unexpceted session.", sessionId, this.session.getSessionId());
+	}
 	
-//	Write this test after adding create, delete entities in setup and teardown
-//	@Test
-//	public void testAcceptSessionTimeoutShouldNotLockSession() throws InterruptedException, ServiceBusException
-//	{
-//	    String sessionId = getRandomString();
-//	    
-//	}
+	@Test
+    public void testRequestResponseLinkRequestLimit() throws InterruptedException, ServiceBusException
+    {	    
+	    int limitToTest = 5000;
+	    String sessionId = TestUtils.getRandomString();	    
+	    this.session = ClientFactory.acceptSessionFromConnectionStringBuilder(this.receiveBuilder, sessionId, ReceiveMode.PEEKLOCK);
+	    for(int i=0; i<limitToTest; i++)
+	    {
+	        this.session.renewSessionLock();
+	    }
+	    
+	    this.session.renewSessionLock();
+    }
 	
 	private void drainSession() throws InterruptedException, ServiceBusException
 	{

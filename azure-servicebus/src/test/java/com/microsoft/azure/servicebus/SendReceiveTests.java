@@ -85,20 +85,21 @@ public abstract class SendReceiveTests extends Tests {
 	@After
 	public void tearDown() throws ServiceBusException, InterruptedException, ExecutionException, ManagementException
 	{
-	    if(this.shouldCreateEntityForEveryTest())
-	    {
-	        ConnectionStringBuilder managementConnectionStringBuilder = new ConnectionStringBuilder(TestUtils.getNamespaceConnectionString());
-	        EntityManager.deleteEntity(managementConnectionStringBuilder, this.entityName);
-	    }
-	    else
+	    if(!this.shouldCreateEntityForEveryTest())
 	    {
 	        this.drainAllMessages();
-	    }		
+	    }
 		
 		this.sender.close();
 		if(this.receiver != null)
 			this.receiver.close();
 		this.factory.close();
+		
+		if(this.shouldCreateEntityForEveryTest())
+        {
+            ConnectionStringBuilder managementConnectionStringBuilder = new ConnectionStringBuilder(TestUtils.getNamespaceConnectionString());
+            EntityManager.deleteEntity(managementConnectionStringBuilder, this.entityName);
+        }
 	}
 	
 	@AfterClass
@@ -228,6 +229,6 @@ public abstract class SendReceiveTests extends Tests {
 		if(this.receiver != null)
 		{
 			TestCommons.drainAllMessagesFromReceiver(this.receiver);
-		}		
+		}
 	}	
 }
