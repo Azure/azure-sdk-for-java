@@ -17,31 +17,40 @@ import java.io.InputStream;
 public class MockHttpResponse extends HttpResponse {
     private final static SerializerAdapter<?> serializer = new JacksonAdapter();
 
-    private final boolean hasBody;
+    private final int statusCode;
     private byte[] byteArray;
     private String string;
 
     public MockHttpResponse() {
-        hasBody = false;
+        statusCode = 200;
+    }
+
+    public MockHttpResponse(int statusCode) {
+        this.statusCode = statusCode;
     }
 
     public MockHttpResponse(byte[] byteArray) {
-        hasBody = true;
+        statusCode = 200;
         this.byteArray = byteArray;
     }
 
     public MockHttpResponse(String string) {
-        hasBody = true;
+        statusCode = 200;
         this.string = string;
     }
 
     public MockHttpResponse(Object serializable) {
-        hasBody = true;
+        statusCode = 200;
         try {
             this.string = serializer.serialize(serializable);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public int statusCode() {
+        return statusCode;
     }
 
     @Override

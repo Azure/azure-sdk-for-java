@@ -17,6 +17,11 @@ import java.io.InputStream;
  */
 public abstract class HttpResponse {
     /**
+     * @return The HTTP response status code.
+     */
+    public abstract int statusCode();
+
+    /**
      * Get this response object's body as an InputStream. If this response object doesn't have a
      * body, then null will be returned.
      * @return This response object's body as an InputStream. If this response object doesn't have a

@@ -28,6 +28,11 @@ class RxNettyResponse extends HttpResponse {
         this.rxnRes = rxnRes;
     }
 
+    @Override
+    public int statusCode() {
+        return rxnRes.getStatus().code();
+    }
+
     private Single<ByteBuf> collectContent(boolean pooled) {
         // Reading entire response into memory-- not sure if this is OK
         int contentLength = (int) rxnRes.getContentLength();

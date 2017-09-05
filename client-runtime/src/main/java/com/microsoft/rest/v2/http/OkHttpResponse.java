@@ -27,6 +27,11 @@ class OkHttpResponse extends HttpResponse {
     }
 
     @Override
+    public int statusCode() {
+        return response.code();
+    }
+
+    @Override
     public Single<? extends InputStream> bodyAsInputStreamAsync() {
         return Single.just(response.body().byteStream());
     }
