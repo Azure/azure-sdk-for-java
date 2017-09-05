@@ -21,6 +21,8 @@ import com.microsoft.rest.ServiceFuture;
 import rx.Completable;
 import rx.Observable;
 
+import java.util.Set;
+
 /**
  * An immutable client-side representation of an Azure managed disk.
  */
@@ -64,6 +66,12 @@ public interface Disk extends
      * @return the details of the source from which the disk is created
      */
     CreationSource source();
+
+    /**
+     * @return the availability zones assigned to the disk
+     */
+    @Beta(Beta.SinceVersion.V1_3_0)
+    Set<String> availabilityZones();
 
     /**
      * Grants access to the disk.

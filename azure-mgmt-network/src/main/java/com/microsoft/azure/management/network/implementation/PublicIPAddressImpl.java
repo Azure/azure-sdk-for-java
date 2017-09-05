@@ -14,12 +14,16 @@ import com.microsoft.azure.management.network.NicIPConfiguration;
 import com.microsoft.azure.management.network.LoadBalancerPublicFrontend;
 import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.PublicIPAddress;
+import com.microsoft.azure.management.network.PublicIPSkuType;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  *  Implementation for PublicIPAddress and its create and update interfaces.
@@ -77,10 +81,23 @@ class PublicIPAddressImpl
 
     @Override
     public PublicIPAddressImpl withAvailabilityZone(String zoneId) {
+        // Note: Zone is not updatable as of now, so this is available only during definition time
+        // Service return `ResourceAvailabilityZonesCannotBeModified` upon attempt to remove zones
+        // or add a new zone.
+        //
         if (this.inner().zones() == null) {
             this.inner().withZones(new ArrayList<String>());
         }
         this.inner().zones().add(zoneId);
+        return this;
+    }
+
+    @Override
+    public PublicIPAddressImpl withSku(PublicIPSkuType skuType) {
+        // Note: SKU is not updatable as of now, so this is available only during definition time
+        // Service return `SkuCannotBeChangedOnUpdate` upon attempt to change it.
+        //
+        this.inner().withSku(skuType.sku());
         return this;
     }
 
@@ -199,6 +216,17 @@ class PublicIPAddressImpl
     @Override
     public boolean hasAssignedNetworkInterface() {
         return equalsResourceType("ipConfigurations");
+    }
+
+    @Override
+    public Set<String> availabilityZones() {
+        Set<String> zones = new TreeSet<>();
+        if (this.inner().zones() != null) {
+            for (String zone : this.inner().zones()) {
+                zones.add(zone);
+            }
+        }
+        return Collections.unmodifiableSet(zones);
     }
 
     @Override

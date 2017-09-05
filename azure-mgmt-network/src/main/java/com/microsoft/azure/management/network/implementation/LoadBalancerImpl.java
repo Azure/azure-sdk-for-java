@@ -14,6 +14,7 @@ import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
 import com.microsoft.azure.management.network.LoadBalancerPrivateFrontend;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.LoadBalancer;
+import com.microsoft.azure.management.network.LoadBalancerSkuType;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NicIPConfiguration;
@@ -596,6 +597,15 @@ class LoadBalancerImpl
         } else {
             return (LoadBalancerBackendImpl) backend;
         }
+    }
+
+    @Override
+    public LoadBalancerImpl withSku(LoadBalancerSkuType skuType) {
+        // Note: SKU is not updatable as of now, so this is available only during definition time
+        // Service return `SkuCannotBeChangedOnUpdate` upon attempt to change it.
+        //
+        this.inner().withSku(skuType.sku());
+        return this;
     }
 
     @Override

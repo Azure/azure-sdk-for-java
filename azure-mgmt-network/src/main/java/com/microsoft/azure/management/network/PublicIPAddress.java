@@ -16,6 +16,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 
+import java.util.Set;
+
 /**
  * Public IP address.
  */
@@ -81,6 +83,12 @@ public interface PublicIPAddress extends
      * @return true if this public IP address is assigned to a network interface
      */
     boolean hasAssignedNetworkInterface();
+
+    /**
+     * @return the availability zones assigned to the public IP address
+     */
+    @Beta(Beta.SinceVersion.V1_3_0)
+    Set<String> availabilityZones();
 
     /**
      * Container interface for all the definitions.
@@ -203,6 +211,20 @@ public interface PublicIPAddress extends
         }
 
         /**
+         * The stage of the IP address definition allowing to specify SKU.
+         */
+        @Beta(Beta.SinceVersion.V1_3_0)
+        interface WithSku {
+            /**
+             * Specifies the sku for the IP address.
+             *
+             * @param skuType the SKU type
+             * @return the next stage of the definition
+             */
+            WithCreate withSku(PublicIPSkuType skuType);
+        }
+
+        /**
          * The stage of the public IP definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
@@ -214,6 +236,7 @@ public interface PublicIPAddress extends
             DefinitionStages.WithReverseFQDN,
             DefinitionStages.WithIdleTimeout,
             DefinitionStages.WithAvailabilityZone,
+            DefinitionStages.WithSku,
             Resource.DefinitionWithTags<WithCreate> {
         }
     }

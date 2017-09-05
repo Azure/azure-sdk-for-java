@@ -25,6 +25,9 @@ import rx.Observable;
 import rx.functions.Func1;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * The implementation for {@link Disk} and its create and update interfaces.
@@ -78,6 +81,17 @@ class DiskImpl
     @Override
     public CreationSource source() {
         return new CreationSource(this.inner().creationData());
+    }
+
+    @Override
+    public Set<String> availabilityZones() {
+        Set<String> zones = new TreeSet<>();
+        if (this.inner().zones() != null) {
+            for (String zone : this.inner().zones()) {
+                zones.add(zone);
+            }
+        }
+        return Collections.unmodifiableSet(zones);
     }
 
     @Override

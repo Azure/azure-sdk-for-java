@@ -30,6 +30,7 @@ import rx.Completable;
 import rx.Observable;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * An immutable client-side representation of an Azure virtual machine.
@@ -384,6 +385,12 @@ public interface VirtualMachine extends
      * @return the virtual machine's instance view
      */
     VirtualMachineInstanceView instanceView();
+
+    /**
+     * @return the availability zones assigned to the virtual machine
+     */
+    @Beta(Beta.SinceVersion.V1_3_0)
+    Set<String> availabilityZones();
 
     /**
      * @return true if boot diagnostics is enabled for the virtual machine

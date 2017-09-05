@@ -224,6 +224,20 @@ public interface LoadBalancer extends
         }
 
         /**
+         * The stage of the load balancer definition allowing to specify SKU.
+         */
+        @Beta(Beta.SinceVersion.V1_3_0)
+        interface WithSku {
+            /**
+             * Specifies the sku for the load balancer address.
+             *
+             * @param skuType the SKU type
+             * @return the next stage of the definition
+             */
+            WithCreate withSku(LoadBalancerSkuType skuType);
+        }
+
+        /**
          * The stage of a load balancer definition containing all the required inputs for
          * the resource to be created, but also allowing
          * for any other optional settings to be specified.
@@ -233,7 +247,8 @@ public interface LoadBalancer extends
             Resource.DefinitionWithTags<WithCreate>,
             WithBackend,
             WithFrontend,
-            WithProbe {
+            WithProbe,
+            WithSku {
         }
 
         /**
