@@ -62,7 +62,7 @@ final class BlobOutputStreamInternal extends BlobOutputStream {
             Thread t = new Thread(group, r,
                     namePrefix + threadNumber.getAndIncrement(),
                     0);
-            t.setDaemon(false);
+            t.setDaemon(true);
             if (t.getPriority() != Thread.NORM_PRIORITY)
                 t.setPriority(Thread.NORM_PRIORITY);
             return t;
