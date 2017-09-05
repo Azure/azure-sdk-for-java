@@ -54,8 +54,14 @@ public abstract class ServiceClient {
     }
 
     /**
+     * The OkHttpClient. TODO: replace with HttpClient wrapper.
+     */
+    public OkHttpClient httpClient() { return restClient.httpClient(); }
+
+    /**
      * @return the {@link RestClient} instance.
      */
+    @Deprecated
     public RestClient restClient() {
         return restClient;
     }
@@ -63,15 +69,9 @@ public abstract class ServiceClient {
     /**
      * @return the Retrofit instance.
      */
+    @Deprecated
     public Retrofit retrofit() {
         return restClient.retrofit();
-    }
-
-    /**
-     * @return the HTTP client.
-     */
-    public OkHttpClient httpClient() {
-        return this.restClient.httpClient();
     }
 
     /**

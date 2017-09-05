@@ -9,11 +9,7 @@ package com.microsoft.rest;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
-import com.microsoft.rest.interceptors.BaseUrlHandler;
-import com.microsoft.rest.interceptors.CustomHeadersInterceptor;
-import com.microsoft.rest.interceptors.LoggingInterceptor;
-import com.microsoft.rest.interceptors.RequestIdHeaderInterceptor;
-import com.microsoft.rest.interceptors.UserAgentInterceptor;
+import com.microsoft.rest.interceptors.*;
 import com.microsoft.rest.protocol.Environment;
 import com.microsoft.rest.protocol.ResponseBuilder;
 import com.microsoft.rest.protocol.SerializerAdapter;
@@ -455,7 +451,8 @@ public final class RestClient {
 
             if (this.credentials != null) {
                 int interceptorCount = httpClientBuilder.interceptors().size();
-                this.credentials.applyCredentialsFilter(httpClientBuilder);
+                // TODO: remove OkHttp
+                httpClientBuilder.interceptors().add(new AddCredentialsInterceptor(this.credentials));
                 // store the interceptor
                 if (httpClientBuilder.interceptors().size() > interceptorCount) {
                     credentialsInterceptor = httpClientBuilder.interceptors().get(interceptorCount);

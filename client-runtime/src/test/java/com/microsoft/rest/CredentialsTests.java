@@ -9,6 +9,7 @@ package com.microsoft.rest;
 import com.microsoft.rest.credentials.BasicAuthenticationCredentials;
 import com.microsoft.rest.credentials.TokenCredentials;
 
+import com.microsoft.rest.interceptors.AddCredentialsInterceptor;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -26,7 +27,7 @@ public class CredentialsTests {
     public void basicCredentialsTest() throws Exception {
         BasicAuthenticationCredentials credentials = new BasicAuthenticationCredentials("user", "pass");
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
-        credentials.applyCredentialsFilter(clientBuilder);
+        clientBuilder.interceptors().add(new AddCredentialsInterceptor(credentials));
         clientBuilder.addInterceptor(
                 new Interceptor() {
                     @Override
@@ -49,7 +50,7 @@ public class CredentialsTests {
     public void tokenCredentialsTest() throws Exception {
         TokenCredentials credentials = new TokenCredentials(null, "this_is_a_token");
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
-        credentials.applyCredentialsFilter(clientBuilder);
+        clientBuilder.interceptors().add(new AddCredentialsInterceptor(credentials));
         clientBuilder.addInterceptor(
                 new Interceptor() {
                     @Override

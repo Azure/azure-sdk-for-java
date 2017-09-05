@@ -66,7 +66,7 @@ public abstract class AzureServiceClient extends ServiceClient {
         final AzureTokenCredentials credentials = (AzureTokenCredentials) restClient().credentials();
         // TODO: tests, refactoring-- less hacky way of getting credentials
         final RxNettyAdapter rxnClient = new RxNettyAdapter();
-        rpHttpClient = new RequestPolicyChain(new AzureTokenCredentialsPolicy.Factory(credentials), new RequestPolicy.Factory() {
+        httpClient = new RequestPolicyChain(new AzureTokenCredentialsPolicy.Factory(credentials), new RequestPolicy.Factory() {
             @Override
             public RequestPolicy create(RequestPolicy next) {
                 return new RequestPolicy() {
@@ -79,12 +79,12 @@ public abstract class AzureServiceClient extends ServiceClient {
         });
     }
 
-    private final HttpClient rpHttpClient;
+    private final HttpClient httpClient;
     /**
      * @return the RestProxy HTTP client.
      */
     public HttpClient rpHttpClient() {
-        return rpHttpClient;
+        return httpClient;
     }
 
     /**

@@ -38,20 +38,6 @@ public abstract class AzureTokenCredentials extends TokenCredentials {
         this.domain = domain;
     }
 
-    @Override
-    protected final String getToken(Request request) throws IOException {
-        String host = request.url().host();
-        for (String endpoint : environment().endpoints().values()) {
-            if (host.contains(endpoint)) {
-                // Remove leading dots
-                host = endpoint.replaceAll("^\\.*", "");
-                break;
-            }
-        }
-        String resource = String.format("https://%s/", host);
-        return getToken(resource);
-    }
-
     /**
      * Gets the token from the given endpoint.
      *
@@ -131,10 +117,5 @@ public abstract class AzureTokenCredentials extends TokenCredentials {
     public AzureTokenCredentials withProxy(Proxy proxy) {
         this.proxy = proxy;
         return this;
-    }
-
-    @Override
-    public void applyCredentialsFilter(OkHttpClient.Builder clientBuilder) {
-        clientBuilder.interceptors().add(new AzureTokenCredentialsInterceptor(this));
     }
 }
