@@ -32,7 +32,7 @@ public class RestClientTests {
                 .withSerializerAdapter(new JacksonAdapter())
                 .withResponseBuilderFactory(new ServiceResponseBuilder.Factory())
                 .build();
-        Assert.assertEquals("https://management.azure.com/", restClient.retrofit().baseUrl().toString());
+        Assert.assertEquals("https://management.azure.com/", restClient.baseURL());
         Assert.assertEquals(LogLevel.NONE, restClient.logLevel());
         Assert.assertTrue(restClient.responseBuilderFactory() instanceof ServiceResponseBuilder.Factory);
         Assert.assertTrue(restClient.serializerAdapter() instanceof JacksonAdapter);
@@ -41,66 +41,69 @@ public class RestClientTests {
 
     @Test
     public void newBuilderKeepsConfigs() {
+        Assert.fail();
         RestClient restClient = new RestClient.Builder()
             .withBaseUrl("http://localhost")
             .withSerializerAdapter(new JacksonAdapter())
             .withResponseBuilderFactory(new ServiceResponseBuilder.Factory())
             .withCredentials(new TokenCredentials("Bearer", "token"))
             .withLogLevel(LogLevel.BASIC)
-            .withInterceptor(new Interceptor() {
-                @Override
-                public Response intercept(Chain chain) throws IOException {
-                    return chain.proceed(chain.request());
-                }
-            })
+                // FIXME: interceptors
+//            .withInterceptor(new Interceptor() {
+//                @Override
+//                public Response intercept(Chain chain) throws IOException {
+//                    return chain.proceed(chain.request());
+//                }
+//            })
             .withUserAgent("user")
-            .withNetworkInterceptor(new Interceptor() {
-                @Override
-                public Response intercept(Chain chain) throws IOException {
-                    return chain.proceed(chain.request());
-                }
-            })
+//            .withNetworkInterceptor(new Interceptor() {
+//                @Override
+//                public Response intercept(Chain chain) throws IOException {
+//                    return chain.proceed(chain.request());
+//                }
+//            })
             .withConnectionTimeout(100, TimeUnit.MINUTES)
             .build();
         RestClient newClient = restClient.newBuilder().build();
-        Assert.assertEquals(restClient.retrofit().baseUrl().toString(), newClient.retrofit().baseUrl().toString());
+        Assert.assertEquals(restClient.baseURL(), newClient.baseURL());
         Assert.assertEquals(restClient.logLevel(), newClient.logLevel());
         Assert.assertEquals(restClient.logLevel().isPrettyJson(), newClient.logLevel().isPrettyJson());
         Assert.assertEquals(restClient.serializerAdapter(), newClient.serializerAdapter());
         Assert.assertEquals(restClient.responseBuilderFactory(), newClient.responseBuilderFactory());
         Assert.assertEquals(restClient.credentials(), newClient.credentials());
-        for (Interceptor interceptor :
-            newClient.httpClient().interceptors()) {
-            if (interceptor instanceof UserAgentInterceptor) {
-                Assert.assertEquals("user", ((UserAgentInterceptor) interceptor).userAgent());
-            }
-        }
-        Assert.assertEquals(restClient.httpClient().interceptors().size(), newClient.httpClient().interceptors().size());
-        Assert.assertEquals(restClient.httpClient().networkInterceptors().size(), newClient.httpClient().networkInterceptors().size());
-        Assert.assertEquals(TimeUnit.MINUTES.toMillis(100), newClient.httpClient().connectTimeoutMillis());
+//        for (Interceptor interceptor :
+//            newClient.httpClient().interceptors()) {
+//            if (interceptor instanceof UserAgentInterceptor) {
+//                Assert.assertEquals("user", ((UserAgentInterceptor) interceptor).userAgent());
+//            }
+//        }
+//        Assert.assertEquals(restClient.httpClient().interceptors().size(), newClient.httpClient().interceptors().size());
+//        Assert.assertEquals(restClient.httpClient().networkInterceptors().size(), newClient.httpClient().networkInterceptors().size());
+        Assert.assertEquals(TimeUnit.MINUTES.toMillis(100), newClient.connectionTimeoutMillis());
     }
 
     @Test
     public void newBuilderClonesProperties() {
+        Assert.fail();
         RestClient restClient = new RestClient.Builder()
             .withBaseUrl("http://localhost")
             .withSerializerAdapter(new JacksonAdapter())
             .withResponseBuilderFactory(new ServiceResponseBuilder.Factory())
             .withCredentials(new TokenCredentials("Bearer", "token"))
             .withLogLevel(LogLevel.BASIC.withPrettyJson(true))
-            .withInterceptor(new Interceptor() {
-                @Override
-                public Response intercept(Chain chain) throws IOException {
-                    return chain.proceed(chain.request());
-                }
-            })
+//            .withInterceptor(new Interceptor() {
+//                @Override
+//                public Response intercept(Chain chain) throws IOException {
+//                    return chain.proceed(chain.request());
+//                }
+//            })
             .withUserAgent("user")
-            .withNetworkInterceptor(new Interceptor() {
-                @Override
-                public Response intercept(Chain chain) throws IOException {
-                    return chain.proceed(chain.request());
-                }
-            })
+//            .withNetworkInterceptor(new Interceptor() {
+//                @Override
+//                public Response intercept(Chain chain) throws IOException {
+//                    return chain.proceed(chain.request());
+//                }
+//            })
             .withConnectionTimeout(100, TimeUnit.MINUTES)
             .build();
         RestClient newClient = restClient.newBuilder()
@@ -147,24 +150,24 @@ public class RestClientTests {
                 }
             })
             .build();
-        Assert.assertNotEquals(restClient.retrofit().baseUrl().toString(), newClient.retrofit().baseUrl().toString());
+        Assert.assertNotEquals(restClient.baseURL(), newClient.baseURL());
         Assert.assertNotEquals(restClient.logLevel(), newClient.logLevel());
         Assert.assertNotEquals(restClient.logLevel().isPrettyJson(), newClient.logLevel().isPrettyJson());
         Assert.assertNotEquals(restClient.serializerAdapter(), newClient.serializerAdapter());
         Assert.assertNotEquals(restClient.responseBuilderFactory(), newClient.responseBuilderFactory());
         Assert.assertNotEquals(restClient.credentials(), newClient.credentials());
-        for (Interceptor interceptor :
-            restClient.httpClient().interceptors()) {
-            if (interceptor instanceof UserAgentInterceptor) {
-                Assert.assertEquals("user", ((UserAgentInterceptor) interceptor).userAgent());
-            }
-        }
-        for (Interceptor interceptor :
-            newClient.httpClient().interceptors()) {
-            if (interceptor instanceof UserAgentInterceptor) {
-                Assert.assertEquals("anotheruser", ((UserAgentInterceptor) interceptor).userAgent());
-            }
-        }
-        Assert.assertNotEquals(restClient.httpClient().connectTimeoutMillis(), newClient.httpClient().connectTimeoutMillis());
+//        for (Interceptor interceptor :
+//            restClient.httpClient().interceptors()) {
+//            if (interceptor instanceof UserAgentInterceptor) {
+//                Assert.assertEquals("user", ((UserAgentInterceptor) interceptor).userAgent());
+//            }
+//        }
+//        for (Interceptor interceptor :
+//            newClient.httpClient().interceptors()) {
+//            if (interceptor instanceof UserAgentInterceptor) {
+//                Assert.assertEquals("anotheruser", ((UserAgentInterceptor) interceptor).userAgent());
+//            }
+//        }
+        Assert.assertNotEquals(restClient.connectionTimeoutMillis(), newClient.connectionTimeoutMillis());
     }
 }

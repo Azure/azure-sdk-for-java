@@ -127,20 +127,6 @@ public final class RestProxy implements InvocationHandler {
     /**
      * Create a proxy implementation of the provided Swagger interface.
      * @param swaggerInterface The Swagger interface to provide a proxy implementation for.
-     * @param restClient The internal HTTP client that will be used to make REST calls.
-     * @param <A> The type of the Swagger interface.
-     * @return A proxy implementation of the provided Swagger interface.
-     */
-    @SuppressWarnings("unchecked")
-    public static <A> A create(Class<A> swaggerInterface, RestClient restClient) {
-        final HttpClient httpClient = new OkHttpAdapter(restClient.httpClient());
-        final SerializerAdapter<?> serializer = restClient.serializerAdapter();
-        return create(swaggerInterface, httpClient, serializer);
-    }
-
-    /**
-     * Create a proxy implementation of the provided Swagger interface.
-     * @param swaggerInterface The Swagger interface to provide a proxy implementation for.
      * @param httpClient The internal HTTP client that will be used to make REST calls.
      * @param serializer The serializer that will be used to convert POJOs to and from request and
      *                   response bodies.

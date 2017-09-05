@@ -16,28 +16,17 @@ import retrofit2.Retrofit;
  */
 public abstract class ServiceClient {
     /**
-     * The RestClient instance storing all information needed for making REST calls.
+     * The RestClient instance storing configuration for service clients.
      */
     private RestClient restClient;
 
     /**
      * Initializes a new instance of the ServiceClient class.
      *
-     * @param baseUrl the service endpoint
+     * @param baseUrl the service base uri
      */
     protected ServiceClient(String baseUrl) {
-        this(baseUrl, new OkHttpClient.Builder(), new Retrofit.Builder());
-    }
-
-    /**
-     * Initializes a new instance of the ServiceClient class.
-     *
-     * @param baseUrl the service base uri
-     * @param clientBuilder the http client builder
-     * @param restBuilder the retrofit rest client builder
-     */
-    protected ServiceClient(String baseUrl, OkHttpClient.Builder clientBuilder, Retrofit.Builder restBuilder) {
-        this(new RestClient.Builder(clientBuilder, restBuilder)
+        this(new RestClient.Builder()
                 .withBaseUrl(baseUrl)
                 .withResponseBuilderFactory(new ServiceResponseBuilder.Factory())
                 .withSerializerAdapter(new JacksonAdapter())
@@ -54,24 +43,11 @@ public abstract class ServiceClient {
     }
 
     /**
-     * The OkHttpClient. TODO: replace with HttpClient wrapper.
-     */
-    public OkHttpClient httpClient() { return restClient.httpClient(); }
-
-    /**
      * @return the {@link RestClient} instance.
      */
     @Deprecated
     public RestClient restClient() {
         return restClient;
-    }
-
-    /**
-     * @return the Retrofit instance.
-     */
-    @Deprecated
-    public Retrofit retrofit() {
-        return restClient.retrofit();
     }
 
     /**

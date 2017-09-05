@@ -30,20 +30,14 @@ import java.util.Enumeration;
  * ServiceClient is the abstraction for accessing REST operations and their payload data types.
  */
 public abstract class AzureServiceClient extends ServiceClient {
-    protected AzureServiceClient(String baseUrl, ServiceClientCredentials credentials) {
-        this(baseUrl, credentials, new OkHttpClient.Builder(), new Retrofit.Builder());
-    }
-
     /**
      * Initializes a new instance of the ServiceClient class.
      *
      * @param baseUrl the service base uri
      * @param credentials the credentials
-     * @param clientBuilder the http client builder
-     * @param restBuilder the retrofit rest client builder
      */
-    protected AzureServiceClient(String baseUrl, ServiceClientCredentials credentials, OkHttpClient.Builder clientBuilder, Retrofit.Builder restBuilder) {
-        this(new RestClient.Builder(clientBuilder, restBuilder)
+    protected AzureServiceClient(String baseUrl, ServiceClientCredentials credentials) {
+        this(new RestClient.Builder()
                 .withBaseUrl(baseUrl)
                 .withCredentials(credentials)
                 .withSerializerAdapter(new AzureJacksonAdapter())

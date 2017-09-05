@@ -36,10 +36,12 @@ public class UserAgentTests {
                                 .build();
                     }
                 });
-        ServiceClient serviceClient = new ServiceClient("http://localhost", clientBuilder, new Retrofit.Builder()) { };
-        Response response = serviceClient.httpClient()
-                .newCall(new Request.Builder().get().url("http://localhost").build()).execute();
-        Assert.assertEquals(200, response.code());
+        ServiceClient serviceClient = new ServiceClient("http://localhost") { };
+//        Response response = serviceClient.restClient().httpClient()
+//                .newCall(new Request.Builder().get().url("http://localhost").build()).execute();
+//        Assert.assertEquals(200, response.code());
+        // FIXME
+        Assert.fail();
     }
 
     @Test
@@ -58,9 +60,12 @@ public class UserAgentTests {
                                 .build();
                     }
                 });
-        ServiceClient serviceClient = new ServiceClient("http://localhost", clientBuilder, new Retrofit.Builder()) { };
-        Response response = serviceClient.httpClient()
-                .newCall(new Request.Builder().get().url("http://localhost").build()).execute();
-        Assert.assertEquals(200, response.code());
+        ServiceClient serviceClient = new ServiceClient("http://localhost") { };
+//        Response response = serviceClient.restClient().httpClient()
+//                .newCall(new Request.Builder().get().url("http://localhost").build()).execute();
+
+//        Assert.assertEquals(200, response.code());
+        // FIXME
+        Assert.fail();
     }
 }

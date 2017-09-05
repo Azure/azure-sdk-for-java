@@ -37,9 +37,11 @@ public class ServiceClientTests {
                         .build();
             }
         });
-        ServiceClient serviceClient = new ServiceClient("http://localhost", clientBuilder, retrofitBuilder) { };
-        Response response = serviceClient.httpClient().newCall(new Request.Builder().url("http://localhost").build()).execute();
-        Assert.assertEquals(200, response.code());
+        ServiceClient serviceClient = new ServiceClient("http://localhost") { };
+//        Response response = serviceClient.restClient().httpClient().newCall(new Request.Builder().url("http://localhost").build()).execute();
+//        Assert.assertEquals(200, response.code());
+        // FIXME
+        Assert.fail();
     }
 
     public class FirstFilter implements Interceptor {
