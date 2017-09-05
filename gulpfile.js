@@ -372,7 +372,7 @@ gulp.task('codegen', function(cb) {
     if (autoRestVersion.match(/[0-9]+\.[0-9]+\.[0-9]+.*/) ||
         autoRestVersion == 'latest') {
             autoRestExe = 'autorest ---version=' + autoRestVersion;
-            handleInput(projects, cb);    
+            handleInput(projects, cb);
     } else {
         autoRestExe = "node " + path.join(autoRestVersion, "src/autorest-core/dist/app.js");
         handleInput(projects, cb);
@@ -397,7 +397,7 @@ var handleInput = function(projects, cb) {
 }
 
 var codegen = function(project, cb) {
-    
+
     if (!args['preserve']) {
         const sourcesToDelete = path.join(
             mappings[project].dir,
@@ -413,7 +413,12 @@ var codegen = function(project, cb) {
         generator = '';
     }
 
-    const autorestGeneratorPath = path.resolve(autoRestVersion, "src/core/AutoRest");
+    const generatorPath = args['autorest-java']
+        ? `--use=${path.resolve(autoRestVersion, args['autorest-java'])} `
+        : '';
+
+    const regenManager = args['regenerate-manager'] ? ' --regenerate-manager=true ' : '';
+
     const outDir = path.resolve(mappings[project].dir);
     // path.join won't work if specRoot is a URL
     cmd = autoRestExe + ' ' + specRoot + "/" + mappings[project].source +
@@ -423,8 +428,10 @@ var codegen = function(project, cb) {
                         ` --namespace=${mappings[project].package} ` +
                         ` --output-folder=${outDir} ` +
                         ` --license-header=MICROSOFT_MIT_NO_CODEGEN ` +
-                        ` --use=${autorestGeneratorPath} ` +
+                        generatorPath +
+                        regenManager +
                         autoRestArgs;
+
     if (mappings[project].args !== undefined) {
         cmd = cmd + ' ' + mappings[project].args;
     }
