@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
@@ -155,8 +156,24 @@ class LoadBalancerFrontendImpl
         SubResource subnetRef = new SubResource()
                 .withId(parentNetworkResourceId + "/subnets/" + subnetName);
         this.inner()
-            .withSubnet(subnetRef)
-            .withPublicIPAddress(null); // Ensure no conflicting public and private settings
+                .withSubnet(subnetRef)
+                .withPublicIPAddress(null); // Ensure no conflicting public and private settings
+        return this;
+    }
+
+    @Override
+    public LoadBalancerFrontendImpl withAvailabilityZone(String zoneId) {
+        // Note: Zone is not updatable as of now, so this is available only during definition time.
+        // Service return `ResourceAvailabilityZonesCannotBeModified` upon attempt to append a new
+        // zone or remove one. Trying to remove the last one means attempt to change resource from
+        // zonal to regional, which is not supported.
+        //
+        // Zone is supported only for internal load balancer, hence exposed only for PrivateFrontEnd
+        //
+        if (this.inner().zones() == null) {
+            this.inner().withZones(new ArrayList<String>());
+        }
+        this.inner().zones().add(zoneId);
         return this;
     }
 
@@ -169,12 +186,12 @@ class LoadBalancerFrontendImpl
     public LoadBalancerFrontendImpl withExistingPublicIPAddress(String resourceId) {
         SubResource pipRef = new SubResource().withId(resourceId);
         this.inner()
-            .withPublicIPAddress(pipRef)
+                .withPublicIPAddress(pipRef)
 
-            // Ensure no conflicting public and private settings
-            .withSubnet(null)
-            .withPrivateIPAddress(null)
-            .withPrivateIPAllocationMethod(null);
+                // Ensure no conflicting public and private settings
+                .withSubnet(null)
+                .withPrivateIPAddress(null)
+                .withPrivateIPAllocationMethod(null);
         return this;
     }
 
@@ -187,22 +204,22 @@ class LoadBalancerFrontendImpl
     @Override
     public LoadBalancerFrontendImpl withPrivateIPAddressDynamic() {
         this.inner()
-            .withPrivateIPAddress(null)
-            .withPrivateIPAllocationMethod(IPAllocationMethod.DYNAMIC)
+                .withPrivateIPAddress(null)
+                .withPrivateIPAllocationMethod(IPAllocationMethod.DYNAMIC)
 
-            // Ensure no conflicting public and private settings
-            .withPublicIPAddress(null);
+                // Ensure no conflicting public and private settings
+                .withPublicIPAddress(null);
         return this;
     }
 
     @Override
     public LoadBalancerFrontendImpl withPrivateIPAddressStatic(String ipAddress) {
         this.inner()
-            .withPrivateIPAddress(ipAddress)
-            .withPrivateIPAllocationMethod(IPAllocationMethod.STATIC)
+                .withPrivateIPAddress(ipAddress)
+                .withPrivateIPAllocationMethod(IPAllocationMethod.STATIC)
 
-            // Ensure no conflicting public and private settings
-            .withPublicIPAddress(null);
+                // Ensure no conflicting public and private settings
+                .withPublicIPAddress(null);
         return this;
     }
 
@@ -246,3 +263,4 @@ class LoadBalancerFrontendImpl
         return this.parent().manager().getAssociatedSubnet(this.inner().subnet());
     }
 }
+

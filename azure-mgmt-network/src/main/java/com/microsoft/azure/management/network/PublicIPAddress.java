@@ -216,7 +216,7 @@ public interface PublicIPAddress extends
         @Beta(Beta.SinceVersion.V1_3_0)
         interface WithSku {
             /**
-             * Specifies the sku for the IP address.
+             * Specifies the SKU for the IP address.
              *
              * @param skuType the SKU type
              * @return the next stage of the definition

@@ -314,6 +314,10 @@ class DiskImpl
 
     @Override
     public DiskImpl withAvailabilityZone(String zoneId) {
+        // Note: Zone is not updatable as of now, so this is available only during definition time.
+        // Service return `ResourceAvailabilityZonesCannotBeModified` upon attempt to append a new
+        // zone or remove one. Trying to remove the last one means attempt to change resource from
+        // zonal to regional, which is not supported.
         if (this.inner().zones() == null) {
             this.inner().withZones(new ArrayList<String>());
         }

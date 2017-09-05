@@ -603,6 +603,7 @@ class LoadBalancerImpl
     public LoadBalancerImpl withSku(LoadBalancerSkuType skuType) {
         // Note: SKU is not updatable as of now, so this is available only during definition time
         // Service return `SkuCannotBeChangedOnUpdate` upon attempt to change it.
+        // Service default is LoadBalancerSkuType.BASIC
         //
         this.inner().withSku(skuType.sku());
         return this;

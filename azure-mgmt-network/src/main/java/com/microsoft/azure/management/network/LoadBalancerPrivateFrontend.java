@@ -55,6 +55,22 @@ public interface LoadBalancerPrivateFrontend extends
         }
 
         /**
+         * The stage of a private frontend definition allowing to specify availability zone.
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
+        @Beta(Beta.SinceVersion.V1_3_0)
+        interface WithAvailabilityZone<ParentT> {
+            /**
+             * Specifies the availability zone for the private frontend.
+             *
+             * @param zoneId the zone identifier. The valid values are "1", "2", and "3"
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_3_0)
+            WithAttach<ParentT> withAvailabilityZone(String zoneId);
+        }
+
+        /**
          * The final stage of a private frontend definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the frontend definition
@@ -63,7 +79,8 @@ public interface LoadBalancerPrivateFrontend extends
          */
         interface WithAttach<ParentT> extends
             Attachable.InDefinitionAlt<ParentT>,
-            HasPrivateIPAddress.DefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>> {
+            HasPrivateIPAddress.DefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>>,
+            DefinitionStages.WithAvailabilityZone<ParentT> {
         }
     }
 
@@ -128,6 +145,22 @@ public interface LoadBalancerPrivateFrontend extends
             WithAttach<ParentT> withExistingSubnet(Network network, String subnetName);
         }
 
+        /**
+         * The stage of a private frontend definition allowing to specify availability zone.
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
+        @Beta(Beta.SinceVersion.V1_3_0)
+        interface WithAvailabilityZone<ParentT> {
+            /**
+             * Specifies the availability zone for the private frontend.
+             *
+             * @param zoneId the zone identifier. The valid values are "1", "2", and "3"
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_3_0)
+            WithAttach<ParentT> withAvailabilityZone(String zoneId);
+        }
+
         /** The final stage of an internal frontend definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the frontend definition
@@ -136,7 +169,8 @@ public interface LoadBalancerPrivateFrontend extends
          */
         interface WithAttach<ParentT> extends
             Attachable.InUpdateAlt<ParentT>,
-            HasPrivateIPAddress.UpdateDefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>> {
+            HasPrivateIPAddress.UpdateDefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>>,
+            WithAvailabilityZone<ParentT> {
         }
     }
 

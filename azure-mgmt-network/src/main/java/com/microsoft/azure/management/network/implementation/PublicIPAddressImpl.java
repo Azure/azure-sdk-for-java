@@ -81,9 +81,10 @@ class PublicIPAddressImpl
 
     @Override
     public PublicIPAddressImpl withAvailabilityZone(String zoneId) {
-        // Note: Zone is not updatable as of now, so this is available only during definition time
-        // Service return `ResourceAvailabilityZonesCannotBeModified` upon attempt to remove zones
-        // or add a new zone.
+        // Note: Zone is not updatable as of now, so this is available only during definition time.
+        // Service return `ResourceAvailabilityZonesCannotBeModified` upon attempt to append a new
+        // zone or remove one. Trying to remove the last one means attempt to change resource from
+        // zonal to regional, which is not supported.
         //
         if (this.inner().zones() == null) {
             this.inner().withZones(new ArrayList<String>());
@@ -94,8 +95,9 @@ class PublicIPAddressImpl
 
     @Override
     public PublicIPAddressImpl withSku(PublicIPSkuType skuType) {
-        // Note: SKU is not updatable as of now, so this is available only during definition time
+        // Note: SKU is not updatable as of now, so this is available only during definition time.
         // Service return `SkuCannotBeChangedOnUpdate` upon attempt to change it.
+        // Service default is PublicIPSkuType.BASIC
         //
         this.inner().withSku(skuType.sku());
         return this;

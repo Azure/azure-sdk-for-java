@@ -1115,6 +1115,21 @@ public interface VirtualMachineScaleSet extends
         }
 
         /**
+         * The stage of the virtual machine scale set definition allowing to specify availability zone.
+         */
+        @Beta(Beta.SinceVersion.V1_3_0)
+        interface WithAvailabilityZone {
+            /**
+             * Specifies the availability zone for the virtual machine scale set.
+             *
+             * @param zoneId the zone identifier. The valid values are "1", "2", and "3"
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_3_0)
+            WithManagedCreate withAvailabilityZone(String zoneId);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for the VM scale set to be
          * created and optionally allow managed data disks specific settings to be specified.
          */
@@ -1122,6 +1137,7 @@ public interface VirtualMachineScaleSet extends
                 extends
                 WithManagedDataDisk,
                 WithManagedDiskOptionals,
+                WithAvailabilityZone,
                 WithCreate {
         }
 
@@ -1790,6 +1806,21 @@ public interface VirtualMachineScaleSet extends
         }
 
         /**
+         * The stage of the virtual machine scale set update allowing to specify availability zone.
+         */
+        @Beta(Beta.SinceVersion.V1_3_0)
+        interface WithAvailabilityZone {
+            /**
+             * Specifies the availability zone for the virtual machine scale set.
+             *
+             * @param zoneId the zone identifier. The valid values are "1", "2", and "3"
+             * @return the next stage of the update
+             */
+            @Beta(Beta.SinceVersion.V1_3_0)
+            WithApply withAvailabilityZone(String zoneId);
+        }
+
+        /**
          * The stage of a virtual machine scale set update containing inputs for the resource to be updated.
          */
         interface WithApply extends
@@ -1803,7 +1834,8 @@ public interface VirtualMachineScaleSet extends
                 UpdateStages.WithoutPrimaryLoadBalancer,
                 UpdateStages.WithoutPrimaryLoadBalancerBackend,
                 UpdateStages.WithoutPrimaryLoadBalancerNatPool,
-                UpdateStages.WithManagedServiceIdentity {
+                UpdateStages.WithManagedServiceIdentity,
+                UpdateStages.WithAvailabilityZone {
         }
     }
 

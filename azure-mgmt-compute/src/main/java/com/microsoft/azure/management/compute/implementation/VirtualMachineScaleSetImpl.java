@@ -1910,6 +1910,19 @@ public class VirtualMachineScaleSetImpl
         return this;
     }
 
+    @Override
+    public VirtualMachineScaleSetImpl withAvailabilityZone(String zoneId) {
+        // Note: Only for virtual machine scale set, new zone can be specified, hence
+        // this option is available for both definition and update cases.
+        //
+        //
+        if (this.inner().zones() == null) {
+            this.inner().withZones(new ArrayList<String>());
+        }
+        this.inner().zones().add(zoneId);
+        return this;
+    }
+
     /**
      * Checks whether the OS disk is based on an image (image from PIR or custom image [captured, bringYourOwnFeature]).
      *

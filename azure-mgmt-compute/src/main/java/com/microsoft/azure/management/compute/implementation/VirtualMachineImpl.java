@@ -1699,9 +1699,13 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withAvailabilityZone(String zoneId) {
         if (isInCreateMode()) {
-            // 'withAvailabilityZone' is not exposed via VirtualMachine.Update interface but
-            // still adding above 'isInCreateMode' check just as a reminder to take special
-            // handling of 'implicitPipCreatable' when avail zone update is supported.
+            // Note: Zone is not updatable as of now, so this is available only during definition time.
+            // Service return `ResourceAvailabilityZonesCannotBeModified` upon attempt to append a new
+            // zone or remove one. Trying to remove the last one means attempt to change resource from
+            // zonal to regional, which is not supported.
+            //
+            // though not updatable, still adding above 'isInCreateMode' check just as a reminder to
+            // take special handling of 'implicitPipCreatable' when avail zone update is supported.
             //
             if (this.inner().zones() == null) {
                 this.inner().withZones(new ArrayList<String>());
