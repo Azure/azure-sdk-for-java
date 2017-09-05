@@ -9,63 +9,68 @@ package com.microsoft.rest;
 import com.microsoft.rest.credentials.BasicAuthenticationCredentials;
 import com.microsoft.rest.credentials.TokenCredentials;
 
-import com.microsoft.rest.interceptors.AddCredentialsInterceptor;
+import com.microsoft.rest.v2.http.*;
+import com.microsoft.rest.v2.policy.AddCredentialsPolicy;
+import com.microsoft.rest.v2.policy.RequestPolicy;
+import com.microsoft.rest.v2.policy.RequestPolicyChain;
+import com.microsoft.rest.v2.policy.SendRequestPolicyFactory;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.io.IOException;
-
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Protocol;
-import okhttp3.Request;
-import okhttp3.Response;
-import retrofit2.Retrofit;
+import rx.Single;
 
 public class CredentialsTests {
+
     @Test
     public void basicCredentialsTest() throws Exception {
         BasicAuthenticationCredentials credentials = new BasicAuthenticationCredentials("user", "pass");
-        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
-        clientBuilder.interceptors().add(new AddCredentialsInterceptor(credentials));
-        clientBuilder.addInterceptor(
-                new Interceptor() {
+
+        RequestPolicy.Factory auditorFactory = new RequestPolicy.Factory() {
+            @Override
+            public RequestPolicy create(final RequestPolicy next) {
+                return new RequestPolicy() {
                     @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        String header = chain.request().header("Authorization");
-                        Assert.assertEquals("Basic dXNlcjpwYXNz", header);
-                        return new Response.Builder()
-                                .request(chain.request())
-                                .code(200)
-                                .protocol(Protocol.HTTP_1_1)
-                                .build();
+                    public Single<HttpResponse> sendAsync(HttpRequest request) {
+                        String headerValue = request.headers().value("Authorization");
+                        Assert.assertEquals("Basic dXNlcjpwYXNz", headerValue);
+                        return next.sendAsync(request);
                     }
-                });
-        ServiceClient serviceClient = new ServiceClient("http://localhost", clientBuilder, new Retrofit.Builder()) { };
-        Response response = serviceClient.httpClient().newCall(new Request.Builder().url("http://localhost").build()).execute();
-        Assert.assertEquals(200, response.code());
+                };
+            }
+        };
+
+        HttpClient client = new RequestPolicyChain(
+                new AddCredentialsPolicy.Factory(credentials),
+                auditorFactory,
+                new SendRequestPolicyFactory(new MockHttpClient()));
+
+        HttpRequest request = new HttpRequest("basicCredentialsTest", "GET", "http://localhost");
+        client.sendRequest(request);
     }
 
     @Test
     public void tokenCredentialsTest() throws Exception {
         TokenCredentials credentials = new TokenCredentials(null, "this_is_a_token");
-        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
-        clientBuilder.interceptors().add(new AddCredentialsInterceptor(credentials));
-        clientBuilder.addInterceptor(
-                new Interceptor() {
+
+        RequestPolicy.Factory auditorFactory = new RequestPolicy.Factory() {
+            @Override
+            public RequestPolicy create(final RequestPolicy next) {
+                return new RequestPolicy() {
                     @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        String header = chain.request().header("Authorization");
-                        Assert.assertEquals("Bearer this_is_a_token", header);
-                        return new Response.Builder()
-                                .request(chain.request())
-                                .code(200)
-                                .protocol(Protocol.HTTP_1_1)
-                                .build();
+                    public Single<HttpResponse> sendAsync(HttpRequest request) {
+                        String headerValue = request.headers().value("Authorization");
+                        Assert.assertEquals("Bearer this_is_a_token", headerValue);
+                        return next.sendAsync(request);
                     }
-                });
-        ServiceClient serviceClient = new ServiceClient("http://localhost", clientBuilder, new Retrofit.Builder()) { };
-        Response response = serviceClient.httpClient().newCall(new Request.Builder().url("http://localhost").build()).execute();
-        Assert.assertEquals(200, response.code());
+                };
+            }
+        };
+
+        HttpClient client = new RequestPolicyChain(
+                new AddCredentialsPolicy.Factory(credentials),
+                auditorFactory,
+                new SendRequestPolicyFactory(new MockHttpClient()));
+
+        HttpRequest request = new HttpRequest("basicCredentialsTest", "GET", "http://localhost");
+        client.sendRequest(request);
     }
 }
