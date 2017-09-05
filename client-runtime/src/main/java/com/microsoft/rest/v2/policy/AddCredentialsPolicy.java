@@ -4,42 +4,39 @@
  * license information.
  */
 
-package com.microsoft.azure.v2.policy;
+package com.microsoft.rest.v2.policy;
 
-import com.microsoft.azure.credentials.AzureTokenCredentials;
+import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import com.microsoft.rest.v2.policy.RequestPolicy;
 import rx.Single;
 
-import java.io.IOException;
-
 /**
- * Netty OutboundHandler to set authorization header.
+ * Adds credentials from ServiceClientCredentials to a request.
  */
-public class AzureTokenCredentialsPolicy implements RequestPolicy {
+public class AddCredentialsPolicy implements RequestPolicy {
     public static class Factory implements RequestPolicy.Factory {
-        private final AzureTokenCredentials credentials;
+        private final ServiceClientCredentials credentials;
 
-        public Factory(AzureTokenCredentials credentials) {
+        public Factory(ServiceClientCredentials credentials) {
             this.credentials = credentials;
         }
 
         @Override
         public RequestPolicy create(RequestPolicy next) {
-            return new AzureTokenCredentialsPolicy(credentials, next);
+            return new AddCredentialsPolicy(credentials, next);
         }
     }
 
-    private final AzureTokenCredentials credentials;
+    private final ServiceClientCredentials credentials;
     private final RequestPolicy next;
 
     /**
-     * Creates AzureTokenCredentialsPolicy.
+     * Creates AddCredentialsPolicy.
      *
      * @param credentials the credentials
      */
-    private AzureTokenCredentialsPolicy(AzureTokenCredentials credentials, RequestPolicy next) {
+    private AddCredentialsPolicy(ServiceClientCredentials credentials, RequestPolicy next) {
         this.credentials = credentials;
         this.next = next;
     }
@@ -51,14 +48,8 @@ public class AzureTokenCredentialsPolicy implements RequestPolicy {
      */
     @Override
     public Single<HttpResponse> sendAsync(HttpRequest request) {
-        String token;
-        try {
-            token = credentials.getTokenFromUri(request.url());
-        } catch (IOException e) {
-            return Single.error(e);
-        }
-
-        request.headers().add("Authorization", "Bearer " + token);
+        String token = credentials.headerValue(request.url());
+        request.headers().add("Authorization", token);
         return next.sendAsync(request);
     }
 }
