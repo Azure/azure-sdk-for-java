@@ -565,6 +565,81 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     }
 
     @Test
+    public void canCreateZoneRedundantVirtualMachineScaleSetWithStandardLoadBalancer() throws Exception {
+        // Zone redundant VMSS is the one with multiple zones
+        //
+
+        Region REGION2 = Region.US_EAST2;
+
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups()
+                .define(RG_NAME)
+                .withRegion(REGION2)
+                .create();
+
+        Network network = this.networkManager
+                .networks()
+                .define("vmssvnet")
+                .withRegion(REGION2)
+                .withExistingResourceGroup(resourceGroup)
+                .withAddressSpace("10.0.0.0/28")
+                .withSubnet("subnet1", "10.0.0.0/28")
+                .create();
+
+        // Zone redundant VMSS requires STANDARD LB
+        //
+        // Creates a STANDARD LB with one public frontend ip configuration with two backend pools
+        // Each address pool of STANDARD LB can hold different VMSS resource.
+        //
+        LoadBalancer publicLoadBalancer = createInternetFacingLoadBalancer(REGION2,
+                resourceGroup,
+                "1",
+                LoadBalancerSkuType.STANDARD);
+
+        List<String> backends = new ArrayList<>();
+        for (String backend : publicLoadBalancer.backends().keySet()) {
+            backends.add(backend);
+        }
+        Assert.assertTrue(backends.size() == 2);
+
+        final String vmss_name = generateRandomResourceName("vmss", 10);
+        // HTTP & HTTPS traffic on port 80, 443 of Internet-facing LB goes to corresponding port in virtual machine scale set
+        //
+        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
+                .define(vmss_name)
+                .withRegion(REGION2)
+                .withExistingResourceGroup(resourceGroup)
+                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
+                .withExistingPrimaryNetworkSubnet(network, "subnet1")
+                .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+                .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
+                .withoutPrimaryInternalLoadBalancer()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername("jvuser")
+                .withRootPassword("123OData!@#123")
+                .withAvailabilityZone("1")  // Zone redundant - zone 1 + zone 2
+                .withAvailabilityZone("2")
+                .create();
+
+        // Check zones
+        //
+        Assert.assertNotNull(virtualMachineScaleSet.availabilityZones());
+        Assert.assertEquals(2, virtualMachineScaleSet.availabilityZones().size());
+
+        // Validate Network specific properties (LB, VNet, NIC, IPConfig etc..)
+        //
+        Assert.assertNull(virtualMachineScaleSet.getPrimaryInternalLoadBalancer());
+        Assert.assertTrue(virtualMachineScaleSet.listPrimaryInternalLoadBalancerBackends().size() == 0);
+        Assert.assertTrue(virtualMachineScaleSet.listPrimaryInternalLoadBalancerInboundNatPools().size() == 0);
+
+        Assert.assertNotNull(virtualMachineScaleSet.getPrimaryInternetFacingLoadBalancer());
+        Assert.assertTrue(virtualMachineScaleSet.listPrimaryInternetFacingLoadBalancerBackends().size() == 2);
+        Assert.assertTrue(virtualMachineScaleSet.listPrimaryInternetFacingLoadBalancerInboundNatPools().size() == 2);
+
+        Network primaryNetwork = virtualMachineScaleSet.getPrimaryNetwork();
+        Assert.assertNotNull(primaryNetwork.id());
+    }
+
+    @Test
     public void canEnableMSIOnVirtualMachineScaleSetWithoutRoleAssignment() throws Exception {
         final String vmss_name = generateRandomResourceName("vmss", 10);
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups()
