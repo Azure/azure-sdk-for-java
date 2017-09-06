@@ -8,6 +8,7 @@ package com.microsoft.rest;
 
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.serializer.JacksonAdapter;
+import com.microsoft.rest.v2.http.HttpClient;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
@@ -50,6 +51,7 @@ public abstract class ServiceClient {
         return restClient;
     }
 
+    public HttpClient httpClient() { return this.restClient.httpClient(); }
     /**
      * @return the adapter to a Jackson {@link com.fasterxml.jackson.databind.ObjectMapper}.
      */
