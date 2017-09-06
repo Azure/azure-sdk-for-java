@@ -290,7 +290,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         LoadBalancer publicLoadBalancer = createInternetFacingLoadBalancer(REGION,
                 resourceGroup,
-                "1");
+                "1",
+                LoadBalancerSkuType.BASIC);
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
             backends.add(backend);
@@ -471,6 +472,98 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assert.assertTrue(nicCount > 0);
     }
 
+
+    @Test
+    public void canCreateTwoVirtualMachineScaleSetsAndAssociateEachWithDifferentBackendPoolOfLoadBalancer() throws Exception {
+        Region REGION2 = Region.US_EAST2;
+
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups()
+                .define(RG_NAME)
+                .withRegion(REGION2)
+                .create();
+
+        Network network = this.networkManager
+                .networks()
+                .define("vmssvnet")
+                .withRegion(REGION2)
+                .withExistingResourceGroup(resourceGroup)
+                .withAddressSpace("10.0.0.0/28")
+                .withSubnet("subnet1", "10.0.0.0/28")
+                .create();
+
+        // Creates a STANDARD LB with one public frontend ip configuration with two backend pools
+        // Each address pool of STANDARD LB can hold different VMSS resource.
+        //
+        LoadBalancer publicLoadBalancer = createInternetFacingLoadBalancer(REGION2,
+                resourceGroup,
+                "1",
+                LoadBalancerSkuType.STANDARD);
+        List<String> backends = new ArrayList<>();
+        for (String backend : publicLoadBalancer.backends().keySet()) {
+            backends.add(backend);
+        }
+        Assert.assertTrue(backends.size() == 2);
+
+        List<String> natpools = new ArrayList<>();
+        for (String natPool : publicLoadBalancer.inboundNatPools().keySet()) {
+            natpools.add(natPool);
+        }
+        Assert.assertTrue(natpools.size() == 2);
+
+        final String vmss_name1 = generateRandomResourceName("vmss1", 10);
+        // HTTP goes to this virtual machine scale set
+        //
+        VirtualMachineScaleSet virtualMachineScaleSet1 = this.computeManager.virtualMachineScaleSets()
+                .define(vmss_name1)
+                .withRegion(REGION2)
+                .withExistingResourceGroup(resourceGroup)
+                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+                .withExistingPrimaryNetworkSubnet(network, "subnet1")
+                .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+                .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0)) // This VMSS in the first backend pool
+                .withPrimaryInternetFacingLoadBalancerInboundNatPools(natpools.get(0))
+                .withoutPrimaryInternalLoadBalancer()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername("jvuser")
+                .withRootPassword("123OData!@#123")
+                .create();
+
+        final String vmss_name2 = generateRandomResourceName("vmss2", 10);
+        // HTTPS goes to this virtual machine scale set
+        //
+        VirtualMachineScaleSet virtualMachineScaleSet2 = this.computeManager.virtualMachineScaleSets()
+                .define(vmss_name2)
+                .withRegion(REGION2)
+                .withExistingResourceGroup(resourceGroup)
+                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+                .withExistingPrimaryNetworkSubnet(network, "subnet1")
+                .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+                .withPrimaryInternetFacingLoadBalancerBackends(backends.get(1)) // This VMSS in the second backend pool
+                .withPrimaryInternetFacingLoadBalancerInboundNatPools(natpools.get(1))
+                .withoutPrimaryInternalLoadBalancer()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername("jvuser")
+                .withRootPassword("123OData!@#123")
+                .create();
+
+        // Validate Network specific properties (LB, VNet, NIC, IPConfig etc..)
+        //
+        Assert.assertNull(virtualMachineScaleSet1.getPrimaryInternalLoadBalancer());
+        Assert.assertTrue(virtualMachineScaleSet1.listPrimaryInternalLoadBalancerBackends().size() == 0);
+        Assert.assertTrue(virtualMachineScaleSet1.listPrimaryInternalLoadBalancerInboundNatPools().size() == 0);
+
+        Assert.assertNotNull(virtualMachineScaleSet1.getPrimaryInternetFacingLoadBalancer());
+        Assert.assertTrue(virtualMachineScaleSet1.listPrimaryInternetFacingLoadBalancerBackends().size() == 1);
+
+
+        Assert.assertNull(virtualMachineScaleSet2.getPrimaryInternalLoadBalancer());
+        Assert.assertTrue(virtualMachineScaleSet2.listPrimaryInternalLoadBalancerBackends().size() == 0);
+        Assert.assertTrue(virtualMachineScaleSet2.listPrimaryInternalLoadBalancerInboundNatPools().size() == 0);
+
+        Assert.assertNotNull(virtualMachineScaleSet2.getPrimaryInternetFacingLoadBalancer());
+        Assert.assertTrue(virtualMachineScaleSet2.listPrimaryInternetFacingLoadBalancerBackends().size() == 1);
+    }
+
     @Test
     public void canEnableMSIOnVirtualMachineScaleSetWithoutRoleAssignment() throws Exception {
         final String vmss_name = generateRandomResourceName("vmss", 10);
@@ -490,7 +583,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         LoadBalancer publicLoadBalancer = createInternetFacingLoadBalancer(REGION,
                 resourceGroup,
-                "1");
+                "1",
+                LoadBalancerSkuType.BASIC);
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
             backends.add(backend);
@@ -567,7 +661,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         LoadBalancer publicLoadBalancer = createInternetFacingLoadBalancer(REGION,
                 resourceGroup,
-                "1");
+                "1",
+                LoadBalancerSkuType.BASIC);
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
             backends.add(backend);
@@ -645,6 +740,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         }
         Assert.assertTrue("Storage account should have a role assignment with virtual machine scale set MSI principal", found);
     }
+
 
     private void checkVMInstances(VirtualMachineScaleSet vmScaleSet) {
         VirtualMachineScaleSetVMs virtualMachineScaleSetVMs = vmScaleSet.virtualMachines();
