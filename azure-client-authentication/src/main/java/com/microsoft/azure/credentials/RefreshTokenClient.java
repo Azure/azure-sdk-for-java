@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.rest.LogLevel;
-import com.microsoft.rest.interceptors.LoggingInterceptor;
+import com.microsoft.rest.interceptors.LoggingPolicy;
 import com.microsoft.rest.serializer.JacksonAdapter;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -32,7 +32,8 @@ final class RefreshTokenClient {
     private final RefreshTokenService service;
 
     RefreshTokenClient(String baseUrl, Proxy proxy) {
-        OkHttpClient.Builder builder = new OkHttpClient.Builder().addInterceptor(new LoggingInterceptor(LogLevel.BODY_AND_HEADERS));
+        // FIXME
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();//.addInterceptor(new LoggingPolicy(LogLevel.BODY_AND_HEADERS));
         if (proxy != null) {
             builder = builder.proxy(proxy);
         }

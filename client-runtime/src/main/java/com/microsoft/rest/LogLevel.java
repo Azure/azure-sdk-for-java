@@ -56,4 +56,16 @@ public enum LogLevel {
         this.prettyJson = prettyJson;
         return this;
     }
+
+    public boolean shouldLogURL() {
+        return this != NONE;
+    }
+
+    public boolean shouldLogHeaders() {
+        return this == HEADERS || this == BODY_AND_HEADERS;
+    }
+
+    public boolean shouldLogBody() {
+        return this == BODY || this == BODY_AND_HEADERS;
+    }
 }

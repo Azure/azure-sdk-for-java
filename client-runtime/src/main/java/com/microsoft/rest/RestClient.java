@@ -47,7 +47,7 @@ public final class RestClient {
         this.serializerAdapter = builder.serializerAdapter;
         this.responseBuilderFactory = builder.responseBuilderFactory;
         this.credentials = builder.credentials;
-        this.logLevel = builder.loggingInterceptor.logLevel();
+        this.logLevel = builder.logLevel;
 
         this.customPolicyFactories = builder.customPolicyFactories;
         this.fullPolicyChain = createPolicyChain();
@@ -143,8 +143,8 @@ public final class RestClient {
         private SerializerAdapter<?> serializerAdapter;
         /** The builder factory for response builders. */
         private ResponseBuilder.Factory responseBuilderFactory;
-        /** The logging interceptor to use. */
-        private LoggingInterceptor loggingInterceptor;
+        /** The logging level to use. */
+        private LogLevel logLevel = LogLevel.NONE;
 
         private Builder(final RestClient restClient) {
             this();
@@ -154,13 +154,14 @@ public final class RestClient {
             this.serializerAdapter = restClient.serializerAdapter;
             this.credentials = restClient.credentials;
             this.customPolicyFactories = new ArrayList<>(restClient.customPolicyFactories);
+            this.logLevel = restClient.logLevel;
         }
 
         /**
          * Creates an instance of the builder.
          */
         public Builder() {
-            this.loggingInterceptor = new LoggingInterceptor(LogLevel.NONE);
+
         }
 
         /**
@@ -243,7 +244,7 @@ public final class RestClient {
             if (logLevel == null) {
                 throw new NullPointerException("logLevel == null");
             }
-            this.loggingInterceptor.withLogLevel(logLevel);
+            this.logLevel = logLevel;
             return this;
         }
 
@@ -281,6 +282,11 @@ public final class RestClient {
             // FIXME
             throw new RuntimeException();
 //            httpClientBuilder.connectionPool(new ConnectionPool(maxIdleConnections, 5, TimeUnit.MINUTES));
+        }
+
+        public Builder addCustomPolicy(RequestPolicy.Factory factory) {
+            customPolicyFactories.add(factory);
+            return this;
         }
 
         /**

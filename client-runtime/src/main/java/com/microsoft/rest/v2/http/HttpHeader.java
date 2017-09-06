@@ -56,4 +56,9 @@ public class HttpHeader {
     public void addValue(String value) {
         value += "," + value;
     }
+
+    @Override
+    public String toString() {
+        return name() + ": " + value();
+    }
 }
