@@ -8,7 +8,9 @@ package com.microsoft.azure.management.network.implementation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
@@ -261,6 +263,17 @@ class LoadBalancerFrontendImpl
     @Override
     public Subnet getSubnet() {
         return this.parent().manager().getAssociatedSubnet(this.inner().subnet());
+    }
+
+    @Override
+    public Set<String> availabilityZones() {
+        Set<String> zones = new TreeSet<>();
+        if (this.inner().zones() != null) {
+            for (String zone : this.inner().zones()) {
+                zones.add(zone);
+            }
+        }
+        return Collections.unmodifiableSet(zones);
     }
 }
 

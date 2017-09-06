@@ -91,6 +91,12 @@ public interface PublicIPAddress extends
     Set<String> availabilityZones();
 
     /**
+     * @return public IP address sku.
+     */
+    @Beta(Beta.SinceVersion.V1_3_0)
+    PublicIPSkuType sku();
+
+    /**
      * Container interface for all the definitions.
      */
     interface Definition extends

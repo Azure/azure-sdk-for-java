@@ -12,6 +12,8 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.HasSubnet;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 
+import java.util.Set;
+
 /**
  * A client-side representation of a private frontend of an internal load balancer.
  */
@@ -28,6 +30,12 @@ public interface LoadBalancerPrivateFrontend extends
      * Note this makes a separate call to Azure.
      */
     Subnet getSubnet();
+
+    /**
+     * @return the availability zones assigned to private frontend.
+     */
+    @Beta(Beta.SinceVersion.V1_3_0)
+    Set<String> availabilityZones();
 
     /**
      * Grouping of private frontend definition stages.

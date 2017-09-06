@@ -97,6 +97,12 @@ public interface LoadBalancer extends
     Map<String, LoadBalancerInboundNatPool> inboundNatPools();
 
     /**
+     * @return load balancer sku.
+     */
+    @Beta(SinceVersion.V1_3_0)
+    LoadBalancerSkuType sku();
+
+    /**
      * The entirety of the load balancer definition.
      */
     interface Definition extends

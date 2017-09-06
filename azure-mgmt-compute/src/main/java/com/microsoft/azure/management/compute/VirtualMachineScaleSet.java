@@ -31,6 +31,7 @@ import rx.Completable;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * An immutable client-side representation of an Azure virtual machine scale set.
@@ -328,6 +329,12 @@ public interface VirtualMachineScaleSet extends
      */
     @Beta(Beta.SinceVersion.V1_2_0)
     String managedServiceIdentityPrincipalId();
+
+    /**
+     * @return the availability zones assigned to virtual machine scale set.
+     */
+    @Beta(Beta.SinceVersion.V1_3_0)
+    Set<String> availabilityZones();
 
     /**
      * The virtual machine scale set stages shared between managed and unmanaged based

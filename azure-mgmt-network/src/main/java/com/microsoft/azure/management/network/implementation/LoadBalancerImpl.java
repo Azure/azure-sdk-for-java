@@ -702,6 +702,11 @@ class LoadBalancerImpl
     }
 
     @Override
+    public LoadBalancerSkuType sku() {
+        return LoadBalancerSkuType.fromSku(this.inner().sku());
+    }
+
+    @Override
     public Map<String, LoadBalancerTcpProbe> tcpProbes() {
         return Collections.unmodifiableMap(this.tcpProbes);
     }
