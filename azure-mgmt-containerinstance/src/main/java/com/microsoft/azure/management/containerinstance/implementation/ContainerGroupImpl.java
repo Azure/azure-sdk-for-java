@@ -10,6 +10,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.containerinstance.Container;
 import com.microsoft.azure.management.containerinstance.ContainerGroup;
 import com.microsoft.azure.management.containerinstance.ContainerGroupNetworkProtocol;
+import com.microsoft.azure.management.containerinstance.ContainerRestartPolicy;
 import com.microsoft.azure.management.containerinstance.ImageRegistryCredential;
 import com.microsoft.azure.management.containerinstance.OperatingSystemTypes;
 import com.microsoft.azure.management.containerinstance.Port;
@@ -384,12 +385,8 @@ public class ContainerGroupImpl
     }
 
     @Override
-    public String restartPolicy() {
-        if (this.inner().restartPolicy() != null) {
-            return this.inner().restartPolicy().toString();
-        } else {
-            return null;
-        }
+    public ContainerRestartPolicy restartPolicy() {
+        return this.inner().restartPolicy();
     }
 
     @Override
@@ -403,20 +400,12 @@ public class ContainerGroupImpl
 
     @Override
     public boolean isIPAddressPublic() {
-        if (this.inner().ipAddress() != null && this.inner().ipAddress().type().toLowerCase().equals("public")) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.inner().ipAddress() != null && this.inner().ipAddress().type().toLowerCase().equals("public");
     }
 
     @Override
-    public String osType() {
-        if (this.inner().osType() != null) {
-            return this.inner().osType().toString();
-        } else {
-            return null;
-        }
+    public OperatingSystemTypes osType() {
+        return this.inner().osType();
     }
 
     @Override

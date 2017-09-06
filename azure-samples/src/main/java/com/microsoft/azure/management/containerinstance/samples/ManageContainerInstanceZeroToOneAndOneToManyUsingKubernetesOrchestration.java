@@ -76,6 +76,8 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingKubernetesOrchestr
      * Main function which runs the actual sample.
      *
      * @param azure instance of the azure client
+     * @param clientId secondary service principal client ID
+     * @param secret secondary service principal secret
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure, String clientId, String secret) {
@@ -269,6 +271,8 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingKubernetesOrchestr
             System.out.println("Created Azure Container Service: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + azureContainerService.id());
             Utils.print(azureContainerService);
 
+            Thread.sleep(30000);
+
 
             //=============================================================
             // Download the Kubernetes config file from one of the master virtual machines
@@ -296,6 +300,8 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingKubernetesOrchestr
             System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, tempKubeConfigFile.getPath());
             Config config = new Config();
             KubernetesClient kubernetesClient = new DefaultKubernetesClient(config);
+
+            Thread.sleep(5000);
 
 
             //=============================================================
@@ -422,6 +428,8 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingKubernetesOrchestr
             //=============================================================
             // Wait until the external IP becomes available
 
+            String serviceIP = null;
+
             int timeout = 30 * 60 * 1000; // 30 minutes
             String matchIPV4 = "^(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}$";
 
@@ -429,7 +437,8 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingKubernetesOrchestr
                 try {
                     List<LoadBalancerIngress> lbIngressList = kubernetesClient.services().inNamespace(acsNamespace).withName(acsLbIngressName).get().getStatus().getLoadBalancer().getIngress();
                     if (lbIngressList != null && !lbIngressList.isEmpty() && lbIngressList.get(0) != null && lbIngressList.get(0).getIp().matches(matchIPV4)) {
-                        System.out.println("\tFound ingress IP: " + lbIngressList.get(0).getIp());
+                        serviceIP = lbIngressList.get(0).getIp();
+                        System.out.println("\tFound ingress IP: " + serviceIP);
                         timeout = 0;
                     }
                 } catch (Exception ignored) {
@@ -441,11 +450,24 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingKubernetesOrchestr
                 }
             }
 
+            //=============================================================
+            // Check that the service is up and running
+
+            if (serviceIP != null) {
+                // warm up
+                System.out.println("Warming up " + serviceIP);
+                Utils.curl("http://" + serviceIP);
+                SdkContext.sleep(15000);
+                System.out.println("CURLing " + serviceIP);
+                System.out.println(Utils.curl("http://" + serviceIP));
+            } else {
+                System.out.println("ERROR: service unavailable");
+            }
+
             // Clean-up
             kubernetesClient.namespaces().delete(ns);
 
             shell.close();
-            shell = null;
 
             return true;
         } catch (Exception f) {

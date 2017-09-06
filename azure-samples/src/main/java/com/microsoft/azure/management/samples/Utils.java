@@ -2315,6 +2315,7 @@ public final class Utils {
      * Connect to a specified URL using "curl" like HTTP GET client.
      *
      * @param url URL to be tested
+     * @return the HTTP GET response content
      */
     public static String curl(String url) {
         Request request = new Request.Builder().url(url).get().build();

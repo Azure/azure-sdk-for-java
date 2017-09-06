@@ -38,7 +38,7 @@ public class TestContainerInstance extends TestTemplate<ContainerGroup, Containe
             .create();
 
         Assert.assertEquals(cgName, containerGroup.name());
-        Assert.assertEquals("Linux", containerGroup.osType());
+        Assert.assertEquals("Linux", containerGroup.osType().toString());
         Assert.assertNull(containerGroup.imageRegistryServers());
         Assert.assertNull(containerGroup.volumes());
         Assert.assertNotNull(containerGroup.ipAddress());

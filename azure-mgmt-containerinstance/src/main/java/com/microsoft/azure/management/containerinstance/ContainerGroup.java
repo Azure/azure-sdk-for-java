@@ -66,7 +66,7 @@ public interface ContainerGroup extends
      * @return - `always` Always restart
 
      */
-    String restartPolicy();
+    ContainerRestartPolicy restartPolicy();
 
     /**
      * @return the IP address
@@ -81,7 +81,7 @@ public interface ContainerGroup extends
     /**
      * @return the base level OS type required by the containers in the group
      */
-    String osType();
+    OperatingSystemTypes osType();
 
     /**
      * @return the state of the container group; only valid in response
