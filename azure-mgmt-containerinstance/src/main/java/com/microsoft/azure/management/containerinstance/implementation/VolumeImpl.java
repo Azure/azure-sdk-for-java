@@ -46,7 +46,11 @@ class VolumeImpl implements ContainerGroup.DefinitionStages.VolumeDefinitionStag
 
     @Override
     public VolumeImpl withExistingReadOnlyAzureFileShare(String shareName) {
-        return null;
+        ensureAzureFileVolume()
+            .withReadOnly(true)
+            .withShareName(shareName);
+
+        return this;
     }
 
     private AzureFileVolume ensureAzureFileVolume() {
@@ -55,11 +59,6 @@ class VolumeImpl implements ContainerGroup.DefinitionStages.VolumeDefinitionStag
         }
 
         return innerVolume.azureFile();
-    }
-
-    @Override
-    public VolumeImpl withNewAzureFileShare(String shareName) {
-        throw new UnsupportedOperationException();
     }
 
     @Override

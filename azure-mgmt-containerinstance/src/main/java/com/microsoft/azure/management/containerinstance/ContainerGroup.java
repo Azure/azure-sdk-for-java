@@ -74,9 +74,9 @@ public interface ContainerGroup extends
     String ipAddress();
 
     /**
-     * @return - 'public' IP address is public
+     * @return - true if IP address is public
      */
-    String ipAddressType();
+    boolean isIPAddressPublic();
 
     /**
      * @return the base level OS type required by the containers in the group
@@ -236,6 +236,15 @@ public interface ContainerGroup extends
             WithFirstContainerInstance withoutVolume();
 
             /**
+             * Specifies a new Azure file share name to be created.
+             *
+             * @param volumeName the name of the volume
+             * @param shareName the Azure file share name to be created
+             * @return the next stage of the definition
+             */
+            WithFirstContainerInstance withNewAzureFileShareVolume(String volumeName, String shareName);
+
+            /**
              * Begins the definition of a volume that can be shared by the container instances in the container group.
              *
              * <p>
@@ -296,14 +305,6 @@ public interface ContainerGroup extends
                  * @return the next stage of the definition
                  */
                 WithStorageAccountName<ParentT> withExistingReadOnlyAzureFileShare(String shareName);
-
-                /**
-                 * Specifies an existing Azure file share name.
-                 *
-                 * @param shareName the Azure file share name to be created
-                 * @return the next stage of the definition
-                 */
-                WithAttach<ParentT> withNewAzureFileShare(String shareName);
             }
 
             /**

@@ -42,7 +42,7 @@ public class TestContainerInstance extends TestTemplate<ContainerGroup, Containe
         Assert.assertNull(containerGroup.imageRegistryServers());
         Assert.assertNull(containerGroup.volumes());
         Assert.assertNotNull(containerGroup.ipAddress());
-        Assert.assertEquals("Public", containerGroup.ipAddressType());
+        Assert.assertTrue(containerGroup.isIPAddressPublic());
         Assert.assertEquals(2, containerGroup.externalTcpPorts().length);
         Assert.assertEquals(2, containerGroup.externalPorts().size());
         Assert.assertEquals(2, containerGroup.externalTcpPorts().length);

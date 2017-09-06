@@ -17,6 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Az
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
+import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 
@@ -28,6 +29,7 @@ public final class ContainerInstanceManager extends Manager<ContainerInstanceMan
 
     // The service managers
     private ContainerGroupsImpl containerGroups;
+    private StorageManager storageManager;
 
     /**
      * Get a Configurable instance that can be used to create ContainerInstanceManager with optional configuration.
@@ -96,6 +98,8 @@ public final class ContainerInstanceManager extends Manager<ContainerInstanceMan
             restClient,
             subscriptionId,
             new ContainerInstanceManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
+
+        this.storageManager = StorageManager.authenticate(restClient, subscriptionId);
     }
 
     /**
@@ -103,7 +107,7 @@ public final class ContainerInstanceManager extends Manager<ContainerInstanceMan
      */
     public ContainerGroups containerGroups() {
         if (containerGroups == null) {
-            containerGroups = new ContainerGroupsImpl(this);
+            containerGroups = new ContainerGroupsImpl(this, this.storageManager);
         }
 
         return containerGroups;

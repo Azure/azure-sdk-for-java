@@ -11,6 +11,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.containerinstance.ContainerGroup;
 import com.microsoft.azure.management.containerinstance.ContainerGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.microsoft.azure.management.storage.implementation.StorageManager;
 import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
@@ -29,13 +30,16 @@ public class ContainerGroupsImpl
                 ContainerInstanceManager>
     implements ContainerGroups {
 
-    protected ContainerGroupsImpl(final ContainerInstanceManager manager) {
+    private final StorageManager storageManager;
+
+    protected ContainerGroupsImpl(final ContainerInstanceManager manager, final StorageManager storageManager) {
         super(manager.inner().containerGroups(), manager);
+        this.storageManager = storageManager;
     }
 
     @Override
     protected ContainerGroupImpl wrapModel(String name) {
-        return new ContainerGroupImpl(name, new ContainerGroupInner(), this.manager());
+        return new ContainerGroupImpl(name, new ContainerGroupInner(), this.manager(), this.storageManager);
     }
 
     @Override
@@ -43,7 +47,7 @@ public class ContainerGroupsImpl
         if (inner == null) {
             return null;
         }
-        return new ContainerGroupImpl(inner.name(), inner, this.manager());
+        return new ContainerGroupImpl(inner.name(), inner, this.manager(), this.storageManager);
     }
 
     @Override
