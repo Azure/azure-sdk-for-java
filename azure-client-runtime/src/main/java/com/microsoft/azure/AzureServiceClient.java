@@ -7,9 +7,8 @@
 package com.microsoft.azure;
 
 import com.google.common.hash.Hashing;
-import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
-import com.microsoft.rest.v2.policy.AddCredentialsPolicy;
+import com.microsoft.rest.v2.policy.CredentialsPolicy;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
@@ -19,8 +18,6 @@ import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyChain;
 import com.microsoft.rest.v2.http.RxNettyAdapter;
-import okhttp3.OkHttpClient;
-import retrofit2.Retrofit;
 import rx.Single;
 
 import java.net.NetworkInterface;
@@ -55,7 +52,7 @@ public abstract class AzureServiceClient extends ServiceClient {
 
         final ServiceClientCredentials credentials = restClient().credentials();
         final RxNettyAdapter rxnClient = new RxNettyAdapter();
-        httpClient = new RequestPolicyChain(new AddCredentialsPolicy.Factory(credentials), new RequestPolicy.Factory() {
+        httpClient = new RequestPolicyChain(new CredentialsPolicy.Factory(credentials), new RequestPolicy.Factory() {
             @Override
             public RequestPolicy create(RequestPolicy next) {
                 return new RequestPolicy() {

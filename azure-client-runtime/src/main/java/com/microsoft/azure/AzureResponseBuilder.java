@@ -77,20 +77,6 @@ public final class AzureResponseBuilder<T, E extends RestException> implements R
         }
     }
 
-    @Override
-    public <THeader> ServiceResponseWithHeaders<T, THeader> buildWithHeaders(Response<ResponseBody> response, Class<THeader> headerType) throws IOException {
-        return baseBuilder.buildWithHeaders(response, headerType);
-    }
-
-    @Override
-    public <THeader> ServiceResponseWithHeaders<T, THeader> buildEmptyWithHeaders(Response<Void> response, Class<THeader> headerType) throws IOException {
-        ServiceResponse<T> bodyResponse = buildEmpty(response);
-        ServiceResponseWithHeaders<T, THeader> baseResponse = baseBuilder.buildEmptyWithHeaders(response, headerType);
-        ServiceResponseWithHeaders<T, THeader> serviceResponse = new ServiceResponseWithHeaders<>(baseResponse.headers(), bodyResponse.headResponse());
-        serviceResponse.withBody(bodyResponse.body());
-        return serviceResponse;
-    }
-
     /**
      * Specifies whether to throw on 404 responses from a GET call.
      * @param throwOnGet404 true if to throw; false to simply return null. Default is false.

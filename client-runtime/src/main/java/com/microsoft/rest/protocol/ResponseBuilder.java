@@ -78,46 +78,6 @@ public interface ResponseBuilder<T, E extends RestException> {
     ServiceResponse<T> buildEmpty(Response<Void> response) throws IOException;
 
     /**
-     * Build a ServiceResponseWithHeaders instance from a REST call response, a header
-     * in JSON format, and a possible error.
-     *
-     * <p>
-     *     If the status code in the response is registered, the response will
-     *     be considered valid and deserialized into the specified destination
-     *     type. If the status code is not registered, the response will be
-     *     considered invalid and deserialized into the specified error type if
-     *     there is one. An AutoRestException is also thrown.
-     * </p>
-     *
-     * @param response the {@link Response} instance from REST call
-     * @param headerType the type of the header
-     * @param <THeader> the type of the header
-     * @return a ServiceResponseWithHeaders instance of generic type {@link T}
-     * @throws E exceptions from the REST call
-     * @throws IOException exceptions from deserialization
-     */
-    <THeader> ServiceResponseWithHeaders<T, THeader> buildWithHeaders(Response<ResponseBody> response, Class<THeader> headerType) throws IOException;
-
-    /**
-     * Build a ServiceResponseWithHeaders instance from a REST call response, a header
-     * in JSON format, and a possible error, which does not have a response body.
-     *
-     * <p>
-     *     If the status code in the response is registered, the response will
-     *     be considered valid. If the status code is not registered, the
-     *     response will be considered invalid. An AutoRestException is also thrown.
-     * </p>
-     *
-     * @param response the {@link Response} instance from REST call
-     * @param headerType the type of the header
-     * @param <THeader> the type of the header
-     * @return a ServiceResponseWithHeaders instance of generic type {@link T}
-     * @throws E exceptions from the REST call
-     * @throws IOException exceptions from deserialization
-     */
-    <THeader> ServiceResponseWithHeaders<T, THeader> buildEmptyWithHeaders(Response<Void> response, Class<THeader> headerType) throws IOException;
-
-    /**
      * A factory that creates a builder based on the return type and the exception type.
      */
     interface Factory {

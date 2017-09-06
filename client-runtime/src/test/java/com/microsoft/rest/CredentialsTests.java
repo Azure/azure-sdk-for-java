@@ -10,7 +10,7 @@ import com.microsoft.rest.credentials.BasicAuthenticationCredentials;
 import com.microsoft.rest.credentials.TokenCredentials;
 
 import com.microsoft.rest.v2.http.*;
-import com.microsoft.rest.v2.policy.AddCredentialsPolicy;
+import com.microsoft.rest.v2.policy.CredentialsPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyChain;
 import com.microsoft.rest.v2.policy.SendRequestPolicyFactory;
@@ -39,7 +39,7 @@ public class CredentialsTests {
         };
 
         HttpClient client = new RequestPolicyChain(
-                new AddCredentialsPolicy.Factory(credentials),
+                new CredentialsPolicy.Factory(credentials),
                 auditorFactory,
                 new SendRequestPolicyFactory(new MockHttpClient()));
 
@@ -66,7 +66,7 @@ public class CredentialsTests {
         };
 
         HttpClient client = new RequestPolicyChain(
-                new AddCredentialsPolicy.Factory(credentials),
+                new CredentialsPolicy.Factory(credentials),
                 auditorFactory,
                 new SendRequestPolicyFactory(new MockHttpClient()));
 

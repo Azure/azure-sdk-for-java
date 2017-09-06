@@ -14,7 +14,7 @@ import rx.Single;
 /**
  * Adds credentials from ServiceClientCredentials to a request.
  */
-public class AddCredentialsPolicy implements RequestPolicy {
+public class CredentialsPolicy implements RequestPolicy {
     public static class Factory implements RequestPolicy.Factory {
         private final ServiceClientCredentials credentials;
 
@@ -24,7 +24,7 @@ public class AddCredentialsPolicy implements RequestPolicy {
 
         @Override
         public RequestPolicy create(RequestPolicy next) {
-            return new AddCredentialsPolicy(credentials, next);
+            return new CredentialsPolicy(credentials, next);
         }
     }
 
@@ -32,11 +32,11 @@ public class AddCredentialsPolicy implements RequestPolicy {
     private final RequestPolicy next;
 
     /**
-     * Creates AddCredentialsPolicy.
+     * Creates CredentialsPolicy.
      *
      * @param credentials the credentials
      */
-    private AddCredentialsPolicy(ServiceClientCredentials credentials, RequestPolicy next) {
+    private CredentialsPolicy(ServiceClientCredentials credentials, RequestPolicy next) {
         this.credentials = credentials;
         this.next = next;
     }

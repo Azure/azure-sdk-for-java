@@ -11,13 +11,12 @@ import com.microsoft.rest.interceptors.*;
 import com.microsoft.rest.protocol.Environment;
 import com.microsoft.rest.protocol.ResponseBuilder;
 import com.microsoft.rest.protocol.SerializerAdapter;
-import com.microsoft.rest.retry.RetryHandler;
-import com.microsoft.rest.retry.RetryStrategy;
 import com.microsoft.rest.v2.http.HttpClient;
-import okhttp3.ConnectionPool;
-import okhttp3.Interceptor;
+import com.microsoft.rest.v2.policy.*;
 import okhttp3.OkHttpClient;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -36,6 +35,9 @@ public final class RestClient {
     private final ServiceClientCredentials credentials;
     private LogLevel logLevel;
 
+    private final List<RequestPolicy.Factory> customPolicyFactories;
+    private final RequestPolicyChain fullPolicyChain;
+
     private RestClient(RestClient.Builder builder) {
         this.httpClient = builder.httpClient;
         this.baseURL = builder.baseUrl;
@@ -46,6 +48,20 @@ public final class RestClient {
         this.responseBuilderFactory = builder.responseBuilderFactory;
         this.credentials = builder.credentials;
         this.logLevel = builder.loggingInterceptor.logLevel();
+
+        this.customPolicyFactories = builder.customPolicyFactories;
+        this.fullPolicyChain = createPolicyChain();
+    }
+
+    private RequestPolicyChain createPolicyChain() {
+        List<RequestPolicy.Factory> allFactories = new ArrayList<>();
+        // TODO: userAgent
+        allFactories.add(new RetryPolicy.Factory());
+        // TODO: logging
+        allFactories.add(new CredentialsPolicy.Factory(credentials));
+        allFactories.addAll(customPolicyFactories);
+        allFactories.add(new SendRequestPolicyFactory(httpClient));
+        return new RequestPolicyChain(allFactories);
     }
 
     /**
@@ -116,8 +132,9 @@ public final class RestClient {
         private String baseUrl;
         /** The credentials to authenticate. */
         private ServiceClientCredentials credentials;
-        /** The interceptor to handle custom headers. */
-        private CustomHeadersInterceptor customHeadersInterceptor;
+
+        private List<RequestPolicy.Factory> customPolicyFactories = new ArrayList<>();
+
         /** The value for 'User-Agent' header. */
         private String userAgent;
         private long readTimeoutMillis = DEFAULT_READ_TIMEOUT_MILLIS;
@@ -135,30 +152,8 @@ public final class RestClient {
             this.baseUrl = restClient.baseURL;
             this.responseBuilderFactory = restClient.responseBuilderFactory;
             this.serializerAdapter = restClient.serializerAdapter;
-            if (restClient.credentials != null) {
-                this.credentials = restClient.credentials;
-            }
-            // FIXME: handle interceptors/request policies
-//            for (Interceptor interceptor : restClient.httpClient.interceptors()) {
-//                if (interceptor instanceof UserAgentInterceptor) {
-//                    this.userAgent = ((UserAgentInterceptor) interceptor).userAgent();
-//                } else if (interceptor instanceof RetryHandler) {
-//                    this.retryStrategy = ((RetryHandler) interceptor).strategy();
-//                } else if (interceptor instanceof CustomHeadersInterceptor) {
-//                    this.customHeadersInterceptor = new CustomHeadersInterceptor();
-//                    this.customHeadersInterceptor.addHeaderMultimap(((CustomHeadersInterceptor) interceptor).headers());
-//                } else if (interceptor != restClient.builder.credentialsInterceptor) {
-//                    this.withInterceptor(interceptor);
-//                }
-//            }
-//            for (Interceptor interceptor : restClient.httpClient.networkInterceptors()) {
-//                if (interceptor instanceof LoggingInterceptor) {
-//                    LoggingInterceptor old = (LoggingInterceptor) interceptor;
-//                    this.loggingInterceptor = new LoggingInterceptor(old.logLevel());
-//                } else {
-//                    this.withNetworkInterceptor(interceptor);
-//                }
-//            }
+            this.credentials = restClient.credentials;
+            this.customPolicyFactories = new ArrayList<>(restClient.customPolicyFactories);
         }
 
         /**
@@ -306,16 +301,6 @@ public final class RestClient {
             }
             if (serializerAdapter == null) {
                 throw new IllegalArgumentException("Please set serializer adapter.");
-            }
-
-            if (this.credentials != null) {
-                // FIXME: handle credentials
-//                int interceptorCount = httpClientBuilder.interceptors().size();
-//                httpClientBuilder.interceptors().add(new AddCredentialsInterceptor(this.credentials));
-//                // store the interceptor
-//                if (httpClientBuilder.interceptors().size() > interceptorCount) {
-//                    credentialsInterceptor = httpClientBuilder.interceptors().get(interceptorCount);
-//                }
             }
 
             return new RestClient(this);

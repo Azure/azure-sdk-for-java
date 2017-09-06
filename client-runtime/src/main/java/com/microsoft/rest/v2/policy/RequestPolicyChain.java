@@ -11,6 +11,7 @@ import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import rx.Single;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +31,17 @@ public class RequestPolicyChain extends HttpClient {
         factories = Arrays.asList(factoryArray);
         Collections.reverse(factories);
     }
+
+    /**
+     * Creates RequestPolicyChain.
+     *
+     * @param factories the factories that can creates RequestPolicy instances in the pipeline.
+     */
+    public RequestPolicyChain(List<RequestPolicy.Factory> factories) {
+        this.factories = new ArrayList<>(factories);
+        Collections.reverse(this.factories);
+    }
+
 
     /**
      * @return RequestPolicy instance

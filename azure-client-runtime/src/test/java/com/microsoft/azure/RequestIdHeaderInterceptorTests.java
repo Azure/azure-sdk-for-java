@@ -24,72 +24,78 @@ public class RequestIdHeaderInterceptorTests {
 
     @Test
     public void newRequestIdForEachCall() throws Exception {
+        // FIXME
+        Assert.fail();
+
         RestClient restClient = new RestClient.Builder()
                 .withBaseUrl("http://localhost")
                 .withSerializerAdapter(new AzureJacksonAdapter())
                 .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                 .withInterceptor(new RequestIdHeaderInterceptor())
-                .withInterceptor(new Interceptor() {
-                    private String firstRequestId = null;
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Request request = chain.request();
-                        if (request.header(REQUEST_ID_HEADER) != null) {
-                            if (firstRequestId == null) {
-                                firstRequestId = request.header(REQUEST_ID_HEADER);
-                                return new Response.Builder().code(200).request(request)
-                                        .protocol(Protocol.HTTP_1_1).build();
-                            } else if (!request.header(REQUEST_ID_HEADER).equals(firstRequestId)) {
-                                return new Response.Builder().code(200).request(request)
-                                        .protocol(Protocol.HTTP_1_1).build();
-                            }
-                        }
-                        return new Response.Builder().code(400).request(request)
-                                .protocol(Protocol.HTTP_1_1).build();
-                    }
-                })
+//                .withInterceptor(new Interceptor() {
+//                    private String firstRequestId = null;
+//                    @Override
+//                    public Response intercept(Chain chain) throws IOException {
+//                        Request request = chain.request();
+//                        if (request.header(REQUEST_ID_HEADER) != null) {
+//                            if (firstRequestId == null) {
+//                                firstRequestId = request.header(REQUEST_ID_HEADER);
+//                                return new Response.Builder().code(200).request(request)
+//                                        .protocol(Protocol.HTTP_1_1).build();
+//                            } else if (!request.header(REQUEST_ID_HEADER).equals(firstRequestId)) {
+//                                return new Response.Builder().code(200).request(request)
+//                                        .protocol(Protocol.HTTP_1_1).build();
+//                            }
+//                        }
+//                        return new Response.Builder().code(400).request(request)
+//                                .protocol(Protocol.HTTP_1_1).build();
+//                    }
+//                })
                 .build();
         AzureServiceClient serviceClient = new AzureServiceClient(restClient) { };
-        Response response = serviceClient.restClient().httpClient()
-                .newCall(new Request.Builder().get().url("http://localhost").build()).execute();
-        Assert.assertEquals(200, response.code());
-        response = serviceClient.restClient().httpClient()
-                .newCall(new Request.Builder().get().url("http://localhost").build()).execute();
-        Assert.assertEquals(200, response.code());
+//        Response response = serviceClient.restClient().httpClient()
+//                .newCall(new Request.Builder().get().url("http://localhost").build()).execute();
+//        Assert.assertEquals(200, response.code());
+//        response = serviceClient.restClient().httpClient()
+//                .newCall(new Request.Builder().get().url("http://localhost").build()).execute();
+//        Assert.assertEquals(200, response.code());
     }
 
     @Test
     public void sameRequestIdForRetry() throws Exception {
+        // FIXME
+        Assert.fail();
+
         RestClient restClient = new RestClient.Builder()
                 .withBaseUrl("http://localhost")
                 .withSerializerAdapter(new AzureJacksonAdapter())
                 .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
-                .withInterceptor(new RequestIdHeaderInterceptor())
-                .withInterceptor(new RetryHandler())
-                .withInterceptor(new Interceptor() {
-                    private String firstRequestId = null;
-
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Request request = chain.request();
-                        if (request.header(REQUEST_ID_HEADER) != null) {
-                            if (firstRequestId == null) {
-                                firstRequestId = request.header(REQUEST_ID_HEADER);
-                                return new Response.Builder().code(500).request(request)
-                                        .protocol(Protocol.HTTP_1_1).build();
-                            } else if (request.header(REQUEST_ID_HEADER).equals(firstRequestId)) {
-                                return new Response.Builder().code(200).request(request)
-                                        .protocol(Protocol.HTTP_1_1).build();
-                            }
-                        }
-                        return new Response.Builder().code(400).request(request)
-                                .protocol(Protocol.HTTP_1_1).build();
-                    }
-                })
+//                .withInterceptor(new RequestIdHeaderInterceptor())
+//                .withInterceptor(new RetryHandler())
+//                .withInterceptor(new Interceptor() {
+//                    private String firstRequestId = null;
+//
+//                    @Override
+//                    public Response intercept(Chain chain) throws IOException {
+//                        Request request = chain.request();
+//                        if (request.header(REQUEST_ID_HEADER) != null) {
+//                            if (firstRequestId == null) {
+//                                firstRequestId = request.header(REQUEST_ID_HEADER);
+//                                return new Response.Builder().code(500).request(request)
+//                                        .protocol(Protocol.HTTP_1_1).build();
+//                            } else if (request.header(REQUEST_ID_HEADER).equals(firstRequestId)) {
+//                                return new Response.Builder().code(200).request(request)
+//                                        .protocol(Protocol.HTTP_1_1).build();
+//                            }
+//                        }
+//                        return new Response.Builder().code(400).request(request)
+//                                .protocol(Protocol.HTTP_1_1).build();
+//                    }
+//                })
                 .build();
         AzureServiceClient serviceClient = new AzureServiceClient(restClient) { };
-        Response response = serviceClient.restClient().httpClient()
-                .newCall(new Request.Builder().get().url("http://localhost").build()).execute();
-        Assert.assertEquals(200, response.code());
+//        Response response = serviceClient.restClient().httpClient()
+//                .newCall(new Request.Builder().get().url("http://localhost").build()).execute();
+//        Assert.assertEquals(200, response.code());
     }
 }
