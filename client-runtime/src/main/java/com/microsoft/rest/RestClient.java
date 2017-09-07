@@ -24,7 +24,6 @@ import java.util.concurrent.TimeUnit;
  */
 public final class RestClient {
 
-    /** The HTTP client. */
     private final HttpClient httpClient;
     private final String baseURL;
     private final String userAgent;
@@ -57,7 +56,7 @@ public final class RestClient {
         List<RequestPolicy.Factory> allFactories = new ArrayList<>();
         // TODO: userAgent
         allFactories.add(new RetryPolicy.Factory());
-        // TODO: logging
+        allFactories.add(new LoggingPolicy.Factory(logLevel));
         allFactories.add(new CredentialsPolicy.Factory(credentials));
         allFactories.addAll(customPolicyFactories);
         allFactories.add(new SendRequestPolicyFactory(httpClient));
@@ -83,6 +82,13 @@ public final class RestClient {
      */
     public HttpClient httpClient() {
         return httpClient;
+    }
+
+    /**
+     * @return a {@link RequestPolicyChain} instance containing all request policies.
+     */
+    public RequestPolicyChain fullPolicyChain() {
+        return fullPolicyChain;
     }
 
     /**
