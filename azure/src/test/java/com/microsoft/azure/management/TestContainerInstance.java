@@ -28,7 +28,7 @@ public class TestContainerInstance extends TestTemplate<ContainerGroup, Containe
             .defineContainerInstance("tomcat")
                 .withImage("tomcat")
                 .withExternalTcpPort(8080)
-                .withCPUCoreCount(1)
+                .withCpuCoreCount(1)
             .attach()
             .defineContainerInstance("nginx")
                 .withImage("nginx")

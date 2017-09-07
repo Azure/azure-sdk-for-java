@@ -130,7 +130,7 @@ class ContainerImpl implements
     }
 
     @Override
-    public ContainerImpl withCPUCoreCount(double cpuCoreCount) {
+    public ContainerImpl withCpuCoreCount(double cpuCoreCount) {
         innerContainer.resources().requests().withCpu(cpuCoreCount);
 
         return this;
