@@ -553,7 +553,7 @@ public final class AzureClient extends AzureServiceClient {
                         int statusCode = response.code();
                         if (statusCode == 202) {
                             pollingState.withResponse(response);
-                            pollingState.withStatus(AzureAsyncOperation.IN_PROGRESS_STATUS);
+                            pollingState.withStatus(AzureAsyncOperation.IN_PROGRESS_STATUS, statusCode);
                         } else if (statusCode == 200 || statusCode == 201) {
                             try {
                                 pollingState.updateFromResponseOnPutPatch(response);
@@ -581,7 +581,7 @@ public final class AzureClient extends AzureServiceClient {
                         int statusCode = response.code();
                         if (statusCode == 202) {
                             pollingState.withResponse(response);
-                            pollingState.withStatus(AzureAsyncOperation.IN_PROGRESS_STATUS);
+                            pollingState.withStatus(AzureAsyncOperation.IN_PROGRESS_STATUS, statusCode);
                         } else if (statusCode == 200 || statusCode == 201 || statusCode == 204) {
                             try {
                                 pollingState.updateFromResponseOnDeletePost(response);

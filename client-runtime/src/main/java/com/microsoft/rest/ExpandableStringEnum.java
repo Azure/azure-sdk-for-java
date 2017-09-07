@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Base implementation for expandable, single string enums.
@@ -78,6 +79,7 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
     }
 
     @Override
+    @JsonValue
     public String toString() {
         return this.name;
     }
