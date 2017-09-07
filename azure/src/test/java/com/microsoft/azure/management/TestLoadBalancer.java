@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.microsoft.azure.management.compute.AvailabilitySetSkuTypes;
+import com.microsoft.azure.management.network.LoadBalancerSkuType;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
 import org.junit.Assert;
 
@@ -68,8 +69,7 @@ public class TestLoadBalancer {
 
         /**
          * Test of a load balancer with a NAT pool.
-         * @param vms virtual machines
-         * @param availabilitySets availability sets
+         * @param computeManager compute manager
          */
         public InternetWithNatPool(ComputeManager computeManager) {
             initializeResourceNames();
@@ -215,8 +215,7 @@ public class TestLoadBalancer {
 
         /**
          * Tests an Internet-facing load balancer with NAT rules.
-         * @param vms virtual machines
-         * @param availabilitySets availability sets
+         * @param computeManager compute manager
          */
         public InternetWithNatRule(ComputeManager computeManager) {
             initializeResourceNames();
@@ -539,8 +538,7 @@ public class TestLoadBalancer {
 
         /**
          * Tests an Internet-facing load balancer with minimum inputs.
-         * @param vms virtual machines
-         * @param availabilitySets availability sets
+         * @param computeManager compute manager
          */
         public InternetMinimal(ComputeManager computeManager) {
             initializeResourceNames();
@@ -708,8 +706,7 @@ public class TestLoadBalancer {
 
         /**
          * Tests an internal load balancer with minimum inputs.
-         * @param vms virtual machines
-         * @param availabilitySets availability sets
+         * @param computeManager compute manager
          */
         public InternalMinimal(ComputeManager computeManager) {
             initializeResourceNames();
@@ -869,6 +866,109 @@ public class TestLoadBalancer {
             Assert.assertNotNull(lbRule.backend());
             Assert.assertTrue("backend2".equalsIgnoreCase(lbRule.backend().name()));
 
+            return resource;
+        }
+    }
+
+    /**
+     * Basic SKU load balancer with zoned private
+     */
+    public static class InternalWithZone extends TestTemplate<LoadBalancer, LoadBalancers> {
+        private final ComputeManager computeManager;
+        private Network network;
+
+        /**
+         * Tests an internal load balancer with zoned front-end.
+         * @param computeManager compute manager
+         */
+        public InternalWithZone(ComputeManager computeManager) {
+            REGION = Region.US_EAST2;
+            initializeResourceNames();
+            this.computeManager = computeManager;
+        }
+
+        @Override
+        public void print(LoadBalancer resource) {
+            TestLoadBalancer.printLB(resource);
+        }
+
+        @Override
+        public LoadBalancer createResource(LoadBalancers resources) throws Exception {
+            // Basic SKU (default) LB requires the VMs to be in the same availability set
+            VirtualMachine[] existingVMs = ensureVMs(resources.manager().networks(), this.computeManager, 2);
+
+            // Must use the same VNet as the VMs
+            this.network = existingVMs[0].getPrimaryNetworkInterface().primaryIPConfiguration().getNetwork();
+
+            // Create a load balancer
+            LoadBalancer lb = resources.define(TestLoadBalancer.LB_NAME)
+                    .withRegion(TestLoadBalancer.REGION)
+                    .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
+                    // LB rule
+                    .defineLoadBalancingRule("lbrule1")
+                        .withProtocol(TransportProtocol.TCP)
+                        .fromFrontend("frontend-1")
+                        .fromFrontendPort(80)
+                        .toExistingVirtualMachines(existingVMs)
+                        .attach()
+                    // Private zoned front-end
+                    .definePrivateFrontend("frontend-1")
+                        .withExistingSubnet(network, "subnet1")
+                        .withAvailabilityZone("1")
+                        .attach()
+                    .withSku(LoadBalancerSkuType.BASIC)
+                    .create();
+
+            // Verify frontends
+            Assert.assertEquals(1, lb.frontends().size());
+            Assert.assertEquals(1, lb.privateFrontends().size());
+            Assert.assertEquals(0, lb.publicFrontends().size());
+            LoadBalancerFrontend frontend = lb.frontends().values().iterator().next();
+            Assert.assertEquals(1, frontend.loadBalancingRules().size());
+            Assert.assertFalse(frontend.isPublic());
+            Assert.assertTrue("lbrule1".equalsIgnoreCase(frontend.loadBalancingRules().values().iterator().next().name()));
+            LoadBalancerPrivateFrontend privateFrontend = (LoadBalancerPrivateFrontend) frontend;
+            Assert.assertTrue(network.id().equalsIgnoreCase(privateFrontend.networkId()));
+            Assert.assertNotNull(privateFrontend.privateIPAddress());
+            Assert.assertTrue("subnet1".equalsIgnoreCase(privateFrontend.subnetName()));
+            Assert.assertEquals(IPAllocationMethod.DYNAMIC, privateFrontend.privateIPAllocationMethod());
+            // Verify frontend zone
+            Assert.assertNotNull(privateFrontend.availabilityZones());
+            Assert.assertFalse(privateFrontend.availabilityZones().isEmpty());
+            Assert.assertTrue(privateFrontend.availabilityZones().contains("1"));
+
+            // Verify TCP probes
+            Assert.assertEquals(0, lb.tcpProbes().size());
+
+            // Verify rules
+            Assert.assertEquals(1, lb.loadBalancingRules().size());
+            LoadBalancingRule lbrule = lb.loadBalancingRules().get("lbrule1");
+            Assert.assertNotNull(lbrule);
+            Assert.assertNotNull(lbrule.frontend());
+            Assert.assertEquals(80, lbrule.backendPort());
+            Assert.assertEquals(80, lbrule.frontendPort());
+            Assert.assertNull(lbrule.probe());
+            Assert.assertEquals(TransportProtocol.TCP, lbrule.protocol());
+            Assert.assertNotNull(lbrule.backend());
+
+            // Verify backends
+            Assert.assertEquals(1, lb.backends().size());
+            LoadBalancerBackend backend = lb.backends().values().iterator().next();
+            Assert.assertNotNull(backend);
+
+            Assert.assertEquals(2, backend.backendNicIPConfigurationNames().size());
+            for (VirtualMachine vm : existingVMs) {
+                Assert.assertTrue(backend.backendNicIPConfigurationNames().containsKey(vm.primaryNetworkInterfaceId()));
+            }
+
+            return lb;
+        }
+
+        @Override
+        public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
+            // Once zone associated with a private front-end, it cannot be removed, updated or new
+            // one cannot be added.
+            //
             return resource;
         }
     }

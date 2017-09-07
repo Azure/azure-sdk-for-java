@@ -472,9 +472,11 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assert.assertTrue(nicCount > 0);
     }
 
-
     @Test
-    public void canCreateTwoVirtualMachineScaleSetsAndAssociateEachWithDifferentBackendPoolOfLoadBalancer() throws Exception {
+    public void canCreateTwoRegionalVirtualMachineScaleSetsAndAssociateEachWithDifferentBackendPoolOfZoneResilientLoadBalancer() throws Exception {
+        // Zone resilient resource -> resources deployed in all zones by the service and it will be served by all AZs all the time.
+        // ZoneResilientLoadBalancer -> STANDARD LB -> [Since service deploy them to all zones, user don't have to set zone explicitly, even if he does its a constrain as user can set only one zone at this time]
+
         Region REGION2 = Region.US_EAST2;
 
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups()
@@ -498,6 +500,20 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 resourceGroup,
                 "1",
                 LoadBalancerSkuType.STANDARD);
+
+        // With default LB SKU BASIC, an attempt to associate two different VMSS to different
+        // backend pool will cause below error (more accurately, while trying to put second VMSS)
+        // {
+        //        "startTime": "2017-09-06T14:27:22.1849435+00:00",
+        //        "endTime": "2017-09-06T14:27:45.8885142+00:00",
+        //        "status": "Failed",
+        //        "error": {
+        //            "code": "VmIsNotInSameAvailabilitySetAsLb",
+        //            "message": "Virtual Machine /subscriptions/<sub-id>/resourceGroups/<rg-name>/providers/Microsoft.Compute/virtualMachines/|providers|Microsoft.Compute|virtualMachineScaleSets|<vm-ss-name>|virtualMachines|<instance-id> is using different Availability Set than other Virtual Machines connected to the Load Balancer(s) <lb-name>."
+        //         },
+        //        "name": "97531d64-db37-4d21-a1cb-9c53aad7c342"
+        // }
+
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
             backends.add(backend);
@@ -565,7 +581,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     }
 
     @Test
-    public void canCreateZoneRedundantVirtualMachineScaleSetWithStandardLoadBalancer() throws Exception {
+    public void canCreateZoneRedundantVirtualMachineScaleSetWithZoneResilientLoadBalancer() throws Exception {
         // Zone redundant VMSS is the one with multiple zones
         //
 
