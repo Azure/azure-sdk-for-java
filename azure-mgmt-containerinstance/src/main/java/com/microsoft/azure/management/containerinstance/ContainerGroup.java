@@ -63,7 +63,7 @@ public interface ContainerGroup extends
     Collection<String> imageRegistryServers();
 
     /**
-     * @return - `always` Always restart
+     * @return `always` Always restart
 
      */
     ContainerRestartPolicy restartPolicy();
@@ -74,7 +74,7 @@ public interface ContainerGroup extends
     String ipAddress();
 
     /**
-     * @return - true if IP address is public
+     * @return true if IP address is public
      */
     boolean isIPAddressPublic();
 
@@ -551,14 +551,14 @@ public interface ContainerGroup extends
              *
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
-            interface WithCPUCoreCount<ParentT> {
+            interface WithCpuCoreCount<ParentT> {
                 /**
                  * Specifies the number of CPU cores assigned to this container instance.
                  *
                  * @param cpuCoreCount the number of CPU cores
                  * @return the next stage of the definition
                  */
-                WithAttach<ParentT> withCPUCoreCount(double cpuCoreCount);
+                WithAttach<ParentT> withCpuCoreCount(double cpuCoreCount);
             }
 
             /**
@@ -693,7 +693,7 @@ public interface ContainerGroup extends
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
             interface WithAttach<ParentT> extends
-                WithCPUCoreCount<ParentT>,
+                WithCpuCoreCount<ParentT>,
                 WithMemorySize<ParentT>,
                 WithStartingCommandLine<ParentT>,
                 WithEnvironmentVariables<ParentT>,
@@ -709,11 +709,6 @@ public interface ContainerGroup extends
                 WithImage<ParentT>,
                 WithOrWithoutPorts<ParentT>,
                 WithPortsOrAttach<ParentT>,
-//                WithCPUCoreCount<ParentT>,
-//                WithMemorySize<ParentT>,
-//                WithStartingCommandLine<ParentT>,
-//                WithEnvironmentVariables<ParentT>,
-//                WithVolumeMountSetting<ParentT>,
                 WithAttach<ParentT> {
             }
         }

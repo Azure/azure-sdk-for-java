@@ -34,6 +34,7 @@ import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,39 +77,37 @@ public class ContainerGroupImpl
     protected Observable<ContainerGroupInner> createInner() {
         final ContainerGroupImpl self = this;
 
-        if (isInCreateMode()) {
-            if (newFileShares != null && creatableStorageAccountKey != null) {
-                final StorageAccount storageAccount = (StorageAccount) this.createdResource(this.creatableStorageAccountKey);
-                return createFileShareAsync(storageAccount)
-                    .collect(new Func0<List<Triple<String, String, String>>>() {
-                        @Override
-                        public List<Triple<String, String, String>> call() {
-                            return new ArrayList<>();
-                        }
-                    }, new Action2<List<Triple<String, String, String>>, Triple<String, String, String>>() {
-                        @Override
-                        public void call(List<Triple<String, String, String>> cloudFileShares, Triple<String, String, String> fileShare) {
-                            cloudFileShares.add(fileShare);
-                        }
-                    })
-                    .flatMap(new Func1<List<Triple<String, String, String>>, Observable<? extends ContainerGroupInner>>() {
-                        @Override
-                        public Observable<? extends ContainerGroupInner> call(List<Triple<String, String, String>> fileShares) {
-                            for (Triple<String, String, String> fileShareEntry : fileShares) {
-                                self.defineVolume(fileShareEntry.getLeft())
-                                    .withExistingReadWriteAzureFileShare(fileShareEntry.getMiddle())
-                                    .withStorageAccountName(storageAccount.name())
-                                    .withStorageAccountKey(fileShareEntry.getRight())
-                                    .attach();
-                            }
-                            return self.manager().inner().containerGroups().createOrUpdateAsync(self.resourceGroupName(), self.name(), self.inner());
-                        }
-                    });
-            } else {
-                return this.manager().inner().containerGroups().createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
-            }
-        } else {
+        if (!isInCreateMode()) {
             throw new UnsupportedOperationException("Update on an existing container group resource is not supported");
+        } else if (newFileShares == null || creatableStorageAccountKey == null) {
+            return this.manager().inner().containerGroups().createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
+        } else {
+            final StorageAccount storageAccount = (StorageAccount) this.createdResource(this.creatableStorageAccountKey);
+            return createFileShareAsync(storageAccount)
+                .collect(new Func0<List<Triple<String, String, String>>>() {
+                    @Override
+                    public List<Triple<String, String, String>> call() {
+                        return new ArrayList<>();
+                    }
+                }, new Action2<List<Triple<String, String, String>>, Triple<String, String, String>>() {
+                    @Override
+                    public void call(List<Triple<String, String, String>> cloudFileShares, Triple<String, String, String> fileShare) {
+                        cloudFileShares.add(fileShare);
+                    }
+                })
+                .flatMap(new Func1<List<Triple<String, String, String>>, Observable<? extends ContainerGroupInner>>() {
+                    @Override
+                    public Observable<? extends ContainerGroupInner> call(List<Triple<String, String, String>> fileShares) {
+                        for (Triple<String, String, String> fileShareEntry : fileShares) {
+                            self.defineVolume(fileShareEntry.getLeft())
+                                .withExistingReadWriteAzureFileShare(fileShareEntry.getMiddle())
+                                .withStorageAccountName(storageAccount.name())
+                                .withStorageAccountKey(fileShareEntry.getRight())
+                                .attach();
+                        }
+                        return self.manager().inner().containerGroups().createOrUpdateAsync(self.resourceGroupName(), self.name(), self.inner());
+                    }
+                });
         }
     }
 
@@ -189,24 +188,24 @@ public class ContainerGroupImpl
     @Override
     protected void initializeChildrenFromInner() {
         // Getting the container instances
+        this.containers = new HashMap<>();
         if (this.inner().containers() != null && this.inner().containers().size() > 0) {
-            this.containers = new HashMap<>();
             for (Container containerInstance : this.inner().containers()) {
                 this.containers.put(containerInstance.name(), containerInstance);
             }
         }
 
         // Getting the volumes
+        this.volumes = new HashMap<>();
         if (this.inner().volumes() != null && this.inner().volumes().size() > 0) {
-            this.volumes = new HashMap<>();
             for (Volume volume : this.inner().volumes()) {
                 this.volumes.put(volume.name(), volume);
             }
         }
 
         // Getting the private image registry servers
+        this.imageRegistryServers = new ArrayList<>();
         if (this.inner().imageRegistryCredentials() != null && this.inner().imageRegistryCredentials().size() > 0) {
-            this.imageRegistryServers = new ArrayList<>();
             for (ImageRegistryCredential imageRegistry : this.inner().imageRegistryCredentials()) {
                 this.imageRegistryServers.add(imageRegistry.server());
             }
@@ -335,7 +334,7 @@ public class ContainerGroupImpl
         return this.defineContainerInstance(this.name())
             .withImage(imageName)
             .withoutPorts()
-            .withCPUCoreCount(1)
+            .withCpuCoreCount(1)
             .withMemorySizeInGB(1.5)
             .attach();
     }
@@ -345,20 +344,20 @@ public class ContainerGroupImpl
         return this.defineContainerInstance(this.name())
             .withImage(imageName)
             .withExternalTcpPort(port)
-            .withCPUCoreCount(1)
+            .withCpuCoreCount(1)
             .withMemorySizeInGB(1.5)
             .attach();
     }
 
     @Override
     public Map<String, Container> containers() {
-        return this.containers;
+        return Collections.unmodifiableMap(this.containers);
     }
 
     @Override
     public Collection<Port> externalPorts() {
         if (this.inner().ipAddress() != null && this.inner().ipAddress().ports() != null) {
-            return this.inner().ipAddress().ports();
+            return Collections.unmodifiableCollection(this.inner().ipAddress().ports());
         } else {
             return null;
         }
@@ -376,12 +375,12 @@ public class ContainerGroupImpl
 
     @Override
     public Map<String, Volume> volumes() {
-        return this.volumes;
+        return Collections.unmodifiableMap(this.volumes);
     }
 
     @Override
     public Collection<String> imageRegistryServers() {
-        return this.imageRegistryServers;
+        return Collections.unmodifiableCollection(this.imageRegistryServers);
     }
 
     @Override

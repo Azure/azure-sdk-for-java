@@ -28,7 +28,7 @@ public class TestContainerInstance extends TestTemplate<ContainerGroup, Containe
             .defineContainerInstance("tomcat")
                 .withImage("tomcat")
                 .withExternalTcpPort(8080)
-                .withCPUCoreCount(1)
+                .withCpuCoreCount(1)
             .attach()
             .defineContainerInstance("nginx")
                 .withImage("nginx")
@@ -39,8 +39,8 @@ public class TestContainerInstance extends TestTemplate<ContainerGroup, Containe
 
         Assert.assertEquals(cgName, containerGroup.name());
         Assert.assertEquals("Linux", containerGroup.osType().toString());
-        Assert.assertNull(containerGroup.imageRegistryServers());
-        Assert.assertNull(containerGroup.volumes());
+        Assert.assertEquals(0, containerGroup.imageRegistryServers().size());
+        Assert.assertEquals(0, containerGroup.volumes().size());
         Assert.assertNotNull(containerGroup.ipAddress());
         Assert.assertTrue(containerGroup.isIPAddressPublic());
         Assert.assertEquals(2, containerGroup.externalTcpPorts().length);
