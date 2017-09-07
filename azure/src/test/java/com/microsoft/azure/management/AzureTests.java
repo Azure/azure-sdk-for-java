@@ -482,6 +482,16 @@ public class AzureTests extends TestBase {
     }
 
     /**
+     * Tests virtual network peering
+     * @throws Exception
+     */
+    @Test
+    public void testNetworkPeerings() throws Exception {
+        new TestNetwork.WithPeering()
+            .runTest(azure.networks(), azure.resourceGroups());
+    }
+
+    /**
      * Tests route tables.
      * @throws Exception
      */
